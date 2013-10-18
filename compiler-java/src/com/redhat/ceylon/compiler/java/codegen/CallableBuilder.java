@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_RAW;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -278,6 +279,56 @@ public class CallableBuilder {
         outer.useDefaultTransformation(outerBody);
         
         return outer;
+    }
+    
+    public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen, 
+            ProducedType typeModel, 
+            final Functional methodOrClass, 
+            ProducedReference producedReference) {
+        final ParameterList parameterList = methodOrClass.getParameterLists().get(0);
+        CallableBuilder inner = new CallableBuilder(gen, typeModel, parameterList);
+        
+        ArrayList<ProducedType> pt = new ArrayList<>();
+        for (Parameter p : methodOrClass.getParameterLists().get(0).getParameters()) {
+            pt.add(p.getType());
+        }
+        inner.parameterTypes = pt; 
+        class InstanceDefaultValueCall implements DefaultValueMethodTransformation {
+            @Override
+            public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, Tree.Term forwardCallTo, List<JCExpression> defaultMethodArgs) {
+                if (methodOrClass instanceof Method
+                        && ((Method)methodOrClass).isParameter()) {
+                    // We can't generate a call to the dpm because there isn't one!
+                    // But since FunctionalParameters cannot currently have 
+                    // defaulted parameters this *must* be a variadic parameter
+                    // and it's default is always empty.
+                    return gen.makeEmptyAsSequential(true);
+                }
+                JCExpression fn = gen.makeQualIdent(gen.naming.makeUnquotedIdent(Unfix.$instance$), 
+                        Naming.getDefaultedParamMethodName((Declaration)methodOrClass, defaultedParam));
+                return gen.make().Apply(null, 
+                        fn,
+                        defaultMethodArgs);
+            }
+        }
+        inner.defaultValueCall = new InstanceDefaultValueCall();
+        JCExpression innerInvocation = gen.expressionGen().makeJavaStaticInvocation(gen,
+                methodOrClass, producedReference, parameterList);
+        
+        // Need to worry about boxing for Method and FunctionalParameter 
+        if (methodOrClass instanceof TypedDeclaration) {
+            innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 
+                    methodOrClass.getType(),
+                    !CodegenUtil.isUnBoxed((TypedDeclaration)methodOrClass), 
+                    BoxingStrategy.BOXED, methodOrClass.getType());
+        } else if (Strategy.isInstantiatorUntyped((Class)methodOrClass)) {
+            // $new method declared to return Object, so needs typecast
+            innerInvocation = gen.make().TypeCast(gen.makeJavaType(
+                    ((Class)methodOrClass).getType()), innerInvocation);
+        }
+        List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
+        inner.useDefaultTransformation(innerBody);
+        return inner;
     }
     
     /**

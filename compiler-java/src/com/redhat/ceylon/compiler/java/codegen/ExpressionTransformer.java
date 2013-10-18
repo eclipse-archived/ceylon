@@ -80,7 +80,6 @@ import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
-import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeApply;
@@ -3084,6 +3083,33 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
         boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
         try {
+            if (member.isStaticallyImportable()) {
+                if (member instanceof Method) {
+                    Method method = (Method)member;
+                    ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
+                    return CallableBuilder.javaStaticMethodReference(
+                            gen(), 
+                            expr.getTypeModel(), 
+                            method, 
+                            producedReference).build();
+                } else if (member instanceof FieldValue) {
+                    return naming.makeName(
+                            (TypedDeclaration)member, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
+                } else if (member instanceof Value) {
+                    CallBuilder callBuilder = CallBuilder.instance(this);
+                    callBuilder.invoke(naming.makeQualifiedName(makeJavaType(expr.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES), 
+                            (TypedDeclaration)member, 
+                            Naming.NA_GETTER | Naming.NA_MEMBER));
+                    return callBuilder.build();
+                } else if (member instanceof Class) {
+                    ProducedReference producedReference = expr.getTarget();
+                    return CallableBuilder.javaStaticMethodReference(
+                            gen(), 
+                            expr.getTypeModel(), 
+                            (Class)member, 
+                            producedReference).build();
+                }
+            }
             if (member instanceof Method) {
                 Method method = (Method)member;
                 if (!method.isParameter()) {
@@ -3296,6 +3322,32 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
+    JCExpression makeJavaStaticInvocation(CeylonTransformer gen,
+            final Functional methodOrClass,
+            ProducedReference producedReference,
+            final ParameterList parameterList) {
+        CallBuilder callBuilder = CallBuilder.instance(gen);
+        if (methodOrClass instanceof Method) {
+            callBuilder.invoke(gen.naming.makeName(
+                    (Method)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED));
+        } else if (methodOrClass instanceof Class) {
+            callBuilder.instantiate(
+                    gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES));
+        }
+        ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
+        
+        DirectInvocation.addReifiedArguments(gen, producedReference, reified);
+        for (ExpressionAndType reifiedArgument : reified) {
+            callBuilder.argument(reifiedArgument.expression);
+        }
+        
+        for (Parameter parameter : parameterList.getParameters()) {
+            callBuilder.argument(gen.naming.makeQuotedIdent(parameter.getName()));
+        }
+        JCExpression innerInvocation = callBuilder.build();
+        return innerInvocation;
+    }
+    
     /**
      * Removes the parentheses from the given term
      */
