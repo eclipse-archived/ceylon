@@ -405,7 +405,7 @@ shared void checkMemberTypes(){
     }
     
     // private member type
-    assert(exists privateMemberType = `PrivateClass`.getClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
+    assert(exists privateMemberType = `PrivateClass`.getDeclaredClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
     value privateMember = privateMemberType(PrivateClass())();
     assert(privateMember.string == "c");
     
@@ -922,7 +922,7 @@ shared void checkClassOrInterfaceCaseTypes(){
 shared void checkModifiers(){
     value mods = `class Modifiers`;
     assert(!mods.annotation, !mods.final, mods.abstract, mods.shared, !mods.formal, !mods.actual, !mods.default);
-    assert(exists inner = mods.getMemberDeclaration<ClassDeclaration>("NonShared"));
+    assert(exists inner = mods.getDeclaredMemberDeclaration<ClassDeclaration>("NonShared"));
     assert(!inner.abstract, !inner.shared, !inner.formal, !inner.actual, !inner.default);
     assert(exists m = mods.getMemberDeclaration<FunctionDeclaration>("method"));
     assert(!m.annotation, m.shared, m.formal, !m.actual, !m.default, !m.parameter);
