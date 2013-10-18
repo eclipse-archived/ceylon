@@ -73,7 +73,7 @@ public abstract class FreeClassOrInterface
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void init(){
         com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration = (com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface) this.declaration;
         
@@ -92,7 +92,7 @@ public abstract class FreeClassOrInterface
         if(declaration.getCaseTypes() != null)
             this.caseTypes = Metamodel.getMetamodelSequential(declaration.getCaseTypes());
         else
-            this.caseTypes = (Sequential<? extends ceylon.language.meta.declaration.OpenType>)empty_.get_();
+            this.caseTypes = (Sequential<? extends ceylon.language.meta.declaration.OpenType>)(Sequential)empty_.get_();
 
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         

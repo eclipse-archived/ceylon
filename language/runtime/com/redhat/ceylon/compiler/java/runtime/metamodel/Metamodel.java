@@ -256,10 +256,10 @@ public class Metamodel {
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Sequential<? extends ceylon.language.meta.declaration.OpenType> getMetamodelSequential(List<ProducedType> types) {
         if(types.isEmpty())
-            return (Sequential<? extends ceylon.language.meta.declaration.OpenType>)empty_.get_();
+            return (Sequential<? extends ceylon.language.meta.declaration.OpenType>)(Sequential)empty_.get_();
         ceylon.language.meta.declaration.OpenType[] ret = new ceylon.language.meta.declaration.OpenType[types.size()];
         int i=0;
         for(ProducedType pt : types){
@@ -268,10 +268,10 @@ public class Metamodel {
         return Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, ret);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getAppliedMetamodelSequential(List<ProducedType> types) {
         if(types.isEmpty())
-            return (Sequential<? extends ceylon.language.meta.model.Type<? extends Object>>)empty_.get_();
+            return (Sequential<? extends ceylon.language.meta.model.Type<? extends Object>>)(Sequential)empty_.get_();
         ceylon.language.meta.model.Type<?>[] ret = new ceylon.language.meta.model.Type[types.size()];
         int i=0;
         for(ProducedType pt : types){

@@ -40,7 +40,7 @@ public class FreeClass
         super(declaration);
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void init() {
         super.init();
@@ -56,7 +56,7 @@ public class FreeClass
             }
             this.parameters = Util.sequentialInstance(ceylon.language.meta.declaration.FunctionOrValueDeclaration.$TypeDescriptor$, parameters);
         }else{
-            this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) empty_.get_();
+            this.parameters = (Sequential<? extends FunctionOrValueDeclaration>) (Sequential)empty_.get_();
         }
     }
     
@@ -194,18 +194,18 @@ public class FreeClass
         return member;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> instantiate$typeArguments(){
-        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public java.lang.Object instantiate(){
-        return instantiate((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
+        return instantiate((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_());
     }
 
     @Ignore
@@ -226,19 +226,19 @@ public class FreeClass
         return classApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> 
         memberInstantiate$typeArguments(java.lang.Object container){
-        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public java.lang.Object memberInstantiate(java.lang.Object container){
-        return memberInstantiate(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
+        return memberInstantiate(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_());
     }
 
     @Ignore

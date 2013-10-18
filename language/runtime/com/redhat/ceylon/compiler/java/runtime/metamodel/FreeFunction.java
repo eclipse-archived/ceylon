@@ -230,18 +230,18 @@ public class FreeFunction
         return declaration.isAnnotation();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> invoke$typeArguments(){
-        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public java.lang.Object invoke(){
-        return invoke((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
+        return invoke((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_());
     }
 
     @Ignore
@@ -262,19 +262,19 @@ public class FreeFunction
         return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> 
         memberInvoke$typeArguments(java.lang.Object container){
-        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public java.lang.Object memberInvoke(java.lang.Object container){
-        return memberInvoke(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)empty_.get_());
+        return memberInvoke(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_());
     }
 
     @Ignore
