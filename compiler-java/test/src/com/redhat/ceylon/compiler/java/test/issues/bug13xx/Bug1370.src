@@ -1,0 +1,107 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1370(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        this.f = f;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> f;
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> getF() {
+        return f;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370.class);
+}
+public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1370_B(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> f) {
+        this.$reified$T = $reified$T;
+        this.f = f;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .ceylon.language.Callable<? extends T> f;
+    
+    public final .ceylon.language.Callable<? extends T> getF() {
+        return f;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_B.class, $reified$T);
+    }
+}
+public class Bug1370_C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1370_C(final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f) {
+        this.f = f;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f;
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> getF() {
+        return f;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_C.class);
+}
+public final class bug1370_ {
+    
+    private bug1370_() {
+    }
+    
+    public static void bug1370() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370 a = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return null;
+            }
+        });
+        final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370 a2 = (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return null;
+                    }
+                };
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370(arg$0$0);
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_B<.ceylon.language.String> b = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_B<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Empty.$TypeDescriptor$, "Nothing()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return .ceylon.language.nothing_.get_();
+            }
+        });
+        final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_C c = new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_C((.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "Null()()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Null()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return null;
+                    }
+                };
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1370_.bug1370();
+    }
+}
