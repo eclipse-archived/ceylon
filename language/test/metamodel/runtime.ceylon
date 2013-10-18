@@ -1311,6 +1311,65 @@ FIXME: to be determined wrt container types
 }
 
 @test
+shared void checkInheritedVsDeclared(){
+    value bottomType = `BottomClass`;
+    
+    // method
+    value inheritedMethod = bottomType.getMethod<Nothing,Anything,Nothing>("inheritedMethod");
+    assert(exists inheritedMethod, inheritedMethod == `Top<String>.inheritedMethod`);
+    
+    assert(!bottomType.getDeclaredMethod("inheritedMethod") exists);
+
+    value declaredMethod = bottomType.getMethod<Nothing,Anything,Nothing>("declaredMethod");
+    assert(exists declaredMethod, declaredMethod == `BottomClass.declaredMethod`);
+
+    // attribute
+    value inheritedAttribute = bottomType.getAttribute<Nothing,Anything>("inheritedAttribute");
+    assert(exists inheritedAttribute, inheritedAttribute == `Top<String>.inheritedAttribute`);
+    
+    assert(!bottomType.getDeclaredAttribute("inheritedAttribute") exists);
+    
+    value declaredAttribute = bottomType.getAttribute<Nothing,Anything>("declaredAttribute");
+    assert(exists declaredAttribute, declaredAttribute == `BottomClass.declaredAttribute`);
+
+    // class
+    value inheritedClass = bottomType.getClass<Nothing,Anything,Nothing>("InheritedClass");
+    assert(exists inheritedClass, inheritedClass == `Top<String>.InheritedClass`);
+    
+    assert(!bottomType.getDeclaredClass("InheritedClass") exists);
+    
+    value declaredClass = bottomType.getClass<Nothing,Anything,Nothing>("DeclaredClass");
+    assert(exists declaredClass, declaredClass == `BottomClass.DeclaredClass`);
+
+    // class via class or interface
+    value inheritedClass2 = bottomType.getClassOrInterface<Nothing,Class<Anything,Nothing>>("InheritedClass");
+    assert(exists inheritedClass2, inheritedClass2 == `Top<String>.InheritedClass`);
+    
+    assert(!bottomType.getDeclaredClassOrInterface("InheritedClass") exists);
+    
+    value declaredClass2 = bottomType.getClassOrInterface<Nothing,Class<Anything,Nothing>>("DeclaredClass");
+    assert(exists declaredClass2, declaredClass2 == `BottomClass.DeclaredClass`);
+    
+    // interface
+    value inheritedInterface = bottomType.getInterface<Nothing,Anything>("InheritedInterface");
+    assert(exists inheritedInterface, inheritedInterface == `Top<String>.InheritedInterface`);
+    
+    assert(!bottomType.getDeclaredInterface("InheritedInterface") exists);
+    
+    value declaredInterface = bottomType.getInterface<Nothing,Anything>("DeclaredInterface");
+    assert(exists declaredInterface, declaredInterface == `BottomClass.DeclaredInterface`);
+
+    // interface via class or interface
+    value inheritedInterface2 = bottomType.getClassOrInterface<Nothing,Interface<Anything>>("InheritedInterface");
+    assert(exists inheritedInterface2, inheritedInterface2 == `Top<String>.InheritedInterface`);
+    
+    assert(!bottomType.getDeclaredClassOrInterface("InheritedInterface") exists);
+    
+    value declaredInterface2 = bottomType.getClassOrInterface<Nothing,Interface<Anything>>("DeclaredInterface");
+    assert(exists declaredInterface2, declaredInterface2 == `BottomClass.DeclaredInterface`);
+}
+
+@test
 shared void checkTests(){
     assert(`NoParams`.isTypeOf(NoParams()));
     assert(!`Integer`.isTypeOf(NoParams()));
