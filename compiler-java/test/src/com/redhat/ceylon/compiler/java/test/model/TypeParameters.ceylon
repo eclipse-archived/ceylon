@@ -160,3 +160,27 @@ shared class ClassWithCaseTypes<T>()
 shared void methodWithCaseTypes<T>() 
  given T of Integer | String {}
 
+//
+// inner members and type parameters
+
+shared interface InterfaceContainer<O1> {
+    shared interface InnerInterface<O2> {
+        shared interface InnerInterface<O3> {}
+        shared class InnerClass<O3>() {}
+    }
+    shared class InnerClass<O2>() {
+        shared interface InnerInterface<O3> {}
+        shared class InnerClass<O3>() {}
+    }
+}
+
+shared interface ClassContainer<O1> {
+    shared interface InnerInterface<O2> {
+        shared interface InnerInterface<O3> {}
+        shared class InnerClass<O3>() {}
+    }
+    shared class InnerClass<O2>() {
+        shared interface InnerInterface<O3> {}
+        shared class InnerClass<O3>() {}
+    }
+}
