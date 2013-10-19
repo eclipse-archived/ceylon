@@ -352,7 +352,8 @@ public abstract class TypeDeclaration extends Declaration
     /**
      * Get the most-refined member with the given name,
      * searching this type first, taking aliases into
-     * account, followed by supertypes.
+     * account, followed by supertypes. We're looking
+     * for shared members.
      */
     public Declaration getMember(String name, Unit unit, 
             List<ProducedType> signature, boolean variadic) {
