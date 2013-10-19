@@ -819,6 +819,14 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     one such member which is not refined by another member, except</para>
                 </listitem>
                 <listitem>
+                    <para>if the qualifying type inherits a class or interface that
+                    contains the program element, and an un-<literal>shared</literal>
+                    declaration contained directly in the body of this class or 
+                    interface has the same name as a <literal>shared</literal> member 
+                    of the qualifying type, in which case the un-<literal>shared</literal>
+                    declaration hides the <literal>shared</literal> member, or</para>
+                </listitem>
+                <listitem>
                     <para>if the qualifying type is an intersection type, in which case 
                     there may be multiple members which are not refined by another 
                     member, but where there is exactly one such member that is refined 
