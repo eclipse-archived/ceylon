@@ -40,7 +40,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean declarationSection = false;
     private boolean endsInBreakReturnThrow = false;
     private boolean inExtends = false;
-    private boolean inComprehensionOrAnonFunction = false;
+    private boolean inAnonFunction = false;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -263,7 +263,7 @@ public class SpecificationVisitor extends Visitor {
                 that.addError("default member may not be used in initializer: " + 
                         member.getName());                    
             }
-            if (inComprehensionOrAnonFunction && 
+            if (inAnonFunction && 
                 specified.definitely && 
                 isVariable()) {
                 that.addError("variable member may not be captured by comprehension or function in extends clause: "+
@@ -295,12 +295,12 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.FunctionArgument that) {
-        boolean oicoaf = inComprehensionOrAnonFunction;
-        inComprehensionOrAnonFunction = declared&&inExtends;
+        boolean oicoaf = inAnonFunction;
+        inAnonFunction = declared&&inExtends;
     	SpecificationState ss = beginSpecificationScope();
     	super.visit(that);
     	endSpecificationScope(ss);
-        inComprehensionOrAnonFunction = oicoaf;
+        inAnonFunction = oicoaf;
     }
     
     @Override
