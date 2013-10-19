@@ -582,6 +582,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <emphasis>instantiated</emphasis>.</para>
             
             <programlisting>List&lt;String&gt;.filter</programlisting>
+            <programlisting>Iterable&lt;Integer&gt;.map&lt;String&gt;</programlisting>
             
             <para>The type of a static callable reference expression for a method
             or member class whose realization has callable type <literal>C</literal>, 
