@@ -165,6 +165,12 @@ public class ModuleVisitor extends Visitor {
                 that.getImportPath().addError("reserved module name: ceylon");
             }
             else {
+                if (name.get(0).equals("ceylon")) {
+                    that.getImportPath().addUsageWarning("discouraged package name: this namespace is used by Ceylon platform modules");
+                }
+                else if (name.get(0).equals("java")||name.get(0).equals("javax")) {
+                    that.getImportPath().addUsageWarning("discouraged package name: this namespace is used by Java platform modules");
+                }
                 that.getImportPath().setModel(pkg);
                 pkg.setUnit(unit.getUnit());
                 String nameString = formatPath(that.getImportPath().getIdentifiers());
