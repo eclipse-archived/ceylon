@@ -1009,6 +1009,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
             no type, and the directive occurs within a <literal>dynamic</literal> block, then 
             the directive is not type-checked at compile time.</para>
             
+            <comment><para>Note: a <literal>return</literal> statement returns only from the
+            innermost function, getter, setter, or class initializer, even in the case of a
+            nested or anonymous function. There are no "non-local returns" in the language.</para></comment>
+            
             <para>The <literal>break</literal> directive must sequentially occur in the body 
             of a loop.</para>
             
