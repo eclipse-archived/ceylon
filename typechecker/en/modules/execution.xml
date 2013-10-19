@@ -879,13 +879,15 @@ String result = middleObject.string;</programlisting>
                     the runtime type of the receiving instance, if any, and then</para>
                 </listitem-->
                 <listitem>
-                    <para>the receiving instance and a reference to the declaration to be
-                    invoked are packaged together into an instance of 
-                    <literal>Callable</literal>.</para>
+                    <para>the receiving instance, a reference to the declaration to be
+                    invoked, or a reference to the current frame or instance of every body 
+                    that contains the referenced declaration are packaged together into an 
+                    instance of <literal>Callable</literal>.</para>
                 </listitem>
             </itemizedlist>
             
-            <para>The resulting value is the instance of <literal>Callable</literal>.</para>
+            <para>The resulting value is the instance of <literal>Callable</literal>. The 
+            concrete class of this instance is not specified here.</para>
             
         </section>
         
@@ -986,6 +988,18 @@ String result = middleObject.string;</programlisting>
                  
         </section>
         
+       <section id="anonymousfunctionevaluation">
+            <title>Evaluation of anonymous functions</title>
+            
+            <para>When an anonymous function expression, as defined in 
+            <xref linkend="anonymousfunctions"/>, is evaluated, a reference to the function and a
+            reference to the current frame or instance of every containing body are packaged into an 
+            instance of <literal>Callable</literal>. The instance of <literal>Callable</literal> is
+            the resulting value of the expression. The concrete class of this instance is not 
+            specified here.</para>
+            
+       </section>
+            
        <section id="enumerationevaluation">
             <title>Evaluation of enumerations</title>
             
@@ -1013,6 +1027,10 @@ String result = middleObject.string;</programlisting>
                     the object <literal>empty</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>In the case of an iterable enumeration, the concrete class of the resulting
+            value is not specified here. In the case of a tuple enumeration it is always
+            <literal>Tuple</literal>, <literal>Empty</literal>, or <literal>Sequence</literal>.</para>
             
         </section>
         
