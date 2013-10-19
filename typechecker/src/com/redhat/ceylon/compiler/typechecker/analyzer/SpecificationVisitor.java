@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
@@ -39,6 +39,16 @@ public class SpecificationVisitor extends Visitor {
     private Tree.Statement lastExecutableStatement;
     private boolean declarationSection = false;
     private boolean endsInBreakReturnThrow = false;
+    private boolean inExtends = false;
+    private boolean inComprehensionOrAnonFunction = false;
+    
+    @Override
+    public void visit(Tree.ExtendedType that) {
+        boolean oie = inExtends;
+        inExtends = declared;
+        super.visit(that);
+        inExtends = oie;
+    }
     
     private final class ContinueVisitor extends Visitor {
         Tree.Continue node;
@@ -253,6 +263,12 @@ public class SpecificationVisitor extends Visitor {
                 that.addError("default member may not be used in initializer: " + 
                         member.getName());                    
             }
+            if (inComprehensionOrAnonFunction && 
+                specified.definitely && 
+                isVariable()) {
+                that.addError("variable member may not be captured by comprehension or function in extends clause: "+
+                        member.getName());
+            }
         }
     }
 
@@ -279,9 +295,12 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.FunctionArgument that) {
+        boolean oicoaf = inComprehensionOrAnonFunction;
+        inComprehensionOrAnonFunction = declared&&inExtends;
     	SpecificationState ss = beginSpecificationScope();
     	super.visit(that);
     	endSpecificationScope(ss);
+        inComprehensionOrAnonFunction = oicoaf;
     }
     
     @Override

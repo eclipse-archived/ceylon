@@ -129,3 +129,7 @@ class Lambdas() {
     Float cube(Float x) = (Float y) return y**3;*/
     
 }
+
+class SuperWithFun(String fun()) {}
+@error class BadSubWithFun(variable String s) extends SuperWithFun(()=>s) {}
+class GoodSubWithFun(String s) extends SuperWithFun(()=>s) {}
