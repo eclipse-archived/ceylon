@@ -327,6 +327,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     return [string[0..mid],string[mid+1...]];
 }</programlisting>
             
+            <comment><para>Note: evaluation of an anonymous function expression,
+            as defined in <xref linkend="anonymousfunctionevaluation"/> results
+            in instantiation of an object of type <literal>Callable</literal>.
+            However, the members of this object are never in scope, do not hide
+            other declarations, and are not referenceable from within the 
+            anonymous function.</para></comment>
+            
             <comment><para>Note: there is almost no semantic difference between the
             following function declarations:</para>
             <programlisting>Float f(Float x)(Float y) => x*y;</programlisting>
