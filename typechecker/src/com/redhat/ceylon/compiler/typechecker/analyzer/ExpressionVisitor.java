@@ -3878,7 +3878,19 @@ public class ExpressionVisitor extends Visitor {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type " + d.getName(unit);
-                member = getTypedMember(d, name, signature, ellipsis, unit);
+                ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+                if (ci!=null && d.inherits(ci)) {
+                    Declaration direct = ci.getDirectMember(name, signature, ellipsis);
+                    if (direct instanceof TypedDeclaration) {
+                        member = (TypedDeclaration) direct;
+                    }
+                    else {
+                        member = getTypedMember(d, name, signature, ellipsis, unit);
+                    }
+                }
+                else {
+                    member = getTypedMember(d, name, signature, ellipsis, unit);
+                }
                 ambiguous = member==null && d.isMemberAmbiguous(name, unit, 
                         signature, ellipsis);
             }
@@ -4212,7 +4224,19 @@ public class ExpressionVisitor extends Visitor {
                 pt = pt.resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 container = "type " + d.getName(unit);
-                type = getTypeMember(d, name, signature, ellipsis, unit);
+                ClassOrInterface ci = getContainingClassOrInterface(that.getScope());
+                if (ci!=null && d.inherits(ci)) {
+                    Declaration direct = ci.getDirectMember(name, signature, ellipsis);
+                    if (direct instanceof TypeDeclaration) {
+                        type = (TypeDeclaration) direct;
+                    }
+                    else {
+                        type = getTypeMember(d, name, signature, ellipsis, unit);
+                    }
+                }
+                else {
+                    type = getTypeMember(d, name, signature, ellipsis, unit);
+                }
                 ambiguous = type==null && d.isMemberAmbiguous(name, unit, 
                         signature, ellipsis);
             }
