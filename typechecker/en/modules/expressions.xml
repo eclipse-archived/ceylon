@@ -327,7 +327,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     return [string[0..mid],string[mid+1...]];
 }</programlisting>
             
-            <para>An anonymous function occurring in an <literal>extends<literal>
+            <para>An anonymous function occurring in an <literal>extends</literal>
             clause may not contain a reference to a variable value.</para>
             
             <comment><para>Note: evaluation of an anonymous function expression,
