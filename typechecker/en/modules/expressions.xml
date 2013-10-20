@@ -884,6 +884,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <literal>for</literal> clause has an iterated expression of nonempty
             type.</para>
             
+            <para>An comprehension occurring in an <literal>extends</literal> clause may 
+            not contain a reference to a variable value.</para>
+            
             <comment><para>Note: a comprehension, like a spread argument, is not considered an 
             expression. An expression, when evaluated, produces a single value. A comprehension,
             produces multiple values, like a spread argument, or like a series of listed 
