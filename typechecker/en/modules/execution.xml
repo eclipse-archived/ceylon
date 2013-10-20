@@ -268,11 +268,11 @@ void run() {
                     accessible,</para> 
                 </listitem>
                 <listitem>
-                    <para>if an instance of a class declared within the body is accessible, 
+                    <para>an instance of a class declared within the body is accessible, 
                     or</para> 
                 </listitem>
                 <listitem>
-                    <para>if an instance of a comprehension declared within the body is 
+                    <para>an instance of a comprehension declared within the body is 
                     accessible.</para>
                 </listitem>
             </itemizedlist>
