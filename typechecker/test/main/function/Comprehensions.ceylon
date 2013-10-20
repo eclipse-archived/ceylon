@@ -98,3 +98,7 @@ void comprehensions() {
     @type:"Tuple<Character,Character,Sequential<Character>>" value sst2 = [ ' ', *"hello" ];
     
 }
+
+class SuperWithIter({Character*} iter) {}
+class BadSubWithIter(variable String s) extends SuperWithIter({for (@error c in s) c}) {}
+class GoodSubWithIter(String s) extends SuperWithIter({for (c in s) c}) {}
