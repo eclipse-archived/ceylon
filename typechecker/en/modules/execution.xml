@@ -1122,7 +1122,7 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>If it occurs in a tuple enumeration, the values produced by the 
-                    comprehension are evaluated immediately, packaged into an instance 
+                    comprehension instance are evaluated immediately, packaged into an instance 
                     of <literal>Sequence</literal>, and appended to the resulting tuple.</para>
                 </listitem>
                 <listitem>
