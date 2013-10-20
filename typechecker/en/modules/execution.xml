@@ -239,42 +239,78 @@ void run() {
         or when an exception is thrown by an evaluation, assignment, invocation, or 
         instantiation.</para>
         
-        <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
-        For each reference whose declaration directly occurs in the body, the frame
-        has a value, which may or may not be initialized. The value may be initialized
-        or assigned during execution of the body.</para>
+        <section>
+            <title>Frames</title>
         
-        <para>While a body is executing, all values held in the frame are considered 
-        accessible. An evaluation, assignment, invocation, or instantiation may result 
-        in a pause in execution of the body while the called getter, setter, function, 
-        or class is executed or instantiated. However, the frame associated with the 
-        calling body is retained and values held in the frame are still considered 
-        accessible. When execution of the body resumes, the frame is restored.</para>
+            <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
+            For each reference whose declaration directly occurs in the body, the frame
+            has a value, which may or may not be initialized. The value may be initialized
+            or assigned during execution of the body.</para>
+            
+            <para>While a body is executing, all values held in the frame are considered 
+            accessible. An evaluation, assignment, invocation, or instantiation may result 
+            in a pause in execution of the body while the called getter, setter, function, 
+            or class is executed or instantiated. However, the frame associated with the 
+            calling body is retained and values held in the frame are still considered 
+            accessible. When execution of the body resumes, the frame is restored.</para>
+            
+            <para>When execution of a body terminates, the frame may or may not become
+            inaccessible. In the case of a class body, if the initializer terminates with
+            no thrown exception, the frame and its values become a new instance of the 
+            class, are associated with the newly created unique identifier, and remain 
+            accessible while this object is itself accessible. In the case of any other 
+            kind of body, or in the case that an initializer throws an exception, the 
+            frame and its values may remain accessible if a reference to a function or 
+            class declared within the body is accessible, if an instance of a class 
+            declared within the body is accessible, or if an instance of a comprehension
+            declared within the body is accessible. Otherwise, the frame becomes 
+            inaccessible and may be destroyed.</para>
+            
+            <para>The principle of <emphasis>closure</emphasis> states that a nested body
+            always has access to a frame for every containing body. The set of 
+            <emphasis>current instances</emphasis> of containing classes and 
+            <emphasis>current frames</emphasis> of containing blocks forms the closure of 
+            a nested declaration.</para>
         
-        <para>When execution of a body terminates, the frame may or may not become
-        inaccessible. In the case of a class body, if the initializer terminates with
-        no thrown exception, the frame and its values become a new instance of the 
-        class, are associated with the newly created unique identifier, and remain 
-        accessible while this object is itself accessible. In the case of any other 
-        kind of body, or in the case that an initializer throws an exception, the 
-        frame and its values may remain accessible if a reference to a function of 
-        class declared within the body is accessible, or if an instance of a class 
-        declared within the body is accessible. Otherwise, the frame becomes 
-        inaccessible and may be destroyed.</para>
+        </section>
         
-        <para>The principle of <emphasis>closure</emphasis> states that a nested body
-        always has access to a frame for every containing body. The set of 
-        <emphasis>current instances</emphasis> of containing classes and 
-        <emphasis>current frames</emphasis> of containing blocks forms the closure of a 
-        nested declaration.</para>
+        <section>
+            <title>Current instances and current frames</title>
+            
+            <para>A frame may be the <emphasis>current frame</emphasis> for a body. When the 
+            body is executing, the created frame is the current frame. When execution of the 
+            body terminates, the created frame is no longer the current frame. Invocation or 
+            evaluation of a member of a class or interface, invocation of a callable reference
+            or anonymous function, or evaluation of the values produced by a comprehension may 
+            result in the frame being restored as the current frame.</para> 
+            
+            <para>A class instance, callable reference, anonymous function reference, or 
+            comprehension instance packages a reference to a frame for each body containing 
+            the program element, as specified below. When a member of the class instance is
+            invoked or evaluated, when the callable reference or anonymous function is
+            invoked, or when the comprehension instance produces a value, these frames are
+            restored as the current frames of the associated bodies. When the invocation or
+            evaluation terminates, or when the comprehension value has been produced, these
+            frames are no longer current frames.</para>  
+            
+            <para>The value associated with a value reference in the current frame of the
+            body to which the value reference belongs is called the <emphasis>current 
+            value</emphasis> of the value reference.</para>
+            
+            <para>If a frame is the current frame for a class or interface body, we call it 
+            the <emphasis>current instance</emphasis> of the class or interface.</para>
+            
+            <comment><para>TODO: in the following two sections, account for callable references,
+            anonymous function references, and comprehension instances.</para></comment>
+            
+        </section>
         
         <section id="currentinstanceofaclassorinterface">
             <title>Current instance of a class or interface</title>
             
             <para>If a statement is occurs directly or indirectly inside a class or interface 
-            body, then there is always a <emphasis>current instance</emphasis> of the class or 
-            interface when the statement is executed. The current instance is determined as 
-            follows:</para>
+            body, then there is always a current instance of the class or interface when the 
+            statement is executed. The current instance is determined as follows:</para>
             
             <itemizedlist>
                 <listitem>
@@ -318,14 +354,14 @@ innerObject.member();</programlisting>
             <title>Current frame of a block</title>
             
             <para>If a statement occurs directly or indirectly inside a block, then there 
-            is always a <emphasis>current frame</emphasis> of the block when the statement 
-            is executed. The current frame is determined as follows:</para>
+            is always a current frame of the block when the statement is executed. The current 
+            frame is determined as follows:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>If the statement occurs sequentially, as defined by 
                     <xref linkend="blockstructure"/>, in the block, the current frame is the
-                    frame is the frame associated with the current execution of the block.</para>
+                    frame associated with the current execution of the block.</para>
                 </listitem>
                 <listitem>
                     <para>For a statement that occurs sequentially in the body of a nested 
@@ -854,12 +890,12 @@ String result = middleObject.string;</programlisting>
                     from the receiving instance, or</para>
                 </listitem>
                 <listitem>
-                    <para>otherwise, execution of the calling context pauses while the body 
+                    <para>otherwise, execution of the calling body pauses while the body 
                     of its getter is executed by the receiving instance, then,</para>
                 </listitem>
                 <listitem>
                     <para>finally, when execution of the getter ends, execution of the 
-                    calling context resumes.</para>
+                    calling body resumes.</para>
                 </listitem>
             </itemizedlist>
             
@@ -916,13 +952,13 @@ String result = middleObject.string;</programlisting>
                     the receiving instance, or</para>
                 </listitem>
                 <listitem>
-                    <para>otherwise, execution of the calling context pauses while the body 
+                    <para>otherwise, execution of the calling body pauses while the body 
                     of its setter is executed by the receiving instance with the assigned 
                     value, then,</para>
                 </listitem>
                 <listitem>
                     <para>finally, when execution of the setter ends, execution of the calling 
-                    context resumes.</para>
+                    body resumes.</para>
                 </listitem>
             </itemizedlist>
             
@@ -962,7 +998,7 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>each listed argument or spread argument is evaluated in turn in the 
-                    calling context, and</para>
+                    calling body, and</para>
                 </listitem>
                 <listitem>
                     <para>if the argument list has a comprehension, a comprehension instance, 
@@ -974,13 +1010,13 @@ String result = middleObject.string;</programlisting>
                     runtime type of the receiving instance, if any, and then</para>
                 </listitem>
                 <listitem>
-                    <para>execution of the calling context pauses while the body of the function 
+                    <para>execution of the calling body pauses while the body of the function 
                     or initializer is executed by the receiving instance with the argument values, 
                     then</para>
                 </listitem>
                 <listitem>
                     <para>finally, when execution of the function or initializer ends, execution 
-                    of the calling context resumes.</para>
+                    of the calling body resumes.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1021,7 +1057,7 @@ String result = middleObject.string;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>first, each listed argument or spread argument is evaluated in 
-                    turn in the calling context, and</para>
+                    turn in the calling body, and</para>
                 </listitem>
                 <listitem>
                     <para>if the argument list has a comprehension, a comprehension instance, 
@@ -1272,6 +1308,10 @@ String result = middleObject.string;</programlisting>
         <comment><para>Note: each child clause can be viewed as a body nested inside 
         the parent clause. The lifecycle of comprehension frames reflects this model.
         </para></comment>
+        
+        <para>Evaluation of an expression occurring in a comprehension clause occurs
+        in the context of the packaged frames associated with the comprehension
+        instance together with a comprehension frame associated with the clause.</para>
         
         <section id="forclause">
             <title><literal>for</literal> clause</title>
