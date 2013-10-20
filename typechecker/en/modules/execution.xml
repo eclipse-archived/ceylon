@@ -961,7 +961,13 @@ String result = middleObject.string;</programlisting>
                     instance, then</para>
                 </listitem>
                 <listitem>
-                    <para>each argument is evaluated in turn in the calling context, then</para>
+                    <para>each listed argument or spread argument is evaluated in turn in the 
+                    calling context, and</para>
+                </listitem>
+                <listitem>
+                    <para>if the argument list has a comprehension, a comprehension instance, 
+                    as defined in <xref linkend="comprehensionevaluation"/>, is obtained, 
+                    and then</para>
                 </listitem>
                 <listitem>
                     <para>the actual declaration to be invoked is determined by considering the 
@@ -981,7 +987,7 @@ String result = middleObject.string;</programlisting>
             <para>A function invocation evaluates to the return value of the function, as specified 
             by the <literal>return</literal> directive. The argument values are passed to the 
             parameters of the method, and the body of the method is executed.</para>
-                    
+            
             <para>A class instantiation evaluates to a new instance of the class. The argument 
             values are passed to the initializer parameters of the class, and the initializer
             is executed.</para>
@@ -1014,25 +1020,29 @@ String result = middleObject.string;</programlisting>
                 
             <itemizedlist>
                 <listitem>
-                    <para>first, each argument is evaluated in turn in the calling context, 
-                    then</para>
+                    <para>first, each listed argument or spread argument is evaluated in 
+                    turn in the calling context, and</para>
                 </listitem>
                 <listitem>
-                    <para>the resulting values are packaged into an instance of 
-                    <literal>Iterable</literal> or <literal>Sequence</literal> and this
-                    object is the resulting value, unless</para>
+                    <para>if the argument list has a comprehension, a comprehension instance, 
+                    as defined in <xref linkend="comprehensionevaluation"/>, is obtained, 
+                    and then</para>
                 </listitem>
                 <listitem>
-                    <para>there are no arguments, in which case the resulting value is
-                    the object <literal>empty</literal>.</para>
+                    <para>the resulting argument values are packaged into an instance of 
+                    <literal>Iterable</literal> or <literal>Sequence</literal>, and this 
+                    object is the resulting value of the enumeration expression, unless</para>
+                </listitem>
+                <listitem>
+                    <para>there are no arguments, and no comprehension, in which case the 
+                    resulting value of the enumeration expression is the object 
+                    <literal>empty</literal>.</para>
                 </listitem>
             </itemizedlist>
             
             <para>In the case of an iterable enumeration, the concrete class of the resulting
             value is not specified here. In the case of a tuple enumeration it is always
             <literal>Tuple</literal>, <literal>Empty</literal>, or <literal>Sequence</literal>.</para>
-            
-            <comment><para>TODO: enumerations containing comprehensions.</para></comment>
             
         </section>
         
@@ -1059,7 +1069,7 @@ String result = middleObject.string;</programlisting>
             </itemizedlist>
             
             <para>On the other hand, when a spread argument expression type is not a subtype of 
-            <literal>Sequential</literal>, the behavior depends upon where spread argument
+            <literal>Sequential</literal>, the behavior depends upon where the spread argument
             occurs:</para>
             
             <itemizedlist>
@@ -1096,27 +1106,31 @@ String result = middleObject.string;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>If it occurs as an argument to a variadic parameter in a positional
-                    argument list, the values produced by the comprehension are evaluated 
-                    immediately and packaged into an instance of <literal>Sequence</literal>
+                    argument list, the values produced by the comprehension instance are 
+                    evaluated immediately, packaged into an instance of <literal>Sequence</literal>,
                     and passed to the variadic parameter, unless there are no values, in 
                     which case the object <literal>empty</literal> is passed to the variadic 
                     parameter.</para>
                 </listitem>
                 <listitem>
                     <para>If it occurs as an argument to a parameter of type 
-                    <literal>Iterable</literal> at the end of a named argument list, an
-                    iterable object that produces the comprehension's values on demand is 
-                    passed directly to the parameter.</para>
+                    <literal>Iterable</literal> at the end of a named argument list, the 
+                    comprehension instance is packaged into an iterable object that produces 
+                    the values of the comprehension on demand, and this iterable object is 
+                    passed directly to the parameter. The concrete class of this object is 
+                    not specified here.</para>
                 </listitem>
                 <listitem>
                     <para>If it occurs in a tuple enumeration, the values produced by the 
-                    comprehension are evaluated immediately and packaged into an instance 
-                    of <literal>Sequence</literal> and appended to the resulting tuple.</para>
+                    comprehension are evaluated immediately, packaged into an instance 
+                    of <literal>Sequence</literal>, and appended to the resulting tuple.</para>
                 </listitem>
                 <listitem>
-                    <para>If it occurs in an iterable enumeration, an iterable object that 
-                    produces the comprehension's values on demand is chained directly to the 
-                    resulting iterable object.</para>
+                    <para>If it occurs in an iterable enumeration, the comprehension instance
+                    is packaged into an iterable object that produces the values of the 
+                    comprehension on demand, and this iterable object is chained directly to 
+                    the resulting iterable object. The concrete class of this object is not 
+                    specified here.</para>
                 </listitem>
             </itemizedlist>
             
