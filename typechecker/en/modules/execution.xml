@@ -1032,6 +1032,8 @@ String result = middleObject.string;</programlisting>
             value is not specified here. In the case of a tuple enumeration it is always
             <literal>Tuple</literal>, <literal>Empty</literal>, or <literal>Sequence</literal>.</para>
             
+            <comment><para>TODO: enumerations containing comprehensions.</para></comment>
+            
         </section>
         
         <section id="spreadevaluation">
@@ -1239,11 +1241,19 @@ String result = middleObject.string;</programlisting>
     <section id="comprehensionevaluation">
         <title>Evaluation of comprehensions</title>
         
-        <para>A comprehension, as specified in <xref linkend="comprehensions"/>, 
-        consists of a series of clauses. Each clause of a comprehension produces 
-        a stream of <emphasis>frames</emphasis>. A frame is a set of values for 
-        iteration variables and condition variables declared by the clause and its
-        parent clauses.</para>
+        <para>When a comprehension, as specified in <xref linkend="comprehensions"/>, 
+        is evaluated, a reference to the comprehension, together with a reference to 
+        the current frame or instance of every containing body, are packaged together 
+        into a <emphasis>comprehension instance</emphasis>. A comprehension instance 
+        is not considered a value in the sense of <xref linkend="objectinstancesidentity"/>. 
+        Instead, it is a stream of values, each produced by evaluating the expression 
+        clause of the comprehension.</para>
+        
+        <para>A comprehension consists of a series of clauses. Each clause of a 
+        comprehension, except for the expression clause that terminates the list of 
+        clauses, produces a stream of <emphasis>frames</emphasis>. A frame is a set 
+        of values for iteration variables and condition variables declared by the 
+        clause and its parent clauses.</para>
         
         <comment><para>Note: each child clause can be viewed as a body nested inside 
         the parent clause. The lifecycle of comprehension frames reflects this model.
@@ -1301,10 +1311,10 @@ String result = middleObject.string;</programlisting>
         <section id="expressionclause">
             <title>Expression clause</title>
             
-            <para>An expression clause produces a single value for each frame 
-            produced by its parent clause, by evaluating the expression in the
-            frame. These resulting values are the values returned by the whole 
-            comprehension.</para>
+            <para>As specified in <xref linkend="comprehensions"/>, every comprehension ends 
+            in an expression clause. An expression clause produces a single value for each 
+            frame produced by its parent clause, by evaluating the expression in the frame. 
+            These resulting values are the values returned by the whole comprehension.</para>
         
         </section>
             
