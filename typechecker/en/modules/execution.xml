@@ -260,11 +260,24 @@ void run() {
             class, are associated with the newly created unique identifier, and remain 
             accessible while this object is itself accessible. In the case of any other 
             kind of body, or in the case that an initializer throws an exception, the 
-            frame and its values may remain accessible if a reference to a function or 
-            class declared within the body is accessible, if an instance of a class 
-            declared within the body is accessible, or if an instance of a comprehension
-            declared within the body is accessible. Otherwise, the frame becomes 
-            inaccessible and may be destroyed.</para>
+            frame and its values may remain accessible if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a reference to a function or class declared within the body is 
+                    accessible,</para> 
+                </listitem>
+                <listitem>
+                    <para>if an instance of a class declared within the body is accessible, 
+                    or</para> 
+                </listitem>
+                <listitem>
+                    <para>if an instance of a comprehension declared within the body is 
+                    accessible.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Otherwise, the frame becomes inaccessible and may be destroyed.</para>
             
             <para>The principle of <emphasis>closure</emphasis> states that a nested body
             always has access to a frame for every containing body. The set of 
