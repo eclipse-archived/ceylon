@@ -12,7 +12,7 @@ import ceylon.language.meta.model {
    ### Usage sample for toplevel classes
    
    Because some classes have type parameters, getting a model requires applying type arguments to the
-   class declaration with [[classApply]] in order to be able to instantiate that class. For example, here is how you would
+   class declaration with [[apply]] in order to be able to instantiate that class. For example, here is how you would
    obtain a class or interface model that you can instantiate from a toplevel class declaration:
    
        class Foo<T>() {
