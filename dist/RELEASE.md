@@ -8,6 +8,8 @@ How to do a release of Ceylon.
 3. If required, bump `AbstractTransformer.BINARY_MAJOR_VERSION` and all the `@Ceylon(major = X)` annotations in `ceylon.language`
    and the compiler tests' `.src` files
   - Note that most likely you'll need a new Herd as well (good luck)
+4. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples)
+complies and runs OK.
 
 # Before (requirements & testing)
 
