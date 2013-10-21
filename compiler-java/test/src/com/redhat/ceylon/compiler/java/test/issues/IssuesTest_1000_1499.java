@@ -678,4 +678,12 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1370() {
         compareWithJavaSource("bug13xx/Bug1370");
     }
+
+    @Test
+    public void testBug1375() {
+        assertErrors("bug13xx/Bug1375",
+                new CompilerError(22, "does not definitely return: x"),
+                new CompilerError(28, "cannot find symbol\n  symbol:   method x()\n  location: variable x of type com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1375")
+        );
+    }
 }
