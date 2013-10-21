@@ -69,8 +69,20 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<S>($reified$S, s);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <C, S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$aliased$(final S s) {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "C",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "S",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
+    public <C, S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("S")
+    final S s) {
         throw new .ceylon.language.Exception();
     }
     
@@ -95,8 +107,14 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, s);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <C>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$aliased$(final .ceylon.language.Integer s) {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "C",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <C>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final .ceylon.language.Integer s) {
         throw new .ceylon.language.Exception();
     }
     
@@ -116,8 +134,14 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<C>($reified$C, s);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public <C>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$aliased$(final C s) {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "C",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <C>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
+    final C s) {
         throw new .ceylon.language.Exception();
     }
     

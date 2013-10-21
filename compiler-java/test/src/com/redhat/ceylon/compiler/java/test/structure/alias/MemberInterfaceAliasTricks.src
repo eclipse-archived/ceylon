@@ -72,7 +72,6 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
             return new MemberClass();
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClassAliasToEnclosingMemberClass$aliased$() {
             throw new .ceylon.language.Exception();
         }

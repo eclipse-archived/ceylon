@@ -58,8 +58,11 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return new MemberClassAliasTricks_Foo(a, b);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel$aliased$(final long a, final long b) {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long b) {
         throw new .ceylon.language.Exception();
     }
     
@@ -79,8 +82,11 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return new MemberClassAliasTricks_Foo(a, b);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel2$aliased$(final long a, final long b) {
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel2$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long b) {
         throw new .ceylon.language.Exception();
     }
     
@@ -154,8 +160,11 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
             return new Member(a, b);
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member MemberClassAliasToEnclosingMemberClass$aliased$(final long a, final long b) {
+        public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member MemberClassAliasToEnclosingMemberClass$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+        final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+        final long b) {
             throw new .ceylon.language.Exception();
         }
         
