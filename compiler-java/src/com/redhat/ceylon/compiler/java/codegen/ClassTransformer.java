@@ -300,8 +300,8 @@ public class ClassTransformer extends AbstractTransformer {
                 argExpr = instantiateAnnotationClass(parameterType, annoAttr);
             } else if (isCeylonMetamodelDeclaration(parameterType)) {
                 argExpr = makeMetamodelInvocation("parseMetamodelReference", 
-                        List.<JCExpression>of(annoAttr), 
-                        null);
+                            List.<JCExpression>of(annoAttr), 
+                            List.<JCExpression>of(makeJavaType(parameterType, JT_TYPE_ARGUMENT)));
             } else if (Decl.isEnumeratedTypeWithAnonCases(parameterType)) {
                 argExpr = makeMetamodelInvocation("parseEnumerationReference", 
                         List.<JCExpression>of(annoAttr), 
