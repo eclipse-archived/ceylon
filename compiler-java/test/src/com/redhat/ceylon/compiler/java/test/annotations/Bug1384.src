@@ -1,0 +1,116 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface Bug1384$annotation$ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
+    public abstract .java.lang.String reference();
+}
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration> {
+    
+    public Bug1384(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384$annotation$ anno) {
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ValueDeclaration>parseMetamodelReference(anno.reference()));
+    }
+    
+    public Bug1384(final .ceylon.language.meta.declaration.ValueDeclaration reference) {
+        this.reference = reference;
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$, this);
+    }
+    private final .ceylon.language.meta.declaration.ValueDeclaration reference;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final .ceylon.language.meta.declaration.ValueDeclaration getReference() {
+        return reference;
+    }
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+        return $ceylon$language$OptionalAnnotation$this$;
+    }
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+        return $ceylon$language$ConstrainedAnnotation$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.Annotated programElement) {
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
+    }
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384> $ceylon$language$Annotation$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384> $ceylon$language$Annotation$impl() {
+        return $ceylon$language$Annotation$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface Bug1384_sequence$annotation$ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
+    public abstract .java.lang.String[] references();
+}
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration> {
+    
+    public Bug1384_sequence(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence$annotation$ anno) {
+        this(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.<.ceylon.language.meta.declaration.ValueDeclaration>parseMetamodelReferences(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, anno.references()));
+    }
+    
+    public Bug1384_sequence(final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> references) {
+        this.references = references;
+        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$, this);
+    }
+    private final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> references;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> getReferences() {
+        return references;
+    }
+    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
+        return $ceylon$language$OptionalAnnotation$this$;
+    }
+    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
+        return $ceylon$language$ConstrainedAnnotation$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean occurs(final .ceylon.language.Annotated programElement) {
+        return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
+    }
+    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence> $ceylon$language$Annotation$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence> $ceylon$language$Annotation$impl() {
+        return $ceylon$language$Annotation$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.class);
+}
