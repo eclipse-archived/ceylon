@@ -304,7 +304,7 @@ public class LinkRenderer {
             }
         }
         
-        ceylonDocTool.warnBrokenLink(docLinkText, scope);
+        ceylonDocTool.warningBrokenLink(docLinkText, scope);
         
         return getUnresolvableLink(docLinkText);
     }

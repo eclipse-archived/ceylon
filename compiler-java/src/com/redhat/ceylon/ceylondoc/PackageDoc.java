@@ -165,7 +165,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div class='package-description'");
         String doc = getDoc(pkg, linkRenderer());
         if (isEmpty(doc)) {
-            tool.warnMissingDoc(pkg.getQualifiedNameString());
+            tool.warningMissingDoc(pkg.getQualifiedNameString());
         }
         around("div class='doc'", doc);
         writeBy(pkg);

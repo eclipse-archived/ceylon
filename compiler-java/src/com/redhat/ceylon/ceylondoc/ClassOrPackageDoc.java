@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -154,6 +155,12 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeParameterList(f);
             writeTypeParametersConstraints(f.getTypeParameters());
         }
+        if (d instanceof Value) {
+            Setter setter = ((Value) d).getSetter();
+            if (setter != null && Util.getAnnotation(setter.getAnnotations(), "doc") != null) {
+                tool.warningSetterDoc(d.getQualifiedNameString());
+            }
+        }
         close("div");
         writeDescription(d);
         close("td");
@@ -214,7 +221,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeDeprecated(d);
         String doc = getDoc(d, linkRenderer());
         if (isEmpty(doc)) {
-            tool.warnMissingDoc(d.getQualifiedNameString());
+            tool.warningMissingDoc(d.getQualifiedNameString());
         }
         around("div class='doc section'", doc);
         if( d instanceof MethodOrValue ) {

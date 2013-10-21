@@ -1084,13 +1084,13 @@ public class CeylonDocTool extends RepoUsingTool {
         return moduleUrlAvailabilityCache;
     }
 
-    protected void warnMissingDoc(String name) {
+    protected void warningMissingDoc(String name) {
         if (!ignoreMissingDoc) {
             log.warning(CeylondMessages.msg("warn.missingDoc", name));
         }
     }
     
-    protected void warnBrokenLink(String link, Referenceable scope) {
+    protected void warningBrokenLink(String link, Referenceable scope) {
         if (!ignoreBrokenLink) {
             
             String where = "";
@@ -1129,6 +1129,10 @@ public class CeylonDocTool extends RepoUsingTool {
             
             log.warning(CeylondMessages.msg("warn.brokenLink", link, where));
         }
+    }
+    
+    protected void warningSetterDoc(String name) {
+        log.warning(CeylondMessages.msg("warn.setterDoc", name));
     }
     
 }
