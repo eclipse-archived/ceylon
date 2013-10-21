@@ -1367,8 +1367,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // must be a class
         Class declaration = (Class) alias.getExtendedType().getDeclaration();
         
-        // copy the parameters from the extended type
-        alias.setParameterList(copyParameterList(alias, declaration));
+        // Find the instantiator method
+        MethodMirror instantiator = null;
+        ClassMirror instantiatorClass = alias.isToplevel() ? alias.classMirror : alias.classMirror.getEnclosingClass();
+        for (MethodMirror method : instantiatorClass.getDirectMethods()) {
+            // If we're finding things based on their name, shouldn't we 
+            // we using Naming to do it?
+            if (method.getName().equals(alias.getName() + "$aliased$")) {
+                instantiator = method;
+                break;
+            }
+        }
+        // Read the parameters from the instantiator, rather than the aliased class
+        if (instantiator != null) {
+            setParameters(alias, instantiator, true, alias);
+        }
         timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
     }
 
@@ -1479,7 +1492,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<Declaration> overloads = (isOverloaded) ? new ArrayList<Declaration>(methodMirrors.size()) : null;
             for (MethodMirror methodMirror : methodMirrors) {
                 String methodName = methodMirror.getName();
-                if(methodMirror.isConstructor()) {
+                if(methodMirror.isConstructor() || isInstantiator(methodMirror)) {
                     break;
                 } else if(isGetter(methodMirror)) {
                     // simple attribute
@@ -1595,6 +1608,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setAnnotations(klass, classMirror);
     }
 
+    private boolean isInstantiator(MethodMirror methodMirror) {
+        return methodMirror.getName().endsWith("$aliased$");
+    }
     private void checkReifiedGenericsForMethods(ClassOrInterface klass, ClassMirror classMirror) {
         for(Declaration member : klass.getMembers()){
             if(member instanceof JavaMethod == false)
