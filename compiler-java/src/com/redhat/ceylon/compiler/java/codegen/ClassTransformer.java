@@ -163,8 +163,7 @@ public class ClassTransformer extends AbstractTransformer {
             }else{
                 // class alias
                 classBuilder.constructorModifiers(PRIVATE);
-                classBuilder.annotations(makeAtAlias(model.getExtendedType()));
-                classBuilder.isAlias(true);
+                transformClassAlias((Tree.AnyClass)def, classBuilder);
             }
         }
         
@@ -219,6 +218,67 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return result;
+    }
+
+    private void transformClassAlias(final Tree.AnyClass def,
+            ClassDefinitionBuilder classBuilder) {
+        Class model = def.getDeclarationModel();
+        ProducedType aliasedClass = model.getExtendedType();
+        classBuilder.annotations(makeAtAlias(aliasedClass));
+        classBuilder.isAlias(true);
+        MethodDefinitionBuilder instantiator = transformClassAliasInstantiator(
+                def, model, aliasedClass);
+        
+        ClassDefinitionBuilder cbInstantiator = null;
+        switch (Strategy.defaultParameterMethodOwner(model)) {
+        case STATIC:
+            cbInstantiator = classBuilder;
+            break;
+        case OUTER:
+            cbInstantiator =  classBuilder.getContainingClassBuilder();
+            break;
+        case OUTER_COMPANION:
+            cbInstantiator = classBuilder.getContainingClassBuilder().getCompanionBuilder(Decl.getClassOrInterfaceContainer(model, true));
+            break;
+        default:
+            Assert.fail("", def);
+        }
+        
+        cbInstantiator.method(instantiator);
+    }
+
+    /**
+     * Builds the instantiator method for a class aliases. In 1.0 you can't
+     * actually invoke these, they exist just so there's somewhere to put the
+     * class alias annotations. In 1.2 (when we fix #1295) the
+     * instantiators will actually do something.
+     */
+    private MethodDefinitionBuilder transformClassAliasInstantiator(
+            final Tree.AnyClass def, Class model, ProducedType aliasedClass) {
+        MethodDefinitionBuilder instantiator = MethodDefinitionBuilder.systemMethod(this, naming.getAliasInstantiatorMethodName(model));
+        int f = 0;
+        if (Strategy.defaultParameterMethodStatic(def.getDeclarationModel())) {
+            f = STATIC;
+        }
+        instantiator.modifiers((transformClassDeclFlags(def) & ~FINAL)| f);
+        for (TypeParameter tp : typeParametersForAliasInstantiator(model)) {
+            instantiator.typeParameter(tp);
+        }
+        
+        instantiator.resultType(null, makeJavaType(aliasedClass));
+        // We need to reify the parameters, at least so they have reified annotations
+        
+        
+        for (final Tree.Parameter param : def.getParameterList().getParameters()) {
+            // Overloaded instantiators
+            Parameter paramModel = param.getParameterModel();
+            at(param);
+
+            List<JCAnnotation> annotations = expressionGen().transform(Decl.getAnnotations(def, param));
+            transformParameter(instantiator, paramModel, annotations);
+        }
+        instantiator.body(make().Throw(makeNewClass(makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CLASS_NEW))));
+        return instantiator;
     }
 
     /**
@@ -644,7 +704,9 @@ public class ClassTransformer extends AbstractTransformer {
                 naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED))));
     }
     
-    private void transformParameter(ClassDefinitionBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
+
+    private void transformParameter(ParameterizedBuilder classBuilder, Parameter param, List<JCAnnotation> annotations) {
+
         JCExpression type = classGen().transformClassParameterType(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.aliasName(Naming.getAliasedParameterName(param));
@@ -658,8 +720,10 @@ public class ClassTransformer extends AbstractTransformer {
             pdb.modelAnnotations(param.getModel().getAnnotations());
             pdb.userAnnotations(annotations);
         }
-        if (pdb.requiresBoxedVariableDecl()) {
-            classBuilder.init(pdb.buildBoxedVariableDecl());
+
+        if (classBuilder instanceof ClassDefinitionBuilder
+                && pdb.requiresBoxedVariableDecl()) {
+            ((ClassDefinitionBuilder)classBuilder).init(pdb.buildBoxedVariableDecl());
         }
         classBuilder.parameter(pdb);
     }
@@ -3111,6 +3175,24 @@ public class ClassTransformer extends AbstractTransformer {
         return filtered;
     }
 
+    private java.util.List<TypeParameter> typeParametersForAliasInstantiator(final Class model) {
+        java.util.List<java.util.List<TypeParameter>> r = new ArrayList<java.util.List<TypeParameter>>(1);
+        Scope s = model.getContainer();
+        while (!(s instanceof Package)) {
+            if (s instanceof Generic) {
+                r.add(((Generic)s).getTypeParameters());
+            }
+            s = s.getContainer();
+        }
+        java.util.List<TypeParameter> result = new ArrayList<TypeParameter>(1);
+        for (java.util.List<TypeParameter> tps : r) {
+            result.addAll(tps);
+        }
+        result.addAll(model.getTypeParameters());
+        return result;
+    }
+    
+    
     /**
      * Creates a (possibly abstract) method for retrieving the value for a 
      * defaulted parameter

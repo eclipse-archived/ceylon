@@ -102,6 +102,7 @@ public class Naming implements LocalId {
      * Should start and end with a {@code $} and contain no {@code $}
      */
     enum Suffix implements Affix {
+        $aliased$,
         $annotation$,
         $annotations$,
         $arg$,
@@ -767,6 +768,10 @@ public class Naming implements LocalId {
     
     String getInstantiatorMethodName(Class model) {
         return suffixName(Suffix.$new$, model.getName());
+    }
+    
+    String getAliasInstantiatorMethodName(Class model) {
+        return suffixName(Suffix.$aliased$, model.getName());
     }
     
     JCExpression makeInstantiatorMethodName(JCExpression qual, Class model) {

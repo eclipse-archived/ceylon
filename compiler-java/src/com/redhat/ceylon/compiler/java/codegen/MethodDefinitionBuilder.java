@@ -57,7 +57,8 @@ import com.sun.tools.javac.util.Name;
  * 
  * @author Tako Schotanus
  */
-public class MethodDefinitionBuilder {
+public class MethodDefinitionBuilder 
+        implements ParameterizedBuilder<MethodDefinitionBuilder> {
     private final AbstractTransformer gen;
     
     private final String name;

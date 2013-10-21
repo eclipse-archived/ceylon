@@ -57,7 +57,8 @@ import com.sun.tools.javac.util.Name;
  * 
  * @author Tako Schotanus
  */
-public class ClassDefinitionBuilder {
+public class ClassDefinitionBuilder 
+        implements ParameterizedBuilder<ClassDefinitionBuilder> {
     private final AbstractTransformer gen;
     
     private final String name;
@@ -422,7 +423,7 @@ public class ClassDefinitionBuilder {
     }
 
     // Create a parameter for the constructor
-    ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
+    public ClassDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
         params.append(pdb);
         return this;
     }
