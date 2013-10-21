@@ -84,6 +84,10 @@ public abstract class CeylonDoc extends Markup {
     }
 
     protected final void writeFooter(String... additionalJs) throws IOException {
+        open("script type='text/javascript'");
+        write("var resourceBaseUrl = '" + tool.getResourceUrl(getFromObject(), "") + "'");
+        close("script");
+        
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("jquery-1.8.2.min.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("bootstrap.min.js") + "'");
         around("script type='text/javascript' src='" + linkRenderer().getResourceUrl("shCore.js") + "'");

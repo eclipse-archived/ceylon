@@ -712,6 +712,11 @@ public class CeylonDocTool extends RepoUsingTool {
                 markup.tag("link href='" + getResourceUrl(pkg, "favicon.ico") + "' rel='shortcut icon'");
                 markup.tag("link href='" + getResourceUrl(pkg, "shCore.css") + "' rel='stylesheet' type='text/css'");
                 markup.tag("link href='" + getResourceUrl(pkg, "shThemeDefault.css") + "' rel='stylesheet' type='text/css'");
+                
+                markup.open("script type='text/javascript'");
+                markup.write("var resourceBaseUrl = '" + getResourceUrl(pkg, "") + "'");
+                markup.close("script");
+                
                 markup.around("script src='" + getResourceUrl(pkg, "jquery-1.8.2.min.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "shCore.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "shAutoloader.js") + "' type='text/javascript'");

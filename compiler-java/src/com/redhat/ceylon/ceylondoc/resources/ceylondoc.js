@@ -33,13 +33,13 @@ $(function(){
 			SyntaxHighlighter.defaults['gutter'] = false;
 			SyntaxHighlighter.defaults['toolbar'] = false;
 			SyntaxHighlighter.autoloader(
-					  'ceylon                 .resources/shBrushCeylon.js',
-					  'css                    .resources/shBrushCss.js',
-					  'java                   .resources/shBrushJava.js',
-					  'js jscript javascript  .resources/shBrushJScript.js',
-					  'plain text             .resources/shBrushPlain.js',
-					  'xml xhtml xslt html    .resources/shBrushXml.js'
-					);
+					'ceylon                 ' + resourceBaseUrl + 'shBrushCeylon.js',
+					'css                    ' + resourceBaseUrl + 'shBrushCss.js',
+					'java                   ' + resourceBaseUrl + 'shBrushJava.js',
+					'js jscript javascript  ' + resourceBaseUrl + 'shBrushJScript.js',
+					'plain text             ' + resourceBaseUrl + 'shBrushPlain.js',
+					'xml xhtml xslt html    ' + resourceBaseUrl + 'shBrushXml.js'
+			);
 			SyntaxHighlighter.all();
 			setTimeout(function() {
 				jQuery('div.number'+startLine).each(function() {
