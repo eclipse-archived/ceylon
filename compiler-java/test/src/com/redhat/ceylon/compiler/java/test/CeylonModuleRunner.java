@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -32,6 +33,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.tools.Diagnostic.Kind;
 import javax.tools.DiagnosticListener;
@@ -114,10 +117,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             outRepo = Files.createTempDirectory("ceylon-module-runner").toFile();
             
             for (String dependency : testModule.dependencies()) {
-                compile(srcDir, outRepo, dependency, false);
+                compile(srcDir, outRepo, dependency, null, false);
             }
             String moduleName = !testModule.module().isEmpty() ? testModule.module() : moduleSuiteClass.getPackage().getName();
-            compile(srcDir, outRepo, moduleName, true);
+            compile(srcDir, outRepo, moduleName, testModule.dependencies(), true);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -125,7 +128,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
     }
 
-    private void compile(File srcDir, File outRepo, String moduleName, boolean runTests) throws Exception {
+    private void compile(File srcDir, File outRepo, String moduleName, String[] deps, boolean runTests) throws Exception {
         // Compile all the .ceylon files into a .car
         Context context = new Context();
         final ErrorCollector listener = new ErrorCollector();
@@ -151,11 +154,11 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 context);
         
         if (runTests) {
-            postCompile(context, listener, moduleName, srcDir);
+            postCompile(context, listener, moduleName, srcDir, deps);
         }
     }
     
-    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir) throws Exception {
+    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] deps) throws Exception {
         // now fetch stuff from the context
         PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         
@@ -167,7 +170,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
 
         // Get a class loader for the car
         // XXX Need to use CMR if the module has dependencies
-        URLClassLoader cl = classLoaderForModule(moduleName, outRepo);
+        URLClassLoader cl = classLoaderForModule(moduleName, deps, outRepo);
         if (cl != null) {
             loadCompiledTests(srcDir, cl, phasedUnits, moduleName);
         }
@@ -247,8 +250,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.fail("No tests found");
     }
 
-    private URLClassLoader classLoaderForModule(final String moduleName, File repo)
-            throws MalformedURLException {
+    private URL urlForModule(File repo, String moduleName) throws MalformedURLException {
         File moduleDir = new File(repo, moduleName.replace(".", "/"));
         if (!moduleDir.exists()) {
             moduleDir = new File(repo, "default");
@@ -281,8 +283,34 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             throw new RuntimeException(carFile + " doesn't exist");
         }
         URL outCar = carFile.toURI().toURL();
-        final URLClassLoader cl = new URLClassLoader(new URL[]{outCar}, 
+        return outCar;
+    }
+    
+    private URLClassLoader classLoaderForModule(final String moduleName, String[] deps, File repo)
+            throws URISyntaxException, MalformedURLException {
+        URL[] carUrls = new URL[1 + (deps != null ? deps.length : 0)];
+        
+        URL carUrl = urlForModule(repo, moduleName);
+        final File carFile = new File(carUrl.toURI());
+        carUrls[0] = carUrl;
+        if (deps != null) {
+            for (int ii = 0; ii < deps.length; ii++) {
+                carUrls[1+ii] = urlForModule(repo, deps[ii]);
+            }
+        }
+        
+        final URLClassLoader cl = new URLClassLoader(carUrls, 
                 getClass().getClassLoader());
+        final String version;
+        if (carFile.getName().equals("default.car")) {
+            version = "unversioned";
+        } else {
+            Matcher matcher = Pattern.compile(Pattern.quote(moduleName+"-") + "(.*)" + Pattern.quote(".car")).matcher(carFile.getName());
+            if (!matcher.matches()) {
+                throw new RuntimeException(carFile.getName());
+            }
+            version = matcher.group(1);
+        }
         
         moduleInitialiser = new Runnable(){
             @Override
@@ -292,7 +320,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
                 Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
                 Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, AbstractModelLoader.JDK_MODULE_VERSION, CompilerTest.makeArtifactResult(null), cl);
-                Metamodel.loadModule(moduleName, moduleVersion, CompilerTest.makeArtifactResult(carFile), cl);
+                Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
             }
         };
         return cl;
