@@ -33,6 +33,7 @@ $(function(){
 			SyntaxHighlighter.defaults['gutter'] = false;
 			SyntaxHighlighter.defaults['toolbar'] = false;
 			SyntaxHighlighter.autoloader(
+					  'ceylon                 .resources/shBrushCeylon.js',
 					  'css                    .resources/shBrushCss.js',
 					  'java                   .resources/shBrushJava.js',
 					  'js jscript javascript  .resources/shBrushJScript.js',
