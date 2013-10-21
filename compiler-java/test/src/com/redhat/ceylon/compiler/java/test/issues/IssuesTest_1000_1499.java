@@ -324,7 +324,8 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1180() {
         compile("bug11xx/Bug1180_1.ceylon");
         assertErrors("bug11xx/Bug1180_2",
-                new CompilerError(25, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of ArrayList that accepts the given argument types ({Bug1180Person*})")
+                new CompilerError(25, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of ArrayList that accepts the given argument types ({Bug1180Person*})"),
+                new CompilerError(25, "class alias may not alias overloaded class")
         );
     }
     
