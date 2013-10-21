@@ -45,6 +45,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
+    private boolean ignoreBrokenLink;
     
     public CeylonDocAntTask() {
         super("doc");
@@ -69,6 +70,13 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      */
     public void setIgnoreMissingDoc(boolean ignoreMissingDoc) {
         this.ignoreMissingDoc = ignoreMissingDoc;
+    }
+    
+    /**
+     * Do not print warnings about broken links.
+     */
+    public void setIgnoreBrokenLink(boolean ignoreBrokenLink) {
+        this.ignoreBrokenLink = ignoreBrokenLink;
     }
     
     /**
@@ -140,6 +148,8 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             cmd.createArgument().setValue("--non-shared");
         if(ignoreMissingDoc)
             cmd.createArgument().setValue("--ignore-missing-doc");
+        if(ignoreBrokenLink)
+            cmd.createArgument().setValue("--ignore-broken-link");
         // links
         for (Link link : linkset.getLinks()) {
             log("Adding link: "+link, Project.MSG_VERBOSE);

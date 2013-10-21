@@ -303,6 +303,9 @@ public class LinkRenderer {
                 }
             }
         }
+        
+        ceylonDocTool.warnBrokenLink(docLinkText, scope);
+        
         return getUnresolvableLink(docLinkText);
     }
 
