@@ -459,7 +459,7 @@ public abstract class CeylonDoc extends Markup {
         if (pkg.getNameAsString().isEmpty()) {
             around("a class='link' href='index.html'", "default package");
         } else {
-            around("a class='link' href='" + tool.getObjectUrl(module, pkg) + "'", pkg.getNameAsString());
+            around("a class='link' href='" + tool.getObjectUrl(getFromObject(), pkg) + "'", pkg.getNameAsString());
         }
         close("td");
 

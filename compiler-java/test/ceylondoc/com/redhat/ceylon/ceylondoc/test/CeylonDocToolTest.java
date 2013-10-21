@@ -970,7 +970,7 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "a/index.html",
                 Pattern.compile("<tr class='table-header' title='Click for expand/collapse'><td colspan='2'><i class='icon-expand'></i>Subpackages</td></tr>"));
         assertMatchInFile(destDir, "a/index.html",
-                Pattern.compile("<tr><td><i class='icon-package'></i><a class='link' href='a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>"));
+                Pattern.compile("<tr><td><i class='icon-package'></i><a class='link' href='../a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>"));
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {
