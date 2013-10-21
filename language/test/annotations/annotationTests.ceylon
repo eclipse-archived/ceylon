@@ -581,10 +581,10 @@ shared void checkModuleAndImports() {
     value deps = m.dependencies;
     check(1 == deps.size);
     assert(exists dep = deps[0]);
-    check("metamodel" == dep.name);
+    check("check" == dep.name);
     check("0.1" == dep.version);
     assert(exists depdoc = annotations(docAnnotation, dep));
-    check(depdoc.description == "Not actually needed, but we want to test ModuleImports");
+    check(depdoc.description == "Neither deprecated nor optional really, but we want to test ModuleImports");
     check(annotations(optAnnotation, dep) exists);
     check(annotations(deprecatedAnnotation, dep) exists);
     

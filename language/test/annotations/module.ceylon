@@ -19,7 +19,6 @@
  */
 "Some module doc"
 module annotations "0.1" {
-    "Not actually needed, but we want to test ModuleImports"
-    deprecated optional import metamodel "0.1";
-    import check "0.1";
+    "Neither deprecated nor optional really, but we want to test ModuleImports"
+    deprecated optional import check "0.1";
 }
