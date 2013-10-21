@@ -58,6 +58,11 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
         return new Member(i, s);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member MemberClassAlias$aliased$(final long i, final .java.lang.String s) {
+        throw new .ceylon.language.Exception();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithParameters_Foo.Member")

@@ -58,6 +58,11 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         return new MemberClassAliasTricks_Foo(a, b);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel$aliased$(final long a, final long b) {
+        throw new .ceylon.language.Exception();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
@@ -72,6 +77,11 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel2$new$(final long a, final long b) {
         return new MemberClassAliasTricks_Foo(a, b);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel2$aliased$(final long a, final long b) {
+        throw new .ceylon.language.Exception();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -142,6 +152,11 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member MemberClassAliasToEnclosingMemberClass$new$(final long a, final long b) {
             return new Member(a, b);
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member MemberClassAliasToEnclosingMemberClass$aliased$(final long a, final long b) {
+            throw new .ceylon.language.Exception();
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)

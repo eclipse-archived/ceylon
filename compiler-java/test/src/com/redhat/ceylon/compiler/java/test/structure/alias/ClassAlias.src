@@ -32,6 +32,11 @@ public final class ClassAlias {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo ClassAlias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo();

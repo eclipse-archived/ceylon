@@ -46,6 +46,11 @@ public final class ClassAliasWithParameters {
     
     private ClassAliasWithParameters() {
     }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo ClassAliasWithParameters$aliased$(final long i, final .java.lang.String s) {
+        throw new .ceylon.language.Exception();
+    }
 }
 final class classAliasWithParametersMethod_ {
     

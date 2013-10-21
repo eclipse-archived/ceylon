@@ -28,4 +28,8 @@ final class S {
     
     private S() {
     }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug09xx.AbstractClass S$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
 }

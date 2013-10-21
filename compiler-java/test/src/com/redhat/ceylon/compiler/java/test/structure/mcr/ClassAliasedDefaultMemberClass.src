@@ -48,6 +48,10 @@ class ClassAliasedDefaultMemberClass_sub extends .com.redhat.ceylon.compiler.jav
         return new Member();
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassAliasedDefaultMemberClass.Member Alias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
     public final class Alias {
         
         private Alias() {

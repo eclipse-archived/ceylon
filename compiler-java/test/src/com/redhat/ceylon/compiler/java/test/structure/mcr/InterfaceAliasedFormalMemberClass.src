@@ -57,6 +57,10 @@ class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compil
         return new Member();
     }
     
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.Member Alias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
     public final class Alias {
         
         private Alias() {

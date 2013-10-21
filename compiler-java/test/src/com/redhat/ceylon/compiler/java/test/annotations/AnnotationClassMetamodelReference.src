@@ -330,6 +330,11 @@ public final class ObjectAlias {
     
     private ObjectAlias() {
     }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .java.lang.Object ObjectAlias$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotations$({
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$(mmr = "::1.0.0:ceylon.language::CAnything"),

@@ -38,6 +38,11 @@ public final class ClassAliasWithTypeParameters<T> {
     
     private ClassAliasWithTypeParameters() {
     }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <T>.com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<T> ClassAliasWithTypeParameters$aliased$(final T t) {
+        throw new .ceylon.language.Exception();
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation$
@@ -46,6 +51,11 @@ public final class ClassAliasWithTypeParameters<T> {
 public final class ClassAliasWithTypeParameters2 {
     
     private ClassAliasWithTypeParameters2() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> ClassAliasWithTypeParameters2$aliased$(final .ceylon.language.Integer t) {
+        throw new .ceylon.language.Exception();
     }
 }
 final class classAliasWithTypeParametersMethod_ {
