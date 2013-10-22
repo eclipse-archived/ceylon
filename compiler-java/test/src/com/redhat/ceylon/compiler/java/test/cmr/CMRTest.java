@@ -36,8 +36,10 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -59,7 +61,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -525,37 +526,98 @@ public class CMRTest extends CompilerTest {
     @Test
     public void testMdlJarDependency() throws IOException{
         // compile our java class
-        File outputFolder = new File("build/java-jar");
-        cleanCars(outputFolder.getPath());
-        outputFolder.mkdirs();
-        
-        JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-        StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
-        File javaFile = new File(getPackagePath()+"/modules/jarDependency/java/JavaDependency.java");
-        Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(javaFile);
-        CompilationTask task = javaCompiler.getTask(null, null, null, Arrays.asList("-d", "build/java-jar", "-sourcepath", "test-src"), null, compilationUnits);
-        assertEquals(Boolean.TRUE, task.call());
-        
-        File jarFolder = new File(outputFolder, "com/redhat/ceylon/compiler/java/test/cmr/modules/jarDependency/java/1.0/");
-        jarFolder.mkdirs();
-        File jarFile = new File(jarFolder, "com.redhat.ceylon.compiler.java.test.cmr.modules.jarDependency.java-1.0.jar");
-        // now jar it up
-        JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
-        ZipEntry entry = new ZipEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/jarDependency/java/JavaDependency.class");
-        outputStream.putNextEntry(entry);
-        
-        FileInputStream inputStream = new FileInputStream(javaFile);
-        Util.copy(inputStream, outputStream);
-        inputStream.close();
-        outputStream.close();
+        File classesOutputFolder = new File(destDir+"-jar-classes");
+        cleanCars(classesOutputFolder.getPath());
+        classesOutputFolder.mkdirs();
 
+        File jarOutputFolder = new File(destDir+"-jar");
+        cleanCars(jarOutputFolder.getPath());
+        jarOutputFolder.mkdirs();
+
+        compileJavaModule(jarOutputFolder, classesOutputFolder, moduleName+".modules.jarDependency.java", "1.0",
+                moduleName.replace('.', File.separatorChar)+"/modules/jarDependency/java/JavaDependency.java");
+        
         // Try to compile the ceylon module
-        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", outputFolder.getPath()), 
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", jarOutputFolder.getPath()), 
                 (DiagnosticListener<? super FileObject>)null, 
                 "modules/jarDependency/ceylon/module.ceylon", "modules/jarDependency/ceylon/Foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
     }
 
+    private void compileJavaModule(File jarOutputFolder, File classesOutputFolder,
+            String moduleName, String moduleVersion, String... sourceFileNames) throws IOException {
+        compileJavaModule(jarOutputFolder, classesOutputFolder,
+                          moduleName, moduleVersion, new File(dir), new File[0], sourceFileNames);
+    }
+    
+    private void compileJavaModule(File jarOutputFolder, File classesOutputFolder,
+            String moduleName, String moduleVersion, 
+            File sourceFolder, 
+            File[] extraClassPath,
+            String... sourceFileNames) throws IOException {
+        JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
+        Set<String> sourceDirectories = new HashSet<String>();
+        File[] javaSourceFiles = new File[sourceFileNames.length];
+        for (int i = 0; i < javaSourceFiles.length; i++) {
+            javaSourceFiles[i] = new File(sourceFolder, sourceFileNames[i]);
+            String sourceDir = sourceFileNames[i].substring(0, sourceFileNames[i].lastIndexOf(File.separatorChar));
+            sourceDirectories.add(sourceDir);
+        }
+        Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(javaSourceFiles);
+        StringBuilder cp = new StringBuilder();
+        for (int i = 0; i < extraClassPath.length; i++) {
+            if(i > 0)
+                cp.append(File.pathSeparator);
+            cp.append(extraClassPath[i]);
+        }
+        CompilationTask task = javaCompiler.getTask(null, null, null, Arrays.asList("-d", classesOutputFolder.getPath(), 
+                "-cp", cp.toString(),
+                "-sourcepath", sourceFolder.getPath()), null, compilationUnits);
+        assertEquals(Boolean.TRUE, task.call());
+        
+        File jarFolder = new File(jarOutputFolder, moduleName.replace('.', File.separatorChar)+File.separatorChar+moduleVersion);
+        jarFolder.mkdirs();
+        File jarFile = new File(jarFolder, moduleName+"-"+moduleVersion+".jar");
+        // now jar it up
+        JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
+        for(String sourceFileName : sourceFileNames){
+            String classFileName = sourceFileName.substring(0, sourceFileName.length()-5)+".class";
+            ZipEntry entry = new ZipEntry(classFileName);
+            outputStream.putNextEntry(entry);
+
+            File classFile = new File(classesOutputFolder, classFileName);
+            FileInputStream inputStream = new FileInputStream(classFile);
+            Util.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.flush();
+        }
+        outputStream.close();
+        for(String sourceDir : sourceDirectories){
+            File module = null;
+            String sourceName = "module.properties";
+            File properties = new File(sourceFolder, sourceDir + File.separator + sourceName);
+            if(properties.exists()){
+                module = properties;
+            }else{
+                sourceName = "module.xml";
+                properties = new File(sourceFolder, sourceDir + File.separator + sourceName);
+                if(properties.exists()){
+                    module = properties;
+                }
+            }
+            if(module != null){
+                File moduleFile = new File(sourceFolder, sourceDir + File.separator + sourceName);
+                FileInputStream inputStream = new FileInputStream(moduleFile);
+                FileOutputStream moduleOutputStream = new FileOutputStream(new File(jarFolder, sourceName));
+                Util.copy(inputStream, moduleOutputStream);
+                inputStream.close();
+                moduleOutputStream.flush();
+                moduleOutputStream.close();
+            }
+        }
+    }
+    
     @Test
     public void testMdlAetherDependencyDefault() throws IOException{
         // Try to compile the ceylon module
