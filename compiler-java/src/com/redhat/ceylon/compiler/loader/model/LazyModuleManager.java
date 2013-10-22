@@ -73,7 +73,8 @@ public abstract class LazyModuleManager extends ModuleManager {
             // check for an already loaded module with the same name but different version
             for(Module loadedModule : getContext().getModules().getListOfModules()){
                 if(loadedModule.getNameAsString().equals(moduleName)
-                        && !loadedModule.getVersion().equals(module.getVersion())){
+                        && !loadedModule.getVersion().equals(module.getVersion())
+                        && getModelLoader().isModuleInClassPath(loadedModule)){
                     // abort
                     // we need this error thrown rather than the typechecker error because the typechecker currently
                     // allows more than we do, such as having direct imports of the same module with different versions
