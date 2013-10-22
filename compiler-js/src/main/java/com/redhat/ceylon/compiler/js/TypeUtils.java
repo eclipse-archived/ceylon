@@ -483,13 +483,18 @@ public class TypeUtils {
         List<ProducedType> satisfies = null;
         List<ProducedType> caseTypes = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            if (((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType() != null) {
+            com.redhat.ceylon.compiler.typechecker.model.Class _cd = (com.redhat.ceylon.compiler.typechecker.model.Class)d;
+            if (_cd.getExtendedType() != null) {
                 gen.out(",'super':");
-                metamodelTypeNameOrList(d.getUnit().getPackage(),
-                        ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getExtendedType(), gen);
+                metamodelTypeNameOrList(d.getUnit().getPackage(), _cd.getExtendedType(), gen);
             }
-            satisfies = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getSatisfiedTypes();
-            caseTypes = ((com.redhat.ceylon.compiler.typechecker.model.Class) d).getCaseTypes();
+            //Parameter types
+            if (_cd.getParameterList()!=null) {
+                gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
+                encodeParameterListForRuntime(that, _cd.getParameterList(), gen);
+            }
+            satisfies = _cd.getSatisfiedTypes();
+            caseTypes = _cd.getCaseTypes();
 
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
 
