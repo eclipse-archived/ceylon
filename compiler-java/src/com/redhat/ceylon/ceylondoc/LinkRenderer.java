@@ -666,12 +666,12 @@ public class LinkRenderer {
                 if( responseCode == HttpURLConnection.HTTP_OK ) {
                     result = Boolean.TRUE;                
                 } else {
-                    ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
+                    ceylonDocTool.getLogger().warning(msg("info.urlDoesNotExist", moduleUrl));
                     result = Boolean.FALSE;
                 }
             }
             catch (IOException e) {
-                ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
+                ceylonDocTool.getLogger().warning(msg("info.urlDoesNotExist", moduleUrl));
                 result = Boolean.FALSE;
             }
             ceylonDocTool.getModuleUrlAvailabilityCache().put(moduleUrl, result);
@@ -686,7 +686,7 @@ public class LinkRenderer {
             if (moduleDocDir.isDirectory() && moduleDocDir.exists()) {
                 result = Boolean.TRUE;
             } else {
-                ceylonDocTool.getLogger().info(msg("info.urlDoesNotExist", moduleUrl));
+                ceylonDocTool.getLogger().warning(msg("info.urlDoesNotExist", moduleUrl));
                 result = Boolean.FALSE;
             }
             ceylonDocTool.getModuleUrlAvailabilityCache().put(moduleUrl, result);
