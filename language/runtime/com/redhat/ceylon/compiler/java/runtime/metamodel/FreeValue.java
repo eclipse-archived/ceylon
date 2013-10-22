@@ -157,9 +157,16 @@ public class FreeValue
             // get the annotations from the parameter itself
             Annotation[][] parameterAnnotations;
             Scope container = parameter.getModel().getContainer();
-            if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method)
-                parameterAnnotations = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method)container).getParameterAnnotations();
-            else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
+            if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method) {
+                parameterAnnotations = Metamodel.getJavaMethod(
+                        (com.redhat.ceylon.compiler.typechecker.model.Method)container)
+                        .getParameterAnnotations();
+            } else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.ClassAlias){
+                parameterAnnotations = Reflection.findClassAliasInstantiator(
+                        Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)container),
+                        (com.redhat.ceylon.compiler.typechecker.model.ClassAlias)container)
+                        .getParameterAnnotations();
+            } else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                 // FIXME: pretty sure that's wrong because of synthetic params. See ReflectionMethod.getParameters
                 parameterAnnotations = Reflection.findConstructor(Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)container)).getParameterAnnotations();
             }else{
