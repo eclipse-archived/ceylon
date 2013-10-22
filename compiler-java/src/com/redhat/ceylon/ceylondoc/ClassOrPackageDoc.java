@@ -29,8 +29,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.runtime.CommonToken;
 
@@ -57,6 +59,21 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
+    
+    private static final Set<String> simpleDefaultValues = new HashSet<String>();
+    static {
+        simpleDefaultValues.add("null");
+        simpleDefaultValues.add("true");
+        simpleDefaultValues.add("false");
+        simpleDefaultValues.add("0");
+        simpleDefaultValues.add("1");
+        simpleDefaultValues.add("-1");
+        simpleDefaultValues.add("0.0");
+        simpleDefaultValues.add("1.0");
+        simpleDefaultValues.add("-1.0");
+        simpleDefaultValues.add("[]");
+        simpleDefaultValues.add("\"\"");
+    }
     
     public ClassOrPackageDoc(Module module, CeylonDocTool tool, Writer writer) {
 		super(module, tool, writer);
@@ -390,22 +407,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
                 
                 if (param.isDefaulted()) {
-                    PhasedUnit pu = tool.getParameterUnit(param);
-                    Node paramNode = tool.getParameterNode(param);
-                    if (pu != null 
-                            && paramNode instanceof Tree.Parameter) {
-                        Tree.SpecifierOrInitializerExpression defArg = getDefaultArgument((Tree.Parameter) paramNode);
-                        if (defArg != null) {
-                            String value = getSourceCode(pu, defArg);
-                            int newLineIndex = value.indexOf("\n");
-                            String valueFirstLine = newLineIndex != -1 ? value.substring(0, newLineIndex) : value;
-                            around("span class='specifier'", valueFirstLine);
-                            if (newLineIndex != -1) {
-                                around("a class='specifier-ellipsis' href='#' title='Click for expand the rest of value.'", "...");
-                                open("div class='specifier-rest'");
-                                write(value.substring(newLineIndex + 1));
-                                close("div");
-                            }
+                    String defaultValue = getParameterDefaultValue(param);
+                    if (defaultValue != null) {
+                        around("span class='parameter-default-value'", " = ");
+                        if (simpleDefaultValues.contains(defaultValue)) {
+                            around("span class='parameter-default-value' title='Parameter default value'", defaultValue);
+                        } else {
+                            around("a class='parameter-default-value' href='#" + f.getName() + "-" + param.getName() + "' title='Go to parameter default value'", "...");
                         }
                     }
                 }
@@ -413,6 +421,24 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             }
             write(")");
         }
+    }
+    
+    private String getParameterDefaultValue(Parameter param) throws IOException {
+        String defaultValue = null;
+        
+        PhasedUnit pu = tool.getParameterUnit(param);
+        Node paramNode = tool.getParameterNode(param);
+        if (pu != null && paramNode instanceof Tree.Parameter) {
+            Tree.SpecifierOrInitializerExpression defArg = getDefaultArgument((Tree.Parameter) paramNode);
+            if (defArg != null) {
+                defaultValue = getSourceCode(pu, defArg.getExpression());
+                if (defaultValue != null) {
+                    defaultValue = defaultValue.trim();
+                }
+            }
+        }
+        
+        return defaultValue;
     }
     
     private Tree.SpecifierOrInitializerExpression getDefaultArgument(Tree.Parameter parameter) {
@@ -444,7 +470,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             for (ParameterList parameterList : parameterLists) {
                 for (Parameter parameter : parameterList.getParameters()) {
                     String doc = getDoc(parameter.getModel(), linkRenderer());
-                    if( !doc.isEmpty() ) {
+                    
+                    String defaultValue = null;
+                    if (parameter.isDefaulted()) {
+                        defaultValue = getParameterDefaultValue(parameter);
+                    }
+                    
+                    if( !doc.isEmpty() || defaultValue != null ) {
                         if( first ) {
                             first = false;
                             open("div class='parameters section'");
@@ -453,6 +485,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         }
                         open("li");
                         around("span class='parameter' id='" + decl.getName() + "-" + parameter.getName() + "'", parameter.getName());
+                        
+                        if (parameter.isDefaulted()) {
+                            around("span class='parameter-default-value' title='Parameter default value'", " = " + defaultValue);
+                        }
+                        
                         write(doc);
                         close("li");
                     }

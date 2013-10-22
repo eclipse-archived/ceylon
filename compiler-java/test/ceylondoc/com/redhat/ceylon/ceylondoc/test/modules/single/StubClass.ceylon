@@ -71,15 +71,16 @@ shared class StubClass(
     
     shared void methodWithTouple2<T>([String|T,Integer=,Float*] t) {}
     
-    shared void methodWithDefaultedParameter1(String a = "a", String b = constAbc, String? c = null) {}
+    shared void methodWithDefaultedParameter1(Boolean b1 = true, Boolean b2 = false, 
+                                               Integer i1 = 0, Integer i2 = 1, Integer i3 = -1, 
+                                               Float f1 = 0.0, Float f2 = 1.0, Float f3 = -1.0,
+                                               String s1 = "", String? s2 = null, String[] s3 = []) {}
     
-    shared void methodWithDefaultedParameter2(String a = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") {}
+    shared void methodWithDefaultedParameter2(String a = "a", String b = constAbc) {}
     
-    shared void methodWithDefaultedParameter3(String a = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-                                                          labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                                                          aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.") {}
+    shared void methodWithDefaultedParameter3("Defaulted parameter with loooong text." String a = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") {}
                                                            
-    shared void methodWithDefaultedParameter4(Boolean(Character) separator = (Character ch) => ch.whitespace) {}                                                           
+    shared void methodWithDefaultedParameter4(Boolean(Character) separator = (Character ch) => ch.whitespace) {}
     
     shared Anything methodWithAnything() { throw; }
     

@@ -60,7 +60,6 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -751,9 +750,26 @@ public class CeylonDocToolTest {
     
     private void assertDefaultedParametres(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("methodWithDefaultedParameter1\\(<span title='ceylon.language::String'>String</span> a<span class='specifier'>= \"a\"</span>, <span title='ceylon.language::String'>String</span> b<span class='specifier'>= constAbc</span>, <span title='ceylon.language::String'>String</span>\\? c<span class='specifier'>= null</span>\\)"));
+                Pattern.compile("methodWithDefaultedParameter1\\(" +
+                                "<span title='ceylon.language::Boolean'>Boolean</span> b1<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>true</span>, " +
+                                "<span title='ceylon.language::Boolean'>Boolean</span> b2<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>false</span>, " +
+                                "<span title='ceylon.language::Integer'>Integer</span> i1<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>0</span>, " +
+                                "<span title='ceylon.language::Integer'>Integer</span> i2<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>1</span>, " +
+                                "<span title='ceylon.language::Integer'>Integer</span> i3<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>-1</span>, " +
+                                "<span title='ceylon.language::Float'>Float</span> f1<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>0.0</span>, " +
+                                "<span title='ceylon.language::Float'>Float</span> f2<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>1.0</span>, " +
+                                "<span title='ceylon.language::Float'>Float</span> f3<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>-1.0</span>, " +
+                                "<span title='ceylon.language::String'>String</span> s1<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>\"\"</span>, " +
+                                "<span title='ceylon.language::String'>String</span>\\? s2<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>null</span>, " +
+                                "<span title='ceylon.language::String'>String</span>\\[\\] s3<span class='parameter-default-value'> = </span><span class='parameter-default-value' title='Parameter default value'>\\[\\]</span>\\)"));
+        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("methodWithDefaultedParameter4\\(<span title='ceylon.language::Boolean'>Boolean</span>\\(<span title='ceylon.language::Character'>Character</span>\\) separator<span class='specifier'>= \\(Character ch\\) => ch.whitespace</span>\\)"));
+                Pattern.compile("methodWithDefaultedParameter2\\(" +
+                        "<span title='ceylon.language::String'>String</span> a<span class='parameter-default-value'> = </span><a class='parameter-default-value' href='#methodWithDefaultedParameter2-a' title='Go to parameter default value'>...</a>, " +
+                        "<span title='ceylon.language::String'>String</span> b<span class='parameter-default-value'> = </span><a class='parameter-default-value' href='#methodWithDefaultedParameter2-b' title='Go to parameter default value'>...</a>\\)"));
+
+        assertMatchInFile(destDir, "StubClass.type.html",
+                Pattern.compile("<li><span class='parameter' id='methodWithDefaultedParameter4-separator'>separator</span><span class='parameter-default-value' title='Parameter default value'> = \\(Character ch\\) => ch.whitespace</span></li>"));
     }
     
     private void assertAnythingReturnType(File destDir) throws Exception {

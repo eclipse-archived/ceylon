@@ -172,6 +172,11 @@
 	font-family: monospace;
 }
 
+.parameter-default-value {
+	font-family: monospace;
+	color: rgb(120, 120, 120);
+}
+
 .modifiers,
 .void {
 	color: rgb(120, 120, 120);
