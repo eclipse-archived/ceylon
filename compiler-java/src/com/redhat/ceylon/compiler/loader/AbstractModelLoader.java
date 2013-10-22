@@ -487,7 +487,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         ClassMirror classMirror = type.getDeclaredClass();
         Module module = findModuleForClassMirror(classMirror);
-        return convertToDeclaration(module, typeName, declarationType);
+        if(isImported(moduleScope, module)){
+            return convertToDeclaration(module, typeName, declarationType);
+        }else{
+            logVerbose("Declaration is not from an imported module: "+typeName);
+            return null;
+        }
     }
     protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
         // avoid ignored classes

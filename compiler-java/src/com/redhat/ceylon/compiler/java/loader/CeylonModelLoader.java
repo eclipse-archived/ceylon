@@ -223,8 +223,24 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    // FIXME: this still works on a flat classpath
     public synchronized ClassMirror lookupNewClassMirror(Module module, String name) {
+        ClassMirror classMirror = lookupNewClassMirror(name);
+        if(classMirror == null)
+            return null;
+        Module classMirrorModule = findModuleForClassMirror(classMirror);
+        if(classMirrorModule == null){
+            logVerbose("Found a class mirror with no module");
+            return null;
+        }
+        // make sure it's imported
+        if(isImported(module, classMirrorModule)){
+            return classMirror;
+        }
+        logVerbose("Found a class mirror that is not imported: "+name);
+        return null;
+    }
+    
+    private ClassMirror lookupNewClassMirror(String name) {
         ClassSymbol classSymbol = null;
 
         String outerName = name;
