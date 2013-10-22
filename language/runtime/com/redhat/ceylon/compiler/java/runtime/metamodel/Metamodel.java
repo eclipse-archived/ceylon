@@ -352,12 +352,12 @@ public class Metamodel {
             ReflectionClass classMirror = (ReflectionClass) ((LazyValue) declaration).classMirror;
             return classMirror.klass;
         }
-        if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
-            return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
-        }
         if (declaration instanceof LazyClassAlias) {
             ReflectionClass classMirror = (ReflectionClass) ((LazyClassAlias) declaration).classMirror;
             return classMirror.klass;
+        }
+        if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
+            return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
     }
