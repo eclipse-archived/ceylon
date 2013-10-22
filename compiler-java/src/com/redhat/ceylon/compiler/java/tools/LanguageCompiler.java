@@ -32,8 +32,10 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileManager;
@@ -54,7 +56,6 @@ import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
@@ -117,6 +118,7 @@ public class LanguageCompiler extends JavaCompiler {
     private boolean isBootstrap;
     private boolean addedDefaultModuleToClassPath;
     private boolean treatLikelyBugsAsErrors = false;
+    private Set<Module> modulesLoadedFromSource = new HashSet<Module>();
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -366,7 +368,7 @@ public class LanguageCompiler extends JavaCompiler {
         if(pkgName.isEmpty())
             module = modules.getDefaultModule();
         else{
-            for(Module m : modules.getListOfModules()){
+            for(Module m : modulesLoadedFromSource){
                 if(Util.isSubPackage(m.getNameAsString(), pkgName)){
                     module = m;
                     break;
@@ -431,6 +433,7 @@ public class LanguageCompiler extends JavaCompiler {
             // now try to obtain the parsed module
             if(module != null){
                 ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
+                modulesLoadedFromSource.add(module);
                 return module;
             }
         }
