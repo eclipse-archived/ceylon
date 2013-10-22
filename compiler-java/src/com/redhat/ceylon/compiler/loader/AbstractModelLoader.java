@@ -1084,10 +1084,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Module lookupModuleInternal(String packageName) {
-        // FIXME: this does not work for multiple modules with same name
         for(Module module : modules.getListOfModules()){
             // don't try the default module because it will always say yes
             if(module.isDefault())
+                continue;
+            // skip modules we're not loading things from
+            if(module != getLanguageModule()
+                    && !isModuleInClassPath(module))
                 continue;
             if(module instanceof LazyModule){
                 if(((LazyModule)module).containsPackage(packageName))
@@ -1095,6 +1098,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else if(isSubPackage(module.getNameAsString(), packageName)){
                 return module;
             }
+        }
+        if(JDKUtils.isJDKAnyPackage(packageName)
+                || JDKUtils.isOracleJDKAnyPackage(packageName)){
+            String moduleName = JDKUtils.getJDKModuleNameForPackage(packageName);
+            return findModule(moduleName, JDK_MODULE_VERSION);
         }
         if(packageName.startsWith("com.redhat.ceylon.compiler.java.runtime")
                 || packageName.startsWith("com.redhat.ceylon.compiler.java.language")){
