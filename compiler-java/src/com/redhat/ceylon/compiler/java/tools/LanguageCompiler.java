@@ -422,7 +422,22 @@ public class LanguageCompiler extends JavaCompiler {
                 if(parsedTree.sourcefile.equals(fileObject)
                         && parsedTree instanceof CeylonCompilationUnit){
                     // same file! we already parsed it, let's return this one's module
-                    return ((CeylonCompilationUnit)parsedTree).phasedUnit.getPackage().getModule();
+                    PhasedUnit phasedUnit = ((CeylonCompilationUnit)parsedTree).phasedUnit;
+                    // the module visitor does load the module but does not set the unit's package module
+                    if(phasedUnit.getPackage().getModule() == null){
+                        // so find the module it created
+                        for(Module mod : ceylonContext.getModules().getListOfModules()){
+                            // we recognise it with the unit
+                            if(mod.getUnit() == phasedUnit.getUnit()){
+                                // set the package's module
+                                phasedUnit.getPackage().setModule(mod);
+                                modulesLoadedFromSource.add(mod);
+                                break;
+                            }
+                        }
+                    }
+                    // now return it
+                    return phasedUnit.getPackage().getModule();
                 }
             }
             CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) parse(fileObject);
