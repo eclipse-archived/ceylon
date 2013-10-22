@@ -361,6 +361,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public abstract void addModuleToClassPath(Module module, ArtifactResult artifact);
 
     /**
+     * Returns true if the given module has been added to this model loader's classpath.
+     * Defaults to true.
+     */
+    public boolean isModuleInClassPath(Module module){
+        return true;
+    }
+    
+    /**
      * Returns true if the given method is overriding an inherited method (from super class or interfaces).
      */
     protected abstract boolean isOverridingMethod(MethodMirror methodMirror);

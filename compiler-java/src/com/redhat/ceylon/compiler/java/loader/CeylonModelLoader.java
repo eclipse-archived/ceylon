@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
@@ -120,6 +121,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
             ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true, artifact);
     }
 
+    @Override
+    public boolean isModuleInClassPath(Module module) {
+        return ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().isModuleInClassPath(module);
+    }
+    
     public void setupSourceFileObjects(java.util.List<?> treeHolders) {
         for(Object treeHolder : treeHolders){
             if (!(treeHolder instanceof CeylonCompilationUnit)) {
