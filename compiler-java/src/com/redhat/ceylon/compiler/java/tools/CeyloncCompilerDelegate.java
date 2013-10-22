@@ -15,6 +15,7 @@ import com.sun.tools.javac.util.List;
 public final class CeyloncCompilerDelegate implements
         CompilerDelegate {
     private final Context context;
+    private CompilerModuleManager moduleManager;
 
     public CeyloncCompilerDelegate(Context context) {
         this.context = context;
@@ -22,8 +23,11 @@ public final class CeyloncCompilerDelegate implements
 
     @Override
     public ModuleManager getModuleManager() {
-        com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
-        return new CompilerModuleManager(ceylonContext, context);
+        if(moduleManager == null){
+            com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
+            moduleManager = new CompilerModuleManager(ceylonContext, context);
+        }
+        return moduleManager;
     }
 
     @Override
