@@ -910,4 +910,101 @@ public class CMRTest extends CompilerTest {
         File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.cmr.modules.legacyimport", "6.6.6");
         assertTrue(carFile.exists());
     }
+    
+    @Test
+    public void testMdlBug1062IncompatibleMissingImport() throws IOException{
+        // compile our java class
+        File classesOutputFolder = new File(destDir+"-jar-classes");
+        cleanCars(classesOutputFolder.getPath());
+        classesOutputFolder.mkdirs();
+
+        File jarOutputFolder = new File(destDir+"-jar");
+        cleanCars(jarOutputFolder.getPath());
+        jarOutputFolder.mkdirs();
+
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "1",
+                new File(getPackagePath()+"/modules/bug1062/javaA1-src"),
+                new File[0],
+                "bug1062/javaA/JavaA.java");
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "2",
+                new File(getPackagePath()+"/modules/bug1062/javaA2-src"),
+                new File[0],
+                "bug1062/javaA/JavaA.java");
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaB", "1",
+                new File(getPackagePath()+"/modules/bug1062/javaB-nomodule-src"),
+                new File[]{new File(jarOutputFolder, "bug1062/javaA/1/bug1062.javaA-1.jar")},
+                "bug1062/javaB/JavaB.java");
+        
+        assertErrors("modules/bug1062/ceylon/test",
+                Arrays.asList("-rep", jarOutputFolder.getPath()),
+                new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
+                new CompilerError(5, "parameter type could not be determined: arg0 of method")
+                );
+    }
+
+    @Test
+    public void testMdlBug1062IncompatibleNonSharedImport() throws IOException{
+        // compile our java class
+        File classesOutputFolder = new File(destDir+"-jar-classes");
+        cleanCars(classesOutputFolder.getPath());
+        classesOutputFolder.mkdirs();
+
+        File jarOutputFolder = new File(destDir+"-jar");
+        cleanCars(jarOutputFolder.getPath());
+        jarOutputFolder.mkdirs();
+
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "1",
+                new File(getPackagePath()+"/modules/bug1062/javaA1-src"),
+                new File[0],
+                "bug1062/javaA/JavaA.java");
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "2",
+                new File(getPackagePath()+"/modules/bug1062/javaA2-src"),
+                new File[0],
+                "bug1062/javaA/JavaA.java");
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaB", "1",
+                new File(getPackagePath()+"/modules/bug1062/javaB-module-src"),
+                new File[]{new File(jarOutputFolder, "bug1062/javaA/1/bug1062.javaA-1.jar")},
+                "bug1062/javaB/JavaB.java");
+        
+        // ceylon module imports JavaA/2 and JavaB/1
+        // JavaB/1 imports JavaA/1
+        assertErrors("modules/bug1062/ceylon/test",
+                Arrays.asList("-rep", jarOutputFolder.getPath()),
+                new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
+                new CompilerError(5, "parameter type could not be determined: arg0 of method")
+                );
+    }
+
+    @Test
+    public void testMdlBug1062IncompatibleSharedImport() throws IOException{
+        // compile our java class
+        File classesOutputFolder = new File(destDir+"-jar-classes");
+        cleanCars(classesOutputFolder.getPath());
+        classesOutputFolder.mkdirs();
+
+        File jarOutputFolder = new File(destDir+"-jar");
+        cleanCars(jarOutputFolder.getPath());
+        jarOutputFolder.mkdirs();
+
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "1",
+                new File(getPackagePath()+"/modules/bug1062/javaA1-src"),
+                new File[0],
+                "bug1062/javaA/JavaA.java");
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "2",
+                new File(getPackagePath()+"/modules/bug1062/javaA2-src"),
+                new File[0],
+                "bug1062/javaA/JavaA.java");
+        compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaB", "1",
+                new File(getPackagePath()+"/modules/bug1062/javaB-module-export-src"),
+                new File[]{new File(jarOutputFolder, "bug1062/javaA/1/bug1062.javaA-1.jar")},
+                "bug1062/javaB/JavaB.java");
+        
+        // ceylon module imports JavaA/2 and JavaB/1
+        // JavaB/1 shared imports JavaA/1
+        assertErrors("modules/bug1062/ceylon/test",
+                Arrays.asList("-rep", jarOutputFolder.getPath()),
+                new CompilerError(1, "module (transitively) imports conflicting versions of dependency: version 2 and version 1 of bug1062.javaA"),
+                new CompilerError(1, "source code imports two different versions of the same module: version 2 and version 1 of bug1062.javaA")
+                );
+    }
 }
