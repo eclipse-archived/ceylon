@@ -3619,4 +3619,65 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             defaultPackage.setModule(null);
         }
     }
+
+    protected boolean isImported(Module moduleScope, Module importedModule) {
+        if(moduleScope == importedModule)
+            return true;
+        if(isImportedSpecialRules(moduleScope, importedModule))
+            return true;
+        Set<Module> visited = new HashSet<Module>();
+        visited.add(moduleScope);
+        for(ModuleImport imp : moduleScope.getImports()){
+            if(imp.getModule() == importedModule)
+                return true;
+            if(imp.isExport() && isImportedTransitively(imp.getModule(), importedModule, visited))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isImportedSpecialRules(Module moduleScope, Module importedModule) {
+        String moduleScopeName = moduleScope.getNameAsString();
+        String importedModuleName = importedModule.getNameAsString();
+        // every Java module imports the JDK
+        // ceylon.language imports the JDK
+        if((moduleScope.isJava()
+                || moduleScope == getLanguageModule())
+                && (JDKUtils.isJDKModule(importedModuleName)
+                   || JDKUtils.isOracleJDKModule(importedModuleName)))
+            return true;
+        // everyone imports the language module
+        if(importedModule == getLanguageModule())
+            return true;
+        if(moduleScope == getLanguageModule()){
+            // this really sucks, I suppose we should set that up better somewhere else
+            if((importedModuleName.equals("com.redhat.ceylon.compiler.java")
+                || importedModuleName.equals("com.redhat.ceylon.typechecker")
+                || importedModuleName.equals("com.redhat.ceylon.common")
+                || importedModuleName.equals("com.redhat.ceylon.module-resolver"))
+                && importedModule.getVersion().equals(Versions.CEYLON_VERSION_NUMBER))
+                return true;
+            if(importedModuleName.equals("org.jboss.modules")
+                    && importedModule.getVersion().equals("1.1.3.GA"))
+                return true;
+        }
+        return false;
+    }
+    
+    private boolean isImportedTransitively(Module moduleScope, Module importedModule, Set<Module> visited) {
+        if(!visited.add(moduleScope))
+            return false;
+        for(ModuleImport imp : moduleScope.getImports()){
+            // only consider exported transitive deps
+            if(!imp.isExport())
+                return false;
+            if(imp.getModule() == importedModule)
+                return true;
+            if(isImportedSpecialRules(imp.getModule(), importedModule))
+                return true;
+            if(isImportedTransitively(imp.getModule(), importedModule, visited))
+                return true;
+        }
+        return false;
+    }
 }
