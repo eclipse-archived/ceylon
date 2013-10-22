@@ -227,7 +227,13 @@ public class RegularFileObject extends BaseFileObject {
     private File getAbsoluteFile() {
         File absFile = (absFileRef == null ? null : absFileRef.get());
         if (absFile == null) {
-            absFile = file.getAbsoluteFile();
+            try {
+                // Ceylon: getAbsoluteFile will not consider that /foo/../bar/joe.java is equal to /bar/joe.java
+                // so try the canonical file for best results
+                absFile = file.getCanonicalFile();
+            } catch (IOException e) {
+                absFile = file.getAbsoluteFile();
+            }
             absFileRef = new SoftReference<File>(absFile);
         }
         return absFile;
