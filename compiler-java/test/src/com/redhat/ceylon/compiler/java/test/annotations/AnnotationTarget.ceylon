@@ -59,6 +59,12 @@ annotationTarget
 class AnnotationTargetClassAlias(annotationTarget String parameter) => AnnotationTargetClass(parameter);
 
 @nomodel
+class AnnotationTargetOuter() {
+    annotationTarget
+    class InnerAlias(annotationTarget String parameter) => AnnotationTargetClass(parameter);
+}
+
+@nomodel
 annotationTarget
 interface AnnotationTargetInterface {
     

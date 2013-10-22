@@ -235,10 +235,38 @@ final class AnnotationTargetClassAlias {
     private AnnotationTargetClassAlias() {
     }
     
-    .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass AnnotationTargetClassAlias$aliased$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     final .java.lang.String parameter) {
         throw new .ceylon.language.Exception();
     }
+}
+class AnnotationTargetOuter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    AnnotationTargetOuter() {
+    }
+    
+    .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass InnerAlias$aliased$(@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final .java.lang.String parameter) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
+    final class InnerAlias {
+        
+        private InnerAlias() {
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetOuter();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetOuter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetOuter.class);
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
 interface AnnotationTargetInterface$InnerInterface {
