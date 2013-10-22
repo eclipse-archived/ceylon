@@ -3226,7 +3226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ProducedType getNonPrimitiveType(Module moduleScope, TypeMirror type, Scope scope, VarianceLocation variance) {
         TypeDeclaration declaration = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(moduleScope, type, scope, DeclarationType.TYPE);
         if(declaration == null){
-            throw new ModelResolutionException("Failed to find declaration for "+type);
+            throw new ModelResolutionException("Failed to find declaration for "+type.getQualifiedName());
         }
         return applyTypeArguments(moduleScope, declaration, type, scope, variance, TypeMappingMode.NORMAL, null);
     }
