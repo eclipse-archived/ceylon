@@ -47,7 +47,8 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
-import com.redhat.ceylon.cmr.impl.CMRException;
+import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -515,36 +516,53 @@ public class CeylonDocTool extends RepoUsingTool {
             // document every module
             boolean documentedOne = false;
             for(Module module : modules){
-                if(isEmpty(module))
+                if (isEmpty(module)) {
                     log.warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
-                else
+                } else {
                     documentedOne = true;
+                }
+                    
                 documentModule(module);
-                ArtifactContext context = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
-                try{
-                    outputRepository.removeArtifact(context);
-                }catch(CMRException x){
-                    throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
-                }catch(Exception x){
-                    // FIXME: remove when the whole CMR is using CMRException
-                    throw new CeylondException("error.failedRemoveArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
-                }
-                try{
-                    outputRepository.putArtifact(context, getOutputFolder(module));
-                }catch(CMRException x){
-                    throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
-                }catch(Exception x){
-                    // FIXME: remove when the whole CMR is using CMRException
-                    throw new CeylondException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
-                }
+                
+                ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+                ArtifactContext artifactDocsZip = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.ZIP);
+                
+                File outputFolder = getOutputFolder(module);
+                File zipFile = IOUtils.zipFolder(outputFolder);
+                File zipSha1File = ShaSigner.sign(zipFile, log, verbose != null);
+
+                repositoryRemoveArtifact(outputRepository, artifactDocs);
+                repositoryRemoveArtifact(outputRepository, artifactDocsZip);
+                repositoryRemoveArtifact(outputRepository, artifactDocsZip.getSha1Context());
+                
+                repositoryPutArtifact(outputRepository, artifactDocs, outputFolder);
+                repositoryPutArtifact(outputRepository, artifactDocsZip, zipFile);
+                repositoryPutArtifact(outputRepository, artifactDocsZip.getSha1Context(), zipSha1File);
             }
-            if(!documentedOne)
+            if (!documentedOne) {
                 log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
-        }finally{
+            }
+        } finally {
             Util.delete(tempDestDir);
         }
     }
 
+    private void repositoryRemoveArtifact(RepositoryManager outputRepository, ArtifactContext artifactContext) {
+        try {
+            outputRepository.removeArtifact(artifactContext);
+        } catch (Exception e) {
+            throw new CeylondException("error.failedRemoveArtifact", new Object[] { artifactContext, e.getLocalizedMessage() }, e);
+        }
+    }
+
+    private void repositoryPutArtifact(RepositoryManager outputRepository, ArtifactContext artifactContext, File content) {
+        try {
+            outputRepository.putArtifact(artifactContext, content);
+        } catch (Exception e) {
+            throw new CeylondException("error.failedWriteArtifact", new Object[] { artifactContext, e.getLocalizedMessage() }, e);
+        }
+    }
+    
     private boolean isEmpty(Module module) {
         for(Package pkg : getPackages(module))
             if(!pkg.getMembers().isEmpty())

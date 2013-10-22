@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.ceylondoc.test;
 
+import static com.redhat.ceylon.compiler.typechecker.TypeChecker.LANGUAGE_MODULE_VERSION;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -397,6 +399,9 @@ public class CeylonDocToolTest {
         assertFileExists(destDirDef, "index.html");
         assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/bar.object.html");
         assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/defaultmodule/foo.object.html");
+        
+        assertFileExists(destDirDef, "../default.zip");
+        assertFileExists(destDirDef, "../default.zip.sha1");
     }
 
     @Test
@@ -408,11 +413,13 @@ public class CeylonDocToolTest {
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
         
-        Module module = makeModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION);
+        Module module = makeModule("ceylon.language", LANGUAGE_MODULE_VERSION);
         File destDir = getOutputDir(tool, module);
         
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "Nothing.type.html");
+        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".zip");
+        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".zip.sha1");
     }
 
     @Test
@@ -519,6 +526,9 @@ public class CeylonDocToolTest {
     }
 
     private void assertFileExists(File destDir, boolean includeNonShared) {
+        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.zip");
+        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.zip.sha1");
+        
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
         assertFileExists(destDir, ".resources/ceylondoc.css");
@@ -539,6 +549,7 @@ public class CeylonDocToolTest {
         assertFileExists(destDir, "SharedClass.type.html");
         assertFileExists(destDir, "CaseSensitive.type.html");
         assertFileExists(destDir, "caseSensitive.object.html");
+        
         if( includeNonShared ) {
             assertFileExists(destDir, "PrivateClass.type.html");
             assertFileExists(destDir, "privatepackage/index.html");
