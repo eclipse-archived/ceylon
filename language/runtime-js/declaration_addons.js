@@ -125,3 +125,38 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
   return rv;
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(cont, types,$mptypes) {
+  //TODO implement properly
+  var _t = {t:this.tipo};
+  if (typeof(this.tipo.$$metamodel$$)==='function') {
+    this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
+  }
+  var tparms = this.tipo.$$metamodel$$.$tp;
+  if (tparms){
+    if (types===undefined)
+      throw TypeApplicationException$meta$model(String$("Missing type arguments in call to ClassOrInterfaceDeclaration.apply()"));
+    var i=0;
+    _t.a={};
+    for (var tp in tparms) {
+      var _type=types.$get(i);
+      if (_type===undefined)
+        throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
+      var _tp = tparms[tp];
+      var _ta = _type.tipo;
+      _t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
+      if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
+        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
+        for (var j=0; j<restraints.length;j++) {
+          if (!extendsType(_t.a[tp],restraints[j]))
+            throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+        }
+      }
+      i++;
+    }
+  }
+  if (!extendsType(_t, $mptypes.Type))
+    throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
+  var rv=this.meta.$mt==='ifc'?AppliedInterface(_t.t, $mptypes):AppliedClass(_t.t, $mptypes);
+  if (_t.a)rv._targs=_t.a;
+  return rv;
+};ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};
