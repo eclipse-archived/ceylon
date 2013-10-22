@@ -661,7 +661,9 @@ public class CMRTest extends CompilerTest {
     @Test
     public void testMdlAetherMissingDependencies() throws IOException{
         CompilerError[] expectedErrors = new CompilerError[]{
-        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n   Failed to resolve org.apache.camel.component.http.HttpComponent"),
+        new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n"
+                +"   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n"
+                +"   Failed to find declaration for org.apache.camel.component.http.HttpComponent"),
         new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent in DefaultCamelContext: JettyHttpComponent is not assignable to Component?"),
         };
 
