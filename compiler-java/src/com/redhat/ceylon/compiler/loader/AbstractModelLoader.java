@@ -2006,7 +2006,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 TypeDeclaration typeDecl = (TypeDeclaration) scope;
                 return !typeDecl.getTypeParameters().isEmpty() && type.getTypeArguments().isEmpty();
             }
-            return type.isRaw();
+            try{
+                return type.isRaw();
+            }catch(Exception x){
+                // ignore this exception, it's likely to be due to missing module imports and an unknown type and
+                // it will be logged somewhere else
+                return false;
+            }
         default:
             return false;
         }
