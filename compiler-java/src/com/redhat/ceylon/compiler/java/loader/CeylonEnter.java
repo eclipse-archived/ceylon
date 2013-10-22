@@ -23,6 +23,8 @@ package com.redhat.ceylon.compiler.java.loader;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject.Kind;
@@ -125,6 +127,7 @@ public class CeylonEnter extends Enter {
     private Todo todo;
     private boolean isBootstrap;
     private Annotate annotate;
+    private Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -381,6 +384,10 @@ public class CeylonEnter extends Enter {
         addModuleToClassPath(module, false, artifact);
     }
     
+    public boolean isModuleInClassPath(Module module){
+        return modulesAddedToClassPath.contains(module);
+    }
+    
     public void addModuleToClassPath(Module module, boolean errorIfMissing, ArtifactResult result) {
         if(verbose)
             Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
@@ -405,10 +412,15 @@ public class CeylonEnter extends Enter {
                 Log.printLines(log.noticeWriter, "[Could not find module]");
         }
 
-        if(artifact != null && artifact.exists())
-            classPath.add(artifact);
-        else if(errorIfMissing)
-            log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
+        if(modulesAddedToClassPath.add(module)){
+            if(artifact != null && artifact.exists()){
+                classPath.add(artifact);
+            }else if(errorIfMissing){
+                log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
+            }
+        }else if(verbose){
+            Log.printLines(log.noticeWriter, "[Module already added to classpath]");
+        }
     }
 
     private void typeCheck() {
