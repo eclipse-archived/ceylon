@@ -200,6 +200,7 @@
             <include name="com/redhat/ceylon/compiler/java/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
             <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
+            <exclude name="com/redhat/ceylon/tools/test/bug1062/**" />
             <include name="com/redhat/ceylon/tools/**" />
             <include name="com/redhat/ceylon/itest/**" />
             <include name="com/redhat/ceylon/ant/**" />
