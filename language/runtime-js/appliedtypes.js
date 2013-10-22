@@ -422,6 +422,15 @@ function $init$AppliedValue(){
         return $$av.obj?$$av.tipo.get.apply($$av.obj):$$av.tipo.get();
       };$$appliedValue.$get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Type',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
 
+$$appliedValue.unsafeSet=function(v) {
+  var mm = this.tipo.$$metamodel$$;
+  if (typeof(mm)=='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+  if (!isOfType(v,mm.$t))throw IncompatibleTypeException$meta$model("The specified value has the wrong type");
+  var mdl=get_model(mm);
+  if (!(mdl &&mdl['var']))throw MutationException$meta$model("Attempt to modify a value that is not variable");
+  this.obj?this.tipo.set.call(this.obj,v):this.tipo.set(v);
+};$$appliedValue.unsafeSet.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$ps:[],$cont:AppliedValue,d:['ceylon.language.meta.model','Value','$m','unsafeSet']};};
+
       defineAttr($$appliedValue,'type',function(){
           var $$atr=this;
           var t = $$atr.tipo.$$metamodel$$;
