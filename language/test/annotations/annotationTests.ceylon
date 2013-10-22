@@ -276,6 +276,24 @@ shared void checkAClass() {
             pseq.seq== "AClass.parameter 1");
     assert(exists pseq2 = pseqs[1],
             pseq2.seq== "AClass.parameter 2");
+    
+    
+    assert(exists aca1doc = annotations(docAnnotation, `class AClass.DefaultInnerClassAlias1`),
+        aca1doc.description == "AClass.DefaultInnerClassAlias1");
+    
+    assert(
+        exists aca1pDecl = `class AClass.DefaultInnerClassAlias1`.parameterDeclarations[0],
+        exists aca1pdoc = annotations(docAnnotation, aca1pDecl),
+        aca1pdoc.description == "AClass.DefaultInnerClassAlias1.parameter");
+    
+    assert(exists aca2doc = annotations(docAnnotation, `class AClass.DefaultInnerClassAlias2`),
+        aca2doc.description == "AClass.DefaultInnerClassAlias2");
+    
+    assert(
+        exists aca2pDecl = `class AClass.DefaultInnerClassAlias2`.parameterDeclarations[0],
+        exists aca2pdoc = annotations(docAnnotation, aca2pDecl),
+        aca2pdoc.description == "AClass.DefaultInnerClassAlias2.parameter");
+    
 }
 
 @test
@@ -853,11 +871,12 @@ shared void checkMetamodelRefs() {
 shared void checkAClassAlias() {
     assert(exists acadoc = annotations(docAnnotation, `class AClassAlias`),
             acadoc.description == "AClassAlias");
-    /* TODO #1298 
+    
     assert(
             exists acapDecl = `class AClassAlias`.parameterDeclarations[0],
             exists acapdoc = annotations(docAnnotation, acapDecl),
-            acapdoc.description == "AClassAlias.p");*/
+            acapdoc.description == "AClassAlias.p");
+    
 }
 
 shared void run() {

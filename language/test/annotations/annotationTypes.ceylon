@@ -198,6 +198,16 @@ shared class AClass(
         seq("AClass.parameter 2")
         String parameter) 
     extends AAbstractClass(parameter) {
+    
+    "AClass.DefaultInnerClassAlias1"
+    shared class DefaultInnerClassAlias1(
+        "AClass.DefaultInnerClassAlias1.parameter"
+        String parameter) => DefaultInnerClass(parameter);
+
+    "AClass.DefaultInnerClassAlias2"
+    shared class DefaultInnerClassAlias2(
+        "AClass.DefaultInnerClassAlias2.parameter"
+        String parameter) => DefaultInnerClass(parameter);
  
 }
 
