@@ -683,10 +683,13 @@ public class CMRTest extends CompilerTest {
     public void testMdlAetherMissingDependencies2() throws IOException{
 
         // Try to compile the ceylon module
-        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether"/*, "-verbose:cmr"*/), 
-                (DiagnosticListener<? super FileObject>)null, 
-                "modules/bug1104/module.ceylon", "modules/bug1104/test.ceylon");
-        assertEquals("Compilation succeeded", Boolean.TRUE, ceylonTask.call());
+        assertErrors("modules/bug1104/test", 
+                Arrays.asList("-out", destDir, "-rep", "aether"/*, "-verbose:cmr"*/),
+                new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n"
+                        +"   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n"
+                        +"   Failed to find declaration for org.apache.camel.component.http.HttpComponent"),
+                new CompilerError(10, "argument must be assignable to parameter arg1 of addComponent in DefaultCamelContext: JettyHttpComponent is not assignable to Component?")
+        );
     }
 
     @Test
