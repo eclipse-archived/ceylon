@@ -141,7 +141,7 @@ function $init$OpenFunction(){
             var _t = types[i].tipo;
             ta[tp]={t:_t};
             if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
-              var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satifies:_tp.of;
+              var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
               for (var j=0; j<restraints.length;j++) {
                 if (!extendsType(ta[tp],restraints[j]))
                   throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
