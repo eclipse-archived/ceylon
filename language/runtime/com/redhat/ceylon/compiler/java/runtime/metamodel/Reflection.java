@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.typechecker.model.ClassAlias;
 
 class Reflection {
 
@@ -81,6 +82,21 @@ class Reflection {
         return null;
     }
 
+    static java.lang.reflect.Method findClassAliasInstantiator(Class<?> javaClass, ClassAlias container) {
+        Class<?> searchClass;
+        if (javaClass.getEnclosingClass() != null) {
+            searchClass = javaClass.getEnclosingClass();
+        } else {
+            searchClass = javaClass;
+        }
+        for (java.lang.reflect.Method method : searchClass.getDeclaredMethods()) {
+            if (method.getName().equals(container.getName() + "$aliased$")) {
+                return method;
+            }
+        }
+        return null;
+    }
+    
     static java.lang.reflect.Constructor<?> findConstructor(Class<?> javaClass) {
         // How to find the right Method, just go for the one with the longest parameter list?
         // OR go via the Method in AppliedFunction?
