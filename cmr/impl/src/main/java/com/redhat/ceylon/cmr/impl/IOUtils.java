@@ -173,7 +173,7 @@ public class IOUtils {
         return new String(chars);
     }
     
-    static File zipFolder(File root) throws IOException{
+    public static File zipFolder(File root) throws IOException{
         if(!root.isDirectory())
             throw new IOException("Zip root must be a folder");
         File zipFile = File.createTempFile("module-doc", ".zip");
