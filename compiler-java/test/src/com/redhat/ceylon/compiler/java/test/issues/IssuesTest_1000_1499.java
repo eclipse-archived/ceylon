@@ -680,6 +680,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
+    @Ignore("For 1.1 - See https://github.com/ceylon/ceylon-compiler/issues/1375")
     public void testBug1375() {
         assertErrors("bug13xx/Bug1375",
                 new CompilerError(22, "does not definitely return: x"),
