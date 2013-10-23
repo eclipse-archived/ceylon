@@ -132,7 +132,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
         if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
           var _targ=this.$$targs$$.Type.a[tp];
           if (typeof(_targ)==='string') {
-            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifedName);
+            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
             _targ={t:Anything};
           }
           targ=typeLiteral$meta({Type:_targ});
