@@ -1,23 +1,50 @@
 //Addendum to model.declaration.ClassOrInterfaceDeclaration
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function (name$20,$$$mptypes){
   var $$oi=this;
+  var _m=undefined;
   if (extendsType($$$mptypes.Kind, {t:ValueDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$at ? $$oi.meta.$at[name$20] : undefined;
-    return _d ? OpenValue($$oi.containingPackage, _d) : null;
+    if (_d)_m=OpenValue($$oi.containingPackage, _d);
   } else if (extendsType($$$mptypes.Kind, {t:FunctionDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$m ? $$oi.meta.$m[name$20] : undefined;
-    return _d ? OpenFunction($$oi.packageContainer, _d) : null;
+    if(_d)_m=OpenFunction($$oi.packageContainer, _d);
   } else if (extendsType($$$mptypes.Kind, {t:ClassDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$c ? $$oi.meta.$c[name$20] : undefined;
-    return _d ? OpenClass($$oi.containingPackage, _d) : null;
+    if(_d)_m=OpenClass($$oi.containingPackage, _d);
   } else if (extendsType($$$mptypes.Kind, {t:InterfaceDeclaration$meta$declaration})) {
     var _d = $$oi.meta.$i ? $$oi.meta.$i[name$20] : undefined;
-    return _d ? OpenInterface($$oi.containingPackage, _d) : null;
+    if(_d)_m=OpenInterface($$oi.containingPackage, _d);
+  }
+  if (_m) {
+    _m.$parent=this;
+    return _m;
   }
   return null;
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getMemberDeclaration']};};
-
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration=function (name$20,$$$mptypes){
+  var $$oi=this;
+  var _m=undefined;
+  if (extendsType($$$mptypes.Kind, {t:ValueDeclaration$meta$declaration})) {
+    var _d = $$oi.meta.$at ? $$oi.meta.$at[name$20] : undefined;
+    if (_d)_m=OpenValue($$oi.containingPackage, _d);
+  } else if (extendsType($$$mptypes.Kind, {t:FunctionDeclaration$meta$declaration})) {
+    var _d = $$oi.meta.$m ? $$oi.meta.$m[name$20] : undefined;
+    if(_d)_m=OpenFunction($$oi.packageContainer, _d);
+  } else if (extendsType($$$mptypes.Kind, {t:ClassDeclaration$meta$declaration})) {
+    var _d = $$oi.meta.$c ? $$oi.meta.$c[name$20] : undefined;
+    if(_d)_m=OpenClass($$oi.containingPackage, _d);
+  } else if (extendsType($$$mptypes.Kind, {t:InterfaceDeclaration$meta$declaration})) {
+    var _d = $$oi.meta.$i ? $$oi.meta.$i[name$20] : undefined;
+    if(_d)_m=OpenInterface($$oi.containingPackage, _d);
+  }
+  if (_m) {
+    _m.$parent=this;
+    return _m;
+  }
+  return null;
+};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getDeclaredMemberDeclaration']};};
 defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations',function(){
   var that=this;
   var parms = that.tipo.$$metamodel$$.$ps;
@@ -62,14 +89,19 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
   for (var i=0; i<defs.length; i++) {
     var m=defs[i];
     var mt = m['$mt'];
+    var _d;
     if (mt === 'mthd') {
-      r.push(OpenFunction(pkg, m));
+      _d=OpenFunction(pkg, m);
     } else if (mt==='cls') {
-      r.push(OpenClass(pkg, m));
+      _d=OpenClass(pkg, m);
     } else if (mt==='ifc') {
-      r.push(OpenInterface(pkg, m));
+      _d=OpenInterface(pkg, m);
     } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
-      r.push(OpenValue(pkg, m));
+      _d=OpenValue(pkg, m);
+    }
+    if (_d) {
+      _d.$parent=this;
+      r.push(_d);
     }
   }
   return r.reifyCeylonType({Element:$$$mptypes.Kind});
@@ -160,3 +192,12 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   if (_t.a)rv._targs=_t.a;
   return rv;
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};
+defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',function(){
+  if (this.$parent)return this.$parent;
+  var mm=this.tipo.$$metamodel$$;
+  if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+  if (mm.$cont) {
+    return typeLiteral$meta({Type:mm.$cont});
+  }
+  return this.containingPackage;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration.NestableDeclaration','$at','container']};});

@@ -125,6 +125,12 @@ function $init$OpenFunction(){
   if (OpenFunction.$$===undefined){
     initTypeProto(OpenFunction,'ceylon.language.meta.declaration::OpenFunction',Basic,FunctionDeclaration$meta$declaration);
     (function($$openFunction){
+defineAttr($$openFunction,'container',function(){
+  if (this.$parent)return this.$parent;
+  if (this.toplevel)return this.containingPackage;
+  return typeLiteral$meta({Type:this.tipo.$$metamodel$$.$cont});
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
+
       $$openFunction.$apply=function $apply(types,$mptypes){
         if (typeof(this.tipo.$$metamodel$$)==='function') {
           this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
@@ -256,6 +262,12 @@ function $init$OpenValue(){
   if (OpenValue.$$===undefined){
     initTypeProto(OpenValue,'ceylon.language.meta.declaration::OpenValue',Basic,ValueDeclaration$meta$declaration);
     (function($$openValue){
+
+defineAttr($$openValue,'container',function(){
+  if (this.$parent)return this.$parent;
+  if (this.toplevel)return this.containingPackage;
+  return typeLiteral$meta({Type:this.tipo.$$metamodel$$.$cont});
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
             
             //MethodDefinition apply at X (39:4-39:68)
       $$openValue.$apply=function $apply($$$mptypes){
