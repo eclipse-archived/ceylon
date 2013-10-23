@@ -7,7 +7,7 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments
       var rtp=rtps&&rtps[tpn];
       var otp=OpenTypeParam(this.declaration.tipo,tpn);
       var targ;
-      if (typeof(tp)==='string' || rtp===undefined) {
+      if (rtp===undefined) {
         targ = new OpenTvar(otp);
       } else {
         targ = _openTypeFromTarg(rtp);
@@ -27,10 +27,21 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'satisfiedType
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClassOrInterfaceType$meta$declaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','satisfiedTypes']};});
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'string',function(){
   var s=this.declaration.string;
-  if (this.declaration._targs) {
-    s+="<PENDIENTE TARGS>";
-  } else if (this.declaration.tipo.$$metamodel$$.$tp) {
-    s+="<PEND TPARAMS>";
+  var tps=this.declaration.tipo.$$metamodel$$.$tp;
+  if (tps) {
+    var rtps=this.declaration._targs;
+    s+="<";
+    var first=true;
+    for (var t in tps) {
+      var rtp=rtps&&rtps[t];
+      if (first)first=false;else s+=",";
+      if (rtp===undefined) {
+        s+=t;
+      } else {
+        s+=_openTypeFromTarg(rtp).string;
+      }
+    }
+    s+=">";
   }
   return s;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
