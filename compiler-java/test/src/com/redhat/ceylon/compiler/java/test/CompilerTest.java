@@ -56,6 +56,8 @@ import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
@@ -173,11 +175,27 @@ public abstract class CompilerTest {
         CeyloncTaskImpl task = getCompilerTask(options, collector, new String[] {ceylon+".ceylon"});
 
         // now compile it all the way
-        Boolean success = task.call();
-        
-        Assert.assertFalse("Compilation successful (it should have failed!)", success);
-        
-        Throwable ex = task.getExitState().abortingException;
+        Throwable ex = null;
+        ExitState exitState = task.call2();
+        switch (exitState.ceylonState) {
+        case OK:
+            Assert.fail("Compilation successful (it should have failed!)");
+            break;
+        case BUG:
+            if (expectedException == null) {
+                throw new AssertionError("Compiler bug", exitState.abortingException);
+            }
+            ex = exitState.abortingException;
+            break;
+        case ERROR:
+            return;
+        case SYS:
+            Assert.fail("System error");
+            break;
+        default:
+            Assert.fail("Unknown exit state");
+        }
+
         if (ex != null) {
             if (expectedException == null) {
                 throw new AssertionError("Compilation terminated with unexpected error", ex);
@@ -247,9 +265,8 @@ public abstract class CompilerTest {
         task.setTaskListener(listener);
 
         // now compile it all the way
-        Boolean success = task.call();
-
-        Assert.assertTrue("Compilation failed", success);
+        ExitState exitState = task.call2();
+        Assert.assertEquals("Compilation failed", exitState.ceylonState, CeylonState.OK);
 
         // now look at what we expected
         String expectedSrc = normalizeLineEndings(readFile(new File(getPackagePath(), name+".src"))).trim();
@@ -290,9 +307,8 @@ public abstract class CompilerTest {
         task.setTaskListener(listener);
 
         // now compile it all the way
-        Boolean success = task.call();
-
-        Assert.assertTrue("Compilation failed", success);
+        ExitState exitState = task.call2();
+        Assert.assertEquals("Compilation failed", exitState.ceylonState == CeylonState.OK);
 
         // now look at what we expected
         String expectedSrc = normalizeLineEndings(readFile(new File(getPackagePath(), name+".src"))).trim();
@@ -330,11 +346,8 @@ public abstract class CompilerTest {
         task.setTaskListener(listener);
 
         // now compile it all the way
-        Boolean success = task.call();
-
-        //Assert.assertTrue("Compilation failed", success);
-        Assert.assertTrue(collector.getAssertionFailureMessage(), success);
-
+        assertCompilesOk(collector, task.call2());
+        
         // now look at what we expected
         File expectedSrcFile = new File(getPackagePath(), java);
         String expectedSrc = normalizeLineEndings(readFile(expectedSrcFile)).trim();
@@ -350,6 +363,26 @@ public abstract class CompilerTest {
         
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
+
+    private void assertCompilesOk(ErrorCollector collector, ExitState exitState)
+            throws AssertionError {
+        switch (exitState.ceylonState) {
+        case OK:
+            break;
+        case BUG:
+            throw new AssertionError("Compiler bug", exitState.abortingException);
+        case ERROR:
+            Assert.fail(collector.getAssertionFailureMessage());
+            break;
+        case SYS:
+            Assert.fail("System error");
+            break;
+        default:
+            Assert.fail("Unknown exit state");
+        }
+    }
+    
+
 
     protected String readFile(File file) {
         try{
@@ -391,14 +424,13 @@ public abstract class CompilerTest {
 
     protected void compile(String... ceylon) {
         ErrorCollector c = new ErrorCollector();
-        Boolean success = getCompilerTask(c, ceylon).call();
-        Assert.assertTrue(c.getAssertionFailureMessage(), success);
+        assertCompilesOk(c, getCompilerTask(c, ceylon).call2());
     }
     
     protected void compilesWithoutWarnings(String... ceylon) {
         ErrorCollector dl = new ErrorCollector();
-        Boolean success = getCompilerTask(defaultOptions, dl, ceylon).call();
-        Assert.assertTrue(success);
+        ExitState exitState = getCompilerTask(defaultOptions, dl, ceylon).call2();
+        Assert.assertEquals(exitState.ceylonState, CeylonState.OK);
         Assert.assertEquals("The code compiled with javac warnings", 
                 0, dl.get(Diagnostic.Kind.WARNING).size() + dl.get(Diagnostic.Kind.MANDATORY_WARNING).size());
     }
@@ -644,7 +676,7 @@ public abstract class CompilerTest {
             options.add("-verbose:ast,code");
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
-        return (CeyloncTaskImpl) runCompiler.getTask(null, runFileManager, diagnosticListener, 
+        return runCompiler.getTask(null, runFileManager, diagnosticListener, 
                 options, modules, compilationUnits1);
     }
 

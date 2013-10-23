@@ -204,7 +204,7 @@ public class JavacTool implements JavaCompiler {
         }
     }
 
-    protected static void processOptions(Context context,
+    public static void processOptions(Context context,
                                        JavaFileManager fileManager,
                                        Iterable<String> options)
     {

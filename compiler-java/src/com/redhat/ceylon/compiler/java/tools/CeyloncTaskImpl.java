@@ -32,8 +32,9 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import javax.tools.JavaFileObject;
 
-import com.sun.tools.javac.api.JavacTaskImpl;
 import com.redhat.ceylon.compiler.java.launcher.Main;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
+import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
@@ -49,4 +50,17 @@ public class CeyloncTaskImpl extends JavacTaskImpl {
         return compilerMain.exitState;
     }
     
+    /**
+     * @deprecated because it doesn't perform celyon error handling properly
+     */
+    @Deprecated
+    public Boolean call() {
+        return super.call();
+    }
+    
+    public ExitState call2() {
+        super.call();
+        return getExitState();
+    }
+
 }

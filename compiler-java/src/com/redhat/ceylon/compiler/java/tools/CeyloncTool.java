@@ -52,9 +52,8 @@ import com.sun.tools.javac.util.Log;
  * @deprecated apparently JavacTool is deprecated, we need to find what to replace it with
  */
 @Deprecated
-public class CeyloncTool extends JavacTool implements JavaCompiler {
+public class CeyloncTool {
 
-    @Override
     public JavacFileManager getStandardFileManager(DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale, Charset charset) {
         Context context = new Context();
         if (diagnosticListener != null)
@@ -62,9 +61,8 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
         CeylonLog.preRegister(context);
         return new CeyloncFileManager(context, true, charset);
     }
-
-    @Override
-    public JavacTask getTask(Writer out, JavaFileManager fileManager, DiagnosticListener<? super JavaFileObject> diagnosticListener, Iterable<String> options, Iterable<String> classes, Iterable<? extends JavaFileObject> compilationUnits) {
+    
+    public CeyloncTaskImpl getTask(Writer out, JavaFileManager fileManager, DiagnosticListener<? super JavaFileObject> diagnosticListener, Iterable<String> options, Iterable<String> classes, Iterable<? extends JavaFileObject> compilationUnits) {
         final String kindMsg = "All compilation units must be of SOURCE kind";
         if (options != null)
             for (String option : options)
@@ -98,7 +96,7 @@ public class CeyloncTool extends JavacTool implements JavaCompiler {
         }
 
         context.put(JavaFileManager.class, fileManager);
-        processOptions(context, fileManager, options);
+        JavacTool.processOptions(context, fileManager, options);
         Main compiler = new Main("ceyloncTask", context.get(Log.outKey));
         return new CeyloncTaskImpl(compiler, options, context, classes, compilationUnits);
     }
