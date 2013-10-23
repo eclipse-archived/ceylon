@@ -1856,10 +1856,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String name = methodMirror.getName();
         boolean matchesGet = name.length() > 3 && name.startsWith("get") 
                 && isStartOfJavaBeanPropertyName(name.charAt(3)) 
-                && !"getString".equals(name) && !"getHash".equals(name);
+                && !"getString".equals(name) && !"getHash".equals(name) && !"getEquals".equals(name);
         boolean matchesIs = name.length() > 2 && name.startsWith("is") 
                 && isStartOfJavaBeanPropertyName(name.charAt(2)) 
-                && !"isString".equals(name) && !"isHash".equals(name);
+                && !"isString".equals(name) && !"isHash".equals(name) && !"isEquals".equals(name);
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
         boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
         return (matchesGet || matchesIs) && hasNoParams && hasNonVoidReturn;
@@ -1869,7 +1869,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String name = methodMirror.getName();
         boolean matchesSet = name.length() > 3 && name.startsWith("set") 
                 && isStartOfJavaBeanPropertyName(name.charAt(3))
-                && !"setString".equals(name) && !"setHash".equals(name);
+                && !"setString".equals(name) && !"setHash".equals(name) && !"setEquals".equals(name);
         boolean hasOneParam = methodMirror.getParameters().size() == 1;
         boolean hasVoidReturn = (methodMirror.getReturnType().getKind() == TypeKind.VOID);
         return matchesSet && hasOneParam && hasVoidReturn;
