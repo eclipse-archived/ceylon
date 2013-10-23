@@ -149,12 +149,12 @@ final class isCond_ {
     }
     
     static void isCond(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> seq) {
-        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -193,12 +193,12 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -237,12 +237,12 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -278,12 +278,12 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -319,12 +319,12 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> barIs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> barIs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -360,12 +360,12 @@ final class isCond_ {
                 };
             }
         }.getSequence();
-        final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;

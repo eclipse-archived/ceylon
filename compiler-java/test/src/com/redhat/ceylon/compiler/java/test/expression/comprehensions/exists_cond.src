@@ -12,12 +12,12 @@ final class existsCond_ {
                 null,
                 .ceylon.language.String.instance("b"),
                 null});
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{seq}){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> $iterator$0;
                     private .ceylon.language.String x;

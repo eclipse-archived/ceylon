@@ -9,12 +9,12 @@ final class bug1011_ {
         (
             let
             {
-                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, false, new .ceylon.language.Iterable[]{.ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})}){
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                             {
-                                $iterator$0 = $getIterables$()[0].iterator();
+                                $iterator$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                             private .ceylon.language.Integer x;
@@ -57,12 +57,12 @@ final class foo_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reified$Item;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key);
-                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{map}){
+                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key))){
                             {
-                                $iterator$0 = $getIterables$()[0].iterator();
+                                $iterator$0 = map.iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                             private Key key;
@@ -85,12 +85,12 @@ final class foo_ {
                                 if (this.$kv$key$item()) {
                                     final Key key = this.key;
                                     final Item item = this.item;
-                                    return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{map}){
+                                    return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                         
                                         public final .ceylon.language.Iterator<Key> iterator() {
                                             return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
                                                 {
-                                                    $iterator$0 = $getIterables$()[0].iterator();
+                                                    $iterator$0 = map.iterator();
                                                 }
                                                 private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                                                 private Key k;
@@ -137,12 +137,12 @@ final class foo_ {
             }
             returning new .ceylon.language.LazyMap<Item, .ceylon.language.LazySet<? extends Key>>(arg$2$reified$0, arg$2$reified$1, arg$2$0);
         );
-        new .ceylon.language.LazyMap<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{map}){
+        new .ceylon.language.LazyMap<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key))){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = map.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                     private Key key;
@@ -165,12 +165,12 @@ final class foo_ {
                         if (this.$kv$key$item()) {
                             final Key key = this.key;
                             final Item item = this.item;
-                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{map}){
+                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                 
                                 public final .ceylon.language.Iterator<Key> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
                                         {
-                                            $iterator$0 = $getIterables$()[0].iterator();
+                                            $iterator$0 = map.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                                         private Key k;
@@ -219,12 +219,12 @@ final class foo_ {
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$0 = $reified$Item;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key);
-                .ceylon.language.Iterable arg$7$0 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{map}){
+                .ceylon.language.Iterable arg$7$0 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key))){
                             {
-                                $iterator$0 = $getIterables$()[0].iterator();
+                                $iterator$0 = map.iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                             private Key key;
@@ -247,12 +247,12 @@ final class foo_ {
                                 if (this.$kv$key$item()) {
                                     final Key key = this.key;
                                     final Item item = this.item;
-                                    return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{map}){
+                                    return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                         
                                         public final .ceylon.language.Iterator<Key> iterator() {
                                             return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
                                                 {
-                                                    $iterator$0 = $getIterables$()[0].iterator();
+                                                    $iterator$0 = map.iterator();
                                                 }
                                                 private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                                                 private Key k;
@@ -299,12 +299,12 @@ final class foo_ {
             }
             returning new .ceylon.language.LazyMap<Item, .ceylon.language.Set<? extends Key>>(arg$7$reified$0, arg$7$reified$1, arg$7$0);
         );
-        new .ceylon.language.LazyMap<Item, .ceylon.language.Set<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key), (.ceylon.language.Iterable).com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.Set<? extends Key>>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{map}){
+        new .ceylon.language.LazyMap<Item, .ceylon.language.Set<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key), (.ceylon.language.Iterable).com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.Set<? extends Key>>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key))){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = map.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                     private Key key;
@@ -327,12 +327,12 @@ final class foo_ {
                         if (this.$kv$key$item()) {
                             final Key key = this.key;
                             final Item item = this.item;
-                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{map}){
+                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                 
                                 public final .ceylon.language.Iterator<Key> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
                                         {
-                                            $iterator$0 = $getIterables$()[0].iterator();
+                                            $iterator$0 = map.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                                         private Key k;
@@ -376,12 +376,12 @@ final class foo_ {
                 };
             }
         }, extra));
-        final .java.lang.Object v1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{map}){
+        final .java.lang.Object v1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key))){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = map.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                     private Key key;
@@ -404,12 +404,12 @@ final class foo_ {
                         if (this.$kv$key$item()) {
                             final Key key = this.key;
                             final Item item = this.item;
-                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{map}){
+                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                 
                                 public final .ceylon.language.Iterator<Key> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
                                         {
-                                            $iterator$0 = $getIterables$()[0].iterator();
+                                            $iterator$0 = map.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                                         private Key k;
@@ -453,12 +453,12 @@ final class foo_ {
                 };
             }
         };
-        final .java.lang.Object v2 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.Set<? extends Key>>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, false, new .ceylon.language.Iterable[]{map}){
+        final .java.lang.Object v2 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.Set<? extends Key>>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .ceylon.language.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key))){
                     {
-                        $iterator$0 = $getIterables$()[0].iterator();
+                        $iterator$0 = map.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                     private Key key;
@@ -481,12 +481,12 @@ final class foo_ {
                         if (this.$kv$key$item()) {
                             final Key key = this.key;
                             final Item item = this.item;
-                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$, true, new .ceylon.language.Iterable[]{map}){
+                            return new .ceylon.language.Entry<Item, .ceylon.language.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.LazySet.class, $reified$Key), item, new .ceylon.language.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
                                 
                                 public final .ceylon.language.Iterator<Key> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
                                         {
-                                            $iterator$0 = $getIterables$()[0].iterator();
+                                            $iterator$0 = map.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
                                         private Key k;
