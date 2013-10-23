@@ -84,7 +84,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support");
         MODULES = ModuleIdentifier.create("org.jboss.modules");
         JANDEX = ModuleIdentifier.create("org.jboss.jandex");
-        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager","main");
+        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", "1.4.0.Final");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
