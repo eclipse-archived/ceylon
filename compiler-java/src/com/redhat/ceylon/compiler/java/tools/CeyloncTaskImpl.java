@@ -37,9 +37,20 @@ import com.sun.tools.javac.main.Main;
 import com.sun.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
-
+    Main compilerMain;
+    
     // we're just making this constructor visible here
     CeyloncTaskImpl(Main compilerMain, Iterable<String> flags, Context context, Iterable<String> classes, Iterable<? extends JavaFileObject> fileObjects) {
         super(compilerMain, flags, context, classes, fileObjects);
+        this.compilerMain = compilerMain;
     }
+    
+    public com.redhat.ceylon.compiler.java.launcher.Main.ExitState getExitState() {
+        if (compilerMain instanceof com.redhat.ceylon.compiler.java.launcher.Main) {
+            return ((com.redhat.ceylon.compiler.java.launcher.Main)compilerMain).exitState;
+        } else {
+            return null;
+        }
+    }
+    
 }
