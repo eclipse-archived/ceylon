@@ -30,7 +30,9 @@ void bug1351_reeval() {
         return bar;
     }
     value lala = {for (x in foo) x};
-    assert ([*lala] == [*lala]);
+    
+    assert([0, 1, 2, 3, 4] == [*lala]);
+    assert([0, 1, 2, 3, 4, 5] == [*lala]);
 }
 // Check we can handle dependent iterables
 shared Element[] bug1351_dependant<Element>({Element*}* iterables) 
