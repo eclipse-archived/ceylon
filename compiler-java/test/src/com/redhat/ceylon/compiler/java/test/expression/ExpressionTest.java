@@ -184,7 +184,6 @@ public class ExpressionTest extends CompilerTest {
     public void testLitNumericLiteral(){
         compareWithJavaSource("literal/NumericLiteral");
         assertErrors("literal/NumericLiteralErrors",
-                new com.sun.tools.javac.util.FatalError("Fatal Error: Unable to find method byteValue"),
                 new CompilerError(24, "literal outside representable range: 9223372036854775808 is too large to be represented as an Integer"),
                 new CompilerError(25, "literal outside representable range: -9223372036854775809 is too large to be represented as an Integer"),
                 new CompilerError(27, "literal so large it is indistinguishable from infinity: 1.7976931348623159E308 (use infinity)"),
