@@ -188,7 +188,7 @@ public abstract class CompilerTest {
             ex = exitState.abortingException;
             break;
         case ERROR:
-            return;
+            break;
         case SYS:
             Assert.fail("System error");
             break;
