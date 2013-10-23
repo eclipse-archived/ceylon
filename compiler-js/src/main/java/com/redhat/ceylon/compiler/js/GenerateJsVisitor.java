@@ -4582,6 +4582,10 @@ public class GenerateJsVisitor extends Visitor
                     out(names.name(d),",");
                 }
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
+                    out(",undefined,");//TODO pass the container
+                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+                }
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
                 if (((Value)d).isVariable()) {
