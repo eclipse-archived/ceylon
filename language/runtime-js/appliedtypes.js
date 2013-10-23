@@ -15,7 +15,16 @@ function AppliedClass(tipo,$$targs$$,that){
       that.$$=AppliedClass.$$;
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
-      that.equals=function(o){return o && (o.tipo$2||o.tipo)==tipo;};
+      that.equals=function(o){
+        var eq=isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==tipo;
+        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+        return eq;
+      };
+      defineAttr(that,'string',function(){
+var qn=mm.d[0];
+for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     } else {
       that=new AppliedClass.$$;
     }
