@@ -69,7 +69,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -4222,56 +4221,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType seqElemType = typeFact().getIteratedType(iterableType);
         return isOptional(seqElemType);
     }
-
-    /**
-     * Determines whether the iterable expressions in a ForComprehension 
-     * depends on an iteration variable declared in an outer ForComprehension.
-     * We care because it determines when we evaluate those iterable expressions
-     * (at the point we instantiate the AbstractIterable, or during the 
-     * iteration).
-     */
-    static class ComprehensionIterablesVisitor extends Visitor {
-        
-        private final HashSet<Scope> scopes = new HashSet<Scope>();
-        private boolean depends = false;
-        private final HashSet<Tree.ForIterator> dependentIterators = new HashSet<Tree.ForIterator>();
-        
-        ComprehensionIterablesVisitor() {
-            reset();
-        }
-        
-        public void reset() {
-            scopes.clear();
-            dependentIterators.clear();
-            depends = false;
-        }
-        
-        @Override
-        public void visit(Tree.ForComprehensionClause that) {
-            scopes.add(that.getScope());
-            that.getForIterator().visit(this);
-            that.getComprehensionClause().visit(this);
-        }
-        
-        @Override
-        public void visit(Tree.ForIterator that) {
-            depends = false;
-            that.getSpecifierExpression().getExpression().visit(this);
-            if (depends) {
-                dependentIterators.add(that);
-            }
-        }
-        
-        @Override
-        public void visit(Tree.BaseMemberExpression that) {
-            if (scopes.contains(that.getDeclaration().getScope())) {
-                depends = true;
-            }
-        }
-        
-    }
-    
-    private final ComprehensionIterablesVisitor comprehensionIterablesVisitor = new ComprehensionIterablesVisitor();
     
     class ComprehensionTransformation {
         private final Tree.Comprehension comp;
@@ -4282,7 +4231,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         Naming.SyntheticName prevItemVar = null;
         Naming.SyntheticName ctxtName = null;
         Naming.SyntheticName lastIteratorCtxtName = null;
-        ListBuffer<JCExpression> iterables = ListBuffer.<JCExpression>lb();
         //Iterator fields
         final ListBuffer<JCTree> fields = new ListBuffer<JCTree>();
         final HashSet<String> fieldNames = new HashSet<String>();
@@ -4294,12 +4242,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // at *that point* on the iteration, and not the (variable) value of 
         // the iterator. See #986
         private final ListBuffer<JCStatement> valueCaptures = ListBuffer.<JCStatement>lb();
-        private HashSet<Tree.ForIterator> dependentIterators;
         public ComprehensionTransformation(final Tree.Comprehension comp, ProducedType elementType) {
             this.comp = comp;
-            comprehensionIterablesVisitor.reset();
-            comprehensionIterablesVisitor.visit(comp);
-            this.dependentIterators = comprehensionIterablesVisitor.dependentIterators;
             targetIterType = typeFact().getIterableType(elementType);
             absentIterType = comp.getForComprehensionClause().getFirstTypeModel();
         }
@@ -4310,13 +4254,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             boolean oldWithinSyntheticClassBody = withinSyntheticClassBody(true);
             
             try{
+                ListBuffer<JCExpression> iterables = ListBuffer.<JCExpression>lb();
                 Tree.ComprehensionClause clause = comp.getForComprehensionClause();
                 while (clause != null) {
                     final Naming.SyntheticName iterVar = naming.synthetic(Prefix.$iterator$, idx);
                     Naming.SyntheticName itemVar = null;
                     if (clause instanceof Tree.ForComprehensionClause) {
                         final Tree.ForComprehensionClause fcl = (Tree.ForComprehensionClause)clause;
-                        JCExpression iterator = transformIterable(fcl.getForIterator());
+                        Tree.SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
+                        iterables.add(transformExpression(specexpr.getExpression()));
+                        JCExpression iterator = make().Apply(null,
+                                makeSelect(
+                                make().Indexed(make().Apply(null, naming.makeUnquotedIdent("$getIterables"), List.<JCExpression>nil()),
+                                        make().Literal(iterables.size()-1)), "iterator"),
+                                        List.<JCExpression>nil());
                         itemVar = transformForClause(fcl, iterVar, itemVar, iterator);
                         
                         if (error != null) {
@@ -4358,26 +4309,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 withinSyntheticClassBody(oldWithinSyntheticClassBody);
             }
         }
-
-        private JCExpression transformIterable(Tree.ForIterator forIterator) {
-            Tree.SpecifierExpression specexpr = forIterator.getSpecifierExpression();
-            JCExpression iterableExpr;
-            if (!dependentIterators.contains(forIterator)) {
-                iterables.add(transformExpression(specexpr.getExpression()));
-                iterableExpr = make().Indexed(make().Apply(null, naming.makeUnquotedIdent("$getIterables"), List.<JCExpression>nil()),
-                        make().Literal(iterables.size()-1));
-            } else {
-                iterableExpr =  transformExpression(specexpr.getExpression());
-                // We pass null, so that the AbstractIterable can tell that 
-                // there's a dependent iterable in use and still knows the "dimensions"
-                // of the iterable.
-                iterables.add(makeNull());
-            }
-            JCExpression iterator = make().Apply(null,
-                    makeSelect(iterableExpr, "iterator"),
-                    List.<JCExpression>nil());
-            return iterator;
-        }
+        
         /**
          * Builds the {@code next()} method of the {@code AbstractIterator}
          */
