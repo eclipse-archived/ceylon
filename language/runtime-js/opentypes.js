@@ -704,8 +704,15 @@ function $init$OpenAlias(){
         throw wrapexc(Exception(String$("OpenAlias.containingModule",26)),'12:42-12:87','caca.ceylon');
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Module$meta$declaration},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','containingModule']};});
       defineAttr($$openAlias,'container',function(){
-        if (this._alias.$$metamodel$$.$cont===undefined)return null;
-        throw wrapexc(Exception(String$("OpenAlias.container",19)),'13:56-13:94','caca.ceylon');
+        var cont=this.$$targs$$.Container;
+        if (cont===undefined) {
+          cont=this._alias.$$metamodel$$.$cont;
+          if (cont)cont={t:cont};
+        }
+        if (cont) {
+          return typeLiteral$meta({Type:cont});
+        }
+        return null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','container']};});
       defineAttr($$openAlias,'openType',function(){
         return this.extendedType;
