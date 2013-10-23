@@ -350,6 +350,31 @@ defineAttr(f,'parameterTypes',function(){
   }
   return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
 },undefined,function(){return{mod:$$METAMODEL$$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
+defineAttr(f,'string',function(){
+  var qn=mm.d[0];
+  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  if (mm.$tp) {
+    qn+="<";
+    var first=true;
+    var targ;
+    for (var tp in mm.$tp) {
+      if (mptypes && mptypes[tp]) {
+        var _targ=mptypes[tp];
+        if (typeof(_targ)==='string') {
+          console.log("TODO: AppliedFunction solve " + tp+"->"+_targ+" for " + qn);
+          _targ={t:Anything};
+        }
+        targ=typeLiteral$meta({Type:_targ});
+      } else {
+        targ=typeLiteral$meta({Type:{t:Anything}});
+      }
+      if (first)first=false; else qn+=",";
+      qn+=targ.declaration.qualifiedName;
+    }
+    qn+=">";
+  }
+  return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
   return f;
 }
 AppliedFunction.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type:'Type',Arguments:'Arguments'}},$an:function(){return [shared(),actual()];}};};
