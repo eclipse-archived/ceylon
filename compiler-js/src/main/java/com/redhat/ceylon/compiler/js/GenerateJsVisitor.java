@@ -844,7 +844,6 @@ public class GenerateJsVisitor extends Visitor
 
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
-        boolean isInterface = false;
         ClassOrInterface decl = null;
         if (type instanceof ClassDefinition) {
             ClassDefinition classDef = (ClassDefinition) type;
@@ -853,7 +852,6 @@ public class GenerateJsVisitor extends Visitor
             decl = classDef.getDeclarationModel();
         } else if (type instanceof InterfaceDefinition) {
             satisfiedTypes = ((InterfaceDefinition) type).getSatisfiedTypes();
-            isInterface = true;
             decl = ((InterfaceDefinition) type).getDeclarationModel();
         } else if (type instanceof ObjectDefinition) {
             ObjectDefinition objectDef = (ObjectDefinition) type;
@@ -872,21 +870,20 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         };
-        typeInitialization(extendedType, satisfiedTypes, isInterface, decl, callback);
+        typeInitialization(extendedType, satisfiedTypes, decl, callback);
     }
 
     /** This is now the main method to generate the type initialization code.
      * @param extendedType The type that is being extended.
      * @param satisfiedTypes The types satisfied by the type being initialized.
-     * @param isInterface Tells whether the type being initialized is an interface
      * @param d The declaration for the type being initialized
      * @param callback A callback to add something more to the type initializer in prototype style.
      */
-    private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes, boolean isInterface,
+    private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes,
             final ClassOrInterface d, PrototypeInitCallback callback) {
 
-        //Let's always use initTypeProto to avoid #113
-        String initFuncName = "initTypeProto";
+        final boolean isInterface = d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
+        String initFuncName = isInterface ? "initTypeProtoI" : "initTypeProto";
 
         out("function $init$", names.name(d), "()");
         beginBlock();
@@ -2599,7 +2596,7 @@ public class GenerateJsVisitor extends Visitor
         TypeUtils.encodeForRuntime(c, null, this);
         endLine(true);
 
-        typeInitialization(xt, sts, false, c, new PrototypeInitCallback() {
+        typeInitialization(xt, sts, c, new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
                 addToPrototype(that, c, body.getStatements());
