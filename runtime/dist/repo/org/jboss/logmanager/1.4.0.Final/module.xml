@@ -23,6 +23,10 @@
 -->
 
 <module xmlns="urn:jboss:module:1.1" name="org.jboss.logmanager" slot="1.4.0.Final">
+    <resources>
+        <resource-root path="org.jboss.logmanager-1.4.0.Final.jar"/>
+    </resources>
+
     <dependencies>
         <system export="true">
             <paths>

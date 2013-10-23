@@ -23,6 +23,10 @@
 -->
 
 <module xmlns="urn:jboss:module:1.1" name="org.jboss.modules" slot="1.1.3.GA">
+    <resources>
+        <resource-root path="org.jboss.modules-1.1.3.GA.jar"/>
+    </resources>
+                
     <dependencies>
         <system export="true">
             <paths>
