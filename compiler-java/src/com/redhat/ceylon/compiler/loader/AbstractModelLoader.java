@@ -1765,9 +1765,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, boolean isOverloaded) {
         JavaMethod method = new JavaMethod(methodMirror);
+        String methodName = methodMirror.getName();
         
         method.setContainer(klass);
-        method.setRealName(methodMirror.getName());
+        method.setRealName(methodName);
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded);
         ProducedType type = null;
@@ -1777,7 +1778,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // collect an error in its type
             type = logModelResolutionException(x, klass, "method '"+methodMirror.getName()+"' (checking if it is an overriding method");
         }
-        method.setName(Util.strip(methodMirror.getName(), isCeylon, method.isShared()));
+        if(methodName.equals("hash")
+                || methodName.equals("string"))
+            method.setName("\\m"+methodName);
+        else
+            method.setName(Util.strip(methodName, isCeylon, method.isShared()));
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first
