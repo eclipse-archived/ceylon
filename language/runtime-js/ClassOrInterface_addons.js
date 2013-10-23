@@ -147,5 +147,33 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   }
   throw wrapexc(Exception(String$("IMPL ClassOrInterface.typeArguments ")),'15:63-15:99','?');
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
-
-
+defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
+    var mm = this.tipo.$$metamodel$$;
+    if (typeof(mm)==='function') {
+      mm=mm();
+      this.tipo.$$metamodel$$=mm;
+    }
+    var qn=mm.d[0];
+    for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+    if (mm.$tp) {
+      qn+="<";
+      var first=true;
+      for (var tp in mm.$tp) {
+        var targ;
+        if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
+          var _targ=this.$$targs$$.Type.a[tp];
+          if (typeof(_targ)==='string') {
+            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifedName);
+            _targ={t:Anything};
+          }
+          targ=typeLiteral$meta({Type:_targ});
+        } else {
+          targ=typeLiteral$meta({Type:{t:Anything}});
+        }
+        if (first)first=false; else qn+=",";
+        qn+=targ.declaration.qualifiedName;
+      }
+      qn+=">";
+    }
+    return String$(qn);
+},undefined,function(){return{mod:$$METMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});

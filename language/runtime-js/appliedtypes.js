@@ -104,19 +104,10 @@ defineAttr($$clase,'parameterTypes',function(){
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 
 
-  $$clase.equals=function(o){return o && (o.tipo$2||o.tipo)==this.tipo; };
+  $$clase.equals=function(o){
+return isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
+};
 //TODO equals metamodel
-
-  defineAttr($$clase,'string',function(){
-    var mm = this.tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm();
-      this.tipo.$$metamodel$$=mm;
-    }
-    var qn=mm.d[0];
-    for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-    return String$("AppliedClass[" + qn + "]");
-  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','string']};});
 
         })(AppliedClass.$$.prototype);
     }
@@ -161,17 +152,6 @@ function $init$AppliedInterface(){
                 var $$appliedInterface=this;
                 throw wrapexc(Exception(String$("IMPL AppliedInterface.container")),'47:50-47:86','?');
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','container']};});
-
-  defineAttr($$appliedInterface,'string',function(){
-    var mm = this.tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm();
-      this.tipo.$$metamodel$$=mm;
-    }
-    var qn=mm.d[0];
-    for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-    return String$("AppliedInterface[" + qn + "]");
-  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','string']};});
 
         })(AppliedInterface.$$.prototype);
     }
