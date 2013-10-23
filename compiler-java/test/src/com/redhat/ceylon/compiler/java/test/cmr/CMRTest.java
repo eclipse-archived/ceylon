@@ -684,7 +684,7 @@ public class CMRTest extends CompilerTest {
 
         // Try to compile the ceylon module
         assertErrors("modules/bug1104/test", 
-                Arrays.asList("-out", destDir, "-rep", "aether"/*, "-verbose:cmr"*/),
+                Arrays.asList("-out", destDir, "-rep", "aether"/*, "-verbose:cmr"*/), null,
                 new CompilerError(5, "Error while loading the org.apache.camel.camel-jetty/2.9.4 module:\n"
                         +"   Error while resolving extended type of org.apache.camel.component.jetty::JettyHttpComponent:\n"
                         +"   Failed to find declaration for org.apache.camel.component.http.HttpComponent"),
@@ -936,7 +936,7 @@ public class CMRTest extends CompilerTest {
                 "bug1062/javaB/JavaB.java");
         
         assertErrors("modules/bug1062/ceylon/test",
-                Arrays.asList("-rep", jarOutputFolder.getPath()),
+                Arrays.asList("-rep", jarOutputFolder.getPath()), null,
                 new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
                 new CompilerError(5, "parameter type could not be determined: arg0 of method")
                 );
@@ -969,7 +969,7 @@ public class CMRTest extends CompilerTest {
         // ceylon module imports JavaA/2 and JavaB/1
         // JavaB/1 imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
-                Arrays.asList("-rep", jarOutputFolder.getPath()),
+                Arrays.asList("-rep", jarOutputFolder.getPath()), null,
                 new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
                 new CompilerError(5, "parameter type could not be determined: arg0 of method")
                 );
@@ -1002,7 +1002,7 @@ public class CMRTest extends CompilerTest {
         // ceylon module imports JavaA/2 and JavaB/1
         // JavaB/1 shared imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
-                Arrays.asList("-rep", jarOutputFolder.getPath()),
+                Arrays.asList("-rep", jarOutputFolder.getPath()), null,
                 new CompilerError(1, "module (transitively) imports conflicting versions of dependency: version 2 and version 1 of bug1062.javaA"),
                 new CompilerError(1, "source code imports two different versions of the same module: version 2 and version 1 of bug1062.javaA")
                 );
