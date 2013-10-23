@@ -1081,7 +1081,10 @@ public class Naming implements LocalId {
     }
     
     private JCExpression addMemberName(JCExpression expr, TypedDeclaration decl, int namingOptions) {
-        if ((namingOptions & NA_IDENT) != 0) {
+        if (Decl.isJavaField(decl)) {
+            String name = ((FieldValue)decl).getRealName();
+            expr = makeQualIdent(expr, name);
+        } else if ((namingOptions & NA_IDENT) != 0) {
             Assert.not((namingOptions & NA_GETTER | NA_SETTER) == 0);
             String name;
             if ((namingOptions & __NA_IDENT_PARAMETER_ALIASED) != 0) {
