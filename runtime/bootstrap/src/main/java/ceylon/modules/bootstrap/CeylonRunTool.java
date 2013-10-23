@@ -26,6 +26,7 @@ import java.util.List;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
+import org.jboss.modules.log.JDKModuleLogger;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
@@ -159,6 +160,7 @@ public class CeylonRunTool extends RepoUsingTool {
             if (runtimeModule == null) {
                 synchronized (ModuleLoader.class) {
                     if (runtimeModule == null) {
+                        org.jboss.modules.Module.setModuleLogger(new JDKModuleLogger());
                         org.jboss.modules.Main.main(setupArguments(argList, sysRep, ceylonVersion));
                         // set runtime module
                         ModuleLoader ml = Module.getBootModuleLoader();
