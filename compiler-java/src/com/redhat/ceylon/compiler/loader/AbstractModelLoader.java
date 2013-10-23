@@ -1579,10 +1579,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
-            if(klass.getDirectMember(name, null, false) != null)
-                continue;
-            if (!"string".equals(fieldMirror.getName()) && ! "hash".equals(fieldMirror.getName())) {
-                addValue(klass, fieldMirror, isCeylon);
+            boolean requireFieldPrefix = klass.getDirectMember(name, null, false) != null
+                    || "equals".equals(name)
+                    || "string".equals(name)
+                    || "hash".equals(name);
+            if (!requireFieldPrefix) {
+                addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon);
+            }else{
+                addValue(klass, "\\f"+fieldMirror.getName(), fieldMirror, isCeylon);
             }
         }
 
@@ -1934,13 +1938,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return new String(newName);
     }
 
-    private void addValue(ClassOrInterface klass, FieldMirror fieldMirror, boolean isCeylon) {
+    private void addValue(ClassOrInterface klass, String ceylonName, FieldMirror fieldMirror, boolean isCeylon) {
         // make sure it's a FieldValue so we can figure it out in the backend
         Value value = new FieldValue(fieldMirror.getName());
         value.setContainer(klass);
         // use the name annotation if present (used by Java arrays)
         String nameAnnotation = getAnnotationStringValue(fieldMirror, CEYLON_NAME_ANNOTATION);
-        value.setName(nameAnnotation != null ? nameAnnotation : fieldMirror.getName());
+        value.setName(nameAnnotation != null ? nameAnnotation : ceylonName);
         value.setUnit(klass.getUnit());
         value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected() || fieldMirror.isDefaultAccess());
         value.setProtectedVisibility(fieldMirror.isProtected());
