@@ -1603,58 +1603,42 @@ shared void run() {
 
     // FIXME: test members() wrt filtering
     // FIXME: test untyped class to applied class
-    try {
+    print("``pass``/``total`` so far. Starting bug tests...");
+    void sandbox(void t()) {
+      try {
         total++;
-        bug238();
-        pass++;total++;
-        bug245();
-        pass++;total++;
-        bug257();
-        pass++;total++;
-        bug258();
-        pass++;total++;
-        bug263();
-        pass++;total++;
-        bug284();
-        pass++;total++;
-        bug285();
-        pass++;total++;
-        bug286();
-        pass++;total++;
-        bug300();
-        pass++;total++;
-        bug303();
-        pass++;total++;
-        bug304();
-        pass++;total++;
-        bug307();
-        pass++;total++;
-        bug308();
-        pass++;total++;
-        bug318();
-        pass++;total++;
-        bug320();
-        pass++;total++;
-        // those were filed for the JVM compiler initially
-        bugC1196test();
-        pass++;total++;
-        bugC1197();
-        pass++;total++;
-        bugC1198();
-        pass++;total++;
-        bugC1199();
-        pass++;total++;
-        bugC1201();
-        bugC1210();
-        pass++;total++;
-        bugC1244();
+        t();
         pass++;
-    } catch (Exception e) {
-        print("Failed bugs");
+      } catch (Exception e) {
+        print("Failed bug test ``total``");
         e.printStackTrace();
-    } 
+      }
+    }
+    sandbox(bug238);
+    sandbox(bug245);
+    sandbox(bug257);
+    sandbox(bug258);
+    sandbox(bug263);
+    sandbox(bug284);
+    sandbox(bug285);
+    sandbox(bug286);
+    sandbox(bug300);
+    sandbox(bug303);
+    sandbox(bug304);
+    sandbox(bug307);
+    sandbox(bug308);
+    sandbox(bug318);
+    sandbox(bug320);
+    // those were filed for the JVM compiler initially
+    sandbox(bugC1196test);
+    sandbox(bugC1197);
+    sandbox(bugC1198);
+    sandbox(bugC1199);
+    sandbox(bugC1201);
+    sandbox(bugC1210);
+    sandbox(bugC1244);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
-    print(pass==total then "Metamodel tests OK" else "Metamodel tests ``pass``/``total``");
+    print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
 }
 shared void test() { run(); }
