@@ -158,10 +158,14 @@ public abstract class CompilerTest {
     }
 
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
-        assertErrors(ceylon, defaultOptions, expectedErrors);
+        assertErrors(ceylon, defaultOptions, null, expectedErrors);
     }
     
-    protected void assertErrors(String ceylon, List<String> options, CompilerError... expectedErrors) {
+    protected void assertErrors(String ceylon, Throwable expectedException, CompilerError... expectedErrors) {
+        assertErrors(ceylon, defaultOptions, expectedException, expectedErrors);
+    }
+    
+    protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         ErrorCollector collector = new ErrorCollector();
@@ -173,8 +177,23 @@ public abstract class CompilerTest {
         
         Assert.assertFalse("Compilation successful (it should have failed!)", success);
         
+        Throwable ex = task.getExitState().abortingException;
+        if (ex != null) {
+            if (expectedException == null) {
+                throw new AssertionError("Compilation terminated with unexpected error", ex);
+            } else if (expectedException.getClass() != ex.getClass() || !eq(expectedException.getMessage(), ex.getMessage())) {
+                throw new AssertionError("Compilation terminated with a different error than the expected " + expectedException, ex);
+            }
+        } else if (expectedException != null) {
+            Assert.fail("Expected compiler exception " + expectedException);
+        }
+        
         TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors, expectedErrors);
+    }
+    
+    private boolean eq(Object o1, Object o2) {
+        return (o1 == o2) || o1.equals(o2);
     }
     
     protected void compareErrors(TreeSet<CompilerError> actualErrors, CompilerError... expectedErrors) {
