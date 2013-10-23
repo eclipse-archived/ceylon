@@ -411,6 +411,13 @@ function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model,Attribute$meta$model);
     (function($$appliedValue){
+defineAttr($$appliedValue,'string',function(){
+  var mm=this.tipo.$$metamodel$$;
+  if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+  var qn=mm.d[0];
+  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
       defineAttr($$appliedValue,'declaration',function(){
         var $$av=this;
         var mm = $$av.tipo.$$metamodel$$;
