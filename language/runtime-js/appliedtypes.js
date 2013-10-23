@@ -174,11 +174,6 @@ function $init$AppliedInterface(){
   $$appliedInterface.equals=function(o){
 return isOfType(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
 };
-            defineAttr($$appliedInterface,'container',function(){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("IMPL AppliedInterface.container")),'47:50-47:86','?');
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','container']};});
-
         })(AppliedInterface.$$.prototype);
     }
     return AppliedInterface;
@@ -484,8 +479,15 @@ function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
       $$appliedValue.getT$all=function(){return dummy.getT$all();};
       $$appliedValue.getT$name=function(){return dummy.getT$name();};
 defineAttr($$appliedValue,'string',function(){
-  var qn=mm.d[0];
+  var qn;
+  if ($$targs$$ && $$targs$$.Container) {
+    qn = typeLiteral$meta({Type:$$targs$$.Container}).string + "." + mm.d[mm.d.length-1];
+  } else if (mm.$cont) {
+    qn = typeLiteral$meta({Type:{t:mm.$cont}}).string + "." + mm.d[mm.d.length-1];
+  } else {
+  qn=mm.d[0];
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  }
   return String$(qn);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     }
@@ -505,7 +507,6 @@ function $init$AppliedValue(){
     (function($$appliedValue){
 defineAttr($$appliedValue,'string',function(){
   var mm=this.tipo.$$metamodel$$;
-  if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
   var qn=mm.d[0];
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
   return String$(qn);
@@ -513,10 +514,6 @@ defineAttr($$appliedValue,'string',function(){
       defineAttr($$appliedValue,'declaration',function(){
         var $$av=this;
         var mm = $$av.tipo.$$metamodel$$;
-        if (typeof(mm)==='function') {
-          mm = mm();
-          $$av.tipo.$$metamodel$$=mm;
-        }
         var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
         return OpenValue(_pkg, $$av.tipo);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','declaration']};});
@@ -528,7 +525,6 @@ defineAttr($$appliedValue,'string',function(){
 
 $$appliedValue.unsafeSet=function(v) {
   var mm = this.tipo.$$metamodel$$;
-  if (typeof(mm)=='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
   if (!isOfType(v,mm.$t))throw IncompatibleTypeException$meta$model("The specified value has the wrong type");
   var mdl=get_model(mm);
   if (!(mdl &&mdl['var']))throw MutationException$meta$model("Attempt to modify a value that is not variable");
@@ -538,20 +534,18 @@ $$appliedValue.unsafeSet=function(v) {
       defineAttr($$appliedValue,'type',function(){
           var $$atr=this;
           var t = $$atr.tipo.$$metamodel$$;
-          if (typeof(t)==='function') {
-            t=t(); $$atr.tipo.$$metamodel$$=t;
-          }
           return typeLiteral$meta({Type:t.$t});
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
       defineAttr($$appliedValue,'container',function(){
-          var $$av=this;
-          var mm=$$av.tipo.$$metamodel$$;
-          if (typeof(t)==='function') {
-            t=t(); $$atr.tipo.$$metamodel$$=t;
+          if (this.$$targs$$.Container) {
+            return typeLiteral$meta({Type:this.$$targs$$.Container});
           }
-          //TODO determine if t is a class, interface, etc to return the apropriate type
-          throw wrapexc(Exception(String$("IMPL AppliedValue.container",17)),'55:50-55:86','?');
+          var mm=this.tipo.$$metamodel$$;
+          if (mm.$cont) {
+            return typeLiteral$meta({Type:{t:mm.$cont}});
+          }
+          return null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','container']};});
 
     })(AppliedValue.$$.prototype);
