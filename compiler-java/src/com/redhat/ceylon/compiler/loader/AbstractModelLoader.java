@@ -1190,7 +1190,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String pkgName = module.getNameAsString();
         if(pkgName.isEmpty())
             return false;
-        String moduleClassName = pkgName + ".module";
+        String moduleClassName = pkgName + ".module_";
         logVerbose("[Trying to look up module from "+moduleClassName+"]");
         ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
         if(moduleClass != null){
