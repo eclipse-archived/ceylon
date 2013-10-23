@@ -44,8 +44,10 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   if (typeof(at.$$metamodel$$)==='function') {
     at.$$metamodel$$=at.$$metamodel$$();
   }
-  if (at.$$metamodel$$.$t)$$$mptypes={Type:at.$$metamodel$$.$t,Container:$$$mptypes.Container};
-  return (at.set?AppliedVariableAttribute:AppliedAttribute)(name$15, at, $$$mptypes);
+  var _t=at.$$metamodel$$.$t || $$$mptypes.Type;
+  var rv=(at.set?AppliedVariableAttribute:AppliedAttribute)(name$15, at, {Type:_t, Container:{t:this.tipo}});
+  rv.$parent=this;
+  return rv;
 };
 ClassOrInterface$meta$model.$$.prototype.getAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttribute']};};
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
