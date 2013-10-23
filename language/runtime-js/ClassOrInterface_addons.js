@@ -209,4 +209,17 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   }
   return h;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
+  var sc = this.tipo.$$metamodel$$['super'];
+  if (sc === undefined)return null;
+  var mm = sc.t.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm = mm();
+    sc.t.$$metamodel$$=mm;
+  }
+  var ac=AppliedClass(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+  if (sc.a)ac._targs=sc.a;
+  return ac;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
+
 

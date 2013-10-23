@@ -8,6 +8,7 @@ function AppliedClass(tipo,$$targs$$,that){
     if (mm && mm.$cont) {
       that=function(x){
         that.tipo=function(){return tipo.apply(x,arguments);};
+        that.$bound=x;
         return that;
       }
       that.tipo$2=tipo;
@@ -101,17 +102,6 @@ defineAttr($$clase,'parameterTypes',function(){
               return $$clase._decl;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassDeclaration$meta$declaration},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','declaration']};});
 
-            defineAttr($$clase,'extendedType',function(){
-              var sc = this.tipo.$$metamodel$$['super'];
-              if (sc === undefined)return null;
-              var mm = sc.t.$$metamodel$$;
-              if (typeof(mm)==='function') {
-                mm = mm();
-                sc.t.$$metamodel$$=mm;
-              }
-              return AppliedClass(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
-
 
   $$clase.equals=function(o){
 return isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
@@ -125,23 +115,52 @@ return isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==this.tipo && this.typ
 exports.$init$AppliedClass$meta$model=$init$AppliedClass;
 $init$AppliedClass();
 
-function AppliedInterface(tipo,$$targs$$,$$interfaz){
+function AppliedInterface(tipo,$$targs$$,that) {
   $init$AppliedInterface();
-  if ($$interfaz===undefined)$$interfaz=new AppliedInterface.$$;
-  set_type_args($$interfaz,$$targs$$);
-  Interface$meta$model($$targs$$,$$interfaz);
-  $$interfaz.tipo=tipo;
-  return $$interfaz;
+  if (that===undefined){
+    var mm = tipo.$$metamodel$$;
+    if (typeof(mm)==='function') {
+      mm=mm(); tipo.$$metamodel$$=mm;
+    }
+    if (mm && mm.$cont) {
+      that=function(x){
+        that.tipo=function(){return tipo.apply(x,arguments);};
+        that.$bound=x;
+        return that;
+      }
+      that.tipo$2=tipo;
+      var dummy = new AppliedInterface.$$;
+      that.$$=AppliedInterface.$$;
+      that.getT$all=function(){return dummy.getT$all();};
+      that.getT$name=function(){return dummy.getT$name();};
+      that.equals=function(o){
+        var eq=isOfType(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==tipo;
+        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+        return eq;
+      };
+      defineAttr(that,'string',function(){
+var qn=mm.d[0];
+for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+    } else {
+      that=new AppliedInterface.$$;
+    }
+  }
+  set_type_args(that,$$targs$$);
+  Interface$meta$model($$targs$$,that);
+  that.tipo=tipo;
+  return that;
 }
 AppliedInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Type:{'var':'out','def':{t:Anything}}},satisfies:[{t:Interface$meta$model,a:{Type:'Type'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Interface']};};
 exports.AppliedInterface=AppliedInterface;
 
 function $init$AppliedInterface(){
-    if (AppliedInterface.$$===undefined){
-        initTypeProto(AppliedInterface,'ceylon.language.meta.model::AppliedInterface',Basic,Interface$meta$model);
-        (function($$appliedInterface){
+  if (AppliedInterface.$$===undefined){
+    initTypeProto(AppliedInterface,'ceylon.language.meta.model::AppliedInterface',Basic,Interface$meta$model);
+    (function($$appliedInterface){
 
-            defineAttr($$appliedInterface,'declaration',function(){
+      defineAttr($$appliedInterface,'declaration',function(){
       if (this._decl)return this._decl;
       var mm = this.tipo.$$metamodel$$;
       if (typeof(mm)==='function') {
@@ -150,13 +169,11 @@ function $init$AppliedInterface(){
       }
       this._decl = OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), this.tipo);
       return this._decl;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:InterfaceDeclaration$meta$declaration},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','declaration']};});
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:InterfaceDeclaration$meta$declaration},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','declaration']};});
 
-            defineAttr($$appliedInterface,'extendedType',function(){
-                var $$appliedInterface=this;
-                throw wrapexc(Exception(String$("IMPL AppliedInterface.extendedType")),'35:62-35:94','?');
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','extendedType']};});
-
+  $$appliedInterface.equals=function(o){
+return isOfType(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
+};
             defineAttr($$appliedInterface,'container',function(){
                 var $$appliedInterface=this;
                 throw wrapexc(Exception(String$("IMPL AppliedInterface.container")),'47:50-47:86','?');
@@ -185,6 +202,37 @@ function $init$AppliedUnionType(){
   if (AppliedUnionType.$$===undefined){
     initTypeProto(AppliedUnionType,'ceylon.language.meta.model::AppliedUnionType',Basic,UnionType$meta$model);
     (function($$appliedUnionType){
+
+defineAttr($$appliedUnionType,'string',function(){
+  var qn="";
+  var first=true;
+  for (var i=0;i<this._types.length;i++) {
+    if (first)first=false;else qn+="|";
+    qn+=this._types[i].string;
+  }
+  return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+defineAttr($$appliedUnionType,'hash',function(){
+  var h=this._types.length;
+  for (var i=0; i<this._types.length;i++) {
+    h+=this._types[i].hash;
+  }
+  return h;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+
+      $$appliedUnionType.equals=function(u) {
+        if(isOfType(u,{t:AppliedUnionType})) {
+          var mine=this._types;
+          var his=u.caseTypes;
+          if (mine.size==his.size) {
+            for (var i=0;i<mine.length;i++) {
+              if (!his.contains(mine[i]))return false;
+            }
+            return true;
+          }
+        }
+        return false;
+      }
             
             defineAttr($$appliedUnionType,'caseTypes',function(){
                 var $$appliedUnionType=this;
@@ -256,6 +304,36 @@ function $init$AppliedIntersectionType(){
     initTypeProto(AppliedIntersectionType,'ceylon.language.meta.model::AppliedIntersectionType',Basic,IntersectionType$meta$model);
     (function($$appliedIntersectionType){
 
+defineAttr($$appliedIntersectionType,'string',function(){
+  var qn="";
+  var first=true;
+  for (var i=0;i<this._types.length;i++) {
+    if (first)first=false;else qn+="&";
+    qn+=this._types[i].string;
+  }
+  return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+defineAttr($$appliedIntersectionType,'hash',function(){
+  var h=this._types.length;
+  for (var i=0; i<this._types.length;i++) {
+    h+=this._types[i].hash;
+  }
+  return h;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+      $$appliedIntersectionType.equals=function(u) {
+        if(isOfType(u,{t:AppliedIntersectionType})) {
+          var mine=this._types;
+          var his=u.satisfiedTypes;
+          if (mine.size==his.size) {
+            for (var i=0;i<mine.length;i++) {
+              if (!his.contains(mine[i]))return false;
+            }
+            return true;
+          }
+        }
+        return false;
+      }
+ 
             defineAttr($$appliedIntersectionType,'satisfiedTypes',function(){
                 var $$appliedIntersectionType=this;
                 return $$appliedIntersectionType._types;
@@ -312,7 +390,7 @@ exports.$init$AppliedIntersectionType$meta$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
 
 function AppliedFunction(m,$$targs$$,o,mptypes) {
-  var f = o===undefined?function(){return m.apply(this,arguments);}:function(){return m.apply(o,arguments);}
+  var f = o===undefined?function(x){return AppliedFunction(m,$$targs$$,x,mptypes);}:function(){return m.apply(o,arguments);}
   var mm=m.$$metamodel$$;
   if (typeof(mm)==='function') {mm=mm();m.$$metamodel$$=mm;}
   f.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language.model','Function'],$t:mm.$t,$ps:mm.$ps,$an:mm.$an};
@@ -405,6 +483,11 @@ function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
       var dummy=new AppliedValue.$$;
       $$appliedValue.getT$all=function(){return dummy.getT$all();};
       $$appliedValue.getT$name=function(){return dummy.getT$name();};
+defineAttr($$appliedValue,'string',function(){
+  var qn=mm.d[0];
+  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     }
   }
   set_type_args($$appliedValue,$$targs$$);
