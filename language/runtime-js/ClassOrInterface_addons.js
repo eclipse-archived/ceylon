@@ -34,7 +34,12 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
   if (!fun) fun = this.tipo.$$.prototype[name];
   if (!fun) return null;
   if (typeof(fun)!=='function')return null;
-  return AppliedMethod(fun, types, {Container:$$$mptypes.Container,Type:$$$mptypes.Type,Arguments:$$$mptypes.Arguments});
+  if (typeof(fun.$$metamodel$$)==='function') {
+    fun.$$metamodel$$=fun.$$metamodel$$();
+  }
+  var _t=$$$mptypes.Type;
+  if (fun.$$metamodel$$ && fun.$$metamodel$$.$t)_t=fun.$$metamodel$$.$t;
+  return AppliedMethod(fun, types, {Container:{t:this.tipo},Type:_t,Arguments:$$$mptypes.Arguments});
 }
 ClassOrInterface$meta$model.$$.prototype.getMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethod']};};
 ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name$15,$$$mptypes){
@@ -44,15 +49,16 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   if (typeof(at.$$metamodel$$)==='function') {
     at.$$metamodel$$=at.$$metamodel$$();
   }
-  var _t=at.$$metamodel$$.$t || $$$mptypes.Type;
+  var _t=$$$mptypes.Type;
+  if (at.$$metamodel$$ && at.$$metamodel$$.$t)_t=at.$$metamodel$$.$t;
   var rv=(at.set?AppliedVariableAttribute:AppliedAttribute)(name$15, at, {Type:_t, Container:{t:this.tipo}});
   rv.$parent=this;
   return rv;
 };
 ClassOrInterface$meta$model.$$.prototype.getAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttribute']};};
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
-  var $$coi=this;
-  var cont = $$coi.tipo.$$metamodel$$.$cont;
+  if (this.$parent)return this.$parent;
+  var cont = this.tipo.$$metamodel$$.$cont;
   if (cont === undefined)return null;
   if (get_model(cont.$$metamodel$$).$mt === 'ifc')
     return AppliedInterface(cont,{Type:{t:cont}});
@@ -62,7 +68,12 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
 ClassOrInterface$meta$model.$$.prototype.getVariableAttribute=function getVariableAttribute(name$16,$$$mptypes){
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   if (nom.set == undefined)throw Exception("Attribute " + name$16 + " is not variable");
-  return AppliedVariableAttribute(nom, this.tipo.$$.prototype[nom], $$$mptypes);
+  var at=this.tipo.$$.prototype[nom];
+  if (!at)return null;
+  if (typeof(at.$$metamodel$$)==='function')at.$$metamodel$$=at.$$metamodel$$();
+  var _t=$$$mptypes.Type;
+  if (at.$$metamodel$$ && at.$$metamodel$$.$t)_t=at.$$metamodel$$.$t;
+  return AppliedVariableAttribute(nom, at, {Type:_t,Container:{t:this.tipo}});
 };
 ClassOrInterface$meta$model.$$.prototype.getVariableAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:VariableAttribute$meta$model,a:{Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getVariableAttribute']};};
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes){
@@ -84,15 +95,18 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
       mm=mm(); ic.$$metamodel$$=mm;
     }
     var md = get_model(mm);
+    var rv;
     if (md.$mt==='ifc') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException("Member " + name$2 + " is an interface");
-      return AppliedInterface(ic, {Type:{t:ic}});
+      rv=AppliedInterface(ic, {Type:{t:ic}});
     } else if (md.$mt==='cls'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException("Member " + name$2 + " is a class");
-      return AppliedClass(ic, {Type:{t:ic}, Arguments:$$$mptypes.Arguments});
+      rv=AppliedClass(ic, {Type:{t:ic}, Arguments:$$$mptypes.Arguments});
     } else {
       throw IncompatibleTypeException("Member " + name$2 + " is not a class or interface");
     }
+    rv.$parent=this;
+    return rv;
   }
   return null;
 };ClassOrInterface$meta$model.$$.prototype.getClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type:'Container',Kind:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Kind:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getClassOrInterface']};};
