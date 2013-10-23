@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 import java.lang.reflect.Field;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -197,6 +198,7 @@ public class ComprehensionTest extends CompilerTest {
     }
     
     @Test
+    @Ignore("#1337")
     public void testOptimizedTupleEnumWithComprehension() throws ReflectiveOperationException {
         compile("OptimizedTupleEnumWithComprehension.ceylon");
         Object seq = run("com.redhat.ceylon.compiler.java.test.expression.comprehensions.optimizedTupleEnumWithComprehensionOverTuple");
