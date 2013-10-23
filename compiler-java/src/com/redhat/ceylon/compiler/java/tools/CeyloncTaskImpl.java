@@ -33,7 +33,7 @@ package com.redhat.ceylon.compiler.java.tools;
 import javax.tools.JavaFileObject;
 
 import com.sun.tools.javac.api.JavacTaskImpl;
-import com.sun.tools.javac.main.Main;
+import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.sun.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
@@ -45,12 +45,8 @@ public class CeyloncTaskImpl extends JavacTaskImpl {
         this.compilerMain = compilerMain;
     }
     
-    public com.redhat.ceylon.compiler.java.launcher.Main.ExitState getExitState() {
-        if (compilerMain instanceof com.redhat.ceylon.compiler.java.launcher.Main) {
-            return ((com.redhat.ceylon.compiler.java.launcher.Main)compilerMain).exitState;
-        } else {
-            return null;
-        }
+    public Main.ExitState getExitState() {
+        return compilerMain.exitState;
     }
     
 }
