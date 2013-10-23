@@ -674,26 +674,25 @@ $init$AppliedMethod();
 
 //ClassDefinition AppliedAttribute at X (96:0-101:0)
 function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
-    $init$AppliedAttribute();
-    if ($$appliedAttribute===undefined) {
-      $$appliedAttribute=function(x){return AppliedValue(x,atr, $$targs$$);};
-      $$appliedAttribute.$$=AppliedAttribute.$$;
-      var dummy=new AppliedAttribute.$$;
-      $$appliedAttribute.getT$all=function(){return dummy.getT$all();};
-      $$appliedAttribute.getT$name=function(){return dummy.getT$name();};
-    }
-    set_type_args($$appliedAttribute,$$targs$$);
-    Attribute$meta$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedAttribute.$$targs$$.Type,Container:$$appliedAttribute.$$targs$$.Container},$$appliedAttribute);
-    $$appliedAttribute.tipo=atr;
-    $$appliedAttribute.pname=pname;
+  $init$AppliedAttribute();
+  if ($$appliedAttribute===undefined) {
+    $$appliedAttribute=function(x){return AppliedValue(x,atr, $$targs$$);};
+    $$appliedAttribute.$$=AppliedAttribute.$$;
+    var dummy=new AppliedAttribute.$$;
+    $$appliedAttribute.getT$all=function(){return dummy.getT$all();};
+    $$appliedAttribute.getT$name=function(){return dummy.getT$name();};
+  }
+  set_type_args($$appliedAttribute,$$targs$$);
+  Attribute$meta$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Type:$$appliedAttribute.$$targs$$.Type,Container:$$appliedAttribute.$$targs$$.Container},$$appliedAttribute);
+  $$appliedAttribute.tipo=atr;
+  $$appliedAttribute.pname=pname;
   defineAttr($$appliedAttribute,'type',function(){
-    var $$atr=this;
-    var t = $$atr.tipo.$$metamodel$$;
+    var t = atr.$$metamodel$$;
     if (typeof(t)==='function'){
       t=t();
-      $$atr.tipo.$$metamodel$$=t;
-      t=t.$t;
+      atr.$$metamodel$$=t;
     }
+    t=t.$t;
     return typeLiteral$meta({Type:t});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
   //AttributeGetterDefinition declaration at X (100:4-100:83)
