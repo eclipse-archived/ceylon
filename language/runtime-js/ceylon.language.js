@@ -25,6 +25,16 @@ function initTypeProto(type, typeName) {
     args.unshift(type);
     inheritProto.apply(this, args);
 }
+function initTypeProtoI(type, typeName) {
+  initType.apply(this, arguments);
+  var args = [].slice.call(arguments, 2);
+  if (type.$$.T$all['ceylon.language::Object']===undefined) {
+    type.$$.T$all['ceylon.language::Object']=Object$;
+    //args.unshift(Object$);
+  }
+  args.unshift(type);
+  inheritProto.apply(this, args);
+}
 function initExistingType(type, cons, typeName) {
     type.$$ = cons;
     cons.T$name = typeName;
@@ -110,6 +120,7 @@ function attrSetter(type, name, value) {
 }
 exports.initType=initType;
 exports.initTypeProto=initTypeProto;
+exports.initTypeProtoI=initTypeProtoI;
 exports.initExistingType=initExistingType;
 exports.initExistingTypeProto=initExistingTypeProto;
 exports.inheritProto=inheritProto;
@@ -157,7 +168,7 @@ function $identityHash(x) {
 }
 
 function Identifiable(obj) {}
-initType(Identifiable, "ceylon.language::Identifiable");
+initType(Identifiable, "ceylon.language::Identifiable", Object$);
 Identifiable.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Identifiable']};
 function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
