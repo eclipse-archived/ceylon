@@ -170,8 +170,8 @@ public abstract class CompilerTest {
 
         // now compile it all the way
         Boolean success = task.call();
-
-        Assert.assertFalse("Compilation failed (as expected!)", success);
+        
+        Assert.assertFalse("Compilation successful (it should have failed!)", success);
         
         TreeSet<CompilerError> actualErrors = collector.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors, expectedErrors);
