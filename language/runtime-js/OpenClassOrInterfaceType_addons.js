@@ -1,17 +1,18 @@
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments',function(){
-  var tps=this.declaration.typeParameterDeclarations;
-  if (tps && tps.length > 0) {
-    var rtps = this.declaration._targs ? this.declaration._targs : this.declaration.tipo.$$metamodel$$.$tp;
+  var tps=this.declaration.tipo.$$metamodel$$.$tp;
+  if (tps) {
+    var rtps = this.declaration._targs;
     var targs=[];
-    for (var i=0; i < tps.length; i++) {
-      var tp = rtps[tps[i].name];
+    for (var tpn in tps) {
+      var rtp=rtps&&rtps[tpn];
+      var otp=OpenTypeParam(this.declaration.tipo,tpn);
       var targ;
-      if (typeof(tp)==='string') {
-        targ = new OpenTvar(OpenTypeParam(this.declaration.tipo,tp));
+      if (typeof(tp)==='string' || rtp===undefined) {
+        targ = new OpenTvar(otp);
       } else {
-        targ = OpenTvar(tps[i]);
+        targ = _openTypeFromTarg(rtp);
       }
-      targs.push(Entry(tps[i], targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));
+      targs.push(Entry(otp, targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));
     }
     return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}}}),{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}});
   }
@@ -24,3 +25,12 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'declaration',
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'satisfiedTypes',function(){
   return this.declaration.satisfiedTypes;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClassOrInterfaceType$meta$declaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','satisfiedTypes']};});
+defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'string',function(){
+  var s=this.declaration.string;
+  if (this.declaration._targs) {
+    s+="<PENDIENTE TARGS>";
+  } else if (this.declaration.tipo.$$metamodel$$.$tp) {
+    s+="<PEND TPARAMS>";
+  }
+  return s;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
