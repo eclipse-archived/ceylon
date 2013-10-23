@@ -1,0 +1,106 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+final class bug1383_ {
+    
+    private bug1383_() {
+    }
+    
+    static void bug1383(final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1383Java j) {
+        j.hash = true;
+        j.string = true;
+        j.equals = true;
+        if (j.hash && j.string && j.equals) {
+        }
+        final long h = j.hashCode();
+        final .java.lang.String s = j.toString();
+        final boolean b = j.equals(j);
+        j.setHash(j.getHash());
+        j.setEquals(j.getEquals());
+        j.setString(j.getString());
+        final boolean b1 = j.hash();
+        final boolean b2 = j.hash("hello");
+        final boolean b3 = j.string();
+        final boolean b4 = j.string("hello");
+        final boolean b5 = j.equals();
+        final boolean b6 = j.equals("hello");
+    }
+}
+public class Bug1383 extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1383JavaNoOverload implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1383() {
+        super();
+        this.string = "str";
+        this.hash = 1L;
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = hash;
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object o) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean hash() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean string() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean getHash() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final void setHash(final boolean b) {
+    }
+    
+    @.java.lang.Override
+    public final boolean getString() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final void setString(final boolean b) {
+    }
+    
+    @.java.lang.Override
+    public final boolean getEquals() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final void setEquals(final boolean b) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1383();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1383.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1383.class);
+}
