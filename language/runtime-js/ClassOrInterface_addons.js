@@ -171,9 +171,42 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
           targ=typeLiteral$meta({Type:{t:Anything}});
         }
         if (first)first=false; else qn+=",";
-        qn+=targ.declaration.qualifiedName;
+        if (targ.declaration) {
+          qn+=targ.declaration.qualifiedName;
+        } else {
+          qn+=targ.string;
+        }
       }
       qn+=">";
     }
     return String$(qn);
 },undefined,function(){return{mod:$$METMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
+  var mm = this.tipo.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm();
+    this.tipo.$$metamodel$$=mm;
+  }
+  var qn=mm.d[0];
+  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  var h=String$(qn).hash;
+  if (mm.$tp) {
+    var first=true;
+    for (var tp in mm.$tp) {
+      var targ;
+      if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
+        var _targ=this.$$targs$$.Type.a[tp];
+        if (typeof(_targ)==='string') {
+          console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifedName);
+          _targ={t:Anything};
+        }
+        targ=typeLiteral$meta({Type:_targ});
+      } else {
+        targ=typeLiteral$meta({Type:{t:Anything}});
+      }
+      h+=targ.hash;
+    }
+  }
+  return h;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+
