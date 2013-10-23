@@ -81,9 +81,9 @@ public class CeylonModuleLoader extends ModuleLoader {
         CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
         TYPECHECKER = ModuleIdentifier.create("com.redhat.ceylon.typechecker", defaultVersion);
         COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
-        MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support");
-        MODULES = ModuleIdentifier.create("org.jboss.modules");
-        JANDEX = ModuleIdentifier.create("org.jboss.jandex");
+        MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support", "1.0");
+        MODULES = ModuleIdentifier.create("org.jboss.modules", "1.1.3.GA");
+        JANDEX = ModuleIdentifier.create("org.jboss.jandex", "1.0.3.Final");
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", "1.4.0.Final");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
 
