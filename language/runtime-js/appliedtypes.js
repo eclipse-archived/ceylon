@@ -709,6 +709,15 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   $$appliedAttribute.$bind=function(cont){
     return AppliedValue(cont,atr,{Type:$$targs$$.Type});
   }
+  defineAttr($$appliedAttribute,'string',function(){
+    var mm=atr.$$metamodel$$;
+    var qn=mm.d[0];
+    for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+    return qn;
+  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+  $$appliedAttribute.equals=function(o) {
+    return isOfType(o,{t:AppliedAttribute}) && o.string.equals(this.string);
+  }
   return $$appliedAttribute;
 }
 AppliedAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}}},satisfies:[{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Attribute']};};
