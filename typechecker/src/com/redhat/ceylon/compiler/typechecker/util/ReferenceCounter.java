@@ -36,6 +36,7 @@ public class ReferenceCounter extends Visitor {
         Declaration d = that.getDeclaration();
 		if (d!=null) inc(d);
     }
+    
     @Override
     public void visit(Tree.SimpleType that) {
         super.visit(that);
@@ -46,4 +47,15 @@ public class ReferenceCounter extends Visitor {
         	inc(t);
         }
     }
+    
+    @Override
+    public void visit(Tree.MemberLiteral that) {
+        super.visit(that);
+        Declaration d = that.getDeclaration();
+        if (d!=null) {
+            inc(d);
+        }
+    }
+
 }
+
