@@ -19,4 +19,8 @@ public abstract class Constants {
     public static final String PROP_CEYLON_SYSTEM_REPO = "ceylon.system.repo";
     public static final String PROP_CEYLON_USER_REPO = "ceylon.user.repo";
     public static final String PROP_CEYLON_CACHE_REPO = "ceylon.cache.repo";
+    
+    public static final String DEFAULT_SOURCE_DIR = "source";
+    public static final String DEFAULT_RESOURCE_DIR = "resource";
+    public static final String DEFAULT_MODULE_DIR = "modules";
 }
