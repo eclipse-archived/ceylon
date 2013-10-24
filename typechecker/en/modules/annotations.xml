@@ -177,7 +177,7 @@ shared deprecated</programlisting>
             be a legal annotation argument.</para>
             
             <para>The return type of an annotation constructor must be a constrained annotation 
-            type.</para>
+            type, as defined below in <xref linkend="constrainedannotationtypes"/>.</para>
             
             <para>A user-defined annotation constructor may not return the same annotation 
             type as one of the modifiers listed below in <xref linkend="declarationmodifiers"/>.</para>
@@ -235,7 +235,12 @@ shared deprecated</programlisting>
             
             <!--para>Every annotation type must be a subtype of <literal>Annotation</literal> 
             defined in the package <literal>ceylon.language</literal>.</para-->
-            
+        
+        </section>            
+        
+        <section id="constrainedannotationtypes">
+            <title>Constrained annotation types</title>
+                        
             <para>A <emphasis>constrained annotation type</emphasis> is an annotation type 
             that is a subtype of <literal>OptionalAnnotation</literal> or 
             <literal>SequencedAnnotation</literal> defined in the package 
