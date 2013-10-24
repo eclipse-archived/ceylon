@@ -84,6 +84,7 @@ public class ModuleDoc extends CeylonDoc {
         }
         around("div class='doc section'", doc);
 
+        writeAnnotations(module);
         writeBy(module);
         writeLicense(module);
 

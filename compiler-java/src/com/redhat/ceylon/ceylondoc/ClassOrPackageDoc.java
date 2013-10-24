@@ -242,6 +242,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
         around("div class='doc section'", doc);
         if( d instanceof MethodOrValue ) {
+            writeAnnotations(d);
         	writeParameters(d);
             writeThrows(d);        
             writeBy(d);
@@ -249,6 +250,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeLinkToRefinedDeclaration(d);
         }
         if (d instanceof TypeAlias) {
+            writeAnnotations(d);
             writeBy(d);
             writeSee(d);
         }
@@ -609,6 +611,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     
         return result.substring(startIndex, stopIndex + 1);
-    }    
+    }
 
 }

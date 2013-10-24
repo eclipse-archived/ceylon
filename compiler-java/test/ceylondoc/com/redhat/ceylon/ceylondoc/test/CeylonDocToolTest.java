@@ -222,6 +222,7 @@ public class CeylonDocToolTest {
         assertAliases(destDir);
         assertPackageNavigation(destDir);
         assertSubpackages(destDir);
+        assertAnnotations(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -998,6 +999,33 @@ public class CeylonDocToolTest {
                 Pattern.compile("<tr class='table-header' title='Click for expand/collapse'><td colspan='2'><i class='icon-expand'></i>Subpackages</td></tr>"));
         assertMatchInFile(destDir, "a/index.html",
                 Pattern.compile("<tr><td><i class='icon-package'></i><a class='link' href='../a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>"));
+    }
+    
+    private void assertAnnotations(File destDir) throws Exception {
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<div class='doc section'><p>The stub annotated function.</p>\n</div>" +
+                		        "<div class='annotations section'><span class='title'>Annotations: </span><ul>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<li><a class='link' href='index.html#stubAnnotationFoo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationFoo'>stubAnnotationFoo</a>" +
+                		"\\(" +
+                		"<span class='literal'>&quot;abc&quot;</span>, " +
+                		"<span class='literal'>'a'</span>, " +
+                		"<span class='literal'>123</span>, " +
+                		"<span class='literal'>987.654</span>, " +
+                		"true, " +
+                		"`<span class='keyword'>class </span><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>`, " +
+                		"`<span class='keyword'>package </span>ceylon.language.meta`, " +
+                		"\\[\\], " +
+                		"\\[<span class='literal'>0</span>, <span class='literal'>1</span>\\], " +
+                		"\\{\\}, " +
+                		"\\{<span class='literal'>0.0</span>, <span class='literal'>1.1</span>\\}" +
+                		"\\)</li>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
+                		"\\(<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>\\(<span class='literal'>&quot;baz&quot;</span>\\)\\)</li>"));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
+                		"\\{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>\\{s=<span class='literal'>&quot;baz&quot;</span>;\\};\\}</li>"));
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {

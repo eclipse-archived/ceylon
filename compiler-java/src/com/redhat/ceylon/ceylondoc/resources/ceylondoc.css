@@ -207,6 +207,16 @@
 	color: rgb(160, 160, 160);
 }
 
+.literal {
+    color: darkblue;
+    font-family: monospace;
+}
+
+.keyword {
+	color: darkmagenta;
+	font-family: monospace;
+}
+
 .specifier,
 .specifier-rest {
 	color: darkblue;

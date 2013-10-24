@@ -36,8 +36,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class CeylonDoc extends Markup {
 
@@ -473,6 +477,274 @@ public abstract class CeylonDoc extends Markup {
 
         close("tr");
     }
+    
+    protected final void writeAnnotations(Referenceable referenceable) throws IOException {
+        Tree.AnnotationList annotationList = null;
+
+        Node node = tool.getNode(referenceable);
+        if (node instanceof Tree.Declaration) {
+            annotationList = ((Tree.Declaration) node).getAnnotationList();
+        } else if (node instanceof Tree.ImportModule) {
+            annotationList = ((Tree.ImportModule) node).getAnnotationList();
+        } else if (node instanceof Tree.ModuleDescriptor) {
+            annotationList = ((Tree.ModuleDescriptor) node).getAnnotationList();
+        } else if (node instanceof Tree.PackageDescriptor) {
+            annotationList = ((Tree.PackageDescriptor) node).getAnnotationList();
+        }
+
+        if (annotationList != null) {
+            annotationList.visit(new WriteAnnotationsVisitor());
+        }
+    }
+
+    private class WriteAnnotationsVisitor extends Visitor {
+    
+        private Tree.Annotation annotation;
+        private Tree.InvocationExpression invocationExpression;
+        private Tree.PositionalArgument positionalArgument;
+    
+        @Override
+        public void visit(Tree.AnnotationList that) {
+            try {
+                boolean containsAnnotations = false;
+                for (Tree.Annotation annotation : that.getAnnotations()) {
+                    if (!isCeylonLanguageAnnotation(annotation)) {
+                        containsAnnotations = true;
+                        break;
+                    }
+                }
+                
+                if( containsAnnotations ) {
+                    open("div class='annotations section'");
+                    around("span class='title'", "Annotations: ");
+                    open("ul");
+                    super.visit(that);
+                    close("ul");
+                    close("div");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        
+        @Override
+        public void visit(Tree.AnonymousAnnotation that) {
+            // noop
+        }
+    
+        @Override
+        public void visit(Tree.Annotation that) {
+            try {
+                if (isCeylonLanguageAnnotation(that)) {
+                    return;
+                }
+                open("li");
+                Tree.Annotation old = annotation;
+                annotation = that;
+                super.visit(that);
+                annotation = old;
+                close("li");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.MemberOrTypeExpression that) {
+            try {
+                linkRenderer().to(that.getDeclaration()).write();
+                super.visit(that);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.InvocationExpression that) {
+            Tree.InvocationExpression old = invocationExpression;
+            invocationExpression = that;
+            super.visit(that);
+            invocationExpression = old;
+        }
+    
+        @Override
+        public void visit(Tree.PositionalArgumentList that) {
+            try {
+                if (!that.getPositionalArguments().isEmpty() || annotation != invocationExpression) {
+                    write("(");
+                }
+                positionalArgument = null;
+                super.visit(that);
+                positionalArgument = null;
+                if (!that.getPositionalArguments().isEmpty() || annotation != invocationExpression) {
+                    write(")");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        
+        @Override
+        public void visit(Tree.PositionalArgument that) {
+            try {
+                if (positionalArgument != null) {
+                    write(", ");
+                }
+                super.visit(that);
+                positionalArgument = that;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.NamedArgumentList that) {
+            try {
+                write("{");
+                super.visit(that);
+                write("}");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        
+        @Override
+        public void visit(Tree.NamedArgument that) {
+            try {
+                write(that.getParameter().getName());
+                write("=");
+                super.visit(that);
+                write(";");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        
+        @Override
+        public void visit(Tree.SequenceEnumeration that) {
+            try {
+                Tree.PositionalArgument old = positionalArgument;
+                positionalArgument = null;
+                write("{");
+                super.visit(that);
+                write("}");
+                positionalArgument = old;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.Tuple that) {
+            try {
+                Tree.PositionalArgument old = positionalArgument;
+                positionalArgument = null;
+                write("[");
+                super.visit(that);
+                write("]");
+                positionalArgument = old;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.Literal that) {
+            try {
+                open("span class='literal'");
+                if (that instanceof Tree.StringLiteral) {
+                    write("&quot;");
+                }
+                write(that.getText());
+                if (that instanceof Tree.StringLiteral) {
+                    write("&quot;");
+                }
+                close("span");
+                super.visit(that);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.MemberLiteral that) {
+            try {
+                if (that instanceof Tree.ValueLiteral) {
+                    write("`");
+                    around("span class='keyword'", "value ");
+                } else if (that instanceof Tree.FunctionLiteral) {
+                    write("`");
+                    around("span class='keyword'", "function ");
+                }
+                linkRenderer().to(that.getDeclaration()).write();
+                write("`");
+                super.visit(that);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.TypeLiteral that) {
+            try {
+                if (that instanceof Tree.AliasLiteral) {
+                    write("`");
+                    around("span class='keyword'", "alias ");
+                } else if (that instanceof Tree.ClassLiteral) {
+                    write("`");
+                    around("span class='keyword'", "class ");
+                } else if (that instanceof Tree.InterfaceLiteral) {
+                    write("`");
+                    around("span class='keyword'", "interface ");
+                } else if (that instanceof Tree.TypeParameterLiteral) {
+                    write("`");
+                    around("span class='keyword'", "given ");
+                }
+                linkRenderer().to(that.getDeclaration()).write();
+                write("`");
+                super.visit(that);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.ModuleLiteral that) {
+            try {
+                write("`");
+                around("span class='keyword'", "module ");
+                linkRenderer().to(that.getImportPath().getModel()).write();
+                write("`");
+                super.visit(that);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    
+        @Override
+        public void visit(Tree.PackageLiteral that) {
+            try {
+                write("`");
+                around("span class='keyword'", "package ");
+                linkRenderer().to(that.getImportPath().getModel()).write();
+                write("`");
+                super.visit(that);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private boolean isCeylonLanguageAnnotation(Tree.Annotation annotation) {
+            if (annotation.getPrimary() instanceof Tree.MemberOrTypeExpression) {
+                Declaration declaration = ((Tree.MemberOrTypeExpression) annotation.getPrimary()).getDeclaration();
+                if (declaration.getQualifiedNameString().startsWith("ceylon.language")) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    
+    }    
 
     protected abstract Object getFromObject();    
     

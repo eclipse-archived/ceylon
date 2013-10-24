@@ -168,6 +168,7 @@ public class PackageDoc extends ClassOrPackageDoc {
             tool.warningMissingDoc(pkg.getQualifiedNameString());
         }
         around("div class='doc'", doc);
+        writeAnnotations(pkg);
         writeBy(pkg);
         close("div");
     }
