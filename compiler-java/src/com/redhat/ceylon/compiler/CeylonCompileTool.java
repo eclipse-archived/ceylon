@@ -37,7 +37,9 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
@@ -144,6 +146,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     private static final Helper HELPER = new Helper();
 
     private List<File> source = Collections.singletonList(new File(Constants.DEFAULT_SOURCE_DIR));
+    private List<File> resource = Collections.singletonList(new File(Constants.DEFAULT_RESOURCE_DIR));
     private String out;
     private List<String> module = Collections.emptyList();
     private boolean continueOnErrors;
@@ -157,7 +160,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     }
     
     @OptionArgument(longName="src", argumentName="dirs")
-    @Description("Path to source files. " +
+    @Description("Path to directory containing source files. " +
             "Can be specified multiple times; you can also specify several " +
             "paths separated by your operating system's `PATH` separator." +
             " (default: `./source`)")
@@ -170,6 +173,16 @@ public class CeylonCompileTool extends RepoUsingTool {
             " (default: `./source`)")
     public void setSource(List<File> source) {
         setSrc(source);
+    }
+    
+    @OptionArgument(longName="resource", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
+    @Description("Path to directory containing resource files. " +
+            "Can be specified multiple times; you can also specify several " +
+            "paths separated by your operating system's `PATH` separator." +
+            " (default: `./resource`)")
+    public void setResource(List<File> resource) {
+        this.resource = resource;
     }
     
     @Hidden
@@ -268,6 +281,12 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add("-src");
             arguments.add(source.getPath());
             options.addMulti(OptionName.SOURCEPATH, source.getPath());
+        }
+        
+        for (File resource : this.resource) {
+            arguments.add("-res");
+            arguments.add(resource.getPath());
+            //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
         }
         
         if (continueOnErrors) {
