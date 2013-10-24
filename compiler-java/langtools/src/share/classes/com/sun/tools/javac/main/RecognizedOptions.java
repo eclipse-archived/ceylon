@@ -732,7 +732,7 @@ public class RecognizedOptions {
                         || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
                 ) {
                     File f = new File(s);
-                    if (!f.exists()) {
+                    if (!f.isFile()) {
                         // -sourcepath not -src because the COption for 
                         // CEYLONSOURCEPATH puts it in the options map as -sourcepath
                         List<String> sourcePaths = options.getMulti("-sourcepath");
@@ -743,11 +743,13 @@ public class RecognizedOptions {
                             return false;
                         }
 
-                        helper.error("err.file.not.found", f);
-                        return true;
+                        if (f.exists()) {
+                            helper.error("err.file.not.file", f);
+                            return true;
+                        }
                     }
-                    if (!f.isFile()) {
-                        helper.error("err.file.not.file", f);
+                    if (!f.exists()) {
+                        helper.error("err.file.not.found", f);
                         return true;
                     }
                     helper.addFile(f);
