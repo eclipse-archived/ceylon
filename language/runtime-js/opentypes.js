@@ -372,11 +372,14 @@ function OpenVariable(pkg, meta, $$openVariable){
 }
 OpenVariable.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:OpenValue},satisfies:[{t:VariableDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','VariableDeclaration']};};
 function $init$OpenVariable(){
-    if (OpenVariable.$$===undefined){
-        initTypeProto(OpenVariable,'ceylon.language.meta.declaration::OpenVariable',OpenValue,VariableDeclaration$meta$declaration);
-        (function($$openVariable){
-            
-            //AttributeGetterDefinition setter at opentypes.ceylon (61:4-61:52)
+  if (OpenVariable.$$===undefined){
+    initTypeProto(OpenVariable,'ceylon.language.meta.declaration::OpenVariable',OpenValue,VariableDeclaration$meta$declaration);
+    (function($$openVariable){
+      $$openVariable.memberSet=function(c,v) {
+        if (!isOfType(c,{t:this.tipo.$$metamodel$$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
+        if (!isOfType(v,this.tipo.$$metamodel$$.$t))throw IncompatibleTypeException$meta$model("Incompatible value type");
+        c[this.name]=v;
+      };
             defineAttr($$openVariable,'setter',function(){
               var $$openVariable=this;
               return OpenSetter(this);

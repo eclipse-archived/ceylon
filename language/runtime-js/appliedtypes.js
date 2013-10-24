@@ -706,7 +706,10 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     var pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
     return ($$atr.tipo.set ? OpenVariable:OpenValue)(pkg, $$atr.tipo);
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
-    return $$appliedAttribute;
+  $$appliedAttribute.$bind=function(cont){
+    return AppliedValue(cont,atr,{Type:$$targs$$.Type});
+  }
+  return $$appliedAttribute;
 }
 AppliedAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}}},satisfies:[{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Attribute']};};
 exports.AppliedAttribute=AppliedAttribute;
