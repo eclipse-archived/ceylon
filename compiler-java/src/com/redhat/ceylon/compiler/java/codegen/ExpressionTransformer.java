@@ -2340,23 +2340,30 @@ public class ExpressionTransformer extends AbstractTransformer {
                 wrapIntoArray = true;
 
             ExpressionAndType exprAndType;
-            if (invocation.isArgumentSpread(argIndex)  
-                    && !invocation.isJavaMethod()) {
+            if (invocation.isArgumentSpread(argIndex)) {
                 if (!invocation.isParameterSequenced(argIndex)) {
                     result = transformSpreadTupleArgument(invocation, callBuilder,
                             result, argIndex);
                     break;
-                } 
-                ProducedType argType = invocation.getArgumentType(argIndex);
-                if (argType.getSupertype(typeFact().getSequentialDeclaration()) != null) {
-                    exprAndType = transformArgument(invocation, argIndex,
-                            boxingStrategy);
-                } else if (argType.getSupertype(typeFact().getIterableDeclaration()) != null) {
-                    exprAndType = transformArgument(invocation, argIndex,
-                            boxingStrategy);
-                    exprAndType = new ExpressionAndType(iterableToSequential(exprAndType.expression), exprAndType.type);
-                } else {
-                    exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
+                }
+                if(invocation.isJavaMethod()){
+                    // if it's a java method we need a special wrapping
+                    exprAndType = transformSpreadArgument(invocation,
+                            numArguments, argIndex, boxingStrategy,
+                            parameterType);
+                    argIndex = numArguments;
+                }else{
+                    ProducedType argType = invocation.getArgumentType(argIndex);
+                    if (argType.getSupertype(typeFact().getSequentialDeclaration()) != null) {
+                        exprAndType = transformArgument(invocation, argIndex,
+                                boxingStrategy);
+                    } else if (argType.getSupertype(typeFact().getIterableDeclaration()) != null) {
+                        exprAndType = transformArgument(invocation, argIndex,
+                                boxingStrategy);
+                        exprAndType = new ExpressionAndType(iterableToSequential(exprAndType.expression), exprAndType.type);
+                    } else {
+                        exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
+                    }
                 }
             } else if (!invocation.isParameterSequenced(argIndex)
                     // if it's sequenced, Java and there's no spread at all, pass it along
@@ -2549,7 +2556,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                     typeFact().getAnythingDeclaration().getType(), 
                     true, boxingStrategy, paramType);
             JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
-            result = result.append(new ExpressionAndType(tupleElement, argType));
+            
+            JCExpression expr;
+            if(invocation.isJavaMethod()){
+                // no need to handle leading arguments since that is handled by transformSpreadArgument
+                // if ever we have leading arguments we never end up in this method
+                expr = sequenceToJavaArray(tupleElement, paramType, boxingStrategy, paramType, List.<JCExpression>nil());                
+            }else{
+                expr = tupleElement;
+            }
+            result = result.append(new ExpressionAndType(expr, argType));
         } else if (variadic
                 && invocation.isIndirect()
                 && argumentsToExtract >= minimumTupleArguments
