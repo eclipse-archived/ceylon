@@ -738,18 +738,9 @@ public class RecognizedOptions {
                         List<String> sourcePaths = options.getMulti("-sourcepath");
                         if(sourcePaths.isEmpty())
                             sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
-                        // walk every path arg
-                        for(String sourcePath : sourcePaths){
-                            // split the path
-                            for(String part : sourcePath.split("\\"+File.pathSeparator)){
-                                // try to see if it's a module folder
-                                File moduleFolder = new File(part, s.replace(".", File.separator));
-                                if (moduleFolder.isDirectory()) {
-                                    // A Ceylon module name that ends with .ceylon or .java
-                                    helper.addClassName(s);
-                                    return false;
-                                }
-                            }
+                        if (checkIfModule(sourcePaths)) {
+                            helper.addClassName(s);
+                            return false;
                         }
 
                         helper.error("err.file.not.found", f);
@@ -772,23 +763,31 @@ public class RecognizedOptions {
                     List<String> sourcePaths = options.getMulti("-sourcepath");
                     if(sourcePaths.isEmpty())
                         sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
-                    // walk every path arg
-                    for(String sourcePath : sourcePaths){
-                        // split the path
-                        for(String part : sourcePath.split("\\"+File.pathSeparator)){
-                            // try to see if it's a module folder
-                            File moduleFolder = new File(part, s.replace(".", File.separator));
-                            if (moduleFolder.isDirectory()) {
-                                // A Ceylon module name that ends with .ceylon or .java
-                                helper.addClassName(s);
-                                return false;
-                            }
-                        }
+                    if (checkIfModule(sourcePaths)) {
+                        // A Ceylon module name that ends with .ceylon or .java
+                        helper.addClassName(s);
+                        return false;
                     }
 
                     String paths = sourcePaths.toString();
                     helper.error("err.module.not.found", s, paths.substring(1,  paths.length()-1));
                     return true;
+                }
+                return false;
+            }
+            
+            private boolean checkIfModule(List<String> paths) {
+                // walk every path arg
+                for(String path : paths){
+                    // split the path
+                    for(String part : path.split("\\"+File.pathSeparator)){
+                        // try to see if it's a module folder
+                        File moduleFolder = new File(part, s.replace(".", File.separator));
+                        if (moduleFolder.isDirectory()) {
+                            // A Ceylon module name that ends with .ceylon or .java
+                            return true;
+                        }
+                    }
                 }
                 return false;
             }
