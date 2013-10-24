@@ -1002,6 +1002,18 @@ public class CeylonDocToolTest {
     }
     
     private void assertAnnotations(File destDir) throws Exception {
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<table id='section-annotations'"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<td id='stubAnnotationBar' nowrap><i class='icon-shared-member'><i class='icon-decoration-annotation'></i></i>stubAnnotationBar</td>"));
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<td id='StubAnnotationBar' nowrap><i class='icon-class'><i class='icon-decoration-annotation'></i></i><a class='link-discreet' href='StubAnnotationBar.type.html'>StubAnnotationBar</a></td>"));
+        
+        assertMatchInFile(destDir, "StubAnnotationBar.type.html", 
+                Pattern.compile("<span class='sub-navbar-label'>annotation</span>"));
+        assertMatchInFile(destDir, "StubAnnotationBar.type.html", 
+                Pattern.compile("<div class='annotationConstructors section'><span class='title'>Annotation Constructors: </span><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>"));
+        
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile("<div class='doc section'><p>The stub annotated function.</p>\n</div>" +
                 		        "<div class='annotations section'><span class='title'>Annotations: </span><ul>"));

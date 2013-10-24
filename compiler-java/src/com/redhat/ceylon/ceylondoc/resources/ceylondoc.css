@@ -558,6 +558,10 @@ td [class^='icon-'] {
     background-position: -560px -1px;
 }
 
+.icon-decoration-annotation {
+	background-position: -576px 0px;
+}
+
 a:HOVER .icon-expand-all,
 a:FOCUS .icon-expand-all {
 	background-position: -464px 0px;

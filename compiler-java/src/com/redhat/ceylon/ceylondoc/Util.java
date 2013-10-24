@@ -43,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -402,15 +403,15 @@ public class Util {
         
     }
     
-    public static class DeclarationComparatorByName implements Comparator<Declaration> {
+    public static class ReferenceableComparatorByName implements Comparator<Referenceable> {
 
-        public static final DeclarationComparatorByName INSTANCE = new DeclarationComparatorByName();
+        public static final ReferenceableComparatorByName INSTANCE = new ReferenceableComparatorByName();
 
         @Override
-        public int compare(Declaration a, Declaration b) {
-            return a.getName().compareTo(b.getName());
+        public int compare(Referenceable a, Referenceable b) {
+            return a.getNameAsString().compareTo(b.getNameAsString());
         }
-        
+
     };
     
     public static class ProducedTypeComparatorByName implements Comparator<ProducedType> {
@@ -432,15 +433,5 @@ public class Util {
             return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
         }
     };
-    
-    public static class PackageComparatorByName implements Comparator<Package> {
-
-        public static final PackageComparatorByName INSTANCE = new PackageComparatorByName();
-
-        @Override
-        public int compare(Package a, Package b) {
-            return a.getModule().getNameAsString().compareTo(b.getModule().getNameAsString());
-        }
-    };    
    
 }

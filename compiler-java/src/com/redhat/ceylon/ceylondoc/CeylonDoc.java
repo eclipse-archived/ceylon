@@ -171,7 +171,8 @@ public abstract class CeylonDoc extends Markup {
         writeKeyboardShortcutInfo("o", "Jump to module documentation");
         writeKeyboardShortcutInfo("p", "Jump to package documentation");
         writeKeyboardShortcutInfo("l", "Jump to aliases");
-        writeKeyboardShortcutInfo("n", "Jump to initializer");
+        writeKeyboardShortcutInfo("n", "Jump to annotations");
+        writeKeyboardShortcutInfo("z", "Jump to initializer");
         if( getFromObject() instanceof Module || getFromObject() instanceof Package ) {
             writeKeyboardShortcutInfo("v", "Jump to values");
             writeKeyboardShortcutInfo("f", "Jump to functions");
@@ -393,11 +394,15 @@ public abstract class CeylonDoc extends Markup {
                             icons.add("icon-decoration-over");
                         }
                     }
-                }            
+                }
             }
             
             if (decl instanceof TypeAlias || decl instanceof NothingType) {
                 icons.add("icon-type-alias");
+            }
+            
+            if (decl.isAnnotation()) {
+                icons.add("icon-decoration-annotation");
             }
         }
 

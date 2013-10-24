@@ -29,8 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.ceylondoc.Util.DeclarationComparatorByName;
-import com.redhat.ceylon.ceylondoc.Util.PackageComparatorByName;
+import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -50,6 +49,8 @@ public class PackageDoc extends ClassOrPackageDoc {
     private final List<Method> methods = new ArrayList<Method>();
     private final List<Class> exceptions = new ArrayList<Class>();
     private final List<TypeAlias> aliases = new ArrayList<TypeAlias>();
+    private final List<Class> annotationTypes = new ArrayList<Class>();
+    private final List<Method> annotationConstructors = new ArrayList<Method>();
 
 	public PackageDoc(CeylonDocTool tool, Writer writer, Package pkg) throws IOException {
 		super(pkg.getModule(), tool, writer);
@@ -67,7 +68,9 @@ public class PackageDoc extends ClassOrPackageDoc {
                 interfaces.add((Interface) m);
             } else if (m instanceof Class) {
                 Class c = (Class) m;
-                if (Util.isException(c)) {
+                if( c.isAnnotation() ) {
+                    annotationTypes.add(c);
+                } else  if (Util.isException(c)) {
                     exceptions.add(c);
                 } else {
                     classes.add(c);
@@ -75,18 +78,25 @@ public class PackageDoc extends ClassOrPackageDoc {
             } else if (m instanceof Value) {
                 attributes.add((MethodOrValue) m);
             } else if (m instanceof Method) {
-                methods.add((Method) m);
+                Method method = (Method) m;
+                if( m.isAnnotation() ) {
+                    annotationConstructors.add(method);
+                } else {
+                    methods.add(method);
+                }
             } else if (m instanceof TypeAlias) {
                 aliases.add((TypeAlias) m);                
             }
         }
         
-        Collections.sort(classes, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(interfaces, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(attributes, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(methods, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(exceptions, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(aliases, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(classes, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(interfaces, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(exceptions, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(aliases, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(annotationTypes, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(annotationConstructors, ReferenceableComparatorByName.INSTANCE);
     }
 
     public void generate() throws IOException {
@@ -102,6 +112,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         writeDescription();
         writeSubpackages();
         writeAliases();
+        writeAnnotations();
         writeAttributes();
         writeMethods();
         writeInterfaces();
@@ -140,6 +151,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         }
         if (!aliases.isEmpty()) {
             writeSubNavBarLink("#section-aliases", "Aliases", 'l', "Jump to aliases");
+        }
+        if (!annotationTypes.isEmpty() || !annotationConstructors.isEmpty()) {
+            writeSubNavBarLink("#section-annotations", "Annotations", 'n', "Jump to annotations");
         }
         if (!attributes.isEmpty()) {
             writeSubNavBarLink("#section-attributes", "Values", 'V', "Jump to values");
@@ -183,7 +197,7 @@ public class PackageDoc extends ClassOrPackageDoc {
                     subpackages.add(p);
                 }
             }
-            Collections.sort(subpackages, PackageComparatorByName.INSTANCE);
+            Collections.sort(subpackages, ReferenceableComparatorByName.INSTANCE);
             writePackagesTable("Subpackages", subpackages);
         }
     }
@@ -195,6 +209,20 @@ public class PackageDoc extends ClassOrPackageDoc {
         openTable("section-aliases", "Aliases", 2, true);
         for (TypeAlias a : aliases) {
             doc(a);
+        }
+        closeTable();
+    }
+    
+    private void writeAnnotations() throws IOException {
+        if (annotationTypes.isEmpty() && annotationConstructors.isEmpty()) {
+            return;
+        }
+        openTable("section-annotations", "Annotations", 2, true);
+        for (Method annotationConstructor : annotationConstructors) {
+            doc(annotationConstructor);
+        }
+        for (Class annotationType : annotationTypes) {
+            doc(annotationType);
         }
         closeTable();
     }
@@ -259,6 +287,9 @@ public class PackageDoc extends ClassOrPackageDoc {
         registerKeyboardShortcut('p', "index.html");
         if (!aliases.isEmpty()) {
             registerKeyboardShortcut('l', "#section-aliases");
+        }
+        if (!annotationTypes.isEmpty() || !annotationConstructors.isEmpty()) {
+            registerKeyboardShortcut('n', "#section-annotations");
         } 
         if (!attributes.isEmpty()) {
             registerKeyboardShortcut('v', "#section-attributes");

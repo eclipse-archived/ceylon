@@ -42,7 +42,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import com.redhat.ceylon.ceylondoc.Util.PackageComparatorByName;
+import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -126,15 +126,9 @@ public class CeylonDocTool extends RepoUsingTool {
     private List<Module> modules;
     private String outputRepository;
     private String user,pass;
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} subclasses of the key
-     */
     private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
-    /**
-     * The {@linkplain #shouldInclude(Declaration) visible} class/interfaces 
-     * that satisfy the key
-     */
-    private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();    
+    private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
+    private Map<TypeDeclaration, List<Method>> annotationConstructors = new HashMap<TypeDeclaration, List<Method>>();
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
@@ -503,6 +497,7 @@ public class CeylonDocTool extends RepoUsingTool {
         }
 
         collectSubclasses();
+        collectAnnotationConstructors();
 
         // make a destination repo
         RepositoryManager outputRepository = createRepositoryManagerBuilder()
@@ -652,6 +647,26 @@ public class CeylonDocTool extends RepoUsingTool {
             }
         }
     }
+    
+    private void collectAnnotationConstructors() {
+        for (Module module : modules) {
+            for (Package pkg : getPackages(module)) {
+                for (Declaration decl : pkg.getMembers()) {
+                    if (decl instanceof Method && decl.isAnnotation() && shouldInclude(decl)) {
+                        Method annotationCtor = (Method) decl;
+                        TypeDeclaration annotationType = annotationCtor.getTypeDeclaration();
+                        List<Method> annotationConstructorList = annotationConstructors.get(annotationType);
+                        if (annotationConstructorList == null) {
+                            annotationConstructorList = new ArrayList<Method>();
+                            annotationConstructors.put(annotationType, annotationConstructorList);
+                        }
+                        annotationConstructorList.add(annotationCtor);
+                    }
+                }
+            }
+        }
+    }
+    
     private Writer openWriter(File file) throws IOException {
         return new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); 
     }
@@ -916,7 +931,7 @@ public class CeylonDocTool extends RepoUsingTool {
                 packages.add(pkg);
             }
         }
-        Collections.sort(packages, PackageComparatorByName.INSTANCE);
+        Collections.sort(packages, ReferenceableComparatorByName.INSTANCE);
         return packages;
     }
 
@@ -1065,11 +1080,17 @@ public class CeylonDocTool extends RepoUsingTool {
     protected Node getNode(Referenceable referenceable) {
         return modelNodeMap.get(referenceable);
     }
+    
     protected PhasedUnit getParameterUnit(Parameter parameter) {
         return parameterUnitMap.get(parameter);
     }
+    
     protected Node getParameterNode(Parameter parameter) {
         return parameterNodeMap.get(parameter);
+    }
+    
+    protected List<Method> getAnnotationConstructors(TypeDeclaration klass) {
+        return annotationConstructors.get(klass);
     }
     
     /**

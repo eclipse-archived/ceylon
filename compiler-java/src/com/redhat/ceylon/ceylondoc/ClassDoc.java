@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.ceylondoc.Util.DeclarationComparatorByName;
+import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.ceylondoc.Util.ProducedTypeComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -138,16 +138,16 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
         }
 
-        Collections.sort(methods, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(attributes, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(subclasses, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(satisfyingClasses, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(satisfyingInterfaces, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(subclasses, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(satisfyingClasses, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(satisfyingInterfaces, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(superInterfaces, ProducedTypeComparatorByName.INSTANCE);
-        Collections.sort(innerInterfaces, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(innerClasses, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(innerExceptions, DeclarationComparatorByName.INSTANCE);
-        Collections.sort(innerAliases, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(innerInterfaces, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(innerClasses, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(innerExceptions, ReferenceableComparatorByName.INSTANCE);
+        Collections.sort(innerAliases, ReferenceableComparatorByName.INSTANCE);
         
         loadSuperclassInheritedMembers(attributeSpecification);
         loadSuperclassInheritedMembers(methodSpecification);
@@ -240,8 +240,12 @@ public class ClassDoc extends ClassOrPackageDoc {
     private String getClassLabel() {
         if (klass instanceof Interface) {
             return "interface";
+        } else if (klass.isAnnotation()) {
+            return "annotation";
+        } else if (isObject()) {
+            return "object";
         } else {
-            return isObject() ? "object" : "class";
+            return "class";
         }
     }
 
@@ -306,7 +310,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             writeSubNavBarLink("#section-attributes", "Attributes", 'A', "Jump to attributes");
         }
         if (hasInitializer()) {
-            writeSubNavBarLink("#section-initializer", "Initializer", 'n', "Jump to initializer");
+            writeSubNavBarLink("#section-initializer", "Initializer", 'z', "Jump to initializer");
         }
         if (hasAnyMethods()) {
             writeSubNavBarLink("#section-methods", "Methods", 'M', "Jump to methods");
@@ -354,6 +358,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeListOnSummary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
         writeListOnSummary("satisfyingInterfaces", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
         writeEnclosingType();
+        writeAnnotationConstructors();
     
         around("div class='doc'", getDoc(klass, linkRenderer()));
         writeBy(klass);
@@ -407,7 +412,10 @@ public class ClassDoc extends ClassOrPackageDoc {
                     first = false;
                 }
                 
-                if( type instanceof ClassOrInterface ) {
+                if( type instanceof TypedDeclaration ) {
+                    TypedDeclaration decl = (TypedDeclaration) type;
+                    linkRenderer().to(decl).write();
+                } else if( type instanceof ClassOrInterface ) {
                     ClassOrInterface klass = (ClassOrInterface) type;
                     linkRenderer().to(klass).printAbbreviated(!isAbbreviatedType(klass)).write();
                 } else {
@@ -429,17 +437,27 @@ public class ClassDoc extends ClassOrPackageDoc {
             close("div");
         }
     }
+    
+    private void writeAnnotationConstructors() throws IOException {
+        if( klass.isAnnotation() ) {
+            List<Method> annotationConstructors = tool.getAnnotationConstructors(klass);
+            if( annotationConstructors != null ) {
+                Collections.sort(annotationConstructors, ReferenceableComparatorByName.INSTANCE);
+                writeListOnSummary("annotationConstructors", "Annotation Constructors: ", annotationConstructors);
+            }
+        }
+    }
 
     private void writeInheritedMembers(MemberSpecification specification, String tableTitle, String rowTitle) throws IOException {
         boolean first = true;
         
         Map<TypeDeclaration, List<Declaration>> superClassInheritedMembersMap = superclassInheritedMembers.get(specification);
         List<TypeDeclaration> superClasses = new ArrayList<TypeDeclaration>(superclassInheritedMembers.get(specification).keySet());
-        Collections.sort(superClasses, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(superClasses, ReferenceableComparatorByName.INSTANCE);
         
         for (TypeDeclaration superClass : superClasses) {
             List<Declaration> inheritedMembers = superClassInheritedMembersMap.get(superClass);
-            Collections.sort(inheritedMembers, DeclarationComparatorByName.INSTANCE);
+            Collections.sort(inheritedMembers, ReferenceableComparatorByName.INSTANCE);
 
             if (first) {
                 first = false;
@@ -450,14 +468,14 @@ public class ClassDoc extends ClassOrPackageDoc {
 
         Map<TypeDeclaration, List<Declaration>> superInterfaceInheritedMembersMap = interfaceInheritedMembers.get(specification);
         List<TypeDeclaration> superInterfaces = new ArrayList<TypeDeclaration>(superInterfaceInheritedMembersMap.keySet());
-        Collections.sort(superInterfaces, DeclarationComparatorByName.INSTANCE);
+        Collections.sort(superInterfaces, ReferenceableComparatorByName.INSTANCE);
         
         for (TypeDeclaration superInterface : superInterfaces) {
             List<Declaration> members = superInterfaceInheritedMembersMap.get(superInterface);
             if (members == null || members.isEmpty()) {
                 continue;
             }
-            Collections.sort(members, DeclarationComparatorByName.INSTANCE);
+            Collections.sort(members, ReferenceableComparatorByName.INSTANCE);
 
             if (first) {
                 first = false;
@@ -557,7 +575,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             registerKeyboardShortcut('a', "#section-attributes");
         }
         if (hasInitializer()) {
-            registerKeyboardShortcut('n', "#section-initializer");
+            registerKeyboardShortcut('z', "#section-initializer");
         }
         if (hasAnyMethods()) {
             registerKeyboardShortcut('m', "#section-methods");
