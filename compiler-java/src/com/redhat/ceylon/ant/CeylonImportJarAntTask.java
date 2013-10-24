@@ -24,6 +24,8 @@ import java.io.File;
 
 import org.apache.tools.ant.types.Commandline;
 
+import com.redhat.ceylon.common.Constants;
+
 /**
  * Ant task wrapping the {@code ceylon import-jar} tool
  * @author tom
@@ -53,7 +55,7 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
 
     protected String getOut() {
         if (this.out == null) {
-            return new File(getProject().getBaseDir(), "modules").getPath();
+            return new File(getProject().getBaseDir(), Constants.DEFAULT_MODULE_DIR).getPath();
         }
         return this.out;
     }

@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 
 public class Main {
@@ -121,12 +122,12 @@ public class Main {
             printUsage(SC_ARGS, cwd, systemRepo, cacheRepo, noDefRepos, repositories, destDir);
         }
         if (destDir == null) {
-            destDir = "modules";
+            destDir = Constants.DEFAULT_MODULE_DIR;
         }
 
         List<File> sourceFolders = new LinkedList<File>();
         if (sourceDirs.isEmpty()) {
-            File src = new File("source");
+            File src = new File(Constants.DEFAULT_SOURCE_DIR);
             if(src.isDirectory())
                 sourceFolders.add(src);
         }else{

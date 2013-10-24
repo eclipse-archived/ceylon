@@ -31,6 +31,8 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectComponent;
 import org.apache.tools.ant.types.FileSet;
 
+import com.redhat.ceylon.common.Constants;
+
 /**
  * Generates a set of modules by scanning a source directory for ceylon modules.
  * {@code <sourcemodules>} is supported as a subelement of {@code <moduleset>}.
@@ -47,7 +49,7 @@ public class SourceModules extends ProjectComponent {
     
     public Set<Module> getModules() {
         if (this.dir == null) {
-            this.dir = getProject().resolveFile("source");
+            this.dir = getProject().resolveFile(Constants.DEFAULT_SOURCE_DIR);
         }
         FileSet fs = new FileSet();
         fs.setDir(this.dir);

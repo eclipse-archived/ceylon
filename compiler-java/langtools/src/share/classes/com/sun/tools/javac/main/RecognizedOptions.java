@@ -25,6 +25,7 @@
 
 package com.sun.tools.javac.main;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.code.Lint;
 import com.sun.tools.javac.code.Source;
@@ -37,6 +38,7 @@ import com.sun.tools.javac.main.JavacOption.XOption;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Options;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -725,7 +727,7 @@ public class RecognizedOptions {
                         // CEYLONSOURCEPATH puts it in the options map as -sourcepath
                         List<String> sourcePaths = options.getMulti("-sourcepath");
                         if(sourcePaths.isEmpty())
-                            sourcePaths = Arrays.asList("source");// default value
+                            sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
                         // walk every path arg
                         for(String sourcePath : sourcePaths){
                             // split the path
@@ -759,7 +761,7 @@ public class RecognizedOptions {
                     // find a corresponding physical module in the source path
                     List<String> sourcePaths = options.getMulti("-sourcepath");
                     if(sourcePaths.isEmpty())
-                        sourcePaths = Arrays.asList("source");// default value
+                        sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
                     // walk every path arg
                     for(String sourcePath : sourcePaths){
                         // split the path

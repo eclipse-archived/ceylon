@@ -40,8 +40,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
+
 import javax.tools.JavaFileManager.Location;
 
+import com.redhat.ceylon.common.Constants;
 import com.sun.tools.javac.code.Lint;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.ListBuffer;
@@ -436,7 +438,7 @@ public class Paths {
         List<String> sourcePathArgs = options.getMulti(SOURCEPATH);
         // Ceylon: default source path
         if (sourcePathArgs.isEmpty())
-            sourcePathArgs = Arrays.asList("source");
+            sourcePathArgs = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);
 
         Path path = new Path();
         for(String pathArg : sourcePathArgs){

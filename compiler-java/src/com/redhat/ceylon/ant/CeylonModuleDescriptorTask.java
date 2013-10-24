@@ -25,6 +25,8 @@ import java.io.File;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
+import com.redhat.ceylon.common.Constants;
+
 
 /**
  * Any task to extract information from a Ceylon module descriptor and 
@@ -44,7 +46,7 @@ public class CeylonModuleDescriptorTask extends Task {
     }
     public File getSrc() {
         if (this.src == null) {
-            return getProject().resolveFile("source");
+            return getProject().resolveFile(Constants.DEFAULT_SOURCE_DIR);
         }
         return src;
     }

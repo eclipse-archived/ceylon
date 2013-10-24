@@ -31,6 +31,8 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 
+import com.redhat.ceylon.common.Constants;
+
 
 /**
  * Baseclass for tasks which only do something if source files are newer than
@@ -94,7 +96,7 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
 
     public List<File> getSrc() {
         if (this.src == null) {
-            return Collections.singletonList(task.getProject().resolveFile("source"));
+            return Collections.singletonList(task.getProject().resolveFile(Constants.DEFAULT_SOURCE_DIR));
         }
         String[] paths = this.src.list();
         ArrayList<File> result = new ArrayList<File>(paths.length);
@@ -145,7 +147,7 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
 
     public String getOut() {
         if (this.out == null) {
-            return new File(task.getProject().getBaseDir(), "modules").getPath();
+            return new File(task.getProject().getBaseDir(), Constants.DEFAULT_MODULE_DIR).getPath();
         }
         return this.out;
     }

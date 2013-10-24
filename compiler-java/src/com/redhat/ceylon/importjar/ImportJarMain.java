@@ -22,6 +22,7 @@ package com.redhat.ceylon.importjar;
 
 import java.io.IOException;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 
 public class ImportJarMain {
@@ -90,7 +91,7 @@ public class ImportJarMain {
             printUsage(SC_ARGS);
         }
         if (destDir == null) {
-            destDir = "modules";
+            destDir = Constants.DEFAULT_MODULE_DIR;
         }
 
         try{

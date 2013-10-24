@@ -15,6 +15,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -41,7 +42,7 @@ import com.redhat.ceylon.tools.ModuleSpec;
 		"")
 public class CeylonSrcTool extends RepoUsingTool {
     
-    private String src = "source";
+    private String src = Constants.DEFAULT_SOURCE_DIR;
     
     private List<ModuleSpec> modules;
     
