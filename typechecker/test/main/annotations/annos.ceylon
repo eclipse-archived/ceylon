@@ -1,19 +1,19 @@
 @error annotation class NonfinalAnnotation() 
-        satisfies Annotation<NonfinalAnnotation> {}
+        satisfies OptionalAnnotation<NonfinalAnnotation> {}
 @error final annotation class GenericAnnotation<T>() 
-        satisfies Annotation<GenericAnnotation<T>> {}
+        satisfies OptionalAnnotation<GenericAnnotation<T>> {}
 @error final annotation class NonemptyAnnotation() 
-        satisfies Annotation<NonemptyAnnotation> { 
+        satisfies OptionalAnnotation<NonemptyAnnotation> { 
     print("hello");
 }
 @error final annotation class NonemptyAnnotationBug() 
-        satisfies Annotation<NonemptyAnnotationBug> { 
+        satisfies OptionalAnnotation<NonemptyAnnotationBug> { 
     String hello="hello";
 }
 
 final annotation class ParameterizedAnnotation
         (int,float,char,str,bool,ann,iter,seq) 
-        satisfies Annotation<ParameterizedAnnotation> {
+        satisfies OptionalAnnotation<ParameterizedAnnotation> {
     Integer int; Float float; Character char; String str; Boolean bool;
     ParameterizedAnnotation ann;
     {String*} iter;
@@ -21,15 +21,15 @@ final annotation class ParameterizedAnnotation
 }
 
 final annotation class BrokenParameterizedAnnotation1(@error Integer|Float num) 
-        satisfies Annotation<BrokenParameterizedAnnotation1> {}
+        satisfies OptionalAnnotation<BrokenParameterizedAnnotation1> {}
 final annotation class BrokenParameterizedAnnotation2(@error Object obj) 
-        satisfies Annotation<BrokenParameterizedAnnotation2> {}
+        satisfies OptionalAnnotation<BrokenParameterizedAnnotation2> {}
 final annotation class BrokenParameterizedAnnotation3(@error {String|Character*} iter) 
-        satisfies Annotation<BrokenParameterizedAnnotation3> {}
+        satisfies OptionalAnnotation<BrokenParameterizedAnnotation3> {}
 final annotation class BrokenParameterizedAnnotation4(@error [Float|Integer*] seq) 
-        satisfies Annotation<BrokenParameterizedAnnotation4> {}
+        satisfies OptionalAnnotation<BrokenParameterizedAnnotation4> {}
 final annotation class BrokenParameterizedAnnotation5(@error [Float,Integer] tup) 
-        satisfies Annotation<BrokenParameterizedAnnotation5> {}
+        satisfies OptionalAnnotation<BrokenParameterizedAnnotation5> {}
 
 
 @error annotation GenericAnnotation<T> genericAnnotation() 
@@ -81,7 +81,7 @@ annotation BrokenParameterizedAnnotation5
         => BrokenParameterizedAnnotation5(tup);
 
 Float float = 0.0;
-final annotation class Ann(shared Float float) satisfies Annotation<Ann> {}
+final annotation class Ann(shared Float float) satisfies OptionalAnnotation<Ann> {}
 annotation Ann ann1() => Ann(0.0);
 @error annotation Ann broke1() => Ann(0.0/2.0);
 @error annotation Ann broke2() => Ann(0.float);
@@ -90,7 +90,7 @@ annotation Ann ann1() => Ann(0.0);
 annotation Ann ann2(Float float = 0.0) => Ann(float);
 annotation Ann broke5(@error Float float = 0.float) => Ann(float);
 
-final annotation class AnnAnn(shared Ann ann) satisfies Annotation<AnnAnn> {}
+final annotation class AnnAnn(shared Ann ann) satisfies OptionalAnnotation<AnnAnn> {}
 annotation AnnAnn ann3() => AnnAnn(Ann(0.0));
 @error annotation AnnAnn broke6() => AnnAnn(Ann(0.0/2.0));
 @error annotation AnnAnn broke7() => AnnAnn(Ann(0.float));

@@ -7,7 +7,7 @@ import ceylon.language.meta.declaration {
 }
 import ceylon.language.meta { annotations }
 
-final annotation class SeeThese(shared Declaration* declarations) satisfies Annotation<SeeThese> {}
+final annotation class SeeThese(shared Declaration* declarations) satisfies OptionalAnnotation<SeeThese> {}
 annotation SeeThese seethese(Declaration* declarations) => SeeThese(*declarations);
 
 final annotation class Meta(shared actual String string) satisfies SequencedAnnotation<Meta> {}
