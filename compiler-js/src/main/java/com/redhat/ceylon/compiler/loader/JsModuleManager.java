@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 /** A ModuleManager that loads modules from js files.
  * 
@@ -70,8 +71,8 @@ public class JsModuleManager extends ModuleManager {
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
         if (module instanceof JsonModule && js.getName().endsWith(".js")) {
-            if (((JsonModule)module).getModel() != null) {
-                return;
+            if (module.getUnit().getFullPath() == null) {
+                module.getUnit().setFullPath(js.getAbsolutePath());
             }
             if (js.exists() && js.isFile() && js.canRead()) {
                 if (JsModuleManagerFactory.isVerbose()) {
@@ -98,6 +99,10 @@ public class JsModuleManager extends ModuleManager {
         Module module = new JsonModule();
         module.setName(moduleName);
         module.setVersion(version);
+        Unit u = new Unit();
+        u.setFilename("module.ceylon");
+        u.setFullPath(moduleName+"/"+version);
+        module.setUnit(u);
         JsonModule dep = (JsonModule)findLoadedModule("ceylon.language", null);
         //This can only happen during initCoreModules()
         if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals("ceylon.language")) && dep == null) {

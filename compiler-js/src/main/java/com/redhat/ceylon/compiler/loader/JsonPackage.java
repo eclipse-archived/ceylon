@@ -66,6 +66,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     public void setModule(com.redhat.ceylon.compiler.typechecker.model.Module module) {
         if (module instanceof JsonModule && model == null) {
             model = ((JsonModule)module).getModelForPackage(getNameAsString());
+            unit.setFullPath(module.getUnit().getFullPath() + "/" + pkgname);
         }
         super.setModule(module);
     };
