@@ -12,6 +12,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -37,10 +38,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
 
     private String user = null;
     private String pass = null;
-    private String out = "modules";
+    private String out = Constants.DEFAULT_MODULE_DIR;
     private String encoding;
 
-    private List<String> src = Collections.singletonList("source");
+    private List<String> src = Collections.singletonList(Constants.DEFAULT_SOURCE_DIR);
     private List<String> files = Collections.emptyList();
 
     public CeylonCompileJsTool() {

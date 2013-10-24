@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Constants;
+
 public class TestOptionParser {
 
     @Test
@@ -21,8 +23,8 @@ public class TestOptionParser {
         Assert.assertTrue(args.contains("f1.ceylon"));
         Assert.assertTrue(args.contains("f2.ceylon"));
         Assert.assertTrue(o.getRepos().isEmpty());
-        Assert.assertEquals("modules", o.getOutDir());
-        Assert.assertEquals("source", o.getSrcDirs().get(0));
+        Assert.assertEquals(Constants.DEFAULT_MODULE_DIR, o.getOutDir());
+        Assert.assertEquals(Constants.DEFAULT_SOURCE_DIR, o.getSrcDirs().get(0));
     }
 
     @Test

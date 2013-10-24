@@ -19,6 +19,7 @@ import net.minidev.json.JSONObject;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -64,7 +65,7 @@ public class Stitcher {
         tmpdir = new File(tmpdir.getAbsolutePath());
         tmpdir.mkdir();
         tmpdir.deleteOnExit();
-        final File tmpout = new File(tmpdir, "modules");
+        final File tmpout = new File(tmpdir, Constants.DEFAULT_MODULE_DIR);
         tmpout.mkdir();
         tmpout.deleteOnExit();
         Options opts = Options.parse(new ArrayList<String>(Arrays.asList(

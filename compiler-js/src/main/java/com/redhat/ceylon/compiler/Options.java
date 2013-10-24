@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.redhat.ceylon.common.Constants;
+
 /** Represents all the options for compiling.
  * 
  * @author Enrique Zamudio
@@ -20,7 +22,7 @@ public class Options {
     private String user;
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
-    private String outDir = "modules";
+    private String outDir = Constants.DEFAULT_MODULE_DIR;
     private boolean optimize;
     private boolean modulify = true;
     private boolean indent = true;
@@ -98,7 +100,7 @@ public class Options {
             }
         }
         if (opts.srcDirs.isEmpty()) {
-            opts.srcDirs.add("source");
+            opts.srcDirs.add(Constants.DEFAULT_SOURCE_DIR);
         }
         return opts;
     }
