@@ -212,3 +212,20 @@ void variadicMethods() {
     @error
     java.variadicT<String>("a", box("b"), "c");
 }
+
+@noanno
+void tupleSpreading(){
+    TypesJava java = TypesJava();
+    value tuple = [true, 1, 2, 3, 4, 5.0, 6.0, 'a', "foo", java];
+    java.takeAll(true, 1, 2, 3, 4, 5.0, 6.0, 'a', "foo", java);
+    // full spread
+    java.takeAll(*tuple);
+    // partial spread
+    java.takeAll(true, *tuple.rest);
+    value tuple2 = [true, 1, 'a', 'b', 'c'];
+    // full spread including variadic
+    java.takeAllVariadic(*tuple2);
+    // partial spread including variadic
+    value tuple3 = ['c', 'd'];
+    java.takeAllVariadic(true, 1, 'a', 'b', *tuple3);
+}

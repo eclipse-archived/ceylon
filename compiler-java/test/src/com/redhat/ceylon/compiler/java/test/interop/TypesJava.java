@@ -121,4 +121,9 @@ public class TypesJava {
     <T> void variadicT(T... vars){}
 
     public void variadicObjectArray(Object[]... arr){}
+    
+    void takeAll(boolean b, byte by, short s, int i, long l, 
+            float f, double d, char c, 
+            java.lang.String str, java.lang.Object o){}
+    void takeAllVariadic(boolean b, byte by, char... c){}
 }
