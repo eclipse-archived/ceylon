@@ -17,6 +17,8 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.ParsedBy;
+import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
@@ -41,7 +43,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     private String out = Constants.DEFAULT_MODULE_DIR;
     private String encoding;
 
-    private List<String> src = Collections.singletonList(Constants.DEFAULT_SOURCE_DIR);
+    private List<File> src = Collections.singletonList(new File(Constants.DEFAULT_SOURCE_DIR));
     private List<String> files = Collections.emptyList();
 
     public CeylonCompileJsTool() {
@@ -141,23 +143,37 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         return getRepositoryAsStrings();
     }
 
-    public List<String> getSrc() {
+    public List<File> getSrc() {
         return src;
     }
 
+    public List<String> getSrcAsStrings() {
+        if (src != null) {
+            List<String> result = new ArrayList<String>(src.size());
+            for (File f : src) {
+                result.add(f.getPath());
+            }
+            return result;
+        } else {
+            return new ArrayList<String>();
+        }
+    }
+    
     @OptionArgument(longName="src", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to source files. " +
     		"Can be specified multiple times; you can also specify several " +
     		"paths separated by your operating system's `PATH` separator." +
             " (default: `./source`)")
-    public void setSrc(List<String> src) {
+    public void setSrc(List<File> src) {
         this.src = src;
     }
     
     @OptionArgument(longName="source", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("An alias for `--src`" +
             " (default: `./source`)")
-    public void setSource(List<String> source) {
+    public void setSource(List<File> source) {
         setSrc(source);
     }
     
@@ -191,7 +207,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         final Options opts = new Options()
                 .cwd(cwd)
                 .repos(getRepos())
-                .sources(getSrc())
+                .sources(getSrcAsStrings())
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .outDir(getOut())
