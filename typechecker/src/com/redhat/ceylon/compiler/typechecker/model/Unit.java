@@ -180,7 +180,7 @@ public class Unit {
         if (obj instanceof Unit) {
             Unit that = (Unit) obj;
             return that.getPackage().equals(getPackage())
-                    && that.getFilename().equals(getFilename());
+                    && that.getFullPath().equals(getFullPath());
         }
         else {
             return false;
@@ -189,7 +189,7 @@ public class Unit {
     
     @Override
     public int hashCode() {
-        return getFilename().hashCode();
+        return getFullPath().hashCode();
     }
     
     private Module languageModule;
