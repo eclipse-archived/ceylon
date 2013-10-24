@@ -268,7 +268,7 @@ $(document).ready(function() {
             $('#filterActionMore').hide();  
         }
         if( tagOccurrenceZeroCount == tagIndex.length ) {
-            $('#filterDropdownPanelInfo').html('None tagged declarations on this page.');
+            $('#filterDropdownPanelInfo').html('No tagged declarations on this page.');
         }
     };
     
