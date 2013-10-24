@@ -161,8 +161,15 @@ public class CeylonCompileTool extends RepoUsingTool {
             "Can be specified multiple times; you can also specify several " +
             "paths separated by your operating system's `PATH` separator." +
             " (default: `./source`)")
-    public void setSource(List<File> source) {
+    public void setSrc(List<File> source) {
         this.source = source;
+    }
+    
+    @OptionArgument(longName="source", argumentName="dirs")
+    @Description("An alias for `--src`" +
+            " (default: `./source`)")
+    public void setSource(List<File> source) {
+        setSrc(source);
     }
     
     @Hidden

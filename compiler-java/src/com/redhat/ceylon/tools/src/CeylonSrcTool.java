@@ -55,6 +55,13 @@ public class CeylonSrcTool extends RepoUsingTool {
         this.src = directory;
     }
     
+    @OptionArgument(longName="source", argumentName="dirs")
+    @Description("An alias for `--src`" +
+            " (default: `./source`)")
+    public void setSource(String source) {
+        setSrc(source);
+    }
+    
     @Argument(argumentName="module", multiplicity="+")
     public void setModules(List<String> modules) {
         setModuleSpecs(ModuleSpec.parseEachList(modules));

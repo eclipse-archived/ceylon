@@ -182,6 +182,13 @@ public class CeylonDocTool extends RepoUsingTool {
     public void setSourceFolders(List<File> sourceFolders) {
         this.sourceFolders = sourceFolders;
     }
+    
+    @OptionArgument(longName="source", argumentName="dirs")
+    @Description("An alias for `--src`" +
+            " (default: `./source`)")
+    public void setSource(List<File> source) {
+        setSourceFolders(source);
+    }
 
     public boolean isHaltOnError() {
         return haltOnError;

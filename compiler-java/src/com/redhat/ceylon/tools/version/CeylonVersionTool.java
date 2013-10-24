@@ -92,6 +92,13 @@ public class CeylonVersionTool extends CeylonBaseTool {
         this.sourceFolders  = sourceFolders;
     }
     
+    @OptionArgument(longName="source", argumentName="dirs")
+    @Description("An alias for `--src`" +
+            " (default: `./source`)")
+    public void setSource(List<File> source) {
+        setSourceFolders(source);
+    }
+    
     @OptionArgument
     @Description("The new version number to set."
             + "If unspecified then module verions are shown and not updated.")
