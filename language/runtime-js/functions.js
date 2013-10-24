@@ -183,7 +183,7 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
         return _ints ? inters||unions : unions;
     }
     if (t2.t === 'u' || t2.t === 'i') {
-        if (t2.t==='i') removeSupertypes(t2.l);
+        if (t2.t==='i')removeSupertypes(t2.l);
         var unions = false;
         var inters = true;
         var _ints = false;
@@ -197,6 +197,20 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
             }
         }
         return _ints ? inters||unions : unions;
+    }
+    if (t1.t==='T') {
+      if (t2.t==='T') {
+        if (t1.l.length===t2.l.length) {
+          for (var i=0; i < t1.l.length;i++) {
+            if (!extendsType(t1.l[i],t2.l[i]))return false;
+          }
+          return true;
+        } else return false;
+      } else {
+        t1=$retuple(t1);
+      }
+    } else if (t2.t==='T') {
+      t2=$retuple(t2);
     }
     for (t in t1.t.$$.T$all) {
         if (t === t2.t.$$.T$name || t === 'ceylon.language::Nothing') {
