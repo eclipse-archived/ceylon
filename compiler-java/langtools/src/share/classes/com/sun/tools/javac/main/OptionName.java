@@ -56,6 +56,7 @@ public enum OptionName {
     CEYLONPASS("-pass"),
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
+    CEYLONRESOURCEPATH("-res"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),

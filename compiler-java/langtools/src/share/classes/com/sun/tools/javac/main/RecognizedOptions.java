@@ -146,6 +146,7 @@ public class RecognizedOptions {
         CEYLONPASS,
         SOURCEPATH,
         CEYLONSOURCEPATH,
+        CEYLONRESOURCEPATH,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -208,6 +209,7 @@ public class RecognizedOptions {
         CEYLONPASS,
         SOURCEPATH,
         CEYLONSOURCEPATH,
+        CEYLONRESOURCEPATH,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -383,7 +385,15 @@ public class RecognizedOptions {
                 return false;
             }
         },
-        new Option(BOOTCLASSPATH,          "opt.arg.path",      "opt.bootclasspath") {
+        new COption(CEYLONRESOURCEPATH,     "opt.arg.url",      "opt.ceylonresource"){
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                if(options != null)
+                    options.addMulti(CEYLONRESOURCEPATH, arg);
+                return false;
+            }
+        },
+        new Option(BOOTCLASSPATH,           "opt.arg.path",      "opt.bootclasspath") {
             @Override
             public boolean process(Options options, String option, String arg) {
                 options.remove("-Xbootclasspath/p:");
