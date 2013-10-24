@@ -298,7 +298,7 @@ shared void constrainedTypeParams<A, B>()
     given A of String | Integer
     given B satisfies TPA {}
 
-shared annotation final class Annot() satisfies Annotation<Annot> {}
+shared annotation final class Annot() satisfies OptionalAnnotation<Annot> {}
 shared annotation Annot annot() => Annot();
 
 shared interface Top<out A>{

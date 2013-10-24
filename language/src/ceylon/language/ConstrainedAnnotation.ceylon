@@ -5,11 +5,17 @@
  Instead either [[OptionalAnnotation]] or [[SequencedAnnotation]] 
  should be satisfied."
 see(`interface Annotation`)
-shared interface ConstrainedAnnotation<out Value, out Values, in ProgramElement> 
+shared interface ConstrainedAnnotation<out Value=Annotation, 
+                                       out Values=Anything, 
+                                       in ProgramElement=Nothing> 
         of Value
-        //of OptionalAnnotation<Value,ProgramElement> | SequencedAnnotation<Value,ProgramElement>
-        satisfies Annotation<Value>
-        given Value satisfies Annotation<Value>
+        //Note: adding the following constraint would
+        //      make ConstrainedAnnotation a GADT, which
+        //      the language does not currently support 
+        //of OptionalAnnotation<Value,ProgramElement> | 
+        //   SequencedAnnotation<Value,ProgramElement>
+        satisfies Annotation
+        given Value satisfies Annotation
         given ProgramElement satisfies Annotated {
     
     "Can this annotation can occur on the given program 

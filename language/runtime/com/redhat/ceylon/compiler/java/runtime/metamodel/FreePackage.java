@@ -71,8 +71,8 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
 
     @Override
     @TypeInfo("ceylon.language::Sequential<Annotation>")
-    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation<Annotation>"))
-    public <Annotation extends ceylon.language.Annotation<? extends Annotation>> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
+    @TypeParameters(@TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation"))
+    public <Annotation extends ceylon.language.Annotation> Sequential<? extends Annotation> annotations(@Ignore TypeDescriptor $reifiedAnnotation) {
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 

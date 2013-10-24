@@ -1,5 +1,5 @@
 final annotation class Bug263Annotation(shared actual String string) 
-        satisfies Annotation<Bug263Annotation> {}
+        satisfies OptionalAnnotation<Bug263Annotation> {}
 
 annotation Bug263Annotation bug263annotation(String s) => Bug263Annotation(s);
 

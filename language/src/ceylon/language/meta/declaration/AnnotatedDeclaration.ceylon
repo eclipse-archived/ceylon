@@ -32,5 +32,5 @@ shared interface AnnotatedDeclaration of NestableDeclaration
     """
     
     shared formal Annotation[] annotations<out Annotation>()
-        given Annotation satisfies AnnotationType<Annotation>;
+        given Annotation satisfies AnnotationType;
 }

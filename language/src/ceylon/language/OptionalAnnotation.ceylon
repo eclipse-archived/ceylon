@@ -17,6 +17,6 @@ see(`interface Annotation`)
 shared interface OptionalAnnotation<out Value, in ProgramElement=Annotated>
         of Value
         satisfies ConstrainedAnnotation<Value,Value?,ProgramElement>
-        given Value satisfies Annotation<Value>
+        given Value satisfies OptionalAnnotation<Value,ProgramElement>
         given ProgramElement satisfies Annotated {}
 

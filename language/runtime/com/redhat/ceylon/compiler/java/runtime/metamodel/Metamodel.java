@@ -497,7 +497,7 @@ public class Metamodel {
     }
     
     @SuppressWarnings("unchecked")
-    private static <A extends ceylon.language.Annotation<? extends A>> void addAnnotation(
+    private static <A extends ceylon.language.Annotation> void addAnnotation(
             SequenceBuilder<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
             Predicates.Predicate<A> pred) {
@@ -549,7 +549,7 @@ public class Metamodel {
     }
     
     private static void addProxyCeylonAnnotation(
-            SequenceBuilder<? extends ceylon.language.Annotation<?>> ceylonAnnotations,
+            SequenceBuilder<? extends ceylon.language.Annotation> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
         InvocationHandler handler = new InvocationHandler() {
@@ -566,7 +566,7 @@ public class Metamodel {
                 handler);
     }
     
-    public static <A extends ceylon.language.Annotation<? extends A>> Sequential<? extends A> annotations(
+    public static <A extends ceylon.language.Annotation> Sequential<? extends A> annotations(
             TypeDescriptor $reifiedValues,
             Annotated annotated) {
         // TODO If the annotated is not a valid target for the annotationType
@@ -575,7 +575,7 @@ public class Metamodel {
         return annotations($reifiedValues, annotated, predicate);
     }
 
-    public static <A extends ceylon.language.Annotation<? extends A>> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
+    public static <A extends ceylon.language.Annotation> Sequential<? extends A> annotations(TypeDescriptor $reifiedValues,
             Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations$();
         if (jAnnotations == null) {
