@@ -3,6 +3,7 @@ package com.redhat.ceylon.common.tool;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -78,12 +79,16 @@ public class ToolFactory {
             this.value = value;
         }
         static <A> Binding<List<A>> mv(List<Binding<A>> bindings) {
-            List<A> listValue = new ArrayList<A>(bindings.size());
+            List<A> listValue = new ArrayList<A>(bindings.size()); // size is just a best-guess
             String givenOption = null;
             OptionModel<A> om = null;
             ArgumentModel<A> am = null;
             for (Binding<A> binding : bindings) {
-                listValue.add(binding.value);
+                if (binding.value instanceof Collection) {
+                    listValue.addAll((Collection<? extends A>)binding.value);
+                } else {
+                    listValue.add(binding.value);
+                }
                 if (om == null) {
                     om = binding.optionModel;
                     am = binding.argumentModel;
