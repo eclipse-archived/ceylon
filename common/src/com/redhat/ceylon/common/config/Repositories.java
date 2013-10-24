@@ -198,7 +198,7 @@ public class Repositories {
                 }
             } else if (REPO_NAME_LOCAL.equals(repoName)) {
                 // ./modules
-                File dir = new File(".", "modules");
+                File dir = new File(".", Constants.DEFAULT_MODULE_DIR);
                 return new SimpleRepository(REPO_NAME_LOCAL, dir.getPath(), null);
             } else if (REPO_NAME_CACHE.equals(repoName)) {
                 // $HOME/.ceylon/cache
