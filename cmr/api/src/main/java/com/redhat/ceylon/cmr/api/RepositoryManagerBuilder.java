@@ -44,6 +44,10 @@ public class RepositoryManagerBuilder {
         return (Class<? extends RepositoryManagerBuilder>) classLoader.loadClass(DEFAULT_DELEGATE);
     }
 
+    public RepositoryManagerBuilder(Logger log) {
+        this(log, true);
+    }
+
     public RepositoryManagerBuilder(Logger log, boolean offline) {
         try {
             Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class);

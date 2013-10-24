@@ -19,7 +19,9 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
@@ -50,8 +52,6 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         if (temp != null)
             token = temp;
 
-        // IMPORTANT Make sure the below list is consistent with CeylonUtils.isRemote() !
-        
         StructureBuilder structureBuilder;
         if (token.startsWith("http:") || token.startsWith("https:")) {
             structureBuilder = new RemoteContentStore(token, log, offline);
@@ -61,11 +61,10 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
             Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, boolean.class);
             return (Repository) createRepository.invoke(null, log, offline);
-        } else if (token.startsWith("aether:") || token.startsWith("mvn:")) {
-            String settingsXml = token.substring("aether:".length());
-            Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class);
-            return (Repository) createRepository.invoke(null, log, settingsXml, offline);
+        } else if (token.startsWith("aether:")) {
+            return createMavenRepository(token, "aether:");
+        } else if (token.startsWith("mvn:")) {
+            return createMavenRepository(token, "mvn:");
         } else {
             final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)
@@ -76,5 +75,39 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             structureBuilder = new FileContentStore(file);
         }
         return new DefaultRepository(structureBuilder.createRoot());
+    }
+
+    protected Repository createMavenRepository(String token, String prefix) throws Exception {
+        String config = token.substring(prefix.length());
+        int p = config.indexOf("|");
+        String settingsXml = null;
+        String overridesXml = null;
+        if (p < 0) {
+            settingsXml = config;
+        } else if (p == 0) {
+            overridesXml = config.substring(1);
+        } else {
+            settingsXml = config.substring(0, p);
+            overridesXml = config.substring(p + 1);
+        }
+        Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
+        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class);
+        return (Repository) createRepository.invoke(null, log, settingsXml, overridesXml, offline);
+    }
+
+    public boolean isRemote(String token) {
+        // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
+        // (except for "file:" which we don't support)
+        return isHttp(token) || "mvn".equals(token) || token.startsWith("mvn:") || "aether".equals(token) || token.startsWith("aether:") || token.equals("jdk") || token.equals("jdk:");
+    }
+
+    public boolean isHttp(String token) {
+        try {
+            URL url = new URL(token);
+            String protocol = url.getProtocol();
+            return "http".equals(protocol) || "https".equals(protocol);
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 }

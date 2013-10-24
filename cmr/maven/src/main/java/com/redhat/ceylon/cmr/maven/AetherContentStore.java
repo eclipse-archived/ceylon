@@ -148,7 +148,6 @@ public class AetherContentStore extends AbstractContentStore {
         }
     }
 
-    @Override
     public String getDisplayString() {
         String name = "Aether";
         if (offline) {
@@ -157,7 +156,6 @@ public class AetherContentStore extends AbstractContentStore {
         return name;
     }
 
-    @Override
     public boolean isHerd() {
         return false;
     }

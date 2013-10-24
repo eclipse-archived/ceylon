@@ -403,7 +403,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testListVersion() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("1.0.0", "The classic Hello World module", "Public domain", set("Stef Epardaud"), 
-                        deps(), types(new ModuleVersionArtifact(".car", 3, null)), false, new File("build/classes/repo").getAbsolutePath()),
+                        deps(), types(new ModuleVersionArtifact(".car", 3, null)), false, getRepositoryRoot().getAbsolutePath()),
         };
         testListVersions("com.acme.helloworld", null, expected);
     }

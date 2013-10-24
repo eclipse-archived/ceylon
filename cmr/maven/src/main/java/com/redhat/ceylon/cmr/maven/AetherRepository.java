@@ -43,14 +43,18 @@ public class AetherRepository extends MavenRepository {
     }
 
     public static Repository createRepository(Logger log, boolean offline) {
-        AetherContentStore acs = new AetherContentStore(log, offline);
-        return new AetherRepository(acs);
+        return createRepository(log, null, offline);
     }
 
     public static Repository createRepository(Logger log, String settingsXml, boolean offline) {
+        return createRepository(log, settingsXml, null, offline);
+    }
+
+    public static Repository createRepository(Logger log, String settingsXml, String overridesXml, boolean offline) {
         AetherContentStore acs = new AetherContentStore(log, offline);
         AetherRepository repo = new AetherRepository(acs);
         repo.utils.overrideSettingsXml(settingsXml);
+        repo.utils.setOverrides(overridesXml);
         return repo;
     }
 

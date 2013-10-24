@@ -1,0 +1,9 @@
+<maven-overrides>
+    <artifact groupId="org.restlet.jse" artifactId="org.restlet" version="2.0.10">
+        <add groupId="org.slf4j" artifactId="slf4j-api" version="1.6.1"/>
+        <remove groupId="org.osgi" artifactId="org.osgi.core" version="4.0.0"/>
+    </artifact>
+    <artifact groupId="org.apache.camel" artifactId="camel-core" version="2.9.2">
+        <replace groupId="org.osgi" artifactId="org.osgi.core" version="4.0.0"/>
+    </artifact>
+</maven-overrides>

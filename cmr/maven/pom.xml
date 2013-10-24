@@ -38,6 +38,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-utils</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-api</artifactId>
         </dependency>

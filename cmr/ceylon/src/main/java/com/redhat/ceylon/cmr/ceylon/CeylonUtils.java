@@ -1,20 +1,27 @@
 package com.redhat.ceylon.cmr.ceylon;
 
-import com.redhat.ceylon.cmr.api.*;
-import com.redhat.ceylon.cmr.impl.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.Repository;
+import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
+import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
+import com.redhat.ceylon.cmr.impl.FileContentStore;
+import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
+import com.redhat.ceylon.cmr.impl.SourceArchiveCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.config.Repositories;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 
 public class CeylonUtils {
 
@@ -38,6 +45,7 @@ public class CeylonUtils {
         private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
+        private RepositoryBuilder throwawayRB;
 
         /**
          * Sets the configuration to use for building the repository manager
@@ -494,22 +502,25 @@ public class CeylonUtils {
             return path;
         }
 
-        private boolean isHTTP(String repo) {
-            try {
-                URL url = new URL(repo);
-                String protocol = url.getProtocol();
-                return "http".equals(protocol) || "https".equals(protocol);
-            } catch (MalformedURLException e) {
-                return false;
+        private synchronized RepositoryBuilder getThrowawayRB() {
+            if (throwawayRB == null) {
+                Logger logger = log;
+                if (logger == null) {
+                    logger = new JULLogger();
+                }
+                throwawayRB = new RepositoryManagerBuilder(logger).repositoryBuilder();
             }
+            return throwawayRB;
+        }
+
+        private boolean isHTTP(String repo) {
+            return getThrowawayRB().isHttp(repo);
         }
 
         private boolean isRemote(String repo) {
-            // IMPORTANT Make sure this is consistent with RepositoryBuilderImpl.buildRepository() !
-            // (except for "file:" which we don't support)
-            return isHTTP(repo) || "mvn".equals(repo) || repo.startsWith("mvn:") || "aether".equals(repo) || repo.startsWith("aether:") || repo.equals("jdk") || repo.equals("jdk:");
+            return getThrowawayRB().isRemote(repo);
         }
-        
+
         private boolean isOffline(CeylonConfig config) {
             return offline || config.getBoolOption(DefaultToolOptions.DEFAULTS_OFFLINE, false);
         }

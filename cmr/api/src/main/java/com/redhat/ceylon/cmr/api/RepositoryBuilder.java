@@ -30,4 +30,20 @@ public interface RepositoryBuilder {
      * @throws Exception for any error
      */
     Repository buildRepository(String token) throws Exception;
+
+    /**
+     * Is remote.
+     *
+     * @param token the token
+     * @return true if token represents remote repo, false otherwise
+     */
+    boolean isRemote(String token);
+
+    /**
+     * Is HTTP.
+     *
+     * @param token the token
+     * @return true if token represents http backed repo, false otherwise
+     */
+    boolean isHttp(String token);
 }

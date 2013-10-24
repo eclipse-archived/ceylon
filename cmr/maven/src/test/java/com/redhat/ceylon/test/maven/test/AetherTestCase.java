@@ -171,8 +171,65 @@ public class AetherTestCase {
         }
     }
 
+    @Test
+    public void testAddRemoveOverrides() throws Throwable {
+        Repository repository = createAetherRepository(true);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("org.restlet.jse:org.restlet", "2.0.10");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(deps.size(), 1);
+            Assert.assertEquals("org.slf4j:slf4j-api", deps.get(0).name());
+            Assert.assertEquals("1.6.1", deps.get(0).version());
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
+    public void testReplaceOverrides() throws Throwable {
+        Repository repository = createAetherRepository(true);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.name(), "org.osgi:org.osgi.core");
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(deps.size(), 0);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
     private Repository createAetherRepository() throws Exception {
-        URL settingsXml = getClass().getClassLoader().getResource("maven-settings/settings.xml");
-        return AetherRepository.createRepository(log, new File(settingsXml.toURI()).getPath(), false);
+        return createAetherRepository(false);
+    }
+
+    private Repository createAetherRepository(boolean useOverrides) throws Exception {
+        URL settingsURL = getClass().getClassLoader().getResource("maven-settings/settings.xml");
+        String settingsXml = new File(settingsURL.toURI()).getPath();
+        if (useOverrides) {
+            URL overridessURL = getClass().getClassLoader().getResource("maven-settings/overrides.xml");
+            String overridesXml = new File(overridessURL.toURI()).getPath();
+            return AetherRepository.createRepository(log, settingsXml, overridesXml, false);
+        } else {
+            return AetherRepository.createRepository(log, settingsXml, false);
+        }
     }
 }
