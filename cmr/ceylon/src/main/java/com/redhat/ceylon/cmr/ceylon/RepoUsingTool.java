@@ -16,6 +16,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
@@ -242,7 +243,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     private Collection<ModuleVersionDetails> getVersionFromSource(String name) {
         Collection<ModuleVersionDetails> result = new ArrayList<ModuleVersionDetails>();
         try {
-            File srcDir = new File("source");
+            // FIXME source folder might be overridden!
+            File srcDir = new File(Constants.DEFAULT_SOURCE_DIR);
             ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
             String version = mdr.getModuleVersion();
             if (version != null) {
