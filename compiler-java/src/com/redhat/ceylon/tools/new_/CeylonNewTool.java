@@ -44,7 +44,7 @@ import com.redhat.ceylon.common.tool.Subtool;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolModel;
 
-@Summary("Generates new ceylon projects")
+@Summary("Generates a new Ceylon project")
 @Description("Generates a new project, prompting for information as necessary")
 public class CeylonNewTool extends CeylonBaseTool {
 

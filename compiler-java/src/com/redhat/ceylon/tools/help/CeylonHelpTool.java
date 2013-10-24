@@ -41,7 +41,7 @@ import com.redhat.ceylon.tools.help.model.Visitor;
  * A plugin which provides help about other plugins 
  * @author tom
  */
-@Summary("Display help information about other ceylon tools")
+@Summary("Displays help information about other Ceylon tools")
 @Description(
 "If a `<tool>` is given, displays help about that ceylon tool on the standard output.\n\n" +
 "If no `<tool>` is given, displays the synopsis of the top level `ceylon` command. "
