@@ -152,7 +152,14 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     public void setSrc(List<String> src) {
         this.src = src;
     }
-
+    
+    @OptionArgument(longName="source", argumentName="dirs")
+    @Description("An alias for `--src`" +
+            " (default: `./source`)")
+    public void setSource(List<String> source) {
+        setSrc(source);
+    }
+    
     public String getOut() {
         return out;
     }
