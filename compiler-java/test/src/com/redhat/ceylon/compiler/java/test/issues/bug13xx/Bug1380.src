@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1380_ {
+    
+    private bug1380_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1380() {
+        new .java.lang.Exception((
+            let
+            {
+                .ceylon.language.String $ceylontmp$0 = (.ceylon.language.String)null;
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0.toString() : null;
+        ));
+        new .java.lang.Exception((.java.lang.Throwable)null);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1380_.bug1380();
+    }
+}

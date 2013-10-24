@@ -697,7 +697,12 @@ public class IssuesTest_1000_1499 extends CompilerTest {
                 new CompilerError(28, "cannot find symbol\n  symbol:   method x()\n  location: variable x of type com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1375")
         );
     }
-    
+
+    @Test
+    public void testBug1380() {
+        compareWithJavaSource("bug13xx/Bug1380");
+    }
+
     @Test
     public void testBug1382() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1382", "bug13xx/Bug1382.ceylon");
