@@ -562,6 +562,10 @@ td [class^='icon-'] {
 	background-position: -576px 0px;
 }
 
+.icon-decoration-variable {
+    background-position: -592px 0px;
+}
+
 a:HOVER .icon-expand-all,
 a:FOCUS .icon-expand-all {
 	background-position: -464px 0px;

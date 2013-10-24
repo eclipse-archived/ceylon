@@ -19,4 +19,4 @@
  */
 "The stub top level attribute"
 see(`class StubClass`, `function stubTopLevelMethod`)
-shared StubClass stubTopLevelAttribute = StubClass(0, 0);
+shared variable StubClass stubTopLevelAttribute = StubClass(0, 0);

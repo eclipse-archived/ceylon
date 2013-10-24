@@ -395,6 +395,9 @@ public abstract class CeylonDoc extends Markup {
                         }
                     }
                 }
+                if( ((TypedDeclaration) decl).isVariable() ) {
+                    icons.add("icon-decoration-variable");
+                }
             }
             
             if (decl instanceof TypeAlias || decl instanceof NothingType) {
