@@ -229,3 +229,12 @@ void tupleSpreading(){
     value tuple3 = ['c', 'd'];
     java.takeAllVariadic(true, 1, 'a', 'b', *tuple3);
 }
+
+@noanno
+void comprehensions(){
+    TypesJava java = TypesJava();
+    java.variadicFloat(*{for (i in 1..2) 2.0});
+    java.variadicFloat(1.0, *{for (i in 1..2) 2.0});
+    java.variadicFloat(*[for (i in 1..2) 2.0]);
+    java.variadicFloat(1.0, *[for (i in 1..2) 2.0]);
+}
