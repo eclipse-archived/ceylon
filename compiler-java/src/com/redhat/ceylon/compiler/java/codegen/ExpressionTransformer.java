@@ -440,11 +440,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // special case for returning Null expressions
                 if (isNull(exprType)){
                     // don't add cast for null
-                    if(!isNullValue(exprType)){
+                    if(!isNullValue(exprType)
+                            // include a cast even for null for interop and disambiguating bw overloads and null values
+                            // of different types using the "of" operator
+                            || downCast){
                         // in some cases we may have an instance of Null, which is of type java.lang.Object, being
                         // returned in a context where we expect a String? (aka ceylon.language.String) so even though
                         // the instance at hand will really be null, we need a up-cast to it
-                        // FIXME: this is always true
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | companionFlags);
                         result = make().TypeCast(targetType, result);
                     }
