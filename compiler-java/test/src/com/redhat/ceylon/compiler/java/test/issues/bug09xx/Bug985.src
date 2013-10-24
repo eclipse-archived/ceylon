@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug985 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug985() {
+    }
+    
+    private final <T>.ceylon.language.Array<T> array$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> vals) {
+        return new .ceylon.language.Array<T>($reified$T, vals);
+    }
+    
+    private final void m$priv$() {
+        .ceylon.language.Integer l$1;
+        if ((l$1 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$2$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L),
+                        null,
+                        .ceylon.language.Integer.instance(3L)});
+            }
+            returning <.ceylon.language.Integer>array$priv$(arg$2$reified$0, arg$2$0);
+        ).getLast()) != null) {
+            final long l$3 = l$1.longValue();
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug985();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug985.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug985.class);
+}

@@ -19,6 +19,8 @@
  */
 @noanno
 class Bug985() {
+    Array<T> array<T>(Iterable<T> vals) => Array(vals);
+    
     void m() {
         if (exists l=array{1,2,null,3}.last) {}
     }

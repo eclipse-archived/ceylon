@@ -730,9 +730,8 @@ public class IssuesTest_0500_0999 extends CompilerTest {
         compareWithJavaSource("bug09xx/Bug979");
     }
 
-    @Ignore("M6: https://github.com/ceylon/ceylon-compiler/issues/985")
     @Test
-    public void testBug985_fail() {
+    public void testBug985() {
         compareWithJavaSource("bug09xx/Bug985");
     }
     
