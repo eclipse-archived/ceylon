@@ -34,6 +34,7 @@ import java.util.zip.ZipEntry;
 
 import javax.tools.Diagnostic;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -677,6 +678,15 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1370() {
         compareWithJavaSource("bug13xx/Bug1370");
+    }
+
+    @Test
+    public void testBug1372() {
+        ErrorCollector c = new ErrorCollector();
+        String base = getPackagePath()+"/bug13xx/bug1372";
+        Boolean success = getCompilerTask(Arrays.asList("-src", base+"/testSrc"+File.pathSeparator+base+"/src"),
+                c, Arrays.asList("org.myapp")).call();
+        Assert.assertTrue(c.getAssertionFailureMessage(), success);
     }
 
     @Test
