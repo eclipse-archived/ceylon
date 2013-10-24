@@ -21,11 +21,20 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -142,23 +151,18 @@ public class JarOutputRepositoryManager {
         }
 
         public void close() throws IOException {
-            final Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
+            Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
 
-            final Properties previousMapping = getPreviousMapping();
-            JarUtils.JarEntryFilter filterForCars = new JarUtils.JarEntryFilter() {
-                @Override
-                public boolean avoid(String entryFullName) {
-                    boolean classWasUpdated = writtenClassesMapping.containsKey(entryFullName);
-                    if (previousMapping != null) {
-                        String sourceFileForClass = previousMapping.getProperty(entryFullName);
-                        classWasUpdated = classWasUpdated || copiedSourceFiles.contains(sourceFileForClass);
-                    }
-                    return classWasUpdated || entryFullName.equals(MAPPING_FILE);
-                }
-            };
-            writeMappingJarEntry(previousMapping, filterForCars);
-            JarUtils.finishUpdatingJar(originalJarFile, outputJarFile, carContext, jarOutputStream, filterForCars,
+            Properties previousMapping = getPreviousMapping();
+            writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles, null));
+            
+            Set<String> keptResources = addResources();
+            
+            JarUtils.finishUpdatingJar(
+                    originalJarFile, outputJarFile, carContext, jarOutputStream,
+                    getJarFilter(previousMapping, copiedSourceFiles, keptResources),
                     repoManager, options.get(OptionName.VERBOSE) != null, cmrLog);
+            
             String info;
             if(module.isDefault())
                 info = module.getNameAsString();
@@ -167,13 +171,31 @@ public class JarOutputRepositoryManager {
             cmrLog.info("Created module " + info);
         }
 
+        private JarUtils.JarEntryFilter getJarFilter(final Properties previousMapping, final Set<String> copiedSourceFiles, final Set<String> keptResources) {
+            return new JarUtils.JarEntryFilter() {
+                @Override
+                public boolean avoid(String entryFullName) {
+                    if (entryFullName.endsWith(".class")) {
+                        boolean classWasUpdated = writtenClassesMapping.containsKey(entryFullName);
+                        if (previousMapping != null) {
+                            String sourceFileForClass = previousMapping.getProperty(entryFullName);
+                            classWasUpdated = classWasUpdated || copiedSourceFiles.contains(sourceFileForClass);
+                        }
+                        return classWasUpdated || entryFullName.equals(MAPPING_FILE);
+                    } else {
+                        return keptResources == null || !keptResources.contains(entryFullName);
+                    }
+                }
+            };
+        }
+        
         private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {
             Properties newMapping = new Properties();
             newMapping.putAll(writtenClassesMapping);
             if (previousMapping != null) {
                 // Add the previous mapping entries that are not related to an updated source file 
-                for (String classFullName : previousMapping.stringPropertyNames() ) {
-                    if (! filter.avoid(classFullName)) {
+                for (String classFullName : previousMapping.stringPropertyNames()) {
+                    if (!filter.avoid(classFullName)) {
                         newMapping.setProperty(classFullName, previousMapping.getProperty(classFullName));
                     }
                 }
@@ -205,6 +227,117 @@ public class JarOutputRepositoryManager {
         private void addMappingEntry(String className,
                 String sourcePath) {
             writtenClassesMapping.put(className, sourcePath);
+        }
+        
+        private Set<String> addResources() throws IOException {
+            Set<String> keptResources = new HashSet<String>();
+            
+            Set<Resource> resources = collectResources();
+            
+            JarFile jarFile = null;
+            try {
+                if (originalJarFile != null) {
+                    jarFile = new JarFile(originalJarFile);
+                }
+                
+                for (Resource res : resources) {
+                    if (originalJarFile != null) {
+                        JarEntry entry = jarFile.getJarEntry(res.name);
+                        if (entry != null) {
+                            if (entry.getTime() == res.file.lastModified() // Don't overwrite if not newer
+                                    && entry.getTime() <= System.currentTimeMillis() // And time is not obviously incorrect
+                                    && entry.getTime() != -1) { // And we do actually have a time
+                                keptResources.add(res.name);
+                                continue;
+                            }
+                        }
+                    }
+                    ZipEntry newEntry = new ZipEntry(res.name);
+                    newEntry.setTime(res.file.lastModified());
+                    jarOutputStream.putNextEntry(newEntry);
+                    try {
+                        InputStream inputStream = new FileInputStream(res.file);
+                        try {
+                            JarUtils.copy(inputStream, jarOutputStream);
+                        } finally {
+                            inputStream.close();
+                        }
+                    } finally {
+                        jarOutputStream.closeEntry();
+                    }
+                }
+            } finally {
+                if (jarFile != null) {
+                    jarFile.close();
+                }
+            }
+            
+            return keptResources;
+        }
+        
+        static class Resource {
+            public String name;
+            public File file;
+            
+            public Resource(String name, File file) {
+                this.name = name;
+                this.file = file;
+            }
+
+            @Override
+            public int hashCode() {
+                return name.hashCode();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (obj instanceof Resource) {
+                    Resource r = (Resource)obj;
+                    return name.equals(r.name);
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public String toString() {
+                return name + "=" + file.getPath();
+            }
+        }
+        
+        private Set<Resource> collectResources() throws IOException {
+            final Set<Resource> resources = new HashSet<Resource>();
+            final Iterable<? extends File> resourcePaths = getResourceLocation();
+            for (final File resPath : resourcePaths) {
+                File moduleResDir = new File(resPath, module.getNameAsString().replace('.', File.separatorChar));
+                if (moduleResDir.isDirectory()) {
+                    Files.walkFileTree(moduleResDir.toPath(), new SimpleFileVisitor<Path>() {
+
+                        @Override
+                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                            String name = JarUtils.toPlatformIndependentPath(resPath, file.toFile().getPath());
+                            resources.add(new Resource(name, file.toFile()));
+                            return FileVisitResult.CONTINUE;
+                        }
+                        
+                    });
+                }
+            }
+            return resources;
+        }
+        
+        // This should probably come from the CeyloncFileManager, but for now we do it ourselves
+        private Iterable<? extends File> getResourceLocation() {
+            List<String> paths = options.getMulti(OptionName.CEYLONRESOURCEPATH);
+            if (paths != null && !paths.isEmpty()) {
+                ArrayList<File> dirs = new ArrayList<File>(paths.size());
+                for (String path : paths) {
+                    dirs.add(new File(path));
+                }
+                return dirs;
+            } else {
+                return Collections.singletonList(new File("resource"));
+            }
         }
     }
 }
