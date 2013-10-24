@@ -20,7 +20,12 @@ function type$meta(x,$$targs$$) {
     if (x.$$metamodel$$.$t) //it's an object
       return AppliedValue(undefined,x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
   }
-  var c=AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+  var c;
+  if ($$targs$$.Type.t==='T') {
+    var rt=$retuple($$targs$$.Type);
+    c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
+  }
+  c=AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
   return c;
 }
@@ -37,6 +42,10 @@ function typeLiteral$meta($$targs$$) {
       throw Exception("'Type' argument should be an open or closed type");
     } else if (t === 'u' || t === 'i') {
       return t === 'u' ? applyUnionType($$targs$$.Type) : applyIntersectionType($$targs$$.Type);
+    } else if (t === 'T') {
+      //TODO arguments
+      var _tt=$retuple($$targs$$.Type);
+      return AppliedClass(Tuple,{Type:_tt,Arguments:{t:'T',l:[_tt.a.First,_tt.a.Rest]}});
     } else if (t.$$metamodel$$ === undefined) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
