@@ -233,8 +233,8 @@ shared deprecated</programlisting>
             <para>An initializer parameter of an annotation type may have a default argument, 
             which must be a legal annotation argument.</para>
             
-            <para>Every annotation type must be a subtype of <literal>Annotation</literal> 
-            defined in the package <literal>ceylon.language</literal>.</para>
+            <!--para>Every annotation type must be a subtype of <literal>Annotation</literal> 
+            defined in the package <literal>ceylon.language</literal>.</para-->
             
             <para>A <emphasis>constrained annotation type</emphasis> is an annotation type 
             that is a subtype of <literal>OptionalAnnotation</literal> or 
@@ -441,8 +441,8 @@ shared deprecated</programlisting>
             annotations are parsed by the documentation compiler as Markdown-format
             content.</para>
             
-            <para>These annotations are defined in the package 
-            <literal>ceylon.language.documentation</literal>.</para>
+            <para>These annotations are all defined in the package 
+            <literal>ceylon.language</literal>.</para>
            
         </section>
     

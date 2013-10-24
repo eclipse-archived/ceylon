@@ -268,10 +268,6 @@ public class AnnotationVisitor extends Visitor {
                 .equals(that.getUnit().getBasicDeclaration())) {
             that.addError("annotation class must directly extend Basic");
         }
-        TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
-        if (!c.inherits(annotationDec)) {
-            that.addError("annotation class must be a subtype of Annotation");
-        }
         for (Tree.Parameter pn: that.getParameterList().getParameters()) {
             checkAnnotationParameter(c, pn);
         }
@@ -289,6 +285,10 @@ public class AnnotationVisitor extends Visitor {
             ProducedType t = type.getTypeModel();
             if (t!=null && t.getDeclaration()!=null) {
                 if (t.getDeclaration().isAnnotation()) {
+                    TypeDeclaration annotationDec = that.getUnit().getAnnotationDeclaration();
+                    if (!t.getDeclaration().inherits(annotationDec)) {
+                        that.addError("annotation constructor must return a subtype of Annotation");
+                    }
                     if (!that.getUnit().getPackage().getQualifiedNameString()
                             .equals(LANGUAGE_MODULE_NAME)) {
                         String packageName = t.getDeclaration()
