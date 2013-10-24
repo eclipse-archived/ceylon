@@ -135,11 +135,13 @@ defineAttr($$openFunction,'container',function(){
         if (typeof(this.tipo.$$metamodel$$)==='function') {
           this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
         }
-        var tps=this.tipo.$$metamodel$$.$tp;
+        var mm=this.tipo.$$metamodel$$;
+        var tps=mm.$tp;
+        var ta;
         if (tps) {
           if (types===undefined)
             throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
-          var ta={}; var i=0;
+          ta={}; var i=0;
           for (var tp in tps) {
             if (types[i]===undefined)
               throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
@@ -155,24 +157,46 @@ defineAttr($$openFunction,'container',function(){
             }
             i++;
           }
-          return AppliedFunction(this.tipo,$mptypes,undefined,ta);
         }
-        return AppliedFunction(this.tipo,$mptypes);
+        var ar=$mptypes.Arguments.t;
+        if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
+          //TODO this is incomplete
+          throw IncompatibleTypeException$meta$model("Wrong number of arguments");
+        }
+        return ta?AppliedFunction(this.tipo,$mptypes,undefined,ta):AppliedFunction(this.tipo,$mptypes);
       };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
 
       $$openFunction.memberApply=function memberApply(cont,types,$mptypes){
-        if(types && types.length) {
-          var tps=this.tipo.$$metamodel$$.$tp;
-          var ta={}; var i=0;
-          for (var tp in tps) {
-console.log("tp " + tp + "=" + tps[tp]);
-            ta[tp]={t:types[i++].tipo};
-          }
-console.log("targs " + require('util').inspect(ta));
-          return AppliedFunction(this.tipo,$mptypes,cont,ta);
-          throw Error("IMPL OpenFunction.apply");
+        var mm=this.tipo.$$metamodel$$;
+        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont})))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+        if (!extendsType(mm.$t,$mptypes.Return))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
+        var ar=$mptypes.Arguments.t;
+        if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0){
+          throw IncompatibleTypeException$meta$model("Wrong number of arguments in Arguments type argument");
         }
-        return AppliedFunction(this.tipo,$mptypes,cont);
+        var tps=mm.$tp;
+        var ta;
+        if (tps) {
+          if (types===undefined)
+            throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
+          ta={}; var i=0;
+          for (var tp in tps) {
+            if (types[i]===undefined)
+              throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
+            var _tp = tps[tp];
+            var _t = types[i].tipo;
+            ta[tp]={t:_t};
+            if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
+              var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
+              for (var j=0; j<restraints.length;j++) {
+                if (!extendsType(ta[tp],restraints[j]))
+                  throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+              }
+            }
+            i++;
+          }
+        }
+        return AppliedMethod(this.tipo,types,$mptypes);
       };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
@@ -275,6 +299,12 @@ defineAttr($$openValue,'container',function(){
       };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
 
       $$openValue.memberApply=function memberApply(cont,$mptypes) {
+        var mm=this.tipo.$$metamodel$$;
+        if (typeof(mm)==='function'){
+          mm=mm(); this.tipo.$$metamodel$$=mm;
+        }
+        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont})))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+        if (!extendsType(mm.$t,$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type type argument");
         return AppliedAttribute(this.meta.$nm,this.tipo,$mptypes);
       };$$openValue.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
             //AttributeDeclaration defaulted at X (40:4-40:44)
@@ -425,8 +455,37 @@ function $init$OpenClass(){
     (function($$openClass){
 
 $$openClass.classApply=function(targs,$mptypes) {
+  var mm=this.tipo.$$metamodel$$;
+  if (mm.$tp) {
+    if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
+    //TODO generate targs
+  }
+  var ar=$mptypes.Arguments.t;
+  if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
+    throw IncompatibleTypeException$meta$model("Wrong number of arguments");
+  }
+  //TODO this is wrong
   return this.$apply(targs,$mptypes);
 }
+$$openClass.memberApply=function(cont,targs,$mptypes) {
+  //TODO add Arguments to mptypes
+  return this.memberClassApply(cont,targs,$mptypes);
+}
+
+$$openClass.memberClassApply=function(cont,targs,$mptypes){
+  var mm=this.tipo.$$metamodel$$;
+  if (!extendsType({t:this.tipo},$mptypes.Container))throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  if (mm.$tp) {
+    if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
+    //TODO generate targs
+  }
+  if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
+    throw IncompatibleTypeException$meta$model("Wrong number of arguments");
+  }
+  //TODO actually return something...
+  return null;
+}
+
       defineAttr($$openClass,'string',function(){
         return String$("class " + this.qualifiedName);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 

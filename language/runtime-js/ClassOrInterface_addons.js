@@ -30,27 +30,44 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
   $an:function(){return[shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','satisfiedTypes']};
 });
 ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptypes) {
+  if (!extendsType($$$mptypes.Container,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   var fun = this.tipo[name];
   if (!fun) fun = this.tipo.$$.prototype[name];
   if (!fun) return null;
   if (typeof(fun)!=='function')return null;
-  if (typeof(fun.$$metamodel$$)==='function') {
-    fun.$$metamodel$$=fun.$$metamodel$$();
+  var mm=fun.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm();fun.$$metamodel$$=mm;
   }
   var _t=$$$mptypes.Type;
-  if (fun.$$metamodel$$ && fun.$$metamodel$$.$t)_t=fun.$$metamodel$$.$t;
+  if (mm) {
+    if (mm.$t){
+      _t=mm.$t;
+      if (!extendsType($$$mptypes.Type,_t))throw IncompatibleTypeException$meta$model("Incompatible Type argument");
+    }
+    var ar=$$$mptypes.Arguments.t;
+    if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
+      //TODO unify this with all the other similar checks
+      throw IncompatibleTypeException$meta$model("Wrong number of Arguments");
+    }
+  }
   return AppliedMethod(fun, types, {Container:{t:this.tipo},Type:_t,Arguments:$$$mptypes.Arguments});
 }
 ClassOrInterface$meta$model.$$.prototype.getMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethod']};};
 ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name$15,$$$mptypes){
+  if (!extendsType($$$mptypes.Container,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = this.tipo.$$.prototype[nom];
   if (!at)return null;
-  if (typeof(at.$$metamodel$$)==='function') {
-    at.$$metamodel$$=at.$$metamodel$$();
+  var mm=at.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm();at.$$metamodel$$=mm;
   }
   var _t=$$$mptypes.Type;
-  if (at.$$metamodel$$ && at.$$metamodel$$.$t)_t=at.$$metamodel$$.$t;
+  if (mm && mm.$t) {
+    if (!extendsType(mm.$t,_t))throw IncompatibleTypeException$meta$model("Incompatible Type type argument");
+    _t=mm.$t;
+  }
   var rv=(at.set?AppliedVariableAttribute:AppliedAttribute)(name$15, at, {Type:_t, Container:{t:this.tipo}});
   rv.$parent=this;
   return rv;
@@ -77,7 +94,8 @@ ClassOrInterface$meta$model.$$.prototype.getVariableAttribute=function getVariab
 };
 ClassOrInterface$meta$model.$$.prototype.getVariableAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:VariableAttribute$meta$model,a:{Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getVariableAttribute']};};
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes){
-  if (!extendsType($$$mptypes.Kind, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException("Kind must be ClassOrInterface");
+  if (!extendsType($$$mptypes.Kind, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
+  if (!extendsType($$$mptypes.Container,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible type specified in Container");
   var $$clase=this;
   if(types$3===undefined){types$3=getEmpty();}
   var mm = $$clase.tipo.$$metamodel$$;
@@ -97,13 +115,13 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     var md = get_model(mm);
     var rv;
     if (md.$mt==='ifc') {
-      if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException("Member " + name$2 + " is an interface");
+      if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
       rv=AppliedInterface(ic, {Type:{t:ic}});
     } else if (md.$mt==='cls'){
-      if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException("Member " + name$2 + " is a class");
+      if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       rv=AppliedClass(ic, {Type:{t:ic}, Arguments:$$$mptypes.Arguments});
     } else {
-      throw IncompatibleTypeException("Member " + name$2 + " is not a class or interface");
+      throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
     }
     rv.$parent=this;
     return rv;
@@ -183,7 +201,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
         if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
           var _targ=this.$$targs$$.Type.a[tp];
           if (typeof(_targ)==='string') {
-            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifedName);
+            console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
             _targ={t:Anything};
           }
           targ=typeLiteral$meta({Type:_targ});
@@ -217,7 +235,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
       if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
         var _targ=this.$$targs$$.Type.a[tp];
         if (typeof(_targ)==='string') {
-          console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifedName);
+          console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
           _targ={t:Anything};
         }
         targ=typeLiteral$meta({Type:_targ});
