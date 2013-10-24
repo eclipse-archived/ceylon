@@ -160,6 +160,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     }
     
     @OptionArgument(longName="src", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to directory containing source files. " +
             "Can be specified multiple times; you can also specify several " +
             "paths separated by your operating system's `PATH` separator." +
@@ -169,6 +170,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     }
     
     @OptionArgument(longName="source", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("An alias for `--src`" +
             " (default: `./source`)")
     public void setSource(List<File> source) {

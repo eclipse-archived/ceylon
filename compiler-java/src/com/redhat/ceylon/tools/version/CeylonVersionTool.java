@@ -25,7 +25,9 @@ import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
+import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -88,12 +90,14 @@ public class CeylonVersionTool extends CeylonBaseTool {
     }
     
     @OptionArgument(longName="src", argumentName="dir")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("A directory containing Ceylon and/or Java source code (default: `./source`)")
     public void setSourceFolders(List<File> sourceFolders) {
         this.sourceFolders  = sourceFolders;
     }
     
     @OptionArgument(longName="source", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("An alias for `--src`" +
             " (default: `./source`)")
     public void setSource(List<File> source) {
