@@ -24,8 +24,9 @@ function type$meta(x,$$targs$$) {
   if ($$targs$$.Type.t==='T') {
     var rt=$retuple($$targs$$.Type);
     c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
+  } else {
+    c=AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   }
-  c=AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
   return c;
 }
@@ -45,7 +46,7 @@ function typeLiteral$meta($$targs$$) {
     } else if (t === 'T') {
       //TODO arguments
       var _tt=$retuple($$targs$$.Type);
-      return AppliedClass(Tuple,{Type:_tt,Arguments:{t:'T',l:[_tt.a.First,_tt.a.Rest]}});
+      return AppliedClass(Tuple,{Type:$$targs$$.Type,Arguments:{t:'T',l:[_tt.a.First,_tt.a.Rest]}});
     } else if (t.$$metamodel$$ === undefined) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {

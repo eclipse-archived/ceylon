@@ -158,11 +158,7 @@ defineAttr($$openFunction,'container',function(){
             i++;
           }
         }
-        var ar=$mptypes.Arguments.t;
-        if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
-          //TODO this is incomplete
-          throw IncompatibleTypeException$meta$model("Wrong number of arguments");
-        }
+        validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of arguments when applying function");
         return ta?AppliedFunction(this.tipo,$mptypes,undefined,ta):AppliedFunction(this.tipo,$mptypes);
       };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
 
@@ -170,10 +166,7 @@ defineAttr($$openFunction,'container',function(){
         var mm=this.tipo.$$metamodel$$;
         if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont})))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
         if (!extendsType(mm.$t,$mptypes.Return))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
-        var ar=$mptypes.Arguments.t;
-        if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0){
-          throw IncompatibleTypeException$meta$model("Wrong number of arguments in Arguments type argument");
-        }
+        validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for memberApply");
         var tps=mm.$tp;
         var ta;
         if (tps) {
@@ -463,14 +456,12 @@ $$openClass.classApply=function(targs,$mptypes) {
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
     //TODO generate targs
   }
-  var ar=$mptypes.Arguments.t;
-  if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
-    throw IncompatibleTypeException$meta$model("Wrong number of arguments");
-  }
+  validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
   //TODO this is wrong
   return this.$apply(targs,$mptypes);
 }
 $$openClass.memberApply=function(cont,targs,$mptypes) {
+  validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
   //TODO add Arguments to mptypes
   return this.memberClassApply(cont,targs,$mptypes);
 }
@@ -482,9 +473,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
     //TODO generate targs
   }
-  if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
-    throw IncompatibleTypeException$meta$model("Wrong number of arguments");
-  }
+  validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
   //TODO actually return something...
   return null;
 }

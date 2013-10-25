@@ -30,3 +30,17 @@ function $retuple(t) { //receives {t:'T',l:[...]}
   }
   return r;
 }
+function validate$params(ps,t,msg) {
+  if (t.t===Nothing)return;
+  if (!ps || ps.length==0) {
+    if (t.t===getEmpty())return;
+  } else if (t.t==='T') {
+    if (ps.length==t.l.length) {
+      //TODO check each parameter
+      return;
+    }
+  } else { //it's already a tuple, navigate it
+    console.log("TODO!!!! validate$params with Tuple type");
+  }
+  throw IncompatibleTypeException$meta$model(msg);
+}

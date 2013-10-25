@@ -45,11 +45,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
       _t=mm.$t;
       if (!extendsType($$$mptypes.Type,_t))throw IncompatibleTypeException$meta$model("Incompatible Type argument");
     }
-    var ar=$$$mptypes.Arguments.t;
-    if ((mm.$ps && mm.$ps.length!=ar.size) || ar.size!=0) {
-      //TODO unify this with all the other similar checks
-      throw IncompatibleTypeException$meta$model("Wrong number of Arguments");
-    }
+    validate$params(mm.$ps,$$$mptypes.Arguments,"Wrong number of Arguments for getMethod");
   }
   return AppliedMethod(fun, types, {Container:{t:this.tipo},Type:_t,Arguments:$$$mptypes.Arguments});
 }
