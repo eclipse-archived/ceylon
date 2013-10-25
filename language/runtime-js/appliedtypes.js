@@ -74,43 +74,9 @@ function $init$AppliedClass(){
         return this.tipo.apply(undefined,a);
       };$$clase.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Class','$m','apply'],$t:'Type'};};
 
-defineAttr($$clase,'parameterTypes',function(){
-  var ps=this.tipo.$$metamodel$$.$ps;
-  if (!ps || ps.length==0)return getEmpty();
-  var r=[];
-  for (var i=0; i < ps.length; i++) {
-    var pt=ps[i].$t;
-    if (typeof(pt)==='string'){
-      if (!this.$targs)throw TypeApplicationException$meta$model(String$("This class model needs type parameters"));
-      pt=this.$targs[pt];
-      if (!pt)throw TypeApplicationException$meta$model(String$("Class model is missing type argument for <" + ps[i].$t + ">"));
-    }
-    r.push(typeLiteral$meta({Type:pt}));
+    })(AppliedClass.$$.prototype);
   }
-  return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
-},undefined,function(){return{mod:$$METAMODEL$$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
-
-            defineAttr($$clase,'declaration',function(){
-              var $$clase=this;
-              if ($$clase._decl)return $$clase._decl;
-              var mm = $$clase.tipo.$$metamodel$$;
-              if (typeof(mm)==='function'){
-                mm=mm();
-                $$clase.tipo.$$metamodel$$=mm;
-              }
-              $$clase._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$clase.tipo);
-              return $$clase._decl;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassDeclaration$meta$declaration},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','declaration']};});
-
-
-  $$clase.equals=function(o){
-return isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
-};
-//TODO equals metamodel
-
-        })(AppliedClass.$$.prototype);
-    }
-    return AppliedClass;
+  return AppliedClass;
 }
 exports.$init$AppliedClass$meta$model=$init$AppliedClass;
 $init$AppliedClass();
@@ -160,20 +126,6 @@ function $init$AppliedInterface(){
     initTypeProto(AppliedInterface,'ceylon.language.meta.model::AppliedInterface',Basic,Interface$meta$model);
     (function($$appliedInterface){
 
-      defineAttr($$appliedInterface,'declaration',function(){
-      if (this._decl)return this._decl;
-      var mm = this.tipo.$$metamodel$$;
-      if (typeof(mm)==='function') {
-        mm = mm();
-        this.tipo.$$metamodel$$=mm;
-      }
-      this._decl = OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), this.tipo);
-      return this._decl;
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:InterfaceDeclaration$meta$declaration},$cont:AppliedInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Interface','$at','declaration']};});
-
-  $$appliedInterface.equals=function(o){
-return isOfType(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
-};
         })(AppliedInterface.$$.prototype);
     }
     return AppliedInterface;
