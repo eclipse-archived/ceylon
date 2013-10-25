@@ -502,22 +502,8 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   } else {
     f.$$targs$$=$$targs$$;
   }
-  Function$meta$model(dummy,$$targs$$);
-defineAttr(f,'parameterTypes',function(){
-  var ps=m.$$metamodel$$.$ps;
-  if (!ps || ps.length==0)return getEmpty();
-  var r=[];
-  for (var i=0; i < ps.length; i++) {
-    var pt=ps[i].$t;
-    if (typeof(pt)==='string'){
-      if (!this.$targs)throw TypeApplicationException$meta$model(String$("This function model needs type parameters"));
-      pt=this.$targs[pt];
-      if (!pt)throw TypeApplicationException$meta$model(String$("Function model is missing type argument for <" + ps[i].$t + ">"));
-    }
-    r.push(typeLiteral$meta({Type:pt}));
-  }
-  return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
-},undefined,function(){return{mod:$$METAMODEL$$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
+  Function$meta$model(f,$$targs$$);
+  f.tipo=m;
 defineAttr(f,'string',function(){
   var qn=mm.d[0];
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
@@ -541,6 +527,9 @@ defineAttr(f,'string',function(){
     }
     qn+=">";
   }
+  defineAttr(f,'parameterTypes',function(){
+    return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(f);
+  },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
   return String$(qn);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
 defineAttr(f,'declaration',function(){
@@ -549,7 +538,7 @@ defineAttr(f,'declaration',function(){
   return f._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
   f.$apply=function(){
-console.log("TODO AppliedFunction.apply");
+    return m.apply(o,arguments);
   }
   return f;
 }
@@ -737,10 +726,16 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       var $$appliedMethod=this;
       throw wrapexc(Exception(String$("IMPL AppliedMethod.typeArguments")),'92:75-92:107','?');
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','typeArguments']};});
+  defineAttr($$appliedMethod,'parameterTypes',function(){
+    return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call($$appliedMethod);
+  },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
 
   $$appliedMethod.equals=function(o){
     return isOfType(o,{t:AppliedMethod}) && o.tipo===tipo;
-  };
+  }
+  $$appliedMethod.$bind=function(o){
+    return $$appliedMethod(o);
+  }
   return $$appliedMethod;
 }
 AppliedMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
