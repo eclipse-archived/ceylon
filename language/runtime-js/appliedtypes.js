@@ -622,7 +622,8 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       _mptypes[type_arg]=typeArgs[_count++].$$targs$$.Type;
     }
   }
-  if ($$appliedMethod===undefined)$$appliedMethod=function(x){return function(){
+  if ($$appliedMethod===undefined){
+  $$appliedMethod=function(x){return function(){
     if (_mptypes) {
       var nargs = [];
       for (var i=0; i < arguments.length; i++)nargs.push(arguments[i]);
@@ -631,6 +632,10 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     }
     return tipo.apply(x,arguments);
   }};
+    var dummy=new AppliedMethod.$$;
+    $$appliedMethod.getT$all=function(){return dummy.getT$all();};
+    $$appliedMethod.getT$name=function(){return dummy.getT$name();};
+  }
   set_type_args($$appliedMethod,$$targs$$);
   Method$meta$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments:$$appliedMethod.$$targs$$.Arguments,Type:$$appliedMethod.$$targs$$.Type,Container:$$appliedMethod.$$targs$$.Container},$$appliedMethod);
   $$appliedMethod.tipo=tipo;
@@ -656,6 +661,9 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       throw wrapexc(Exception(String$("IMPL AppliedMethod.typeArguments")),'92:75-92:107','?');
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','typeArguments']};});
 
+  $$appliedMethod.equals=function(o){
+    return isOfType(o,{t:AppliedMethod}) && o.tipo===tipo;
+  };
   return $$appliedMethod;
 }
 AppliedMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
