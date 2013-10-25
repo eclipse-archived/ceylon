@@ -773,4 +773,19 @@ public class Decl {
                 && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration() != null
                 && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration().isStaticallyImportable();
     }
+    
+    /**
+     * Is the member private and not visible from the primary (i.e. is an 
+     * upcast required to be able to see that member) 
+     */
+    public static boolean isPrivateAccessRequiringUpcast(Tree.StaticMemberOrTypeExpression qual) {
+        if (qual instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.Primary primary = ((Tree.QualifiedMemberOrTypeExpression)qual).getPrimary();
+            Declaration decl = qual.getDeclaration();
+            return decl.isMember()
+                    && !decl.isShared()
+                    && primary.getTypeModel().getDeclaration() != decl.getContainer();
+        }
+        return false;
+    }
 }

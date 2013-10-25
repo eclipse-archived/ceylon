@@ -3715,6 +3715,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (qualExpr == null && decl.isStaticallyImportable()) {
                 qualExpr = naming.makeQuotedFQIdent(Decl.className((Declaration) decl.getContainer()));
             }
+            if (Decl.isPrivateAccessRequiringUpcast(expr)) {
+                qualExpr = makePrivateAccessUpcast(expr, qualExpr);
+            }
             
             if (transformer != null) {
                 result = transformer.transform(qualExpr, selector);
@@ -4128,6 +4131,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr = transformSuperOf(qualified);
             } else {
                 expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+                if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
+                    expr = makePrivateAccessUpcast(qualified, expr);
+                }
             }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
             // Nothing to do here
@@ -5048,6 +5054,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             Assert.fail();
         }
+    }
+    
+    JCExpression makePrivateAccessUpcast(Tree.StaticMemberOrTypeExpression qmte, JCExpression qual) {
+        ProducedType pt = ((TypeDeclaration)qmte.getDeclaration().getRefinedDeclaration().getContainer()).getType();
+        // By definition the member has private access, so if it's an interface
+        // member we want the companion.
+        return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);
     }
 
 }
