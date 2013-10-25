@@ -16,6 +16,9 @@
 %define name_source %{name}-%{major_version}.%{minor_version}
 #define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
 
+# Make sure rpmbuild leaves JAR files alone!
+%define __jar_repack 0
+
 Name: ceylon
 Epoch: 0
 Version: %{major_version}.%{minor_version}.%{micro_version}
