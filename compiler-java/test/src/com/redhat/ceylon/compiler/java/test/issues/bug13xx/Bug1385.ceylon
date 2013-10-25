@@ -18,28 +18,58 @@
  * MA  02110-1301, USA.
  */
 @noanno
-void bug1385<This, Other>(This actual, Other expected) 
+This bug1385_1<This, Other>(This actual, Other expected) 
     given Other satisfies This {
+    return actual;
 }
 @noanno
-void bug1385_swapped<This, Other>(This actual, Other expected) 
+Other bug1385_2<This, Other>(This actual, Other expected) 
+        given Other satisfies This {
+    return expected;
+}
+@noanno
+This bug1385_swapped_1<This, Other>(This actual, Other expected) 
         given This satisfies Other {
+    return actual;
 }
 @noanno
-void bug1385_constrained<This, Other>(This actual, Other expected)
+Other bug1385_swapped_2<This, Other>(This actual, Other expected) 
+        given This satisfies Other {
+    return expected;
+}
+@noanno
+This bug1385_constrained_1<This, Other>(This actual, Other expected)
         given This satisfies List<Character>
         given Other satisfies This {
+    return actual;
 }
 @noanno
-class Bug1385_constrained2<This, Other>(This actual, Other expected)
+Other bug1385_constrained_2<This, Other>(This actual, Other expected)
+        given This satisfies List<Character>
+        given Other satisfies This {
+    return expected;
+}
+@noanno
+This bug1385_constrained2_1<This, Other>(This actual, Other expected)
         given This satisfies [String, Integer*]
         given Other satisfies This {
+    return actual;
+}
+@noanno
+Other bug1385_constrained2_2<This, Other>(This actual, Other expected)
+        given This satisfies [String, Integer*]
+        given Other satisfies This {
+    return expected;
 }
 
 @noanno
 void bug1385_test() {
-    bug1385(3, "foo");
-    bug1385_swapped(3, "foo");
-    bug1385_constrained(['c'], "foo");
-    bug1385_constrained2(["this"], ["other", 1]);
+    value a1 = bug1385_1(3, "foo");
+    value a2 = bug1385_2(3, "foo");
+    value b1 = bug1385_swapped_1(3, "foo");
+    value b2 = bug1385_swapped_2(3, "foo");
+    value c1 = bug1385_constrained_1(['c'], "foo");
+    value c2 = bug1385_constrained_2(['c'], "foo");
+    value d1 = bug1385_constrained2_1(["this"], ["other", 1]);
+    value d2 = bug1385_constrained2_2(["this"], ["other", 1]);
 }

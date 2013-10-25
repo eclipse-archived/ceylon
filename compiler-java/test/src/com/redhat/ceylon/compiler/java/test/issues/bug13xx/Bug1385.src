@@ -1,27 +1,75 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-final class bug1385_ {
+final class bug1385_1_ {
     
-    private bug1385_() {
+    private bug1385_1_() {
     }
     
-    static <This, Other extends This>void bug1385(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
-    }
-}
-final class bug1385_swapped_ {
-    
-    private bug1385_swapped_() {
-    }
-    
-    static <This extends Other, Other>void bug1385_swapped(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+    static <This, Other extends This>This bug1385_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return actual;
     }
 }
-final class bug1385_constrained_ {
+final class bug1385_2_ {
     
-    private bug1385_constrained_() {
+    private bug1385_2_() {
     }
     
-    static <This extends .ceylon.language.List<? extends .ceylon.language.Character>, Other extends This>void bug1385_constrained(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+    static <This, Other extends This>Other bug1385_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return (Other)expected;
+    }
+}
+final class bug1385_swapped_1_ {
+    
+    private bug1385_swapped_1_() {
+    }
+    
+    static <This extends Other, Other>This bug1385_swapped_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return (This)actual;
+    }
+}
+final class bug1385_swapped_2_ {
+    
+    private bug1385_swapped_2_() {
+    }
+    
+    static <This extends Other, Other>Other bug1385_swapped_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return expected;
+    }
+}
+final class bug1385_constrained_1_ {
+    
+    private bug1385_constrained_1_() {
+    }
+    
+    static <This extends .ceylon.language.List<? extends .ceylon.language.Character>, Other extends This>This bug1385_constrained_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return (This)actual;
+    }
+}
+final class bug1385_constrained_2_ {
+    
+    private bug1385_constrained_2_() {
+    }
+    
+    static <This extends .ceylon.language.List<? extends .ceylon.language.Character>, Other extends This>Other bug1385_constrained_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return (Other)expected;
+    }
+}
+final class bug1385_constrained2_1_ {
+    
+    private bug1385_constrained2_1_() {
+    }
+    
+    static <This extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>, Other extends This>This bug1385_constrained2_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return (This)actual;
+    }
+}
+final class bug1385_constrained2_2_ {
+    
+    private bug1385_constrained2_2_() {
+    }
+    
+    static <This extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>, Other extends This>Other bug1385_constrained2_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$This, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final This actual, final Other expected) {
+        return (Other)expected;
     }
 }
 final class bug1385_test_ {
@@ -30,9 +78,18 @@ final class bug1385_test_ {
     }
     
     static void bug1385_test() {
-        .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_.<.java.lang.Object, .ceylon.language.String>bug1385(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("foo"));
-        .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_swapped_.<.ceylon.language.Integer, .java.lang.Object>bug1385_swapped(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("foo"));
-        .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_constrained_.<.ceylon.language.List<? extends .ceylon.language.Character>, .ceylon.language.String>bug1385_constrained(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Sequential<? extends .ceylon.language.Character>>(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Character.instance(99)}), .ceylon.language.String.instance("foo"));
+        final .java.lang.Object a1 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_1_.<.java.lang.Object, .ceylon.language.String>bug1385_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("foo"));
+        final .java.lang.String a2 = ((.ceylon.language.String)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_2_.<.java.lang.Object, .ceylon.language.String>bug1385_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("foo"))).toString();
+        final long b1 = ((.ceylon.language.Integer)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_swapped_1_.<.ceylon.language.Integer, .java.lang.Object>bug1385_swapped_1(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("foo"))).longValue();
+        final .java.lang.Object b2 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_swapped_2_.<.ceylon.language.Integer, .java.lang.Object>bug1385_swapped_2(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("foo"));
+        final .java.lang.Object c1 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_constrained_1_.<.ceylon.language.List<? extends .ceylon.language.Character>, .ceylon.language.String>bug1385_constrained_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Sequential<? extends .ceylon.language.Character>>(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Character.instance(99)}), .ceylon.language.String.instance("foo"));
+        final .java.lang.String c2 = ((.ceylon.language.String)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_constrained_2_.<.ceylon.language.List<? extends .ceylon.language.Character>, .ceylon.language.String>bug1385_constrained_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Sequential<? extends .ceylon.language.Character>>(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Character.instance(99)}), .ceylon.language.String.instance("foo"))).toString();
+        final .ceylon.language.Sequential d1 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential).com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_constrained2_1_.<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>, .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>bug1385_constrained2_1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), (.ceylon.language.Tuple)new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("this")}), (.ceylon.language.Tuple)new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("other"),
+                .ceylon.language.Integer.instance(1L)}));
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> d2 = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>)(.ceylon.language.Tuple).com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1385_constrained2_2_.<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>, .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>bug1385_constrained2_2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), (.ceylon.language.Tuple)new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("this")}), (.ceylon.language.Tuple)new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("other"),
+                .ceylon.language.Integer.instance(1L)}));
     }
     
     public static void main(.java.lang.String[] args) {
