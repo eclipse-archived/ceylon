@@ -2814,18 +2814,33 @@ public class ExpressionTransformer extends AbstractTransformer {
                     firstBound = null;
                 }
                 if (willEraseToObject(ta) || needsCastForBounds) {
+                    boolean boundsSelfDependent = isBoundsSelfDependant(tp);
                     if (hasDependentTypeParameters(tps, tp)
                             // if we must use the bounds and we have more than one, we cannot use one to satisfy them all
                             // and we cannot represent the intersection type in Java so give up
                             || hasMultipleBounds
-                            // if we are going to use the first bound and it is self-dependent, just give up because
-                            // we cannot express that in the Java language
-                            || isBoundsSelfDependant(tp)
+                            // if we are going to use the first bound and it is self-dependent, we will make it raw
+                            || boundsSelfDependent
                             || (firstBound != null && willEraseToObject(firstBound))) {
-                        callBuilder.typeArguments(List.<JCExpression>nil());
-                        return;
-                    }
-                    if (firstBound == null) {
+                        // we just can't satisfy the bounds if there are more than one, just pray,
+                        // BUT REMEMBER THERE IS NO SUCH THING AS A RAW METHOD CALL IN JAVA
+                        // so at some point we'll have to introduce an intersection type AST node to satisfy multiple bounds
+                        if(hasMultipleBounds){
+                            callBuilder.typeArguments(List.<JCExpression>nil());
+                            return;
+                        }
+                        // if we have a bound
+                        if(firstBound != null){
+                            // if it's self-dependent we cannot satisfy it without a raw type
+                            if(boundsSelfDependent)
+                                callBuilder.typeArgument(makeJavaType(firstBound, JT_TYPE_ARGUMENT|JT_RAW));
+                            else
+                                callBuilder.typeArgument(makeJavaType(firstBound, JT_TYPE_ARGUMENT));
+                        }else{
+                            // no bound, let's go with Object then
+                            callBuilder.typeArgument(makeJavaType(typeFact().getObjectDeclaration().getType(), JT_TYPE_ARGUMENT));
+                        }
+                    }else if (firstBound == null) {
                         callBuilder.typeArgument(makeJavaType(ta, JT_TYPE_ARGUMENT));
                     } else {
                         callBuilder.typeArgument(makeJavaType(firstBound, JT_TYPE_ARGUMENT));
