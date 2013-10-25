@@ -154,13 +154,13 @@ public class JarOutputRepositoryManager {
             Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
 
             Properties previousMapping = getPreviousMapping();
-            writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles, null));
+            writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles));
             
-            Set<String> keptResources = addResources();
+            addResources();
             
             JarUtils.finishUpdatingJar(
                     originalJarFile, outputJarFile, carContext, jarOutputStream,
-                    getJarFilter(previousMapping, copiedSourceFiles, keptResources),
+                    getJarFilter(previousMapping, copiedSourceFiles),
                     repoManager, options.get(OptionName.VERBOSE) != null, cmrLog);
             
             String info;
@@ -171,7 +171,7 @@ public class JarOutputRepositoryManager {
             cmrLog.info("Created module " + info);
         }
 
-        private JarUtils.JarEntryFilter getJarFilter(final Properties previousMapping, final Set<String> copiedSourceFiles, final Set<String> keptResources) {
+        private JarUtils.JarEntryFilter getJarFilter(final Properties previousMapping, final Set<String> copiedSourceFiles) {
             return new JarUtils.JarEntryFilter() {
                 @Override
                 public boolean avoid(String entryFullName) {
@@ -181,9 +181,9 @@ public class JarOutputRepositoryManager {
                             String sourceFileForClass = previousMapping.getProperty(entryFullName);
                             classWasUpdated = classWasUpdated || copiedSourceFiles.contains(sourceFileForClass);
                         }
-                        return classWasUpdated || entryFullName.equals(MAPPING_FILE);
+                        return classWasUpdated;
                     } else {
-                        return keptResources == null || !keptResources.contains(entryFullName);
+                        return true;
                     }
                 }
             };
@@ -229,50 +229,23 @@ public class JarOutputRepositoryManager {
             writtenClassesMapping.put(className, sourcePath);
         }
         
-        private Set<String> addResources() throws IOException {
-            Set<String> keptResources = new HashSet<String>();
-            
+        private void addResources() throws IOException {
             Set<Resource> resources = collectResources();
             
-            JarFile jarFile = null;
-            try {
-                if (originalJarFile != null) {
-                    jarFile = new JarFile(originalJarFile);
-                }
-                
-                for (Resource res : resources) {
-                    if (originalJarFile != null) {
-                        JarEntry entry = jarFile.getJarEntry(res.name);
-                        if (entry != null) {
-                            if (entry.getTime() == res.file.lastModified() // Don't overwrite if not newer
-                                    && entry.getTime() <= System.currentTimeMillis() // And time is not obviously incorrect
-                                    && entry.getTime() != -1) { // And we do actually have a time
-                                keptResources.add(res.name);
-                                continue;
-                            }
-                        }
-                    }
-                    ZipEntry newEntry = new ZipEntry(res.name);
-                    newEntry.setTime(res.file.lastModified());
-                    jarOutputStream.putNextEntry(newEntry);
+            for (Resource res : resources) {
+                ZipEntry newEntry = new ZipEntry(res.name);
+                jarOutputStream.putNextEntry(newEntry);
+                try {
+                    InputStream inputStream = new FileInputStream(res.file);
                     try {
-                        InputStream inputStream = new FileInputStream(res.file);
-                        try {
-                            JarUtils.copy(inputStream, jarOutputStream);
-                        } finally {
-                            inputStream.close();
-                        }
+                        JarUtils.copy(inputStream, jarOutputStream);
                     } finally {
-                        jarOutputStream.closeEntry();
+                        inputStream.close();
                     }
-                }
-            } finally {
-                if (jarFile != null) {
-                    jarFile.close();
+                } finally {
+                    jarOutputStream.closeEntry();
                 }
             }
-            
-            return keptResources;
         }
         
         static class Resource {
