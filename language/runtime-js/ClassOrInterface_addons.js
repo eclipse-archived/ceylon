@@ -112,7 +112,7 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     var rv;
     if (md.$mt==='ifc') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
-      rv=AppliedInterface(ic, {Type:{t:ic}});
+      rv=AppliedMemberInterface(ic, {Container:{t:this.tipo},Type:{t:ic}});
     } else if (md.$mt==='cls'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       rv=AppliedMemberClass(ic, {Container:{t:this.tipo},Type:{t:ic}, Arguments:$$$mptypes.Arguments});
@@ -133,7 +133,7 @@ ClassOrInterface$meta$model.$$.prototype.getClass=function getClass(name,types,$
 };ClassOrInterface$meta$model.$$.prototype.getClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:MemberClass$meta$model},$ps:[],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{satisfies:[{t:Sequential,a:{Element:{t:Anything}}}]}}};};
 ClassOrInterface$meta$model.$$.prototype.getInterface=function(name,types,$mptypes) {
   var rv=this.getClassOrInterface(name,types,{Container:$mptypes.Container, Kind:Interface$meta$model});
-  if (rv && !isOfType(rv, {t:AppliedInterface})) {
+  if (rv && !isOfType(rv, {t:AppliedMemberInterface})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not an interface");
   }
   return rv;
