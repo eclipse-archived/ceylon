@@ -50,7 +50,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         this.hashCode = hashCode;
         this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
         this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -126,11 +126,11 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $ceylon$language$Annotation$this$;
+    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

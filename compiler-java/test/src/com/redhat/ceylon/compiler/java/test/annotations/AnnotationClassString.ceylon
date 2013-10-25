@@ -5,15 +5,15 @@ annotation final class AnnotationClassString(String s) satisfies SequencedAnnota
 @nomodel
 annotation final class AnnotationClassStringDefaulted(String s="foo") satisfies SequencedAnnotation<AnnotationClassStringDefaulted, ClassOrInterfaceDeclaration>{}
 @nomodel
-annotation final class AnnotationClassStringSequence(String[] s) satisfies Annotation<AnnotationClassStringSequence> {}
+annotation final class AnnotationClassStringSequence(String[] s) satisfies OptionalAnnotation<AnnotationClassStringSequence, ClassOrInterfaceDeclaration> {}
 @nomodel
-annotation final class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) satisfies Annotation<AnnotationClassStringSequenceDefaulted> {}
+annotation final class AnnotationClassStringSequenceDefaulted(String[] s=["foo"]) satisfies OptionalAnnotation<AnnotationClassStringSequenceDefaulted, ClassOrInterfaceDeclaration> {}
 @nomodel
-annotation final class AnnotationClassStringIterable({String*} s) satisfies Annotation<AnnotationClassStringIterable> {}
+annotation final class AnnotationClassStringIterable({String*} s) satisfies OptionalAnnotation<AnnotationClassStringIterable, ClassOrInterfaceDeclaration> {}
 @nomodel
-annotation final class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) satisfies Annotation<AnnotationClassStringIterableDefaulted> {}
+annotation final class AnnotationClassStringIterableDefaulted({String*} s={"foo"}) satisfies OptionalAnnotation<AnnotationClassStringIterableDefaulted, ClassOrInterfaceDeclaration> {}
 @nomodel
-annotation final class AnnotationClassStringVariadic({String*} s) satisfies Annotation<AnnotationClassStringVariadic> {}
+annotation final class AnnotationClassStringVariadic({String*} s) satisfies OptionalAnnotation<AnnotationClassStringVariadic, ClassOrInterfaceDeclaration> {}
 @nomodel
 annotation AnnotationClassString annotationClassString(String s="s") { return AnnotationClassString(s); }
 @nomodel

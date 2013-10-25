@@ -17,6 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared annotation final class FooAnnotation() satisfies Annotation<FooAnnotation> {}
+shared annotation final class FooAnnotation() satisfies OptionalAnnotation<FooAnnotation, Annotated> {}
 
 shared annotation FooAnnotation fooAnnotation() => FooAnnotation();

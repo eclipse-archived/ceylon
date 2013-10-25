@@ -24,7 +24,7 @@ public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.
         this.y = y;
         this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     private final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y;
     
@@ -49,10 +49,10 @@ public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X> $ceylon$language$Annotation$this$;
+    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this$;
     }
     
@@ -86,7 +86,7 @@ public final class EnumeratedReference_Y implements .com.redhat.ceylon.compiler.
     public EnumeratedReference_Y(final .ceylon.language.Comparison c) {
         this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y>(.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor$, this);
+        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
@@ -105,10 +105,10 @@ public final class EnumeratedReference_Y implements .com.redhat.ceylon.compiler.
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
     }
-    protected final .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y> $ceylon$language$Annotation$this$;
+    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Annotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y> $ceylon$language$Annotation$impl() {
+    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
         return $ceylon$language$Annotation$this$;
     }
     

@@ -12,7 +12,7 @@ import java.lang.annotation{
 
 target([type])
 retention(runtime)
-final annotation class BannedAnnotation() satisfies Annotation<BannedAnnotation> {
+final annotation class BannedAnnotation() satisfies OptionalAnnotation<BannedAnnotation, Annotated> {
     jdeprecated
     override
     void m() {

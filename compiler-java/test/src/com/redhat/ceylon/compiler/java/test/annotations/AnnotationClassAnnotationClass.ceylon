@@ -1,7 +1,7 @@
 import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration }
 
 @nomodel
-annotation final class AnnotationClassParam(String name) satisfies Annotation<AnnotationClassParam> {}
+annotation final class AnnotationClassParam(String name) satisfies OptionalAnnotation<AnnotationClassParam, ClassOrInterfaceDeclaration> {}
 @nomodel
 annotation AnnotationClassParam annotationClassParam(String name) => AnnotationClassParam(name);
 @nomodel
@@ -11,7 +11,7 @@ annotation final class AnnotationClassAnnotationClassSequence(AnnotationClassPar
 @nomodel
 annotation AnnotationClassAnnotationClassSequence annotationClassAnnotationClassSequence(AnnotationClassParam[] params) => AnnotationClassAnnotationClassSequence(params);
 @nomodel
-annotation final class AnnotationClassAnnotationClassDefaulted(AnnotationClassParam a=AnnotationClassParam("defaulted")) satisfies Annotation<AnnotationClassAnnotationClassDefaulted> {}
+annotation final class AnnotationClassAnnotationClassDefaulted(AnnotationClassParam a=AnnotationClassParam("defaulted")) satisfies OptionalAnnotation<AnnotationClassAnnotationClassDefaulted, ClassOrInterfaceDeclaration> {}
 @nomodel
 annotation AnnotationClassAnnotationClass annotationClassAnnotationClass(AnnotationClassParam a) => AnnotationClassAnnotationClass(a);
 @nomodel

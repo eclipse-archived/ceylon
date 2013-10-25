@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 @nomodel
-shared annotation final class AnnotationClass(String strictfp) satisfies Annotation<AnnotationClass> {}
+shared annotation final class AnnotationClass(String strictfp) satisfies OptionalAnnotation<AnnotationClass, Annotated> {}
 @nomodel
 shared annotation AnnotationClass enum(String instanceof) => AnnotationClass(instanceof);
