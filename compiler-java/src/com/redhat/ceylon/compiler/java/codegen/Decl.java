@@ -46,7 +46,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -609,7 +608,7 @@ public class Decl {
                 && attr.isCaptured();
     }
 
-    public static boolean isAnnotationConstructor(AnyMethod def) {
+    public static boolean isAnnotationConstructor(Tree.AnyMethod def) {
         return isAnnotationConstructor(def.getDeclarationModel());
     }
     
