@@ -9,7 +9,7 @@ function get_model(mm) {
 }
 
 function type$meta(x,$$targs$$) {
-  if (x === null) {
+  if (x === null || $$targs$$.Type.t===Nothing) {
     return getNothingType$meta$model();
   }
   if (x.$$metamodel$$) {
