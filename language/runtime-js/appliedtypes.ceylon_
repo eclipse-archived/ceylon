@@ -114,5 +114,8 @@ shared abstract class AppliedMemberClass<in Container, out Type=Anything, in Arg
         given Arguments satisfies Anything[] {
     shared actual Class<Type,Arguments> bind(Object container) { throw Exception("IMPL MemberClass.bind"); }
 }
-shared class AppliedMemberInterface() satisfies MemberInteface {
+shared abstract class AppliedMemberInterface<in Container, out Type=Anything>()
+        satisfies MemberInterface<Container,Type> {
+    shared actual Interface<Type> bind(Object container) { throw Exception("IMPL MemberInterface.bind"); }
 }
+

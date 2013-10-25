@@ -191,6 +191,59 @@ function $init$AppliedInterface(){
 exports.$init$AppliedInterface$meta$model=$init$AppliedInterface;
 $init$AppliedInterface();
 
+function AppliedMemberInterface(tipo,$$targs$$,that){
+  $init$AppliedMemberInterface();
+  if (that===undefined){
+    var mm = tipo.$$metamodel$$;
+    if (typeof(mm)==='function') {
+      mm=mm(); tipo.$$metamodel$$=mm;
+    }
+    if (mm && mm.$cont) {
+      that=function(x){
+        that.tipo=function(){return tipo.apply(x,arguments);};
+        that.$bound=x;
+        return that;
+      }
+      that.tipo$2=tipo;
+      var dummy = new AppliedMemberInterface.$$;
+      that.$$=AppliedMemberInterface.$$;
+      that.getT$all=function(){return dummy.getT$all();};
+      that.getT$name=function(){return dummy.getT$name();};
+      that.equals=function(o){
+        var eq=isOfType(o,{t:AppliedMemberInterface}) && (o.tipo$2||o.tipo)==tipo;
+        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+        return eq;
+      };
+      defineAttr(that,'string',function(){
+var qn=mm.d[0];
+for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+    } else {
+      that=new AppliedMemberInterface.$$;
+    }
+  }
+  set_type_args(that,$$targs$$);
+  MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type:that.$$targs$$.Type,Container:that.$$targs$$.Container},that);
+  that.tipo=tipo;
+  return that;
+}
+AppliedMemberInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$ps:[],$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}}},satisfies:[{t:MemberInterface$meta$model,a:{Type:'Type',Container:'Container'}}],$an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
+exports.AppliedMemberInterface=AppliedMemberInterface;
+function $init$AppliedMemberInterface(){
+  if (AppliedMemberInterface.$$===undefined){
+    initTypeProto(AppliedMemberInterface,'ceylon.language.meta.model::AppliedMemberInterface',Basic,MemberInterface$meta$model);
+    (function($$appliedMemberInterface){
+      $$appliedMemberInterface.$bind=function $bind(container$2){
+        var $$appliedMemberInterface=this;
+        throw wrapexc(Exception(String$("IMPL MemberInterface.bind",25)),'5:59-5:103','caca.ceylon');
+      };$$appliedMemberInterface.$bind.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$meta$model,a:{Type:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
+    })(AppliedMemberInterface.$$.prototype);
+  }
+  return AppliedMemberInterface;
+}
+exports.$init$AppliedMemberInterface=$init$AppliedMemberInterface;
+$init$AppliedMemberInterface();
     
 
 function AppliedUnionType(tipo,types$2, $$targs$$, that) {
