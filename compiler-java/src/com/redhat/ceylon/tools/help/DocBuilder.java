@@ -176,7 +176,7 @@ public class DocBuilder {
             if (!model.isPorcelain() && !includeHidden) {
                 continue;
             }
-            sb.append("* `").append(toolName).append("` ");
+            sb.append("* `").append(toolName).append("` — ");
             String summary = getSummaryValue(model);
             if (summary != null) {
                 sb.append(summary);
