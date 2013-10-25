@@ -117,6 +117,9 @@ $('tbody .description').each(function() {
 			if( target.is('i') && (target.is('.icon-link') || target.is('.icon-source-code')) ) {
 				return true;
 			}
+			if( target.is('b') && target.is('.caret') ) {
+				return true;
+			}
 
 			var isCollapsed = descDiv.hasClass('description-collapsed');
 			if( isCollapsed ) {
@@ -130,7 +133,7 @@ $('tbody .description').each(function() {
 				iconDecoration.removeClass('icon-decoration-collapse').addClass('icon-decoration-expand');
 			}
 			descDiv.toggleClass('description-collapsed');
-			return false;
+			return true;
 		};
 
 		collapsibleLink.click(collapsibleHandler);

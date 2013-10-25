@@ -152,6 +152,28 @@
 	font-family: monospace;
 }
 
+.link-dropdown {
+    position: relative;
+}
+
+.link-dropdown .caret {
+    position: absolute;
+    right: -8px;
+    bottom: 0px;
+    border-top: 5px solid #005580;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    display: none;
+}
+
+.link-dropdown:HOVER .caret {
+    display: inline-block;
+}
+
+.link-dropdown .dropdown-menu small {
+    color: #999999;
+}
+
 .module-description,
 .class-description {
 	padding: 10px 0;

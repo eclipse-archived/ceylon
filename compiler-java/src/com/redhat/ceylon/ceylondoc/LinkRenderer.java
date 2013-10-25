@@ -20,12 +20,20 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.CeylondMessages.msg;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateCallable;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateEntry;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateIterable;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateOptional;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateSequence;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateSequential;
+import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateTuple;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
@@ -33,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -45,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -65,6 +75,7 @@ public class LinkRenderer {
     private boolean printTypeParameters = true;
     private boolean printTypeParameterDetail = false;
     private boolean printWikiStyleLinks = false;
+    private boolean printLinkDropdownMenu = true;
     
     private final ProducedTypeNamePrinter producedTypeNamePrinter = new ProducedTypeNamePrinter() {
         
@@ -133,6 +144,7 @@ public class LinkRenderer {
         this.printAbbreviated = linkRenderer.printAbbreviated;
         this.printTypeParameters = linkRenderer.printTypeParameters;
         this.printTypeParameterDetail = linkRenderer.printTypeParameterDetail;
+        this.printLinkDropdownMenu = linkRenderer.printLinkDropdownMenu;
     }
     
     public LinkRenderer to(Object to) {
@@ -182,6 +194,11 @@ public class LinkRenderer {
     
     public LinkRenderer printWikiStyleLinks(boolean printWikiStyleLinks) {
         this.printWikiStyleLinks = printWikiStyleLinks;
+        return this;
+    }
+    
+    public LinkRenderer printLinkDropdownMenu(boolean printLinkDropdownMenu) {
+        this.printLinkDropdownMenu = printLinkDropdownMenu;
         return this;
     }
 
@@ -250,7 +267,9 @@ public class LinkRenderer {
 
     private String processProducedType(ProducedType producedType) {
         String result = producedTypeNamePrinter.getProducedTypeName(producedType, null);
-        return decodeResult(result);
+        result = decodeResult(result);
+        result = decorateWithLinkDropdownMenu(result, producedType);
+        return result;
     }
     
     private String processTypedDeclaration(TypedDeclaration decl) {
@@ -717,6 +736,132 @@ public class LinkRenderer {
             text = text.replaceAll(",out ", ",<span class='type-parameter-keyword'>out </span>");
         }
         return text;
-    }    
+    }
+
+    private String decorateWithLinkDropdownMenu(String link, ProducedType producedType) {
+        if( !printLinkDropdownMenu || !printAbbreviated || !canLinkToCeylonLanguageModule() ) {
+            return link;
+        }
+        
+        List<ProducedType> producedTypes = new ArrayList<ProducedType>();
+        decompose(producedType, producedTypes);
+        
+        boolean containsOptional = false;
+        boolean containsSequential = false;
+        boolean containsSequence = false;
+        boolean containsIterable = false;
+        boolean containsEntry = false;
+        boolean containsCallable = false;
+        boolean containsTuple = false;
+        
+        for (ProducedType pt : producedTypes) {
+            if (abbreviateOptional(pt)) {
+                containsOptional = true;
+            } else if (abbreviateSequential(pt) && !link.contains("'Go to ceylon.language::Sequential'")) {
+                containsSequential = true;
+            } else if (abbreviateSequence(pt) && !link.contains("'Go to ceylon.language::Sequence'")) {
+                containsSequence = true;
+            } else if (abbreviateIterable(pt) && !link.contains("'Go to ceylon.language::Iterable'")) {
+                containsIterable = true;
+            } else if (abbreviateEntry(pt) && !link.contains("'Go to ceylon.language::Entry'")) {
+                containsEntry = true;
+            } else if (abbreviateCallable(pt) && !link.contains("'Go to ceylon.language::Callable'")) {
+                containsCallable = true;
+            } else if (abbreviateTuple(pt) && !link.contains("'Go to ceylon.language::Tuple'")) {
+                containsTuple = true;
+            }
+        }
+        
+        Unit unit = producedType.getDeclaration().getUnit();
+        
+        if( containsOptional || containsSequential || containsSequence || containsIterable || containsEntry || containsCallable || containsTuple ) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<span class='link-dropdown'>");
+            sb.append(link);
+            sb.append("<span class='dropdown'>");
+            sb.append("<a class='dropdown-toggle' data-toggle='dropdown' href='#'><b title='Show more links' class='caret'></b></a>");
+            sb.append("<ul class='dropdown-menu'>");    
+            if( containsOptional ) {
+                sb.append(getLinkMenuItem(unit.getNothingDeclaration(), "abbreviations X? means X|Nothing"));
+            }
+            if( containsSequential ) {
+                sb.append(getLinkMenuItem(unit.getSequentialDeclaration(), "abbreviations X[] or [X*] means Sequential&lt;X&gt;"));
+            }
+            if( containsSequence ) {
+                sb.append(getLinkMenuItem(unit.getSequenceDeclaration(), "abbreviations [X+] means Sequence&lt;X&gt;"));
+            }
+            if( containsIterable ) {
+                sb.append(getLinkMenuItem(unit.getIterableDeclaration(), "abbreviations {X+} or {X*} means Iterable&lt;X,Nothing&gt; or Iterable&lt;X,Null&gt;"));
+            }
+            if( containsEntry ) {
+                sb.append(getLinkMenuItem(unit.getEntryDeclaration(), "abbreviations X-&gt;Y means Entry&lt;X,Y&gt;"));
+            }
+            if( containsCallable ) {
+                sb.append(getLinkMenuItem(unit.getCallableDeclaration(), "abbreviations X(Y,Z) means Callable&lt;X,[Y,Z]&gt;"));
+            }
+            if( containsTuple ) {
+                sb.append(getLinkMenuItem(unit.getTupleDeclaration(), "abbreviations [X,Y] means Tuple&lt;X|Y,X,Tuple&lt;Y,Y,[]&gt;&gt;"));
+            }
+            sb.append("</ul>"); // dropdown-menu
+            sb.append("</span>"); // dropdown
+            sb.append("</span>"); // link-dropdown
+            
+            return sb.toString();
+        }
+        
+        return link;
+    }
+
+    private boolean canLinkToCeylonLanguageModule() {
+        Module currentModule = ceylonDocTool.getCurrentModule();
+        if (currentModule.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) {
+            return true;
+        } else {
+            Module languageModule = currentModule.getLanguageModule();
+            String languageModuleUrl = getExternalModuleUrl(languageModule);
+            return languageModuleUrl != null;
+        }
+    }
+
+    private void decompose(ProducedType pt, List<ProducedType> producedTypes) {
+        if (!producedTypes.contains(pt)) {
+            producedTypes.add(pt);
+            TypeDeclaration decl = pt.getDeclaration();
+            if (decl instanceof IntersectionType) {
+                for (ProducedType satisfiedType : pt.getSatisfiedTypes()) {
+                    decompose(satisfiedType, producedTypes);
+                }
+            } else if (decl instanceof UnionType) {
+                for (ProducedType caseType : pt.getCaseTypes()) {
+                    decompose(caseType, producedTypes);
+                }
+            }
+            if (!pt.getTypeArgumentList().isEmpty()) {
+                for (ProducedType typeArgument : pt.getTypeArgumentList()) {
+                    decompose(typeArgument, producedTypes);
+                }
+            }
+        }
+    }
+
+    private String getLinkMenuItem(Declaration decl, String description) {
+        String url = new LinkRenderer(this).
+                to(decl).
+                useCustomText("").
+                printLinkDropdownMenu(false).
+                printAbbreviated(false).
+                printTypeParameters(false).
+                getUrl();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<li>");
+        sb.append("<a class='link' href='").append(url).append("'>");
+        sb.append("Go to ").append(decl.getName()).append(" ");
+        sb.append("<small>").append(description).append("</small>");
+        sb.append("</a>");
+        sb.append("</li>");
+
+        return sb.toString();
+    }
     
 }
