@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -458,8 +459,11 @@ public class TypeUtils {
                         path.add(0, "$i");
                     } else if (p instanceof Method) {
                         path.add(0, "$m");
-                    } else {
+                    } else if (p instanceof TypeAlias) {
                         path.add(0, "$at");
+                    } else { //It's a value
+                        TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
+                        path.add(0, (td!=null&&td.isAnonymous())?"$o":"$at");
                     }
                 }
                 Scope s = p.getContainer();
