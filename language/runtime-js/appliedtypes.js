@@ -81,6 +81,64 @@ function $init$AppliedClass(){
 exports.$init$AppliedClass$meta$model=$init$AppliedClass;
 $init$AppliedClass();
 
+function AppliedMemberClass(tipo,$$targs$$,that){
+  $init$AppliedMemberClass();
+  if (that===undefined) {
+    var mm = tipo.$$metamodel$$;
+    if (typeof(mm)==='function') {
+      mm=mm(); tipo.$$metamodel$$=mm;
+    }
+    if (mm && mm.$cont) {
+      that=function(x){
+        that.tipo=function(){return tipo.apply(x,arguments);};
+        that.$bound=x;
+        return that;
+      }
+      that.tipo$2=tipo;
+      var dummy = new AppliedMemberClass.$$;
+      that.$$=AppliedMemberClass.$$;
+      that.getT$all=function(){return dummy.getT$all();};
+      that.getT$name=function(){return dummy.getT$name();};
+      that.equals=function(o){
+        var eq=isOfType(o,{t:AppliedMemberClass}) && (o.tipo$2||o.tipo)==tipo;
+        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+        return eq;
+      };
+      defineAttr(that,'string',function(){
+var qn=mm.d[0];
+for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+    } else {
+      that=new AppliedMemberClass.$$;
+    }
+  }
+  set_type_args(that,$$targs$$);
+  MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments:that.$$targs$$.Arguments,Type:that.$$targs$$.Type,Container:that.$$targs$$.Container},that);
+  return that;
+}
+AppliedMemberClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$ps:[],$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:MemberClass$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared(),abstract()];},d:['','AppliedMemberClass']};};
+exports.AppliedMemberClass=AppliedMemberClass;
+function $init$AppliedMemberClass(){
+  if (AppliedMemberClass.$$===undefined){
+    initTypeProto(AppliedMemberClass,'ceylon.language.meta.model::AppliedMemberClass',Basic,MemberClass$meta$model);
+    (function($$amc){
+      
+      //MethodDef bind at caca.ceylon (5:4-5:107)
+      $$amc.$bind=function $bind(cont){
+        var mm=this.tipo.$$metamodel$$;
+        var omm=cont.$$.$$metamodel$$;
+        if (typeof(omm)==='function')omm=omm();
+        if (!extendsType({t:mm.$cont},{t:omm}))throw IncompatibleTypeException$meta$model("Incompatible container type");
+        throw wrapexc(Exception(String$("IMPL MemberClass.bind",21)),'5:65-5:105','caca.ceylon');
+      };$$amc.$bind.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:'Arguments',Type:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
+    })(AppliedMemberClass.$$.prototype);
+  }
+  return AppliedMemberClass;
+}
+exports.$init$AppliedMemberClass=$init$AppliedMemberClass;
+$init$AppliedMemberClass();
+
 function AppliedInterface(tipo,$$targs$$,that) {
   $init$AppliedInterface();
   if (that===undefined){

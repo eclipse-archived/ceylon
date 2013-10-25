@@ -109,3 +109,10 @@ shared class AppliedVariableAttribute<in Container, Type>() extends AppliedAttri
   shared actual VariableDeclaration declaration { throw Exception("unimplemented"); }
   shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
 }
+shared abstract class AppliedMemberClass<in Container, out Type=Anything, in Arguments=Nothing>()
+        satisfies MemberClass<Container,Type,Arguments>
+        given Arguments satisfies Anything[] {
+    shared actual Class<Type,Arguments> bind(Object container) { throw Exception("IMPL MemberClass.bind"); }
+}
+shared class AppliedMemberInterface() satisfies MemberInteface {
+}
