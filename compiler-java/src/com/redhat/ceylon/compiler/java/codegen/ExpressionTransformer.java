@@ -574,7 +574,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(exprType.getDeclaration() instanceof UnionType
                 && willEraseToSequential(exprType)){
             // consider the expression type to be Sequential then
-            exprType = typeFact().getDefiniteType(exprType.getSupertype(typeFact().getSequentialDeclaration()));
+            ProducedType exprSequentialType = typeFact().getDefiniteType(exprType.getSupertype(typeFact().getSequentialDeclaration()));
+            // if we ended up with an expression that is a supertype of the expected type this turns into a downcast
+            if(!exprSequentialType.isSubtypeOf(expectedType))
+                downCast = true;
+            exprType = exprSequentialType;
         }
         
         // find their common type
