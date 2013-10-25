@@ -4536,13 +4536,21 @@ public class GenerateJsVisitor extends Visitor
             final ProducedType ltype = that.getType().getTypeModel();
             final TypeDeclaration td = ltype.getDeclaration();
             if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                out(clAlias, "$init$AppliedClass$meta$model()(");
+                if (td.isToplevel()) {
+                    out(clAlias, "$init$AppliedClass$meta$model()(");
+                } else {
+                    out(clAlias, "$init$AppliedMemberClass$meta$model()(");
+                }
                 TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this);
                 out(",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
             } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                out(clAlias, "$init$AppliedInterface$meta$model()(");
+                if (td.isToplevel()) {
+                    out(clAlias, "$init$AppliedInterface$meta$model()(");
+                } else {
+                    out(clAlias, "$init$AppliedMemberInterface$meta$model()(");
+                }
                 TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this);
                 out(",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
