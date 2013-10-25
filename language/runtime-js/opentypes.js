@@ -164,7 +164,8 @@ defineAttr($$openFunction,'container',function(){
 
       $$openFunction.memberApply=function memberApply(cont,types,$mptypes){
         var mm=this.tipo.$$metamodel$$;
-        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont})))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
+          throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
         if (!extendsType(mm.$t,$mptypes.Return))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
         validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for memberApply");
         var tps=mm.$tp;
@@ -296,7 +297,8 @@ defineAttr($$openValue,'container',function(){
         if (typeof(mm)==='function'){
           mm=mm(); this.tipo.$$metamodel$$=mm;
         }
-        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont})))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
+        if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
+          throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
         if (!extendsType(mm.$t,$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type type argument");
         return AppliedAttribute(this.meta.$nm,this.tipo,$mptypes);
       };$$openValue.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
@@ -470,7 +472,8 @@ $$openClass.memberApply=function(cont,targs,$mptypes) {
 
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
-  if (!extendsType({t:cont.tipo},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
+    throw IncompatibleTypeException$meta$model("Incompatible Container specified");
   var _t={t:this.tipo};
   if (mm.$tp) {
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
