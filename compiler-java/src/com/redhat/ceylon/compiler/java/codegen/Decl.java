@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -783,8 +784,25 @@ public class Decl {
             Declaration decl = qual.getDeclaration();
             return decl.isMember()
                     && !decl.isShared()
+                    && decl.getContainer() instanceof Class
                     && primary.getTypeModel().getDeclaration() != decl.getContainer();
         }
         return false;
+    }
+    
+    public static boolean isPrivateAccessRequiringCompanion(Tree.StaticMemberOrTypeExpression qual) {
+        if (qual instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.Primary primary = ((Tree.QualifiedMemberOrTypeExpression)qual).getPrimary();
+            Declaration decl = qual.getDeclaration();
+            return decl.isMember()
+                    && !decl.isShared()
+                    && decl.getContainer() instanceof Interface
+                    && primary.getTypeModel().getDeclaration() != decl.getContainer();
+        }
+        return false;
+    }
+    
+    public static ProducedType getPrivateAccessType(Tree.StaticMemberOrTypeExpression qmte) {
+        return ((TypeDeclaration)qmte.getDeclaration().getRefinedDeclaration().getContainer()).getType();
     }
 }

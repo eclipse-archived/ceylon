@@ -3151,6 +3151,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
                             gen(), 
+                            expr,
                             expr.getTypeModel(), 
                             method, 
                             producedReference).build();
@@ -3158,19 +3159,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                     ProducedReference producedReference = method.getProducedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
                             gen(), 
+                            expr,
                             expr.getTypeModel(), 
                             method, 
                             producedReference).build();
                 }
             } else if (member instanceof Value) {
                 return CallableBuilder.unboundValueMemberReference(
-                        gen(), 
+                        gen(),
+                        expr,
                         expr.getTypeModel(), 
                         ((TypedDeclaration)member)).build();
             } else if (member instanceof Class) {
                 ProducedReference producedReference = expr.getTarget();
                 return CallableBuilder.unboundFunctionalMemberReference(
                         gen(), 
+                        expr,
                         expr.getTypeModel(), 
                         (Class)member, 
                         producedReference).build();
@@ -5057,7 +5061,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression makePrivateAccessUpcast(Tree.StaticMemberOrTypeExpression qmte, JCExpression qual) {
-        ProducedType pt = ((TypeDeclaration)qmte.getDeclaration().getRefinedDeclaration().getContainer()).getType();
+        ProducedType pt = Decl.getPrivateAccessType(qmte);
         // By definition the member has private access, so if it's an interface
         // member we want the companion.
         return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);

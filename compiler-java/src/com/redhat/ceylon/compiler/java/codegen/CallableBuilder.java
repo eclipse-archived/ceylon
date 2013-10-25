@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_RAW;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +33,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -147,6 +147,8 @@ public class CallableBuilder {
     
     private CallableTransformation transformation;
     
+    private boolean companionAccess = false;
+    
     private CallableBuilder(CeylonTransformer gen, ProducedType typeModel, ParameterList paramLists) {
         this.gen = gen;
         this.typeModel = typeModel;
@@ -197,7 +199,9 @@ public class CallableBuilder {
      *     value z = Outer.Inner;
      * </pre>
      */
-    public static CallableBuilder unboundFunctionalMemberReference(CeylonTransformer gen, 
+    public static CallableBuilder unboundFunctionalMemberReference(
+            CeylonTransformer gen,
+            Tree.QualifiedMemberOrTypeExpression qmte,
             ProducedType typeModel, 
             final Functional methodOrClass, 
             ProducedReference producedReference) {
@@ -225,8 +229,12 @@ public class CallableBuilder {
         }
         inner.defaultValueCall = new InstanceDefaultValueCall();
         CallBuilder callBuilder = CallBuilder.instance(gen);
+        ProducedType accessType = gen.getParameterTypeOfCallable(typeModel, 0);
         if (methodOrClass instanceof Method) {
             callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Method)methodOrClass, Naming.NA_MEMBER));
+            if (!((TypedDeclaration)methodOrClass).isShared()) {
+                accessType = Decl.getPrivateAccessType(qmte);
+            }
         } else if (methodOrClass instanceof Method
                 && ((Method)methodOrClass).isParameter()) {
             callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Method)methodOrClass, Naming.NA_MEMBER));
@@ -235,7 +243,10 @@ public class CallableBuilder {
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(gen.naming.makeUnquotedIdent(Unfix.$instance$), (Class)methodOrClass));
             } else {
                 callBuilder.instantiate(new ExpressionAndType(gen.naming.makeUnquotedIdent(Unfix.$instance$), null), 
-                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW));
+                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
+                if (!((Class)methodOrClass).isShared()) {
+                    accessType = Decl.getPrivateAccessType(qmte);
+                }
             }
         } else {
             Assert.fail("Unhandled functional type " + methodOrClass.getClass().getSimpleName());
@@ -270,13 +281,14 @@ public class CallableBuilder {
         instanceParameter.setName(Naming.name(Unfix.$instance$));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
-        valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
+        valueModel.setType(accessType);
         valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(inner.build()));
         outer.useDefaultTransformation(outerBody);
+        outer.companionAccess = Decl.isPrivateAccessRequiringCompanion(qmte);
         
         return outer;
     }
@@ -339,8 +351,10 @@ public class CallableBuilder {
      *     value z = Outer.Inner;
      * </pre>
      */
-    public static CallableBuilder unboundValueMemberReference(CeylonTransformer gen, 
-            ProducedType typeModel, 
+    public static CallableBuilder unboundValueMemberReference(
+            CeylonTransformer gen,
+            Tree.QualifiedMemberOrTypeExpression qmte,
+            ProducedType typeModel,
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER));
@@ -352,13 +366,18 @@ public class CallableBuilder {
         instanceParameter.setName(Naming.name(Unfix.$instance$));
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
-        valueModel.setType(gen.getParameterTypeOfCallable(typeModel, 0));
+        ProducedType accessType = gen.getParameterTypeOfCallable(typeModel, 0);;
+        if (!value.isShared()) {
+            accessType = Decl.getPrivateAccessType(qmte);
+        }
+        valueModel.setType(accessType);
         valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         outer.useDefaultTransformation(innerBody);
+        outer.companionAccess = Decl.isPrivateAccessRequiringCompanion(qmte);
         
         return outer;
     }
@@ -1348,7 +1367,7 @@ public class CallableBuilder {
                     makeParamIdent(gen, 0), 
                     gen.make().Literal(argIndex));
         }
-        
+        int ebFlags = ExpressionTransformer.EXPR_DOWN_CAST; // we're effectively downcasting it from Object
         argExpr = gen.expressionGen().applyErasureAndBoxing(argExpr, 
                 paramType, // it came in as Object, but we need to pretend its type
                 // is the parameter type because that's how unboxing determines how it has to unbox
@@ -1356,7 +1375,10 @@ public class CallableBuilder {
                 true, // it came in boxed
                 CodegenUtil.getBoxingStrategy(param.getModel()), // see if we need to box 
                 paramType, // see what type we need
-                ExpressionTransformer.EXPR_DOWN_CAST); // we're effectively downcasting it from Object
+                ebFlags);
+        if (this.companionAccess) {
+            argExpr = gen.naming.makeCompanionAccessorCall(argExpr, (Interface)paramType.getType().getDeclaration());
+        }
         return argExpr;
     }
     
@@ -1470,6 +1492,9 @@ public class CallableBuilder {
         int flags = 0;
         if(!CodegenUtil.isUnBoxed(param.getModel())){
             flags |= AbstractTransformer.JT_NO_PRIMITIVES;
+        }
+        if (companionAccess) {
+            flags |= AbstractTransformer.JT_COMPANION;
         }
         // Always go raw if we're forwarding, because we're building the call ourselves and we don't get a chance to apply erasure and
         // casting to parameter expressions when we pass them to the forwarded method. Ideally we could set it up correctly so that

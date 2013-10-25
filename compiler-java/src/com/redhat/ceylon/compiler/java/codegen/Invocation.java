@@ -1440,13 +1440,17 @@ class NamedArgumentInvocation extends Invocation {
             if (isOnValueType()) {
                 varType = gen.makeJavaType(getQmePrimary().getTypeModel());
             } else {
+                int jtFlags = JT_NO_PRIMITIVES;
                 if (getPrimary() instanceof QualifiedTypeExpression
                         && !getPrimaryDeclaration().isShared()
                         && type.getDeclaration() instanceof Interface) {
-                    varType = gen.makeJavaType(type, JT_NO_PRIMITIVES | JT_COMPANION);
-                } else {
-                    varType = gen.makeJavaType(type, JT_NO_PRIMITIVES);
+                    jtFlags |= JT_COMPANION;
+                } else if (
+                        getPrimary() instanceof Tree.StaticMemberOrTypeExpression
+                        && Decl.isPrivateAccessRequiringCompanion((Tree.StaticMemberOrTypeExpression)getPrimary())) {
+                    jtFlags |= JT_COMPANION;
                 }
+                varType = gen.makeJavaType(type, jtFlags);
             }
             vars.prepend(gen.makeVar(callVarName, varType, result));
             result = callVarName.makeIdent();
