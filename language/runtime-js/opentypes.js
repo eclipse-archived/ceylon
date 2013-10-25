@@ -468,7 +468,7 @@ $$openClass.memberApply=function(cont,targs,$mptypes) {
 
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
-  if (!extendsType({t:this.tipo},$mptypes.Container))throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  if (!extendsType({t:mm.$cont},$mptypes.Container))throw IncompatibleTypeException$meta$model("Incompatible Container specified");
   if (mm.$tp) {
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
     //TODO generate targs

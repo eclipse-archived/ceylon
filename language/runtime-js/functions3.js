@@ -33,7 +33,7 @@ function $retuple(t) { //receives {t:'T',l:[...]}
 function validate$params(ps,t,msg) {
   if (t.t===Nothing)return;
   if (!ps || ps.length==0) {
-    if (t.t===getEmpty())return;
+    if (t.t===Empty)return;
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
       //TODO check each parameter
