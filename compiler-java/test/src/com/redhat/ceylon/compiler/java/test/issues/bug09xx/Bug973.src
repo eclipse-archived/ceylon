@@ -52,7 +52,7 @@ final class bug973_ff_ {
                     }
                 };
             }
-            returning .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug973_first_.bug973_first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug973_first_.<.ceylon.language.Integer, .java.lang.Object>bug973_first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
         )).longValue()};
     }
     

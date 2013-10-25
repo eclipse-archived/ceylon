@@ -17,7 +17,7 @@ final class bug601_ {
                                 .ceylon.language.String.instance("world")}),
                         .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")})});
             }
-            returning .ceylon.language.first_.first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+            returning .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
         );
         (
             let
@@ -28,7 +28,7 @@ final class bug601_ {
                         .ceylon.language.String.split("hello world"),
                         .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")})});
             }
-            returning .ceylon.language.first_.first(arg$1$reified$0, arg$1$reified$1, arg$1$0);
+            returning .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$1$reified$0, arg$1$reified$1, arg$1$0);
         );
         (
             let
@@ -69,7 +69,7 @@ final class bug601_ {
                         },
                         .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")})});
             }
-            returning .ceylon.language.first_.first(arg$2$reified$0, arg$2$reified$1, arg$2$0);
+            returning .ceylon.language.first_.<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>first(arg$2$reified$0, arg$2$reified$1, arg$2$0);
         );
     }
     

@@ -233,7 +233,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         final .java.lang.String s = <.ceylon.language.String>parameterizedWithErasedBounds$priv$(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("")).toString();
         final .java.lang.String s2 = <.ceylon.language.String>parameterizedWithErasedBounds$priv$(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("")).toString();
         final .java.lang.Object e = <.ceylon.language.String>parameterizedWithErasedBounds$priv$(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""));
-        final .java.lang.Object e2 = parameterizedWithErasedBounds$priv$(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.String.instance(""));
+        final .java.lang.Object e2 = <.java.lang.Object>parameterizedWithErasedBounds$priv$(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.String.instance(""));
         <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(2L));
         <.ceylon.language.Integer>parameterizedWithParameterizedBounds$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(2L));
     }
@@ -417,7 +417,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
                 .java.lang.Object arg$24$0 = .ceylon.language.String.instance("");
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$24$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
             }
-            returning parameterizedWithErasedBounds$priv$(arg$24$reified$0, arg$24$0);
+            returning <.java.lang.Object>parameterizedWithErasedBounds$priv$(arg$24$reified$0, arg$24$0);
         );
         (
             let
@@ -581,7 +581,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         parameterizedMiddle.<.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft>parameterizedWithBounds(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
         parameterizedMiddle.parameterizedWithIntersectionBounds(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft)middle, middle);
         parameterizedMiddle.<.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""), middle);
-        parameterizedMiddle.parameterizedWithErasedBounds(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.String.instance(""), middle);
+        parameterizedMiddle.<.java.lang.Object>parameterizedWithErasedBounds(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.String.instance(""), middle);
         parameterizedMiddle.<.ceylon.language.String>parameterizedWithErasedBounds(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""), middle);
         parameterizedMiddle.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), middle);
         parameterizedMiddle.<.ceylon.language.Integer>parameterizedWithParameterizedBounds(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), middle);
@@ -758,7 +758,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
                 .java.lang.Object arg$53$1 = middle;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$53$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
             }
-            returning arg$53$callable$.parameterizedWithErasedBounds(arg$53$reified$0, arg$53$0, arg$53$1);
+            returning arg$53$callable$.<.java.lang.Object>parameterizedWithErasedBounds(arg$53$reified$0, arg$53$0, arg$53$1);
         );
         (
             let

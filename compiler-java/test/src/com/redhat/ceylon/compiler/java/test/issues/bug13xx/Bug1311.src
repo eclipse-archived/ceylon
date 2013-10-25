@@ -11,7 +11,7 @@ final class bug1311_ {
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.Iterable $ceylontmp$values = (.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
-                return (.ceylon.language.Integer).ceylon.language.max_.max(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, $ceylontmp$values);
+                return (.ceylon.language.Integer).ceylon.language.max_.<.ceylon.language.Integer, .java.lang.Object>max(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, $ceylontmp$values);
             }
         };
     }

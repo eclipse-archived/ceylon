@@ -54,7 +54,7 @@ final class bug1157_call_ {
     }
     
     static void bug1157_call() {
-        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1157_annotations_.bug1157_annotations(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType));
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1157_annotations_.<.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno>bug1157_annotations(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType));
     }
     
     public static void main(.java.lang.String[] args) {
