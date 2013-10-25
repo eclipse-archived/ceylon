@@ -477,7 +477,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
       var _ta=mptypes[i];
       if(_ta&&_ta.tipo)ttargs[tp]={t:_ta.tipo};
       else if (_ta) console.log("TODO assign type arg " + _ta + " to " + tp);
-      else if (mptypes[tp])ttargs[tp]=mptypes.[tp];
+      else if (mptypes[tp])ttargs[tp]=mptypes[tp];
       else console.log("TODO no more type arguments");
       i++;
     }
