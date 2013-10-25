@@ -6,21 +6,17 @@ function AppliedClass(tipo,$$targs$$,that){
       mm=mm(); tipo.$$metamodel$$=mm;
     }
     if (mm && mm.$cont) {
-      that=function(x){
-        that.tipo=function(){return tipo.apply(x,arguments);};
-        that.$bound=x;
-        return that;
-      }
-      that.tipo$2=tipo;
+      that=function(x){/*Class*/return tipo.apply(x,arguments);};
       var dummy = new AppliedClass.$$;
       that.$$=AppliedClass.$$;
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
       that.equals=function(o){
-        var eq=isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==tipo;
-        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+        var eq=isOfType(o,{t:AppliedClass}) && o.tipo===tipo;
         return eq;
       };
+      that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
+      that.$apply.$$metamodel$$=AppliedClass.$$.prototype.$apply.$$metamodel$$;
       defineAttr(that,'string',function(){
 var qn=mm.d[0];
 for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
@@ -90,31 +86,35 @@ function AppliedMemberClass(tipo,$$targs$$,that){
     }
     if (mm && mm.$cont) {
       that=function(x){
-        that.tipo=function(){return tipo.apply(x,arguments);};
-        that.$bound=x;
-        return that;
+        var rv=tipo.bind(x);
+        rv.$$metamodel$$=tipo.$$metamodel$$;
+        return AppliedClass(rv,{Type:{t:mm.$cont},Arguments:{t:Nothing}});//TODO Arguments
       }
-      that.tipo$2=tipo;
       var dummy = new AppliedMemberClass.$$;
       that.$$=AppliedMemberClass.$$;
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
       that.equals=function(o){
-        var eq=isOfType(o,{t:AppliedMemberClass}) && (o.tipo$2||o.tipo)==tipo;
+        var eq=isOfType(o,{t:AppliedMemberClass}) && o.tipo===tipo;
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
+      defineAttr(that,'parameterTypes',function(){
+        return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
+      },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
+      that.$bind=function(){return AppliedMemberClass.$$.prototype.$bind.apply(that,arguments);}
       defineAttr(that,'string',function(){
 var qn=mm.d[0];
 for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
 return String$(qn);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     } else {
-      that=new AppliedMemberClass.$$;
+      throw IncompatibleTypeException("Invalid metamodel data for MemberClass");
     }
   }
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments:that.$$targs$$.Arguments,Type:that.$$targs$$.Type,Container:that.$$targs$$.Container},that);
+  that.tipo=tipo;
   return that;
 }
 AppliedMemberClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$ps:[],$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:MemberClass$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared(),abstract()];},d:['','AppliedMemberClass']};};
@@ -126,17 +126,20 @@ function $init$AppliedMemberClass(){
       
       //MethodDef bind at caca.ceylon (5:4-5:107)
       $$amc.$bind=function $bind(cont){
+        var ot=cont.getT$name ? cont.getT$all()[cont.getT$name()]:throwexc(IncompatibleTypeException$meta$model("Container does not appear to be a Ceylon object"));
+        if (!ot)throw IncompatibleTypeException$meta$model("Incompatible Container (has no metamodel information");
+        var omm=ot.$$metamodel$$;
+        if (typeof(omm)==='function'){omm=omm();ot.$$metamodel$$=omm;}
         var mm=this.tipo.$$metamodel$$;
-        var omm=cont.$$.$$metamodel$$;
-        if (typeof(omm)==='function')omm=omm();
-        if (!extendsType({t:mm.$cont},{t:omm}))throw IncompatibleTypeException$meta$model("Incompatible container type");
-        throw wrapexc(Exception(String$("IMPL MemberClass.bind",21)),'5:65-5:105','caca.ceylon');
+        if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+        if (!extendsType({t:ot},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
+        return this(cont);
       };$$amc.$bind.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments:'Arguments',Type:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
     })(AppliedMemberClass.$$.prototype);
   }
   return AppliedMemberClass;
 }
-exports.$init$AppliedMemberClass=$init$AppliedMemberClass;
+exports.$init$AppliedMemberClass$meta$model=$init$AppliedMemberClass;
 $init$AppliedMemberClass();
 
 function AppliedInterface(tipo,$$targs$$,that) {
@@ -242,7 +245,7 @@ function $init$AppliedMemberInterface(){
   }
   return AppliedMemberInterface;
 }
-exports.$init$AppliedMemberInterface=$init$AppliedMemberInterface;
+exports.$init$AppliedMemberInterface$meta$model=$init$AppliedMemberInterface;
 $init$AppliedMemberInterface();
     
 
