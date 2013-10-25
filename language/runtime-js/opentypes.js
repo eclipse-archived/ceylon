@@ -461,21 +461,23 @@ $$openClass.classApply=function(targs,$mptypes) {
   return this.$apply(targs,$mptypes);
 }
 $$openClass.memberApply=function(cont,targs,$mptypes) {
-  validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
+  var mm=this.tipo.$$metamodel$$;
+  if (!extendsType({t:mm.$cont},$mptypes.Container))throw IncompatibleTypeException$meta$model("Incompatible Container in memberApply");
+  if (!extendsType({t:this.tipo},$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type in memberApply");
   //TODO add Arguments to mptypes
-  return this.memberClassApply(cont,targs,$mptypes);
+  return this.memberClassApply(cont,targs,{Type:$mptypes.Type,Arguments:{t:Nothing}});
 }
 
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
-  if (!extendsType({t:mm.$cont},$mptypes.Container))throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  if (!extendsType({t:cont.tipo},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  var _t={t:this.tipo};
   if (mm.$tp) {
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
     //TODO generate targs
   }
   validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
-  //TODO actually return something...
-  return null;
+  return AppliedMemberClass(this.tipo,{Container:{t:mm.$cont},Type:_t,Arguments:$mptypes.Arguments});
 }
 
       defineAttr($$openClass,'string',function(){
