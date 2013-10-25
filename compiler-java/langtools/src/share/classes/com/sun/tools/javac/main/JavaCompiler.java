@@ -832,6 +832,7 @@ public class JavaCompiler implements ClassReader.SourceCompleter {
         } catch (Abort ex) {
             if (devVerbose)
                 ex.printStackTrace(System.err);
+            throw ex;
         } finally {
             if (procEnvImpl != null)
                 procEnvImpl.close();
