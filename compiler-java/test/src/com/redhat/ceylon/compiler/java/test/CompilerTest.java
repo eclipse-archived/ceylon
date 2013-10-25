@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -370,7 +372,16 @@ public abstract class CompilerTest {
         case OK:
             break;
         case BUG:
-            throw new AssertionError("Compiler bug", exitState.abortingException);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            if (exitState.abortingException != null) {
+                pw.println();
+                pw.println("With Javac error");
+                exitState.abortingException.printStackTrace(pw);
+            }
+            pw.flush();
+            Assert.fail(collector.getAssertionFailureMessage() + sw.toString());
+            break;
         case ERROR:
             Assert.fail(collector.getAssertionFailureMessage());
             break;
