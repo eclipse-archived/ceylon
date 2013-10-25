@@ -25,7 +25,9 @@ function type$meta(x,$$targs$$) {
     var rt=$retuple($$targs$$.Type);
     c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
   } else {
-    c=AppliedClass($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+    var mm=$$targs$$.Type.t.$$metamodel$$;
+    if (typeof(mm)==='function'){mm=mm();$$targs$$.Type.t.$$metamodel$$=mm;}
+    c=(mm.$cont?AppliedMemberClass:AppliedClass)($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   }
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
   return c;
