@@ -4555,6 +4555,8 @@ public class GenerateJsVisitor extends Visitor
                 out(",");
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
                 out(")");
+            } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
+                out(clAlias,"getNothingType$meta$model()");
             } else if (that instanceof Tree.AliasLiteral) {
                 out("/*TODO: applied alias*/");
             } else if (that instanceof Tree.TypeParameterLiteral) {
