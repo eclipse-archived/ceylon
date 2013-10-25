@@ -195,7 +195,7 @@ public class ProducedTypeNamePrinter {
         }
     }
 
-    private boolean abbreviateEntry(ProducedType pt) {
+    public static boolean abbreviateEntry(ProducedType pt) {
         Unit unit = pt.getDeclaration().getUnit();
         if (pt.getDeclaration() instanceof Class &&
                 pt.getDeclaration().equals(unit.getEntryDeclaration()) &&
@@ -211,7 +211,7 @@ public class ProducedTypeNamePrinter {
         }
     }
 
-    private boolean abbreviateEmpty(ProducedType pt) {
+    public static boolean abbreviateEmpty(ProducedType pt) {
         if (pt.getDeclaration() instanceof Interface) {
             Unit unit = pt.getDeclaration().getUnit();
             return pt.getDeclaration().equals(unit.getEmptyDeclaration());
@@ -219,7 +219,7 @@ public class ProducedTypeNamePrinter {
         return false;
     }
 
-    private boolean abbreviateOptional(ProducedType pt) {
+    public static boolean abbreviateOptional(ProducedType pt) {
         if (pt.getDeclaration() instanceof UnionType) {
             Unit unit = pt.getDeclaration().getUnit();
             UnionType ut = (UnionType) pt.getDeclaration();
@@ -232,13 +232,13 @@ public class ProducedTypeNamePrinter {
         }
     }    
 
-    private boolean abbreviateTuple(ProducedType pt) {
+    public static boolean abbreviateTuple(ProducedType pt) {
         return pt.getDeclaration() instanceof Class && 
                 pt.getDeclaration().equals(pt.getDeclaration().getUnit()
                         .getTupleDeclaration());
     }
 
-    private boolean abbreviateCallable(ProducedType pt) {
+    public static boolean abbreviateCallable(ProducedType pt) {
         return pt.getDeclaration() instanceof Interface &&
                 pt.getDeclaration().equals(pt.getDeclaration().getUnit().getCallableDeclaration()) &&
                 pt.getTypeArgumentList().size()>0 && pt.getTypeArgumentList().get(0)!=null &&
@@ -246,7 +246,7 @@ public class ProducedTypeNamePrinter {
                 pt.getTypeArgumentList().size()==pt.getDeclaration().getTypeParameters().size();
     }
 
-    private boolean abbreviateSequence(ProducedType pt) {
+    public static boolean abbreviateSequence(ProducedType pt) {
         if (pt.getDeclaration() instanceof Interface) {
             Unit unit = pt.getDeclaration().getUnit();
             if (pt.getDeclaration().equals(unit.getSequenceDeclaration())) {
@@ -257,7 +257,7 @@ public class ProducedTypeNamePrinter {
         return false;
     }
 
-    private boolean abbreviateSequential(ProducedType pt) {
+    public static boolean abbreviateSequential(ProducedType pt) {
         if (pt.getDeclaration() instanceof Interface) {
             Unit unit = pt.getDeclaration().getUnit();
             if (pt.getDeclaration().equals(unit.getSequentialDeclaration())) {
@@ -268,7 +268,7 @@ public class ProducedTypeNamePrinter {
         return false;
     }
 
-    private boolean abbreviateIterable(ProducedType pt) {
+    public static boolean abbreviateIterable(ProducedType pt) {
         if (pt.getDeclaration() instanceof Interface) {
             Unit unit = pt.getDeclaration().getUnit();
             if (pt.getDeclaration().equals(unit.getIterableDeclaration())) {
