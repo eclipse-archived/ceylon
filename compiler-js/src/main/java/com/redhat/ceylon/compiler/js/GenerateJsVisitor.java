@@ -4667,5 +4667,8 @@ public class GenerateJsVisitor extends Visitor
                 node.getUnit().getFilename(), "')");
     }
 
+    @Override public void visit(Tree.CompilerAnnotation that) {
+        //just ignore this
+    }
 }
 
