@@ -266,15 +266,34 @@ public abstract class Declaration
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
 
+    private java.lang.Class<?> findModelClass(Declaration dec) {
+        java.lang.Class<?> clazz = dec.getClass();
+        java.lang.Class<?> declarationClass = Declaration.class;
+        java.lang.Package modelPackage = declarationClass.getPackage();
+        while (! clazz.getPackage().equals(modelPackage)) {
+            java.lang.Class<?> superClass = clazz.getSuperclass();
+            if (! declarationClass.isAssignableFrom(superClass)) {
+                break;
+            }
+            clazz = superClass;
+        }
+        return clazz;
+    }
+    
     @Override
     public boolean equals(Object object) {
         if (this==object) {
             return true;
         }
-        else if (object==null || object.getClass()!=getClass()) {
+        
+        if(object == null) {
             return false;
         }
-        else if (object instanceof Declaration) {
+        
+        if (object instanceof Declaration) {
+            if (findModelClass(this) != findModelClass((Declaration)object)) {
+                return false;
+            }
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
