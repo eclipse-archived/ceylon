@@ -740,7 +740,8 @@ public class RecognizedOptions {
                         List<String> sourcePaths = options.getMulti("-sourcepath");
                         if(sourcePaths.isEmpty())
                             sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
-                        if (checkIfModule(sourcePaths)) {
+                        if (checkIfModule(sourcePaths, s)) {
+                            // A Ceylon module name that ends with .ceylon or .java
                             helper.addClassName(s);
                             return false;
                         }
@@ -769,8 +770,7 @@ public class RecognizedOptions {
                     List<String> sourcePaths = options.getMulti("-sourcepath");
                     if(sourcePaths.isEmpty())
                         sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
-                    if (checkIfModule(sourcePaths)) {
-                        // A Ceylon module name that ends with .ceylon or .java
+                    if (checkIfModule(sourcePaths, s)) {
                         helper.addClassName(s);
                         return false;
                     }
@@ -782,15 +782,15 @@ public class RecognizedOptions {
                 return false;
             }
             
-            private boolean checkIfModule(List<String> paths) {
+            private boolean checkIfModule(List<String> paths, String moduleName) {
+                String moduleDirName = moduleName.replace(".", File.separator);
                 // walk every path arg
                 for(String path : paths){
                     // split the path
                     for(String part : path.split("\\"+File.pathSeparator)){
                         // try to see if it's a module folder
-                        File moduleFolder = new File(part, s.replace(".", File.separator));
+                        File moduleFolder = new File(part, moduleDirName);
                         if (moduleFolder.isDirectory()) {
-                            // A Ceylon module name that ends with .ceylon or .java
                             return true;
                         }
                     }
