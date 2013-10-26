@@ -44,6 +44,7 @@ import java.util.zip.ZipFile;
 import javax.tools.JavaFileManager.Location;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.sun.tools.javac.code.Lint;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.ListBuffer;
@@ -143,6 +144,8 @@ public class Paths {
                 p = computeAnnotationProcessorPath();
             else if (location == SOURCE_PATH)
                 p = computeSourcePath();
+            else if (location == CeylonLocation.RESOURCE_PATH)
+                p = computeResourcePath();
             else
                 // no defaults for other paths
                 p = null;
@@ -170,6 +173,7 @@ public class Paths {
             pathsForLocation.put(PLATFORM_CLASS_PATH, computeBootClassPath());
             pathsForLocation.put(CLASS_PATH, computeUserClassPath());
             pathsForLocation.put(SOURCE_PATH, computeSourcePath());
+            pathsForLocation.put(CeylonLocation.RESOURCE_PATH, computeResourcePath());
 
             inited = true;
         }
@@ -186,6 +190,13 @@ public class Paths {
     public Collection<File> sourcePath() {
         lazy();
         Path p = getPathForLocation(SOURCE_PATH);
+        return p == null || p.size() == 0
+            ? null
+            : Collections.unmodifiableCollection(p);
+    }
+    public Collection<File> resourcePath() {
+        lazy();
+        Path p = getPathForLocation(CeylonLocation.RESOURCE_PATH);
         return p == null || p.size() == 0
             ? null
             : Collections.unmodifiableCollection(p);
@@ -442,6 +453,19 @@ public class Paths {
 
         Path path = new Path();
         for(String pathArg : sourcePathArgs){
+            path.addFiles(pathArg);
+        }
+        return path;
+    }
+
+    private Path computeResourcePath() {
+        List<String> resourcePathArgs = options.getMulti(CEYLONRESOURCEPATH);
+        // Ceylon: default resource path
+        if (resourcePathArgs.isEmpty())
+            resourcePathArgs = Arrays.asList(Constants.DEFAULT_RESOURCE_DIR);
+
+        Path path = new Path();
+        for(String pathArg : resourcePathArgs){
             path.addFiles(pathArg);
         }
         return path;
