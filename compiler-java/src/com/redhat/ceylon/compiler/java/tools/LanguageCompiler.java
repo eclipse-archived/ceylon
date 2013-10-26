@@ -31,13 +31,17 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
 import javax.annotation.processing.Processor;
+import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
@@ -46,6 +50,7 @@ import javax.tools.StandardLocation;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
@@ -83,6 +88,7 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.tree.TreeInfo;
+import com.sun.tools.javac.util.Abort;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Context.SourceLanguage.Language;
 import com.sun.tools.javac.util.Convert;
@@ -119,6 +125,7 @@ public class LanguageCompiler extends JavaCompiler {
     private boolean addedDefaultModuleToClassPath;
     private boolean treatLikelyBugsAsErrors = false;
     private Set<Module> modulesLoadedFromSource = new HashSet<Module>();
+    private List<JavaFileObject> resourceFileObjects;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -189,6 +196,74 @@ public class LanguageCompiler extends JavaCompiler {
         timer = Timer.instance(context);
     }
 
+    @Override
+    public void compile(List<JavaFileObject> fileObjects,
+            List<String> classnames,
+            Iterable<? extends Processor> processors)
+    {
+        // Now we first split the files into sources/modules and resources
+        List<JavaFileObject> sourceFiles = List.nil();
+        List<JavaFileObject> resourceFiles = List.nil();
+        for (JavaFileObject fo : fileObjects) {
+            if (isResource(fo)) {
+                resourceFiles = resourceFiles.append(fo);
+            } else {
+                sourceFiles = sourceFiles.append(fo);
+            }
+        }
+        this.resourceFileObjects = resourceFiles;
+        // And then continue to the compilation of the source files
+        super.compile(sourceFiles, classnames, processors);
+    }
+
+    private boolean isResource(JavaFileObject fo) {
+        JavacFileManager dfm = (JavacFileManager) fileManager;
+        for (File dir : dfm.getLocation(CeylonLocation.RESOURCE_PATH)) {
+            String prefix = dir.getPath();
+            if (fo.getName().startsWith(prefix)) {
+                return true;
+            }
+            String absPrefix = dir.getAbsolutePath();
+            if (fo.getName().startsWith(absPrefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public void close(boolean disposeNames) {
+        if (resourceFileObjects != null) {
+            addResources();
+            resourceFileObjects = null;
+        }
+        super.close(disposeNames);
+    }
+
+    private void addResources() throws Abort {
+        try {
+            for (JavaFileObject fo : resourceFileObjects) {
+                CeyloncFileManager dfm = (CeyloncFileManager) fileManager;
+                String jarFileName = JarUtils.toPlatformIndependentPath(dfm.getLocation(CeylonLocation.RESOURCE_PATH), fo.getName());
+                dfm.setModule(modelLoader.findModuleForFile(new File(jarFileName)));
+                FileObject outFile = dfm.getFileForOutput(StandardLocation.CLASS_OUTPUT, "", jarFileName, null);
+                OutputStream out = outFile.openOutputStream();
+                try {
+                    InputStream in = new FileInputStream(new File(fo.getName()));
+                    try {
+                        JarUtils.copy(in, out);
+                    } finally {
+                        in.close();
+                    }
+                } finally {
+                    out.close();
+                }
+            }
+        } catch (IOException ex) {
+            throw new Abort(ex);
+        }
+    }
+    
     /**
      * Parse contents of file.
      * @param filename The name of the file to be parsed.
