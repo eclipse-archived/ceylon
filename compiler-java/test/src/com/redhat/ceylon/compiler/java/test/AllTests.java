@@ -28,6 +28,7 @@ import com.redhat.ceylon.ceylondoc.test.CeylonDocToolTest;
 import com.redhat.ceylon.compiler.java.codegen.NamingTest;
 import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTest;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
+import com.redhat.ceylon.compiler.java.test.cargeneration.CarGenerationTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTest;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTestHTTP;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTest;
@@ -98,6 +99,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     TopLevelToolTest.class,
     AntToolTests.class,
     TraceTests.class,
+    CarGenerationTest.class,
 })
 public class AllTests {
 }
