@@ -692,7 +692,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             for(JavaFileObject file : files){
                 File f = new File(file.toUri().getPath());
                 if(!filenames.contains(f))
-                    filenames = filenames.prepend(f);
+                    filenames = filenames.append(f);
                 gotOne = true;
             }
             if(check && !gotOne){
