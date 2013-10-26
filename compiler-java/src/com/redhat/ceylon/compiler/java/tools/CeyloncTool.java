@@ -73,13 +73,6 @@ public class CeyloncTool {
                         && !"default".equals(cls)) // FIX for ceylon because default is not a valid name for Java
                     throw new IllegalArgumentException("Not a valid class name: " + cls);
         }
-        if (compilationUnits != null) {
-            for (JavaFileObject cu : compilationUnits) {
-                if (cu.getKind() != JavaFileObject.Kind.SOURCE) // implicit null
-                                                                // check
-                    throw new IllegalArgumentException(kindMsg);
-            }
-        }
 
         if (fileManager == null)
             fileManager = getStandardFileManager(diagnosticListener, null, null);
