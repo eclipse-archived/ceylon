@@ -37,13 +37,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.EnumSet;
 import java.util.MissingResourceException;
+import java.util.Set;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaFileManager;
+import javax.tools.JavaFileManager.Location;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -602,18 +605,20 @@ public class Main extends com.sun.tools.javac.main.Main {
                 return EXIT_SYSERR;
             }
 
-            if(!classnames.isEmpty())
-                filenames = addModuleSources(filenames);
+            if(!classnames.isEmpty()) {
+                filenames = addModuleSources(filenames, StandardLocation.SOURCE_PATH, EnumSet.of(Kind.SOURCE), true);
+                filenames = addModuleSources(filenames, CeylonLocation.RESOURCE_PATH, EnumSet.allOf(Kind.class), false);
+                classnames.clear();
+            }
             
             if (!filenames.isEmpty()) {
                 // add filenames to fileObjects
-                comp = JavaCompiler.instance(context);
                 List<JavaFileObject> otherFiles = List.nil();
                 JavacFileManager dfm = (JavacFileManager) fileManager;
-                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(filenames))
-                    otherFiles = otherFiles.prepend(fo);
-                for (JavaFileObject fo : otherFiles)
-                    fileObjects = fileObjects.prepend(fo);
+                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(filenames)) {
+                    otherFiles = otherFiles.append(fo);
+                }
+                fileObjects = fileObjects.prependList(otherFiles);
             }
             if(fileObjects.isEmpty()){
                 error("err.no.source.files");
@@ -679,10 +684,10 @@ public class Main extends com.sun.tools.javac.main.Main {
         return EXIT_OK;
     }
 
-    private List<File> addModuleSources(List<File> filenames) throws IOException {
+    private List<File> addModuleSources(List<File> filenames, Location location, Set<Kind> kinds, boolean check) throws IOException {
         for(String moduleName : classnames){
             String path = moduleName.equals("default") ? "" : moduleName;
-            Iterable<JavaFileObject> files = fileManager.list(StandardLocation.SOURCE_PATH, path, EnumSet.of(Kind.SOURCE), true);
+            Iterable<JavaFileObject> files = fileManager.list(location, path, kinds, true);
             boolean gotOne = false;
             for(JavaFileObject file : files){
                 File f = new File(file.toUri().getPath());
@@ -690,11 +695,10 @@ public class Main extends com.sun.tools.javac.main.Main {
                     filenames = filenames.prepend(f);
                 gotOne = true;
             }
-            if(!gotOne){
+            if(check && !gotOne){
                 warning("ceylon", "Could not find source files for module: "+moduleName);
             }
         }
-        classnames.clear();
         return filenames;
     }
 
