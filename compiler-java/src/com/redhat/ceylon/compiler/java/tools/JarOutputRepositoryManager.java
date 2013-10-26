@@ -92,6 +92,7 @@ public class JarOutputRepositoryManager {
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
         final private Set<String> modifiedSourceFiles = new HashSet<String>();
+        final private Set<String> modifiedResourceFiles = new HashSet<String>();
         final private Properties writtenClassesMapping = new Properties(); 
         private Logger cmrLog;
         private Options options;
@@ -172,7 +173,7 @@ public class JarOutputRepositoryManager {
                         }
                         return classWasUpdated;
                     } else {
-                        return true;
+                        return modifiedResourceFiles.contains(entryFullName) || entryFullName.equals(MAPPING_FILE);
                     }
                 }
             };
@@ -206,10 +207,14 @@ public class JarOutputRepositoryManager {
         }
 
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
-            modifiedSourceFiles.add(sourceFile.getPath());
-            // record the class file we produce so that we don't save it from the original jar
-        	fileName = fileName.replace(File.separatorChar, '/');
-        	addMappingEntry(fileName, JarUtils.toPlatformIndependentPath(creator.getSourcePaths(), sourceFile.getPath()));
+            fileName = fileName.replace(File.separatorChar, '/');
+            if (sourceFile != null) {
+                modifiedSourceFiles.add(sourceFile.getPath());
+                // record the class file we produce so that we don't save it from the original jar
+            	addMappingEntry(fileName, JarUtils.toPlatformIndependentPath(creator.getSourcePaths(), sourceFile.getPath()));
+            } else {
+                modifiedResourceFiles.add(fileName);
+            }
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
         }
 
