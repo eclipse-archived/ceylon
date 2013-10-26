@@ -53,6 +53,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.lang.model.SourceVersion;
+
 import static com.sun.tools.javac.main.OptionName.*;
 
 /**
@@ -719,7 +721,11 @@ public class RecognizedOptions {
             @Override
             public boolean matches(String s) {
                 this.s = s;
-                return true;
+                return s.endsWith(".java")  // Java source file
+                        || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                        || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
+                        || SourceVersion.isName(s)   // Legal type name
+                        || (new File(s)).isFile();   // Possibly a resource file
             }
             @Override
             public boolean process(Options options, String option) {
