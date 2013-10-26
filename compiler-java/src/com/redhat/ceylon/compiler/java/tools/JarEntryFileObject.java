@@ -64,6 +64,21 @@ public class JarEntryFileObject implements JavaFileObject {
     }
 
     @Override
+    public int hashCode() {
+        return jarFileName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof JarEntryFileObject) {
+            JarEntryFileObject r = (JarEntryFileObject)obj;
+            return jarFileName.equals(r.jarFileName);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public String toString() {
         return jarFileName+":"+fileName;
     }
