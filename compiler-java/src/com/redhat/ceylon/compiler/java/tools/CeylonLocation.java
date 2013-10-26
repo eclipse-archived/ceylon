@@ -25,6 +25,11 @@ import javax.tools.JavaFileManager.Location;
 public enum CeylonLocation implements Location {
 
     /**
+     * Path for locating resources
+     */
+    RESOURCE_PATH,
+    
+    /**
      * Repository for loading modules
      */
     REPOSITORY;
