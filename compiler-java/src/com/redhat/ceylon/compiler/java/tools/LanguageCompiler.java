@@ -241,22 +241,26 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private void addResources() throws Abort {
+       HashSet<String> written = new HashSet<String>();
         try {
             for (JavaFileObject fo : resourceFileObjects) {
                 CeyloncFileManager dfm = (CeyloncFileManager) fileManager;
                 String jarFileName = JarUtils.toPlatformIndependentPath(dfm.getLocation(CeylonLocation.RESOURCE_PATH), fo.getName());
-                dfm.setModule(modelLoader.findModuleForFile(new File(jarFileName)));
-                FileObject outFile = dfm.getFileForOutput(StandardLocation.CLASS_OUTPUT, "", jarFileName, null);
-                OutputStream out = outFile.openOutputStream();
-                try {
-                    InputStream in = new FileInputStream(new File(fo.getName()));
+                if (!written.contains(jarFileName)) {
+                    dfm.setModule(modelLoader.findModuleForFile(new File(jarFileName)));
+                    FileObject outFile = dfm.getFileForOutput(StandardLocation.CLASS_OUTPUT, "", jarFileName, null);
+                    OutputStream out = outFile.openOutputStream();
                     try {
-                        JarUtils.copy(in, out);
+                        InputStream in = new FileInputStream(new File(fo.getName()));
+                        try {
+                            JarUtils.copy(in, out);
+                        } finally {
+                            in.close();
+                        }
                     } finally {
-                        in.close();
+                        out.close();
                     }
-                } finally {
-                    out.close();
+                    written.add(jarFileName);
                 }
             }
         } catch (IOException ex) {
