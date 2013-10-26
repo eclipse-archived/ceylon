@@ -53,8 +53,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.lang.model.SourceVersion;
-
 import static com.sun.tools.javac.main.OptionName.*;
 
 /**
@@ -721,17 +719,15 @@ public class RecognizedOptions {
             @Override
             public boolean matches(String s) {
                 this.s = s;
-                return s.endsWith(".java")  // Java source file
-                        || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
-                        || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
-                        || SourceVersion.isName(s);   // Legal type name
+                return true;
             }
             @Override
             public boolean process(Options options, String option) {
+                File f = new File(s);
                 if (s.endsWith(".java")
                         || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
                 ) {
-                    File f = new File(s);
+                    // Most likely a source file
                     if (!f.isFile()) {
                         // -sourcepath not -src because the COption for 
                         // CEYLONSOURCEPATH puts it in the options map as -sourcepath
@@ -753,8 +749,10 @@ public class RecognizedOptions {
                         return true;
                     }
                     helper.addFile(f);
-                }
-                else {
+                } if (f.isFile()) {
+                    // Most likely a resource file
+                    helper.addFile(f);
+                } else {
                     // Should be a module name
                     // the default module is always allowed, it doesn't need to have any folder
                     if(s.equals(Module.DEFAULT_MODULE_NAME)){
