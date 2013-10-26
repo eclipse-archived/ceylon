@@ -212,6 +212,8 @@ public class LanguageCompiler extends JavaCompiler {
             }
         }
         this.resourceFileObjects = resourceFiles;
+        // Add any module files for the resources (if needed)
+        sourceFiles = addModuleDescriptors(sourceFiles, resourceFiles);
         // And then continue to the compilation of the source files
         super.compile(sourceFiles, classnames, processors);
     }
@@ -231,6 +233,42 @@ public class LanguageCompiler extends JavaCompiler {
         return false;
     }
     
+    // This is a bit of a hack, but if we got passed a list of resources
+    // without any accompaning source files we'll not be able to determine
+    // the module to which the resource files belong. So to try to fix that
+    // we see if a module file exists in the source folders and add it to
+    // the list of source files
+    private List<JavaFileObject> addModuleDescriptors(List<JavaFileObject> sourceFiles, List<JavaFileObject> resourceFiles) {
+        List<JavaFileObject> result = sourceFiles;
+        JavacFileManager dfm = (JavacFileManager) fileManager;
+        for (JavaFileObject fo : resourceFiles) {
+            String resName = JarUtils.toPlatformIndependentPath(dfm.getLocation(CeylonLocation.RESOURCE_PATH), fo.getName());
+            JavaFileObject moduleFile = findModuleDescriptorForFile(new File(resName));
+            if (moduleFile != null && !result.contains(moduleFile)) {
+                result = result.append(moduleFile);
+            }
+        }
+        return result;
+    }
+
+    private JavaFileObject findModuleDescriptorForFile(File file) {
+        JavacFileManager dfm = (JavacFileManager) fileManager;
+        File dir = file.getParentFile();
+        while (dir != null) {
+            try {
+                String name = dir.getPath() + "/module";
+                JavaFileObject fo = dfm.getJavaFileForInput(StandardLocation.SOURCE_PATH, name, Kind.SOURCE);
+                if (fo != null) {
+                    return fo;
+                }
+            } catch (IOException e) {
+                // Ignore
+            }
+            dir = dir.getParentFile();
+        }
+        return null;
+    }
+
     @Override
     public void close(boolean disposeNames) {
         if (resourceFileObjects != null) {
