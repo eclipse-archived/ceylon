@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -3555,6 +3556,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     public Module getJDKBaseModule() {
         return findModule(JAVA_BASE_MODULE_NAME, JDK_MODULE_VERSION);
+    }
+
+    public Module findModuleForFile(File file){
+        File path = file.getParentFile();
+        while (path != null) {
+            String name = path.getPath().replaceAll("[\\\\/]", ".");
+            Module m = getLoadedModule(name);
+            if (m != null) {
+                return m;
+            }
+            path = path.getParentFile();
+        }
+        return modules.getDefaultModule();
     }
 
     protected abstract Module findModuleForClassMirror(ClassMirror classMirror);
