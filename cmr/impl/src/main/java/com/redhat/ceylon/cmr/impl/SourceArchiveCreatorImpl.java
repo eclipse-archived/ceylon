@@ -53,18 +53,20 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
         for (String prefixedSourceFile : sources) {
             // must remove the prefix first
             String sourceFile = JarUtils.toPlatformIndependentPath(sourcePaths, prefixedSourceFile);
-            srcOutputStream.putNextEntry(new ZipEntry(sourceFile));
-            try {
-                InputStream inputStream = new FileInputStream(prefixedSourceFile);
+            if (!copiedFiles.contains(sourceFile)) {
+                srcOutputStream.putNextEntry(new ZipEntry(sourceFile));
                 try {
-                    JarUtils.copy(inputStream, srcOutputStream);
+                    InputStream inputStream = new FileInputStream(prefixedSourceFile);
+                    try {
+                        JarUtils.copy(inputStream, srcOutputStream);
+                    } finally {
+                        inputStream.close();
+                    }
                 } finally {
-                    inputStream.close();
+                    srcOutputStream.closeEntry();
                 }
-            } finally {
-                srcOutputStream.closeEntry();
+                copiedFiles.add(sourceFile);
             }
-            copiedFiles.add(sourceFile);
         }
         JarUtils.finishUpdatingJar(originalSrcFile, outputSrcFile, srcContext, srcOutputStream, new JarUtils.JarEntryFilter() {
             @Override
