@@ -16,6 +16,8 @@ public class DefaultToolOptions {
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
     
+    public final static String RUNNER_COMPILE = "runner.compile";
+    
     private DefaultToolOptions() {
     }
     
@@ -67,5 +69,13 @@ public class DefaultToolOptions {
 
     public static File getCompilerOutDir(CeylonConfig config) {
         return new File(Repositories.withConfig(config).getOutputRepository().getUrl());
+    }
+    
+    public static String getRunnerCompileFlags() {
+        return getRunnerCompileFlags(CeylonConfig.get());
+    }
+
+    public static String getRunnerCompileFlags(CeylonConfig config) {
+        return config.getOption(RUNNER_COMPILE, Constants.DEFAULT_RUNNER_COMPILATION_FLAGS);
     }
 }
