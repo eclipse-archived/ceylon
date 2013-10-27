@@ -3,8 +3,14 @@ package com.redhat.ceylon.cmr.ceylon;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
@@ -171,7 +177,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             compileFlags = COMPILE_ONCE;
         }
         boolean forceCompilation = compileFlags.contains("force");
-        boolean allowCompilation = forceCompilation || compileFlags.contains("once");
+        boolean checkCompilation = compileFlags.contains("check");
+        boolean allowCompilation = forceCompilation || checkCompilation || compileFlags.contains("once");
         
         if (!forceCompilation && ("default".equals(name) || version != null)) {
             // If we have the default module or a version we first try it the quick way
@@ -192,7 +199,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
         if (version != null) {
             // Here we either have a single version or none
-            if (versions.isEmpty() || forceCompilation) {
+            if (versions.isEmpty() || forceCompilation || shouldRecompile(checkCompilation, repoMgr, name, version, type)) {
                 if (allowCompilation) {
                     Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                     if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
@@ -213,16 +220,23 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             }
         } else {
             // Here we can have any number of versions, including none
-            if ((versions.isEmpty() || onlyRemote(versions) || forceCompilation) && allowCompilation) {
+            if (allowCompilation
+                    && (versions.isEmpty()
+                        || onlyRemote(versions)
+                        || forceCompilation
+                        || checkCompilation)) {
                 // If there are no versions at all or only in remote repositories we
                 // first check if there's local code we could compile before giving up
                 Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                 if (!srcVersions.isEmpty()) {
                     // There seems to be source code
                     // Let's see if we can compile it...
-                    if (runCompiler(repoMgr, name, type)) {
-                        // All okay it seems, let's use this version
-                        versions = srcVersions;
+                    String srcver = srcVersions.iterator().next().getVersion();
+                    if (!checkCompilation || shouldRecompile(checkCompilation, repoMgr, name, srcver, type)) {
+                        if (runCompiler(repoMgr, name, type)) {
+                            // All okay it seems, let's use this version
+                            versions = srcVersions;
+                        }
                     }
                 }
             }
@@ -253,6 +267,39 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             return null;
         }
         return versions.iterator().next().getVersion();
+    }
+    
+    private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
+        if (checkCompilation) {
+            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ac.setFetchSingleArtifact(true);
+            ac.setThrowErrorIfMissing(false);
+            File artifile = repoMgr.getArtifact(ac);
+            long newestSource = getNewestLastmodified(name);
+            if (newestSource > artifile.lastModified()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private long getNewestLastmodified(String name) throws IOException {
+        final long[] newest = new long[] { -1L };
+        List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
+        for (File srcDir : srcDirs) {
+            File moduleDir = new File(srcDir, name);
+            Files.walkFileTree(moduleDir.toPath(), new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    if (newest[0] == -1L || file.toFile().lastModified() > newest[0]) {
+                        newest[0] = file.toFile().lastModified();
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+                
+            });
+        }
+        return newest[0];
     }
     
     private boolean onlyRemote(Collection<ModuleVersionDetails> versions) {
