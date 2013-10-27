@@ -20,9 +20,11 @@ shared void testProcess() {
     }
     process.write("write");
     process.writeLine(" and writeLine");
+    process.writeLine();
     process.flush();
     process.writeError("writeError");
     process.writeErrorLine(" and writeErrorLine");
+    process.writeErrorLine();
     process.flushError();
     
     //language object

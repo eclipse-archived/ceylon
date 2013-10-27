@@ -3,6 +3,7 @@ package ceylon.language;
 import java.io.IOException;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
@@ -208,24 +209,44 @@ public final class process_ {
 
 //    shared Entries<String,String> properties { throw; }
 
-    public void writeLine(@Name("line") java.lang.String s) {
-        java.lang.System.out.println(s);
+    public void writeLine(@Name("line") @Defaulted java.lang.String line) {
+        java.lang.System.out.println(line);
     }
     
-    public void write(@Name("string") java.lang.String s) {
-        java.lang.System.out.print(s);
+    @Ignore
+    public void writeLine() {
+        writeLine(writeErrorLine$line());
+    }
+    
+    @Ignore
+    public static java.lang.String writeLine$line() {
+        return "";
+    }
+    
+    public void write(@Name("string") java.lang.String string) {
+        java.lang.System.out.print(string);
     }
     
     public void flush() {
         java.lang.System.out.flush();
     }
     
-    public void writeErrorLine(@Name("line") java.lang.String s) {
-        java.lang.System.err.println(s);
+    public void writeErrorLine(@Name("line") @Defaulted java.lang.String line) {
+        java.lang.System.err.println(line);
     }
     
-    public void writeError(@Name("string") java.lang.String s) {
-        java.lang.System.err.print(s);
+    @Ignore
+    public void writeErrorLine() {
+        writeErrorLine(writeErrorLine$line());
+    }
+    
+    @Ignore
+    public static java.lang.String writeErrorLine$line() {
+        return "";
+    }
+    
+    public void writeError(@Name("string") java.lang.String string) {
+        java.lang.System.err.print(string);
     }
     
     public void flushError() {
