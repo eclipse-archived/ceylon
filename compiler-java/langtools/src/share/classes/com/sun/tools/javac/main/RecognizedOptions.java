@@ -26,6 +26,8 @@
 package com.sun.tools.javac.main;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.code.Lint;
 import com.sun.tools.javac.code.Source;
@@ -739,7 +741,7 @@ public class RecognizedOptions {
                         // CEYLONSOURCEPATH puts it in the options map as -sourcepath
                         List<String> sourcePaths = options.getMulti("-sourcepath");
                         if(sourcePaths.isEmpty())
-                            sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
+                            sourcePaths = FileUtil.filesToPathList(DefaultToolOptions.getCompilerSourceDirs());
                         if (checkIfModule(sourcePaths, s)) {
                             // A Ceylon module name that ends with .ceylon or .java
                             helper.addClassName(s);
@@ -769,7 +771,7 @@ public class RecognizedOptions {
                     // find a corresponding physical module in the source path
                     List<String> sourcePaths = options.getMulti("-sourcepath");
                     if(sourcePaths.isEmpty())
-                        sourcePaths = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);// default value
+                        sourcePaths = FileUtil.filesToPathList(DefaultToolOptions.getCompilerSourceDirs());
                     if (checkIfModule(sourcePaths, s)) {
                         helper.addClassName(s);
                         return false;

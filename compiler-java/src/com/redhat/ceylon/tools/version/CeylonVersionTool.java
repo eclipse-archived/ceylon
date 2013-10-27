@@ -19,7 +19,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.TokenRewriteStream;
 
-import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -77,7 +77,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
     
     private List<ModuleSpec> modules;
 
-    private List<File> sourceFolders = Collections.singletonList(new File(Constants.DEFAULT_SOURCE_DIR));
+    private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     
     private String encoding = System.getProperty("file.encoding");
     

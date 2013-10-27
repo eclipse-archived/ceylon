@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 
 public class Main {
     private static final int SC_OK = 0;
@@ -122,14 +123,16 @@ public class Main {
             printUsage(SC_ARGS, cwd, systemRepo, cacheRepo, noDefRepos, repositories, destDir);
         }
         if (destDir == null) {
-            destDir = Constants.DEFAULT_MODULE_DIR;
+            destDir = DefaultToolOptions.getCompilerOutDir().getPath();
         }
 
         List<File> sourceFolders = new LinkedList<File>();
         if (sourceDirs.isEmpty()) {
-            File src = new File(Constants.DEFAULT_SOURCE_DIR);
-            if(src.isDirectory())
-                sourceFolders.add(src);
+            List<File> srcs = DefaultToolOptions.getCompilerSourceDirs();
+            for (File src : srcs) {
+                if(src.isDirectory())
+                    sourceFolders.add(src);
+            }
         }else{
             for(String srcDir : sourceDirs){
                 File src = new File(srcDir);

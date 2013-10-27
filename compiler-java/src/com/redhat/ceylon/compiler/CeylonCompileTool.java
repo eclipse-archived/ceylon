@@ -145,8 +145,8 @@ public class CeylonCompileTool extends RepoUsingTool {
     
     private static final Helper HELPER = new Helper();
 
-    private List<File> source = Collections.singletonList(new File(Constants.DEFAULT_SOURCE_DIR));
-    private List<File> resource = Collections.singletonList(new File(Constants.DEFAULT_RESOURCE_DIR));
+    private List<File> source = DefaultToolOptions.getCompilerSourceDirs();
+    private List<File> resource = DefaultToolOptions.getCompilerResourceDirs();
     private String out;
     private List<String> module = Collections.emptyList();
     private boolean continueOnErrors;

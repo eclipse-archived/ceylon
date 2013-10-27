@@ -50,6 +50,7 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -143,7 +144,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private File tempDestDir;
     private CeylondLogger log;
     private List<String> compiledClasses = new LinkedList<String>();
-    private List<File> sourceFolders = Collections.singletonList(new File(Constants.DEFAULT_SOURCE_DIR));
+    private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private boolean haltOnError;
     private List<String> moduleSpecs = new LinkedList<String>();
     private Module currentModule;

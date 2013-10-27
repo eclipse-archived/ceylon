@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 
 public class ImportJarMain {
     private static final int SC_OK = 0;
@@ -91,7 +92,7 @@ public class ImportJarMain {
             printUsage(SC_ARGS);
         }
         if (destDir == null) {
-            destDir = Constants.DEFAULT_MODULE_DIR;
+            destDir = DefaultToolOptions.getCompilerOutDir().getPath();
         }
 
         try{

@@ -29,7 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,8 +42,11 @@ import java.util.zip.ZipFile;
 
 import javax.tools.JavaFileManager.Location;
 
-import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
+import com.redhat.ceylon.compiler.java.tools.CompilerConfig;
 import com.sun.tools.javac.code.Lint;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.ListBuffer;
@@ -65,7 +67,8 @@ import static com.sun.tools.javac.main.OptionName.*;
  *  deletion without notice.</b>
  */
 public class Paths {
-
+    private CeylonConfig config;
+    
     /** The context key for the todo list */
     protected static final Context.Key<Paths> pathsKey =
         new Context.Key<Paths>();
@@ -104,6 +107,7 @@ public class Paths {
         options = Options.instance(context);
         lint = Lint.instance(context);
         fsInfo = FSInfo.instance(context);
+        config = CompilerConfig.instance(context);
     }
 
     /** Whether to warn about non-existent path elements */
@@ -449,7 +453,7 @@ public class Paths {
         List<String> sourcePathArgs = options.getMulti(SOURCEPATH);
         // Ceylon: default source path
         if (sourcePathArgs.isEmpty())
-            sourcePathArgs = Arrays.asList(Constants.DEFAULT_SOURCE_DIR);
+            sourcePathArgs = FileUtil.filesToPathList(DefaultToolOptions.getCompilerSourceDirs(config));
 
         Path path = new Path();
         for(String pathArg : sourcePathArgs){
@@ -462,7 +466,7 @@ public class Paths {
         List<String> resourcePathArgs = options.getMulti(CEYLONRESOURCEPATH);
         // Ceylon: default resource path
         if (resourcePathArgs.isEmpty())
-            resourcePathArgs = Arrays.asList(Constants.DEFAULT_RESOURCE_DIR);
+            resourcePathArgs = FileUtil.filesToPathList(DefaultToolOptions.getCompilerResourceDirs(config));
 
         Path path = new Path();
         for(String pathArg : resourcePathArgs){
