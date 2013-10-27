@@ -19,6 +19,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -244,19 +245,22 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         Collection<ModuleVersionDetails> result = new ArrayList<ModuleVersionDetails>();
         try {
             // FIXME source folder might be overridden!
-            File srcDir = new File(Constants.DEFAULT_SOURCE_DIR);
-            ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
-            String version = mdr.getModuleVersion();
-            if (version != null) {
-                ModuleVersionDetails mvd = new ModuleVersionDetails(version);
-                mvd.setLicense(mdr.getModuleLicense());
-                List<String> by = mdr.getModuleAuthors();
-                if (by != null) {
-                    mvd.getAuthors().addAll(by);
+            List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
+            for (File srcDir : srcDirs) {
+                ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
+                String version = mdr.getModuleVersion();
+                if (version != null) {
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(version);
+                    mvd.setLicense(mdr.getModuleLicense());
+                    List<String> by = mdr.getModuleAuthors();
+                    if (by != null) {
+                        mvd.getAuthors().addAll(by);
+                    }
+                    mvd.setRemote(false);
+                    mvd.setOrigin("Local source folder");
+                    result.add(mvd);
+                    break;
                 }
-                mvd.setRemote(false);
-                mvd.setOrigin("Local source folder");
-                result.add(mvd);
             }
         } catch (Exception ex) {
             // Just continue as if nothing happened
