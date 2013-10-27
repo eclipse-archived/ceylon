@@ -19,8 +19,10 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
@@ -133,6 +135,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     private String func = "run";
+    private String compileFlags;
     private String module;
     private String exepath;
     private List<String> args;
@@ -159,6 +162,14 @@ public class CeylonRunJsTool extends RepoUsingTool {
     		"given `<module>`. (default: `run`).")
     public void setRun(String func) {
         this.func = func;
+    }
+
+    @Option
+    @OptionArgument(argumentName = "flags")
+    @Description("Determines if and how compilation should be handled." +
+            "Allowed flags include: `never`, `once`, `force`.")
+    public void setCompile(String compile) {
+        this.compileFlags = compile;
     }
 
     @Argument(argumentName="module", multiplicity="1", order=1)
@@ -340,8 +351,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
         //Create a repository manager to load the js module we're going to run
         final RepositoryManager repoman = getRepositoryManager();
         
-        version = checkModuleVersionsOrShowSuggestions(repoman, modname, version, ModuleQuery.Type.JS,
-            Versions.JS_BINARY_MAJOR_VERSION, true);
+        version = checkModuleVersionsOrShowSuggestions(
+                repoman, modname, version, ModuleQuery.Type.JS,
+                Versions.JS_BINARY_MAJOR_VERSION, compileFlags);
         if (version == null) {
             return;
         }
