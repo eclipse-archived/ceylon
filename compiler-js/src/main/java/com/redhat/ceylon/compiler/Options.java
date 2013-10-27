@@ -6,7 +6,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 
 /** Represents all the options for compiling.
  * 
@@ -22,7 +23,7 @@ public class Options {
     private String user;
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
-    private String outDir = Constants.DEFAULT_MODULE_DIR;
+    private String outDir = DefaultToolOptions.getCompilerOutDir().getPath();
     private boolean optimize;
     private boolean modulify = true;
     private boolean indent = true;
@@ -100,7 +101,7 @@ public class Options {
             }
         }
         if (opts.srcDirs.isEmpty()) {
-            opts.srcDirs.add(Constants.DEFAULT_SOURCE_DIR);
+            opts.srcDirs.addAll(FileUtil.filesToPathList(DefaultToolOptions.getCompilerSourceDirs()));
         }
         return opts;
     }
