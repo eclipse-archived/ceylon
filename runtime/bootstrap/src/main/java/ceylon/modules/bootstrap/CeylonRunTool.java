@@ -60,6 +60,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
     private String moduleNameOptVersion;
     private String run;
+    private String compileFlags;
     private List<String> args = Collections.emptyList();
 
     public CeylonRunTool() {
@@ -80,6 +81,14 @@ public class CeylonRunTool extends RepoUsingTool {
     @Description("Specifies the fully qualified name of a toplevel method or class with no parameters.")
     public void setRun(String run) {
         this.run = run;
+    }
+
+    @Option
+    @OptionArgument(argumentName = "flags")
+    @Description("Determines if and how compilation should be handled." +
+            "Allowed flags include: `never`, `once`, `force`.")
+    public void setCompile(String compile) {
+        this.compileFlags = compile;
     }
 
     @Option
@@ -145,7 +154,13 @@ public class CeylonRunTool extends RepoUsingTool {
         }
 
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
-        String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module, ModuleUtil.moduleVersion(moduleNameOptVersion), ModuleQuery.Type.JVM, Versions.JVM_BINARY_MAJOR_VERSION, true);
+        String version = checkModuleVersionsOrShowSuggestions(
+                getRepositoryManager(),
+                module,
+                ModuleUtil.moduleVersion(moduleNameOptVersion),
+                ModuleQuery.Type.JVM,
+                Versions.JVM_BINARY_MAJOR_VERSION,
+                compileFlags);
         if (version == null) {
             return;
         }
