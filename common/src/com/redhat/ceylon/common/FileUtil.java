@@ -2,6 +2,9 @@ package com.redhat.ceylon.common;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FileUtil {
     
@@ -124,4 +127,60 @@ public class FileUtil {
         }
     }
     
+    private static final String[] EMPTY_STRINGS = new String[0];
+    private static final File[] EMPTY_FILES = new File[0];
+    
+    public static List<File> pathsToFileList(List<String> paths) {
+        if (paths != null) {
+            List<File> result = new ArrayList<File>(paths.size());
+            for (String s : paths) {
+                result.add(new File(s));
+            }
+            return result;
+        } else {
+            return Collections.emptyList();
+        }
+        
+    }
+    
+    public static File[] pathsToFileArray(String[] paths) {
+        if (paths != null) {
+            File[] result = new File[paths.length];
+            int idx = 0;
+            for (String s : paths) {
+                result[idx++] = new File(s);
+            }
+            return result;
+        } else {
+            return EMPTY_FILES;
+        }
+        
+    }
+    
+    public static List<String> filesToPathList(List<File> files) {
+        if (files != null) {
+            List<String> result = new ArrayList<String>(files.size());
+            for (File f : files) {
+                result.add(f.getPath());
+            }
+            return result;
+        } else {
+            return Collections.emptyList();
+        }
+        
+    }
+    
+    public static String[] filesToPathArray(File[] files) {
+        if (files != null) {
+            String[] result = new String[files.length];
+            int idx = 0;
+            for (File f : files) {
+                result[idx++] = f.getPath();
+            }
+            return result;
+        } else {
+            return EMPTY_STRINGS;
+        }
+        
+    }
 }
