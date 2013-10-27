@@ -259,7 +259,6 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     private Collection<ModuleVersionDetails> getVersionFromSource(String name) {
         Collection<ModuleVersionDetails> result = new ArrayList<ModuleVersionDetails>();
         try {
-            // FIXME source folder might be overridden!
             List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
             for (File srcDir : srcDirs) {
                 ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
