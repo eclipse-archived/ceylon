@@ -16,7 +16,6 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -147,11 +146,26 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
-        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, false);
+        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, COMPILE_NEVER);
     }
     
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, boolean allowCompilation) throws IOException {
-        if ("default".equals(name) || version != null) {
+    protected static final String COMPILE_NEVER = "never";
+    protected static final String COMPILE_ONCE = "once";
+    protected static final String COMPILE_FORCE = "force";
+    
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, String compileFlags) throws IOException {
+        if (compileFlags == null) {
+            compileFlags = DefaultToolOptions.getRunnerCompileFlags();
+            if (compileFlags.isEmpty()) {
+                compileFlags = COMPILE_NEVER;
+            }
+        } else if (compileFlags.isEmpty()) {
+            compileFlags = COMPILE_ONCE;
+        }
+        boolean forceCompilation = compileFlags.contains("force");
+        boolean allowCompilation = forceCompilation || compileFlags.contains("once");
+        
+        if (!forceCompilation && ("default".equals(name) || version != null)) {
             // If we have the default module or a version we first try it the quick way
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
             ac.setFetchSingleArtifact(true);
@@ -165,11 +179,12 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 return null;
             }
         }
+        
         boolean suggested = false;
         Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
         if (version != null) {
             // Here we either have a single version or none
-            if (versions.isEmpty()) {
+            if (versions.isEmpty() || forceCompilation) {
                 if (allowCompilation) {
                     Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
                     if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
@@ -190,7 +205,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             }
         } else {
             // Here we can have any number of versions, including none
-            if ((versions.isEmpty() || onlyRemote(versions)) && allowCompilation) {
+            if ((versions.isEmpty() || onlyRemote(versions) || forceCompilation) && allowCompilation) {
                 // If there are no versions at all or only in remote repositories we
                 // first check if there's local code we could compile before giving up
                 Collection<ModuleVersionDetails> srcVersions = getVersionFromSource(name);
