@@ -35,6 +35,7 @@ public class CeylonUtils {
         private File cwd;
         private String systemRepo;
         private String cacheRepo;
+        private String mavenOverrides;
         private List<String> userRepos;
         private List<String> extraUserRepos;
         private List<String> remoteRepos;
@@ -114,6 +115,17 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder cacheRepo(String cacheRepo) {
             this.cacheRepo = cacheRepo;
+            return this;
+        }
+
+        /**
+         * Sets the path to use for the maven overrides XML file
+         *
+         * @param mavenOverrides the path to use for the maven overrides XML file
+         * @return This object for chaining method calls
+         */
+        public CeylonRepoManagerBuilder mavenOverrides(String mavenOverrides) {
+            this.mavenOverrides = mavenOverrides;
             return this;
         }
 
@@ -282,7 +294,7 @@ public class CeylonUtils {
                 root = new File(absolute(resolveRepoUrl(repositories, cacheRepo)));
             }
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config));
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), mavenOverrides);
 
             // Now we add all the rest of the repositories in the order that they will be searched
             

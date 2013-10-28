@@ -37,10 +37,12 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
 
     private Logger log;
     private boolean offline;
+    private String mavenOverrides;
     
-    RepositoryBuilderImpl(Logger log, boolean offline) {
+    RepositoryBuilderImpl(Logger log, boolean offline, String mavenOverrides) {
         this.log = log;
         this.offline = offline;
+        this.mavenOverrides = mavenOverrides;
     }
 
     public Repository buildRepository(String token) throws Exception {
@@ -59,8 +61,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             return new JDKRepository();
         } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
             Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, boolean.class);
-            return (Repository) createRepository.invoke(null, log, offline);
+            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class);
+            return (Repository) createRepository.invoke(null, log, null, mavenOverrides, offline);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:");
         } else if (token.startsWith("mvn:")) {
@@ -90,6 +92,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             settingsXml = config.substring(0, p);
             overridesXml = config.substring(p + 1);
         }
+        if(overridesXml == null)
+            overridesXml = mavenOverrides;
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class);
         return (Repository) createRepository.invoke(null, log, settingsXml, overridesXml, offline);

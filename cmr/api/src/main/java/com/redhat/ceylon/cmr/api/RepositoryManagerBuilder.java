@@ -47,20 +47,28 @@ public class RepositoryManagerBuilder {
     public RepositoryManagerBuilder(Logger log) {
         this(log, true);
     }
-
+    
     public RepositoryManagerBuilder(Logger log, boolean offline) {
+        this(log, true, null);
+    }
+    
+    public RepositoryManagerBuilder(Logger log, boolean offline, String mavenOverrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class);
-            delegate = ctor.newInstance(log, offline);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, String.class);
+            delegate = ctor.newInstance(log, offline, mavenOverrides);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline) {
+        this(mainRepository, log, offline, null);
+    }
+    
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, String mavenOverrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class);
-            delegate = ctor.newInstance(mainRepository, log, offline);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, String.class);
+            delegate = ctor.newInstance(mainRepository, log, offline, mavenOverrides);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }

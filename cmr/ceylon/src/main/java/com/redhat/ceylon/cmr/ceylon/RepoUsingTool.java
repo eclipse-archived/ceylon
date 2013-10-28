@@ -34,6 +34,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
     protected String systemRepo;
     protected String cacheRepo;
+    protected String mavenOverrides;
     protected boolean noDefRepos;
     protected boolean offline;
 
@@ -96,6 +97,12 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.cacheRepo = cacheRepo;
     }
 
+    @OptionArgument(longName="maven-overrides", argumentName="url")
+    @Description("Specifies the xml file to use to load Maven artifact overrides.")
+    public void setMavenOverrides(String mavenOverrides) {
+        this.mavenOverrides = mavenOverrides;
+    }
+
     @Option(longName="no-default-repositories")
     @Description("Indicates that the default repositories should not be used.")
     public void setNoDefRepos(boolean noDefRepos) {
@@ -115,6 +122,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .cwd(cwd)
+                .mavenOverrides(mavenOverrides)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)
