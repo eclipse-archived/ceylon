@@ -562,7 +562,8 @@
         <section id="bottomtype">
             <title>The bottom type</title>
             
-            <para>The special type <literal>Nothing</literal> represents:</para>
+            <para>The special type <literal>Nothing</literal>, sometimes called the
+            <emphasis>bottom type</emphasis>, represents:</para>
             
             <itemizedlist>
                 <listitem>
@@ -576,8 +577,8 @@
             <para><literal>Nothing</literal> is assignable to all other types, but has
             no instances.</para>
             
-            <para>A reference to a member of an expression of type <literal>Nothing</literal>
-            is always an error, since there can never be a receiving instance.</para>
+            <para>The type schema for <literal>Nothing</literal> is empty, that is, it
+            is considered to have no members.</para>
             
             <para><literal>Nothing</literal> is considered to belong to the module
             <literal>ceylon.language</literal>. However, it cannot be defined within

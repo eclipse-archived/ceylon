@@ -803,6 +803,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 </listitem>
             </itemizedlist>
                     
+            <para>A qualified reference may not have <literal>Nothing</literal> as the
+            qualifying type.</para>
+            
             <para>If a program element contains a qualified reference:</para>
             
             <itemizedlist>
