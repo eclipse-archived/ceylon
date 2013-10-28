@@ -2453,7 +2453,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(!invocation.isJavaMethod()){
                     ProducedType argType = invocation.getArgumentType(ii);
                     if(!typeFact().isSequentialType(argType))
-                        argExpr = makeIterableToSequential(argExpr);
+                        argExpr = iterableToSequential(argExpr);
                 }
                 x = x.prepend(argExpr);
             }
@@ -2482,14 +2482,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
         exprAndType = new ExpressionAndType(expr, type);
         return exprAndType;
-    }
-
-    /**
-     * Turns a <tt>ceylon.language.Iterable</tt> to a <tt>ceylon.language.Sequential</tt> by invoking 
-     * its <tt>getSequence()</tt> method.
-     */
-    private JCExpression makeIterableToSequential(JCExpression argExpr) {
-        return make().Apply(null, makeSelect(argExpr, "getSequence"), List.<JCExpression>nil());
     }
 
     private List<ExpressionAndType> transformSpreadTupleArgument(

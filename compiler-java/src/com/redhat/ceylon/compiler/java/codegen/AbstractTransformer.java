@@ -2607,7 +2607,8 @@ public abstract class AbstractTransformer implements Transformation {
      */
     
     /**
-     * Invokes getSequence() on an Iterable to get a Sequential
+     * Turns a <tt>ceylon.language.Iterable</tt> to a <tt>ceylon.language.Sequential</tt> by invoking 
+     * its <tt>getSequence()</tt> method.
      */
     JCExpression iterableToSequential(JCExpression iterable){
         return make().Apply(null, makeSelect(iterable, "getSequence"), List.<JCExpression>nil());
