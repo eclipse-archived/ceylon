@@ -43,7 +43,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
   if (mm) {
     if (mm.$t){
       _t=mm.$t;
-      if (!extendsType($$$mptypes.Type,_t))throw IncompatibleTypeException$meta$model("Incompatible Type argument");
+      if (!extendsType(_t,$$$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type argument");
     }
     validate$params(mm.$ps,$$$mptypes.Arguments,"Wrong number of Arguments for getMethod");
   }
