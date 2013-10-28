@@ -43,6 +43,16 @@ abstract class LazyHelper {
         this.task = task;
     }
     
+    long newestSourceFile(List<File> srcs, File moduleDir) {
+        long newest = Long.MIN_VALUE;
+        for (File src : srcs) {
+            File srcModuleDir = new File(src, moduleDir.getPath());
+            newest = newestSourceFile(newest, srcModuleDir);
+            task.log("Newest file in " + srcModuleDir + " " + new Date(newest), Project.MSG_DEBUG);
+        }
+        return newest;
+    }
+    
     long newestSourceFile(long mtime, File file) {
         if (file.isDirectory()) {
             for (File child : file.listFiles()) {
@@ -80,20 +90,14 @@ abstract class LazyHelper {
         }
         Iterator<Module> iterator = modules.iterator();
         while (iterator.hasNext()) {
-            Module module = iterator.next();
-            long newest = Long.MIN_VALUE;
-            String version = null;
-            for (File src : task.getSrc()) {
-                version = version != null ? version : new ModuleDescriptorReader(module.getName(), src).getModuleVersion();
-                File srcModuleDir = new File(src, module.toDir().getPath());
-                newest = newestSourceFile(newest, srcModuleDir);
-                task.log("Newest file in " + srcModuleDir + " " + new Date(newest), Project.MSG_DEBUG);
-            }
-            if (version == null) {
+            Module m = iterator.next();
+            Module module = findModule(m.getName());
+            if (module.getVersion() == null) {
                 task.log("Unable to determine version (and hence timestamp) of " + module, Project.MSG_VERBOSE);
                 continue;
             }
-            File outModuleDir = getArtifactDir(version, module);
+            long newest = newestSourceFile(task.getSrc(), module.toDir());
+            File outModuleDir = getArtifactDir(module);
             long oldest = oldestOutputArtifact(Long.MAX_VALUE, outModuleDir);
             task.log("Oldest file in " + outModuleDir + " " + new Date(oldest), Project.MSG_DEBUG);
             if (newest != Long.MIN_VALUE
@@ -128,7 +132,6 @@ abstract class LazyHelper {
             return false;
         }
         long newestFile = Long.MIN_VALUE;
-        String version = null;
         Iterator<File> iter = files.iterator();
         while (iter.hasNext()) {
             File file = iter.next();
@@ -137,14 +140,11 @@ abstract class LazyHelper {
                 task.log("Unable to determine module of " + file, Project.MSG_VERBOSE);
                 continue;
             }
-            for (File src : task.getSrc()) {
-                version = version != null ? version : new ModuleDescriptorReader(module.getName(), src).getModuleVersion();
-            }
-            if (version == null) {
-                task.log("Unable to determine version (and hence timestamp) of " + module, Project.MSG_VERBOSE);
+            if (module.getVersion() == null) {
+                task.log("Unable to determine version (and hence timestamp) of " + module.getName(), Project.MSG_VERBOSE);
                 continue;
             }
-            File outModuleDir = getArtifactDir(version, module);
+            File outModuleDir = getArtifactDir(module);
             long oldest = oldestOutputArtifact(Long.MAX_VALUE, outModuleDir);
             task.log("Oldest file in " + outModuleDir + " " + new Date(oldest), Project.MSG_DEBUG);
             
@@ -165,6 +165,16 @@ abstract class LazyHelper {
     
     protected abstract FileFilter getArtifactFilter();
 
+    private Module findModule(String moduleName) {
+        for (File src : task.getSrc()) {
+            ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
+            if (mdr.getModuleVersion() != null) {
+                return new Module(mdr.getModuleName(), mdr.getModuleVersion());
+            }
+        }
+        return null;
+    }
+    
     private Module inferModule(File file) {
         if (file.exists()) {
             for (File src : task.getSrc()) {
@@ -174,9 +184,8 @@ abstract class LazyHelper {
                         if (moduleDescriptor.exists()
                                 && moduleDescriptor.getName().equals("module.ceylon")) {
                             String moduleName = moduleDescriptor.getParentFile().getAbsolutePath().substring(src.getAbsolutePath().length()+1).replace(File.separator, ".");
-                            Module module = new Module();
-                            module.setName(moduleName);
-                            return module;
+                            ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
+                            return new Module(mdr.getModuleName(), mdr.getModuleVersion());
                         }
                         file = file.getParentFile();
                     }
