@@ -141,7 +141,12 @@ public class CeylonRunTool extends RepoUsingTool {
             argList.add("-cacherep");
             argList.add(cacheRepo);
         }
-        
+
+        if (mavenOverrides != null) {
+            argList.add("-maven-overrides");
+            argList.add(mavenOverrides);
+        }
+
         if (noDefRepos) {
             argList.add("-nodefreps");
         }

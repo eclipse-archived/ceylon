@@ -29,6 +29,7 @@ public enum Argument {
     REPOSITORY("rep", ArgumentType.CEYLON, 1),
     SYSTEM_REPOSITORY("sysrep", ArgumentType.CEYLON, 1),
     CACHE_REPOSITORY("cacherep", ArgumentType.CEYLON, 1),
+    MAVEN_OVERRIDES("maven-overrides", ArgumentType.CEYLON, 1),
     NO_DEFAULT_REPOSITORIES("nodefreps", ArgumentType.CEYLON, 0),
     SOURCE("src", ArgumentType.CEYLON, 1),
     VERBOSE("verbose", ArgumentType.CEYLON, 0),

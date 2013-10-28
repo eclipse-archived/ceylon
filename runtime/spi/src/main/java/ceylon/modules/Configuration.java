@@ -63,6 +63,11 @@ public class Configuration {
     public String cacheRepository;
 
     /**
+     * The path to the Maven overrides XML file (default = null)
+     */
+    public String mavenOverrides;
+
+    /**
      * Indicates that the default repositories should not be used
      */
     public boolean noDefaultRepositories;
@@ -137,6 +142,9 @@ public class Configuration {
                 break;
             case CACHE_REPOSITORY:
                 cacheRepository = values[arg];
+                break;
+            case MAVEN_OVERRIDES:
+                mavenOverrides = values[arg];
                 break;
             case NO_DEFAULT_REPOSITORIES:
                 noDefaultRepositories = true;
