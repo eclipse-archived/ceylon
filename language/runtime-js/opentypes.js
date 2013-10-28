@@ -172,14 +172,14 @@ defineAttr($$openFunction,'container',function(){
         var ta;
         if (tps) {
           if (types===undefined)
-            throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
+            throw TypeApplicationException$meta$model(String$("Missing type arguments in call to "+this.string+".memberApply"));
           ta={}; var i=0;
           for (var tp in tps) {
-            if (types[i]===undefined)
-              throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
+            var _t=types.$get(i);
+            if (_t===undefined)
+              throw TypeApplicationException$meta$model(String$("Missing type argument for "+this.string+"<"+ tp+">"));
             var _tp = tps[tp];
-            var _t = types[i].tipo;
-            ta[tp]={t:_t};
+            ta[tp]={t:_t.tipo};
             if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
               var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
               for (var j=0; j<restraints.length;j++) {
