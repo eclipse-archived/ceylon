@@ -90,7 +90,7 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static double $default$f() {
+    public static double $default$f() {
         return 3.141;
     }
     protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
@@ -147,7 +147,7 @@ final class annotationClassFloat_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.FloatValue(1.0)
-    static final double annotationClassFloat$f() {
+    public static final double annotationClassFloat$f() {
         return 1.0;
     }
     

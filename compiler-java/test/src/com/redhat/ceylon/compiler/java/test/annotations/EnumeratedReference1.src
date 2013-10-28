@@ -291,7 +291,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static .ceylon.language.Comparison $default$comparison() {
+    public static .ceylon.language.Comparison $default$comparison() {
         return .ceylon.language.larger_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -362,7 +362,7 @@ final class enumeratedReferenceDefaulted_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.ObjectValue(.ceylon.language.smaller_.class)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Comparison enumeratedReferenceDefaulted$comparison() {
+    public static final .ceylon.language.Comparison enumeratedReferenceDefaulted$comparison() {
         return .ceylon.language.smaller_.get_();
     }
     

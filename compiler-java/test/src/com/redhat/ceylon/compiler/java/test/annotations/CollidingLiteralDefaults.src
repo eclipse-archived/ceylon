@@ -94,7 +94,7 @@ final class collidingLiteralDefaults_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(2L)
-    static final long collidingLiteralDefaults$i1() {
+    public static final long collidingLiteralDefaults$i1() {
         return 2L;
     }
     

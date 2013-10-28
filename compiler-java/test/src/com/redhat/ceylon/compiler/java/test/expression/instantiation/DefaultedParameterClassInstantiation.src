@@ -41,11 +41,11 @@ class DefaultedParameterClassInstantiation implements .com.redhat.ceylon.compile
     DefaultedParameterClassInstantiation(final long m, final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    static long $default$m() {
+    public static long $default$m() {
         return 1L;
     }
     
-    static long $default$n(final long m) {
+    public static long $default$n(final long m) {
         return m + 1L;
     }
     

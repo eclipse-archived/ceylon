@@ -16,7 +16,7 @@ class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     C1(final long i) {
     }
     
-    static long $default$i() {
+    public static long $default$i() {
         return 1L;
     }
     
@@ -59,11 +59,11 @@ class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     C3(final long i, final long n) {
     }
     
-    static long $default$i() {
+    public static long $default$i() {
         return 1L;
     }
     
-    static long $default$n(final long i) {
+    public static long $default$n(final long i) {
         return 2L * i;
     }
     
@@ -94,7 +94,7 @@ class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     C4(final long i, final long n) {
     }
     
-    static long $default$n(final long i) {
+    public static long $default$n(final long i) {
         return 2L * i;
     }
     
@@ -122,7 +122,7 @@ class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
     
-    static <U>U $default$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
+    public static <U>U $default$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return null;
     }
     

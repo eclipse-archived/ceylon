@@ -99,7 +99,7 @@ final class sequenceDefaults_String_ {
             "b",
             "c"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String$seq() {
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String$seq() {
         return .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("b"),
@@ -145,7 +145,7 @@ final class sequenceDefaults_String_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.StringValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String_Empty$seq() {
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> sequenceDefaults_String_Empty$seq() {
         return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
     }
     
@@ -321,7 +321,7 @@ final class sequenceDefaults_Boolean_ {
             true,
             false})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean$seq() {
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean$seq() {
         return new .ceylon.language.Tuple<.ceylon.language.Boolean, .ceylon.language.Boolean, .ceylon.language.Tuple<.ceylon.language.Boolean, ? extends .ceylon.language.Boolean, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>>(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Boolean.instance(true),
                 .ceylon.language.Boolean.instance(false)});
@@ -366,7 +366,7 @@ final class sequenceDefaults_Boolean_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.BooleanValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean_Empty$seq() {
+    public static final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> sequenceDefaults_Boolean_Empty$seq() {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
     }
     
@@ -541,7 +541,7 @@ final class sequenceDefaults_Character_ {
             98,
             99})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character$seq() {
         return new .ceylon.language.Tuple<.ceylon.language.Character, .ceylon.language.Character, .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Tuple<.ceylon.language.Character, ? extends .ceylon.language.Character, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>>>(.ceylon.language.Character.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Character.instance(97),
                 .ceylon.language.Character.instance(98),
@@ -587,7 +587,7 @@ final class sequenceDefaults_Character_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.CharacterValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character_Empty$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> sequenceDefaults_Character_Empty$seq() {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     
@@ -764,7 +764,7 @@ final class sequenceDefaults_Float_ {
             2.0,
             3.0})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float$seq() {
         return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>>(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.Float.instance(2.0),
@@ -810,7 +810,7 @@ final class sequenceDefaults_Float_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.FloatValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float_Empty$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Float> sequenceDefaults_Float_Empty$seq() {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     
@@ -987,7 +987,7 @@ final class sequenceDefaults_Integer_ {
             2L,
             3L})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer$seq() {
         return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
@@ -1033,7 +1033,7 @@ final class sequenceDefaults_Integer_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.IntegerValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer_Empty$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequenceDefaults_Integer_Empty$seq() {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     
@@ -1210,7 +1210,7 @@ final class sequenceDefaults_Object_ {
             .ceylon.language.empty_.class,
             .ceylon.language.empty_.class})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object$seq() {
         return new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Tuple<.ceylon.language.Empty, ? extends .ceylon.language.Empty, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Empty>>>(.ceylon.language.Empty.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.empty_.get_(),
                 .ceylon.language.empty_.get_()});
@@ -1255,7 +1255,7 @@ final class sequenceDefaults_Object_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.ObjectValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object_Empty$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Empty> sequenceDefaults_Object_Empty$seq() {
         return (.ceylon.language.Sequential<? extends .ceylon.language.Empty>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     
@@ -1430,7 +1430,7 @@ final class sequenceDefaults_Declaration_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({"::1.0.0:ceylon.language::Vempty"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration$seq() {
         return new .ceylon.language.Tuple<.ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.meta.declaration.ValueDeclaration, .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>>(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.0.0").findPackage("ceylon.language").getValue("empty")});
     }
     
@@ -1473,7 +1473,7 @@ final class sequenceDefaults_Declaration_Empty_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationValue({})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration_Empty$seq() {
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> sequenceDefaults_Declaration_Empty$seq() {
         return (.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     

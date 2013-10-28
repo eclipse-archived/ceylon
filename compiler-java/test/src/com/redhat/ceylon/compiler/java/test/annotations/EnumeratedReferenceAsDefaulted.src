@@ -142,7 +142,7 @@ final class enumeratedReference_z_ {
     @.com.redhat.ceylon.compiler.java.metadata.ObjectExprs({@.com.redhat.ceylon.compiler.java.metadata.ObjectValue(
             name = "$arg$c",
             value = .ceylon.language.smaller_.class)})
-    static final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y enumeratedReference_z$y() {
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y enumeratedReference_z$y() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(.ceylon.language.smaller_.get_());
     }
     

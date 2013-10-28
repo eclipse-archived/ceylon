@@ -90,7 +90,7 @@ final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compile
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static .java.lang.String $default$s() {
+    public static .java.lang.String $default$s() {
         return "foo";
     }
     protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
@@ -206,7 +206,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static .ceylon.language.Sequential<? extends .ceylon.language.String> $default$s() {
+    public static .ceylon.language.Sequential<? extends .ceylon.language.String> $default$s() {
         return new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("foo")});
     }
     protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$OptionalAnnotation$this$;
@@ -322,7 +322,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $default$s() {
+    public static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $default$s() {
         return .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("foo")});
     }
     protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$OptionalAnnotation$this$;
@@ -427,7 +427,7 @@ final class annotationClassString_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.StringValue("s")
-    static final .java.lang.String annotationClassString$s() {
+    public static final .java.lang.String annotationClassString$s() {
         return "s";
     }
     

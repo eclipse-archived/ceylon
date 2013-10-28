@@ -586,7 +586,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static <T>.java.lang.String $default$str(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+    public static <T>.java.lang.String $default$str(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return "a";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

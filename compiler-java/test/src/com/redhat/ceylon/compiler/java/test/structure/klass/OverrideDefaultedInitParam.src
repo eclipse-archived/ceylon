@@ -16,7 +16,7 @@ class OverrideDefaultedInitParam implements .com.redhat.ceylon.compiler.java.run
     OverrideDefaultedInitParam(final .java.lang.String id) {
     }
     
-    static .java.lang.String $default$id() {
+    public static .java.lang.String $default$id() {
         return "";
     }
     
@@ -48,7 +48,7 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
         super(id);
     }
     
-    static .java.lang.String $default$id() {
+    public static .java.lang.String $default$id() {
         return "";
     }
     

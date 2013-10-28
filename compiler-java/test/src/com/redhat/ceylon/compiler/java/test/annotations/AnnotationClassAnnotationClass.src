@@ -218,7 +218,7 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $default$a() {
+    public static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $default$a() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam("defaulted");
     }
     protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$OptionalAnnotation$this$;

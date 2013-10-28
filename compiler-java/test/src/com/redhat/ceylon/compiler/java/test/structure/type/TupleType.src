@@ -27,7 +27,7 @@ final class add_ {
         );
     }
     
-    static final .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> add$floats() {
+    public static final .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> add$floats() {
         return new .ceylon.language.Tuple<.ceylon.language.Float, .ceylon.language.Float, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>(.ceylon.language.Float.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Float.instance(1.0),
                 .ceylon.language.Float.instance(2.0)});

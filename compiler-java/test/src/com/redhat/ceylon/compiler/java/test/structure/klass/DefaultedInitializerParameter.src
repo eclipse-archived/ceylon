@@ -47,7 +47,7 @@ class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter2(final long n, final .java.lang.String s) {
     }
     
-    static .java.lang.String $default$s(final long n) {
+    public static .java.lang.String $default$s(final long n) {
         return "test";
     }
     
@@ -85,11 +85,11 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter3(final long n, final long m) {
     }
     
-    static long $default$n() {
+    public static long $default$n() {
         return 5L;
     }
     
-    static long $default$m(final long n) {
+    public static long $default$m(final long n) {
         return n;
     }
     
@@ -132,11 +132,11 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter4(final long n, final long m) {
     }
     
-    static long $default$n() {
+    public static long $default$n() {
         return 5L;
     }
     
-    static long $default$m(final long n) {
+    public static long $default$m(final long n) {
         return n + 1L;
     }
     
@@ -179,7 +179,7 @@ class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java
     DefaultedInitializerParameter5(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
     }
     
-    static long $default$n() {
+    public static long $default$n() {
         return 5L;
     }
     

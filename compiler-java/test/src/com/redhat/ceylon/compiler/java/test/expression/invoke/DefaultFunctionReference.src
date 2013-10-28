@@ -16,7 +16,7 @@ final class defaultFunctionReference_ {
         );
     }
     
-    static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference$f() {
+    public static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference$f() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Object)", (short)-1){
             
             @.java.lang.Override
@@ -63,7 +63,7 @@ final class defaultFunctionReference2_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .java.lang.String defaultFunctionReference2$s() {
+    public static final .java.lang.String defaultFunctionReference2$s() {
         return "hi";
     }
     
@@ -80,7 +80,7 @@ final class defaultFunctionReference2_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference2$f(final .java.lang.String s) {
+    public static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference2$f(final .java.lang.String s) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object*)", (short)0){
             
             @.java.lang.Override
@@ -209,7 +209,7 @@ final class defaultFunctionReference3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .java.lang.String defaultFunctionReference3$s() {
+    public static final .java.lang.String defaultFunctionReference3$s() {
         return "hi";
     }
     
@@ -226,7 +226,7 @@ final class defaultFunctionReference3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference3$f(final .java.lang.String s) {
+    public static final .ceylon.language.Callable<? extends .java.lang.Object> defaultFunctionReference3$f(final .java.lang.String s) {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object+)", (short)0){
             
             @.java.lang.Override

@@ -16,7 +16,7 @@ final class f1_ {
         );
     }
     
-    static final long f1$i() {
+    public static final long f1$i() {
         return 1L;
     }
     
@@ -43,7 +43,7 @@ final class f2_ {
         );
     }
     
-    static final long f2$i() {
+    public static final long f2$i() {
         return 1L;
     }
     
@@ -72,7 +72,7 @@ final class f3_ {
         );
     }
     
-    static final long f3$i() {
+    public static final long f3$i() {
         return 1L;
     }
     
@@ -86,7 +86,7 @@ final class f3_ {
         );
     }
     
-    static final long f3$n(final long i) {
+    public static final long f3$n(final long i) {
         return 2L * i;
     }
     
@@ -114,7 +114,7 @@ final class f4_ {
         );
     }
     
-    static final long f4$n(final long i) {
+    public static final long f4$n(final long i) {
         return 2L * i;
     }
     
@@ -137,7 +137,7 @@ final class f5_ {
         );
     }
     
-    static final <U>U f5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
+    public static final <U>U f5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return null;
     }
     

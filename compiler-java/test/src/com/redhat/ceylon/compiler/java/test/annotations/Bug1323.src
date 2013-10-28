@@ -184,7 +184,7 @@ final class bug1223Spread1_3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(0L)
-    static final long bug1223Spread1_3$i(final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
+    public static final long bug1223Spread1_3$i(final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
         return 0L;
     }
     
@@ -254,7 +254,7 @@ final class bug1223Spread2_3_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(0L)
-    static final long bug1223Spread2_3$i(final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
+    public static final long bug1223Spread2_3$i(final .ceylon.language.Sequential<? extends .ceylon.language.String> a) {
         return 0L;
     }
     

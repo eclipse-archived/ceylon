@@ -22,7 +22,7 @@ class FunctionalParameterDefault implements .com.redhat.ceylon.compiler.java.run
         return m.$call$(.ceylon.language.String.instance(arg)).toString();
     }
     
-    static .ceylon.language.Callable<? extends .ceylon.language.String> $default$m() {
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> $default$m() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
             
             @.java.lang.Override

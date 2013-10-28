@@ -38,7 +38,7 @@ final class AnnotationClassInteger implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static long $default$j(final long i) {
+    public static long $default$j(final long i) {
         return 1L;
     }
     protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;

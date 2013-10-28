@@ -73,7 +73,7 @@ final class annotationClassBoolean_ {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.BooleanValue(true)
-    static final boolean annotationClassBoolean$x() {
+    public static final boolean annotationClassBoolean$x() {
         return true;
     }
     
@@ -117,7 +117,7 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     
-    static boolean $default$b() {
+    public static boolean $default$b() {
         return true;
     }
     protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$OptionalAnnotation$this$;

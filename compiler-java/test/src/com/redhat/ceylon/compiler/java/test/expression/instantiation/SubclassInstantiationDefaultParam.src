@@ -16,7 +16,7 @@ class SubclassInstantiationDefaultParam implements .com.redhat.ceylon.compiler.j
     SubclassInstantiationDefaultParam(final .java.lang.String name) {
     }
     
-    static .java.lang.String $default$name() {
+    public static .java.lang.String $default$name() {
         return "tom";
     }
     

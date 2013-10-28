@@ -30,11 +30,11 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
         this.lastName = lastName$param$;
     }
     
-    static .ceylon.language.String $default$firstName() {
+    public static .ceylon.language.String $default$firstName() {
         return null;
     }
     
-    static .ceylon.language.String $default$lastName(final .ceylon.language.String firstName$param$) {
+    public static .ceylon.language.String $default$lastName(final .ceylon.language.String firstName$param$) {
         return null;
     }
     private .ceylon.language.String firstName;
