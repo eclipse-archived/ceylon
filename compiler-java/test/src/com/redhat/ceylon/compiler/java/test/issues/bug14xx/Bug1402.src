@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+class Bug1402Parent implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1402Parent(final .java.lang.String name, final boolean status, final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs) {
+        this.attrs = attrs;
+    }
+    private final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs;
+    
+    private final .ceylon.language.Sequence<? extends .ceylon.language.String> getAttrs$priv$() {
+        return attrs;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return getAttrs$priv$().toString();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent.class);
+}
+class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent {
+    
+    Bug1402Child(final .java.lang.String name, final boolean flag) {
+        super(name, true, (.ceylon.language.Sequence<? extends .ceylon.language.String>)(
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$0 = flag ? .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.String.instance("def"),
+                        .ceylon.language.String.instance("abc")}) : null;
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                    .ceylon.language.String.instance("ghi"),
+                    .ceylon.language.String.instance("abc"),
+                    .ceylon.language.String.instance("xyz")});
+        ).getSequence());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Child.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Child.class);
+}
