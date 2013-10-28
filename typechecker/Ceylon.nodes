@@ -634,8 +634,7 @@
     boolean directlyInvoked;
     boolean assigned;
     boolean staticMethodReference;
-    boolean staticMethodReferencePrimary;
-    boolean staticMemberQualifier;)
+    boolean staticMethodReferencePrimary;)
 
 ^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
 

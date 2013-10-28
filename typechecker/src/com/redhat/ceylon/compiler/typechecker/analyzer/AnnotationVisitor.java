@@ -627,7 +627,7 @@ public class AnnotationVisitor extends Visitor {
     //      want to add a whole new Visitor
     @Override public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
-        if (!that.getStaticMemberQualifier() && 
+        if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(that.getDeclaration())) {
             StringBuilder sb = new StringBuilder();
             List<ProducedType> sig = that.getSignature();

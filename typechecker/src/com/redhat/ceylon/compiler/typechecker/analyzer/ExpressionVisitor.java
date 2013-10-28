@@ -4016,7 +4016,6 @@ public class ExpressionVisitor extends Visitor {
         if (that.getStaticMethodReference()) {
             Tree.MemberOrTypeExpression qmte = (Tree.MemberOrTypeExpression) that.getPrimary();
             if (member.isStaticallyImportable()) {
-                qmte.setStaticMemberQualifier(true);
                 return type;
             }
             else {
