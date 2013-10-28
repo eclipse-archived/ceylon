@@ -147,15 +147,15 @@ process$proto.propertyValue = function(name) {
 
 if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
     process$proto.write = function(string) {
-        process.stdout.write(string.valueOf());
+        if(string)process.stdout.write(string.valueOf());
     }
     process$proto.writeLine = function(line) {
-        this.write(line.valueOf());
+        if(line)this.write(line.valueOf());
         this.write(linesep.valueOf());
     }
 } else if ((typeof console !== "undefined") && (console.log !== undefined)) {
     process$proto.writeLine = function(line) {
-        console.log(line.valueOf());
+        console.log(line?line.valueOf():'');
     }
     process$proto.write = process$proto.writeLine;
 } else {
@@ -165,15 +165,15 @@ if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
 
 if ((typeof process !== "undefined") && (process.stderr !== undefined)) {
     process$proto.writeError = function(string) {
-        process.stderr.write(string.valueOf());
+        if(string)process.stderr.write(string.valueOf());
     }
     process$proto.writeErrorLine = function(line) {
-        this.writeError(line.valueOf());
+        if(line)this.writeError(line.valueOf());
         this.writeError(linesep.valueOf());
     }
 } else if ((typeof console !== "undefined") && (console.error !== undefined)) {
     process$proto.writeErrorLine = function(line) {
-        console.error(line.valueOf());
+        console.error(line?line.valueOf():'');
     }
     process$proto.writeError = process$proto.writeErrorLine;
 } else {
