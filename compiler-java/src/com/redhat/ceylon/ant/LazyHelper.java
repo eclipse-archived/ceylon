@@ -43,20 +43,20 @@ abstract class LazyHelper {
         this.task = task;
     }
     
-    long newestSourceFile(List<File> srcs, File moduleDir) {
+    long newestFile(List<File> dirs, File moduleDir) {
         long newest = Long.MIN_VALUE;
-        for (File src : srcs) {
-            File srcModuleDir = new File(src, moduleDir.getPath());
-            newest = newestSourceFile(newest, srcModuleDir);
-            task.log("Newest file in " + srcModuleDir + " " + new Date(newest), Project.MSG_DEBUG);
+        for (File dir : dirs) {
+            File fullModuleDir = new File(dir, moduleDir.getPath());
+            newest = newestFile(newest, fullModuleDir);
+            task.log("Newest file in " + fullModuleDir + " " + new Date(newest), Project.MSG_DEBUG);
         }
         return newest;
     }
     
-    long newestSourceFile(long mtime, File file) {
+    long newestFile(long mtime, File file) {
         if (file.isDirectory()) {
             for (File child : file.listFiles()) {
-                mtime = Math.max(mtime, newestSourceFile(mtime, child));
+                mtime = Math.max(mtime, newestFile(mtime, child));
             }
         } else {
             long lastModified = file.lastModified();
@@ -96,7 +96,7 @@ abstract class LazyHelper {
                 task.log("Unable to determine version (and hence timestamp) of " + module, Project.MSG_VERBOSE);
                 continue;
             }
-            long newest = newestSourceFile(task.getSrc(), module.toDir());
+            long newest = Math.max(newestFile(task.getSrc(), module.toDir()), newestFile(task.getResource(), module.toDir()));
             File outModuleDir = getArtifactDir(module);
             long oldest = oldestOutputArtifact(Long.MAX_VALUE, outModuleDir);
             task.log("Oldest file in " + outModuleDir + " " + new Date(oldest), Project.MSG_DEBUG);
