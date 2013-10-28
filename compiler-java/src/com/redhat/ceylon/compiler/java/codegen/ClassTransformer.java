@@ -3231,7 +3231,10 @@ public class ClassTransformer extends AbstractTransformer {
             modifiers |= PRIVATE;
         }
         if (Strategy.defaultParameterMethodStatic(container)) {
-            modifiers |= STATIC;
+            // static default parameter methods should be consistently public so that if non-shared class Top and
+            // shared class Bottom which extends Top both have the same default param name, we don't get an error
+            // if the Bottom class tries to "hide" a static public method with a private one
+            modifiers |= STATIC | PUBLIC;
         }
         methodBuilder.modifiers(modifiers);
         
