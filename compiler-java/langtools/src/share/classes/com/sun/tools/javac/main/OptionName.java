@@ -72,6 +72,7 @@ public enum OptionName {
     CEYLONOUT("-out"),
     CEYLONOFFLINE("-offline"),
     CEYLONCONTINUE("-continue"),
+    CEYLONMAVENOVERRIDES("-maven-overrides"),
     S("-s"),
     IMPLICIT("-implicit:"),
     ENCODING("-encoding"),

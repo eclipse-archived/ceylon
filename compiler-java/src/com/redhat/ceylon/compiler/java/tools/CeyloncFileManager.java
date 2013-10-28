@@ -248,10 +248,12 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String systemRepo = getSystemRepoOption();
         String cacheRepo = getCacheRepoOption();
         String outRepo = getOutputRepoOption();
+        String mavenOverrides = options.get(OptionName.CEYLONMAVENOVERRIDES);
         
         repoManager = CeylonUtils.repoManager()
                 .config(CompilerConfig.instance(context))
                 .cwd(getCurrentWorkingDir())
+                .mavenOverrides(mavenOverrides)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(getNoDefaultRepos())

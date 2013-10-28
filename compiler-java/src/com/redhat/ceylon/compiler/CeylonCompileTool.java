@@ -299,6 +299,11 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add("-offline");
         }
         
+        if (mavenOverrides != null) {
+            arguments.add("-maven-overrides");
+            arguments.add(mavenOverrides);
+        }
+
         if (verbose != null) {
             if (verbose.isEmpty()) {
                 arguments.add("-verbose");
