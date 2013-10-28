@@ -602,7 +602,17 @@ function $init$OpenInterface(){
       $$openInterface.equals=function(other) {
         return isOfType(other, {t:OpenInterface}) && other.tipo==this.tipo;
       }
-
+$$openInterface.memberInterfaceApply=function(cont,targs,$mptypes){
+  var mm=this.tipo.$$metamodel$$;
+  if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
+    throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  var _t={t:this.tipo};
+  if (mm.$tp) {
+    if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
+    //TODO generate targs
+  }
+  return AppliedMemberInterface(this.tipo,{Container:{t:mm.$cont},Type:_t});
+}
 $$openInterface.interfaceApply=function(targs,$mptypes) {
   return this.$apply(targs,$mptypes);
 }
