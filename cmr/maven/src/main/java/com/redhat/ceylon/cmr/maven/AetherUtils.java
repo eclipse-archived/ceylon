@@ -155,9 +155,15 @@ public class AetherUtils {
                 for (MavenArtifactInfo dep : infos) {
                     final MavenCoordinate dCo = dep.getCoordinate();
 
-                    if (ao != null && ao.isRemoved(dCo)) {
-                        log.info(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
-                        continue; // skip dependency
+                    if (ao != null){
+                        if(ao.isRemoved(dCo)) {
+                            log.info(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
+                            continue; // skip dependency
+                        }
+                        if(ao.isAdded(dCo)) {
+                            log.info(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, mc));
+                            continue; // skip dependency
+                        }
                     }
 
                     ArtifactResult dr = createArtifactResult(dCo, false);
