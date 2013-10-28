@@ -36,7 +36,8 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String SRC = ".src";
     public static final String MAVEN_SRC = "-sources.jar";
     public static final String DOCS = "module-doc";
-    public static final String DOCS_ZIPPED = "module-doc.zip";
+    public static final String DOC_ZIPED = ".doc.zip";
+    public static final String API_DOCS_ZIPPED = "module-doc.zip";
     public static final String MODULE_PROPERTIES = "module.properties";
     public static final String MODULE_XML = "module.xml";
     public static final String SHA1 = ".sha1";

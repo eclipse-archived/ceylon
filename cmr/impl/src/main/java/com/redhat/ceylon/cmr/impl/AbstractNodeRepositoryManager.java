@@ -183,7 +183,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             File zip = IOUtils.zipFolder(folder);
             log.debug("Herd module-doc zip file is at " + zip.getAbsolutePath());
             try {
-                context.setSuffixes(ArtifactContext.DOCS_ZIPPED);
+                context.setSuffixes(ArtifactContext.API_DOCS_ZIPPED);
                 final String[] names = cache.getArtifactNames(context);
                 if (names.length != 1) {
                     throw new RepositoryException("ArtifactContext should have a single suffix");
