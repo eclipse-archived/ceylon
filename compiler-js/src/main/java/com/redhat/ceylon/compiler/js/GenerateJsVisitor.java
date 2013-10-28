@@ -4578,7 +4578,7 @@ public class GenerateJsVisitor extends Visitor
             final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
             final Declaration d = ref.getDeclaration();
             if (that instanceof FunctionLiteral || d instanceof Method) {
-                out(clAlias, "AppliedFunction$meta$model(");
+                out(clAlias, d.isMember()?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
                 if (ltype == null) {
                     qualify(that, d);
                 } else {
@@ -4591,10 +4591,28 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     out(names.name(d),",");
                 }
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
-                if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
-                    out(",undefined,");//TODO pass the container
-                    TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+                if (d.isMember()) {
+                    if (that.getTypeArgumentList()!=null) {
+                        out("[");
+                        boolean first=true;
+                        for (ProducedType targ : that.getTypeArgumentList().getTypeModels()) {
+                            if (first)first=false;else out(",");
+                            out(clAlias,"typeLiteral$meta({Type:");
+                            TypeUtils.typeNameOrList(that, targ, this);
+                            out("})");
+                        }
+                        out("]");
+                        out(",");
+                    } else {
+                        out("undefined,");
+                    }
+                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                } else {
+                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                    if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
+                        out(",undefined,");//TODO pass the container
+                        TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+                    }
                 }
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
