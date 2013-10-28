@@ -56,8 +56,7 @@ public class ClassDoc extends ClassOrPackageDoc {
     private TypeDeclaration klass;
     private List<Method> methods;
     private List<TypedDeclaration> attributes;
-    private List<ClassOrInterface> subclasses;
-    private List<ClassOrInterface> satisfyingClassesOrInterfaces;
+    private List<Class> subclasses;
     private List<Class> satisfyingClasses;
     private List<Interface> innerInterfaces;
     private List<Class> innerClasses;
@@ -87,20 +86,14 @@ public class ClassDoc extends ClassOrPackageDoc {
         }
     };
 
-    public ClassDoc(CeylonDocTool tool, Writer writer, TypeDeclaration klass, List<ClassOrInterface> subclasses, List<ClassOrInterface> satisfyingClassesOrInterfaces) throws IOException {
+    public ClassDoc(CeylonDocTool tool, Writer writer, TypeDeclaration klass) throws IOException {
         super(tool.getModule(klass), tool, writer);
-        
         this.klass = klass;
-        this.subclasses = (subclasses != null) ? subclasses : new ArrayList<ClassOrInterface>(); 
-        this.satisfyingClassesOrInterfaces = (satisfyingClassesOrInterfaces != null) ? satisfyingClassesOrInterfaces : new ArrayList<ClassOrInterface>();
-        
         loadMembers();
     }
 
     private void loadMembers() {
         methods = new ArrayList<Method>();
-        satisfyingClasses = new ArrayList<Class>();
-        satisfyingInterfaces = new ArrayList<Interface>();
         attributes = new ArrayList<TypedDeclaration>();
         innerInterfaces = new ArrayList<Interface>();
         innerClasses = new ArrayList<Class>();
@@ -129,13 +122,23 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
             }
         }
-
-        for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
-            if (classOrInterface instanceof Class) {
-                satisfyingClasses.add((Class) classOrInterface);
-            } else if (classOrInterface instanceof Interface) {
-                satisfyingInterfaces.add((Interface) classOrInterface);
+        
+        satisfyingClasses = new ArrayList<Class>();
+        satisfyingInterfaces = new ArrayList<Interface>();
+        List<ClassOrInterface> satisfyingClassesOrInterfaces = tool.getSatisfyingClassesOrInterfaces(klass);
+        if (satisfyingClassesOrInterfaces != null) {
+            for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
+                if (classOrInterface instanceof Class) {
+                    satisfyingClasses.add((Class) classOrInterface);
+                } else if (classOrInterface instanceof Interface) {
+                    satisfyingInterfaces.add((Interface) classOrInterface);
+                }
             }
+        }
+
+        subclasses = tool.getSubclasses(klass);
+        if (subclasses == null) {
+            subclasses = new ArrayList<Class>();
         }
 
         Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
@@ -355,8 +358,9 @@ public class ClassDoc extends ClassOrPackageDoc {
         writeTypeHierarchy();
         writeListOnSummary("satisfied", "Satisfied Interfaces: ", superInterfaces);
         writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
-        writeListOnSummary("satisfyingClasses", "All Known Satisfying Classes: ", satisfyingClasses);
-        writeListOnSummary("satisfyingInterfaces", "All Known Satisfying Interfaces: ", satisfyingInterfaces);
+        writeListOnSummary("satisfyingClasses", "Direct Known Satisfying Classes: ", satisfyingClasses);
+        writeListOnSummary("satisfyingInterfaces", "Direct Known Satisfying Interfaces: ", satisfyingInterfaces);
+        writeSubtypesHierarchy();
         writeEnclosingType();
         writeAnnotationConstructors();
     
@@ -396,6 +400,52 @@ public class ClassDoc extends ClassOrPackageDoc {
             }
             
             close("div");
+        }
+    }
+    
+    private void writeSubtypesHierarchy() throws IOException {
+        if (!(klass instanceof ClassOrInterface)) {
+            return;
+        }
+        if (satisfyingInterfaces.isEmpty() && satisfyingClasses.isEmpty() && subclasses.isEmpty()) {
+            return;
+        }
+        
+        open("div class='subtypes-hierarchy section'");
+        write("<a href='#' class='title' title='Click for expand/collapse'>All Known Subtypes Hierarchy <i class='icon-collapse'></i></a>");
+        writeSubtypesHierarchyLevel(Collections.singletonList((ClassOrInterface) klass), 0);
+        close("div");
+    }
+    
+    private void writeSubtypesHierarchyLevel(List<ClassOrInterface> types, int level) throws IOException {
+        if( types.size() > 1 ) {
+            Collections.sort(types, ReferenceableComparatorByName.INSTANCE);
+        }
+        for (ClassOrInterface type : types) {
+            String cssClass = "inheritance-" + level;
+            if (level == 0) {
+                open("ul class='inheritance " + cssClass + "' style='display: none'", "li");
+            } else {
+                open("ul class='inheritance " + cssClass + "'", "li");
+                around("i class='icon-indentation'");
+            }
+            writeIcon(type);
+            linkRenderer().to(type).printTypeParameters(false).printAbbreviated(false).write();
+
+            List<ClassOrInterface> subtypes = new ArrayList<ClassOrInterface>();
+            
+            List<ClassOrInterface> satisfyingClassesOrInterfaces = tool.getSatisfyingClassesOrInterfaces(type);
+            if (satisfyingClassesOrInterfaces != null) {
+                subtypes.addAll(satisfyingClassesOrInterfaces);
+            }
+            List<Class> subclasses = tool.getSubclasses(type);
+            if (subclasses != null) {
+                subtypes.addAll(subclasses);
+            }
+
+            writeSubtypesHierarchyLevel(subtypes, level + 1);
+
+            close("li", "ul");
         }
     }
 

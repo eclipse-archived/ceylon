@@ -222,6 +222,7 @@ public class CeylonDocToolTest {
         assertAliases(destDir);
         assertPackageNavigation(destDir);
         assertSubpackages(destDir);
+        assertSubtypesHierarchy(destDir);
         assertAnnotations(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
@@ -1001,6 +1002,13 @@ public class CeylonDocToolTest {
                 Pattern.compile("<tr class='table-header' title='Click for expand/collapse'><td colspan='2'><i class='icon-expand'></i>Subpackages</td></tr>"));
         assertMatchInFile(destDir, "a/index.html",
                 Pattern.compile("<tr><td><i class='icon-package'></i><a class='link' href='../a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>"));
+    }
+    
+    private void assertSubtypesHierarchy(File destDir) throws Exception {
+        assertMatchInFile(destDir, "StubInterface.type.html",
+                Pattern.compile("<div class='subtypes-hierarchy section'>" +
+                		        "<a href='#' class='title' title='Click for expand/collapse'>All Known Subtypes Hierarchy <i class='icon-collapse'></i></a>" +
+                		        "<ul class='inheritance inheritance-0' style='display: none'>"));
     }
     
     private void assertAnnotations(File destDir) throws Exception {

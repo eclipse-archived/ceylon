@@ -49,7 +49,6 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -130,7 +129,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private List<Module> modules;
     private String outputRepository;
     private String user,pass;
-    private Map<ClassOrInterface, List<ClassOrInterface>> subclasses = new HashMap<ClassOrInterface, List<ClassOrInterface>>();
+    private Map<TypeDeclaration, List<Class>> subclasses = new HashMap<TypeDeclaration, List<Class>>();
     private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
     private Map<TypeDeclaration, List<Method>> annotationConstructors = new HashMap<TypeDeclaration, List<Method>>();
     private boolean includeNonShared;
@@ -639,9 +638,9 @@ public class CeylonDocTool extends RepoUsingTool {
                             ClassOrInterface superclass = c.getExtendedTypeDeclaration();                    
                             if (superclass != null) {
                                 if (subclasses.get(superclass) ==  null) {
-                                    subclasses.put(superclass, new ArrayList<ClassOrInterface>());
+                                    subclasses.put(superclass, new ArrayList<Class>());
                                 }
-                                subclasses.get(superclass).add(c);
+                                subclasses.get(superclass).add((Class) c);
                             }
                         }
 
@@ -907,10 +906,7 @@ public class CeylonDocTool extends RepoUsingTool {
             if (shouldInclude(decl)) {
                 Writer writer = openWriter(getObjectFile(decl));
                 try {
-                    new ClassDoc(this, writer,
-                            (TypeDeclaration) decl,
-                            subclasses.get(decl),
-                            satisfyingClassesOrInterfaces.get(decl)).generate();
+                    new ClassDoc(this, writer, (TypeDeclaration) decl).generate();
                 } finally {
                     writer.close();
                 }
@@ -1104,6 +1100,14 @@ public class CeylonDocTool extends RepoUsingTool {
     
     protected List<Method> getAnnotationConstructors(TypeDeclaration klass) {
         return annotationConstructors.get(klass);
+    }
+
+    protected List<ClassOrInterface> getSatisfyingClassesOrInterfaces(TypeDeclaration klass) {
+        return satisfyingClassesOrInterfaces.get(klass);
+    }
+    
+    protected List<Class> getSubclasses(TypeDeclaration klass) {
+        return subclasses.get(klass);
     }
     
     /**
