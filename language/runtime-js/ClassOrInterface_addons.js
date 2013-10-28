@@ -252,7 +252,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
     sc.t.$$metamodel$$=mm;
   }
   var ac=AppliedClass(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
-  if (sc.a)ac._targs=sc.a;
+  if (sc.a)ac.$targs=sc.a;
   return ac;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 

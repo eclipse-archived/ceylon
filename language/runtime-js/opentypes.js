@@ -444,14 +444,6 @@ $$openClass.classApply=function(targs,$mptypes) {
   //TODO this is wrong
   return this.$apply(targs,$mptypes);
 }
-$$openClass.memberApply=function(cont,targs,$mptypes) {
-  var mm=this.tipo.$$metamodel$$;
-  if (!extendsType({t:mm.$cont},$mptypes.Container))throw IncompatibleTypeException$meta$model("Incompatible Container in memberApply");
-  if (!extendsType({t:this.tipo},$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type in memberApply");
-  //TODO add Arguments to mptypes
-  return this.memberClassApply(cont,targs,{Type:$mptypes.Type,Arguments:{t:Nothing}});
-}
-
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
   if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
@@ -564,7 +556,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
 
       $$openClass.equals=function(other) {
-        return isOfType(other, {t:OpenClass}) && other.tipo==this.tipo;
+        return isOfType(other, {t:OpenClass}) && other.tipo===this.tipo;
       }
     })(OpenClass.$$.prototype);
   }

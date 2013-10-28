@@ -153,7 +153,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
   if (!extendsType(_t, $mptypes.Type))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
   var rv=this.meta.$mt==='ifc'?AppliedInterface(_t.t, $mptypes):AppliedClass(_t.t, $mptypes);
-  if (_t.a)rv._targs=_t.a;
+  if (_t.a)rv.$targs=_t.a;
   return rv;
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
@@ -189,7 +189,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   if (!extendsType(_t, $mptypes.Type))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
   var rv=this.meta.$mt==='ifc'?AppliedMemberInterface(_t.t, $mptypes):AppliedMemberClass(_t.t, $mptypes);
-  if (_t.a)rv._targs=_t.a;
+  if (_t.a)rv.$targs=_t.a;
   return rv;
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};
 defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',function(){

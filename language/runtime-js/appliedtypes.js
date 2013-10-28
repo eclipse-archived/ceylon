@@ -7,7 +7,12 @@ function AppliedClass(tipo,$$targs$$,that){
     }
     if (mm && mm.$cont) {
       that=function(x){/*Class*/
-        //TODO sometimes we need type arguments
+        if (that.$targs) {
+          var _a=[];
+          for (var i=0;i<arguments.length;i++)_a.push(arguments[i]);
+          _a.push(that.$targs);
+          return tipo.apply(x,_a);
+        }
         return tipo.apply(x,arguments);
       }
       var dummy = new AppliedClass.$$;
@@ -92,7 +97,9 @@ function AppliedMemberClass(tipo,$$targs$$,that){
       that=function(x){
         var rv=tipo.bind(x);
         rv.$$metamodel$$=tipo.$$metamodel$$;
-        return AppliedClass(rv,{Type:{t:mm.$cont},Arguments:{t:Nothing}});//TODO Arguments
+        rv=AppliedClass(rv,{Type:{t:mm.$cont},Arguments:{t:Nothing}});//TODO Arguments
+        if (that.$targs)rv.$targs=that.$targs;
+        return rv;
       }
       var dummy = new AppliedMemberClass.$$;
       that.$$=AppliedMemberClass.$$;
