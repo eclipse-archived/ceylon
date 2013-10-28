@@ -517,7 +517,7 @@ public class Naming implements LocalId {
                 packageName = ((Package) s).getName();
             else
                 packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;
-            if (!packageName.get(0).isEmpty()) {
+            if (packageName.isEmpty() || !packageName.get(0).isEmpty()) {
                 helper.select("");
             }
             for (int ii = 0; ii < packageName.size(); ii++) {
