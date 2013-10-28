@@ -43,6 +43,7 @@ import com.redhat.ceylon.common.Constants;
 abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
 
     private Path src;
+    private Path res;
     private String out;
     private String encoding;
     private String user;
@@ -99,6 +100,30 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
             return Collections.singletonList(task.getProject().resolveFile(Constants.DEFAULT_SOURCE_DIR));
         }
         String[] paths = this.src.list();
+        ArrayList<File> result = new ArrayList<File>(paths.length);
+        for (String path : paths) {
+            result.add(task.getProject().resolveFile(path));
+        }
+        return result;
+    }
+
+    /**
+     * Set the resource directories to find the resource files.
+     * @param res the resource directories as a path
+     */
+    public void setResource(Path res) {
+        if (this.res == null) {
+            this.res = res;
+        } else {
+            this.res.append(res);
+        }
+    }
+
+    public List<File> getResource() {
+        if (this.res == null) {
+            return Collections.singletonList(task.getProject().resolveFile(Constants.DEFAULT_RESOURCE_DIR));
+        }
+        String[] paths = this.res.list();
         ArrayList<File> result = new ArrayList<File>(paths.length);
         for (String path : paths) {
             result.add(task.getProject().resolveFile(path));
@@ -176,7 +201,11 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
         appendPassOption(cmd, pass);
         
         for (File src : getSrc()) {
-            cmd.createArgument().setValue("--src=" + src.getAbsolutePath());
+            cmd.createArgument().setValue("--source=" + src.getAbsolutePath());
+        }
+        
+        for (File res : getResource()) {
+            cmd.createArgument().setValue("--resource=" + res.getAbsolutePath());
         }
         
         if (getSystemRepository() != null) {
