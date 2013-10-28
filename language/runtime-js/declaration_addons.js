@@ -160,6 +160,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=f
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(cont, types,$mptypes) {
   //TODO implement properly
   var _t = {t:this.tipo};
+  if (!isOfType(cont,_t))throw IncompatibleTypeException$meta$model("Incompatible Container type");
   if (typeof(this.tipo.$$metamodel$$)==='function') {
     this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
   }
