@@ -20,7 +20,7 @@ void literals<T>() {
     Function<Integer,[{Integer+}]> ftypeParams = `sum<Integer>`;
     check(sum{1,2,3,4}==10, "metamodel function w/type params 1");
     Function<Float,[Float,Float]> ftimes = `times<Float>`;
-    check(ftimes(2.0,2.0)==4.0, "metamodel function w/type params 2");
+    check(ftimes(2.0,2.0)==4.0, "metamodel function w/type params 2 yields ``ftimes(2.0,2.0)`` expected 4.0");
     Method<String,String,[Integer]> finitial = `String.initial`;
     Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
     FunctionDeclaration fdecl = `function Iterable.taking`;
