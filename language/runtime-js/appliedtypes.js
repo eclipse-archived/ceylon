@@ -21,9 +21,7 @@ function AppliedClass(tipo,$$targs$$,that){
       that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
       that.$apply.$$metamodel$$=AppliedClass.$$.prototype.$apply.$$metamodel$$;
       defineAttr(that,'string',function(){
-var qn=mm.d[0];
-for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-return String$(qn);
+        return String$($qname(mm));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
       defineAttr(that,'declaration',function(){
         return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -113,9 +111,7 @@ function AppliedMemberClass(tipo,$$targs$$,that){
       },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);
       that.$bind=function(){return AppliedMemberClass.$$.prototype.$bind.apply(that,arguments);}
       defineAttr(that,'string',function(){
-var qn=mm.d[0];
-for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-return String$(qn);
+        return String$($qname(mm));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     } else {
       throw IncompatibleTypeException("Invalid metamodel data for MemberClass");
@@ -175,9 +171,7 @@ function AppliedInterface(tipo,$$targs$$,that) {
         return eq;
       };
       defineAttr(that,'string',function(){
-var qn=mm.d[0];
-for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-return String$(qn);
+        return String$($qname(mm));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
       defineAttr(that,'declaration',function(){
         return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -230,9 +224,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
         return eq;
       };
       defineAttr(that,'string',function(){
-var qn=mm.d[0];
-for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-return String$(qn);
+        return String$($qname(mm));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
       defineAttr(that,'declaration',function(){
         return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
@@ -505,8 +497,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   Function$meta$model(f,$$targs$$);
   f.tipo=m;
 defineAttr(f,'string',function(){
-  var qn=mm.d[0];
-  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  var qn=$qname(mm);
   if (mm.$tp) {
     qn+="<";
     var first=true;
@@ -537,8 +528,8 @@ defineAttr(f,'declaration',function(){
   f._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), m);
   return f._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
-  f.$apply=function(){
-    return m.apply(o,arguments);
+  f.$apply=function(a){
+    return m.apply(o,a);
   }
   return f;
 }
@@ -568,8 +559,7 @@ defineAttr($$appliedValue,'string',function(){
   } else if (mm.$cont) {
     qn = typeLiteral$meta({Type:{t:mm.$cont}}).string + "." + mm.d[mm.d.length-1];
   } else {
-  qn=mm.d[0];
-  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+    qn=$qname(mm);
   }
   return String$(qn);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
@@ -589,10 +579,7 @@ function $init$AppliedValue(){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model,Attribute$meta$model);
     (function($$appliedValue){
 defineAttr($$appliedValue,'string',function(){
-  var mm=this.tipo.$$metamodel$$;
-  var qn=mm.d[0];
-  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-  return String$(qn);
+  return String$($qname(this.tipo.$$metamodel$$));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
       defineAttr($$appliedValue,'declaration',function(){
         var $$av=this;
@@ -789,10 +776,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return AppliedValue(cont,atr,{Type:$$targs$$.Type});
   }
   defineAttr($$appliedAttribute,'string',function(){
-    var mm=atr.$$metamodel$$;
-    var qn=mm.d[0];
-    for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
-    return qn;
+    return String$($qname(atr.$$metamodel$$));
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
     return isOfType(o,{t:AppliedAttribute}) && o.string.equals(this.string);
