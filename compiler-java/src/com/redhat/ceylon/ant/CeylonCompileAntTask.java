@@ -165,20 +165,8 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     protected Commandline buildCommandline() {
         resetFileLists();
         if (files != null) {
-            
-            for (File srcDir : getSrc()) {
-                FileSet fs = (FileSet)this.files.clone();
-                fs.setDir(srcDir);
-                if (!srcDir.exists()) {
-                    throw new BuildException("source path \"" + srcDir.getPath() + "\" does not exist!", getLocation());
-                }
-    
-                DirectoryScanner ds = fs.getDirectoryScanner(getProject());
-                String[] files = ds.getIncludedFiles();
-    
-                for(String fileName : files)
-                    compileList.add(new File(srcDir, fileName));
-            }
+            addToCompileList(getSrc());
+            addToCompileList(getResource());
         }
         
         if (compileList.size() == 0 && moduleSet.getModules().size() == 0){
@@ -340,6 +328,21 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             return null;
         }
         return super.buildCommandline();
+    }
+    
+    private void addToCompileList(List<File> dirs) {
+        for (File srcDir : dirs) {
+            if (srcDir.isDirectory()) {
+                FileSet fs = (FileSet)this.files.clone();
+                fs.setDir(srcDir);
+                
+                DirectoryScanner ds = fs.getDirectoryScanner(getProject());
+                String[] files = ds.getIncludedFiles();
+
+                for(String fileName : files)
+                    compileList.add(new File(srcDir, fileName));
+            }
+        }
     }
     
     /**
