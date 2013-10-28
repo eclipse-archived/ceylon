@@ -375,14 +375,14 @@
             <para>A <emphasis>documentation archive name</emphasis> is of the following 
             standard form:</para>
             
-            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.zip</synopsis>
+            <synopsis><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.doc.zip</synopsis>
             
             <para>For example:</para>
             
-            <screen>ceylon.language-1.0.1.zip</screen>
-            <screen>org.hibernate-3.0.0.beta.zip</screen>
+            <screen>ceylon.language-1.0.1.doc.zip</screen>
+            <screen>org.hibernate-3.0.0.beta.doc.zip</screen>
     
-            <para>The default module has no version, its documentation archive name is <literal>default.zip</literal></para>
+            <para>The default module has no version, its documentation archive name is <literal>default.doc.zip</literal></para>
             
         </section>
         
@@ -546,7 +546,7 @@
             <para>Thus, the structure of the documentation archive for the module
             <literal>org.hello</literal> might be the following:</para>
             
-            <screen><![CDATA[org.hello-1.0.0.zip
+            <screen><![CDATA[org.hello-1.0.0.doc.zip
     module-doc/
         .resources/
             ...
@@ -625,7 +625,7 @@
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.car</screen>        
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.js</screen>
             <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.src</screen>
-            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.zip</screen>
+            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.doc.zip</screen>
             
             <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>,
             source archive <literal>org.hibernate-3.0.0.beta.src</literal>, and 
@@ -635,7 +635,7 @@
             
             <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.car</screen>
             <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.src</screen>
-            <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.zip</screen>
+            <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.doc.zip</screen>
             
             <para>The module archive <literal>org.h2-1.2.141.car</literal> and legacy 
             archive <literal>org.h2-1.2.141.jar</literal> belonging to the repository 
