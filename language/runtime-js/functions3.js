@@ -44,3 +44,8 @@ function validate$params(ps,t,msg) {
   }
   throw IncompatibleTypeException$meta$model(msg);
 }
+function $qname(mm) {
+  var qn=mm.d[0];
+  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  return qn;
+}
