@@ -734,6 +734,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     return isOfType(o,{t:AppliedMethod}) && o.tipo===tipo && o.typeArguments.equals(this.typeArguments);
   }
   $$appliedMethod.$bind=function(o){
+    if (!isOfType(o,{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Cannot bind " + $$appliedMethod.string + " to "+o);
     return $$appliedMethod(o);
   }
   defineAttr($$appliedMethod,'string',function(){
