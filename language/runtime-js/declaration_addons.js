@@ -159,12 +159,12 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(cont, types,$mptypes) {
   //TODO implement properly
-  var _t = {t:this.tipo};
-  if (!isOfType(cont,_t))throw IncompatibleTypeException$meta$model("Incompatible Container type");
   if (typeof(this.tipo.$$metamodel$$)==='function') {
     this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
   }
+  if (!extendsType({t:cont.tipo},{t:this.tipo.$$metamodel$$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container type");
   var tparms = this.tipo.$$metamodel$$.$tp;
+  var _t = {t:this.tipo};
   if (tparms){
     if (types===undefined)
       throw TypeApplicationException$meta$model(String$("Missing type arguments in call to ClassOrInterfaceDeclaration.apply()"));
