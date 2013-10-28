@@ -74,5 +74,11 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     }
 
     protected abstract File artifactInternal();
+    
+    @Override
+    public String toString() {
+        return "[Artifact result: "+name+"/"+version+"]";
+    }
+
 }
 
