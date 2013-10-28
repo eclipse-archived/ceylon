@@ -2446,10 +2446,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         for (int ii = argIndex ; ii < numArguments; ii++) {
             JCExpression argExpr = invocation.getTransformedArgumentExpression(ii);
             // the last parameter is spread and must be put first
-            if(ii < numArguments - 1)
+            if(ii < numArguments - 1){
                 x = x.append(argExpr);
-            else
+            }else{
+                // convert to a Sequential if required
+                if(!invocation.isJavaMethod()){
+                    ProducedType argType = invocation.getArgumentType(ii);
+                    if(!typeFact().isSequentialType(argType))
+                        argExpr = makeIterableToSequential(argExpr);
+                }
                 x = x.prepend(argExpr);
+            }
         }
         if(invocation.isJavaMethod()){
             // collect all the initial arguments and wrap into a Java array
@@ -2475,6 +2482,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
         exprAndType = new ExpressionAndType(expr, type);
         return exprAndType;
+    }
+
+    /**
+     * Turns a <tt>ceylon.language.Iterable</tt> to a <tt>ceylon.language.Sequential</tt> by invoking 
+     * its <tt>getSequence()</tt> method.
+     */
+    private JCExpression makeIterableToSequential(JCExpression argExpr) {
+        return make().Apply(null, makeSelect(argExpr, "getSequence"), List.<JCExpression>nil());
     }
 
     private List<ExpressionAndType> transformSpreadTupleArgument(
