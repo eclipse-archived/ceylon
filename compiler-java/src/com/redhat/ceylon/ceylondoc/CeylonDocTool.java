@@ -532,7 +532,7 @@ public class CeylonDocTool extends RepoUsingTool {
                 documentModule(module);
                 
                 ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
-                ArtifactContext artifactDocsZip = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.ZIP);
+                ArtifactContext artifactDocsZip = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOC_ZIPED);
                 
                 File outputFolder = getOutputFolder(module);
                 File zipFile = IOUtils.zipFolder(outputFolder);

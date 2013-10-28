@@ -401,8 +401,8 @@ public class CeylonDocToolTest {
         assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/bar.object.html");
         assertFileExists(destDirDef, "com/redhat/ceylon/ceylondoc/test/modules/multi/goes/into/defaultmodule/foo.object.html");
         
-        assertFileExists(destDirDef, "../default.zip");
-        assertFileExists(destDirDef, "../default.zip.sha1");
+        assertFileExists(destDirDef, "../default.doc.zip");
+        assertFileExists(destDirDef, "../default.doc.zip.sha1");
     }
 
     @Test
@@ -419,8 +419,8 @@ public class CeylonDocToolTest {
         
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "Nothing.type.html");
-        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".zip");
-        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".zip.sha1");
+        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".doc.zip");
+        assertFileExists(destDir, "../ceylon.language-"+ LANGUAGE_MODULE_VERSION +".doc.zip.sha1");
     }
 
     @Test
@@ -527,8 +527,8 @@ public class CeylonDocToolTest {
     }
 
     private void assertFileExists(File destDir, boolean includeNonShared) {
-        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.zip");
-        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.zip.sha1");
+        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip");
+        assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip.sha1");
         
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
