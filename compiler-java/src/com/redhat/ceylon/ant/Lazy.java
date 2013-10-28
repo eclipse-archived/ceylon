@@ -35,6 +35,8 @@ public interface Lazy {
 
     List<File> getSrc();
 
+    List<File> getResource();
+
     void log(String string);
 
     String getOut();
