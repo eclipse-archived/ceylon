@@ -21,16 +21,12 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.apache.tools.ant.Project;
 
@@ -76,46 +72,13 @@ abstract class LazyHelper {
                 mtime = Math.min(mtime, oldestOutputArtifact(mtime, child));
             }
         } else if (getArtifactFilter().accept(file)) {
-            if (file.getName().toLowerCase().endsWith(".car")) {
-                long oldest = oldestFileInCar(file);
-                task.log(file + " oldest entry " + new Date(oldest), Project.MSG_DEBUG);
-                mtime = Math.min(mtime, oldest);
-            } else {
-                long lastModified = file.lastModified();
-                task.log(file + " last modified " + new Date(lastModified), Project.MSG_DEBUG);
-                mtime = Math.min(mtime, lastModified);
-            }
+            long time = getOldestArtifactTime(file);
+            task.log(file + " oldest time " + new Date(time), Project.MSG_DEBUG);
+            mtime = Math.min(mtime, time);
         }
         return mtime;
     }
     
-    private long oldestFileInCar(File file) {
-        long mtime = Long.MAX_VALUE;
-        JarFile jarFile = null;
-        try {
-            jarFile = new JarFile(file);
-            Enumeration<JarEntry> entries = jarFile.entries();
-            while(entries.hasMoreElements()){
-                JarEntry entry = entries.nextElement();
-                if (entry.getTime() < mtime) {
-                    mtime = entry.getTime();
-                }
-            }
-        } catch (IOException ex) {
-            // Maybe something's wrong with the CAR so let's return MIN_VALUE
-            mtime = Long.MIN_VALUE;
-        } finally {
-            if (jarFile != null) {
-                try {
-                    jarFile.close();
-                } catch (IOException e) {
-                    // Ignore
-                }
-            }
-        }
-        return mtime;
-    }
-
     /**
      * Filters out all the modules which appear to not require 
      * compilation based on comparison of file modification times
@@ -180,9 +143,14 @@ abstract class LazyHelper {
                 task.log("Unable to determine version (and hence timestamp) of " + module.getName(), Project.MSG_VERBOSE);
                 continue;
             }
-            File outModuleDir = getArtifactDir(module);
-            long oldest = oldestOutputArtifact(Long.MAX_VALUE, outModuleDir);
-            task.log("Oldest file in " + outModuleDir + " " + new Date(oldest), Project.MSG_DEBUG);
+            long oldest = getArtifactFileTime(module, file);
+            if (oldest == Long.MAX_VALUE) {
+                File outModuleDir = getArtifactDir(module);
+                oldest = oldestOutputArtifact(Long.MAX_VALUE, outModuleDir);
+                task.log("Oldest file for " + module + " " + new Date(oldest), Project.MSG_DEBUG);
+            } else {
+                task.log("Artifact file associated with " + file + " for " + module + " " + new Date(oldest), Project.MSG_DEBUG);
+            }
             
             long newestFile = file.lastModified();
             task.log("File " + file + " last modified " + new Date(newestFile), Project.MSG_DEBUG);
@@ -200,6 +168,10 @@ abstract class LazyHelper {
     protected abstract File getArtifactDir(Module module);
     
     protected abstract FileFilter getArtifactFilter();
+    
+    protected abstract long getOldestArtifactTime(File file);
+
+    protected abstract long getArtifactFileTime(Module module, File file);
 
     private Module findModule(String moduleName) {
         for (File src : task.getSrc()) {

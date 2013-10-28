@@ -27,8 +27,15 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -189,6 +196,141 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             @Override
             protected FileFilter getArtifactFilter() {
                 return ARTIFACT_FILTER;
+            }
+
+            @Override
+            protected long getOldestArtifactTime(File file) {
+                long mtime = Long.MAX_VALUE;
+                String name = file.getPath().toLowerCase();
+                if (name.endsWith(".car") || name.endsWith(".src")) {
+                    JarFile jarFile = null;
+                    try {
+                        jarFile = new JarFile(file);
+                        Enumeration<JarEntry> entries = jarFile.entries();
+                        while(entries.hasMoreElements()){
+                            JarEntry entry = entries.nextElement();
+                            if (entry.getTime() < mtime) {
+                                mtime = entry.getTime();
+                            }
+                        }
+                    } catch (IOException ex) {
+                        // Maybe something's wrong with the CAR so let's return MIN_VALUE
+                        mtime = Long.MIN_VALUE;
+                    } finally {
+                        if (jarFile != null) {
+                            try {
+                                jarFile.close();
+                            } catch (IOException e) {
+                                // Ignore
+                            }
+                        }
+                    }
+                } else {
+                    mtime = file.lastModified();
+                }
+                return mtime;
+            }
+            
+            @Override
+            protected long getArtifactFileTime(Module module, File file) {
+                File moduleDir = getArtifactDir(module);
+                String name = module.getName() + ((module.getVersion() != null) ? "-" + module.getVersion() : "") ;
+                File carFile = new File(moduleDir, name + ".car");
+                File srcFile = new File(moduleDir, name + ".src");
+                long carTime = getCarEntryTime(carFile, file);
+                long srcTime = getZipEntryTime(srcFile, file);
+                return Math.min(carTime, srcTime);
+            }
+
+            private long getCarEntryTime(File carFile, File entryFile) {
+                long mtime = Long.MAX_VALUE;
+                String name = entryFile.getPath().replace('\\', '/');
+                Properties mapping = readMappingFromCar(carFile);
+                if (mapping != null) {
+                    JarFile jarFile = null;
+                    try {
+                        jarFile = new JarFile(carFile);
+                        for (String className : mapping.stringPropertyNames()) {
+                            String srcName = mapping.getProperty(className);
+                            if (name.equals(srcName) || name.endsWith("/" + srcName)) {
+                                ZipEntry entry = jarFile.getEntry(className);
+                                if (entry != null) {
+                                    mtime = Math.min(mtime, entry.getTime());
+                                }
+                            }
+                        }
+                    } catch (IOException ex) {
+                        // Ignore
+                    } finally {
+                        if (jarFile != null) {
+                            try {
+                                jarFile.close();
+                            } catch (IOException e) {
+                                // Ignore
+                            }
+                        }
+                    }
+                }
+                return mtime;
+            }
+            
+            private long getZipEntryTime(File zipFile, File entryFile) {
+                if (zipFile.isFile()) {
+                    String name = entryFile.getPath().replace('\\', '/');
+                    JarFile jarFile = null;
+                    try {
+                        jarFile = new JarFile(zipFile);
+                        Enumeration<JarEntry> entries = jarFile.entries();
+                        while(entries.hasMoreElements()){
+                            JarEntry entry = entries.nextElement();
+                            if (name.equals(entry.getName()) || name.endsWith("/" + entry.getName())) {
+                                return entry.getTime();
+                            }
+                        }
+                    } catch (IOException ex) {
+                        // Ignore
+                    } finally {
+                        if (jarFile != null) {
+                            try {
+                                jarFile.close();
+                            } catch (IOException e) {
+                                // Ignore
+                            }
+                        }
+                    }
+                }
+                return Long.MAX_VALUE;
+            }
+            
+            private Properties readMappingFromCar(File carFile) {
+                if (carFile.isFile()) {
+                    JarFile jarFile = null;
+                    try {
+                        jarFile = new JarFile(carFile);
+                        ZipEntry entry = jarFile.getEntry("META-INF/mapping.txt");
+                        if (entry != null) {
+                            InputStream inputStream = jarFile.getInputStream(entry);
+                            try {
+                                Properties mapping = new Properties();
+                                mapping.load(inputStream);
+                                return mapping;
+                            } finally {
+                                inputStream.close();
+                            }
+                        }
+                    } catch (IOException ex) {
+                        // Ignore
+                    } finally {
+                        if (jarFile != null) {
+                            try {
+                                jarFile.close();
+                            } catch (IOException e) {
+                                // Ignore
+                            }
+                        }
+                    }
+                }
+                return null;
             }
         };
         

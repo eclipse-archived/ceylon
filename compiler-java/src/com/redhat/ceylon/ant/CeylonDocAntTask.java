@@ -130,6 +130,16 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             protected FileFilter getArtifactFilter() {
                 return ARTIFACT_FILTER;
             }
+
+            @Override
+            protected long getOldestArtifactTime(File file) {
+                return file.lastModified();
+            }
+            
+            @Override
+            protected long getArtifactFileTime(Module module, File file) {
+                return Long.MAX_VALUE;
+            }
         };
         if (lazyTask.filterModules(moduleset.getModules())) {
             log("Everything's up to date");

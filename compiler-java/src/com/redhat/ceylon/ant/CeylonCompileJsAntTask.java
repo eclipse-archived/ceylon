@@ -149,6 +149,23 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
             protected FileFilter getArtifactFilter() {
                 return ARTIFACT_FILTER;
             }
+
+            @Override
+            protected long getOldestArtifactTime(File file) {
+                return file.lastModified();
+            }
+            
+            @Override
+            protected long getArtifactFileTime(Module module, File file) {
+                File moduleDir = getArtifactDir(module);
+                String name = module.getName() + ((module.getVersion() != null) ? "-" + module.getVersion() : "") + ".js";
+                File jsFile = new File(moduleDir, name);
+                if (jsFile.isFile()) {
+                    return jsFile.lastModified();
+                } else {
+                    return Long.MAX_VALUE;
+                }
+            }
         };
 
         if (lazyTask.filterFiles(compileList) 
