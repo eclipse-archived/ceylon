@@ -13,4 +13,45 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
   }
   return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
 },undefined,function(){return{mod:$$METAMODEL$$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
-
+defineAttr(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
+  var mm = this.tipo.$$metamodel$$;
+  if (mm) {
+    if (mm.$tp) {
+      if (this.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+this.string);
+      var targs=[];
+      for (var tp in mm.$tp) {
+        var param = OpenTypeParam(this.tipo,tp);
+        var targ = this.$targs[tp];
+        if (targ) {
+          targ=typeLiteral$meta({Type:targ});
+        } else {
+          targ=typeLiteral$meta({Type:{t:Anything}});
+        }
+        targs.push(Entry(param,targ,{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}));
+      }
+      return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}}}), {Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}});
+    }
+    return getEmpty();
+  }
+  throw wrapexc(Exception(String$("IMPL FunctionModel.typeArguments ")),'15:63-15:99','?');
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
+defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
+  var mm=this.tipo.$$metamodel$$;
+  var qn=$qname(mm);
+  if (mm.$tp) {
+    qn+="<";
+    var first=true;
+    for (var tp in mm.$tp) {
+      if (first)first=false; else qn+=",";
+      var targ=this.$targs[tp];
+      if (targ.t) {
+        if (typeof(targ.t.$$metamodel$$)==='function')targ.t.$$metamodel$$=targ.t.$$metamodel$$();
+        qn+=$qname(targ.t.$$metamodel$$);
+      } else {
+        qn+=tp;
+      }
+    }
+    qn+=">";
+  }
+  return String$(qn);
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:FunctionModel$meta$model};});
