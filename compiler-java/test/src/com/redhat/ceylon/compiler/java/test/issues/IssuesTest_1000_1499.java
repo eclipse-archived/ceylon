@@ -723,6 +723,14 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
+    public void testBug1392() {
+        assertErrors("bug13xx/Bug1392",
+                new CompilerError(25, "protected constructor is not visible: LogManager"),
+                new CompilerError(26, "type is not visible: Class")
+        );
+    }
+
+    @Test
     public void testBug1395() {
         compareWithJavaSource("bug13xx/Bug1395");
     }

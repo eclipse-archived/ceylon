@@ -17,8 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.issues "1" {
-    import java.base "7";
-    import java.desktop "7";
-    import java.logging "7";
+import java.util.logging { LogManager }
+import java.lang { Class }
+
+@noanno
+shared void bug1392(){
+    LogManager();
+    Class<LogManager>();
 }
