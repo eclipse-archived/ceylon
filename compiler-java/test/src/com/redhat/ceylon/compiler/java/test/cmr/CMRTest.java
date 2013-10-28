@@ -680,6 +680,16 @@ public class CMRTest extends CompilerTest {
     }
 
     @Test
+    public void testMdlAetherMissingDependenciesOverride() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
+                "-rep", "aether",
+                "-maven-overrides", getPackagePath()+"/modules/bug1100/overrides.xml"/*, "-verbose:cmr"*/), 
+                "modules/bug1100/module.ceylon", "modules/bug1100/test.ceylon");
+        assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
+    }
+
+    @Test
     public void testMdlAetherMissingDependencies2() throws IOException{
 
         // Try to compile the ceylon module
