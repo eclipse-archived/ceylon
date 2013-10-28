@@ -168,7 +168,6 @@ abstract class LazyHelper {
         if (task.getNoMtimeCheck() || isOutputRepositoryURL()) {
             return false;
         }
-        long newestFile = Long.MIN_VALUE;
         Iterator<File> iter = files.iterator();
         while (iter.hasNext()) {
             File file = iter.next();
@@ -185,7 +184,7 @@ abstract class LazyHelper {
             long oldest = oldestOutputArtifact(Long.MAX_VALUE, outModuleDir);
             task.log("Oldest file in " + outModuleDir + " " + new Date(oldest), Project.MSG_DEBUG);
             
-            newestFile = Math.max(newestFile, file.lastModified());
+            long newestFile = file.lastModified();
             task.log("File " + file + " last modified " + new Date(newestFile), Project.MSG_DEBUG);
             if (newestFile != Long.MIN_VALUE
                     && oldest != Long.MAX_VALUE
