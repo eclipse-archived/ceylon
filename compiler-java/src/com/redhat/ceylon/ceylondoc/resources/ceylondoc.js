@@ -155,7 +155,12 @@ $('tbody .description').each(function() {
 				iconDecoration.removeClass('icon-decoration-collapse').addClass('icon-decoration-expand');
 			}
 			descDiv.toggleClass('description-collapsed');
-			return true;
+			
+			if( target.is('a') && target.is('.link-collapsible') ) {
+				return false;
+			} else {
+				return true;
+			}
 		};
 
 		collapsibleLink.click(collapsibleHandler);
