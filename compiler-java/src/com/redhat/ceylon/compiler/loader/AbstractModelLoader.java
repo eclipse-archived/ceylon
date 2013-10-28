@@ -813,7 +813,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
             // referenced in private methods but not available
-            if(isFromJDK && !methodMirror.isPublic())
+            if(isFromJDK 
+                    && !methodMirror.isPublic()
+                    // allow protected because we can subclass them, but not package-private because we can't define
+                    // classes in the jdk packages
+                    && !methodMirror.isProtected())
                 continue;
 
             // if we are expecting Ceylon code, check that we have enough reified type parameters
