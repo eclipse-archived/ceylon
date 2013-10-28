@@ -187,6 +187,15 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         if(verbose){
             cmd.createArgument().setValue("--verbose");
         }
+        if (optimize) {
+            cmd.createArgument().setValue("--optimize");
+        }
+        if (!modulify) {
+            cmd.createArgument().setValue("--no-module");
+        }
+        if (!gensrc) {
+            cmd.createArgument().setValue("--skip-src-archive");
+        }
 
         for (File file : compileList) {
             log("Adding source file: "+file.getAbsolutePath(), Project.MSG_VERBOSE);
@@ -196,15 +205,6 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         for (Module module : moduleset.getModules()) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
             cmd.createArgument().setValue(module.toSpec());
-        }
-        if (optimize) {
-            cmd.createArgument().setValue("--optimize");
-        }
-        if (!modulify) {
-            cmd.createArgument().setValue("--no-module");
-        }
-        if (!gensrc) {
-            cmd.createArgument().setValue("--skip-src-archive");
         }
     }
     @Override
