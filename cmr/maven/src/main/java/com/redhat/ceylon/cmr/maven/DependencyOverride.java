@@ -30,10 +30,12 @@ public class DependencyOverride {
 
     private MavenCoordinate mvn;
     private Type type;
+    private boolean shared;
 
-    public DependencyOverride(MavenCoordinate mvn, Type type) {
+    public DependencyOverride(MavenCoordinate mvn, Type type, boolean shared) {
         this.mvn = mvn;
         this.type = type;
+        this.shared = shared;
     }
 
     public MavenCoordinate getMvn() {
@@ -42,6 +44,10 @@ public class DependencyOverride {
 
     public Type getType() {
         return type;
+    }
+    
+    public boolean isShared(){
+        return shared;
     }
 
     @Override

@@ -85,9 +85,15 @@ public class Overrides {
         List<Element> overrides = getChildren(artifact, type.name().toLowerCase());
         for (Element override : overrides) {
             MavenCoordinate dep = getMavenCoordinate(override);
-            DependencyOverride doo = new DependencyOverride(dep, type);
+            boolean shared = getBooleanAttribute(override, "shared");
+            DependencyOverride doo = new DependencyOverride(dep, type, shared);
             ao.addOverride(doo);
         }
+    }
+
+    protected static boolean getBooleanAttribute(Element element, String name) {
+        String val = getAttribute(element, name);
+        return val != null && val.toLowerCase().equals("true");
     }
 
     protected static String getAttribute(Element element, String name) {

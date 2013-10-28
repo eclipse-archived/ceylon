@@ -25,6 +25,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ArtifactResultType;
+import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -159,13 +160,13 @@ public class AetherUtils {
                         continue; // skip dependency
                     }
 
-                    ArtifactResult dr = createArtifactResult(dCo);
+                    ArtifactResult dr = createArtifactResult(dCo, false);
                     dependencies.add(dr);
                 }
 
                 if (ao != null) {
                     for (DependencyOverride addon : ao.getAdd()) {
-                        dependencies.add(createArtifactResult(addon.getMvn()));
+                        dependencies.add(createArtifactResult(addon.getMvn(), addon.isShared()));
                         log.info(String.format("[Maven-Overrides] Added %s to %s.", addon.getMvn(), mc));
                     }
                 }
@@ -178,13 +179,18 @@ public class AetherUtils {
         }
     }
 
-    protected ArtifactResult createArtifactResult(final MavenCoordinate dCo) {
+    protected ArtifactResult createArtifactResult(final MavenCoordinate dCo, final boolean shared) {
         final String dName = toCanonicalForm(dCo.getGroupId(), dCo.getArtifactId());
         final String dVersion = dCo.getVersion();
 
         return new MavenArtifactResult(dName, dVersion) {
             private ArtifactResult result;
 
+            @Override
+            public ImportType importType() {
+                return shared ? ImportType.EXPORT : ImportType.UNDEFINED;
+            }
+            
             private synchronized ArtifactResult getResult() {
                 if (result == null) {
                     result = fetchDependencies(dCo.getGroupId(), dCo.getArtifactId(), dVersion, false);
