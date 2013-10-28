@@ -448,6 +448,8 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
   if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
     throw IncompatibleTypeException$meta$model("Incompatible Container specified");
+  if (!extendsType({t:this.tipo},$mptypes.Type))
+    throw IncompatibleTypeException$meta$model("Incompatible Type specified");
   var _t={t:this.tipo};
   if (mm.$tp) {
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
