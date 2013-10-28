@@ -22,6 +22,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -275,8 +276,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             ac.setFetchSingleArtifact(true);
             ac.setThrowErrorIfMissing(false);
             File artifile = repoMgr.getArtifact(ac);
+            long oldestInCar = JarUtils.oldestFileTime(artifile);
             long newestSource = getNewestLastmodified(name);
-            if (newestSource > artifile.lastModified()) {
+            if (newestSource > oldestInCar) {
                 return true;
             }
         }

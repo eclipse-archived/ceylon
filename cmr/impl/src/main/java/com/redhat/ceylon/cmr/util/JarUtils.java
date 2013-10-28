@@ -105,5 +105,31 @@ public final class JarUtils {
         }
         outputStream.flush();
     }
+    
+    public static long oldestFileTime(File file) {
+        long mtime = Long.MAX_VALUE;
+        JarFile jarFile = null;
+        try {
+            jarFile = new JarFile(file);
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while(entries.hasMoreElements()){
+                JarEntry entry = entries.nextElement();
+                if (entry.getTime() < mtime) {
+                    mtime = entry.getTime();
+                }
+            }
+        } catch (IOException ex) {
+            mtime = Long.MIN_VALUE;
+        } finally {
+            if (jarFile != null) {
+                try {
+                    jarFile.close();
+                } catch (IOException e) {
+                    // Ignore
+                }
+            }
+        }
+        return mtime;
+    }
 
 }
