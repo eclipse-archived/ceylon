@@ -71,6 +71,15 @@ public class ArtifactOverrides {
         return false;
     }
 
+    public boolean isAdded(MavenCoordinate mc) {
+        for (DependencyOverride override : add) {
+            if (mc.equals(override.getMvn())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public DependencyOverride getReplace() {
         return replace;
     }
