@@ -161,7 +161,7 @@ abstract class LazyHelper {
         return files.size() == 0;
     }
 
-    protected abstract File getArtifactDir(String version, Module module);
+    protected abstract File getArtifactDir(Module module);
     
     protected abstract FileFilter getArtifactFilter();
 

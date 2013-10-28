@@ -140,8 +140,8 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         }
         LazyHelper lazyTask = new LazyHelper(this) {
             @Override
-            protected File getArtifactDir(String version, Module module) {
-                File outModuleDir = new File(getOut(), module.toDir().getPath()+"/"+version);
+            protected File getArtifactDir(Module module) {
+                File outModuleDir = new File(getOut(), module.toVersionedDir().getPath());
                 return outModuleDir;
             }
             

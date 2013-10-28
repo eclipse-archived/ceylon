@@ -102,4 +102,11 @@ public class Module {
     public File toDir() {
         return new File(name.replace(".", "/"));
     }
+    
+    public File toVersionedDir() {
+        if (version == null) {
+            throw new RuntimeException("Module " + name + " doesn't specify a version");
+        }
+        return new File(toDir(), version);
+    }
 }
