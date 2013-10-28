@@ -2613,7 +2613,15 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression iterableToSequential(JCExpression iterable){
         return make().Apply(null, makeSelect(iterable, "getSequence"), List.<JCExpression>nil());
     }
-    
+
+    /**
+     * Casts a <tt>ceylon.language.Sequential</tt> type to a <tt>ceylon.language.Sequence</tt> type.
+     */
+    JCExpression castSequentialToSequence(JCExpression sequentialExpr, ProducedType iteratedType) {
+        return make().TypeCast(
+                makeJavaType(typeFact().getSequenceType(iteratedType)), sequentialExpr);
+    }
+
     /**
      * Returns a JCExpression along the lines of 
      * {@code new ArraySequence<seqElemType>(list...)}

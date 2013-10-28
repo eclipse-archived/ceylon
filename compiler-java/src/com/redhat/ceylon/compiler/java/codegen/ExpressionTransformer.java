@@ -2364,7 +2364,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     } else if (argType.getSupertype(typeFact().getIterableDeclaration()) != null) {
                         exprAndType = transformArgument(invocation, argIndex,
                                 boxingStrategy);
-                        exprAndType = new ExpressionAndType(iterableToSequential(exprAndType.expression), exprAndType.type);
+                        JCExpression sequential = iterableToSequential(exprAndType.expression);
+                        if(invocation.isParameterVariadicPlus(argIndex)){
+                            ProducedType iteratedType = typeFact().getIteratedType(argType);
+                            sequential = castSequentialToSequence(sequential, iteratedType);
+                        }
+                        exprAndType = new ExpressionAndType(sequential, exprAndType.type);
                     } else {
                         exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
                     }
@@ -2473,8 +2478,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
             JCExpression sequentialExpr = makeUtilInvocation("sequentialInstance", x.prepend(makeReifiedTypeArgument(iteratedType)), List.of(typeExpr));
             if (invocation.isParameterVariadicPlus(argIndex)) {
-                expr = make().TypeCast(
-                        makeJavaType(typeFact().getSequenceType(iteratedType)), sequentialExpr);
+                expr = castSequentialToSequence(sequentialExpr, iteratedType);
             } else {
                 expr = sequentialExpr;
             }
