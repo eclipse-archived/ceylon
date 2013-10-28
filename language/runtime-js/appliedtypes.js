@@ -463,14 +463,14 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   if (typeof(mm)==='function') {mm=mm();m.$$metamodel$$=mm;}
   var ttargs;
   if (mm.$tp) {
-    if (!mptypes)throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
+    if (!mptypes || mptypes.size<1)throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
     var i=0;ttargs={};
     for (var tp in mm.$tp) {
-      var _ta=mptypes[i];
+      var _ta=mptypes.$get?mptypes.$get(i):mptypes[i];
       if(_ta&&_ta.tipo)ttargs[tp]={t:_ta.tipo};
       else if (_ta) console.log("TODO assign type arg " + _ta + " to " + tp);
       else if (mptypes[tp])ttargs[tp]=mptypes[tp];
-      else console.log("TODO no more type arguments");
+      else throw Error("TODO no more type arguments in AppliedFunction");
       i++;
     }
   }
@@ -496,39 +496,32 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   }
   Function$meta$model(f,$$targs$$);
   f.tipo=m;
-defineAttr(f,'string',function(){
-  var qn=$qname(mm);
-  if (mm.$tp) {
-    qn+="<";
-    var first=true;
-    var targ;
-    for (var tp in mm.$tp) {
-      if (mptypes && mptypes[tp]) {
-        var _targ=mptypes[tp];
-        if (typeof(_targ)==='string') {
-          console.log("TODO: AppliedFunction solve " + tp+"->"+_targ+" for " + qn);
-          _targ={t:Anything};
-        }
-        targ=typeLiteral$meta({Type:_targ});
-      } else {
-        targ=typeLiteral$meta({Type:{t:Anything}});
-      }
-      if (first)first=false; else qn+=",";
-      qn+=targ.declaration.qualifiedName;
-    }
-    qn+=">";
+  f.$targs=ttargs;
+  if (o)f.$bound=o;
+  defineAttr(f,'typeArguments',function(){
+    return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call(f);
+  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
+  f.equals=function(oo){
+    return isOfType(oo,{t:AppliedFunction}) && oo.tipo===m && oo.typeArguments.equals(this.typeArguments) && (o?o.equals(oo.$bound):oo.$bound===o);
   }
+  defineAttr(f,'string',function(){
+    return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call(f);
+  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:AppliedFunction};});
   defineAttr(f,'parameterTypes',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(f);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
-  return String$(qn);
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
 defineAttr(f,'declaration',function(){
   if (f._decl)return f._decl;
   f._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), m);
   return f._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
   f.$apply=function(a){
+    if (ttargs) {
+      var _a=[];
+      for (var i=0;i<a.size;i++)_a.push(a.$get(i));
+      _a.push(ttargs);
+      a=_a;
+    }
     return m.apply(o,a);
   }
   return f;
@@ -682,6 +675,31 @@ $init$AppliedVariable$meta$model();
 //ClassDefinition AppliedMethod at X (10:0-21:0)
 function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   $init$AppliedMethod();
+  var mm = tipo.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm = mm();
+    tipo.$$metamodel$$=mm;
+  }
+  if (mm.$tp) {
+    if (typeArgs===undefined || typeArgs.size<1)
+      throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
+    var _ta={}; var i=0;
+    for (var tp in mm.$tp) {
+      if (typeArgs.$get(i)===undefined)
+        throw TypeApplicationException$meta$model(String$("Missing type argument for "+tp));
+      var _tp = mm.$tp[tp];
+      var _t = typeArgs.$get(i).tipo;
+      _ta[tp]={t:_t};
+      if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
+        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
+        for (var j=0; j<restraints.length;j++) {
+          if (!extendsType(_ta[tp],restraints[j]))
+            throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+        }
+      }
+      i++;
+    }
+  }
   if ($$appliedMethod===undefined){
     $$appliedMethod=function(x){
       return AppliedFunction(tipo,$$targs$$,x,typeArgs);
@@ -690,43 +708,41 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     $$appliedMethod.getT$all=function(){return dummy.getT$all();};
     $$appliedMethod.getT$name=function(){return dummy.getT$name();};
   }
+  if (_ta)$$appliedMethod.$targs=_ta;
   set_type_args($$appliedMethod,$$targs$$);
   Method$meta$model($$appliedMethod.$$targs$$===undefined?$$targs$$:{Arguments:$$appliedMethod.$$targs$$.Arguments,Type:$$appliedMethod.$$targs$$.Type,Container:$$appliedMethod.$$targs$$.Container},$$appliedMethod);
   $$appliedMethod.tipo=tipo;
 
 //This was copied from prototype style
   defineAttr($$appliedMethod,'declaration',function(){
-    var mm = tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm = mm();
-      tipo.$$metamodel$$=mm;
-    }
     var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
     return OpenFunction(_pkg, $$appliedMethod.tipo);
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
   defineAttr($$appliedMethod,'type',function(){
-    return typeLiteral$meta({Type:this.tipo.$$metamodel$$['$t']});
+    return typeLiteral$meta({Type:mm.$t});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
   defineAttr($$appliedMethod,'typeArguments',function(){
-      var $$appliedMethod=this;
-      throw wrapexc(Exception(String$("IMPL AppliedMethod.typeArguments")),'92:75-92:107','?');
-  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','typeArguments']};});
+    return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call($$appliedMethod);
+  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
   defineAttr($$appliedMethod,'parameterTypes',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call($$appliedMethod);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
 
   $$appliedMethod.equals=function(o){
-    return isOfType(o,{t:AppliedMethod}) && o.tipo===tipo;
+    return isOfType(o,{t:AppliedMethod}) && o.tipo===tipo && o.typeArguments.equals(this.typeArguments);
   }
   $$appliedMethod.$bind=function(o){
     return $$appliedMethod(o);
   }
+  defineAttr($$appliedMethod,'string',function(){
+    return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call($$appliedMethod);
+  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:AppliedMethod};});
   return $$appliedMethod;
 }
 AppliedMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},$tp:{Container:{'var':'in'},Type:{'var':'out','def':{t:Anything}},Arguments:{'var':'in','satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
-exports.AppliedMethod=AppliedMethod;
+exports.AppliedMethod$meta$model=AppliedMethod;
 function $init$AppliedMethod(){
     if (AppliedMethod.$$===undefined){
         initTypeProto(AppliedMethod,'ceylon.language.meta.model::AppliedMethod',Basic,Method$meta$model);
