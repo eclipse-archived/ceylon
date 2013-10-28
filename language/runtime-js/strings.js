@@ -534,7 +534,7 @@ String$proto.occurrences = function(sub) {
 }
 String$proto.occurrences.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','occurrences']};
 String$proto.$filter = function(f) {
-    var r = Iterable.$$.prototype.$filter.apply(this, [f]);
+    var r = Iterable.$$.prototype.$filter.call(this, f);
     return String$(r);
 }
 String$proto.$filter.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','filter']};
@@ -549,12 +549,12 @@ String$proto.taking = function(take) {
 }
 String$proto.taking.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','taking']};
 String$proto.by = function(step) {
-    var r = Iterable.$$.prototype.by.apply(this, [step]);
+    var r = Iterable.$$.prototype.by.call(this, step);
     return String$(r);
 }
 String$proto.by.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','by']};
 String$proto.$sort = function(f) {
-    var r = Iterable.$$.prototype.$sort.apply(this, [f]);
+    var r = Iterable.$$.prototype.$sort.call(this, f);
     return String$(r);
 }
 String$proto.$sort.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','sort']};
