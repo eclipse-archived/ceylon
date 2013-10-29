@@ -1368,11 +1368,8 @@ public class GenerateJsVisitor extends Visitor
             initDefaultedParameters(that.getParameterLists().get(0), m);
         } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
             if (m.getContainer() instanceof TypeDeclaration) {
-                out("if(");
                 self((TypeDeclaration)m.getContainer());
-                out(".", names.name(m),"===undefined)");
-                self((TypeDeclaration)m.getContainer());
-                out(".", names.name(m),"={$$metamodel$$:");
+                out(".", names.name(m),"={$fml:1,$$metamodel$$:");
                 TypeUtils.encodeForRuntime(that, m, this);
                 out("};");
             }
