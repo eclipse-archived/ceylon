@@ -47,6 +47,8 @@ function $init$AppliedClass(){
     (function($$clase){
 
       $$clase.$apply=function(a){
+        var mdl=get_model(this.tipo.$$metamodel$$);
+        if (mdl&&mdl.$mt==='obj')throw InvocationException$meta$model("Cannot instantiate anonymous class");
         var ps = this.tipo.$$metamodel$$.$ps;
         if (ps===undefined || ps.length===0){
           if (a && a.size>0)
