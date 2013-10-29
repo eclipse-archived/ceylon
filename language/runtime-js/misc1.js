@@ -1,4 +1,5 @@
 function getNull() { return null }
+exports.$prop$getNull={get:getNull,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','null'],$t:{t:Null}};}};
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
 Boolean$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Boolean']};
@@ -19,8 +20,10 @@ var trueString = String$("true", 4);
 var falseString = String$("false", 5);
 defineAttr(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
-function getTrue() {return true}
-function getFalse() {return false}
+function getTrue() {return true;}
+function getFalse() {return false;}
+exports.$prop$getTrue={get:getTrue,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','true'],$t:{t:Boolean$}};}};
+exports.$prop$getFalse={get:getFalse,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','false'],$t:{t:Boolean$}};}};
 var $true = true;
 var $false = false;
 
