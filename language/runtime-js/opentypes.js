@@ -1,5 +1,14 @@
+function $findAnnotation(cont,ant) {
+  if (typeof(cont.$$metamodel$$)==='function')cont.$$metamodel$$=cont.$$metamodel$$();
+  if (typeof(cont.$$metamodel$$.$an)==='function')cont.$$metamodel$$.$an=cont.$$metamodel$$.$an();
+  if (!cont.$$metamodel$$.$an)return null;
+  for (var i=0; i < cont.$$metamodel$$.$an.length; i++) {
+    if (isOfType(cont.$$metamodel$$.$an[i],{t:ant}))return cont.$$metamodel$$.$an[i];
+  }
+  return null;
+}
 //Find the real declaration of something from its model definition
-function _findTypeFromModel(pkg,mdl) {
+function _findTypeFromModel(pkg,mdl,cont) {
   var mod = pkg.container;
   //TODO this is very primitive needs a lot of rules replicated from the JsIdentifierNames
   var nm = mdl.$nm;
@@ -7,10 +16,17 @@ function _findTypeFromModel(pkg,mdl) {
   if (mt === 'attr' || mt === 'gttr' || mt === 'obj') {
     nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
   }
-  var nm=nm + pkg.suffix;
-  var rv=mod.meta[nm];
-  if (rv===undefined)rv=mod.meta['$init$'+nm];
-  if (rv===undefined)rv=mod.meta['$'+nm];
+  if (cont) {
+    var imm=cont.$$metamodel$$;
+    if (typeof(imm)==='function'){imm=imm();cont.$$metamodel$$=imm;}
+    if (mt==='cls'||mt==='ifc')nm=nm+'$'+imm.d[imm.d.length-1];
+  }else {
+    nm+=pkg.suffix;
+  }
+  var out=cont?cont.$$.prototype:mod.meta;
+  var rv=out[nm];
+  if (rv===undefined)rv=out['$init$'+nm];
+  if (rv===undefined)rv=out['$'+nm];
   return rv;
 }
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
@@ -21,6 +37,8 @@ function _openTypeFromTarg(targ) {
       tl.push(_openTypeFromTarg(targ.l[i]));
     }
     return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({Element:{t:OpenType$meta$declaration}}));
+  } else if (targ.t==='T') {
+    targ=$retuple(targ);
   }
   var mm=targ.t.$$metamodel$$;
   if (typeof(mm)==='function') {
@@ -128,6 +146,9 @@ defineAttr($$openFunction,'container',function(){
   if (this.toplevel)return this.containingPackage;
   return typeLiteral$meta({Type:this.tipo.$$metamodel$$.$cont});
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
+defineAttr($$openFunction,'annotation',function(){
+  return $findAnnotation(this.tipo,AnnotationAnnotation)!==null;
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
 
       $$openFunction.$apply=function $apply(types,$mptypes){
         if (typeof(this.tipo.$$metamodel$$)==='function') {
@@ -464,37 +485,18 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
         return this.meta.$mt==='obj';
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
       defineAttr($$openClass,'abstract',function(){
-        var _m=this.meta;
-        return (_m && (_m['abstract'] || (_m.$an&&_m.$an['abstract'])))!==undefined;
+        return $findAnnotation(this.tipo,AbstractAnnotation)!==null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','abstract']};});
       defineAttr($$openClass,'$final',function(){
-        var _m=this.meta;
-        return (_m && _m.$an && _m.$an['final'])!==undefined;
+        return $findAnnotation(this.tipo,FinalAnnotation)!==null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','final']};});
       defineAttr($$openClass,'annotation',function(){
-        var _m=this.meta;
-        return (_m && _m.$an && _m.$an['annotation'])!==undefined;
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','annotation']};});
-      defineAttr($$openClass,'actual',function(){
-        var _m=this.meta;
-        return (_m && _m.$an && _m.$an.actual)!==undefined;
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','actual']};});
-      defineAttr($$openClass,'formal',function(){
-        var _m=this.meta;
-        return (_m && _m.$an && _m.$an.formal)!==undefined;
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','formal']};});
-      defineAttr($$openClass,'shared',function(){
-        var _m=this.meta;
-        return (_m && _m.$an && _m.$an.shared)!==undefined;
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','shared']};});
-      defineAttr($$openClass,'$default',function(){
-        var _m=this.meta;
-        return (_m && _m.$an && _m.$an['default'])!==undefined;
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','default']};});
-
+        return $findAnnotation(this.tipo,AnnotationAnnotation)!==null;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
             //MethodDeclaration annotatedMemberDeclarations at X (55:2-56:66)
             $$openClass.annotatedMemberDeclarations=function ($$$mptypes){
                 var $$openClass=this;
+console.log("IMPL OpenClass.annotatedMemberDeclarations()");
                 return getEmpty();
             };
             $$openClass.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','annotatedMemberDeclarations']};};
@@ -508,6 +510,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
            //MethodDeclaration getParameterDeclaration at X (66:2-66:88)
             $$openClass.getParameterDeclaration=function (name$15){
                 var $$openClass=this;
+console.log("IMPL OpenClass.getParameterDeclaration("+name$15+")");
                 return null;
             };
             $$openClass.getParameterDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:FunctionOrValueDeclaration$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','getParameterDeclaration']};};
@@ -713,18 +716,6 @@ function $init$OpenAlias(){
       defineAttr($$openAlias,'toplevel',function(){
         return this._alias.$cont===undefined;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','toplevel']};});
-      defineAttr($$openAlias,'$default',function(){
-        throw wrapexc(Exception(String$("OpenAlias.default",17)),'8:34-8:70','caca.ceylon');
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','default']};});
-      defineAttr($$openAlias,'actual',function(){
-        throw wrapexc(Exception(String$("OpenAlias.actual",16)),'9:33-9:68','caca.ceylon');
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','actual']};});
-      defineAttr($$openAlias,'formal',function(){
-        throw wrapexc(Exception(String$("OpenAlias.formal",16)),'10:33-10:68','caca.ceylon');
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','formal']};});
-      defineAttr($$openAlias,'shared',function(){
-        throw wrapexc(Exception(String$("OpenAlias.shared",16)),'11:33-11:68','caca.ceylon');
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','shared']};});
       defineAttr($$openAlias,'containingPackage',function(){
         throw Error("IMPL OpenAlias.containingPackage");
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Package$meta$declaration},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','containingPackage']};});
