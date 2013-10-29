@@ -8,7 +8,9 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments
       var otp=OpenTypeParam(this.declaration.tipo,tpn);
       var targ;
       if (rtp===undefined) {
-        targ = new OpenTvar(otp);
+        targ = OpenTvar(otp);
+      } else if (typeof(rtp)==='string') {
+        targ = OpenTvar(OpenTypeParam(this.declaration.tipo,rtp));
       } else {
         targ = _openTypeFromTarg(rtp);
       }
