@@ -32,7 +32,7 @@ Map,LazyMap,LazyList,LazySet
 
 any,byDecreasing,byIncreasing,byItem,byKey,coalesce,count,emptyOrSingleton,curry,entries,equalTo,apply
 every,first,forItem,forKey,greaterThan,concatenate,largest,lessThan,max,min,smallest,sum,product,zip,print,nothing
-identical,compose,shuffle,plus,times,combine,sort,sequences.js,strings.js,parseInteger
+identical,compose,shuffle,plus,times,combine,sort,sequences.js,strings.js,parseInteger,parseBoolean
 
 #metamodel
 Annotated,Annotation,ConstrainedAnnotation,OptionalAnnotation,SequencedAnnotation
