@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+final class bug895SideEffects_ {
+    
+    private bug895SideEffects_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> bug895SideEffects() {
+        return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects_.bug895SideEffects();
+    }
+}
+final class bug895_ {
+    
+    private bug895_() {
+    }
+    
+    static void bug895() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> foo1 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects_.bug895SideEffects();
+        final .ceylon.language.Callable<? extends .java.lang.Object> foo2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects2_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895_.bug895();
+    }
+}
+final class bug895SideEffects2_ {
+    
+    private bug895SideEffects2_() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
+        return (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+    }
+}
