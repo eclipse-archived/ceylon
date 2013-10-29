@@ -182,7 +182,7 @@ public abstract class LazyModuleManager extends ModuleManager {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         if(AbstractModelLoader.isJDKModule(name)){
-            error = "invalid JDK module version: should be '" + AbstractModelLoader.JDK_MODULE_VERSION + "'";
+            error = "unsupported JDK module version: the only supported version is '" + AbstractModelLoader.JDK_MODULE_VERSION + "' which you get with Java 7";
         }
         super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error);
     }
