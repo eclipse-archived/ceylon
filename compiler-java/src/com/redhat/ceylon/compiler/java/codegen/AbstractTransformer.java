@@ -1361,13 +1361,32 @@ public abstract class AbstractTransformer implements Transformation {
         else
             simpleType = type;
         
+        // see if we need to cross methods when looking up container types
+        // this is required to properly collect all the type parameters for local interfaces
+        // which we pull up to the toplevel and capture all the container type parameters
+        boolean needsQualifyingTypeArgumentsFromLocalContainers =
+                Decl.isCeylon(simpleType.getDeclaration())
+                && simpleType.getDeclaration() instanceof Interface
+                // this is only valid for interfaces, not for their companion which stay where they are
+                && (flags & JT_COMPANION) == 0;
+        
         java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
         ProducedType qType = simpleType;
         boolean hasTypeParameters = false;
         while (qType != null) {
             hasTypeParameters |= !qType.getTypeArguments().isEmpty();
             qualifyingTypes.add(qType);
-            qType = qType.getQualifyingType();
+            TypeDeclaration typeDeclaration = qType.getDeclaration();
+            // local interfaces that are pulled to the toplevel need to cross containing methods to find
+            // all the containing type parameters that it captures
+            if(Decl.isLocal(typeDeclaration)
+                    && needsQualifyingTypeArgumentsFromLocalContainers
+                    && typeDeclaration instanceof ClassOrInterface){
+                ClassOrInterface container = Decl.getClassOrInterfaceContainer(typeDeclaration, false);
+                qType = container == null ? null : container.getType();
+            }else{
+                qType = qType.getQualifyingType();
+            }
         }
         int firstQualifyingTypeWithTypeParameters = qualifyingTypes.size() - 1;
         // find the first static one, from the right to the left
@@ -1395,14 +1414,8 @@ public abstract class AbstractTransformer implements Transformation {
                 // collect all the qualifying type args we'd normally have
                 java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
                 java.util.Map<TypeParameter, ProducedType> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, ProducedType>();
-                for (ProducedType qualifiedType : qualifyingTypes) {
-                    Map<TypeParameter, ProducedType> tas = qualifiedType.getTypeArguments();
-                    java.util.List<TypeParameter> tps = qualifiedType.getDeclaration().getTypeParameters();
-                    if (tps != null) {
-                        qualifyingTypeParameters.addAll(tps);
-                        qualifyingTypeArguments.putAll(tas);
-                    }
-                }
+                collectQualifyingTypeArguments(qualifyingTypeParameters, qualifyingTypeArguments, qualifyingTypes);
+                
                 ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
                         flags, 
                         qualifyingTypeArguments, qualifyingTypeParameters);
@@ -1441,6 +1454,70 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         return (jt != null) ? jt : makeErroneous(null, "compiler bug: the java type corresponding to " + ceylonType + " could not be computed");
+    }
+
+    /**
+     * Collects all the type parameters and arguments required for an interface that's been pulled up to the
+     * toplevel, including its containing type and method type parameters.
+     */
+    private void collectQualifyingTypeArguments(java.util.List<TypeParameter> qualifyingTypeParameters, 
+            Map<TypeParameter, ProducedType> qualifyingTypeArguments, 
+            java.util.List<ProducedType> qualifyingTypes) {
+        // make sure we only add type parameters with the same name once, as duplicates are erased from the target interface
+        // since they cannot be accessed
+        Set<String> names = new HashSet<String>();
+        // walk the qualifying types backwards to make sure we only add a TP with the same name once and the outer one wins
+        for (int i = qualifyingTypes.size()-1 ; i >= 0 ; i--) {
+            ProducedType qualifiedType = qualifyingTypes.get(i);
+            Map<TypeParameter, ProducedType> tas = qualifiedType.getTypeArguments();
+            java.util.List<TypeParameter> tps = qualifiedType.getDeclaration().getTypeParameters();
+            // add any type params for this type
+            if (tps != null) {
+                int index = 0;
+                for(TypeParameter tp : tps){
+                    // add it only once
+                    if(names.add(tp.getName())){
+                        // start putting all these type parameters at 0 and then in order
+                        // so that outer type params end up before inner type params but
+                        // order is preserved within each type
+                        qualifyingTypeParameters.add(index++, tp);
+                        qualifyingTypeArguments.put(tp, tas.get(tp));
+                    }
+                }
+            }
+            // add any container method TP
+            TypeDeclaration declaration = qualifiedType.getDeclaration();
+            if(Decl.isLocal(declaration)){
+                Scope scope = declaration.getContainer();
+                // collect every container method until the next type or package
+                java.util.List<Method> methods = new LinkedList<Method>();
+                while(scope != null
+                        && scope instanceof ClassOrInterface == false
+                        && scope instanceof Package == false){
+                    if(scope instanceof Method){
+                        methods.add((Method) scope);
+                    }
+                    scope = scope.getContainer();
+                }
+                // methods are sorted inner to outer, which is the order we're following here for types
+                for(Method method : methods){
+                    java.util.List<TypeParameter> methodTypeParameters = method.getTypeParameters();
+                    if (methodTypeParameters != null) {
+                        int index = 0;
+                        for(TypeParameter tp : methodTypeParameters){
+                            // add it only once
+                            if(names.add(tp.getName())){
+                                // start putting all these type parameters at 0 and then in order
+                                // so that outer type params end up before inner type params but
+                                // order is preserved within each type
+                                qualifyingTypeParameters.add(index++, tp);
+                                qualifyingTypeArguments.put(tp, tp.getType());
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public boolean isJavaArray(ProducedType type) {
