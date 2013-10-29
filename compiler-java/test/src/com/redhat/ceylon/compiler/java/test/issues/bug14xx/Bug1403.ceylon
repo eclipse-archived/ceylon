@@ -21,7 +21,7 @@
 class Bug1403(String+ attrs) {}
 
 @noanno
-void bug1303() {
+void bug1403() {
     Bug1403("", *coalesce { "" });
     Bug1403("", *{ "" });
     value it = { "" };

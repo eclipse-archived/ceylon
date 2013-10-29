@@ -11,12 +11,12 @@ class Bug1403 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403.class);
 }
-final class bug1303_ {
+final class bug1403_ {
     
-    private bug1303_() {
+    private bug1403_() {
     }
     
-    static void bug1303() {
+    static void bug1403() {
         new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403((.ceylon.language.Sequence<? extends .ceylon.language.String>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialInstance(.ceylon.language.String.$TypeDescriptor$, (
             let
             {
@@ -35,6 +35,6 @@ final class bug1303_ {
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
-        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1303_.bug1303();
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1403_.bug1403();
     }
 }
