@@ -2455,11 +2455,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 x = x.append(argExpr);
             }else{
                 // convert to a Sequential if required
-                if(!invocation.isJavaMethod()){
-                    ProducedType argType = invocation.getArgumentType(ii);
-                    if(!typeFact().isSequentialType(argType))
-                        argExpr = iterableToSequential(argExpr);
-                }
+                ProducedType argType = invocation.getArgumentType(ii);
+                if(!typeFact().isSequentialType(argType))
+                    argExpr = iterableToSequential(argExpr);
                 x = x.prepend(argExpr);
             }
         }
