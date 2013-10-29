@@ -156,7 +156,10 @@ var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
 },undefined,{$an:function(){return[shared(),$default()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
+Object$proto.$prop$getHash={$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','hash'],$t:{t:Integer}};}};
 Object$proto.toString=function() { return this.string.valueOf(); }
+Object$proto.equals={};
+Object$proto.equals.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$}};
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
 
