@@ -1332,26 +1332,35 @@ public class GenerateJsVisitor extends Visitor
             endLine(true);
             share(m);
         }
-        else if (outer == null) { // don't do the following in a prototype definition
-            //Check for refinement of simple param declaration
-            if (m == that.getScope()) {
-                if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
-                    //Declare the method just by pointing to the param function
-                    final String name = names.name(((Class)m.getContainer()).getParameter(m.getName()));
-                    if (name != null) {
-                        self((Class)m.getContainer());
-                        out(".", names.name(m), "=", name, ";");
-                        endLine();
-                    }
-                } else if (m.getContainer() instanceof Method) {
-                    //Declare the function just by forcing the name we used in the param list
-                    final String name = names.name(((Method)m.getContainer()).getParameter(m.getName()));
-                    if (names != null) {
-                        names.forceName(m, name);
-                    }
+        else if (outer == null // don't do the following in a prototype definition
+                && m == that.getScope()) { //Check for refinement of simple param declaration
+            
+            if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
+                //Declare the method just by pointing to the param function
+                final String name = names.name(((Class)m.getContainer()).getParameter(m.getName()));
+                if (name != null) {
+                    self((Class)m.getContainer());
+                    out(".", names.name(m), "=", name, ";");
+                    endLine();
                 }
-                //Only the first paramlist can have defaults
-                initDefaultedParameters(that.getParameterLists().get(0), m);
+            } else if (m.getContainer() instanceof Method) {
+                //Declare the function just by forcing the name we used in the param list
+                final String name = names.name(((Method)m.getContainer()).getParameter(m.getName()));
+                if (names != null) {
+                    names.forceName(m, name);
+                }
+            }
+            //Only the first paramlist can have defaults
+            initDefaultedParameters(that.getParameterLists().get(0), m);
+        } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
+            if (m.getContainer() instanceof TypeDeclaration) {
+                out("if(");
+                self((TypeDeclaration)m.getContainer());
+                out(".", names.name(m),"===undefined)");
+                self((TypeDeclaration)m.getContainer());
+                out(".", names.name(m),"={$$metamodel$$:");
+                TypeUtils.encodeForRuntime(that, m, this);
+                out("};");
             }
         }
     }
@@ -4616,10 +4625,14 @@ public class GenerateJsVisitor extends Visitor
                 }
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
-                if (((Value)d).isVariable()) {
-                    out(clAlias, "$init$AppliedVariable$meta$model()(undefined,");
+                Value vd = (Value)d;
+                if (vd.isMember()) {
+                    out(clAlias, vd.isVariable()?"$init$AppliedVariableAttribute$meta$model()('":
+                        "$init$AppliedAttribute$meta$model()('");
+                    out(d.getName(), "',");
                 } else {
-                    out(clAlias, "$init$AppliedValue$meta$model()(undefined,");
+                    out(clAlias, vd.isVariable() ? "$init$AppliedVariable$meta$model()(undefined,"
+                            : "$init$AppliedValue$meta$model()(undefined,");
                 }
                 if (ltype == null) {
                     qualify(that, d);
