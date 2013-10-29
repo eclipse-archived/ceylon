@@ -37,7 +37,23 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
   var mm=this.tipo.$$metamodel$$;
-  var qn=$qname(mm);
+  var qn;
+  if (mm.$cont) {
+    qn=$qname(mm.$cont);
+    if (mm.$cont.$$metamodel$$.$tp) {
+      var cnt=this.$$targs$$&&this.$$targs$$.Container&&this.$$targs$$.Container.a;
+      qn+="<";var first=true;
+      for (var tp in mm.$cont.$$metamodel$$.$tp) {
+        if (first)first=false;else qn+=",";
+        var _ta=cnt&&cnt[tp];
+        qn+=$qname(_ta||Anything);
+      }
+      qn+=">";
+    }
+    qn+="."+mm.d[mm.d.length-1];
+  } else {
+    qn=$qname(mm);
+  }
   if (mm.$tp) {
     qn+="<";
     var first=true;
