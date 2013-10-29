@@ -484,13 +484,14 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   var f = o===undefined?function(x){
     return AppliedFunction(m,$$targs$$,x,mptypes);
   }:function(){
+    var _fu=o[mm.d[mm.d.length-1]]||m;//Get the object's method if possible
     if (mm.$tp) {
       var _a=[];
       for (var i=0;i<arguments.length;i++)_a.push(arguments[i]);
       _a.push(ttargs);//AQUI
-      return m.apply(o,_a);
+      return _fu.apply(o,_a);
     }
-    return m.apply(o,arguments);
+    return _fu.apply(o,arguments);
   }
   f.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language.model','Function'],$t:mm.$t,$ps:mm.$ps,$an:mm.$an};
   var dummy=new AppliedFunction.$$;
@@ -589,8 +590,11 @@ defineAttr($$appliedValue,'string',function(){
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','declaration']};});
 
       $$appliedValue.$get=function $get(){
-        var $$av=this;
-        return $$av.obj?$$av.tipo.get.apply($$av.obj):$$av.tipo.get();
+        if (this.obj) {
+          var mm=this.tipo.$$metamodel$$;
+          return (mm&&mm.d&&this.obj[mm.d[mm.d.length-1]])||this.tipo.get.call(this.obj);
+        }
+        return this.tipo.get();
       };$$appliedValue.$get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Type',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
 
 $$appliedValue.unsafeSet=function(v) {
@@ -652,7 +656,7 @@ AppliedVariable.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:App
 exports.AppliedVariable=AppliedVariable;
 function $init$AppliedVariable$meta$model(){
   if (AppliedVariable.$$===undefined){
-    initTypeProto(AppliedVariable,'ceylon.language.meta.model::AppliedVariable',AppliedValue,Variable$meta$model);
+    initTypeProto(AppliedVariable,'ceylon.language.meta.model::AppliedVariable',Variable$meta$model,AppliedValue);
     (function($$appliedVariable){
             
       //MethodDefinition set at X (104:2-104:76)
@@ -818,7 +822,7 @@ function $init$AppliedAttribute(){
     }
     return AppliedAttribute;
 }
-exports.$init$AppliedAttribute=$init$AppliedAttribute;
+exports.$init$AppliedAttribute$meta$model=$init$AppliedAttribute;
 $init$AppliedAttribute();
 
 
@@ -849,5 +853,5 @@ function $init$AppliedVariableAttribute(){
     }
     return AppliedVariableAttribute;
 }
-exports.$init$AppliedVariableAttribute=$init$AppliedVariableAttribute;
+exports.$init$AppliedVariableAttribute$meta$model=$init$AppliedVariableAttribute;
 $init$AppliedVariableAttribute();
