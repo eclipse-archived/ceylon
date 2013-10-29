@@ -28,3 +28,6 @@ Exception.$$.prototype.printStackTrace = function() {
     }
   }
 }
+Exception.$$.prototype.printStackTrace.$$metamodel$$=function(){
+  return{mod:$$METAMODEL$$,d:['ceylon.language','Exception','$m','printStackTrace'],$t:{t:Anything},$ps:[]};
+}
