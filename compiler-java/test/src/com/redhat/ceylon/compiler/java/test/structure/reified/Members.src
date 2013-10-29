@@ -8,7 +8,7 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-interface OuterClass$outerMethod$0$InnerInterface<Inner> {
+interface OuterClass$outerMethod$0$InnerInterface<Outer, Inner> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .java.lang.Object InnerInterface$impl();
@@ -94,12 +94,12 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         final class InnerInterface$impl<Inner> {
             
-            InnerInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<Inner> $this) {
+            InnerInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<Outer, Inner> $this) {
                 this.$reified$Inner = $reified$Inner;
                 this.$this = $this;
             }
             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner;
-            private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<Inner> $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<Outer, Inner> $this;
             
             public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
                 this.$reified$Inner = $reified$Inner;
@@ -111,7 +111,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
         }
         .java.lang.Object o$4;
         if (.com.redhat.ceylon.compiler.java.Util.isReified(o$4 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<.ceylon.language.Integer> o$5 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface)o$4;
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface<Outer, .ceylon.language.Integer> o$5 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$0$InnerInterface)o$4;
         }
     }
     
