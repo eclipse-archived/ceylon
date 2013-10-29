@@ -580,7 +580,7 @@ function $init$AppliedValue(){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model,Attribute$meta$model);
     (function($$appliedValue){
 defineAttr($$appliedValue,'string',function(){
-  return String$($qname(this.tipo.$$metamodel$$));
+  return String$($qname(this.tipo));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
       defineAttr($$appliedValue,'declaration',function(){
         var $$av=this;
@@ -804,7 +804,24 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return AppliedValue(cont,atr,{Type:$$targs$$.Type});
   }
   defineAttr($$appliedAttribute,'string',function(){
-    return String$($qname(atr.$$metamodel$$));
+    if (typeof(atr.$$metamodel$$)==='function')atr.$$metamodel$$=atr.$$metamodel$$();
+    var c=atr.$$metamodel$$.$cont;
+    if (typeof(c.$$metamodel$$)==='function')c.$$metamodel$$=c.$$metamodel$$();
+    if (!c)return String$($qname(atr));
+    c=c.$$metamodel$$;
+    var qn=$qname(c);
+    if (c.$tp) {
+      qn+="<";
+      for (var tp in c.$tp) {
+        var _ta=$$targs$$&&$$targs$$.Container$$targs$$.Container.a&&$$targs$$.Container.a[tp];
+        if (_ta) {
+          qn+=$qname(_ta);
+        } else qn+=$qname(Anything);
+      }
+      qn+=">";
+    }
+    qn+="."+pname;
+    return String$(qn);
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
     return isOfType(o,{t:AppliedAttribute}) && o.string.equals(this.string);
