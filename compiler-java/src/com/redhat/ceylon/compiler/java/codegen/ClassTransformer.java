@@ -261,7 +261,7 @@ public class ClassTransformer extends AbstractTransformer {
             f = STATIC;
         }
         instantiator.modifiers((transformClassDeclFlags(def) & ~FINAL)| f);
-        for (TypeParameter tp : typeParametersForAliasInstantiator(model)) {
+        for (TypeParameter tp : typeParametersOfAllContainers(model, true)) {
             instantiator.typeParameter(tp);
         }
         
@@ -3178,20 +3178,29 @@ public class ClassTransformer extends AbstractTransformer {
         return filtered;
     }
 
-    private java.util.List<TypeParameter> typeParametersForAliasInstantiator(final Class model) {
+    private java.util.List<TypeParameter> typeParametersOfAllContainers(final ClassOrInterface model, boolean includeModelTypeParameters) {
         java.util.List<java.util.List<TypeParameter>> r = new ArrayList<java.util.List<TypeParameter>>(1);
         Scope s = model.getContainer();
         while (!(s instanceof Package)) {
             if (s instanceof Generic) {
-                r.add(((Generic)s).getTypeParameters());
+                r.add(0, ((Generic)s).getTypeParameters());
             }
             s = s.getContainer();
         }
+        Set<String> names = new HashSet<String>();
+        for(TypeParameter tp : model.getTypeParameters()){
+            names.add(tp.getName());
+        }
         java.util.List<TypeParameter> result = new ArrayList<TypeParameter>(1);
         for (java.util.List<TypeParameter> tps : r) {
-            result.addAll(tps);
+            for(TypeParameter tp : tps){
+                if(names.add(tp.getName())){
+                    result.add(tp);
+                }
+            }
         }
-        result.addAll(model.getTypeParameters());
+        if(includeModelTypeParameters)
+            result.addAll(model.getTypeParameters());
         return result;
     }
     
