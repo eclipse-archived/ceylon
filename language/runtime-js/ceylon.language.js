@@ -82,7 +82,7 @@ function inheritProto(type) {
                 if (desc.get) {
                     // defined through getter/setter, so copy the definition
                     Object.defineProperty(proto, name, desc);
-                } else {
+                } else if (proto[name]===undefined || desc.value.$fml===undefined) {
                     proto[name] = desc.value;
                 }
             }
