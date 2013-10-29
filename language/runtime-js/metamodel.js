@@ -16,10 +16,11 @@ function type$meta(x,$$targs$$) {
   if (typeof(mm)==='function') {
     mm=mm(); x.$$metamodel$$=mm;
   }
+  var _t=$$targs$$.Type.t;
   if (mm===undefined) {
     if (x.getT$name && x.getT$all) {
       var mmm=x.getT$all()[x.getT$name()];
-      if (mmm)mm=mmm.$$metamodel$$;
+      if (mmm){mm=mmm.$$metamodel$$;_t=mmm;}
       if (typeof(mm)==='function') {
         mm=mm(); mmm.$$metamodel$$=mm;
       }
@@ -42,7 +43,7 @@ function type$meta(x,$$targs$$) {
     var rt=$retuple($$targs$$.Type);
     c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
   } else {
-    c=(mm.$cont?AppliedMemberClass:AppliedClass)($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+    c=(mm.$cont?AppliedMemberClass:AppliedClass)(_t, {Type:{t:_t}, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   }
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
   return c;
