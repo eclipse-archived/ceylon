@@ -35,8 +35,7 @@ function type$meta(x,$$targs$$) {
       }
       return AppliedFunction(x,{Type:mm.$t,Arguments:{t:Nothing}});
     }
-    console.log("how the hell did a value get here?"+x);
-    return AppliedValue(undefined,mm.$t.t, {Type:mm.$t});
+    return AppliedClass(mm.$t.t, {Type:mm.$t,Arguments:{t:Nothing}});
   }
   var c;
   if ($$targs$$.Type.t==='T') {
