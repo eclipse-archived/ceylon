@@ -17,11 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+import java.lang { ObjectArray, arrays }
+
 @noanno
 void variadicArraysMethods() {
     TypesJava java = TypesJava();
 
-    Array<Object>[] objectArray = {array<Object>("a"), array<Object>("b")};
-    java.variadicObjectArray(objectArray);
+    Iterable<ObjectArray<Object>> objectArray = {arrays.toObjectArray<Object>{"a"}, arrays.toObjectArray<Object>{"b"}};
     java.variadicObjectArray(*objectArray);
 }

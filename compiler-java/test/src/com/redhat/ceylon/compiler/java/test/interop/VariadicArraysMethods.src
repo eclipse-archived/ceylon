@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class variadicArraysMethods_ {
+    
+    private variadicArraysMethods_() {
+    }
+    
+    static void variadicArraysMethods() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .ceylon.language.Iterable<? extends .java.lang.Object[], ? extends .java.lang.Object> objectArray = .ceylon.language.ArraySequence.<.java.lang.Object[]>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.language.arrays_ arg$0$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
+                        .ceylon.language.Iterable arg$0$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")});
+                    }
+                    returning arg$0$callable$.<.java.lang.Object>toObjectArray(arg$0$reified$0, arg$0$0);
+                ),
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.language.arrays_ arg$1$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
+                        .ceylon.language.Iterable arg$1$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("b")});
+                    }
+                    returning arg$1$callable$.<.java.lang.Object>toObjectArray(arg$1$reified$0, arg$1$0);
+                )});
+        java.variadicObjectArray((
+            let
+            {
+                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$2$0 = objectArray.getSequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$2$0, new .java.lang.Object[(int)$ceylontmp$2$0.getSize()][]);
+        ));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.variadicArraysMethods_.variadicArraysMethods();
+    }
+}

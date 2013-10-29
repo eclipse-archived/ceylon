@@ -60,9 +60,7 @@ public class InteropTest extends CompilerTest {
     }
 
     @Test
-    @Ignore("M5")
-    // depends on https://github.com/ceylon/ceylon-spec/issues/420
-    public void testIopVariadicArrays_fail(){
+    public void testIopVariadicArrays(){
         compile("TypesJava.java");
         compareWithJavaSource("VariadicArraysMethods");
     }
