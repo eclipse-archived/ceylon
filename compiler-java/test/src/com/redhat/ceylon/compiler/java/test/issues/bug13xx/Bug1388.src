@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+public final class serveStaticFile_ {
+    
+    private serveStaticFile_() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> serveStaticFile() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$fileMapper$0 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.serveStaticFile_.serveStaticFile$fileMapper();
+            }
+            returning serveStaticFile($ceylontmp$fileMapper$0);
+        );
+    }
+    
+    public static final .ceylon.language.Callable<? extends .ceylon.language.String> serveStaticFile$fileMapper() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance("");
+            }
+        };
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> serveStaticFile(final .ceylon.language.Callable<? extends .ceylon.language.String> fileMapper) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return null;
+            }
+        };
+    }
+}
