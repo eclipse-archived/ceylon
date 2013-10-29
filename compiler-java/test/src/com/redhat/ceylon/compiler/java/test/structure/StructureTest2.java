@@ -391,9 +391,8 @@ public class StructureTest2 extends CompilerTest {
         compareWithJavaSource("concrete/LazySpec");
     }
 
-    @Ignore("M6")
     @Test
-    public void testCncCapturedTypeParam_fail(){
+    public void testCncCapturedTypeParam(){
         compareWithJavaSource("concrete/CapturedTypeParam");
     }
     
