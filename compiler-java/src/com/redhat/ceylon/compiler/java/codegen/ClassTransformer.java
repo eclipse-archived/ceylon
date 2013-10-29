@@ -2586,7 +2586,9 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpression invocation = overloaded.makeInvocation(args);
             Declaration model = overloaded.getModel();// TODO Yuk
             if (!isVoid(model)
-                    || model instanceof Method && !(Decl.isUnboxedVoid(model))
+                    // MPL overloads always return a Callable
+                    || (model instanceof Functional && Decl.isMpl((Functional) model))
+                    || (model instanceof Method && !(Decl.isUnboxedVoid(model)))
                     || (model instanceof Method && Strategy.useBoxedVoid((Method)model)) 
                     || Strategy.generateInstantiator(model) && overloaded instanceof DefaultedArgumentInstantiator) {
                 if (!vars.isEmpty()) {
