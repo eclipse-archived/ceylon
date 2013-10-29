@@ -7,12 +7,10 @@ function _findTypeFromModel(pkg,mdl) {
   if (mt === 'attr' || mt === 'gttr' || mt === 'obj') {
     nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
   }
-  var nm = nm + pkg.suffix;
-  var rv = mod.meta[nm];
-  if (rv === undefined) {
-    rv = mod.meta['$init$'+nm];
-    if (typeof(rv)==='function')return rv();
-  }
+  var nm=nm + pkg.suffix;
+  var rv=mod.meta[nm];
+  if (rv===undefined)rv=mod.meta['$init$'+nm];
+  if (rv===undefined)rv=mod.meta['$'+nm];
   return rv;
 }
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
