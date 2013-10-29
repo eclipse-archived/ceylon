@@ -41,12 +41,45 @@ function validate$params(ps,t,msg) {
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
       //TODO check each parameter
+      for (var i=0;i<ps.length;i++)
+        if (!extendsType(t.l[i],ps[i].$t))throw IncompatibleTypeException$meta$model(msg);
       return;
     }
   } else { //it's already a tuple, navigate it
     console.log("TODO!!!! validate$params with Tuple type");
   }
   throw IncompatibleTypeException$meta$model(msg);
+}
+function validate$typeparams(t,tparms,types) {
+  if (tparms) {
+    if (types===undefined||types.size<1)
+      throw TypeApplicationException$meta$model(String$("Missing type arguments"));
+    var i=0;
+    t.a={};
+    for (var tp in tparms) {
+      var _type=types.$get(i);
+      if (_type===undefined)
+        throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
+      var _tp = tparms[tp];
+      var _ta = _type.tipo;
+      t.a[tp]= ta.t ? ta : {t:_type.tipo};
+      if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
+        var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
+        for (var j=0; j<restraints.length;j++) {
+          if (!extendsType(t.a[tp],restraints[j]))
+            throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
+        }
+      }
+      i++;
+    }
+  }
+}
+function tupleize$params(ps) {
+  if (!ps || ps.length==0)return {t:Empty};
+  var tupa={t:'T',l:[]};
+  for (var i=0; i<ps.length;i++)
+    tupa.l.push(ps[i].$t);
+  return tupa;
 }
 function $qname(mm) {
   if (mm.t) {
