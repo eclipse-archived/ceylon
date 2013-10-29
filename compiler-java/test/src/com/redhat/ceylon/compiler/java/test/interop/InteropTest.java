@@ -286,6 +286,7 @@ public class InteropTest extends CompilerTest {
         );
     }
 
+    @Ignore("Pending resolution of https://github.com/ceylon/ceylon-spec/issues/832")
     @Test
     public void testIopExtendsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
@@ -314,6 +315,7 @@ public class InteropTest extends CompilerTest {
         );
     }
 
+    @Ignore("Pending resolution of https://github.com/ceylon/ceylon-spec/issues/832")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
@@ -327,6 +329,7 @@ public class InteropTest extends CompilerTest {
         );
     }
 
+    @Ignore("Pending resolution of https://github.com/ceylon/ceylon-spec/issues/832")
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
