@@ -178,7 +178,7 @@ defineAttr($$openFunction,'annotation',function(){
           }
         }
         validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of arguments when applying function");
-        return ta?AppliedFunction(this.tipo,$mptypes,undefined,ta):AppliedFunction(this.tipo,$mptypes);
+        return ta?AppliedFunction(this.tipo,{Type:$mptypes.Return,Arguments:tupleize$params(mm.$ps)},undefined,ta):AppliedFunction(this.tipo,{Type:$mptypes.Type,Arguments:tupleize$params(mm.$ps)});
       };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
 
       $$openFunction.memberApply=function memberApply(cont,types,$mptypes){
@@ -209,7 +209,7 @@ defineAttr($$openFunction,'annotation',function(){
             i++;
           }
         }
-        return AppliedMethod(this.tipo,types,$mptypes);
+        return AppliedMethod(this.tipo,types,$mptypes);//TODO tupleize
       };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
@@ -461,7 +461,7 @@ $$openClass.classApply=function(targs,$mptypes) {
   }
   validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
   //TODO this is wrong
-  return this.$apply(targs,$mptypes);
+  return this.$apply(targs,$mptypes);//TODO tupleize
 }
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
@@ -475,7 +475,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
     //TODO generate targs
   }
   validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
-  return AppliedMemberClass(this.tipo,{Container:{t:mm.$cont},Type:_t,Arguments:$mptypes.Arguments});
+  return AppliedMemberClass(this.tipo,{Container:{t:mm.$cont},Type:_t,Arguments:tupleize$params(mm.$ps)});
 }
 
       defineAttr($$openClass,'string',function(){
