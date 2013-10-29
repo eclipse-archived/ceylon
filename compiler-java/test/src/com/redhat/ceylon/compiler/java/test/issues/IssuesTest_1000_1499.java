@@ -747,6 +747,14 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
+    public void testBug1405() {
+        assertErrors("bug14xx/Bug1405",
+                new CompilerError(24, "value type could not be inferred"),
+                new CompilerError(24, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of State that accepts the given argument types")
+        );
+    }
+
+    @Test
     public void testBug1406() {
         compile("bug14xx/Bug1406Java.java");
         compareWithJavaSource("bug14xx/Bug1406");
