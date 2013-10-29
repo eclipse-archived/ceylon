@@ -904,16 +904,9 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder, TypeParameterList typeParameterList) {
         //  Copy all the qualifying type's type parameters into the interface
-        ProducedType type = model.getType().getQualifyingType();
-        while (type != null) {
-            java.util.List<TypeParameter> typeArguments = type.getDeclaration().getTypeParameters();
-            if (typeArguments == null) {
-                continue;
-            }
-            for (TypeParameter typeArgument : typeArguments) {
-                classBuilder.typeParameter(typeArgument, false);
-            }
-            type = type.getQualifyingType();
+        java.util.List<TypeParameter> typeParameters = typeParametersOfAllContainers(model, false);
+        for(TypeParameter tp : typeParameters){
+            classBuilder.typeParameter(tp, false);
         }
         
         classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), null, false));
