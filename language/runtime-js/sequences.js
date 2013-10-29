@@ -29,10 +29,12 @@ exports.Array=Array$;
 function EmptyArray() {
     return [];
 }
+EmptyArray.$$metamodel$$=$init$Empty().$$metamodel$$;
 initTypeProto(EmptyArray, 'ceylon.language::EmptyArray', Array$);
 function ArrayList(items) {
     return items;
 }
+ArrayList.$$metamodel$$=Array$.$$metamodel$$;
 initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, $init$List());
 function ArraySequence(/* js array */value, $$targs$$) {
     value.$seq = true;
@@ -51,34 +53,40 @@ Array$proto.getT$all = function() {
 
 exports.EmptyArray=EmptyArray;
 
-defineAttr(Array$proto, 'size', function(){ return this.length; });
+defineAttr(Array$proto, 'size', function(){ return this.length; },undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$at','size'],$cont:Array$proto,$t:{t:Integer}};});
 defineAttr(Array$proto,'string',function(){
     return (opt$181=(this.empty?String$("[]",2):null),opt$181!==null?opt$181:StringBuilder().appendAll([String$("[",1),commaList(this).string,String$("]",1)]).string);
-});
+},undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string'],$t:{t:String},$cont:Array$proto};});
 Array$proto.set = function(idx,elem) {
     if (idx >= 0 && idx < this.length) {
         this[idx] = elem;
     }
 }
+Array$proto.set.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Array','$m','set'],$t:{t:Anything},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'},{$nm:'element',$mt:'prm',$t:'Element'}]};}
 Array$proto.$get = function(idx) {
     var result = this[idx];
     return result!==undefined ? result:null;
 }
+Array$proto.$get.$$metamodel$$=function(){
+  return{mod:$$METAMODEL$$,d:['ceylon.language','List','$m','get'],$t:{t:'u',l:[{t:Null},'Element']},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'}]};
+}
 defineAttr(Array$proto, 'lastIndex', function() {
     return this.length>0 ? (this.length-1) : null;
-});
+},undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','lastIndex'],$t:{t:'u',l:[{t:Null},{t:Integer}]}};});
 defineAttr(Array$proto, 'reversed', function() {
     if (this.length === 0) { return this; }
     var arr = this.slice(0);
     arr.reverse();
     return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr.reifyCeylonType(this.$$targs$$);
-});
+},undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','reversed'],$t:{t:List,a:{Element:'Element'}}};});
 Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
     return Iterable.$$.prototype.chain.call(this, other, $$$mptypes);
 }
-defineAttr(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; });
-defineAttr(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; });
+defineAttr(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; },
+  undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$at','first'],$t:{t:'u',l:[{t:Null},'Element']}};});
+defineAttr(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; },
+  undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','last'],$t:{t:'u',l:[{t:Null},'Element']}};});
 Array$proto.segment = function(from, len) {
     if (len <= 0) { return getEmpty(); }
     var stop = from + len;
