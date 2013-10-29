@@ -648,7 +648,14 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1345() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1345", "bug13xx/Bug1345.ceylon");
     }
-    
+
+    @Test
+    public void testBug1347() {
+        assertErrors("bug13xx/bug1347/bug1347",
+                new CompilerError(2, "unsupported JDK module version: the only supported version is '7' which you get with Java 7")
+        );
+    }
+
     @Test
     public void testBug1351() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1351", "bug13xx/Bug1351.ceylon");
