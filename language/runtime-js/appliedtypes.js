@@ -811,9 +811,11 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     c=c.$$metamodel$$;
     var qn=$qname(c);
     if (c.$tp) {
-      qn+="<";
+      qn+="<"; var first=true;
+      var cnt=$$targs$$&&$$targs$$.Container&&$$targs$$.Container.a;
       for (var tp in c.$tp) {
-        var _ta=$$targs$$&&$$targs$$.Container$$targs$$.Container.a&&$$targs$$.Container.a[tp];
+        if (first)first=false;else qn+=",";
+        var _ta=cnt&&cnt[tp];
         if (_ta) {
           qn+=$qname(_ta);
         } else qn+=$qname(Anything);
@@ -824,7 +826,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return String$(qn);
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
-    return isOfType(o,{t:AppliedAttribute}) && o.string.equals(this.string);
+    return isOfType(o,{t:AppliedAttribute}) && o.tipo===atr;
   }
   return $$appliedAttribute;
 }
