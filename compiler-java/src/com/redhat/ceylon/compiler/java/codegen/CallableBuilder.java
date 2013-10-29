@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
@@ -357,7 +358,12 @@ public class CallableBuilder {
             ProducedType typeModel,
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        callBuilder.invoke(gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER));
+        JCExpression memberName = gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER);
+        if(value instanceof FieldValue){
+            callBuilder.fieldRead(memberName);
+        }else{
+            callBuilder.invoke(memberName);
+        }
         JCExpression innerInvocation = callBuilder.build();
         innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
         

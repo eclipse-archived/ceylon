@@ -20,7 +20,8 @@ public class CallBuilder {
         NEW,
         ARRAY_READ,
         ARRAY_WRITE,
-        NEW_ARRAY
+        NEW_ARRAY,
+        FIELD_READ
     }
     
     public static final int CB_ALIAS_ARGS = 1<<0;
@@ -83,7 +84,14 @@ public class CallBuilder {
         this.kind = Kind.APPLY;
         return this;
     }
-    
+
+    public CallBuilder fieldRead(JCExpression expr) {
+        this.methodOrClass = expr;
+        this.instantiateQualfier = null;
+        this.kind = Kind.FIELD_READ;
+        return this;
+    }
+
     public CallBuilder instantiate(JCExpression cls) {
         return instantiate(null, cls);
     }
@@ -241,6 +249,9 @@ public class CallBuilder {
                 // must fill it
                 result = gen.makeUtilInvocation("fillArray", List.of(result, arguments.tail.head), null);
             }
+            break;
+        case FIELD_READ:
+            result = this.methodOrClass;
             break;
         
         default:
