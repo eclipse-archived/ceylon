@@ -1720,10 +1720,13 @@ Item item = comp of Item;</programlisting>
             <comment><para>TODO: Should we allow unions in upper bounds? Should we allow 
             intersections in enumerated bounds?</para></comment>
             
-            <para>A single <literal>given</literal> clause may specify multiple constraints
-            on a certain type parameter. For example, it may specify multiple upper bounds
+            <para>A single <literal>given</literal> clause may specify multiple constraints on 
+            a certain type parameter. In particular, it may specify multiple upper bounds
             together with an enumerated bound. If multiple upper bounds are specified, at most
             one upper bound may be a class, and at most one upper bound may be a type parameter.</para>
+            
+            <comment><para>Note: in Ceylon 1.0, a type parameter with multiple upper bounds may 
+            not have an upper bound which is another type parameter.</para></comment>
             
             <programlisting><![CDATA[given Value satisfies Ordinal & Comparable<Value>]]></programlisting>
             
