@@ -482,6 +482,8 @@ public class GenerateJsVisitor extends Visitor
         qualify(ext, aliased);
         out(names.name(aliased), ".$$;");
         endLine();
+        out(names.name(d),".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
         share(d);
     }
 
@@ -522,15 +524,27 @@ public class GenerateJsVisitor extends Visitor
         Scope scope = that.getScope();
         if (scope instanceof InterfaceAlias) {
             scope = scope.getContainer();
-            if (!(scope instanceof ClassOrInterface)) return;
         }
         comment(that);
-        var(d);
-        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel()
-                .getDeclaration();
+        out(function, names.name(d), "(");
+        self(d);
+        if (!d.getTypeParameters().isEmpty())out(",$$targs$$");
+        out(")");
+        beginBlock();
+        ProducedType pt = that.getTypeSpecifier().getType().getTypeModel();
+        TypeDeclaration dec = pt.getDeclaration();
         qualify(that,dec);
-        out(names.name(dec), ";");
+        out(names.name(dec), "(");
+        self(d);
+        if (!pt.getTypeArguments().isEmpty()) {
+            out(",");
+            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this);
+        }
+        out(");");
+        endBlock();
         endLine();
+        out(names.name(d),".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
         share(d);
     }
 
@@ -4701,5 +4715,6 @@ public class GenerateJsVisitor extends Visitor
     @Override public void visit(Tree.CompilerAnnotation that) {
         //just ignore this
     }
+
 }
 
