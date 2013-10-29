@@ -29,6 +29,43 @@ final class bug895_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895_.bug895();
     }
 }
+abstract class Bug895A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug895A() {
+    }
+    
+    public abstract .java.lang.Object f();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895A.class);
+}
+class Bug895B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895A {
+    
+    Bug895B() {
+        super();
+        this.f$specifier$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects2_.get_();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f$specifier$;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f() {
+        return f$specifier$.$call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895B();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895B.class);
+}
 final class bug895SideEffects2_ {
     
     private bug895SideEffects2_() {

@@ -30,3 +30,12 @@ void bug895() {
     Anything() foo1 = bug895SideEffects();
     Anything() foo2 = bug895SideEffects2;
 }
+
+@noanno
+abstract class Bug895A(){
+    shared formal void f();
+}
+@noanno
+class Bug895B() extends Bug895A(){
+    f = bug895SideEffects2;
+}
