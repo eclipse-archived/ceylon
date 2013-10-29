@@ -40,14 +40,16 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
     mm=mm();fun.$$metamodel$$=mm;
   }
   var _t=$$$mptypes.Type;
+  var _a=$$$mptypes.Arguments;
   if (mm) {
     if (mm.$t){
       _t=mm.$t;
       if (!extendsType(_t,$$$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type argument");
     }
-    validate$params(mm.$ps,$$$mptypes.Arguments,"Wrong number of Arguments for getMethod");
+    validate$params(mm.$ps,_a,"Wrong number of Arguments for getMethod");
+    _a=tupleize$params(mm.$ps);
   }
-  return AppliedMethod(fun, types, {Container:{t:this.tipo},Type:_t,Arguments:$$$mptypes.Arguments});
+  return AppliedMethod(fun, types, {Container:{t:this.tipo},Type:_t,Arguments:_a});
 }
 ClassOrInterface$meta$model.$$.prototype.getMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethod']};};
 ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name$15,$$$mptypes){
