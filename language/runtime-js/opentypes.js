@@ -343,14 +343,14 @@ $init$OpenValue();
 function OpenVariable(pkg, meta, $$openVariable){
     $init$OpenVariable();
     if ($$openVariable===undefined)$$openVariable=new OpenVariable.$$;
-    OpenValue(pkg, meta,$$openVariable);
     VariableDeclaration$meta$declaration($$openVariable);
+    OpenValue(pkg, meta,$$openVariable);
     return $$openVariable;
 }
 OpenVariable.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:OpenValue},satisfies:[{t:VariableDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','VariableDeclaration']};};
 function $init$OpenVariable(){
   if (OpenVariable.$$===undefined){
-    initTypeProto(OpenVariable,'ceylon.language.meta.declaration::OpenVariable',OpenValue,VariableDeclaration$meta$declaration);
+    initTypeProto(OpenVariable,'ceylon.language.meta.declaration::OpenVariable',VariableDeclaration$meta$declaration,OpenValue);
     (function($$openVariable){
       $$openVariable.memberSet=function(c,v) {
         if (!isOfType(c,{t:this.tipo.$$metamodel$$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
