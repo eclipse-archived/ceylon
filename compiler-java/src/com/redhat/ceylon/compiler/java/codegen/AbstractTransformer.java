@@ -2879,8 +2879,7 @@ public abstract class AbstractTransformer implements Transformation {
                 return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
             }
             if(methodName == null){
-                log.error("ceylon", "Don't know how to convert sequences of type "+type+" to Java array (This is a compiler bug)");
-                return expr;
+                return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
             }
             return makeUtilInvocation(methodName, initialElements.prepend(expr), null);
         }else{
