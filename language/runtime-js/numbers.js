@@ -2,7 +2,7 @@ function Number$(wat) {
     return wat;
 }
 initType(Number$, 'ceylon.language::Number');
-Number$.$$metamodel$$={$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Number']};
+Number$.$$metamodel$$=function(){return{$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Number']};}
 exports.Number=Number$;
 function $init$Number$() {
     if (Number$.$$===undefined) {
@@ -17,7 +17,7 @@ var toInt = function(float) {
 
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
-JSNumber.$$metamodel$$={$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Number']};
+JSNumber.$$metamodel$$=function(){return{$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Number']};}
 
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, Object$, Scalar, $init$Integral(), Exponentiable);
@@ -30,7 +30,7 @@ function Integer(value) {
 }
 initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
         $init$Integral(), Exponentiable, Binary);
-Integer.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Integer']};
+Integer.$$metamodel$$=function(){return{$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Integer']};}
 
 function Float(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -41,7 +41,7 @@ function Float(value) {
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
-Float.$$metamodel$$={$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Float']};
+Float.$$metamodel$$=function(){return{$an:function(){return[shared(),native(),final()];},mod:$$METAMODEL$$,d:['ceylon.language','Float']};}
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
@@ -157,6 +157,7 @@ defineAttr(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Number','$at','magnitude']});
 
 function $parseFloat(s) { return Float(parseFloat(s)); }
+$parseFloat.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:Null},{t:Float}]},$ps:[{$nm:'string',$t:{t:String$}}],d:['ceylon.language','parseFloat']};}
 
 defineAttr(JSNum$proto, 'undefined', function(){ return isNaN(this); },
   undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Float','$at','undefined']});
@@ -171,7 +172,7 @@ defineAttr(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this=
 
 var $infinity = Float(Infinity);
 function getInfinity() { return $infinity; }
-getInfinity.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','infinity']};
+exports.$prop$getInfinity={get:getInfinity,$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:Float},d:['ceylon.language','infinity']};}};
 //TODO metamodel
 //function getNegativeInfinity() { return Float(-Infinity); }
 
