@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+final class bug1406_ {
+    
+    private bug1406_() {
+    }
+    
+    static void bug1406() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> zero1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.InnerStatic.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.InnerStatic.class)), .ceylon.language.Empty.$TypeDescriptor$), "Integer(Bug1406Java.InnerStatic)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.InnerStatic $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.InnerStatic)$param$0;
+                return .ceylon.language.Integer.instance($instance$.zero);
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> zero2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.Inner.class)), .ceylon.language.Empty.$TypeDescriptor$), "Integer(Bug1406Java.Inner)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.Inner $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.Inner)$param$0;
+                return .ceylon.language.Integer.instance($instance$.zero);
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Float> x1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.class), .ceylon.language.Empty.$TypeDescriptor$), "Float(Bug1406Java)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java)$param$0;
+                return .ceylon.language.Float.instance($instance$.x);
+            }
+        };
+        final double x2 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1406Java.staticX;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1406_.bug1406();
+    }
+}
