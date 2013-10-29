@@ -559,7 +559,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(!classMirror.isInnerClass() && !classMirror.isLocalClass()){
             d.setContainer(pkg);
             pkg.addCompiledMember(d);
-            DeclarationVisitor.setVisibleScope(d);
         }else if(classMirror.isLocalClass()){
             // set its container to the package for now, but don't add it to the package as a member because it's not
             d.setContainer(pkg);
@@ -572,14 +571,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 d.setContainer(container);
                 // let's not trigger lazy-loading
                 ((LazyContainer)container).addMember(d);
-                DeclarationVisitor.setVisibleScope(d);
                 // now we can do overloads
                 if(d instanceof Class && ((Class)d).getOverloads() != null){
                     for(Declaration overload : ((Class)d).getOverloads()){
                         overload.setContainer(container);
                         // let's not trigger lazy-loading
                         ((LazyContainer)container).addMember(d);
-                        DeclarationVisitor.setVisibleScope(overload);
                     }
                 }
             }
@@ -1796,8 +1793,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setAnnotations(method, methodMirror);
         
         klass.getMembers().add(method);
-        DeclarationVisitor.setVisibleScope(method);
-
+        
         return method;
     }
 
@@ -1965,7 +1961,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         setAnnotations(value, fieldMirror);
         klass.getMembers().add(value);
-        DeclarationVisitor.setVisibleScope(value);
     }
     
     private boolean isRaw(Module module, TypeMirror type) {
@@ -2070,7 +2065,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
-        DeclarationVisitor.setVisibleScope(value);
     }
 
     private boolean isUncheckedNull(AnnotatedMirror methodMirror) {
