@@ -8,6 +8,9 @@ function getEqual() { return equal }
 exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
+exports.$prop$getLarger={get:getLarger,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','larger'],$t:{t:Comparison}};}};
+exports.$prop$getSmaller={get:getSmaller,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','smaller'],$t:{t:Comparison}};}};
+exports.$prop$getEqual={get:getEqual,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','equal'],$t:{t:Comparison}};}};
 
 //These are operators for handling nulls
 function exists(value) {

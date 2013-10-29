@@ -9,7 +9,11 @@ exports.addSuppressedException=addSuppressedException;
 function suppressedExceptions(/*Exception*/e) {
     return e.$sups$===undefined?getEmpty():e.$sups$;
 }
+suppressedExceptions.$$metamodel$$=function(){
+  return {mod:$$METAMODEL$$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent:{t:Null},Element:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
+}
 exports.suppressedExceptions=suppressedExceptions;
+
 function $retuple(t) { //receives {t:'T',l:[...]}
   if (t.t!=='T')return t;
   var e;
