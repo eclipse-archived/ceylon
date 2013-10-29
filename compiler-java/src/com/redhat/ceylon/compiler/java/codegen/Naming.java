@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.compiler.loader.model.FieldValue;
 import com.redhat.ceylon.compiler.loader.model.JavaBeanValue;
 import com.redhat.ceylon.compiler.loader.model.JavaMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyClass;
@@ -707,6 +708,9 @@ public class Naming implements LocalId {
     public static String getGetterName(Declaration decl, boolean indirect) {
         // always use the refined decl
         decl = decl.getRefinedDeclaration();
+        if (decl instanceof FieldValue){
+            return ((FieldValue)decl).getRealName();
+        }
         if (decl instanceof JavaBeanValue) {
             return ((JavaBeanValue)decl).getGetterName();
         }
@@ -730,6 +734,9 @@ public class Naming implements LocalId {
             }
         } else {
             decl = refinedDecl;
+        }
+        if (decl instanceof FieldValue){
+            return ((FieldValue)decl).getRealName();
         }
         if (decl instanceof JavaBeanValue
                 // only if the declaration actually has a setter name, if it's a non-variable
