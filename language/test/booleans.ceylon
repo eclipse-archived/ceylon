@@ -46,5 +46,7 @@ shared void booleans() {
     switch (bt)
     case (true) {}
     case (false) { fail("boolean switch"); }*/
-    
+    check(parseBoolean("true") exists, "parseBoolean(true)");
+    check(parseBoolean("false") exists,"parseBoolean(false)");
+    check(!parseBoolean("Yes") exists, "parseBoolean(Yes)");
 }
