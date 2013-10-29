@@ -12,21 +12,36 @@ function type$meta(x,$$targs$$) {
   if (x === null || $$targs$$.Type.t===Nothing) {
     return getNothingType$meta$model();
   }
-  if (x.$$metamodel$$) {
-    //Could be an object (or a callable)
-    if (typeof(x.$$metamodel$$)==='function') {
-      x.$$metamodel$$=x.$$metamodel$$();
+  var mm=x.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm(); x.$$metamodel$$=mm;
+  }
+  if (mm===undefined) {
+    if (x.getT$name && x.getT$all) {
+      var mmm=x.getT$all()[x.getT$name()];
+      if (mmm)mm=mmm.$$metamodel$$;
+      if (typeof(mm)==='function') {
+        mm=mm(); mmm.$$metamodel$$=mm;
+      }
     }
-    if (x.$$metamodel$$.$t) //it's an object
-      return AppliedValue(undefined,x.$$metamodel$$.$t.t, {Type:x.$$metamodel$$.$t});
+  }
+  if (mm===undefined&&x.reifyCeylonType)mm=Array$.$$metamodel$$;
+  if (mm===undefined)throw Error("Cannot retrieve metamodel for " + x);
+  if (mm.$t) { //it's a value
+    if (typeof(x)==='function') { //It's a callable
+      if (mm.$cont) {
+        return AppliedMethod(x,undefined,{Type:mm.$t,Arguments:{t:Nothing}});
+      }
+      return AppliedFunction(x,{Type:mm.$t,Arguments:{t:Nothing}});
+    }
+    console.log("how the hell did a value get here?"+x);
+    return AppliedValue(undefined,mm.$t.t, {Type:mm.$t});
   }
   var c;
   if ($$targs$$.Type.t==='T') {
     var rt=$retuple($$targs$$.Type);
     c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
   } else {
-    var mm=$$targs$$.Type.t.$$metamodel$$;
-    if (typeof(mm)==='function'){mm=mm();$$targs$$.Type.t.$$metamodel$$=mm;}
     c=(mm.$cont?AppliedMemberClass:AppliedClass)($$targs$$.Type.t, {Type:$$targs$$.Type, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   }
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
