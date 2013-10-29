@@ -1388,7 +1388,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         JCExpression containerInstance = null;
         JCExpression ifaceImplType = null;
-        if(!Decl.isToplevel(iface)){
+        if(!Decl.isToplevel(iface) && !Decl.isLocal(iface)){
             // if it's a member type we need to qualify the new instance with its $impl container
             ClassOrInterface interfaceContainer = Decl.getClassOrInterfaceContainer(iface, false);
             if(interfaceContainer instanceof Interface){
