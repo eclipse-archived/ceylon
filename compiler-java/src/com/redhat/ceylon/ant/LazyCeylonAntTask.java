@@ -204,10 +204,6 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
             cmd.createArgument().setValue("--source=" + src.getAbsolutePath());
         }
         
-        for (File res : getResource()) {
-            cmd.createArgument().setValue("--resource=" + res.getAbsolutePath());
-        }
-        
         if (getSystemRepository() != null) {
             cmd.createArgument().setValue("--sysrep=" + getSystemRepository());
         }

@@ -357,6 +357,10 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             appendOptionArgument(cmd, "--javac", javacOption);
         }
         
+        for (File res : getResource()) {
+            cmd.createArgument().setValue("--resource=" + res.getAbsolutePath());
+        }
+        
         if(classpath != null){
             throw new RuntimeException("-classpath not longer supported");
         	/*String path = classpath.toString();
