@@ -8,12 +8,19 @@ class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     c_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.cc_ cc$new$() {
+        return new cc_();
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
     @.com.redhat.ceylon.compiler.java.metadata.Name("cc")
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.class)
-    class cc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public class cc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        cc_() {
+        protected cc_() {
         }
         
         @.java.lang.Override

@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 class \Ic() {
-    class \Icc() {
+    shared class \Icc() {
         
     }
     void m() {
