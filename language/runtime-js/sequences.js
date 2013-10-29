@@ -40,6 +40,7 @@ function ArraySequence(/* js array */value, $$targs$$) {
     this.$$targs$$=$$targs$$;
     return value;
 }
+ArraySequence.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','ArraySequence'],$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element:'Element'}}}],$tp:{Element:{'var':'out'}},satisfies:[{t:Sequence,a:{Element:'Element'}}]};};
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), $init$Sequence());
 Array$proto.getT$name = function() {
     return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;

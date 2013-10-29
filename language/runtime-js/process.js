@@ -30,7 +30,9 @@ defineAttr(lang$proto, 'string', function() {
 var language$ = languageClass();
 function getLanguage() { return language$; }
 exports.getLanguage=getLanguage;
-
+exports.$prop$getLanguage={get:getLanguage,$$metamodel$$:function(){
+  return {mod:$$METAMODEL$$,d:['ceylon.language','language'],$t:{t:languageClass}};
+}};
 function processClass() {
     var proc = new processClass.$$;
     Basic(proc);
@@ -204,7 +206,8 @@ defineAttr(process$proto, 'string', function() {
 var process$ = processClass();
 function getProcess() { return process$; }
 exports.getProcess=getProcess;
-
+exports.$prop$getProcess={get:getProcess,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','process'],$t:{t:processClass}
+}}};
 // system
 
 function systemClass() {
@@ -236,7 +239,9 @@ defineAttr(system$proto, 'string', function() {
 var system$ = systemClass();
 function getSystem() { return system$; }
 exports.getSystem=getSystem;
-
+exports.$prop$getSystem={get:getSystem,$$metamodel$$:function(){return{
+  mod:$$METAMODEL$$,d:['ceylon.language','system'],$t:{t:systemClass}
+};}};
 // runtime
 
 function runtimeClass() {
@@ -281,7 +286,8 @@ defineAttr(runtime$proto, 'string', function() {
 var runtime$ = runtimeClass();
 function getRuntime() { return runtime$; }
 exports.getRuntime=getRuntime;
-
+exports.$prop$getRuntime={get:getRuntime,$$metamodel$$:function(){
+  return{mod:$$METAMODEL$$,d:['ceylon.language','runtime'],$t:{t:runtimeClass}};}};
 // operatingSystem
 
 function operatingSystemClass() {
@@ -316,4 +322,6 @@ defineAttr(operatingSystem$proto, 'string', function() {
 var operatingSystem$ = operatingSystemClass();
 function getOperatingSystem() { return operatingSystem$; }
 exports.getOperatingSystem=getOperatingSystem;
-
+exports.$prop$getOperatingSystem={get:getOperatingSystem,$$metamodel$$:function(){
+  return {mod:$$METAMODEL$$,d:['ceylon.language','operatingSystem'],$t:{t:operatingSystemClass}};
+}};
