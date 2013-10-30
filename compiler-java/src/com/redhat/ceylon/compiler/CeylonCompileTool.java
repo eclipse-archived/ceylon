@@ -54,51 +54,70 @@ import com.sun.tools.javac.util.Options;
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
 @Description("The default module repositories are `modules` and " +
-		"http://modules.ceylon-lang.org, and the default source directory is `source`. " +
+		"http://modules.ceylon-lang.org, while the default source directory is `source`" +
+		"and the default resource directory is `resource`. " +
 		"The default output module repository is `modules`." +
 		"\n\n" +
 		"The `<moduleOrFile>` arguments can be either module names (without versions) " +
 		"or file paths specifying the Ceylon or Java source code to compile." +
 		"\n\n" +
-		"When `<moduleOrFile>` specifies a module the compiler searches for compilation units " +
-		"belonging to the specified " +
-		"modules in the specified source directories. " +
+		"When `<moduleOrFile>` specifies a module the compiler searches for " +
+		"compilation units and resource files belonging to the specified modules " +
+		"in the specified source and resource directories. " +
 		"For each specified module, the compiler generates a module archive, " +
 		"source archive, and their checksum files in the specified output module " +
 		"repository." +
 		"\n\n"+
 		"When `<moduleOrFile>` specifies a source file just that file is compiled and " +
 		"the module archive is created or updated with the .class files produced." +
-		"The source file is " +
-		"treated as relative to the current directory (so any `--src` " +
-		"options are ignored)."+
-		"\n\n"+
+		"The source file path is treated as relative to the current directory " +
+		"(it still needs to be located either in the default source folder or in " +
+		"any folder defined by the configuration file or `--source` options!)."+
+        "\n\n" +
+        "When `<moduleOrFile>` specifies a resource file just that file is added to " +
+        "the module archive. " +
+        "The resource file path is treated as relative to the current directory " +
+        "(it still needs to be located either in the default source folder or in " +
+        "any folder defined by the configuration file or `--source` options!)."+
+        "\n\n" +
         "All program elements imported by a compilation unit must belong to the " +
         "same module as the compilation unit, or must belong to a module that " +
         "is explicitly imported in the module descriptor." +
         "\n\n" +
         "The compiler searches for dependencies in the following locations:" +
-        "\n\n"+
+        "\n\n" +
         "* module archives in the specified repositories,\n"+
         "* source archives in the specified repositories, and\n"+
         "* module directories in the specified source directories.\n")
 @RemainingSections(
-"## Specifying `javac` options\n" +
-"\n"+
-"It is possible to pass options to the `javac` compiler by prefixing them " +
-"with `--javac=` and separating the javac option from its argument (if any) " +
-"using another `=`. For example:\n" +
-"\n" +
-"* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
-"* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`\n" +
-"\n" +
-"Execute `ceylon compile --javac=-help` for a list of the standard javac " +
-"options, and ceylon compile --javac=-X for a list of the non-standard javac " +
-"options.\n" +
-"\n" +
-"**Important note**: There is no guarantee that any particular `javac` " +
-"option or combination of options will work, or continue to work in " +
-"future releases.")
+        "## Configuration file" +
+        "\n\n" +
+        "The compile tool accepts the following options from the Ceylon configuration file: " +
+        "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories`" +
+        "(the equivalent options on the command line always have precedence)." +
+        "## About resources" +
+        "\n\n" +
+        "Duplicate resources (resources with the exact same name and path found in several" +
+        "resource folders at a time) are handled on a first come first serve basis" +
+        "where the order is defined by the order of the `--resource` options on the command" +
+        "line or the order of the `compiler.resource` options in the configuration file." +
+        "\n\n" +
+        "## Specifying `javac` options" +
+        "\n\n" +
+        "It is possible to pass options to the `javac` compiler by prefixing them " +
+        "with `--javac=` and separating the javac option from its argument (if any) " +
+        "using another `=`. For example:" +
+        "\n\n" +
+        "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
+        "* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`" +
+        "\n\n" +
+        "Execute `ceylon compile --javac=-help` for a list of the standard javac " +
+        "options, and ceylon compile --javac=-X for a list of the non-standard javac " +
+        "options." +
+        "\n\n" +
+        "**Important note**: There is no guarantee that any particular `javac` " +
+        "option or combination of options will work, or continue to work in " +
+        "future releases.")
 public class CeylonCompileTool extends RepoUsingTool {
 
     private static final class Helper implements OptionHelper {
