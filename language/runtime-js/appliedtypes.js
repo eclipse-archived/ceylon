@@ -72,8 +72,17 @@ function AppliedMemberClass(tipo,$$targs$$,that){
       that=function(x){
         var rv=tipo.bind(x);
         rv.$$metamodel$$=tipo.$$metamodel$$;
-        rv=AppliedClass(rv,{Type:{t:mm.$cont},Arguments:{t:Nothing}});//TODO Arguments
-        if (that.$targs)rv.$targs=that.$targs;
+        var nt={t:tipo};
+        if (x.$$targs$$) {
+          nt.a={};
+          for (var nta in x.$$targs$$)nt.a[nta]=x.$$targs$$[nta];
+        }
+        if (that.$targs) {
+          if (!nt.a)nt.a={};
+          for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
+        }
+        rv=AppliedClass(rv,{Type:nt,Arguments:{t:Sequential,a:{Element:{t:Anything},Absent:{t:Null}}}});//TODO generate metamodel for Arguments
+        if (nt.a)rv.$targs=nt.a;
         return rv;
       }
       var dummy = new AppliedMemberClass.$$;
