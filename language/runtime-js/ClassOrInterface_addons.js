@@ -20,7 +20,9 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
     }
     for (var i=0; i < ints.length; i++) {
       var ifc = resolveTypeArguments(this,ints[i]);
-      rv.push(AppliedInterface(ifc.t, {Type:ifc}));
+      var mm=ifc.t.$$metamodel$$;
+      if (typeof(mm)==='function'){mm=mm();ifc.t.$$metamodel$$=mm;}
+      rv.push((mm.$cont?AppliedMemberInterface:AppliedInterface)(ifc.t, {Type:ifc}));
     }
     return rv.reifyCeylonType({Absent:{t:Null},Element:{t:InterfaceModel$meta$model,a:{Type:{t:Anything}}}});
   }
@@ -260,7 +262,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
     mm = mm();
     sc.t.$$metamodel$$=mm;
   }
-  var ac=AppliedClass(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+  var ac=(mm.$cont?AppliedMemberClass:AppliedClass)(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
   if (sc.a)ac.$targs=sc.a;
   return ac;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});

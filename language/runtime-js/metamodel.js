@@ -74,6 +74,7 @@ function typeLiteral$meta($$targs$$) {
       }
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
+        //TODO tupleize Arguments
         var r=AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
         if ($$targs$$.Type.a)r.$targs=$$targs$$.Type.a;
         return r;

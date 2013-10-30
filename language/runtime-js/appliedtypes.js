@@ -28,6 +28,12 @@ function AppliedClass(tipo,$$targs$$,that){
       defineAttr(that,'string',function(){
         return String$($qname(mm));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+      defineAttr(that,'extendedType',function(){
+        return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
+      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
+      defineAttr(that,'satisfiedTypes',function(){
+        return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
+      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
       defineAttr(that,'declaration',function(){
         return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
       },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);
@@ -97,6 +103,12 @@ function AppliedMemberClass(tipo,$$targs$$,that){
       defineAttr(that,'parameterTypes',function(){
         return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
       },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
+      defineAttr(that,'extendedType',function(){
+        return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
+      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
+      defineAttr(that,'satisfiedTypes',function(){
+        return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
+      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
       defineAttr(that,'declaration',function(){
         return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
       },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);

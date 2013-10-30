@@ -203,8 +203,8 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
     }
     if (t1.t==='T') {
       if (t2.t==='T') {
-        if (t1.l.length===t2.l.length) {
-          for (var i=0; i < t1.l.length;i++) {
+        if (t1.l.length>=t2.l.length) {
+          for (var i=0; i < t2.l.length;i++) {
             if (!extendsType(t1.l[i],t2.l[i]))return false;
           }
           return true;
