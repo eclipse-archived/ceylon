@@ -151,34 +151,12 @@ defineAttr($$openFunction,'annotation',function(){
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
 
       $$openFunction.$apply=function $apply(types,$mptypes){
-        if (typeof(this.tipo.$$metamodel$$)==='function') {
-          this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
-        }
         var mm=this.tipo.$$metamodel$$;
-        var tps=mm.$tp;
-        var ta;
-        if (tps) {
-          if (types===undefined)
-            throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
-          ta={}; var i=0;
-          for (var tp in tps) {
-            if (types[i]===undefined)
-              throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
-            var _tp = tps[tp];
-            var _t = types[i].tipo;
-            ta[tp]={t:_t};
-            if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
-              var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
-              for (var j=0; j<restraints.length;j++) {
-                if (!extendsType(ta[tp],restraints[j]))
-                  throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
-              }
-            }
-            i++;
-          }
-        }
+        var ta={t:this.tipo};
+        validate$typeparams(ta,mm.$tp,types);
         validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of arguments when applying function");
-        return ta?AppliedFunction(this.tipo,{Type:$mptypes.Return,Arguments:tupleize$params(mm.$ps)},undefined,ta):AppliedFunction(this.tipo,{Type:$mptypes.Type,Arguments:tupleize$params(mm.$ps)});
+        return ta.a?AppliedFunction(this.tipo,{Type:mm.$t,Arguments:tupleize$params(mm.$ps,ta.a)},undefined,ta.a):
+          AppliedFunction(this.tipo,{Type:mm.$t,Arguments:tupleize$params(mm.$ps)});
       };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
 
       $$openFunction.memberApply=function memberApply(cont,types,$mptypes){
@@ -187,29 +165,9 @@ defineAttr($$openFunction,'annotation',function(){
           throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
         if (!extendsType(mm.$t,$mptypes.Return))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
         validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for memberApply");
-        var tps=mm.$tp;
-        var ta;
-        if (tps) {
-          if (types===undefined)
-            throw TypeApplicationException$meta$model(String$("Missing type arguments in call to "+this.string+".memberApply"));
-          ta={}; var i=0;
-          for (var tp in tps) {
-            var _t=types.$get(i);
-            if (_t===undefined)
-              throw TypeApplicationException$meta$model(String$("Missing type argument for "+this.string+"<"+ tp+">"));
-            var _tp = tps[tp];
-            ta[tp]={t:_t.tipo};
-            if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
-              var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
-              for (var j=0; j<restraints.length;j++) {
-                if (!extendsType(ta[tp],restraints[j]))
-                  throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
-              }
-            }
-            i++;
-          }
-        }
-        return AppliedMethod(this.tipo,types,$mptypes);//TODO tupleize
+        var ta={t:this.tipo};
+        validate$typeparams(ta,mm.$tp,types);
+        return AppliedMethod(this.tipo,types,{Container:$mptypes.Container,Type:mm.$t,Arguments:tupleize$params(mm.$ps,ta.a)});
       };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
@@ -470,12 +428,11 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
   if (!extendsType({t:this.tipo},$mptypes.Type))
     throw IncompatibleTypeException$meta$model("Incompatible Type specified");
   var _t={t:this.tipo};
-  if (mm.$tp) {
-    if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
-    //TODO generate targs
-  }
+  validate$typeparams(_t,mm.$tp,targs);
   validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
-  return AppliedMemberClass(this.tipo,{Container:{t:mm.$cont},Type:_t,Arguments:tupleize$params(mm.$ps)});
+  var rv=AppliedMemberClass(this.tipo,{Container:{t:mm.$cont},Type:_t,Arguments:tupleize$params(mm.$ps)});
+  if (_t.a)rv.$targs=_t.a;
+  return rv;
 }
 
       defineAttr($$openClass,'string',function(){
@@ -610,11 +567,10 @@ $$openInterface.memberInterfaceApply=function(cont,targs,$mptypes){
   if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
     throw IncompatibleTypeException$meta$model("Incompatible Container specified");
   var _t={t:this.tipo};
-  if (mm.$tp) {
-    if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
-    //TODO generate targs
-  }
-  return AppliedMemberInterface(this.tipo,{Container:{t:mm.$cont},Type:_t});
+  validate$typeparams(_t,mm.$tp,targs);
+  var rv=AppliedMemberInterface(this.tipo,{Container:{t:mm.$cont},Type:_t});
+  if (_t.a)rv.$targs=_t.a;
+  return rv;
 }
 $$openInterface.interfaceApply=function(targs,$mptypes) {
   return this.$apply(targs,$mptypes);
