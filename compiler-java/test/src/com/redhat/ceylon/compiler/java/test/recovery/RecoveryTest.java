@@ -19,7 +19,19 @@
  */
 package com.redhat.ceylon.compiler.java.test.recovery;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
+import java.util.TreeSet;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
@@ -32,7 +44,10 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
 public class RecoveryTest extends CompilerTest {
     
@@ -97,6 +112,122 @@ public class RecoveryTest extends CompilerTest {
             }
         }
         return errors;
+    }
+
+    @Test
+    public void testDuplicateInDefault() throws IOException {
+        String subPath = "modules/duplicateInDefault";
+        String srcPath = getPackagePath()+subPath;
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(srcPath);
+        options.addAll(defaultOptions);
+        options.add("-continue");
+        ErrorCollector c = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                c,
+                Arrays.asList("okmodule"),
+                subPath + "/dupdeclerr1.ceylon",
+                subPath + "/dupdeclerr2.ceylon",
+                subPath + "/someok.ceylon");
+        Boolean ret = task.call();
+        assertFalse(ret);
+
+        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors,
+//                new CompilerError(21, "cannot find module artifact notfound-1(.car|.jar)\n  \t- dependency tree: okmodule/1.0.0 -> notfound/1"),
+                new CompilerError(20, "duplicate declaration name: run"));
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("foobar_.class");
+        assertNotNull(moduleClass);
+        car.close();
+
+        carFile = getModuleArchive("okmodule", "1.0.0");
+        assertTrue(carFile.exists());
+
+        car = new JarFile(carFile);
+
+        moduleClass = car.getEntry("okmodule/module_.class");
+        assertNotNull(moduleClass);
+        car.close();
+    }
+
+    @Test
+    public void testMissingImport() throws IOException {
+        String subPath = "modules/missingImport";
+        String srcPath = getPackagePath()+subPath;
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(srcPath);
+        options.addAll(defaultOptions);
+        options.add("-continue");
+        ErrorCollector c = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                c,
+                Arrays.asList("okmodule"),
+                subPath + "/someok.ceylon");
+        Boolean ret = task.call();
+        assertFalse(ret);
+
+        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors,
+                new CompilerError(21, "cannot find module artifact notfound-1(.car|.jar)\n  \t- dependency tree: okmodule/1.0.0 -> notfound/1"));
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("foobar_.class");
+        assertNotNull(moduleClass);
+        car.close();
+
+        carFile = getModuleArchive("okmodule", "1.0.0");
+        assertFalse(carFile.exists());
+    }
+
+    @Test
+    public void testSyntaxErrorInModule() throws IOException {
+        String subPath = "modules/syntaxErrorInModule";
+        String srcPath = getPackagePath()+subPath;
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(srcPath);
+        options.addAll(defaultOptions);
+        options.add("-continue");
+        ErrorCollector c = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                c,
+                Arrays.asList("okmodule"),
+                subPath + "/someok.ceylon");
+        Boolean ret = task.call();
+        assertFalse(ret);
+
+        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors,
+                new CompilerError(-1, "incorrect syntax: no viable alternative at token end of file"),
+                new CompilerError(20, "incorrect syntax: mismatched token 'ERROR' expecting initial-lowercase identifier"),
+                new CompilerError(20, "incorrect syntax: no viable alternative at token '\"1.0.0\"'"),
+                new CompilerError(20, "incorrect syntax: no viable alternative at token 'okmodule'"),
+                new CompilerError(21, "incorrect syntax: no viable alternative at token '}'")
+        );
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("foobar_.class");
+        assertNotNull(moduleClass);
+        car.close();
+
+        carFile = getModuleArchive("okmodule", "1.0.0");
+        assertFalse(carFile.exists());
     }
 
 }

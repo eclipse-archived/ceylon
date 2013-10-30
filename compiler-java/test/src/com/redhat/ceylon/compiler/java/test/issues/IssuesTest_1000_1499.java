@@ -19,20 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
-import javax.tools.Diagnostic;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -41,7 +29,6 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
-import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
 
 public class IssuesTest_1000_1499 extends CompilerTest {
@@ -562,48 +549,6 @@ public class IssuesTest_1000_1499 extends CompilerTest {
         compile("bug13xx/bug1315/bug1315_2.ceylon");
     }
     
-    @Test
-    public void testBug1316() throws IOException {
-        String subPath = "bug13xx/bug1316/source";
-        String srcPath = getPackagePath()+subPath;
-        List<String> options = new LinkedList<String>();
-        options.add("-src");
-        options.add(srcPath);
-        options.addAll(defaultOptions);
-        options.add("-continue");
-        ErrorCollector c = new ErrorCollector();
-        CeyloncTaskImpl task = getCompilerTask(options, 
-                c,
-                Arrays.asList("okmodule"),
-                subPath + "/dupdeclerr.ceylon",
-                subPath + "/someok.ceylon");
-        Boolean ret = task.call();
-        assertFalse(ret);
-
-        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
-        compareErrors(actualErrors,
-                new CompilerError(-1, "Duplicate declaration error: run_ is declared twice: once in RegularFileObject[test/src/com/redhat/ceylon/compiler/java/test/issues/bug13xx/bug1316/source/dupdeclerr.ceylon] and again in: another file"),
-                new CompilerError(22, "duplicate declaration name: run"));
-        
-        File carFile = getModuleArchive("default", null);
-        assertTrue(carFile.exists());
-
-        JarFile car = new JarFile(carFile);
-
-        ZipEntry moduleClass = car.getEntry("foobar_.class");
-        assertNotNull(moduleClass);
-        car.close();
-
-        carFile = getModuleArchive("okmodule", "1.0.0");
-        assertTrue(carFile.exists());
-
-        car = new JarFile(carFile);
-
-        moduleClass = car.getEntry("okmodule/module_.class");
-        assertNotNull(moduleClass);
-        car.close();
-    }
-
     @Test
     public void testBug1328() {
         compareWithJavaSource("bug13xx/Bug1328");

@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared void run() {
-}
-shared void run() {
+module okmodule "1.0.0" {
+    import notfound "1";
 }
