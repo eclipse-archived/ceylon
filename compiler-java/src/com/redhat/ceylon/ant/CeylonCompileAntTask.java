@@ -201,7 +201,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
                                 mtime = entry.getTime();
                             }
                         }
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         // Maybe something's wrong with the CAR so let's return MIN_VALUE
                         mtime = Long.MIN_VALUE;
                     } finally {
@@ -247,7 +247,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
                                 }
                             }
                         }
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         // Ignore
                     } finally {
                         if (jarFile != null) {
@@ -275,7 +275,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
                                 return entry.getTime();
                             }
                         }
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         // Ignore
                     } finally {
                         if (jarFile != null) {
@@ -306,7 +306,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
                                 inputStream.close();
                             }
                         }
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         // Ignore
                     } finally {
                         if (jarFile != null) {
