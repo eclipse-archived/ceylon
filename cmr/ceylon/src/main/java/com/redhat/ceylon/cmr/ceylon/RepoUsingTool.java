@@ -155,7 +155,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             query.setBinaryMajor(binaryMajor);
         }
         if (binaryMinor != null) {
-            query.setBinaryMajor(binaryMinor);
+            query.setBinaryMinor(binaryMinor);
         }
         ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
