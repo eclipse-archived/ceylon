@@ -35,8 +35,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -73,6 +76,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -126,6 +130,7 @@ public class LanguageCompiler extends JavaCompiler {
     private boolean treatLikelyBugsAsErrors = false;
     private Set<Module> modulesLoadedFromSource = new HashSet<Module>();
     private List<JavaFileObject> resourceFileObjects;
+    private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -465,6 +470,14 @@ public class LanguageCompiler extends JavaCompiler {
              */
             Package pkg = modelLoader.findOrCreateModulelessPackage(packageName);
             loadModuleFromSource(pkg, modules, moduleTrees, trees);
+        }
+        for(PhasedUnit phasedUnit : phasedUnits.getPhasedUnits()){
+            for(Tree.ModuleDescriptor modDescr : phasedUnit.getCompilationUnit().getModuleDescriptors()){
+                String name = phasedUnit.getPackage().getNameAsString();
+                CeylonPhasedUnit cpu = (CeylonPhasedUnit) phasedUnit;
+                CeylonFileObject cfo = (CeylonFileObject) cpu.getFileObject();
+                moduleNamesToFileObjects .put(name, cfo);
+            }
         }
     }
 
