@@ -165,6 +165,7 @@ public class CeylonRunTool extends RepoUsingTool {
                 ModuleUtil.moduleVersion(moduleNameOptVersion),
                 ModuleQuery.Type.JVM,
                 Versions.JVM_BINARY_MAJOR_VERSION,
+                Versions.JVM_BINARY_MINOR_VERSION,
                 compileFlags);
         if (version == null) {
             return;
