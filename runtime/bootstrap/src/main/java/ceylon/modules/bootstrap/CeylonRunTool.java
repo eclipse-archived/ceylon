@@ -103,6 +103,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
     @Override
     public void run() throws IOException {
+        setSystemProperties();
         ArrayList<String> argList = new ArrayList<String>();
 
         String ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
