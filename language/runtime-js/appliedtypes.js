@@ -49,35 +49,8 @@ function $init$AppliedClass(){
       $$clase.$apply=function(a){
         var mdl=get_model(this.tipo.$$metamodel$$);
         if (mdl&&mdl.$mt==='obj')throw InvocationException$meta$model("Cannot instantiate anonymous class");
-        var ps = this.tipo.$$metamodel$$.$ps;
-        if (ps===undefined || ps.length===0){
-          if (a && a.size>0)
-            throw InvocationException$meta$model(String$("Wrong number of arguments (should be 0)"));
-          return this._targs?this.tipo(_targs) : this.tipo();
-        }
-        if (a===undefined)a=[];
-        if (a.size!=ps.length || ps[ps.length-1].seq) {
-          var fa=[];
-          var sarg;
-          for (var i=0; i<ps.length;i++) { //check def/seq params
-            var p=ps[i];
-            if (a[i]===undefined) {
-              if (p.$def||p.seq)fa.push(undefined);
-              else {
-                throw InvocationException$meta$model(String$("Wrong number of arguments (should be " + ps.length + ")"));
-              }
-            } else if (sarg) {
-              sarg.push(a[i]);
-            } else if (p.seq) {
-              sarg=[]; fa.push(sarg);
-              for (var j=i; j<a.size;j++)sarg.push(a[j]);
-            } else {
-              fa.push(a[i]);
-            }
-          }
-          a = fa;
-        }
-        if (this.tipo._targs)a.push(this.tipo._targs);
+        a=convert$params(this.tipo.$$metamodel$$.$ps,a);
+        if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);
       };$$clase.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Class','$m','apply'],$t:'Type'};};
 
@@ -524,6 +497,7 @@ defineAttr(f,'declaration',function(){
   return f._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
   f.$apply=function(a){
+    a=convert$params(mm.$ps,a);
     if (ttargs) {
       var _a=[];
       for (var i=0;i<a.size;i++)_a.push(a.$get(i));
