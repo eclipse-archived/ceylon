@@ -118,7 +118,7 @@ public final class JarUtils {
                     mtime = entry.getTime();
                 }
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             mtime = Long.MIN_VALUE;
         } finally {
             if (jarFile != null) {
