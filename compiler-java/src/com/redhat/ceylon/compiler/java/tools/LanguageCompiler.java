@@ -570,14 +570,27 @@ public class LanguageCompiler extends JavaCompiler {
                     return phasedUnit.getPackage().getModule();
                 }
             }
-            CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) parse(fileObject);
-            moduleTrees.add(ceylonCompilationUnit);
-            // parse the module info from there
-            Module module = ceylonCompilationUnit.phasedUnit.visitSrcModulePhase();
-            ceylonCompilationUnit.phasedUnit.visitRemainingModulePhase();
-            // now try to obtain the parsed module
+            JCCompilationUnit javaCompilationUnit = parse(fileObject);
+            Module module;
+            if(javaCompilationUnit instanceof CeylonCompilationUnit){
+                CeylonCompilationUnit ceylonCompilationUnit = (CeylonCompilationUnit) javaCompilationUnit;
+                moduleTrees.add(ceylonCompilationUnit);
+                // parse the module info from there
+                module = ceylonCompilationUnit.phasedUnit.visitSrcModulePhase();
+                ceylonCompilationUnit.phasedUnit.visitRemainingModulePhase();
+                // now set the module
+                if(module != null){
+                    ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
+                }
+            }else{
+                // there was a syntax error in the module descriptor, make a pretend module so that we can
+                // correctly mark all declarations as part of that module, but we won't generate any code
+                // for it
+                ModuleManager moduleManager = phasedUnits.getModuleManager();
+                module = moduleManager.getOrCreateModule(Arrays.asList(pkgName.split("\\.")), "bogus");
+            }
+            // now remember it
             if(module != null){
-                ceylonCompilationUnit.phasedUnit.getPackage().setModule(module);
                 modulesLoadedFromSource.add(module);
                 return module;
             }
