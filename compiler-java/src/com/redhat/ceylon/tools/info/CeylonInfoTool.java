@@ -16,6 +16,7 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.tools.ModuleSpec;
@@ -25,14 +26,18 @@ import com.redhat.ceylon.tools.ModuleSpec;
 		"its description, its licence, and its dependencies")
 public class CeylonInfoTool extends RepoUsingTool {
 
-    // TODO filter by backend (.car only, js only)
-    // TODO machine readable output (JSON, or dot, or ceylon, gephi)
-    
     private static final int INFINITE_DEPTH = -1; 
     
     private List<ModuleSpec> modules;
-    
+    private boolean showVersions;
+    private boolean showDependencies;
+    private boolean showIncompatible;
+    private String showType;
     private int depth = 1;
+    
+    private Integer binaryMajor = null;
+    private Integer binaryMinor = null;
+    private ModuleQuery.Type queryType = ModuleQuery.Type.ALL;
     
     public CeylonInfoTool() {
         super(CeylonInfoMessages.RESOURCE_BUNDLE);
@@ -45,6 +50,32 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     public void setModuleSpecs(List<ModuleSpec> modules) {
         this.modules = modules;
+    }
+    
+    @Option(longName="show-versions")
+    @Description("Show the versions when searching for modules")
+    public void setShowVersions(boolean showVersions) {
+        this.showVersions = showVersions;
+    }
+    
+    @Option(longName="show-dependencies")
+    @Description("Show the dependencies whenever versions are shown")
+    public void setShowDependencies(boolean showDependencies) {
+        this.showDependencies = showDependencies;
+    }
+    
+    @Option(longName="show-incompatible")
+    @Description("Also show versions incompatible with the current Ceylon installation")
+    public void setShowIncompatible(boolean showIncompatible) {
+        this.showIncompatible = showIncompatible;
+    }
+    
+    @Option
+    @OptionArgument(argumentName = "type")
+    @Description("The artifact ypes to show information for. " +
+            "Allowed values include: `all`, `jvm`, `js`, `src` (default is `all`).")
+    public void setShowType(String showType) {
+        this.showType = showType;
     }
     
     @Description("The depth of the dependency tree to show, or `all` for the full tree. " +
@@ -67,17 +98,35 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @Override
     public void run() throws Exception {
+        if (!showIncompatible) {
+            binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
+            binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
+        }
+        if (showType != null) {
+            if ("jvm".equalsIgnoreCase(showType)) {
+                queryType = ModuleQuery.Type.JVM;
+            } else if ("js".equalsIgnoreCase(showType)) {
+                queryType = ModuleQuery.Type.JS;
+            } else if ("src".equalsIgnoreCase(showType)) {
+                queryType = ModuleQuery.Type.SRC;
+            } else if ("all".equalsIgnoreCase(showType)) {
+                queryType = ModuleQuery.Type.ALL;
+            } else {
+                errorMsg("illegal.type", showType);
+                return;
+            }
+        }
         for (ModuleSpec module : modules) {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
-                Collection<ModuleDetails> modules = getModules(name, ModuleQuery.Type.ALL, null, null);
+                Collection<ModuleDetails> modules = getModules(name, queryType, binaryMajor, binaryMinor);
                 if (modules.isEmpty()) {
                     errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
                     continue;
                 }
                 outputModules(module, modules);
             } else {
-                Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null);
+                Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), queryType, binaryMajor, binaryMinor);
                 if (versions.isEmpty()) {
                     errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
                     continue;
@@ -124,24 +173,29 @@ public class CeylonInfoTool extends RepoUsingTool {
         msg("module.query").append(query.getName()).newline();
         for (ModuleDetails module : modules) {
             append("    ").append(module.getName()).newline();
-            for (ModuleVersionDetails version : module.getVersions()) {
-                append("        ").append(version.getVersion());
-                if (version.isRemote()) {
-                    append(" *");
-                }
-                newline();
+            if (showVersions) {
+                outputVersions(module.getVersions(), "        ");
             }
         }
     }
 
     private void outputVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
         msg("version.query").append(module.getName()).newline();
+        outputVersions(versions, "    ");
+    }
+
+    private void outputVersions(Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
         for (ModuleVersionDetails version : versions) {
-            append("    ").append(version.getVersion());
+            append(prefix).append(version.getVersion());
             if (version.isRemote()) {
                 append(" *");
             }
             newline();
+            if (showDependencies) {
+                for (ModuleInfo dep : version.getDependencies()) {
+                    append(prefix).append("    ").append(dep).newline();
+                }
+            }
         }
     }
 
@@ -230,7 +284,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         
         if (depth < this.depth) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), ModuleQuery.Type.ALL, null);
+            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, binaryMajor, binaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), depth + 1);
             }
