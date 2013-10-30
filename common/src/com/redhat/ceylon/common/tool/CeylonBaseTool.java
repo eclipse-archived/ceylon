@@ -1,10 +1,12 @@
 package com.redhat.ceylon.common.tool;
 
 import java.io.File;
+import java.util.List;
 
 public abstract class CeylonBaseTool implements Tool {
     protected File cwd;
     public String verbose;
+    protected List<String> defines;
 
     public File getCwd() {
         return cwd;
@@ -29,6 +31,25 @@ public abstract class CeylonBaseTool implements Tool {
             "Allowed flags include: `all`, `loader`.")
     public void setVerbose(String verbose) {
         this.verbose = verbose;
+    }
+    
+    @OptionArgument(shortName='D', argumentName = "key>=<value")
+    @Description("Set a system property")
+    public void setDefine(List<String> defines) {
+        this.defines = defines;
+    }
+    
+    protected void setSystemProperties() {
+        if (defines != null) {
+            for (String prop : defines) {
+                int p = prop.indexOf('=');
+                if (p > 0) {
+                    String key = prop.substring(0, p);
+                    String val = prop.substring(p + 1);
+                    System.setProperty(key, val);
+                }
+            }
+        }
     }
 
 }
