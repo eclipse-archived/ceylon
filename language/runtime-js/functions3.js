@@ -94,3 +94,33 @@ function $qname(mm) {
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
   return qn;
 }
+function convert$params(ps,a) { //ps comes from metamodel.$ps, a is list of params
+  if (ps===undefined || ps.length===0){
+    if (a && a.size>0)
+      throw InvocationException$meta$model(String$("Passing parameters to no-args callable"));
+    return [];
+  }
+  if (a===undefined)a=[];
+  if (a.size!=ps.length || ps[ps.length-1].seq) {
+    var fa=[];
+    var sarg;
+    for (var i=0; i<ps.length;i++) { //check def/seq params
+      var p=ps[i];
+      if (a[i]===undefined) {
+        if (p.$def||p.seq)fa.push(undefined);
+        else {
+          throw InvocationException$meta$model(String$("Wrong number of arguments (should be " + ps.length + ")"));
+        }
+      } else if (sarg) {
+        sarg.push(a[i]);
+      } else if (p.seq) {
+        sarg=[]; fa.push(sarg);
+        for (var j=i; j<a.size;j++)sarg.push(a[j]);
+      } else {
+        fa.push(a[i]);
+      }
+    }
+    a = fa;
+  }
+  return a;
+}
