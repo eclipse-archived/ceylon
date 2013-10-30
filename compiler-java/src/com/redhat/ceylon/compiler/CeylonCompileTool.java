@@ -381,22 +381,29 @@ public class CeylonCompileTool extends RepoUsingTool {
         
         JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
         
-        for (String moduleSpec : this.module) {
+        for (String moduleOrFile : this.module) {
             if (sourceFileOpt != null) {
-                validateWithJavac(options, sourceFileOpt, moduleSpec, moduleSpec, "argument.error");
+                validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
             }
-            if (moduleSpec.endsWith(Constants.CEYLON_SUFFIX)) {
-                // It's a single source file instead of a module name, so let's check
-                // if it's really located in one of the defined source folders
-                File sourceFile = new File(moduleSpec);
-                if (sourceFile.isFile()) {
-                    if (LanguageCompiler.getSrcDir(this.source, sourceFile) == null) {
+            File file = new File(moduleOrFile);
+            if (file.isFile()) {
+                // It's a single (re)source file instead of a module name, so let's check
+                // if it's really located in one of the defined (re)source folders
+                if (moduleOrFile.endsWith(Constants.CEYLON_SUFFIX)
+                        || moduleOrFile.endsWith(Constants.JAVA_SUFFIX)
+                        || moduleOrFile.endsWith(Constants.JS_SUFFIX)) {
+                    if (LanguageCompiler.getSrcDir(this.source, file) == null) {
                         String srcPath = this.source.toString();
-                        throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleSpec, srcPath));
+                        throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
+                    }
+                } else {
+                    if (LanguageCompiler.getSrcDir(this.resource, file) == null) {
+                        String resrcPath = this.resource.toString();
+                        throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
                 }
             }
-            arguments.add(moduleSpec);
+            arguments.add(moduleOrFile);
         }
         
         if (verbose != null) {
