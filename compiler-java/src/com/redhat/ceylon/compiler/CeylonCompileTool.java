@@ -164,10 +164,10 @@ public class CeylonCompileTool extends RepoUsingTool {
     
     private static final Helper HELPER = new Helper();
 
-    private List<File> source = DefaultToolOptions.getCompilerSourceDirs();
-    private List<File> resource = DefaultToolOptions.getCompilerResourceDirs();
+    private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
+    private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
     private String out;
-    private List<String> module = Collections.emptyList();
+    private List<String> modulesOrFiles = Collections.emptyList();
     private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
     private String user;
@@ -185,7 +185,7 @@ public class CeylonCompileTool extends RepoUsingTool {
             "paths separated by your operating system's `PATH` separator." +
             " (default: `./source`)")
     public void setSrc(List<File> source) {
-        this.source = source;
+        this.sources = source;
     }
     
     @OptionArgument(longName="source", argumentName="dirs")
@@ -203,7 +203,7 @@ public class CeylonCompileTool extends RepoUsingTool {
             "paths separated by your operating system's `PATH` separator." +
             " (default: `./resource`)")
     public void setResource(List<File> resource) {
-        this.resource = resource;
+        this.resources = resource;
     }
     
     @Hidden
@@ -245,7 +245,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     // multiplicity=* because of --javac=-help and --javac=-Xhelp are allowed 
     // on their own
     public void setModule(List<String> moduleOrFile) {
-        this.module = moduleOrFile;
+        this.modulesOrFiles = moduleOrFile;
     }
     
     @Option
@@ -291,20 +291,20 @@ public class CeylonCompileTool extends RepoUsingTool {
         compiler = new Main("ceylon compile");
         Options options = Options.instance(new Context());
         
-        if (module.isEmpty() &&
+        if (modulesOrFiles.isEmpty() &&
                 !javac.contains("-help") &&
                 !javac.contains("-X") &&
                 !javac.contains("-version")) {
             throw new IllegalStateException("Argument moduleOrFile should appear at least 1 time(s)");
         }
         arguments = new ArrayList<>();
-        for (File source : this.source) {
+        for (File source : this.sources) {
             arguments.add("-src");
             arguments.add(source.getPath());
             options.addMulti(OptionName.SOURCEPATH, source.getPath());
         }
         
-        for (File resource : this.resource) {
+        for (File resource : this.resources) {
             arguments.add("-res");
             arguments.add(resource.getPath());
             //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
@@ -381,7 +381,7 @@ public class CeylonCompileTool extends RepoUsingTool {
         
         JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
         
-        for (String moduleOrFile : this.module) {
+        for (String moduleOrFile : this.modulesOrFiles) {
             if (sourceFileOpt != null) {
                 validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
             }
@@ -392,13 +392,13 @@ public class CeylonCompileTool extends RepoUsingTool {
                 if (moduleOrFile.endsWith(Constants.CEYLON_SUFFIX)
                         || moduleOrFile.endsWith(Constants.JAVA_SUFFIX)
                         || moduleOrFile.endsWith(Constants.JS_SUFFIX)) {
-                    if (LanguageCompiler.getSrcDir(this.source, file) == null) {
-                        String srcPath = this.source.toString();
+                    if (LanguageCompiler.getSrcDir(this.sources, file) == null) {
+                        String srcPath = this.sources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
                 } else {
-                    if (LanguageCompiler.getSrcDir(this.resource, file) == null) {
-                        String resrcPath = this.resource.toString();
+                    if (LanguageCompiler.getSrcDir(this.resources, file) == null) {
+                        String resrcPath = this.resources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
                 }
