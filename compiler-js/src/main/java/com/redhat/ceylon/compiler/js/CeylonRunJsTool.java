@@ -19,7 +19,6 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -353,7 +352,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         
         version = checkModuleVersionsOrShowSuggestions(
                 repoman, modname, version, ModuleQuery.Type.JS,
-                Versions.JS_BINARY_MAJOR_VERSION, compileFlags);
+                Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION, compileFlags);
         if (version == null) {
             return;
         }
