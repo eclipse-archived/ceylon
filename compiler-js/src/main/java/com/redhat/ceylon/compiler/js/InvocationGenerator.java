@@ -494,10 +494,10 @@ public class InvocationGenerator {
                 _m = (Method)((Tree.MemberOrTypeExpression)term).getDeclaration();
             }
         } else if (term instanceof Tree.InvocationExpression) {
-            gen.getTypeUtils().encodeTupleAsParameterListForRuntime(term.getTypeModel(), gen);
+            TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(term.getTypeModel(), gen);
             return;
         } else {
-            gen.out("/*WARNING Callable EXPR of type ", term.getClass().getName(), "*/");
+            gen.out("/*WARNING4 Callable EXPR of type ", term.getClass().getName(), "*/");
         }
         if (_m == null) {
             gen.out("[]");
