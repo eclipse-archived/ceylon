@@ -6,6 +6,8 @@ public abstract class Constants {
     }
 
     public static final String CEYLON_SUFFIX = ".ceylon";
+    public static final String JAVA_SUFFIX = ".java";
+    public static final String JS_SUFFIX = ".js";
 
     public static final String ENV_CEYLON_HOME_DIR = "CEYLON_HOME";
 
