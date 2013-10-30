@@ -74,11 +74,14 @@ function validate$typeparams(t,tparms,types) {
     }
   }
 }
-function tupleize$params(ps) {
+function tupleize$params(ps,aux) {
   if (!ps || ps.length==0)return {t:Empty};
   var tupa={t:'T',l:[]};
-  for (var i=0; i<ps.length;i++)
-    tupa.l.push(ps[i].$t);
+  for (var i=0; i<ps.length;i++){
+    var e=ps[i].$t;
+    if (typeof(e)==='string'&&aux&&aux[e])e=aux[e];
+    tupa.l.push(e);
+  }
   return tupa;
 }
 function $qname(mm) {
