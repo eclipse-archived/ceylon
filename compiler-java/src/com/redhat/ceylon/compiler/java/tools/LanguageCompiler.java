@@ -729,8 +729,27 @@ public class LanguageCompiler extends JavaCompiler {
         CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
         try {
             // do not look at the global number of errors but only those for this file
-            if (super.gen.genClass(env, cdef) && sourcefile.errors == 0)
+            if (super.gen.genClass(env, cdef) && sourcefile.errors == 0){
+                String packageName = cdef.sym.packge().getQualifiedName().toString();
+                Package pkg = modelLoader.findPackage(packageName);
+                if(pkg == null)
+                    throw new RuntimeException("Failed to find package: "+packageName);
+                Module module = pkg.getModule();
+                if(!module.isDefault()){
+                    String moduleName = module.getNameAsString();
+                    CeylonFileObject moduleFileObject = moduleNamesToFileObjects.get(moduleName);
+                    // if there's no module source file object it means the module descriptor had parse errors
+                    if(moduleFileObject == null || moduleFileObject.errors > 0){
+                        // we do not produce any class files for modules with errors
+                        if(options.get(OptionName.VERBOSE) != null){
+                            Log.printLines(log.noticeWriter, "[Not writing class "+cdef.sym.className()
+                                    +" because its module has errors: "+moduleName+"]");
+                        }
+                        return null;
+                    }
+                }
                 return writer.writeClass(cdef.sym);
+            }
         } catch (ClassWriter.PoolOverflow ex) {
             log.error(cdef.pos(), "limit.pool");
         } catch (ClassWriter.StringOverflow ex) {
