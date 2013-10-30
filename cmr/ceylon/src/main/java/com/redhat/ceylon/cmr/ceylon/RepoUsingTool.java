@@ -10,7 +10,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
@@ -146,29 +145,32 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return rm;
     }
     
-    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, Integer binaryVersion) {
-        return getModuleVersions(getRepositoryManager(), name, version, type, binaryVersion);
+    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        return getModuleVersions(getRepositoryManager(), name, version, type, binaryMajor, binaryMinor);
     }
 
-    protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) {
+    protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
         ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
-        if (binaryVersion != null) {
-            query.setBinaryMajor(binaryVersion);
+        if (binaryMajor != null) {
+            query.setBinaryMajor(binaryMajor);
+        }
+        if (binaryMinor != null) {
+            query.setBinaryMajor(binaryMinor);
         }
         ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
         return versionMap.values();
     }
 
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion) throws IOException {
-        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryVersion, COMPILE_NEVER);
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
+        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, binaryMajor, binaryMinor, COMPILE_NEVER);
     }
     
     protected static final String COMPILE_NEVER = "never";
     protected static final String COMPILE_ONCE = "once";
     protected static final String COMPILE_FORCE = "force";
     
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryVersion, String compileFlags) throws IOException {
+    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor, String compileFlags) throws IOException {
         if (compileFlags == null) {
             compileFlags = DefaultToolOptions.getRunnerCompileFlags();
             if (compileFlags.isEmpty()) {
@@ -197,7 +199,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
         
         boolean suggested = false;
-        Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryVersion);
+        Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryMajor, binaryMinor);
         if (version != null) {
             // Here we either have a single version or none
             if (versions.isEmpty() || forceCompilation || shouldRecompile(checkCompilation, repoMgr, name, version, type)) {
@@ -215,7 +217,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 if (versions.isEmpty()) {
                     // Maybe the user specified the wrong version?
                     // Let's see if we can find any and suggest them
-                    versions = getModuleVersions(repoMgr, name, null, type, binaryVersion);
+                    versions = getModuleVersions(repoMgr, name, null, type, binaryMajor, binaryMinor);
                     suggested = true;
                 }
             }
