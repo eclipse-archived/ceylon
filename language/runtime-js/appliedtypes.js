@@ -483,14 +483,14 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
       i++;
     }
   }
-  var f = o===undefined?function(x){
+  var f = o===undefined&&mm.$cont?function(x){
     return AppliedFunction(m,$$targs$$,x,mptypes);
   }:function(){
-    var _fu=o[mm.d[mm.d.length-1]]||m;//Get the object's method if possible
+    var _fu=(o&&o[mm.d[mm.d.length-1]])||m;//Get the object's method if possible
     if (mm.$tp) {
       var _a=[];
       for (var i=0;i<arguments.length;i++)_a.push(arguments[i]);
-      _a.push(ttargs);//AQUI
+      _a.push(ttargs);
       return _fu.apply(o,_a);
     }
     return _fu.apply(o,arguments);
@@ -501,10 +501,8 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   f.getT$name=function(){return dummy.getT$name();}
   if ($$targs$$===undefined) {
     throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
-  } else {
-    f.$$targs$$=$$targs$$;
   }
-  Function$meta$model(f,$$targs$$);
+  Function$meta$model($$targs$$,f);
   f.tipo=m;
   f.$targs=ttargs;
   if (o)f.$bound=o;
@@ -579,7 +577,7 @@ AppliedValue.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic}
 exports.AppliedValue$meta$model=AppliedValue;
 function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
-    initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model,Attribute$meta$model);
+    initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model);
     (function($$appliedValue){
 defineAttr($$appliedValue,'string',function(){
   return String$($qname(this.tipo));
