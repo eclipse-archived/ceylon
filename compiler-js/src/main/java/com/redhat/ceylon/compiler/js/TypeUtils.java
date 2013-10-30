@@ -375,12 +375,12 @@ public class TypeUtils {
             }
         }
         if (!_callable.getProducedTypeQualifiedName().contains("ceylon.language::Callable<")) {
-            gen.out("[/*WARNING: got ", _callable.getProducedTypeQualifiedName(), " instead of Callable*/]");
+            gen.out("[/*WARNING1: got ", _callable.getProducedTypeQualifiedName(), " instead of Callable*/]");
             return;
         }
         List<ProducedType> targs = _callable.getTypeArgumentList();
         if (targs == null || targs.size() != 2) {
-            gen.out("[/*WARNING: missing argument types for Callable*/]");
+            gen.out("[/*WARNING2: missing argument types for Callable*/]");
             return;
         }
         ProducedType _tuple = targs.get(1);
@@ -412,7 +412,7 @@ public class TypeUtils {
                 _tuple = empty.getType();
             }
             else {
-                gen.out("\n/*WARNING! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
+                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
                 if (pos > 100) {
                     return;
                 }
@@ -480,7 +480,8 @@ public class TypeUtils {
         gen.out("]");
     }
 
-    static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen, final RuntimeMetamodelAnnotationGenerator annGen) {
+    static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
+            final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$$METAMODEL$$");
         List<TypeParameter> tparms = d instanceof TypeDeclaration ? ((TypeDeclaration)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
@@ -636,7 +637,9 @@ public class TypeUtils {
         }
     }
 
-    /** Appends an object with the type's type and list of union/intersection types. */
+    /** Appends an object with the type's type and list of union/intersection types; works only with union,
+     * intersection and tuple types.
+     * @return true if output was generated, false otherwise (it was a regular type) */
     static boolean outputMetamodelTypeList(final com.redhat.ceylon.compiler.typechecker.model.Package pkg,
             ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
@@ -772,12 +775,30 @@ public class TypeUtils {
 
     private static List<ProducedType> getTupleTypes(ProducedType pt) {
         final ArrayList<ProducedType> ts=new ArrayList<>();
-        List<ProducedType> targs = pt.getTypeArgumentList();
-        while (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Tuple")) {
-            ts.add(targs.get(1));
-            pt = targs.get(2);
-            targs = pt.getTypeArgumentList();
-        }
+        do {
+            if (pt.getProducedTypeQualifiedName().equals("ceylon.language::Empty")) {
+                pt = null;
+            } else {
+                String tname=pt.getProducedTypeQualifiedName();
+                if (tname.startsWith("ceylon.language::Tuple")) {
+                    ts.add(pt.getTypeArgumentList().get(1));
+                    pt = pt.getTypeArgumentList().get(2);
+                } else if (tname.startsWith("ceylon.language::Sequen")) {
+                    ts.add(pt);
+                    pt = null;
+                } else if (pt.getDeclaration() instanceof UnionType) {
+                    for (ProducedType ct : pt.getCaseTypes()) {
+                        if (ct.getProducedTypeQualifiedName().startsWith("ceylon.language::Tuple")) {
+                            ts.add(pt);
+                            pt=null;
+                            break;
+                        }
+                    }
+                } else { //just cut it short
+                    pt = null;
+                }
+            }
+        } while (pt != null);
         return ts;
     }
 
