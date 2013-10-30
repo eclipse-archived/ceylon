@@ -125,6 +125,7 @@ public class CeylonImportJarTool extends CeylonBaseTool {
     
     @PostConstruct
     public void init() {
+        setSystemProperties();
         if(jarFile == null || jarFile.isEmpty())
             throw new ImportJarException("error.jarFile.empty");
         File f = new File(jarFile);

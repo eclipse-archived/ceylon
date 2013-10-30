@@ -183,6 +183,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     
     @PostConstruct
     public void init() {
+        setSystemProperties();
         if (!allPlumbing && !allPorcelain && (tools == null || tools.isEmpty())) {
             throw new IllegalStateException("No tools to process");
         }

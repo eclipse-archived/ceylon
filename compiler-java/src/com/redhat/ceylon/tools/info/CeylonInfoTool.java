@@ -83,7 +83,6 @@ public class CeylonInfoTool extends RepoUsingTool {
         this.showIncompatible = showIncompatible;
     }
     
-    @Option
     @OptionArgument(argumentName = "type")
     @Description("The artifact ypes to show information for. " +
             "Allowed values include: `all`, `jvm`, `js`, `src` (default is `all`).")
@@ -111,6 +110,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @Override
     public void run() throws Exception {
+        setSystemProperties();
         if (!showIncompatible) {
             binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
             binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;

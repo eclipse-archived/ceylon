@@ -288,6 +288,7 @@ public class CeylonCompileTool extends RepoUsingTool {
     
     @PostConstruct
     public void init() {
+        setSystemProperties();
         compiler = new Main("ceylon compile");
         Options options = Options.instance(new Context());
         

@@ -267,6 +267,7 @@ public class CeylonDocTool extends RepoUsingTool {
 
     @PostConstruct
     public void init() {
+        setSystemProperties();
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){
             builder.addSrcDirectory(src);

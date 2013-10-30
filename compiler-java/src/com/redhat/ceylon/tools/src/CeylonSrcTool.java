@@ -74,6 +74,7 @@ public class CeylonSrcTool extends RepoUsingTool {
     
     @Override
     public void run() throws Exception {
+        setSystemProperties();
         // First check if all the arguments point to source archives
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
