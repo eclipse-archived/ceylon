@@ -356,9 +356,58 @@ public class TypeUtils {
         gen.out("]");
     }
 
-    /** This method encodes the type parameters of a Tuple (taken from a Callable) in the same way
+    /** This method encodes the type parameters of a Tuple in the same way
      * as a parameter list for runtime. */
-    void encodeTupleAsParameterListForRuntime(ProducedType _callable, GenerateJsVisitor gen) {
+    private static void encodeTupleAsParameterListForRuntime(ProducedType _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
+        gen.out("[");
+        int pos = 1;
+        TypeDeclaration tdecl = _tuple.getDeclaration();
+        while (!(gen.getTypeUtils().empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
+            if (pos > 1) gen.out(",");
+            gen.out("{");
+            pos++;
+            if (nameAndMetatype) {
+                gen.out(MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos), "',");
+                gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
+            }
+            gen.out(MetamodelGenerator.KEY_TYPE, ":");
+            if (gen.getTypeUtils().tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
+                    && tdecl.getCaseTypeDeclarations().size()==2
+                    && tdecl.getCaseTypeDeclarations().contains(gen.getTypeUtils().tuple))) {
+                if (gen.getTypeUtils().tuple.equals(tdecl)) {
+                    metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
+                    _tuple = _tuple.getTypeArgumentList().get(2);
+                } else {
+                    //Handle union types for defaulted parameters
+                    for (ProducedType mt : _tuple.getCaseTypes()) {
+                        if (gen.getTypeUtils().tuple.equals(mt.getDeclaration())) {
+                            metamodelTypeNameOrList(gen.getCurrentPackage(), mt.getTypeArgumentList().get(1), gen);
+                            _tuple = mt.getTypeArgumentList().get(2);
+                            break;
+                        }
+                    }
+                    gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
+                }
+            } else if (tdecl.inherits(gen.getTypeUtils().sequential)) {
+                //Handle Sequence, for nonempty variadic parameters
+                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
+                gen.out(",seq:1");
+                _tuple = gen.getTypeUtils().empty.getType();
+            }
+            else {
+                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
+                if (pos > 100) {
+                    return;
+                }
+            }
+            gen.out("}");
+            if (_tuple != null) tdecl = _tuple.getDeclaration();
+        }
+        gen.out("]");
+    }
+    /** This method encodes the Arguments type argument of a Callable the same way
+     * as a parameter list for runtime. */
+    static void encodeCallableArgumentsAsParameterListForRuntime(ProducedType _callable, GenerateJsVisitor gen) {
         if (_callable.getCaseTypes() != null) {
             for (ProducedType pt : _callable.getCaseTypes()) {
                 if (pt.getProducedTypeQualifiedName().startsWith("ceylon.language::Callable<")) {
@@ -383,44 +432,7 @@ public class TypeUtils {
             gen.out("[/*WARNING2: missing argument types for Callable*/]");
             return;
         }
-        ProducedType _tuple = targs.get(1);
-        gen.out("[");
-        int pos = 1;
-        TypeDeclaration tdecl = _tuple.getDeclaration();
-        while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
-            if (pos > 1) gen.out(",");
-            gen.out("{", MetamodelGenerator.KEY_NAME, ":'p", Integer.toString(pos++), "',");
-            gen.out(MetamodelGenerator.KEY_METATYPE, ":'", MetamodelGenerator.METATYPE_PARAMETER, "',");
-            gen.out(MetamodelGenerator.KEY_TYPE, ":");
-            if (tuple.equals(tdecl) || tdecl.getCaseTypeDeclarations() != null && tdecl.getCaseTypeDeclarations().contains(tuple)) {
-                if (tuple.equals(tdecl)) {
-                    metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(1), gen);
-                    _tuple = _tuple.getTypeArgumentList().get(2);
-                } else {
-                    //Handle union types for defaulted parameters
-                    outputMetamodelTypeList(gen.getCurrentPackage(), _tuple, gen);
-                    for (ProducedType mt : _tuple.getCaseTypes()) {
-                        if (tuple.equals(mt.getDeclaration())) {
-                            _tuple = mt.getTypeArgumentList().get(2);
-                            break;
-                        }
-                    }
-                }
-            } else if (tdecl.inherits(sequential)) {
-                //Handle Sequence, for nonempty variadic parameters
-                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
-                _tuple = empty.getType();
-            }
-            else {
-                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
-                if (pos > 100) {
-                    return;
-                }
-            }
-            gen.out("}");
-            if (_tuple != null) tdecl = _tuple.getDeclaration();
-        }
-        gen.out("]");
+        encodeTupleAsParameterListForRuntime(targs.get(1), true, gen);
     }
 
     static void encodeForRuntime(Node that, final Declaration d, final GenerateJsVisitor gen) {
@@ -648,11 +660,22 @@ public class TypeUtils {
             gen.out("{t:'i");
             subs = type.getSatisfiedTypes();
         } else if (type instanceof UnionType) {
+            //It still could be a Tuple with first optional type
+            List<TypeDeclaration> cts = type.getCaseTypeDeclarations();
+            if (cts.size()==2 && cts.contains(gen.getTypeUtils().empty) && cts.contains(gen.getTypeUtils().tuple)) {
+                //yup...
+                gen.out("{t:'T',l:");
+                encodeTupleAsParameterListForRuntime(pt,false,gen);
+                gen.out("}");
+                return true;
+            }
             gen.out("{t:'u");
             subs = type.getCaseTypes();
         } else if (type.getQualifiedNameString().equals("ceylon.language::Tuple")) {
-            gen.out("{t:'T");
-            subs = getTupleTypes(pt);
+            gen.out("{t:'T',l:");
+            encodeTupleAsParameterListForRuntime(pt,false, gen);
+            gen.out("}");
+            return true;
         } else {
             return false;
         }
