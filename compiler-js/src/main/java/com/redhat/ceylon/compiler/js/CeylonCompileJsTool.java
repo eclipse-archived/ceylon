@@ -204,6 +204,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
 
     @Override
     public void run() throws Exception {
+        setSystemProperties();
         final Options opts = new Options()
                 .cwd(cwd)
                 .repos(getRepos())
