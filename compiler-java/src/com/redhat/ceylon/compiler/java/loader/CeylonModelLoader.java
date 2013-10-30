@@ -141,14 +141,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     try{
                         reader.enterClass(names.fromString(fqn), tree.getSourceFile());
                     }catch(AssertionError error){
-                        // this happens when we have already registered a source file for this decl, so let's
-                        // print out a helpful message
-                        // see https://github.com/ceylon/ceylon-compiler/issues/250
-                        // we can pass null here since it's ignored
-                        ClassMirror previousClass = lookupNewClassMirror(null, fqn);
-                        log.error("ceylon", "Duplicate declaration error: "+fqn+" is declared twice: once in "
-                                +tree.getSourceFile()+" and again in: "+
-                                (previousClass != null ? ((JavacClass)previousClass).classSymbol.classfile : "another file"));
+                        // this happens when we have already registered a source file for this decl, hopefully the typechecker
+                        // will catch this and log an error
                     }
                 }
             });
