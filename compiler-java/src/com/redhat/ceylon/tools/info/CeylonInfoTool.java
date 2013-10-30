@@ -21,9 +21,22 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.tools.ModuleSpec;
 
-@Summary("Prints information about a module")
-@Description("Prints information about the contents of a module archive, " +
-		"its description, its licence, and its dependencies")
+@Summary("Prints information about modules in repositories")
+@Description("When passed a search query like `*foo*` it will look at all the modules in all " +
+        "repositories and see if the word `foo` appears anywhere in the name, description, " +
+        "version, license or any other field in the module's desciptor and print their names. " +
+        "\n\n" +
+        "When passed a partial module name like `com.acme.foo*` it will look at all the " +
+        "modules in all the repositoriues and see if their names start with `com.acme.foo` " +
+        "and print their names." +
+        "\n\n" +
+        "When passed a complete module name like `com.acme.foobar` it will print the list " +
+        "of available versions for that module. Versions marked with `*` are not currently " +
+        "available on the local system but can be downloaded on-demand from remote servers." +
+        "\n\n" +
+        "When passed a complete module name and version like `com.acme.foobar/1.0` it will " +
+        "print information about the contents of a module archive, its description, its licence " +
+        "and its dependencies")
 public class CeylonInfoTool extends RepoUsingTool {
 
     private static final int INFINITE_DEPTH = -1; 
