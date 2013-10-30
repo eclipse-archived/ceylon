@@ -412,10 +412,6 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private void var(Declaration d) {
-        out("var ", names.name(d), "=");
-    }
-
     private boolean share(Declaration d) {
         return share(d, true);
     }
@@ -1857,7 +1853,7 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     //Type of value must be Callable
                     //And the Args Type Parameters is a Tuple
-                    types.encodeTupleAsParameterListForRuntime(expr.getExpression().getTypeModel(), this);
+                    TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(expr.getExpression().getTypeModel(), this);
                 }
                 out(",");
                 TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
