@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.loader;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -54,11 +53,9 @@ public class TestModuleManager {
         }
         lmreader.close();
         lmwriter.close();
-        ArrayList<String> args = new ArrayList<String>();
-        args.addAll(Arrays.asList("src/test/resources/loader/pass1/m1/test.ceylon",
-                "-rep", "build/test/test_modules", "-out", "build/test/test_modules",
-                "-src", "src/test/resources/loader/pass1"));
-        options = Options.parse(args);
+        options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
+                .addSrc("src/test/resources/loader/pass1/m1/test.ceylon")
+                .addSrc("src/test/resources/loader/pass1");
         repoman = CeylonUtils.repoManager()
                 .cwd(options.getCwd())
                 .systemRepo(options.getSystemRepo())

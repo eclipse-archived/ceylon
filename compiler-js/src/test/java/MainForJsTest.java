@@ -3,8 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -25,9 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class MainForJsTest {
     
     public static void main(String[] args) throws Exception {
-        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
-                "-rep", "build/runtime",
-                "-out", "build/test/modules")));
+        final Options opts = new Options().addRepo("build/runtime").outDir("build/test/modules");
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .cwd(opts.getCwd())
                 .systemRepo(opts.getSystemRepo())
@@ -56,9 +52,7 @@ public class MainForJsTest {
             System.out.println("Skipping output validation.");
         }
         System.out.println("Compiling with optimization");
-        opts = Options.parse(new ArrayList<String>(Arrays.asList("-optimize", "-out",
-                "build/test/opt_modules")));
-        jsc = new JsCompiler(typeChecker, opts).stopOnErrors(false);
+        jsc = new JsCompiler(typeChecker, opts.optimize(true).outDir("build/test/opt_modules")).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
         } else {

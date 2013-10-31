@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -22,11 +20,8 @@ public class TestMultipackages {
 
     @BeforeClass
     public static void sharedSetup() {
-        ArrayList<String> args = new ArrayList<String>();
-        args.addAll(Arrays.asList("multi/1.0.0",
-                "-rep", "build/test/test_modules", "-out", "build/test/test_modules",
-                "-src", "src/test/resources/loader"));
-        Options options = Options.parse(args);
+        Options options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
+                .addSrc("multi/1.0.0").addSrc("src/test/resources/loader");
         repoman = CeylonUtils.repoManager()
                 .cwd(options.getCwd())
                 .systemRepo(options.getSystemRepo())
@@ -44,11 +39,8 @@ public class TestMultipackages {
         tcb.setRepositoryManager(repoman);
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
-        ArrayList<String> args = new ArrayList<String>();
-        args.addAll(Arrays.asList(
-                "-rep", "build/test/test_modules", "-out", "build/test/test_modules",
-                "-src", "src/test/resources/multi/pass1"));
-        Options options = Options.parse(args);
+        Options options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
+                .addSrc("src/test/resources/multi/pass1");
         JsCompiler compiler = new JsCompiler(tc, options);
         compiler.stopOnErrors(false);
         compiler.generate();
@@ -64,11 +56,8 @@ public class TestMultipackages {
         tcb.setRepositoryManager(repoman);
         TypeChecker tc = tcb.getTypeChecker();
         tc.process();
-        ArrayList<String> args = new ArrayList<String>();
-        args.addAll(Arrays.asList(
-                "-rep", "build/test/test_modules", "-out", "build/test/test_modules",
-                "-src", "src/test/resources/multi/pass2", "-verbose"));
-        Options options = Options.parse(args);
+        Options options = new Options().addRepo("build/test/test_modules").outDir("build/test/test_modules")
+                .addSrc("src/test/resources/multi/pass2").verbose("");
         JsCompiler compiler = new JsCompiler(tc, options);
         compiler.stopOnErrors(false);
         compiler.generate();
