@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.java.tools.LanguageCompiler.CompilerDelegate;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
@@ -415,6 +416,7 @@ public class CeylonEnter extends Enter {
         if(modulesAddedToClassPath.add(module)){
             if(artifact != null && artifact.exists()){
                 classPath.add(artifact);
+                ((LazyModule)module).loadPackageList(result);
             }else if(errorIfMissing){
                 log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
             }
