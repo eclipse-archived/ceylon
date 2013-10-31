@@ -1549,7 +1549,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
                     addValue(klass, methodMirror, "string", isCeylon);
-                } else {
+                } else if(!methodMirror.getName().equals("hash")
+                        && !methodMirror.getName().equals("string")){
                     // normal method
                     Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
                     if (isOverloaded) {
@@ -1579,14 +1580,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             String name = fieldMirror.getName();
             // skip the field if "we've already got one"
-            boolean requireFieldPrefix = klass.getDirectMember(name, null, false) != null
+            boolean conflicts = klass.getDirectMember(name, null, false) != null
                     || "equals".equals(name)
                     || "string".equals(name)
                     || "hash".equals(name);
-            if (!requireFieldPrefix) {
+            if (!conflicts) {
                 addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon);
-            }else{
-                addValue(klass, fieldMirror.getName()+"_field", fieldMirror, isCeylon);
             }
         }
 
