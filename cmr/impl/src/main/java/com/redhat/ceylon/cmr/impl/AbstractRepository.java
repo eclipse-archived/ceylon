@@ -517,34 +517,34 @@ public abstract class AbstractRepository implements Repository {
                 continue;
             // is it a module? does it contains artifacts?
             ret.foundRightType = false;
-            if (hasChildrenContainingAnyArtifact(child, query, ret)) {
-                // does it contain an artifact of the type we're looking for?
-                if (ret.foundRightType) {
-                    // check if we were already done but were checking for a next results
-                    if (ret.stopSearching) {
-                        // we already found enough results but were checking if there
-                        // were more results to be found for paging, so record that
-                        // and stop
-                        result.setHasMoreResults(true);
-                        throw new GetOut();
-                    }
-                    if (query.getStart() == null || ret.found++ >= query.getStart()) {
-                        // are we interested in this result or did we need to skip it?
-                        String moduleName = toModuleName(child);
-                        addSearchResult(result, moduleName, child, query.getType());
-                        // stop if we're done searching
-                        if (query.getStart() != null
-                                && query.getCount() != null
-                                && ret.found >= query.getStart() + query.getCount()) {
-                            // we're done, but we want to see if there's at least one more result
-                            // to be found so we can tell clients there's a next page
-                            ret.stopSearching = true;
+            if (!child.getLabel().equals(ArtifactContext.DOCS)) { // safety check
+                if (hasChildrenContainingAnyArtifact(child, query, ret)) {
+                    // does it contain an artifact of the type we're looking for?
+                    if (ret.foundRightType) {
+                        // check if we were already done but were checking for a next results
+                        if (ret.stopSearching) {
+                            // we already found enough results but were checking if there
+                            // were more results to be found for paging, so record that
+                            // and stop
+                            result.setHasMoreResults(true);
+                            throw new GetOut();
+                        }
+                        if (query.getStart() == null || ret.found++ >= query.getStart()) {
+                            // are we interested in this result or did we need to skip it?
+                            String moduleName = toModuleName(child);
+                            addSearchResult(result, moduleName, child, query.getType());
+                            // stop if we're done searching
+                            if (query.getStart() != null
+                                    && query.getCount() != null
+                                    && ret.found >= query.getStart() + query.getCount()) {
+                                // we're done, but we want to see if there's at least one more result
+                                // to be found so we can tell clients there's a next page
+                                ret.stopSearching = true;
+                            }
                         }
                     }
-                }
-            } else {
-                // it doesn't contain artifacts, it's probably leading to modules
-                if (!child.getLabel().equals(ArtifactContext.DOCS)) { // safety check
+                } else {
+                    // it doesn't contain artifacts, it's probably leading to modules
                     searchModules(child, query, result, ret);
                 }
             }
