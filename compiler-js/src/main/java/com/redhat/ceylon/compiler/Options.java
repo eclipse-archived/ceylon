@@ -31,6 +31,7 @@ public class Options {
     private boolean version;
     private boolean stdin;
     private boolean gensrc = true;
+    private boolean offline;
     private String encoding = System.getProperty("file.encoding");
 
     /** Find all the repos specified in the argument list (pairs of "-rep x").
@@ -123,6 +124,14 @@ public class Options {
 
     public Options systemRepo(String systemRepo) {
         this.systemRepo = systemRepo;
+        return this;
+    }
+
+    public boolean getOffline() {
+        return offline;
+    }
+    public Options offline(boolean flag) {
+        offline=flag;
         return this;
     }
 
