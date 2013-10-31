@@ -11,7 +11,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minidev.json.JSONObject;
@@ -68,9 +67,8 @@ public class Stitcher {
         final File tmpout = new File(tmpdir, Constants.DEFAULT_MODULE_DIR);
         tmpout.mkdir();
         tmpout.deleteOnExit();
-        Options opts = Options.parse(new ArrayList<String>(Arrays.asList(
-                "-rep", "build/runtime", "-nocomments", "-optimize",
-                "-out", tmpout.getAbsolutePath(), "-nomodule")));
+        final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
+                .outDir(tmpout.getAbsolutePath()).modulify(false);
 
         //Typecheck the whole language module
         System.out.println("Compiling language module from Ceylon source");
