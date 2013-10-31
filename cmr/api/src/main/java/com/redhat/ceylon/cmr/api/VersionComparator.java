@@ -118,4 +118,16 @@ public class VersionComparator implements Comparator<String>{
             return -1;
         return 1;
     }
+
+    /**
+     * Returns versionA and versionB ordered
+     */
+    public static String[] orderVersions(String versionA, String versionB) {
+        if(VersionComparator.compareVersions(versionA, versionB) > 0){
+            String permute = versionA;
+            versionA = versionB;
+            versionB = permute;
+        }
+        return new String[]{ versionA, versionB };
+    }
 }
