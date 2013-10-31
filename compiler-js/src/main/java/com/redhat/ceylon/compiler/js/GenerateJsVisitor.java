@@ -2305,6 +2305,13 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
+        if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
+            //it's a static method ref
+            out("function(x){return ");
+            that.getPrimary().visit(this);
+            out(".$$.prototype.", (name == null) ? memberAccess(that, "") :name,".bind(x);}");
+            return;
+        }
         String primaryVar = createRetainedTempVar("opt");
         out("(", primaryVar, "=");
         that.getPrimary().visit(this);
