@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +42,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     private String out = DefaultToolOptions.getCompilerOutDir().getPath();
     private String encoding;
 
-    private List<File> src = DefaultToolOptions.getCompilerSourceDirs();
+    private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
     private List<String> files = Collections.emptyList();
 
     public CeylonCompileJsTool() {
@@ -60,18 +59,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         return encoding;
     }
 
-    public boolean isProfile() {
-        return profile;
-    }
-
     @Option
     @Description("Time the compilation phases (results are printed to standard error)")
     public void setProfile(boolean profile) {
         this.profile = profile;
-    }
-
-    public boolean isOptimize() {
-        return optimize;
     }
 
     @Option
@@ -80,18 +71,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         this.optimize = optimize;
     }
 
-    public boolean isModulify() {
-        return modulify;
-    }
-
     @Option(longName="no-module")
     @Description("Do **not** wrap generated code as CommonJS module")
     public void setNoModulify(boolean nomodulify) {
         this.modulify = !nomodulify;
-    }
-
-    public boolean isIndent() {
-        return indent;
     }
 
     @Option
@@ -107,18 +90,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         this.setNoComments(compact);
     }
 
-    public boolean isComments() {
-        return comments;
-    }
-
     @Option
     @Description("Do **not** generate any comments")
     public void setNoComments(boolean nocomments) {
         this.comments = !nocomments;
-    }
-
-    public String getUser() {
-        return user;
     }
 
     @OptionArgument(argumentName="name")
@@ -128,10 +103,6 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         this.user = user;
     }
 
-    public String getPass() {
-        return pass;
-    }
-
     @OptionArgument(argumentName="secret")
     @Description("Sets the password for use with an authenticated output repository" +
             "(no default).")
@@ -139,23 +110,15 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         this.pass = pass;
     }
 
-    public List<String> getRepos() {
-        return getRepositoryAsStrings();
-    }
-
-    public List<File> getSrc() {
-        return src;
-    }
-
     public List<String> getSrcAsStrings() {
-        if (src != null) {
-            List<String> result = new ArrayList<String>(src.size());
-            for (File f : src) {
+        if (roots != null) {
+            List<String> result = new ArrayList<>(roots.size());
+            for (File f : roots) {
                 result.add(f.getPath());
             }
             return result;
         } else {
-            return new ArrayList<String>();
+            return Collections.emptyList();
         }
     }
     
@@ -166,7 +129,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     		"paths separated by your operating system's `PATH` separator." +
             " (default: `./source`)")
     public void setSrc(List<File> src) {
-        this.src = src;
+        roots = src;
     }
     
     @OptionArgument(longName="source", argumentName="dirs")
@@ -207,63 +170,36 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         setSystemProperties();
         final Options opts = new Options()
                 .cwd(cwd)
-                .repos(getRepos())
+                .repos(getRepositoryAsStrings())
                 .sources(getSrcAsStrings())
                 .systemRepo(systemRepo)
-                .cacheRepo(cacheRepo)
                 .outDir(getOut())
-                .user(getUser())
-                .pass(getPass())
-                .optimize(isOptimize())
-                .modulify(isModulify())
-                .indent(isIndent())
-                .comment(isComments())
+                .user(user)
+                .pass(pass)
+                .optimize(optimize)
+                .modulify(modulify)
+                .indent(indent)
+                .comment(comments)
                 .verbose(getVerbose())
-                .profile(isProfile())
+                .profile(profile)
                 .stdin(false)
                 .generateSourceArchive(!skipSrc)
-                .encoding(encoding)
-                .offline(offline)
-                .noDefaultRepos(noDefRepos);
-        run(opts, files);
-    }
-
-    private static void addFilesToCompilationSet(Options opts, File dir, List<String> onlyFiles) {
-        for (File e : dir.listFiles()) {
-            String n = e.getName().toLowerCase();
-            if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
-                String path = normalizePath(e.getPath());
-                if (opts.isVerbose()) {
-                    System.out.println("Adding to compilation set: " + path);
-                }
-                if (!onlyFiles.contains(path)) {
-                    onlyFiles.add(path);
-                }
-            } else if (e.isDirectory()) {
-                addFilesToCompilationSet(opts, e, onlyFiles);
-            }
-        }
-    }
-
-    private static String normalizePath(String path) {
-    	return path.replace('\\', '/');
-    }
-    
-    public static void run(Options opts, List<String> files) throws IOException {
+                .encoding(encoding);
         final TypeChecker typeChecker;
         if (opts.hasVerboseFlag("cmr")) {
-            System.out.printf("Using repositories: %s%n", opts.getRepos());
+            append("Using repositories: "+getRepositoryAsStrings());
+            newline();
         }
         final RepositoryManager repoman = CeylonUtils.repoManager()
-                .cwd(opts.getCwd())
-                .systemRepo(opts.getSystemRepo())
-                .cacheRepo(opts.getCacheRepo())
-                .noDefaultRepos(opts.getNoDefaultRepos())
-                .userRepos(opts.getRepos())
-                .outRepo(opts.getOutDir())
-                .offline(opts.getOffline())
+                .cwd(cwd)
+                .systemRepo(systemRepo)
+                .cacheRepo(cacheRepo)
+                .noDefaultRepos(noDefRepos)
+                .userRepos(getRepositoryAsStrings())
+                .outRepo(getOut())
+                .offline(offline)
                 .buildManager();
-        final List<String> onlyFiles = new ArrayList<String>();
+        final List<String> onlyFiles = new ArrayList<>();
         long t0, t1, t2, t3, t4;
         final TypeCheckerBuilder tcb;
         if (opts.isStdin()) {
@@ -286,7 +222,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                 }
                 @Override
                 public List<VirtualFile> getChildren() {
-                    return new ArrayList<VirtualFile>(0);
+                    return Collections.emptyList();
                 }
                 @Override
                 public int hashCode() {
@@ -308,11 +244,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         } else {
             t0=System.nanoTime();
             tcb = new TypeCheckerBuilder();
-            final List<File> roots = new ArrayList<File>(opts.getSrcDirs().size());
-            for (String _srcdir : opts.getSrcDirs()) {
-                roots.add(new File(_srcdir));
-            }
-            final Set<String> modfilters = new HashSet<String>();
+            final Set<String> modfilters = new HashSet<>();
             
             for (String filedir : files) {
                 File f = new File(filedir);
@@ -321,7 +253,8 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                     for (File root : roots) {
                         if (f.getAbsolutePath().startsWith(root.getAbsolutePath() + File.separatorChar)) {
                             if (opts.isVerbose()) {
-                                System.out.printf("Adding %s to compilation set%n", filedir);
+                                append("Adding "+filedir+" to compilation set");
+                                newline();
                             }
                             onlyFiles.add(normalizePath(filedir));
                             once=true;
@@ -336,7 +269,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                     //except any file that exists in directories and subdirectories where we find a module.ceylon file
                     //Typechecker takes care of all that if we add default to module filters
                     if (opts.isVerbose()) {
-                        System.out.println("Adding default module filter");
+                        append("Adding default module filter"); newline();
                     }
                     modfilters.add("default");
                     f = null;
@@ -356,17 +289,15 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                         }
                         if (_f != null) {
                             f = _f;
+                            if (opts.isVerbose()) {
+                                append("Adding dir to module filters: " + f.getAbsolutePath()); newline();
+                            }
+                            addFilesToCompilationSet(opts.isVerbose(), f, onlyFiles);
+                            modfilters.add(filedir);
                         }
                     }
                     if (f == null) {
                         throw new CompilerErrorException(String.format("ceylonc-js: file not found: %s%n", filedir));                        
-                    } else {
-                        if (opts.isVerbose()) {
-                            System.out.println("Adding to module filters: " + filedir);
-                        }
-                        addFilesToCompilationSet(opts, f, onlyFiles);
-                        modfilters.add(filedir);
-                        f = null;
                     }
                 }
                 if (f != null) {
@@ -377,7 +308,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                                 _f = _f.substring(root.getAbsolutePath().length()+1).replace(File.separator, ".");
                                 modfilters.add(_f);
                                 if (opts.isVerbose()) {
-                                    System.out.println("Adding to module filters: " + _f);
+                                    append("Adding file to module filters: " + _f);newline();
                                 }
                             }
                         }
@@ -390,7 +321,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                                             File.separatorChar, '.');
                                     modfilters.add(_f);
                                     if (opts.isVerbose()) {
-                                        System.out.println("Adding to module filters: " + _f);
+                                        append("Adding file to module filters: " + _f);newline();
                                     }
                                 }
                                 middir = middir.getParentFile();
@@ -400,17 +331,18 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                 } //f!= null
             } //loop over files
 
+            if (opts.isVerbose()) {
+                append("Adding source directories to typechecker:" + roots);newline();
+            }
             for (File root : roots) {
                 tcb.addSrcDirectory(root);
             }
             if (!modfilters.isEmpty()) {
-                ArrayList<String> _modfilters = new ArrayList<String>(modfilters.size());
-                _modfilters.addAll(modfilters);
-                tcb.setModuleFilters(_modfilters);
+                tcb.setModuleFilters(new ArrayList<>(modfilters));
             }
             tcb.statistics(opts.isProfile());
             JsModuleManagerFactory.setVerbose(opts.isVerbose());
-            tcb.moduleManagerFactory(new JsModuleManagerFactory(opts.getEncoding()));
+            tcb.moduleManagerFactory(new JsModuleManagerFactory(encoding));
         }
         //getting the type checker does process all types in the source directory
         tcb.verbose(opts.isVerbose()).setRepositoryManager(repoman);
@@ -420,6 +352,9 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         if (!onlyFiles.isEmpty()) {
             for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
                 if (!onlyFiles.contains(normalizePath(pu.getUnitFile().getPath()))) {
+                    if (opts.isVerbose()) {
+                        append("Removing phased unit " + pu);newline();
+                    }
                     typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
                 }
             }
@@ -429,7 +364,12 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
-        if (!onlyFiles.isEmpty()) { jsc.setFiles(onlyFiles); }
+        if (!onlyFiles.isEmpty()) {
+            if (opts.isVerbose()) {
+                append("Only these files will be compiled: " + onlyFiles);newline();
+            }
+            jsc.setFiles(onlyFiles);
+        }
         t3=System.nanoTime();
         if (!jsc.generate()) {
             int count = jsc.printErrors(System.out);
@@ -445,4 +385,26 @@ public class CeylonCompileJsTool extends RepoUsingTool {
             System.out.println("Compilation finished.");
         }
     }
+
+    private static void addFilesToCompilationSet(boolean verbose, File dir, List<String> onlyFiles) {
+        for (File e : dir.listFiles()) {
+            String n = e.getName().toLowerCase();
+            if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
+                String path = normalizePath(e.getPath());
+                if (verbose) {
+                    System.out.println("Adding to compilation set: " + path);
+                }
+                if (!onlyFiles.contains(path)) {
+                    onlyFiles.add(path);
+                }
+            } else if (e.isDirectory()) {
+                addFilesToCompilationSet(verbose, e, onlyFiles);
+            }
+        }
+    }
+
+    private static String normalizePath(String path) {
+    	return path.replace('\\', '/');
+    }
+    
 }
