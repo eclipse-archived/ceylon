@@ -230,4 +230,131 @@ public class RecoveryTest extends CompilerTest {
         assertFalse(carFile.exists());
     }
 
+    @Test
+    public void testTako() throws IOException {
+        String subPath = "modules/bug1411";
+        String srcPath = getPackagePath()+subPath;
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(srcPath);
+        options.addAll(defaultOptions);
+        options.add("-continue");
+        ErrorCollector c = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                c,
+                subPath + "/dupdecl.ceylon",
+                subPath + "/moduletest1/module.ceylon",
+                subPath + "/moduletest1/package.ceylon",
+                subPath + "/moduletest1/helloworld.ceylon",
+                subPath + "/hello/hello.ceylon",
+                subPath + "/hello/module.ceylon",
+                subPath + "/hello/package.ceylon",
+                subPath + "/testtest/module.ceylon",
+                subPath + "/testtest/test.ceylon",
+                subPath + "/sub/mod/module.ceylon",
+                subPath + "/sub/mod/run.ceylon",
+                subPath + "/sub/mod/package.ceylon",
+                subPath + "/unknownmodule/module.ceylon",
+                subPath + "/unknownmodule/run.ceylon",
+                subPath + "/unknownmodule/package.ceylon",
+                subPath + "/interop/module.ceylon",
+                subPath + "/interop/interop.ceylon",
+                subPath + "/jsonly/jsonly.ceylon",
+                subPath + "/jsonly/module.ceylon",
+                subPath + "/jsonly/package.ceylon",
+                subPath + "/modulep/module.ceylon",
+                subPath + "/modulep/main.ceylon",
+                subPath + "/browser/dom/main.ceylon",
+                subPath + "/browser/dom/package.ceylon",
+                subPath + "/browser/module.ceylon",
+                subPath + "/browser/main.ceylon",
+                subPath + "/browser/package.ceylon",
+                subPath + "/test/InheritanceAndBoxingTest.ceylon",
+                subPath + "/test/ExceptionTest.ceylon",
+                subPath + "/test/Foo.ceylon",
+                subPath + "/test/GameOfLife.ceylon",
+                subPath + "/test/Bar.ceylon",
+                subPath + "/test/encoding.ceylon",
+                subPath + "/test/helloworld.ceylon",
+                subPath + "/swing/module.ceylon",
+                subPath + "/swing/run.ceylon",
+                subPath + "/swing/package.ceylon",
+                subPath + "/interoprev/module.ceylon",
+                subPath + "/interoprev/run.ceylon",
+                subPath + "/interoprev/package.ceylon",
+                subPath + "/java/hello.ceylon",
+                subPath + "/java/module.ceylon",
+                subPath + "/java/package.ceylon",
+                subPath + "/helloworld.ceylon",
+                subPath + "/wrongversion/module.ceylon",
+                subPath + "/wrongversion/run.ceylon",
+                subPath + "/wrongversion/package.ceylon",
+                subPath + "/importhello/module.ceylon",
+                subPath + "/importhello/helloworld.ceylon",
+                subPath + "/usingimport.ceylon",
+                // These depend on the error recovery we plan for 1.1
+//                subPath + "/javaa/bugJvm1290.ceylon",
+//                subPath + "/javaa/module.ceylon",
+//                subPath + "/javaa/run.ceylon"
+                subPath + "/gavinprob/module.ceylon",
+                subPath + "/gavinprob/main.ceylon",
+                subPath + "/web_ide_script/module.ceylon",
+                subPath + "/web_ide_script/hello_world.ceylon",
+                subPath + "/timetest/module.ceylon",
+                subPath + "/timetest/test.ceylon"
+                );
+        Boolean ret = task.call();
+        assertFalse(ret);
+
+        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors,
+                new CompilerError(1, "package not found in imported modules: java.lang"),
+                new CompilerError(1, "source code imports two different versions of the same module: version 0.5 and version 1.0.0 of ceylon.file"),
+                new CompilerError(2, "cannot find module artifact fooxhilio.bastardo-77.9(.car|.jar)\n"
+                +"  \t- dependency tree: unknownmodule/1.0.0 -> fooxhilio.bastardo/77.9"),
+                new CompilerError(4, "function or value does not exist: nanoTime"),
+                new CompilerError(4, "type does not exist: Test"),
+                new CompilerError(5, "duplicate declaration name: run"),
+                new CompilerError(7, "duplicate declaration name: run"),
+                new CompilerError(10, "case must be a toplevel anonymous class: alive is not toplevel"),
+                new CompilerError(10, "case must be a toplevel anonymous class: dead is not toplevel"),
+                new CompilerError(10, "case must be a toplevel anonymous class: moribund is not toplevel"),
+                new CompilerError(10, "case must be a toplevel anonymous class: resurrected is not toplevel"),
+                new CompilerError(135, "function or value does not exist: array"),
+                new CompilerError(135, "value type could not be inferred"),
+                new CompilerError(138, "could not determine type of function or value reference: cells"),
+                new CompilerError(138, "value type could not be inferred"),
+                new CompilerError(139, "could not determine type of function or value reference: c"),
+                new CompilerError(140, "could not determine type of function or value reference: c")
+        );
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        String[] modules = new String[]{
+                "swing/1.0.0",
+                "java/1.0.0",
+                "web_ide_script/1.0.0",
+                "browser/1.0.0",
+                "timetest/1.0.0",
+                "interop/1.0.0",
+                "importhello/0.1",
+                "interoprev/1.0.0",
+                "modulep/0.1",
+                "hello/1.0.0",
+                "moduletest1/0.1",
+                "jsonly/1.0.0",
+                "testtest/1.1",
+                "sub.mod/1.0.0"
+        };
+
+        for(String module : modules){
+            int sep = module.indexOf('/');
+            String name = module.substring(0, sep);
+            String version = module.substring(sep+1);
+            carFile = getModuleArchive(name, version);
+            assertTrue(carFile.exists());
+        }
+    }
+
 }
