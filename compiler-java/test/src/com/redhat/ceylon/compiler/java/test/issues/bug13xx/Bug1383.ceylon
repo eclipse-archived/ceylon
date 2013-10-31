@@ -20,10 +20,10 @@
 @noanno
 void bug1383(Bug1383Java j) {
     // fields
-    j.hash_field = true;
-    j.string_field = true;
-    j.equals_field = true;
-    if(j.hash_field && j.string_field && j.equals_field){}
+    //j.hash_field = true;
+    //j.string_field = true;
+    //j.equals_field = true;
+    //if(j.hash_field && j.string_field && j.equals_field){}
     
     // original Object members
     Integer h = j.hash;
@@ -36,10 +36,10 @@ void bug1383(Bug1383Java j) {
     j.setString(j.getString());
     
     // diverted methods
-    Boolean b1 = j.hash_method();
-    Boolean b2 = j.hash_method("hello");
-    Boolean b3 = j.string_method();
-    Boolean b4 = j.string_method("hello");
+    //Boolean b1 = j.hash_method();
+    //Boolean b2 = j.hash_method("hello");
+    //Boolean b3 = j.string_method();
+    //Boolean b4 = j.string_method("hello");
     // normal overload
     Boolean b5 = j.equals();
     Boolean b6 = j.equals("hello");
@@ -51,8 +51,8 @@ shared class Bug1383() extends Bug1383JavaNoOverload(){
     shared actual Integer hash = 1;
     shared actual Boolean equals(Object o) => true;
     
-    shared actual Boolean hash_method() => true;
-    shared actual Boolean string_method() => true;
+    //shared actual Boolean hash_method() => true;
+    //shared actual Boolean string_method() => true;
     
     shared actual Boolean getHash() => true;
     shared actual void setHash(Boolean b){}

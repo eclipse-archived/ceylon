@@ -6,21 +6,12 @@ final class bug1383_ {
     }
     
     static void bug1383(final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1383Java j) {
-        j.hash = true;
-        j.string = true;
-        j.equals = true;
-        if (j.hash && j.string && j.equals) {
-        }
         final long h = j.hashCode();
         final .java.lang.String s = j.toString();
         final boolean b = j.equals(j);
         j.setHash(j.getHash());
         j.setEquals(j.getEquals());
         j.setString(j.getString());
-        final boolean b1 = j.hash();
-        final boolean b2 = j.hash("hello");
-        final boolean b3 = j.string();
-        final boolean b4 = j.string("hello");
         final boolean b5 = j.equals();
         final boolean b6 = j.equals("hello");
     }
@@ -45,24 +36,14 @@ public class Bug1383 extends .com.redhat.ceylon.compiler.java.test.issues.bug13x
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = hash;
+                long $ceylontmp$hash$0 = hash;
             }
-            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
     }
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object o) {
-        return true;
-    }
-    
-    @.java.lang.Override
-    public final boolean hash() {
-        return true;
-    }
-    
-    @.java.lang.Override
-    public final boolean string() {
         return true;
     }
     
