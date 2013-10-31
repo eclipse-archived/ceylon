@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+class ImportMethodSingle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImportMethodSingle() {
+    }
+    
+    private final void m$priv$() {
+        .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.m1_.m1();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportMethodSingle();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportMethodSingle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.ImportMethodSingle.class);
+}

@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+class ImportAttrSingle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImportAttrSingle() {
+    }
+    
+    private final void m$priv$() {
+        final boolean b = .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.f1_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportAttrSingle();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportAttrSingle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.ImportAttrSingle.class);
+}

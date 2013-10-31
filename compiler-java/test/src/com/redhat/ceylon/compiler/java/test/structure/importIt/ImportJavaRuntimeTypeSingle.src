@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+class ImportJavaRuntimeTypeSingle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImportJavaRuntimeTypeSingle() {
+    }
+    
+    private final void m$priv$(final .java.util.List<.ceylon.language.Integer> l) {
+        new .java.lang.Exception();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportJavaRuntimeTypeSingle();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportJavaRuntimeTypeSingle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.ImportJavaRuntimeTypeSingle.class);
+}

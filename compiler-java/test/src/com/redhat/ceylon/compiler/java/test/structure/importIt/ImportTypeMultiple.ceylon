@@ -17,11 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{m1}
+import com.redhat.ceylon.compiler.java.test.structure.importIt.pkg{C1, C2}
 
 @noanno
-class ImportMethodSingle() {
+class ImportTypeMultiple() {
     void m() {
-        m1();
+        C1();
+        C2();
     }
 }

@@ -145,73 +145,73 @@ public class StructureTest2 extends CompilerTest {
     @Test
     public void testImpImportAliasAndWildcard(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportAliasAndWildcard");
+        compareWithJavaSource("importIt/ImportAliasAndWildcard");
     }
     
     private void compileImportedPackage() {
-        compile("import_/pkg/C1.ceylon", "import_/pkg/C2.ceylon");
+        compile("importIt/pkg/C1.ceylon", "importIt/pkg/C2.ceylon");
     }
 
     @Test
     public void testImpImportAttrSingle(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportAttrSingle");
+        compareWithJavaSource("importIt/ImportAttrSingle");
     }
 
     @Test
     public void testImpImportMethodSingle(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportMethodSingle");
+        compareWithJavaSource("importIt/ImportMethodSingle");
     }
     
     @Test
     public void testImpImportTypeSingle(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportTypeSingle");
+        compareWithJavaSource("importIt/ImportTypeSingle");
     }
     
     @Test
     public void testImpImportTypeMultiple(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportTypeMultiple");
+        compareWithJavaSource("importIt/ImportTypeMultiple");
     }
     
     @Test
     public void testImpImportTypeAlias(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportTypeAlias");
+        compareWithJavaSource("importIt/ImportTypeAlias");
     }
     
     @Test
     public void testImpImportWildcard(){
         compileImportedPackage();
-        compareWithJavaSource("import_/ImportWildcard");
+        compareWithJavaSource("importIt/ImportWildcard");
     }
     
     @Test
     public void testImpImportWildcardSinglePass(){
         List<String> options = new LinkedList<String>();
         options.add("-src");
-        options.add(getPackagePath()+"/import_/src");
-        CeyloncTaskImpl task = getCompilerTask(options, "import_/src/pkg/File.ceylon", "import_/src/pkg/sub/ConcreteDirectory.ceylon");
+        options.add(getPackagePath()+"/importIt/src");
+        CeyloncTaskImpl task = getCompilerTask(options, "importIt/src/pkg/File.ceylon", "importIt/src/pkg/sub/ConcreteDirectory.ceylon");
         Assert.assertTrue(task.call());
-        task = getCompilerTask(options, "import_/src/pkg/File.ceylon", "import_/src/pkg/sub/ConcreteDirectory.ceylon");
+        task = getCompilerTask(options, "importIt/src/pkg/File.ceylon", "importIt/src/pkg/sub/ConcreteDirectory.ceylon");
         Assert.assertTrue(task.call());
     }
 
     @Test
     public void testImpImportJavaRuntimeTypeSingle(){
-        compareWithJavaSource("import_/ImportJavaRuntimeTypeSingle");
+        compareWithJavaSource("importIt/ImportJavaRuntimeTypeSingle");
     }
 
     @Test
     public void testImpImportJavaRuntimeTypeWildcard(){
-        compareWithJavaSource("import_/ImportJavaRuntimeTypeWildcard");
+        compareWithJavaSource("importIt/ImportJavaRuntimeTypeWildcard");
     }
 
     @Test
     public void testImpImportCeylonLanguageType(){
-        compareWithJavaSource("import_/ImportCeylonLanguageType");
+        compareWithJavaSource("importIt/ImportCeylonLanguageType");
     }
     
     // Tests for nesting of declarations

@@ -17,16 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import com.redhat.ceylon.compiler.java.test.structure.import_.pkg{...}
+import com.redhat.ceylon.compiler.java.test.structure.importIt.pkg{Foo=C1}
 
 @noanno
-class ImportWildcard() {
+class ImportTypeAlias() {
     void m() {
-        C1();
-        C2();
-        variable Boolean b = f1;
-        b = f2;
-        m1();
-        m2();
+        Foo();
     }
 }

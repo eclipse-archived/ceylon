@@ -17,6 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-module com.redhat.ceylon.compiler.java.test.structure.import_ "1" {
-    import java.base "7";
+import com.redhat.ceylon.compiler.java.test.structure.importIt.pkg{...}
+
+@noanno
+class ImportWildcard() {
+    void m() {
+        C1();
+        C2();
+        variable Boolean b = f1;
+        b = f2;
+        m1();
+        m2();
+    }
 }
