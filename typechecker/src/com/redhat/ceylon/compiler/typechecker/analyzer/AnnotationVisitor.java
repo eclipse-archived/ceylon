@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 
@@ -627,8 +628,27 @@ public class AnnotationVisitor extends Visitor {
     //      want to add a whole new Visitor
     @Override public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
+        Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
-                isAbstraction(that.getDeclaration())) {
+                isAbstraction(dec)) {
+            if (dec instanceof Functional && ((Functional) dec).isAbstraction()) {
+                List<Declaration> overloads = ((Functional) dec).getOverloads();
+                if (overloads.size()==1) {
+                    dec = overloads.get(0);
+                    if (!dec.isShared()) {
+                        that.addError("private constructor is not visible: " + dec.getName());
+                    }
+                    else if (dec.isPackageVisibility() && 
+                            !declaredInPackage(dec, that.getUnit())) {
+                        that.addError("package private constructor is not visible: " + dec.getName());
+                    }
+                    else if (dec.isProtectedVisibility() &&
+                            !declaredInPackage(dec, that.getUnit())) {
+                        that.addError("protected constructor is not visible: " + dec.getName());
+                    }
+                }
+                return;
+            }
             StringBuilder sb = new StringBuilder();
             List<ProducedType> sig = that.getSignature();
             if (sig!=null) {
@@ -646,7 +666,7 @@ public class AnnotationVisitor extends Visitor {
             }
             that.addError("ambiguous reference to overloaded method or class: " +
                     "there must be exactly one overloaded declaration of " + 
-                    that.getDeclaration().getName(that.getUnit()) + 
+                    dec.getName(that.getUnit()) + 
                     " that accepts the given argument types" + sb);
         }
     }
