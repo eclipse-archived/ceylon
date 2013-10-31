@@ -2,6 +2,7 @@ import functions { ... }
 import check { check, results }
 
 String mixseqs({Character*} chars, Integer* nums) => "C:``(chars.first else "?")`` #``(nums[0] else "?")``";
+String({String*})(String) staticJoinTest = String.join;
 
 shared void test() {
     helloWorld();
@@ -28,6 +29,7 @@ shared void test() {
     check(mixseqs{nums=[4]; for (c in "hola") c}=="C:h #4");
     check(mixseqs{*"hola"}=="C:h #?");
     check(mixseqs{'H','I'}=="C:H #?");
+    check(staticJoinTest("**")({"a","b","c"})=="a**b**c", "static String.join test");
     testSpread();
     results();
 }
