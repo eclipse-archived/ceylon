@@ -1586,7 +1586,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (!requireFieldPrefix) {
                 addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon);
             }else{
-                addValue(klass, "\\f"+fieldMirror.getName(), fieldMirror, isCeylon);
+                addValue(klass, fieldMirror.getName()+"_field", fieldMirror, isCeylon);
             }
         }
 
@@ -1780,7 +1780,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         if(methodName.equals("hash")
                 || methodName.equals("string"))
-            method.setName("\\m"+methodName);
+            method.setName(methodName+"_method");
         else
             method.setName(Util.strip(methodName, isCeylon, method.isShared()));
         method.setDefaultedAnnotation(methodMirror.isDefault());
