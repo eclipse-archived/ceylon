@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug954(final boolean b) {
-        final long n = 2L;
+        this.n = 2L;
         
         final class x_ {
             
@@ -22,7 +22,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.Integer.instance(i * n);
+                return .ceylon.language.Integer.instance(i * .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.this.getN$priv$());
             }
         };
         
@@ -44,7 +44,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance(i * n * 2L);
+                    return .ceylon.language.Integer.instance(i * .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.this.getN$priv$() * 2L);
                 }
             };
         } else {
@@ -53,7 +53,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance(i * n * 3L);
+                    return .ceylon.language.Integer.instance(i * .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.this.getN$priv$() * 3L);
                 }
             };
         }
@@ -63,7 +63,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                return .ceylon.language.Integer.instance(i * n);
+                return .ceylon.language.Integer.instance(i * .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.this.getN$priv$());
             }
         };
         this.puby = null;
@@ -73,7 +73,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance(i * n * 2L);
+                    return .ceylon.language.Integer.instance(i * .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.this.getN$priv$() * 2L);
                 }
             };
         } else {
@@ -82,10 +82,15 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance(i * n * 3L);
+                    return .ceylon.language.Integer.instance(i * .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug954.this.getN$priv$() * 3L);
                 }
             };
         }
+    }
+    private final long n;
+    
+    private final long getN$priv$() {
+        return n;
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> pubx;
     
