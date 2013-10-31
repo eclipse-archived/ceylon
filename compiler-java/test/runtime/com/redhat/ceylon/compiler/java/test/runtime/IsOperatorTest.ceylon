@@ -18,22 +18,22 @@
  * MA  02110-1301, USA.
  */
 shared class IsOperatorTest() {
-    object o_ extends Object() {
+    object o1 extends Object() {
         shared actual Boolean equals(Object o) {
             return false;
         }
         shared actual Integer hash = 0;
     }
-    Anything o = o_;
-    object i_ extends Object() satisfies Identifiable {
+    Anything o = o1;
+    object i1 extends Object() satisfies Identifiable {
         shared actual Boolean equals(Object o) {
             return false;
         }
         shared actual Integer hash = 0;
     }
-    Anything i = i_;
-    object io_ extends Basic() {}
-    Anything io = io_;
+    Anything i = i1;
+    object io1 extends Basic() {}
+    Anything io = io1;
     Anything nowt = null;
     
     @test
