@@ -54,7 +54,7 @@ import com.sun.tools.javac.util.Options;
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
 @Description("The default module repositories are `modules` and " +
-		"http://modules.ceylon-lang.org, while the default source directory is `source`" +
+		"http://modules.ceylon-lang.org, while the default source directory is `source` " +
 		"and the default resource directory is `resource`. " +
 		"The default output module repository is `modules`." +
 		"\n\n" +
@@ -68,17 +68,17 @@ import com.sun.tools.javac.util.Options;
 		"source archive, and their checksum files in the specified output module " +
 		"repository." +
 		"\n\n"+
-		"When `<moduleOrFile>` specifies a source file just that file is compiled and " +
-		"the module archive is created or updated with the .class files produced." +
+		"When `<moduleOrFile>` specifies a source file only that file is compiled and " +
+		"the module archive is created or updated with the .class files produced. " +
 		"The source file path is treated as relative to the current directory " +
 		"(it still needs to be located either in the default source folder or in " +
 		"any folder defined by the configuration file or `--source` options!)."+
         "\n\n" +
-        "When `<moduleOrFile>` specifies a resource file just that file is added to " +
+        "When `<moduleOrFile>` specifies a resource file only that file is added to " +
         "the module archive. " +
         "The resource file path is treated as relative to the current directory " +
-        "(it still needs to be located either in the default source folder or in " +
-        "any folder defined by the configuration file or `--source` options!)."+
+        "(it still needs to be located either in the default resource folder or in " +
+        "any folder defined by the configuration file or `--resource` options!)."+
         "\n\n" +
         "All program elements imported by a compilation unit must belong to the " +
         "same module as the compilation unit, or must belong to a module that " +
@@ -93,13 +93,14 @@ import com.sun.tools.javac.util.Options;
         "## Configuration file" +
         "\n\n" +
         "The compile tool accepts the following options from the Ceylon configuration file: " +
-        "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories`" +
+        "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories` " +
         "(the equivalent options on the command line always have precedence)." +
+        "\n\n" +
         "## About resources" +
         "\n\n" +
-        "Duplicate resources (resources with the exact same name and path found in several" +
-        "resource folders at a time) are handled on a first come first serve basis" +
-        "where the order is defined by the order of the `--resource` options on the command" +
+        "Duplicate resources (resources with the exact same name and path found in several " +
+        "resource folders at a time) are handled on a first come first serve basis " +
+        "where the order is defined by the order of the `--resource` options on the command " +
         "line or the order of the `compiler.resource` options in the configuration file." +
         "\n\n" +
         "## Specifying `javac` options" +
