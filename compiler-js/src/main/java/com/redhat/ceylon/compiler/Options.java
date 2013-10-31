@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 
 /** Represents all the options for compiling.
@@ -18,8 +17,6 @@ public class Options {
     private File cwd;
     private List<String> repos = new ArrayList<String>();
     private String systemRepo;
-    private String cacheRepo;
-    private boolean noDefRepos;
     private String user;
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
@@ -35,76 +32,6 @@ public class Options {
     private boolean stdin;
     private boolean gensrc = true;
     private String encoding = System.getProperty("file.encoding");
-    private boolean offline;
-
-    public Options() {}
-
-    /** Creates and returns an Options object from a command-list argument list. The list itself
-     * is modified, so at the end it only contains the files to compile. */
-    public static Options parse(List<String> args) {
-        Options opts = new Options();
-        //Review all non-arg options
-        opts.version = findOption("-version", args, true);
-        opts.help = findOption("-help", args, true);
-        opts.optimize = findOption("-optimize", args, true);
-        opts.modulify = !findOption("-nomodule", args, true);
-        if (args.contains("-noindent") || args.contains("-compact")) {
-            opts.indent=false;
-            args.remove("-noindent");
-        }
-        if (args.contains("-nocomments") || args.contains("-compact")) {
-            opts.comment=false;
-            args.remove("-nocomments");
-            args.remove("-compact");
-        }
-        opts.verbose = (findOption("-verbose", args, true)) ? "" : null;
-        opts.offline = findOption("-offline", args, true);
-        opts.profile = findOption("-profile", args, true);
-        opts.stdin = findOption("--", args, true);
-        //Review arg options
-        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
-            String s = iter.next();
-            if (s.startsWith("-")) {
-                iter.remove();
-                //Get the option's value
-                if (iter.hasNext()) {
-                    String v = iter.next();
-                    iter.remove();
-                    if ("-cwd".equals(s)) {
-                        opts.cwd=new File(v);
-                    } else if ("-rep".equals(s)) {
-                        opts.addRepo(v);
-                    } else if ("-sysrep".equals(s)) {
-                        opts.systemRepo=v;
-                    } else if ("-cacherep".equals(s)) {
-                        opts.cacheRepo=v;
-                    } else if ("-user".equals(s)) {
-                        opts.user=v;
-                    } else if ("-pass".equals(s)) {
-                        opts.pass=v;
-                    } else if ("-src".equals(s)) {
-                        //Split the value
-                        int pos;
-                        while ((pos = v.indexOf(File.pathSeparator)) >= 0) {
-                            opts.srcDirs.add(v.substring(0, pos));
-                            v = v.substring(pos+File.pathSeparator.length());
-                        }
-                        opts.srcDirs.add(v);
-                    } else if ("-out".equals(s)) {
-                        opts.outDir=v;
-                    } else if ("-encoding".equals(s)) {
-                        opts.encoding = v;
-                    } else {
-                        System.err.printf("Unrecognized option %s %s%n", s, v);
-                    }
-                }
-            }
-        }
-        if (opts.srcDirs.isEmpty()) {
-            opts.srcDirs.addAll(FileUtil.filesToPathList(DefaultToolOptions.getCompilerSourceDirs()));
-        }
-        return opts;
-    }
 
     /** Find all the repos specified in the argument list (pairs of "-rep x").
      * @param args The argument list from which to parse repositories
@@ -196,25 +123,6 @@ public class Options {
 
     public Options systemRepo(String systemRepo) {
         this.systemRepo = systemRepo;
-        return this;
-    }
-
-    /** Returns the cache folder (default = null) */
-    public String getCacheRepo() {
-        return cacheRepo;
-    }
-    
-    public Options cacheRepo(String cacheRepo) {
-        this.cacheRepo = cacheRepo;
-        return this;
-    }
-
-    public boolean getNoDefaultRepos() {
-        return noDefRepos;
-    }
-
-    public Options noDefaultRepos(boolean noDefRepos) {
-        this.noDefRepos = noDefRepos;
         return this;
     }
 
@@ -348,15 +256,6 @@ public class Options {
     
     public Options encoding(String encoding) {
         this.encoding = encoding;
-        return this;
-    }
-
-    public boolean getOffline() {
-        return offline;
-    }
-
-    public Options offline(boolean offline) {
-        this.offline = offline;
         return this;
     }
 
