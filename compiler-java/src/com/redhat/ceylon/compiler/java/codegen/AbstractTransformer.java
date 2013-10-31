@@ -938,7 +938,11 @@ public abstract class AbstractTransformer implements Transformation {
     private ProducedType javacCeylonTypeToProducedType(com.sun.tools.javac.code.Type t) {
         return loader().getType(getLanguageModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
-    
+
+    private ProducedType javacJavaTypeToProducedType(com.sun.tools.javac.code.Type t) {
+        return loader().getType(getJDKBaseModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
+    }
+
     private boolean sameTypeForCeylonTypes(Type ceylonType, ProducedType otherType) {
         return otherType != null && javacCeylonTypeToProducedType(ceylonType).isExactly(otherType);
     }
@@ -3489,6 +3493,10 @@ public abstract class AbstractTransformer implements Transformation {
         return loader.getLanguageModule();
     }
 
+    private Module getJDKBaseModule() {
+        return loader.getJDKBaseModule();
+    }
+
     ProducedType getGetterInterfaceType(TypedDeclaration attrTypedDecl) {
         ProducedTypedReference typedRef = getTypedReference(attrTypedDecl);
         ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
@@ -3508,7 +3516,7 @@ public abstract class AbstractTransformer implements Transformation {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterType);
             ProducedType typeArg = nonWideningType;
             if (unboxed && isCeylonString(typeArg)) {
-                typeArg = javacCeylonTypeToProducedType(syms().stringType);
+                typeArg = javacJavaTypeToProducedType(syms().stringType);
             }
             type = producedType(type.getDeclaration(), typeArg);
         }
