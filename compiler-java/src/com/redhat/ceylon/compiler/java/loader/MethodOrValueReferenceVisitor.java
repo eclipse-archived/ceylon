@@ -240,30 +240,30 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     }
     
     /*@Override public void visit(Tree.FunctionalParameterDeclaration that) {
-        this.defaultArgument = true;
+        defaultArgument = true;
         super.visit(that);
-        this.defaultArgument = false;
+        defaultArgument = false;
     }*/
     @Override public void visit(Tree.ValueParameterDeclaration that) {
-        this.defaultArgument = true;
+        defaultArgument = true;
         super.visit(that);
-        this.defaultArgument = false;
+        defaultArgument = false;
     }
     /*@Override public void visit(Tree.InitializerParameter that) {
-        this.defaultArgument = true;
+        defaultArgument = true;
         super.visit(that);
-        this.defaultArgument = false;
+        defaultArgument = false;
     }*/
     
     @Override public void visit(Tree.SpecifierOrInitializerExpression that) {
         boolean cs = false;
         // Things in specifiers or initializers are only captured if they are
         // specifiers or initializers of parameters
-        if (this.defaultArgument) {
+        if (defaultArgument || inLazySpecifierExpression) {
             cs = enterCapturingScope();
         }
         super.visit(that);
-        if (this.defaultArgument) {
+        if (defaultArgument || inLazySpecifierExpression) {
             exitCapturingScope(cs);
         }
     }
