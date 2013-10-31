@@ -43,13 +43,6 @@ public class LiteralVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Identifier that) {
-        if (that.getText().endsWith("_")) {
-            that.addUnsupportedError("identifiers ending in _ not currently supported");
-        }
-    }
-    
-    @Override
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();

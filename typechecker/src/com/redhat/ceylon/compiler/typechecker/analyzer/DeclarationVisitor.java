@@ -942,6 +942,15 @@ public class DeclarationVisitor extends Visitor {
                 that.addError("member of final class may not be annotated default");
             }
         }
+        if (model.isToplevel()) {
+            if (model.getName()!=null && 
+                model.getName().endsWith("_")) {
+                that.addUnsupportedError("toplevel declaration name ending in _ not currently supported");
+            }
+            if (pkg.getNameAsString().endsWith("_")) {
+                that.addUnsupportedError("toplevel declaration belonging to package with name ending in _ not currently supported");
+            }
+        }
     }
 
     private void handleDeclarationAnnotations(Tree.Declaration that,
