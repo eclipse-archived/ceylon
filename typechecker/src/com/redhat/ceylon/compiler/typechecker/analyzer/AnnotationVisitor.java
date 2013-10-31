@@ -635,8 +635,8 @@ public class AnnotationVisitor extends Visitor {
                 List<Declaration> overloads = ((Functional) dec).getOverloads();
                 if (overloads.size()==1) {
                     dec = overloads.get(0);
-                    if (!dec.isShared()) {
-                        that.addError("private constructor is not visible: " + dec.getName());
+                    if (!dec.isVisible(that.getScope())) {
+                        that.addError("constructor is not visible: " + dec.getName());
                     }
                     else if (dec.isPackageVisibility() && 
                             !declaredInPackage(dec, that.getUnit())) {
