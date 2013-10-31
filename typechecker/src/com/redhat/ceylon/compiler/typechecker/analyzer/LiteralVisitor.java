@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
@@ -38,6 +39,13 @@ public class LiteralVisitor extends Visitor {
         if (!that.getLiteralsProcessed()) {
             super.visit(that);
             that.setLiteralsProcessed(true);
+        }
+    }
+    
+    @Override
+    public void visit(Identifier that) {
+        if (that.getText().endsWith("_")) {
+            that.addUnsupportedError("identifiers ending in _ not currently supported");
         }
     }
     
