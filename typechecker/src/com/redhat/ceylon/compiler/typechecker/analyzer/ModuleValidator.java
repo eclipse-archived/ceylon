@@ -9,6 +9,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -194,8 +195,9 @@ public class ModuleValidator {
         if (dupe != null && !isSameVersion(module, dupe)) {
             //TODO improve by giving the dependency string leading to these two conflicting modules
             StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency: ");
-            error.append("version ").append(module.getVersion())
-                 .append(" and version ").append(dupe.getVersion())
+            String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
+            error.append("version ").append(versions[0])
+                 .append(" and version ").append(versions[1])
                  .append(" of ").append(module.getNameAsString());
             moduleManager.addErrorToModule(dependencyTree.getFirst(), error.toString());
         }
