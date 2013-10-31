@@ -551,9 +551,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 )
             return "java.lang";
         else
-            return classMirror.getPackage().getQualifiedName();
+            return unquotePackageName(classMirror.getPackage());
     }
     
+    private String unquotePackageName(PackageMirror pkg) {
+        return pkg.getQualifiedName().replace("$", "");
+    }
+
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
         // add it to its package if it's not an inner class
         if(!classMirror.isInnerClass() && !classMirror.isLocalClass()){
@@ -1660,7 +1664,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private boolean isFromJDK(ClassMirror classMirror) {
-        String pkgName = classMirror.getPackage().getQualifiedName();
+        String pkgName = unquotePackageName(classMirror.getPackage());
         return JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName);
     }
 
@@ -1996,6 +2000,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             List<String> path = new LinkedList<String>();
             String pkgName = klass.getPackage().getQualifiedName();
+            String unquotedPkgName = unquotePackageName(klass.getPackage());
             String qualifiedName = klass.getQualifiedName();
             String relativeName = pkgName.isEmpty() ? qualifiedName : qualifiedName.substring(pkgName.length()+1);
             for(String name : relativeName.split("[\\$\\.]")){
@@ -2011,7 +2016,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             if(!path.isEmpty() && klass.isLoadedFromSource()){
                 // we need to find its model
-                Scope scope = packagesByName.get(cacheKeyByModule(module, pkgName));
+                Scope scope = packagesByName.get(cacheKeyByModule(module, unquotedPkgName));
                 if(scope == null)
                     return false;
                 for(String name : path){
@@ -2858,13 +2863,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 try{
                     klass.getSatisfiedTypes().add(getNonPrimitiveType(Decl.getModule(klass), iface, klass, VarianceLocation.INVARIANT));
                 }catch(ModelResolutionException x){
-                    PackageMirror classPackage = classMirror.getPackage();
-                    if(JDKUtils.isJDKAnyPackage(classPackage.getQualifiedName())){
+                    String classPackageName = unquotePackageName(classMirror.getPackage());
+                    if(JDKUtils.isJDKAnyPackage(classPackageName)){
                         if(iface.getKind() == TypeKind.DECLARED){
                             // check if it's a JDK thing
                             ClassMirror ifaceClass = iface.getDeclaredClass();
-                            PackageMirror ifacePackage = ifaceClass.getPackage();
-                            if(JDKUtils.isOracleJDKAnyPackage(ifacePackage.getQualifiedName())){
+                            String ifacePackageName = unquotePackageName(ifaceClass.getPackage());
+                            if(JDKUtils.isOracleJDKAnyPackage(ifacePackageName)){
                                 // just log and ignore it
                                 logMissingOracleType(iface.getQualifiedName());
                                 continue;

@@ -172,6 +172,8 @@ public abstract class LazyModule extends Module {
                 if(sep != -1)
                     path = path.substring(0, sep);
                 String pkg = path.replace('/', '.');
+                // make sure we unquote any package part
+                pkg = pkg.replace("$", "");
                 jarPackages.add(pkg);
             }
         }
