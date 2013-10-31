@@ -185,9 +185,15 @@ public abstract class LazyModule extends Module {
             // default packages contain it all
             if(isDefault())
                 return true;
-            // Ceylon rules are simple
-            // is it the same package as the module, or a subpackage of it?
-            return Util.isSubPackage(moduleName, pkgName);
+            for(Package pkg : super.getPackages()){
+                if(pkg.getNameAsString().equals(pkgName))
+                    return true;
+            }
+            // The language module is in the classpath and does not have its jarPackages loaded
+            if(moduleName.equals(Module.LANGUAGE_MODULE_NAME)){
+                return Util.isSubPackage(moduleName, pkgName);
+            }
+            return jarPackages.contains(pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
             if(JDKUtils.isJDKPackage(moduleName, pkgName)
