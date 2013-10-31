@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -40,7 +41,7 @@ public class ModuleManager {
     private Modules modules;
     private final Map<ModuleImport,Set<Node>> moduleImportToNode = new HashMap<ModuleImport, Set<Node>>();
     private Map<List<String>, Set<String>> topLevelErrorsPerModuleName = new HashMap<List<String>,Set<String>>();
-    private Map<Module, Node> moduleToNode = new HashMap<Module, Node>();
+    private Map<Module, Node> moduleToNode = new TreeMap<Module, Node>();
 
     public ModuleManager(Context context) {
         this.context = context;

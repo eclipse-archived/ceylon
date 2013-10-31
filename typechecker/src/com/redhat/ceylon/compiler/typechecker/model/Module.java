@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Module 
-        implements Referenceable, Annotated {
+        implements Referenceable, Annotated, Comparable<Module> {
 
     public static final String LANGUAGE_MODULE_NAME = "ceylon.language";
     public static final String DEFAULT_MODULE_NAME = "default";
@@ -231,6 +231,20 @@ public class Module
 
     public void setMinor(int minor) {
         this.minor = minor;
+    }
+
+    @Override
+    public int compareTo(Module other) {
+        if(this == other)
+            return 0;
+        // default first
+        if(isDefault())
+            return -1;
+        int cmp = this.getNameAsString().compareTo(other.getNameAsString());
+        if(cmp != 0)
+            return cmp;
+        // we don't care about how versions are compared, we just care that the order is consistent
+        return this.getVersion().compareTo(other.getVersion());
     }
     
 }

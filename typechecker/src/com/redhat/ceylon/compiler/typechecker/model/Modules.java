@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Represents the set of modules involved in the compilation
@@ -10,7 +11,7 @@ import java.util.Set;
  */
 public class Modules {
     private Module languageModule;
-    private Set<Module> modules = new HashSet<Module>();
+    private Set<Module> modules = new TreeSet<Module>();
     private Module defaultModule;
 
     public Module getLanguageModule() {
