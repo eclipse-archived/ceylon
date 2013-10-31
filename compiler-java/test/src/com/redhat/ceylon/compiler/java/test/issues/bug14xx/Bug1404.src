@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+final class bug1404_ {
+    
+    private bug1404_() {
+    }
+    
+    static void bug1404() {
+        final VariableBox<.java.lang.String> firstName = new VariableBox<.java.lang.String>("Bob");
+        .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> fullName$getter$_;
+        fullName$getter$_ = (
+            let
+            {
+                
+                final class fullName$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private fullName$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return firstName.ref;
+                    }
+                }
+            }
+            returning new fullName$getter$_();
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1404_.bug1404();
+    }
+}

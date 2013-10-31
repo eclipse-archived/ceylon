@@ -698,6 +698,11 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
+    public void testBug1404() {
+        compareWithJavaSource("bug14xx/Bug1404");
+    }
+    
+    @Test
     public void testBug1405() {
         assertErrors("bug14xx/Bug1405",
                 new CompilerError(24, "value type could not be inferred"),
