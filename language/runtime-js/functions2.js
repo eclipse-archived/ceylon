@@ -11,7 +11,11 @@ function internalSort(comp, elems, $$$mptypes) {
     });
     return ArraySequence(arr, $$$mptypes);
 }
-internalSort.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','internalSort']};
+internalSort.$$metamodel$$=function(){return{
+  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','internalSort'],
+  $ps:[{$nm:'comparing',$t:{t:Callable,a:{Return:{t:Comparison},Arguments:{t:'T',l:['Element','Element']}}},$mt:'prm'},{$nm:'elements',$t:{t:Iterable,a:{Absent:{t:Null},Element:'Element'}},$mt:'prm'}],
+  $tp:{Element:{}}, $t:{t:Sequential,a:{Absent:{t:Null},Element:'Element'}}
+}};
 
 function flatten(tf, $$$mptypes) {
     var rf = function() {
@@ -50,13 +54,19 @@ function flatten(tf, $$$mptypes) {
     rf.$$targs$$=$$$mptypes;
     return rf;
 }
-flatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','flatten']};
+flatten.$$metamodel$$=function(){return{
+  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','flatten'],
+  $tp:{Return:{},Args:{'satisfies':[{t:Sequential,a:{Absent:{t:Null},Element:{t:Anything}}}]}},
+  $t:{t:Callable,a:{Return:'Return',Arguments:{t:Sequential,a:{Absent:{t:Null},Element:{t:Anything}}}}},
+  $p:[{$nm:'tupleFunction',$t:{t:Callable,a:{Return:'Return',Arguments:{t:'T',l:[{t:Sequential,a:{Absent:{t:Null},Element:{t:Anything}}}]}}},$mt:'prm'}]
+}};
 
 function unflatten(ff, $$$mptypes) {
-    if (ff.$$metamodel$$ && ff.$$metamodel$$['$ps']) {
+    if (typeof(ff.$$metamodel$$)==='function')ff.$$metamodel$$=ff.$$metamodel$$();
+    if (ff.$$metamodel$$ && ff.$$metamodel$$.$ps) {
         var ru = function ru(seq) {
             if (seq===undefined || seq.size === 0) { return ff(); }
-            var pmeta = ff.$$metamodel$$['$ps'];
+            var pmeta = ff.$$metamodel$$.$ps;
             var a = [];
             for (var i = 0; i < pmeta.length; i++) {
                 if (pmeta[i]['seq'] == 1) {
@@ -84,7 +94,12 @@ function unflatten(ff, $$$mptypes) {
     ru.$$targs$$=$$$mptypes;
     return ru;
 }
-unflatten.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','unflatten']};
+unflatten.$$metamodel$$=function(){return{
+  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','unflatten'],
+  $tp:{Return:{},Args:{'satisfies':[{t:Sequential,a:{Absent:{t:Null},Element:{t:Anything}}}]}},
+  $ps:[{$nm:'flatFunction',$t:{t:Callable,a:{Return:'Return',Arguments:{t:Sequential,a:{Absent:{t:Null},Element:{t:Anything}}}}},$mt:'prm'}],
+  $t:{t:Callable,a:{Return:'Return',Arguments:{t:'T',l:[{t:Sequential,a:{Absent:{t:Null},Element:{t:Anything}}}]}}}
+}};
 exports.flatten=flatten;
 exports.unflatten=unflatten;
 
@@ -114,5 +129,10 @@ function integerRangeByIterable(range, step, $$$mptypes) {
         }
     }, {Element:range.$$targs$$.Element, Absent:range.$$targs$$.Absent});
 }
-integerRangeByIterable.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','integerRangeByIterable']};
+integerRangeByIterable.$$metamodel$$=function(){return{
+  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','integerRangeByIterable'],
+  $tp:{Element:{'satisfies':[{t:Ordinal,a:{Other:'Element'}},{t:Comparable,a:{Other:'Element'}}]}},
+  $t:{t:Iterable,a:{Absent:{t:Nothing},Element:'Element'}},
+  $ps:[{$nm:'range',$t:{t:Range,a:{Element:'Element'}},$mt:'prm'},{$nm:'step',$t:{t:Integer},$mt:'prm'}]
+}};
 exports.integerRangeByIterable=integerRangeByIterable;
