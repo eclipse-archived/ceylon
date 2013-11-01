@@ -349,6 +349,9 @@ public class CeylonTool implements Tool {
         setupScriptEnvironment(processBuilder);
         processBuilder.redirectError(Redirect.INHERIT);
         processBuilder.redirectInput(Redirect.INHERIT);
+        if (!OSUtil.isWindows()) {
+            processBuilder.redirectOutput(Redirect.INHERIT);
+        }
         try {
             Process process = processBuilder.start();
             if (OSUtil.isWindows()) {
@@ -359,8 +362,6 @@ public class CeylonTool implements Tool {
                 while ((line = bufferedreader.readLine()) != null) {
                     System.out.println(line);
                 }
-            } else {
-                processBuilder.redirectOutput(Redirect.INHERIT);
             }
             int exit = process.waitFor();
             if(exit != 0)
