@@ -34,13 +34,11 @@ public class JsModuleManager extends ModuleManager {
 
     /** Tells whether the language module has been loaded yet. */
     private boolean clLoaded;
-    private final Map<String, Object> clmod;
 	private String encoding;
     private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + "." + Versions.JS_BINARY_MINOR_VERSION;
 
-    public JsModuleManager(Context context, Map<String, Object> jsonCL, String encoding) {
+    public JsModuleManager(Context context, String encoding) {
         super(context);
-        clmod = jsonCL;
         this.encoding = encoding;
     }
 
@@ -55,25 +53,18 @@ public class JsModuleManager extends ModuleManager {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading JS language module before any other modules");
                 }
-                if (clmod == null) {
-                    ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion(), ".js");
-                    ac.setFetchSingleArtifact(true);
-                    ac.setThrowErrorIfMissing(true);
-                    ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
-                    resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
-                            phasedUnitsOfDependencies, forCompiledModule);
-                } else {
-                    loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule, clmod);
-                }
+                ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion(), ".js");
+                ac.setFetchSingleArtifact(true);
+                ac.setThrowErrorIfMissing(true);
+                ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
+                resolveModule(lmar, module.getLanguageModule(), null, dependencyTree,
+                        phasedUnitsOfDependencies, forCompiledModule);
             }
             //Then we continue loading whatever they asked for first.
         }
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
         if (module instanceof JsonModule && js.getName().endsWith(".js")) {
-            if (module.getUnit().getFullPath() == null) {
-                module.getUnit().setFullPath(js.getAbsolutePath());
-            }
             if (js.exists() && js.isFile() && js.canRead()) {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading metamodel from " + js);
@@ -96,7 +87,7 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     protected Module createModule(List<String> moduleName, String version) {
-        Module module = new JsonModule();
+        final Module module = new JsonModule();
         module.setName(moduleName);
         module.setVersion(version);
         Unit u = new Unit();
@@ -113,18 +104,28 @@ public class JsModuleManager extends ModuleManager {
             ModuleImport imp = new ModuleImport(dep, false, false);
             module.getImports().add(imp);
             module.setLanguageModule(dep);
+            //Fix 280 part 1
+            getContext().getModules().getDefaultModule().getImports().add(new ModuleImport(module, false, false));
         }
         return module;
     }
 
     @Override
     protected com.redhat.ceylon.compiler.typechecker.model.Package createPackage(String pkgName, Module module) {
-        if (module == null) return super.createPackage(pkgName, module);
+        if (module!=null && module == getContext().getModules().getDefaultModule())
+        try {
+            //Fix 280 part 2
+            return module.getPackage(pkgName);
+        } catch (CompilerErrorException ex) {
+            //nothing, package will be created
+        }
         final JsonPackage pkg = new JsonPackage(pkgName);
         List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
         pkg.setName(name);
-        module.getPackages().add(pkg);
-        pkg.setModule(module);
+        if (module != null) {
+            module.getPackages().add(pkg);
+            pkg.setModule(module);
+        }
         return pkg;
     }
 
