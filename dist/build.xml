@@ -200,7 +200,7 @@ Used with another target such as 'package'">
 
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
-                     copy-samples, copy-templates, copy-jvm-compiler-libraries,
+                     copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
                      copy-licenses, install-runtime-libs, install-language, install-runtime"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
@@ -268,6 +268,15 @@ Used with another target such as 'package'">
         <mkdir dir="${ceylon.dist.dir}/templates"/>
         <copy todir="${ceylon.dist.dir}/templates">
             <fileset dir="templates">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-contrib">
+        <mkdir dir="${ceylon.dist.dir}/contrib"/>
+        <copy todir="${ceylon.dist.dir}/contrib">
+            <fileset dir="contrib">
                 <include name="**/*"/>
             </fileset>
         </copy>
