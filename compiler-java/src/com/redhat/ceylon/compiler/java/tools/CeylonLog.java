@@ -157,4 +157,11 @@ public class CeylonLog extends Log {
     public int getNonCeylonErrorCount() {
         return numNonCeylonErrors;
     }
+    
+    /**
+     * A count of the number of Ceylon errors
+     */
+    public int getCeylonErrorCount(){
+        return numCeylonAnalysisErrors;
+    }
 }

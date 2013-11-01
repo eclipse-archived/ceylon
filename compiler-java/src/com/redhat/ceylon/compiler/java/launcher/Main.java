@@ -304,9 +304,19 @@ public class Main extends com.sun.tools.javac.main.Main {
             } 
             return 0;
         }
-        
+
+        private static int getCeylonErrorCount(JavaCompiler comp) {
+            if (comp.log instanceof CeylonLog) {
+                CeylonLog log = ((CeylonLog)comp.log);
+                return log.getCeylonErrorCount();
+            } 
+            return 0;
+        }
+
         private static boolean hasCeylonCodegenErrors(JavaCompiler comp) {
-            return getCeylonCodegenErrorCount(comp) > 0 || getNonCeylonErrorCount(comp) > 0;
+            return getNonCeylonErrorCount(comp) == 0
+                    && getCeylonErrorCount(comp) == 0
+                    && getCeylonCodegenErrorCount(comp) > 0;
         }
         
         public boolean hasCeylonCodegenErrors() {
