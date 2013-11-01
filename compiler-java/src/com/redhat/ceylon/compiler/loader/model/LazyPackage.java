@@ -99,7 +99,9 @@ public class LazyPackage extends Package {
                 if (d instanceof Class) {
                     Class c = (Class) d;
                     if (c.isAbstraction() && signature != null) {
-                        return lookupMember(c.getOverloads(), name, signature, ellipsis);
+                        ArrayList<Declaration> list = new ArrayList<Declaration>(c.getOverloads());
+                        list.add(c);
+                        return lookupMember(list, name, signature, ellipsis);
                     }
                 }
                 return d;
