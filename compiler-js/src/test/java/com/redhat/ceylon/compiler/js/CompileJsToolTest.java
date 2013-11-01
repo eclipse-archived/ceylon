@@ -19,8 +19,10 @@ public class CompileJsToolTest {
         
         @Override
         public String getToolName(String className) {
-            return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));
+            return classNameToToolName(className);
         }
+        
+        
     };
 
     private List<String> args(String... args) {
