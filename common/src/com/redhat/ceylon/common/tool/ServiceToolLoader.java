@@ -76,7 +76,7 @@ public abstract class ServiceToolLoader extends ToolLoader {
         return result;
     }
 
-    private Set<String> getPathPlugins() {
+    protected Set<String> getPathPlugins() {
         if(pathPlugins == null){
             pathPlugins = new TreeSet<String>();
             findPathPlugins();
