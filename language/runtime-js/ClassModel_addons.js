@@ -27,6 +27,8 @@ defineAttr(ClassModel$meta$model.$$.prototype,'declaration',function(){
   return $$clase._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassDeclaration$meta$declaration},$cont:ClassModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassModel','$at','declaration']};});
 ClassModel$meta$model.$$.prototype.equals=function(o){
-return isOfType(o,{t:AppliedClass}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
+return isOfType(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
 };
-//TODO equals metamodel
+ClassModel$meta$model.$$.prototype.equals.$$metamodel$$=function(){return{
+  mod:$$METAMODEL$$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},$ps:[{$nm:'other',$t:{t:Object$},$mt:'prm'}]
+}};
