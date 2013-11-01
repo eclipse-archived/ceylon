@@ -21,7 +21,9 @@ package com.redhat.ceylon.tools;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.Vector;
 
 import com.redhat.ceylon.common.tool.ToolException;
@@ -36,6 +38,14 @@ public class TestingToolLoader extends CeylonToolLoader {
         this.includeParentServices = includeParentServices;
     }
 
+    /**
+     * Make sure we don't look at the current user's path for script plugins
+     */
+    @Override
+    protected Set<String> getPathPlugins() {
+        return Collections.emptySet();
+    }
+    
     @Override
     protected Enumeration<URL> getServiceMeta() {
         Vector<URL> result = new Vector<>();
