@@ -229,6 +229,8 @@ Used with another target such as 'package'">
                 <include name="ceylon"/>
                 <include name="ceylon.bat"/>
                 <include name="ceylon-completion.bash"/>
+                <include name="ceylon-sh-setup"/>
+                <include name="ceylon-sh-setup.bat"/>
             </fileset>
         </copy>
         <chmod perm="0755">
