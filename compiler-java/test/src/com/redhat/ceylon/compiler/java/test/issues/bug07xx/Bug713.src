@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
+
+class Bug713 extends .java.awt.Container implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .javax.accessibility.Accessible {
+    
+    Bug713() {
+        super();
+        this.accessibleContext = (.javax.accessibility.AccessibleContext).ceylon.language.nothing_.get_();
+    }
+    private final .javax.accessibility.AccessibleContext accessibleContext;
+    
+    @.java.lang.Override
+    public final .javax.accessibility.AccessibleContext getAccessibleContext() {
+        return accessibleContext;
+    }
+    
+    @.java.lang.Override
+    public final .java.awt.Component getComponentAt(final .java.awt.Point point) {
+        return (.java.awt.Component).ceylon.language.nothing_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug713();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug713.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug713.class);
+}

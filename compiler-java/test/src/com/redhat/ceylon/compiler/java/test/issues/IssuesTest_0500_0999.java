@@ -377,8 +377,7 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     
     @Test
     public void testBug713() {
-        assertErrors("bug07xx/Bug713",
-                new CompilerError(26, "member does not have the same number of parameters as the member it refines: getComponentAt declared by Bug713 refining getComponentAt declared by Container"));
+        compareWithJavaSource("bug07xx/Bug713");
     }
     
     @Ignore("M6: https://github.com/ceylon/ceylon-compiler/issues/714")
