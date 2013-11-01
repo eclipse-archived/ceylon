@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.OSUtil;
 
 public abstract class ServiceToolLoader extends ToolLoader {
@@ -86,27 +86,24 @@ public abstract class ServiceToolLoader extends ToolLoader {
     }
 
     private void findPathPlugins() {
-        String ceylonHome = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
         Set<String> names = new HashSet<String>();
+        // First the ones from CEYLON_HOME/bin
+        File ceylonHome = FileUtil.getInstallDir();
         if(ceylonHome != null)
-            findPluginInPath(ceylonHome+File.separator+"bin", names);
-        String path = System.getenv("PATH");
-        if(path == null || path.isEmpty()){
-            return;
-        }
-        int sep;
-        while((sep = path.indexOf(File.pathSeparatorChar)) != -1){
-            String part = path.substring(0, sep);
+            findPluginInPath(new File(ceylonHome, "bin"), names);
+        // Then look in ~/.ceylon/bin
+        File defUserDir = new File(FileUtil.getDefaultUserDir(), "bin");
+        findPluginInPath(defUserDir, names);
+        // And finally in the user's PATH
+        File[] paths = FileUtil.getExecPath();
+        for (File part : paths) {
             findPluginInPath(part, names);
-            path = path.substring(sep+1);
         }
-        findPluginInPath(path, names);
     }
 
-    private void findPluginInPath(String path, final Set<String> names) {
-        File file = new File(path);
-        if(file.isDirectory() && file.canRead()){
-            File[] matches = file.listFiles(new FileFilter(){
+    private void findPluginInPath(File dir, final Set<String> names) {
+        if(dir.isDirectory() && dir.canRead()){
+            File[] matches = dir.listFiles(new FileFilter(){
                 @Override
                 public boolean accept(File f) {
                     if(f.isFile() && f.canExecute() && f.getName().toLowerCase().startsWith("ceylon-")){
