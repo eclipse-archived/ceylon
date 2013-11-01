@@ -280,7 +280,7 @@ public class InteropTest extends CompilerTest {
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
+                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
         );
     }
 
@@ -309,7 +309,7 @@ public class InteropTest extends CompilerTest {
     public void testIopCallsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
-                new CompilerError(22, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
+                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of JavaDefaultAccessClass4 that accepts the given argument types ()")
         );
     }
 
@@ -359,14 +359,13 @@ public class InteropTest extends CompilerTest {
         assertErrors("NamedInvocations",
                 new CompilerError(30, "could not determine type of function or value reference: createTempFile"),
                 new CompilerError(30, "overloaded declarations may not be called using named arguments: createTempFile"),
-                new CompilerError(30, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of createTempFile that accepts the given argument types"),
+                new CompilerError(30, "ambiguous callable reference to overloaded method or class: createTempFile is overloaded"),
                 new CompilerError(30, "named invocations of Java methods not supported"),
                 new CompilerError(32, "named invocations of Java methods not supported"),
-                new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "named invocations of Java methods not supported"),
                 new CompilerError(35, "could not determine type of method or attribute reference: createTempFile of File"),
                 new CompilerError(35, "overloaded declarations may not be called using named arguments: createTempFile"),
-                new CompilerError(35, "ambiguous reference to overloaded method or class: there must be exactly one overloaded declaration of createTempFile that accepts the given argument types"),
+                new CompilerError(35, "ambiguous callable reference to overloaded method or class: createTempFile is overloaded"),
                 new CompilerError(37, "named invocations of Java methods not supported")
         );
     }
