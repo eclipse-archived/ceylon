@@ -26,6 +26,8 @@ public class ToolModel<T extends Tool> {
     private Method rest;
     private SubtoolModel<?> subtoolModel;
     private ToolModel<?> parentTool;
+    private boolean script;
+    private String scriptName;
 
     public ToolLoader getToolLoader() {
         return loader;
@@ -129,7 +131,7 @@ public class ToolModel<T extends Tool> {
      */
     public boolean isPorcelain() {
         return !isTopLevel()  
-                && toolClass.getAnnotation(Hidden.class) == null;
+                && (isScript() || toolClass.getAnnotation(Hidden.class) == null);
     }
 
     /**
@@ -140,6 +142,7 @@ public class ToolModel<T extends Tool> {
         // Note we have both this and isPorcelain() because the CeylonTool
         // is currently considered neither, which is a fudge for the CeylonDocToolTool
         return !isTopLevel()  
+                && !isScript()
                 && toolClass.getAnnotation(Hidden.class) != null;
     }
 
@@ -159,5 +162,20 @@ public class ToolModel<T extends Tool> {
     public void setParentTool(ToolModel<?> parentTool) {
         this.parentTool = parentTool;
     }
-    
+
+    public void setScript(boolean script) {
+        this.script = script;
+    }
+
+    public boolean isScript(){
+        return script;
+    }
+
+    public void setScriptName(String scriptName) {
+        this.scriptName = scriptName;
+    }
+
+    public String getScriptName() {
+        return scriptName;
+    }
 }

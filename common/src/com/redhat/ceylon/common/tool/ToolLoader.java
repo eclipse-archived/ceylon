@@ -8,7 +8,6 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +27,8 @@ import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
  * @author tom
  */
 public abstract class ToolLoader {
+
+    protected static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
 
     protected final ClassLoader loader;
     
@@ -76,22 +77,36 @@ public abstract class ToolLoader {
      * know to this tool loader.
      */
     public <T extends Tool> ToolModel<T> loadToolModel(String toolName) {
-        Class<T> toolClass = loadToolClass(toolName);
-        if (toolClass != null) {
-            final ToolModel<T> toolModel;
-            try {
-                toolModel = loadModel(toolClass, toolName);
-            } catch (ModelException e) {
-                throw e;
-            } catch (RuntimeException e) {
-                throw new ModelException("Failed to load model for tool " + toolName +"(" + toolClass + ")", e);
+        String className = getToolClassName(toolName);
+        if(className != null && className.startsWith("PATH:")){
+            return loadScriptTool(toolName);
+        }else{
+            Class<T> toolClass = loadToolClass(toolName);
+            if (toolClass != null) {
+                final ToolModel<T> toolModel;
+                try {
+                    toolModel = loadModel(toolClass, toolName);
+                } catch (ModelException e) {
+                    throw e;
+                } catch (RuntimeException e) {
+                    throw new ModelException("Failed to load model for tool " + toolName +"(" + toolClass + ")", e);
+                }
+                toolModel.setToolLoader(this);
+                return toolModel;
             }
-            toolModel.setToolLoader(this);
-            return toolModel;
         }
         return null;
     }
     
+    private <T extends Tool> ToolModel<T> loadScriptTool(String toolName) {
+        ToolModel<T> model = new ToolModel<T>();
+        model.setScript(true);
+        model.setScriptName("ceylon-"+toolName);
+        model.setName(toolName);
+        model.setToolLoader(this);
+        return model;
+    }
+
     private static URL[] makeClasspath(File... jars) {
         URL[] urls = new URL[jars.length];
         for (int ii = 0; ii <jars.length; ii++) {
