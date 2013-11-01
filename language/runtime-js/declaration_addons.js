@@ -122,16 +122,17 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(cont, types,$mptypes) {
-  //TODO implement properly
-  if (typeof(this.tipo.$$metamodel$$)==='function') {
-    this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
+  var mm=this.tipo.$$metamodel$$;
+  if (typeof(mm)==='function') {
+    mm=mm(); this.tipo.$$metamodel$$=mm();
   }
-  if (!extendsType({t:cont.tipo},{t:this.tipo.$$metamodel$$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container type");
+  if (!extendsType({t:cont.tipo},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container type");
   var _t = {t:this.tipo};
-  validate$typeparams(_t,this.tipo.$$metamodel$$.$tp,types);
+  validate$typeparams(_t,mm.$tp,types);
   if (!extendsType(_t, $mptypes.Type))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
-  var rv=this.meta.$mt==='ifc'?AppliedMemberInterface(_t.t, $mptypes):AppliedMemberClass(_t.t, $mptypes);
+  var rv=this.meta.$mt==='ifc'?AppliedMemberInterface(_t.t, {Container:$mptypes.Container, Type:_t})
+    :AppliedMemberClass(_t.t, {Container:$mptypes.Container, Type:_t, Arguments:$mptypes.Arguments});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};

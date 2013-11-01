@@ -69,6 +69,7 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
     _t=mm.$t;
   }
   var rv=(at.set?AppliedVariableAttribute:AppliedAttribute)(name$15, at, {Type:_t, Container:{t:this.tipo}});
+  if (this.$targs)rv.$$targs$$.Container.a=this.$targs;
   rv.$parent=this;
   return rv;
 };
@@ -84,13 +85,15 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
 
 ClassOrInterface$meta$model.$$.prototype.getVariableAttribute=function getVariableAttribute(name$16,$$$mptypes){
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
-  if (nom.set == undefined)throw Exception("Attribute " + name$16 + " is not variable");
   var at=this.tipo.$$.prototype[nom];
   if (!at)return null;
+  if (at.set===undefined)throw IncompatibleTypeException$meta$model("Attribute " + name$16 + " is not variable");
   if (typeof(at.$$metamodel$$)==='function')at.$$metamodel$$=at.$$metamodel$$();
   var _t=$$$mptypes.Type;
   if (at.$$metamodel$$ && at.$$metamodel$$.$t)_t=at.$$metamodel$$.$t;
-  return AppliedVariableAttribute(nom, at, {Type:_t,Container:{t:this.tipo}});
+  var _cont={t:this.tipo};
+  if (this.$targs)_cont.a=this.$targs;
+  return AppliedVariableAttribute(nom, at, {Type:_t,Container:_cont});
 };
 ClassOrInterface$meta$model.$$.prototype.getVariableAttribute.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:VariableAttribute$meta$model,a:{Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getVariableAttribute']};};
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes){
@@ -105,9 +108,6 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
   var nom = name$2 + '$' + mm.d[mm.d.length-1];
   var ic = $$clase.tipo.$$.prototype[nom];
   if (ic) {
-    if (types$3) {
-      //TODO type arguments for ic
-    }
     mm = ic.$$metamodel$$;
     if (typeof(mm)==='function') {
       mm=mm(); ic.$$metamodel$$=mm;
@@ -115,17 +115,20 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     var md = get_model(mm);
     var rv;
     var ict={t:ic};
+    var _cont={t:this.tipo};
+    if (this.$targs)_cont.a=this.$targs;
     if (md.$mt==='ifc') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
       validate$typeparams(ict,ic.$$metamodel$$.$tp,types$3);
-      rv=AppliedMemberInterface(ic, {Container:{t:this.tipo},Type:{t:ic}});
+      rv=AppliedMemberInterface(ic, {Container:_cont,Type:ict});
     } else if (md.$mt==='cls'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$$metamodel$$.$tp,types$3);
-      rv=AppliedMemberClass(ic, {Container:{t:this.tipo},Type:ict, Arguments:$$$mptypes.Arguments});
+      rv=AppliedMemberClass(ic, {Container:_cont,Type:ict, Arguments:$$$mptypes.Arguments});
     } else {
       throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
     }
+    if (ict.a)rv.$targs=ict.a;
     rv.$parent=this;
     return rv;
   }
@@ -151,8 +154,9 @@ ClassOrInterface$meta$model.$$.prototype.getInterface=function(name,types,$mptyp
 };ClassOrInterface$meta$model.$$.prototype.getInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:MemberInterface$meta$model},$ps:[],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{satisfies:[{t:Sequential,a:{Element:{t:Anything}}}]}}};};
 
 ClassOrInterface$meta$model.$$.prototype.isTypeOf=function isTypeOf(instance$8){
-  var coi=this;
-  return isOfType(instance$8,{t:coi.tipo});
+  var _t={t:this.tipo};
+  if (this.$targs)_t.a=this.$targs;
+  return isOfType(instance$8,_t);
 };
 ClassOrInterface$meta$model.$$.prototype.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isTypeOf']};};
 ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf=function isSuperTypeOf(type$9){

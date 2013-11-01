@@ -42,7 +42,13 @@ function type$meta(x,$$targs$$) {
     var rt=$retuple($$targs$$.Type);
     c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
   } else {
-    c=(mm.$cont?AppliedMemberClass:AppliedClass)(_t, {Type:{t:_t}, Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+    var _ta={Type:{t:x.getT$all()[x.getT$name()]}, Arguments:{t:Sequential,a:{Element:{t:Anything}}}};
+    if (x.$$targs$$)_ta.Type.a=x.$$targs$$;
+    if (x.$$outer) {
+      _ta.Container={t:x.$$outer.getT$all()[x.$$outer.getT$name()]};
+      if (x.$$outer.$$targs$$)_ta.Container.a=x.$$outer.$$targs$$;
+    }
+    c=(mm.$cont?AppliedMemberClass:AppliedClass)(_t, _ta);
   }
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
   return c;
