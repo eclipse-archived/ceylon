@@ -78,9 +78,9 @@ interface TypeInference {
         
         @error @type:"unknown" function g() => burp;
         
-        @error @type:"unknown" value seq = [ @error burp ].sequence;
+        @error @type:"Sequence<unknown>" value seq = [ @error burp ].sequence;
         
-        @type:"unknown" @error function createSeq() {
+        @type:"Sequence<unknown>" @error function createSeq() {
             @error @type:"unknown" return [ @error hi ].sequence;
         }
         

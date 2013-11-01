@@ -639,8 +639,15 @@ class MoreInvariance() {
         @error Num<Int>&Num<T> nn = m;
         @error Num<Int|T> mm = nn;
         @error Num<Int>&Num<T> nnn = mm;
+        @error value nx1 = n.X();
+        @error value nx2 = n.X;
         @error n.X();
+        @error print(n.X());
+        @error print(n.X);
     }
+    
+    @error value mii = MoreInvariance().Int;
+    @error value bi = Int;
 }
 
 void intersectionsAndExtension() {

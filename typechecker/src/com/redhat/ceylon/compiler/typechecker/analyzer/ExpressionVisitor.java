@@ -3988,16 +3988,14 @@ public class ExpressionVisitor extends Visitor {
             else {*/
                 ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
-                if (isTypeUnknown(t)) {
-                    if (!dynamic) {
-                        that.addError("could not determine type of method or attribute reference: " +
-                                member.getName(unit)  + " of " + 
-                                receiverType.getDeclaration().getName(unit));
-                    }
+                if (!dynamic && !that.getStaticMethodReference() && isTypeUnknown(t)) {
+                    //this occurs with an ambiguous reference
+                    //to a member of an intersection type
+                    that.addError("could not determine type of method or attribute reference: " +
+                            member.getName(unit)  + " of " + 
+                            receiverType.getDeclaration().getName(unit));
                 }
-                else {
-                    that.setTypeModel(accountForStaticReferenceType(that, member, t));
-                }
+                that.setTypeModel(accountForStaticReferenceType(that, member, t));
             //}
         }
     }
@@ -4393,20 +4391,19 @@ public class ExpressionVisitor extends Visitor {
                 unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that, false)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            ProducedType ft = isAbstractType(t) /*|| isAbstraction(type)*/ ?
-                    new UnknownType(unit).getType() :
+            boolean abs = isAbstractType(t) || isAbstraction(type);
+            ProducedType ft = abs ?
+                    producedType(unit.getCallableDeclaration(), t, new UnknownType(unit).getType()) :
                     t.getFullType(wrap(t, receivingType, that));
             that.setTarget(t);
-            if (isTypeUnknown(ft)) {
-                if (!dynamic && !that.getStaticMethodReference()) {
-                    that.addError("could not determine type of member class reference: " +
-                            type.getName(unit)  + " of " + 
-                            receiverType.getDeclaration().getName(unit));
-                }
+            if (!dynamic && !abs && !that.getStaticMethodReference() && isTypeUnknown(ft)) {
+                //this occurs with an ambiguous reference
+                //to a member of an intersection type
+                that.addError("could not determine type of member class reference: " +
+                        type.getName(unit)  + " of " + 
+                        receiverType.getDeclaration().getName(unit));
             }
-            else {
-                that.setTypeModel(accountForStaticReferenceType(that, type, ft));
-            }
+            that.setTypeModel(accountForStaticReferenceType(that, type, ft));
         }
     }
 
@@ -4421,8 +4418,8 @@ public class ExpressionVisitor extends Visitor {
             type = t.getDeclaration();
 //        }
         if (acceptsTypeArguments(type, typeArgs, tal, that, false)) {
-            ProducedType ft = isAbstractType(t) /*|| isAbstraction(type)*/ ?
-                    new UnknownType(unit).getType() :
+            ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
+                    producedType(unit.getCallableDeclaration(), t, new UnknownType(unit).getType()) :
                     t.getFullType();
             that.setTypeModel(ft);
             that.setTarget(t);
