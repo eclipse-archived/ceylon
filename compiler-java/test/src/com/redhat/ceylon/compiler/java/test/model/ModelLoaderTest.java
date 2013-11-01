@@ -844,7 +844,6 @@ public class ModelLoaderTest extends CompilerTest {
     public void bogusModelAnnotationsTopLevelClass(){
         compile("BogusTopLevelClass.java", "BogusTopLevelClass2.java");
         assertErrors("bogusTopLevelClassUser",
-                new ClassCastException("com.sun.tools.javac.code.Type$ErrorType cannot be cast to com.sun.tools.javac.code.Symbol"),
                 new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving type of extended type for com.redhat.ceylon.compiler.java.test.model::BogusTopLevelClass:\n"
                         +"   Could not find type 'com.redhat.ceylon.compiler.java.test.model.MissingType'"),
