@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+# This is a sample script that can be used as a template
+# for creating your own sub-commands for the "ceylon"
+# command. If you create a copy, and rename it to for
+# example "ceylon-mycommand" and place it anywhere
+# in your $PATH, in ~/.ceylon/bin or in $CEYLON_HOME/bin
+# it will be found and automatically be added to the
+# list of existing commands (try typing "ceylon help").
+
+USAGE='<arg1> <arg2>'
+DESCRIPTION='Example command that does nothing'
+LONG_USAGE='This script just shows how to create
+custom "ceylon" sub-commands.'
+
+. $CEYLON_HOME/bin/ceylon-sh-setup
+
+# REPLACE THE CODE BELOW THIS LINE WITH YOUR OWN CODE
+
+# Just showing some variables that the script can use
+echo "Ceylon home: $CEYLON_HOME"
+echo "Ceylon version major: $CEYLON_VERSION_MAJOR"
+echo "Ceylon version minor: $CEYLON_VERSION_MINOR"
+echo "Ceylon version release: $CEYLON_VERSION_RELEASE"
+echo "Ceylon version: $CEYLON_VERSION"
+echo "Ceylon version name: $CEYLON_VERSION_NAME"
+echo "Java home: $JAVA_HOME"
+echo "Invoked with arguments: $@"
+
