@@ -252,6 +252,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
       h+=targ.hash;
     }
   }
+  if (this.$bound)h+=this.$bound.hash;
   return h;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
