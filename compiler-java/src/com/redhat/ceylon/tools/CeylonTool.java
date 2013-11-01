@@ -19,8 +19,11 @@
  */
 package com.redhat.ceylon.tools;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
@@ -345,10 +348,20 @@ public class CeylonTool implements Tool {
         ProcessBuilder processBuilder = new ProcessBuilder(args);
         setupScriptEnvironment(processBuilder);
         processBuilder.redirectError(Redirect.INHERIT);
-        processBuilder.redirectOutput(Redirect.INHERIT);
         processBuilder.redirectInput(Redirect.INHERIT);
         try {
             Process process = processBuilder.start();
+            if (OSUtil.isWindows()) {
+                InputStream in = process.getInputStream();
+                InputStreamReader inread = new InputStreamReader(in);
+                BufferedReader bufferedreader = new BufferedReader(inread);
+                String line;
+                while ((line = bufferedreader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } else {
+                processBuilder.redirectOutput(Redirect.INHERIT);
+            }
             int exit = process.waitFor();
             if(exit != 0)
                 throw new ToolError("Script "+model.getScriptName()+" returned error exit code "+exit) {};
