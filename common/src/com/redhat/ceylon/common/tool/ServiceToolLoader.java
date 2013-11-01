@@ -109,20 +109,20 @@ public abstract class ServiceToolLoader extends ToolLoader {
             File[] matches = file.listFiles(new FileFilter(){
                 @Override
                 public boolean accept(File f) {
-                    if(f.isFile() && f.canExecute() && f.getName().startsWith("ceylon-")){
+                    if(f.isFile() && f.canExecute() && f.getName().toLowerCase().startsWith("ceylon-")){
                         String name = f.getName().substring(7);
                         if(OSUtil.isWindows()){
                             // script must end with ".bat"
-                            if(!name.endsWith(".bat"))
+                            if(!name.toLowerCase().endsWith(".bat"))
                                 return false;
-                            // srip it
+                            // strip it
                             name = name.substring(0, name.length()-4);
                         }
                         // refuse any name with dots in there (like ceylon-completion.bash)
                         if(name.indexOf('.') != -1)
                             return false;
                         // also refuse ceylon-sh-setup
-                        if(name.equals("ceylon-sh-setup"))
+                        if(name.equalsIgnoreCase("sh-setup"))
                             return false;
                         // we're good if it's unique
                         return names.add(name);
