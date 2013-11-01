@@ -164,8 +164,12 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public ProducedType getExtendedType() {
-        load();
-        return super.getExtendedType();
+        if (superClass == null) {
+            load();
+            return super.getExtendedType();
+        } else {
+            return superClass.getType();
+        }
     }
     
     @Override

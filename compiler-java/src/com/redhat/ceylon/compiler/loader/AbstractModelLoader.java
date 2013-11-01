@@ -2155,9 +2155,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             else
                 extendedType = getNonPrimitiveType(Decl.getModule(klass), superClass, klass, VarianceLocation.INVARIANT);
         }else if(klass instanceof Class && ((Class) klass).isOverloaded()){
-            // if the class is overloaded we need to find the abstraction
-            TypeDeclaration abstraction = (TypeDeclaration) klass.getContainer().getMember(klass.getName(), null, false);
-            extendedType = abstraction.getType();
+            // if the class is overloaded we already have it stored
+            extendedType = klass.getExtendedType();
         }else{
             String className = classMirror.getQualifiedName();
             String superClassName = superClass == null ? null : superClass.getQualifiedName();

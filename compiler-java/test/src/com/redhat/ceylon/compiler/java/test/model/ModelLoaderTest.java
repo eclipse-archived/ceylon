@@ -960,7 +960,6 @@ public class ModelLoaderTest extends CompilerTest {
         compile("publicjavaclasswithpackageconstructortest.ceylon");
     }
 
-    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1415")
     @Test
     public void loadJavaContainer(){
         compile("JavaContainer1.java", "JavaContainer2.java");
