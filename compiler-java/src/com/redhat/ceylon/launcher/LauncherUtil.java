@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 
 public class LauncherUtil {
@@ -83,7 +84,7 @@ public class LauncherUtil {
         String path = System.getenv("PATH");
         if (path != null) {
             String ceylonScriptName;
-            if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+            if (OSUtil.isWindows()) {
                 ceylonScriptName = "ceylon.bat";
             } else {
                 ceylonScriptName = "ceylon";

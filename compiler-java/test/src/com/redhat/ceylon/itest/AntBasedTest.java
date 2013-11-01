@@ -53,6 +53,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.redhat.ceylon.common.OSUtil;
+
 public abstract class AntBasedTest {
 
     protected static final String EXEC_CEYLONC = "script.ceylonc";
@@ -155,16 +157,12 @@ public abstract class AntBasedTest {
         return matches.get(0);
     }
     
-    private boolean isWindows() {
-        return System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
-    }
-    
     @Before
     public void rewriteBuildFile() throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder parser = factory.newDocumentBuilder();
         Document document = parser.parse(this.originalBuildfile);
-        if (isWindows()) {
+        if (OSUtil.isWindows()) {
             /*
              * On windows you can't just use the <exec> task on a .bat file
              * you have to exec "cmd -c foo.bat". To avoid a maintainance 
@@ -199,7 +197,7 @@ public abstract class AntBasedTest {
     public void saveProperties() throws Exception {
         savedProperties = new Properties(System.getProperties());
         String scriptDir = System.getProperty("build.bin", "build/bin");
-        String scriptExt = isWindows() ? ".bat" : "";
+        String scriptExt = OSUtil.isWindows() ? ".bat" : "";
         System.setProperty(EXEC_CEYLONC, scriptDir + "/ceylonc" + scriptExt);
         System.setProperty(EXEC_CEYLOND, scriptDir + "/ceylond" + scriptExt);
         System.setProperty(EXEC_CEYLON, "../ceylon-runtime/build/dist/bin/ceylon" + scriptExt);
