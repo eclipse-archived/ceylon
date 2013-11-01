@@ -357,4 +357,35 @@ public class RecoveryTest extends CompilerTest {
         }
     }
 
+    @Test
+    public void testErrorSameCompilationUnit() throws IOException {
+        String subPath = "modules/errorInSameCompilationUnit";
+        String srcPath = getPackagePath()+subPath;
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(srcPath);
+        options.addAll(defaultOptions);
+        options.add("-continue");
+        ErrorCollector c = new ErrorCollector();
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                c,
+                subPath + "/someok.ceylon");
+        Boolean ret = task.call();
+        assertFalse(ret);
+
+        TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
+        compareErrors(actualErrors,
+                new CompilerError(23, "type does not exist: ERROR")
+        );
+        
+        File carFile = getModuleArchive("default", null);
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry moduleClass = car.getEntry("a_.class");
+        assertNotNull(moduleClass);
+        car.close();
+    }
+
 }
