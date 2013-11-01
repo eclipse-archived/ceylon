@@ -80,9 +80,13 @@ public class CeylonLog extends Log {
             } else if (messageKey.startsWith("compiler.err.ceylon")) {
                 numCeylonAnalysisErrors++;
             } else if (Context.isCeylon()) {
+                numCeylonCodegenErrors++;
+            } else {
                 numNonCeylonErrors++;
             }
         } else if (Context.isCeylon()) {
+            numCeylonCodegenErrors++;
+        } else {
             numNonCeylonErrors++;
         }
         DiagnosticSource source = diagnostic.getDiagnosticSource();
