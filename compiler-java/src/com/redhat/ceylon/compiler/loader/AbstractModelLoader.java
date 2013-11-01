@@ -582,7 +582,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     for(Declaration overload : ((Class)d).getOverloads()){
                         overload.setContainer(container);
                         // let's not trigger lazy-loading
-                        ((LazyContainer)container).addMember(d);
+                        ((LazyContainer)container).addMember(overload);
                         DeclarationVisitor.setVisibleScope(overload);
                     }
                 }
