@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.tool.Argument;
@@ -336,7 +337,11 @@ public class CeylonTool implements Tool {
     }
 
     private void runScript(ToolModel<?> model) {
-        List<String> args = new ArrayList<String>(1+toolArgs.size());
+        List<String> args = new ArrayList<String>(3+toolArgs.size());
+        if (OSUtil.isWindows()) {
+            args.add("cmd.exe");
+            args.add("/C");
+        }
         args.add(model.getScriptName());
         args.addAll(toolArgs);
         ProcessBuilder processBuilder = new ProcessBuilder(args);

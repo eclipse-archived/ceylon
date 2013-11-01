@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 
 import org.tautua.markdownpapers.ast.Document;
 
-import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
@@ -470,7 +470,12 @@ public class DocBuilder {
     }
 
     private String invokeScript(ToolModel<?> model, String arg) {
-        ProcessBuilder processBuilder = new ProcessBuilder(model.getScriptName(), arg);
+        ProcessBuilder processBuilder;
+        if (OSUtil.isWindows()) {
+        	processBuilder = new ProcessBuilder("cmd.exe", "/C", model.getScriptName(), arg);
+        } else {
+        	processBuilder = new ProcessBuilder(model.getScriptName(), arg);
+        }
         CeylonTool.setupScriptEnvironment(processBuilder);
         processBuilder.redirectError(Redirect.INHERIT);
         try {
