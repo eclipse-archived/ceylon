@@ -18,41 +18,41 @@ internalSort.$$metamodel$$=function(){return{
 }};
 
 function flatten(tf, $$$mptypes) {
-    var rf = function() {
-        var t = getEmpty();
-        var e = null;
-        var argc = arguments.length;
-        var last = argc>0 ? arguments[argc-1] : undefined;
-        if (typeof(last) === 'object' && typeof(last.Args) === 'object' && (last.Args.t==='T'||typeof(last.Args.t) === 'function')) {
-            argc--;
+  function rf() {
+    var t = getEmpty();
+    var e = null;
+    var argc = arguments.length;
+    var last = argc>0 ? arguments[argc-1] : undefined;
+    if (typeof(last) === 'object' && typeof(last.Args) === 'object' && (last.Args.t==='T'||typeof(last.Args.t) === 'function')) {
+      argc--;
+    }
+    for (var i=argc-1; i>=0; i--) {
+      var c = arguments[i]===null ? Null :
+        arguments[i] === undefined ? Empty :
+        arguments[i].getT$all ? arguments[i].getT$all() :
+        Anything;
+      if (e === null) {
+        e = c;
+      } else if (e.t === 'u' && e.l.length > 0) {
+        var l = [c];
+        for (var j=0; j < e.l.length; j++) {
+          l[j+1] = e.l[j];
         }
-        for (var i=0; i < argc; i++) {
-            var c = arguments[i]===null ? Null :
-                arguments[i] === undefined ? Empty :
-                arguments[i].getT$all ? arguments[i].getT$all() :
-                Anything;
-            if (e === null) {
-                e = c;
-            } else if (e.t === 'u' && e.l.length > 0) {
-                var l = [c];
-                for (var j=0; j < e.l.length; j++) {
-                    l[j+1] = e.l[j];
-                }
-            } else {
-                e = {t:'u', l:[e, c]};
-            }
-            var rest;
-            if (t === getEmpty()) {
-                rest={t:Empty};
-            } else {
-                rest={t:Tuple, a:t.$$$targs$$$};
-            }
-            t = Tuple(arguments[i], t, {First:c, Element:e, Rest:rest});
-        }
-        return tf(t, t.$$targs$$);
-    };
-    rf.$$targs$$=$$$mptypes;
-    return rf;
+      } else {
+        e = {t:'u', l:[e, c]};
+      }
+      var rest;
+      if (t === getEmpty()) {
+        rest={t:Empty};
+      } else {
+        rest={t:Tuple, a:t.$$targs$$};
+      }
+      t = Tuple(arguments[i], t, {First:c, Element:e, Rest:rest});
+    }
+    return tf(t, t.$$targs$$);
+  };
+  rf.$$targs$$=$$$mptypes;
+  return rf;
 }
 flatten.$$metamodel$$=function(){return{
   $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','flatten'],
@@ -62,37 +62,36 @@ flatten.$$metamodel$$=function(){return{
 }};
 
 function unflatten(ff, $$$mptypes) {
-    if (typeof(ff.$$metamodel$$)==='function')ff.$$metamodel$$=ff.$$metamodel$$();
-    if (ff.$$metamodel$$ && ff.$$metamodel$$.$ps) {
-        var ru = function ru(seq) {
-            if (seq===undefined || seq.size === 0) { return ff(); }
-            var pmeta = ff.$$metamodel$$.$ps;
-            var a = [];
-            for (var i = 0; i < pmeta.length; i++) {
-                if (pmeta[i]['seq'] == 1) {
-                    a[i] = seq.skipping(i).sequence;
-                } else if (seq.size > i) {
-                    a[i] = seq.$get(i);
-                } else {
-                    a[i] = undefined;
-                }
-            }
-            a[i]=ru.$$targs$$;
-            return ff.apply(ru, a);
+  if (typeof(ff.$$metamodel$$)==='function')ff.$$metamodel$$=ff.$$metamodel$$();
+  if (ff.$$metamodel$$ && ff.$$metamodel$$.$ps) {
+    var ru=function ru(seq) {
+      if (seq===undefined || seq.size === 0) { return ff(); }
+      var pmeta = ff.$$metamodel$$.$ps;
+      var _lim=Math.max(pmeta.length,seq.size);
+      var a = [];
+      for (var i = 0; i < _lim; i++) {
+        if (pmeta[i]&&pmeta[i]['seq']) {
+          a.push(seq.skipping(i).sequence);
+        } else if (seq.size > i) {
+          a.push(seq.$get(i));
         }
-    } else {
-        var ru = function ru(seq) {
-            if (seq===undefined || seq.size === 0) { return ff(); }
-            var a = [];
-            for (var i = 0; i < seq.size; i++) {
-                a[i] = seq.$get(i);
-            }
-            a[i]=ru.$$targs$$;
-            return ff.apply(ru, a);
-        }
+      }
+      a.push(ru.$$targs$$);
+      return ff.apply(ru, a);
     }
-    ru.$$targs$$=$$$mptypes;
-    return ru;
+  } else {
+    var ru=function ru(seq) {
+      if (seq===undefined || seq.size === 0) { return ff(); }
+      var a = [];
+      for (var i = 0; i < seq.size; i++) {
+        a[i] = seq.$get(i);
+      }
+      a[i]=ru.$$targs$$;
+      return ff.apply(ru, a);
+    }
+  }
+  ru.$$targs$$=$$$mptypes;
+  return ru;
 }
 unflatten.$$metamodel$$=function(){return{
   $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','unflatten'],
