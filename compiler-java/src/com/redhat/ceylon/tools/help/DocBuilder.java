@@ -472,9 +472,9 @@ public class DocBuilder {
     private String invokeScript(ToolModel<?> model, String arg) {
         ProcessBuilder processBuilder;
         if (OSUtil.isWindows()) {
-        	processBuilder = new ProcessBuilder("cmd.exe", "/C", model.getScriptName(), arg);
+            processBuilder = new ProcessBuilder("cmd.exe", "/C", model.getScriptName(), arg);
         } else {
-        	processBuilder = new ProcessBuilder(model.getScriptName(), arg);
+            processBuilder = new ProcessBuilder(model.getScriptName(), arg);
         }
         CeylonTool.setupScriptEnvironment(processBuilder);
         processBuilder.redirectError(Redirect.INHERIT);

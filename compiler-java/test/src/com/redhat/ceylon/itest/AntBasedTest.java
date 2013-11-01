@@ -372,9 +372,9 @@ public abstract class AntBasedTest {
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
                 Assert.fail("Entry " + newerEntry + 
                         " (mtime: " + fmt.format(new Date(newer)) + ") " +
-                		"was not newer than " + olderEntry + 
-                		" (mtime: " +fmt.format(new Date(older)) + ") " +
-        				"in archive " + zipFile);
+                        "was not newer than " + olderEntry + 
+                        " (mtime: " +fmt.format(new Date(older)) + ") " +
+                        "in archive " + zipFile);
             }
         } else if (newer != null) {
             Assert.fail("Couldn't find entry " + olderEntry + " in archive " + zipFile);

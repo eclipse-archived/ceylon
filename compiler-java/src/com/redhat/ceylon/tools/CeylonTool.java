@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.ProcessBuilder.Redirect;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +48,6 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
-import com.redhat.ceylon.launcher.LauncherUtil;
 import com.sun.tools.javac.main.CommandLine;
 
 
@@ -61,7 +59,7 @@ import com.sun.tools.javac.main.CommandLine;
 @Description(
         "If `--version` is present, print version information and exit. "+
         "Otherwise `<tool-arguments>` should begin with the name of a ceylon tool. " +
-		"The named tool is loaded and configured with the remaining command " +
+        "The named tool is loaded and configured with the remaining command " +
         "line arguments and control passes to that tool.")
 public class CeylonTool implements Tool {
 
@@ -107,7 +105,7 @@ public class CeylonTool implements Tool {
     
     @Option
     @Description("Print version information and exit, " +
-    		"*ignoring all other options and arguments*.")
+            "*ignoring all other options and arguments*.")
     public void setVersion(boolean version) {
         this.version = version;
     }
