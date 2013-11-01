@@ -23,7 +23,18 @@ class ActualMethodShortcutSub extends .com.redhat.ceylon.compiler.java.test.stru
     
     ActualMethodShortcutSub() {
         super();
-        this.print2$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(String)", (short)-1){
+        this.print2$specifier$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(String=)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .ceylon.language.process_.get_().writeLine();
+                    }
+                    returning null;
+                );
+            }
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
