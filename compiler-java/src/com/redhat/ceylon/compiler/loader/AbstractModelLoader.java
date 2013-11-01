@@ -690,6 +690,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                         }
                     }
+                } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
+                    // objects don't need overloading stuff
+                    decl = makeLazyClass(classMirror, null, null, false);
+                    setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
                 } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
                     Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                     decl = klass;
