@@ -545,7 +545,7 @@ public abstract class TypeDeclaration extends Declaration
      * @param signature 
      */
     private SupertypeDeclaration getSupertypeDeclaration(final String name, final List<ProducedType> signature, final boolean variadic) {
-        class Criteria implements ProducedType.Criteria {
+        class ExactCriteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
                 // do not look in ourselves
@@ -565,16 +565,40 @@ public abstract class TypeDeclaration extends Declaration
             	return true;
             }
         };
+        class LooseCriteria implements ProducedType.Criteria {
+            @Override
+            public boolean satisfies(TypeDeclaration type) {
+                // do not look in ourselves
+                if (type == TypeDeclaration.this)
+                    return false;
+                Declaration d = type.getDirectMember(name, null, false);
+                if (d!=null && d.isShared() && isResolvable(d)) {
+                    // only accept abstractions
+                    return isAbstraction(d);
+                }
+                else {
+                    return false;
+                }
+            }
+            @Override
+            public boolean isMemberLookup() {
+                return true;
+            }
+        };
         //this works by finding the most-specialized supertype
         //that defines the member
-        ProducedType st = getType().getSupertype(new Criteria());
+        ProducedType st = getType().getSupertype(new ExactCriteria());
+        if (st == null) {
+            //try again, ignoring the given signature
+            st = getType().getSupertype(new LooseCriteria());
+        }
         if (st == null) {
             //no such member
             return new SupertypeDeclaration(null, false);
         }
         else if (st.getDeclaration() instanceof UnknownType) {
             //we're dealing with an ambiguous member of an 
-            //intersection types
+            //intersection type
             //TODO: this is pretty fragile - it depends upon
             //      the fact that getSupertype() just happens
             //      to return an UnknownType instead of null
