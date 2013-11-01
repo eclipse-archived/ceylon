@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class FileUtil {
     
@@ -123,6 +124,24 @@ public class FileUtil {
             return new File(ceylonUserDir);
         } else {
             return getDefaultUserDir();
+        }
+    }
+    
+    /**
+     * Returns the environment variable {@code PATH} as an array of {@code File}.
+     * If the value was empty a array of size 0 will be returned.
+     */
+    public static File[] getExecPath() {
+        String path = System.getenv("PATH");
+        if (path != null && !path.isEmpty()) {
+            String[] items = path.split(Pattern.quote(File.pathSeparator));
+            File[] result = new File[items.length];
+            for (int i = 0; i < items.length; i++) {
+                result[i] = new File(items[i]);
+            }
+            return result;
+        } else {
+            return EMPTY_FILES;
         }
     }
     
