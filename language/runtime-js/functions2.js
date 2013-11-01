@@ -64,7 +64,7 @@ flatten.$$metamodel$$=function(){return{
 function unflatten(ff, $$$mptypes) {
   if (typeof(ff.$$metamodel$$)==='function')ff.$$metamodel$$=ff.$$metamodel$$();
   if (ff.$$metamodel$$ && ff.$$metamodel$$.$ps) {
-    var ru=function ru(seq) {
+    var ru=function ru(seq,$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
       var pmeta = ff.$$metamodel$$.$ps;
       var _lim=Math.max(pmeta.length,seq.size);
@@ -72,11 +72,12 @@ function unflatten(ff, $$$mptypes) {
       for (var i = 0; i < _lim; i++) {
         if (pmeta[i]&&pmeta[i]['seq']) {
           a.push(seq.skipping(i).sequence);
+          break;//we're done
         } else if (seq.size > i) {
           a.push(seq.$get(i));
         }
       }
-      a.push(ru.$$targs$$);
+      if ($mptypes && ff.$$metamodel$$.$tp)a.push($mptypes);
       return ff.apply(ru, a);
     }
   } else {
