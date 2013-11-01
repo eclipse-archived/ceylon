@@ -3801,6 +3801,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
+            member = (TypedDeclaration) handleAbstraction(member, that);
             that.setDeclaration(member);
             checkBaseVisibility(that, member, name);
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -3906,6 +3907,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
+                member = (TypedDeclaration) handleAbstraction(member, that);
                 that.setDeclaration(member);
                 boolean selfReference = 
                         p instanceof Tree.This ||
@@ -4073,6 +4075,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
+            type = (TypeDeclaration) handleAbstraction(type, that);
             that.setDeclaration(type);
             if (!type.isVisible(that.getScope())) {
                 that.addError("type is not visible: " + name, 400);
@@ -4251,6 +4254,7 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
+                type = (TypeDeclaration) handleAbstraction(type, that);
                 that.setDeclaration(type);
                 boolean selfReference = p instanceof Tree.This &&
                         p instanceof Tree.Super;
@@ -4389,8 +4393,8 @@ public class ExpressionVisitor extends Visitor {
                 unwrap(receivingType, that));
         if (acceptsTypeArguments(receiverType, type, typeArgs, tal, that, false)) {
             ProducedType t = receiverType.getTypeMember(type, typeArgs);
-            ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
-                    new UnknownType(unit).getType() : //TODO: set the correct metatype
+            ProducedType ft = isAbstractType(t) /*|| isAbstraction(type)*/ ?
+                    new UnknownType(unit).getType() :
                     t.getFullType(wrap(t, receivingType, that));
             that.setTarget(t);
             if (isTypeUnknown(ft)) {
@@ -4417,8 +4421,8 @@ public class ExpressionVisitor extends Visitor {
             type = t.getDeclaration();
 //        }
         if (acceptsTypeArguments(type, typeArgs, tal, that, false)) {
-            ProducedType ft = isAbstractType(t) || isAbstraction(type) ?
-                    new UnknownType(unit).getType() : //TODO: set the correct metatype
+            ProducedType ft = isAbstractType(t) /*|| isAbstraction(type)*/ ?
+                    new UnknownType(unit).getType() :
                     t.getFullType();
             that.setTypeModel(ft);
             that.setTarget(t);
@@ -5899,5 +5903,23 @@ public class ExpressionVisitor extends Visitor {
             checkNonlocalType(that, (TypeDeclaration) declaration.getContainer());
         }
     }*/
+    
+    private Declaration handleAbstraction(Declaration dec, Tree.MemberOrTypeExpression that) {
+        //NOTE: if this is the qualifying type of a static method
+        //      reference, don't do anything special here, since
+        //      we're not actually calling the constructor
+        if (!that.getStaticMethodReferencePrimary() &&
+                isAbstraction(dec)) {
+            //first handle the case where it's not _really_ overloaded,
+            //it's just a constructor with a different visibility
+            if (dec instanceof Functional && ((Functional) dec).isAbstraction()) {
+                List<Declaration> overloads = ((Functional) dec).getOverloads();
+                if (overloads.size()==1) {
+                    return overloads.get(0);
+                }
+            }
+        }
+        return dec;
+    }
     
 }

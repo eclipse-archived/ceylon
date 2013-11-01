@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 
@@ -624,50 +623,44 @@ public class AnnotationVisitor extends Visitor {
     
     //Note: this simply doesn't belong here at all, since it has
     //      nothing at all to do with annotations, but it has
-    //      to happen after ExpressionVisitor, and I did not
-    //      want to add a whole new Visitor
+    //      to happen after ExpressionVisitor because overloaded
+    //      references are only resolved when we get to the 
+    //      containing InvocationExpression, and I did not want
+    //      to add a whole new Visitor just for overloading errors
     @Override public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            if (dec instanceof Functional && ((Functional) dec).isAbstraction()) {
-                List<Declaration> overloads = ((Functional) dec).getOverloads();
-                if (overloads.size()==1) {
-                    dec = overloads.get(0);
-                    if (!dec.isVisible(that.getScope())) {
-                        that.addError("constructor is not visible: " + dec.getName());
-                    }
-                    else if (dec.isPackageVisibility() && 
-                            !declaredInPackage(dec, that.getUnit())) {
-                        that.addError("package private constructor is not visible: " + dec.getName());
-                    }
-                    else if (dec.isProtectedVisibility() &&
-                            !declaredInPackage(dec, that.getUnit())) {
-                        that.addError("protected constructor is not visible: " + dec.getName());
-                    }
-                }
-                return;
+            if (that.getStaticMethodReference()) {
+                that.addError("ambiguous static reference to overloaded method or class: " +
+                        dec.getName(that.getUnit()) + " is overloaded");
             }
-            StringBuilder sb = new StringBuilder();
-            List<ProducedType> sig = that.getSignature();
-            if (sig!=null) {
-                sb.append(" (");
-                for (ProducedType pt: sig) {
-                    if (pt!=null) {
-                        sb.append(pt.getProducedTypeName(that.getUnit()));
+            else {
+                List<ProducedType> sig = that.getSignature();
+                if (sig==null) {
+                    that.addError("ambiguous callable reference to overloaded method or class: " +
+                            dec.getName(that.getUnit()) + " is overloaded");
+                }
+                else {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(" (");
+                    for (ProducedType pt: sig) {
+                        if (pt!=null) {
+                            sb.append(pt.getProducedTypeName(that.getUnit()));
+                        }
+                        sb.append(", ");
                     }
-                    sb.append(", ");
+                    if (!sig.isEmpty()) {
+                        sb.setLength(sb.length()-2);
+                    }
+                    sb.append(")");
+                    that.addError("ambiguous invocation of overloaded method or class: " +
+                            "there must be exactly one overloaded declaration of " + 
+                            dec.getName(that.getUnit()) + 
+                            " that accepts the given argument types" + sb);
                 }
-                if (!sig.isEmpty()) {
-                    sb.setLength(sb.length()-2);
-                }
-                sb.append(")");
             }
-            that.addError("ambiguous reference to overloaded method or class: " +
-                    "there must be exactly one overloaded declaration of " + 
-                    dec.getName(that.getUnit()) + 
-                    " that accepts the given argument types" + sb);
         }
     }
     
