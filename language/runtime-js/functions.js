@@ -266,6 +266,7 @@ function className(obj) {
         }
     }
     if (obj === null) return String$('ceylon.language::Null');
+    if (obj === undefined) return String$("JavaScript UNDEFINED");
     var tn = obj.getT$name === undefined ? 'UNKNOWN' : obj.getT$name();
     if (tn === 'UNKNOWN') {
         if (typeof obj === 'function') {
