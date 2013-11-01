@@ -10,7 +10,7 @@ public class TestingToolLoader extends ServiceToolLoader {
 
     @Override
     public String getToolName(String className) {
-        return camelCaseToDashes(className.replaceAll("^(.*\\.)?Test(.*)Tool$", "$2"));
+        return classNameToToolName(className);
     }
 
 }

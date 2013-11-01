@@ -287,6 +287,16 @@ public abstract class ToolLoader {
                 && method.getParameterTypes().length == 1;
     }
 
+    protected String classNameToToolName(String className){
+        if(className.startsWith("PATH:ceylon-")){
+            String name = className.substring(12);
+            if(IS_WINDOWS) // strip the .bat
+                name = name.substring(0, name.length()-4);
+            return name;
+        }
+        return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));
+    }
+    
     protected String camelCaseToDashes(String name) {
         StringBuilder sb = new StringBuilder();
         for (char ch : name.toCharArray()) {
