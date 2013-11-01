@@ -188,8 +188,11 @@ public class CompilerToolTest {
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
-        }catch(CompilerBugException x){
-            Assert.assertEquals("Codegen Assertion", x.getMessage());
+        }catch(CompilerErrorException x){
+            Assert.assertEquals("There was 1 error", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
         }
     }
     
@@ -202,8 +205,11 @@ public class CompilerToolTest {
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
-        }catch(CompilerBugException x){
-            Assert.assertEquals("Codegen Bug", x.getMessage());
+        }catch(CompilerErrorException x){
+            Assert.assertEquals("There was 1 error", x.getMessage());
+        }catch(Throwable t){
+            t.printStackTrace();
+            Assert.fail("Unexpected exception");
         }
     }
     

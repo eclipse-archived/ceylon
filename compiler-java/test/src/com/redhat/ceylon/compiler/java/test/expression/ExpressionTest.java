@@ -335,7 +335,6 @@ public class ExpressionTest extends CompilerTest {
         compile("instantiation/AvoidBackwardBranchWithSuper.ceylon");
         // We're testing that we get a vaguely helpful error message
         assertErrors("instantiation/AvoidBackwardBranchWithSuperInner",
-                new com.sun.tools.javac.util.FatalError("Fatal Error: Unable to find method byteValue"),
                 new CompilerError(2, "compiler bug: use of expressions which imply a loop (or other backward branch) in the invocation of a super class initializer are currently only supported on top level classes"));
     }
     
