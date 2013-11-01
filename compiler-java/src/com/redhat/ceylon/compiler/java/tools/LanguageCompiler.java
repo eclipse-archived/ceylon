@@ -729,7 +729,7 @@ public class LanguageCompiler extends JavaCompiler {
         CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
         try {
             // do not look at the global number of errors but only those for this file
-            if (super.gen.genClass(env, cdef) && sourcefile.errors == 0){
+            if (super.gen.genClass(env, cdef) && !sourcefile.hasError(cdef.pos)){
                 String packageName = cdef.sym.packge().getQualifiedName().toString();
                 Package pkg = modelLoader.findPackage(packageName);
                 if(pkg == null)
@@ -739,7 +739,7 @@ public class LanguageCompiler extends JavaCompiler {
                     String moduleName = module.getNameAsString();
                     CeylonFileObject moduleFileObject = moduleNamesToFileObjects.get(moduleName);
                     // if there's no module source file object it means the module descriptor had parse errors
-                    if(moduleFileObject == null || moduleFileObject.errors > 0){
+                    if(moduleFileObject == null || moduleFileObject.hasError()){
                         // we do not produce any class files for modules with errors
                         if(options.get(OptionName.VERBOSE) != null){
                             Log.printLines(log.noticeWriter, "[Not writing class "+cdef.sym.className()

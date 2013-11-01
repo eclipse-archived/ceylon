@@ -89,7 +89,7 @@ public class CeylonLog extends Log {
         if(source != null){
             JavaFileObject file = source.getFile();
             if(file instanceof CeylonFileObject && diagnostic.getType() == DiagnosticType.ERROR){
-                ((CeylonFileObject)file).errors++;
+                ((CeylonFileObject)file).addError(diagnostic);
             }
         }
         super.report(diagnostic);

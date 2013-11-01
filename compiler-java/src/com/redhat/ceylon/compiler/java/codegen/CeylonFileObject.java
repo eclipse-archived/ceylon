@@ -30,9 +30,13 @@ import javax.lang.model.element.NestingKind;
 import javax.tools.ForwardingFileObject;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.util.JCDiagnostic;
+import com.sun.tools.javac.util.List;
+import com.sun.tools.javac.util.Position;
+
 public class CeylonFileObject extends ForwardingFileObject<JavaFileObject> implements JavaFileObject {
     private final JavaFileObject f;
-    public int errors = 0;
+    private List<JCDiagnostic> errorList = List.nil();
 
     public CeylonFileObject(JavaFileObject f) {
         super(f);
@@ -124,5 +128,24 @@ public class CeylonFileObject extends ForwardingFileObject<JavaFileObject> imple
         if(obj instanceof CeylonFileObject)
             return f.equals(((CeylonFileObject)obj).f);
         return f.equals(obj);
+    }
+
+    public boolean hasError() {
+        return !errorList.isEmpty();
+    }
+
+    public void addError(JCDiagnostic error){
+        errorList = errorList.prepend(error);
+    }
+    
+    public boolean hasError(int pos){
+        for(JCDiagnostic error : errorList){
+            if(error.getStartPosition() <= pos && pos <= error.getEndPosition())
+                return true;
+            // we don't know where that error is
+            if(error.getStartPosition() == Position.NOPOS)
+                return true;
+        }
+        return false;
     }
 }
