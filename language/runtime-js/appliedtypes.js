@@ -15,31 +15,61 @@ function AppliedClass(tipo,$$targs$$,that){
         }
         return tipo.apply(x,arguments);
       }
-      var dummy = new AppliedClass.$$;
-      that.$$=AppliedClass.$$;
-      that.getT$all=function(){return dummy.getT$all();};
-      that.getT$name=function(){return dummy.getT$name();};
-      that.equals=function(o){
-        var eq=isOfType(o,{t:AppliedClass}) && o.tipo===tipo;
-        return eq;
-      };
-      that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
-      that.$apply.$$metamodel$$=AppliedClass.$$.prototype.$apply.$$metamodel$$;
-      defineAttr(that,'string',function(){
-        return String$($qname(mm));
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-      defineAttr(that,'extendedType',function(){
-        return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
-      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
-      defineAttr(that,'satisfiedTypes',function(){
-        return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
-      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
-      defineAttr(that,'declaration',function(){
-        return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-      },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);
     } else {
-      that=new AppliedClass.$$;
+      that=function(){
+        return tipo.apply(undefined,arguments);
+      }
     }
+    that.$$metamodel$$=mm;
+    var dummy = new AppliedClass.$$;
+    that.$$=AppliedClass.$$;
+    that.getT$all=function(){return dummy.getT$all();};
+    that.getT$name=function(){return dummy.getT$name();};
+    that.equals=function(o){
+      var eq=isOfType(o,{t:AppliedClass}) && o.tipo===tipo;
+      return eq;
+    };
+    that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
+    that.$apply.$$metamodel$$=AppliedClass.$$.prototype.$apply.$$metamodel$$;
+    defineAttr(that,'satisfiedTypes',function(){
+      return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
+    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
+    defineAttr(that,'container',function(){
+      return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
+    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$$metamodel$$);
+    defineAttr(that,'string',function(){
+      return ClassOrInterface$meta$model.$$.prototype.$prop$getString.get.call(that);
+    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getString.$$metamodel$$);
+    defineAttr(that,'hash',function(){
+      return ClassOrInterface$meta$model.$$.prototype.$prop$getHash.get.call(that);
+    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getHash.$$metamodel$$);
+    defineAttr(that,'typeArguments',function(){
+      return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
+    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$$metamodel$$);
+    defineAttr(that,'extendedType',function(){
+      return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
+    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$$metamodel$$);
+    defineAttr(that,'declaration',function(){
+      return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+    },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);
+    defineAttr(that,'parameterTypes',function(){
+      return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
+    },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$$metamodel$$);
+    defineAttr(that,'declaration',function(){
+      return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+    },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);
+    that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
+    that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
+    that.getVariableAttribute=ClassOrInterface$meta$model.$$.prototype.getVariableAttribute;
+    that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
+    that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
+    that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
+    that.equals=ClassModel$meta$model.$$.prototype.equals;
+    that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
+    that.isTypeOf=ClassOrInterface$meta$model.$$.prototype.isTypeOf;
+    that.isSuperTypeOf=ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf;
+    that.isSubTypeOf=ClassOrInterface$meta$model.$$.prototype.isSubTypeOf;
+    that.isExactly=ClassOrInterface$meta$model.$$.prototype.isExactly;
   }
   set_type_args(that,$$targs$$);
   Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments:that.$$targs$$.Arguments,Type:that.$$targs$$.Type},that);
@@ -89,6 +119,7 @@ function AppliedMemberClass(tipo,$$targs$$,that){
         }
         rv=AppliedClass(rv,{Type:nt,Arguments:{t:Sequential,a:{Element:{t:Anything},Absent:{t:Null}}}});//TODO generate metamodel for Arguments
         if (nt.a)rv.$targs=nt.a;
+        rv.$bound=x;
         return rv;
       }
       var dummy = new AppliedMemberClass.$$;
@@ -212,9 +243,21 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
     }
     if (mm && mm.$cont) {
       that=function(x){
-        that.tipo=function(){return tipo.apply(x,arguments);};
-        that.$bound=x;
-        return that;
+        var rv=tipo.bind(x);
+        rv.$$metamodel$$=tipo.$$metamodel$$;
+        var nt={t:tipo};
+        if (x.$$targs$$) {
+          nt.a={};
+          for (var nta in x.$$targs$$)nt.a[nta]=x.$$targs$$[nta];
+        }
+        if (that.$targs) {
+          if (!nt.a)nt.a={};
+          for (var nta in that.$targs)nt.a[nta]=that.$targs[nta];
+        }
+        rv=AppliedInterface(rv,{Type:nt});
+        if (nt.a)rv.$targs=nt.a;
+        rv.$bound=x;
+        return rv;
       }
       that.tipo$2=tipo;
       var dummy = new AppliedMemberInterface.$$;
