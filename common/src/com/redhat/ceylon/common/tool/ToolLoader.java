@@ -19,6 +19,7 @@ import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
 /**
@@ -27,8 +28,6 @@ import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
  * @author tom
  */
 public abstract class ToolLoader {
-
-    protected static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
 
     protected static final String SCRIPT_PREFIX = "SCRIPT:";
 
@@ -295,7 +294,7 @@ public abstract class ToolLoader {
             int lastSep = className.lastIndexOf(File.separatorChar);
             if(lastSep != -1)
                 name = name.substring(lastSep+1);
-            if(IS_WINDOWS) // strip the .bat
+            if(OSUtil.isWindows()) // strip the .bat
                 name = name.substring(0, name.length()-4);
             return name;
         }

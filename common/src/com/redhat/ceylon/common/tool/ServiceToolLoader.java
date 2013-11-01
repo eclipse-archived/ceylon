@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.OSUtil;
 
 public abstract class ServiceToolLoader extends ToolLoader {
 
@@ -110,7 +111,7 @@ public abstract class ServiceToolLoader extends ToolLoader {
                 public boolean accept(File f) {
                     if(f.isFile() && f.canExecute() && f.getName().startsWith("ceylon-")){
                         String name = f.getName().substring(7);
-                        if(IS_WINDOWS){
+                        if(OSUtil.isWindows()){
                             // script must end with ".bat"
                             if(!name.endsWith(".bat"))
                                 return false;

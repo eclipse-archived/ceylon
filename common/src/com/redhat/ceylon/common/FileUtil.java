@@ -77,13 +77,12 @@ public class FileUtil {
         if (ceylonConfigDir != null) {
             configDir = new File(ceylonConfigDir);
         } else {
-            String os = System.getProperty("os.name").toLowerCase();
-            if (os.startsWith("windows")) {
+            if (OSUtil.isWindows()) {
                 String appDir = System.getenv("ALLUSERSPROFILE");
                 if (appDir != null) {
                     configDir = new File(appDir, "ceylon");
                 }
-            } else if (os.startsWith("mac")) {
+            } else if (OSUtil.isMac()) {
                 configDir = new File("/etc/ceylon");
             } else {
                 // Assume a "regular" unix OS
