@@ -366,7 +366,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         ToolLoader pluginLoader = new ServiceToolLoader(Tool.class) {
             @Override
             public String getToolName(String className) {
-                return camelCaseToDashes(className.replaceAll("^(.*\\.)?Ceylon(.*)Tool$", "$2"));
+                return classNameToToolName(className);
             }
         };
         String toolName;
