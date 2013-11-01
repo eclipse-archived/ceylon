@@ -405,7 +405,7 @@ public abstract class ToolLoader {
         if (hasDescription(setter)) {
             throw new ModelException(
                     "Method " + setter + " is annotated with @Argument and @Description: " +
-            		"Arguments should be documented in the class-level @Description");
+                    "Arguments should be documented in the class-level @Description");
         }
         if (isHidden(setter)) {
             throw new ModelException(
