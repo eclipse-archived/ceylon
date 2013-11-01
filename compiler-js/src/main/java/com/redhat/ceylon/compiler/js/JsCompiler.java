@@ -127,30 +127,30 @@ public class JsCompiler {
                 .buildOutputManager();
         String outDir = options.getOutDir();
         if(!isURL(outDir)){
-        	File root = new File(outDir);
-        	if (root.exists()) {
-        		if (!(root.isDirectory() && root.canWrite())) {
-        			System.err.printf("Cannot write to %s. Stop.%n", root);
-        		}
-        	} else {
-        		if (!root.mkdirs()) {
-        			System.err.printf("Cannot create %s. Stop.%n", root);
-        		}
-        	}
+            File root = new File(outDir);
+            if (root.exists()) {
+                if (!(root.isDirectory() && root.canWrite())) {
+                    System.err.printf("Cannot write to %s. Stop.%n", root);
+                }
+            } else {
+                if (!root.mkdirs()) {
+                    System.err.printf("Cannot create %s. Stop.%n", root);
+                }
+            }
         }
         types = new TypeUtils(tc.getContext().getModules().getLanguageModule());
     }
 
     private boolean isURL(String path) {
-    	try {
-			new URL(path);
-			return true;
-		} catch (MalformedURLException e) {
-			return false;
-		}
-	}
+        try {
+            new URL(path);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
 
-	/** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
+    /** Specifies whether the compiler should stop when errors are found in a compilation unit (default true). */
     public JsCompiler stopOnErrors(boolean flag) {
         stopOnErrors = flag;
         return this;
