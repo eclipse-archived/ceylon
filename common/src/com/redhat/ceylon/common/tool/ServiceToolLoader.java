@@ -8,9 +8,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import com.redhat.ceylon.common.Constants;
 
 public abstract class ServiceToolLoader extends ToolLoader {
 
@@ -82,6 +85,10 @@ public abstract class ServiceToolLoader extends ToolLoader {
     }
 
     private void findPathPlugins() {
+        String ceylonHome = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
+        Set<String> names = new HashSet<String>();
+        if(ceylonHome != null)
+            findPluginInPath(ceylonHome+File.separator+"bin", names);
         String path = System.getenv("PATH");
         if(path == null || path.isEmpty()){
             return;
@@ -89,13 +96,13 @@ public abstract class ServiceToolLoader extends ToolLoader {
         int sep;
         while((sep = path.indexOf(File.pathSeparatorChar)) != -1){
             String part = path.substring(0, sep);
-            findPluginInPath(part);
+            findPluginInPath(part, names);
             path = path.substring(sep+1);
         }
-        findPluginInPath(path);
+        findPluginInPath(path, names);
     }
 
-    private void findPluginInPath(String path) {
+    private void findPluginInPath(String path, final Set<String> names) {
         File file = new File(path);
         if(file.isDirectory() && file.canRead()){
             File[] matches = file.listFiles(new FileFilter(){
@@ -116,14 +123,14 @@ public abstract class ServiceToolLoader extends ToolLoader {
                         // also refuse ceylon-sh-setup
                         if(name.equals("ceylon-sh-setup"))
                             return false;
-                        // we're good
-                        return true;
+                        // we're good if it's unique
+                        return names.add(name);
                     }
                     return false;
                 }
             });
             for(File sub : matches){
-                String name = "PATH:"+sub.getName();
+                String name = SCRIPT_PREFIX+sub.getAbsolutePath();
                 pathPlugins.add(name);
             }
         }

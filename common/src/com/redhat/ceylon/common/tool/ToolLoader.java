@@ -30,6 +30,8 @@ public abstract class ToolLoader {
 
     protected static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
 
+    protected static final String SCRIPT_PREFIX = "SCRIPT:";
+
     protected final ClassLoader loader;
     
     public ToolLoader() {
@@ -78,8 +80,8 @@ public abstract class ToolLoader {
      */
     public <T extends Tool> ToolModel<T> loadToolModel(String toolName) {
         String className = getToolClassName(toolName);
-        if(className != null && className.startsWith("PATH:")){
-            return loadScriptTool(toolName);
+        if(className != null && className.startsWith(SCRIPT_PREFIX)){
+            return loadScriptTool(className, toolName);
         }else{
             Class<T> toolClass = loadToolClass(toolName);
             if (toolClass != null) {
@@ -98,10 +100,10 @@ public abstract class ToolLoader {
         return null;
     }
     
-    private <T extends Tool> ToolModel<T> loadScriptTool(String toolName) {
+    private <T extends Tool> ToolModel<T> loadScriptTool(String className, String toolName) {
         ToolModel<T> model = new ToolModel<T>();
         model.setScript(true);
-        model.setScriptName("ceylon-"+toolName);
+        model.setScriptName(className.substring(7));
         model.setName(toolName);
         model.setToolLoader(this);
         return model;
@@ -288,8 +290,11 @@ public abstract class ToolLoader {
     }
 
     protected String classNameToToolName(String className){
-        if(className.startsWith("PATH:ceylon-")){
-            String name = className.substring(12);
+        if(className.startsWith(SCRIPT_PREFIX)){
+            String name = className.substring(7);
+            int lastSep = className.lastIndexOf(File.separatorChar);
+            if(lastSep != -1)
+                name = name.substring(lastSep+1);
             if(IS_WINDOWS) // strip the .bat
                 name = name.substring(0, name.length()-4);
             return name;
