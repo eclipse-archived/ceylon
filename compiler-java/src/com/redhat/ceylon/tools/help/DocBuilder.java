@@ -19,6 +19,11 @@
  */
 package com.redhat.ceylon.tools.help;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.ProcessBuilder.Redirect;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +37,7 @@ import java.util.ResourceBundle;
 
 import org.tautua.markdownpapers.ast.Document;
 
+import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.Description;
@@ -226,6 +232,8 @@ public class DocBuilder {
     }
 
     private OptionsSection buildOptions(ToolModel<?> model) {
+        if(model.isScript())
+            return null;
         final HashMap<ToolModel<?>, OptionsSection> map = new HashMap<>();
         new SubtoolVisitor(model) {
             @Override
@@ -364,7 +372,7 @@ public class DocBuilder {
                     SubtoolModel<?> subtoolModel) {
                 if (model.getSubtoolModel() == null) {// a leaf
                     Synopsis synopsis = new Synopsis();
-                    synopsis.setInvocation(getCeylonInvocation(root));
+                    synopsis.setInvocation(getCeylonInvocationForSynopsis(root));
                     List<?> optionsAndArguments;
                     if (ancestors.isEmpty()) {
                         optionsAndArguments = optionsAndArguments(model);
@@ -447,6 +455,9 @@ public class DocBuilder {
     }
     
     private String getSummaryValue(ToolModel<?> model) {
+        if(model.isScript()){
+            return invokeScript(model, "--_print-summary");
+        }
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "summary");
         if (msg.isEmpty()) {
@@ -458,7 +469,37 @@ public class DocBuilder {
         return msg;
     }
 
+    private String invokeScript(ToolModel<?> model, String arg) {
+        ProcessBuilder processBuilder = new ProcessBuilder(model.getScriptName(), arg);
+        CeylonTool.setupScriptEnvironment(processBuilder);
+        processBuilder.redirectError(Redirect.INHERIT);
+        try {
+            Process process = processBuilder.start();
+            // no stdin to the tool
+            process.getOutputStream().close();
+            InputStream stream = process.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            StringBuffer strbuf = new StringBuffer();
+            String line;
+            while((line = reader.readLine()) != null){
+                strbuf.append(line+"\n");
+            }
+            reader.close();
+            int exit = process.waitFor();
+            if(exit != 0)
+                return "";
+            return strbuf.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     private ResourceBundle getToolBundle(ToolModel<?> model) {
+        if(model.isScript())
+            return null;
         ResourceBundle toolBundle;
         try {
             toolBundle = ResourceBundle.getBundle(model.getToolClass().getName());
@@ -470,10 +511,15 @@ public class DocBuilder {
 
     
     private Summary getSummary(ToolModel<?> model) {
+        if(model.isScript())
+            return null;
         return model.getToolClass().getAnnotation(Summary.class);
     }
 
     private String getDescription(ToolModel<?> model) {
+        if(model.isScript()){
+            return invokeScript(model, "--_print-description");
+        }
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "description");
         if (msg.isEmpty()) {
@@ -486,6 +532,8 @@ public class DocBuilder {
     }
 
     private String getSections(ToolModel<?> model) {
+        if(model.isScript())
+            return null;
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "sections.remaining");
         if (msg.isEmpty()) {
@@ -513,5 +561,11 @@ public class DocBuilder {
         return getName(model).isEmpty() ? Tools.progName(): Tools.progName() + " " + model.getName();
     }
 
+    private String getCeylonInvocationForSynopsis(ToolModel<?> model) {
+        String ret = getCeylonInvocation(model);
+        if(model.isScript())
+            return ret + " " + invokeScript(model, "--_print-usage");
+        return ret;
+    }
 
 }

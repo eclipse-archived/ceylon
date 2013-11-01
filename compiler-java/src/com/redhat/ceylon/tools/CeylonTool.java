@@ -20,11 +20,16 @@
 package com.redhat.ceylon.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.ProcessBuilder.Redirect;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.tool.Argument;
@@ -43,6 +48,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.Tools;
+import com.redhat.ceylon.launcher.LauncherUtil;
 import com.sun.tools.javac.main.CommandLine;
 
 
@@ -299,7 +305,7 @@ public class CeylonTool implements Tool {
     }
 
     private CeylonConfig setupConfig() {
-        Tool tool = getTool();
+        Tool tool = getTool(getToolModel());
         if (tool instanceof CeylonBaseTool) {
             CeylonBaseTool cbt = (CeylonBaseTool)tool;
             File cwd = cbt.getCwd();
@@ -318,15 +324,56 @@ public class CeylonTool implements Tool {
             // --version with a Java <7 JVM, but also do it here for consistency
             version(System.out);
         } else {
-            Tool tool = getTool();
-            // Run the tool
-            tool.run();
+            final ToolModel<?> model = getToolModel();
+            if(model.isScript()){
+                runScript(model);
+            }else{
+                Tool tool = getTool(model);
+                // Run the tool
+                tool.run();
+            }
         }
     }
 
-    public Tool getTool() {
+    private void runScript(ToolModel<?> model) {
+        List<String> args = new ArrayList<String>(1+toolArgs.size());
+        args.add(model.getScriptName());
+        args.addAll(toolArgs);
+        ProcessBuilder processBuilder = new ProcessBuilder(args);
+        setupScriptEnvironment(processBuilder);
+        processBuilder.redirectError(Redirect.INHERIT);
+        processBuilder.redirectOutput(Redirect.INHERIT);
+        processBuilder.redirectInput(Redirect.INHERIT);
+        try {
+            Process process = processBuilder.start();
+            int exit = process.waitFor();
+            if(exit != 0)
+                throw new ToolError("Script "+model.getScriptName()+" returned error exit code "+exit) {};
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setupScriptEnvironment(ProcessBuilder processBuilder) {
+        Map<String, String> env = processBuilder.environment();
+        try {
+            env.put(Constants.ENV_CEYLON_HOME_DIR, LauncherUtil.determineHome().getAbsolutePath());
+        } catch (URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+        // FIXME: more info?
+        env.put("JAVA_HOME", System.getProperty("java.home"));
+        env.put("CEYLON_VERSION_MAJOR", Integer.toString(Versions.CEYLON_VERSION_MAJOR));
+        env.put("CEYLON_VERSION_MINOR", Integer.toString(Versions.CEYLON_VERSION_MINOR));
+        env.put("CEYLON_VERSION_RELEASE", Integer.toString(Versions.CEYLON_VERSION_RELEASE));
+        env.put("CEYLON_VERSION", Versions.CEYLON_VERSION);
+        env.put("CEYLON_VERSION_NAME", Versions.CEYLON_VERSION_NAME);
+    }
+
+    public Tool getTool(ToolModel<?> model) {
         Tool tool = null;
-        final ToolModel<?> model = getToolModel(getToolName());
         if (model == null) {
             ArgumentModel<?> argumentModel = getToolModel("").getArguments().get(0);
             // XXX Very evil hack to work around the fact that the CeyonTool does 
@@ -336,6 +383,8 @@ public class CeylonTool implements Tool {
             throw new NoSuchToolException(argumentModel,
                     getToolName());
         }
+        if(model.isScript())
+            return null;
         tool = getPluginFactory().bindArguments(model, toolArgs);
         return tool;
     }
