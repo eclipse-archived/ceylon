@@ -199,3 +199,45 @@ void testMaybeNum() {
 }
 
 alias MaybeNum => Integer|Float|Null;
+
+alias Primitive => String|Float|Integer;
+alias PrimitiveOrIterable => Primitive|{Primitive*};
+
+void foo1(PrimitiveOrIterable bar) {
+    switch(bar)
+    case(is Primitive) {
+        print("primitve");
+    }
+    case(is {Primitive*}) { // Compile error
+        print("primitive iterable");
+    }
+    switch(bar)
+    case(is String) {
+        print("primitve");
+    }
+    case(is Float|Integer) {
+        print("primitve");
+    }
+    case(is {String|Float|Integer*}) { // Compile error
+        print("primitive iterable");
+    }
+}
+void foo2(String|Float|Integer|{String|Float|Integer*} bar) {
+    switch(bar)
+    case(is Primitive) {
+        print("primitve");
+    }
+    case(is {Primitive*}) { // Compile error
+        print("primitive iterable");
+    }
+    switch(bar)
+    case(is String) {
+        print("primitve");
+    }
+    case(is Float|Integer) {
+        print("primitve");
+    }
+    case(is {String|Float|Integer*}) { // Compile error
+        print("primitive iterable");
+    }
+}

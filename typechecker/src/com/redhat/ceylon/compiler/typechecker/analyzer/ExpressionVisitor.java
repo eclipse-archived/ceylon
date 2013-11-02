@@ -5437,7 +5437,7 @@ public class ExpressionVisitor extends Visitor {
     private void checkCasesDisjoint(ProducedType type, ProducedType other,
             Node ot) {
         if (!isTypeUnknown(type) && !isTypeUnknown(other)) {
-            if (!intersectionType(type, other, unit).isNothing()) {
+            if (!intersectionType(type.resolveAliases(), other.resolveAliases(), unit).isNothing()) {
                 ot.addError("cases are not disjoint: " + 
                         type.getProducedTypeName(unit) + " and " + 
                         other.getProducedTypeName(unit));
