@@ -61,4 +61,17 @@ shared void testCurries() {
     check(apply(function () => 1, []) == 1, "apply 0");
     check(apply(function (Integer a = 2) => a, []) == 2, "apply 0.1");
     check(apply(function (Integer a = 2) => a, [1]) == 1, "apply 0.2");
+    
+    function f1(Integer i) => i;
+    value g1 = curry(f1);
+    check(g1(1)()==1, "call curried");
+    value h1 = uncurry(g1);
+    check(h1(3)==3, "call uncurried");
+    
+    function f2(Float x, Float y) => x+y;
+    value g2 = curry(f2);
+    check(g2(1.0)(1.0)==2.0, "call curried");
+    value h2 = uncurry(g2);
+    check(h2(3.0, 3.0)==6.0, "call uncurried");
+    
 }

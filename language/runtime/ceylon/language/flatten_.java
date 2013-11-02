@@ -31,7 +31,7 @@ public final class flatten_ {
 
             @Override
             public Return $call$() {
-                return tupleFunction.$call$();
+                return tupleFunction.$call$(empty_.get_());
             }
 
             @Override
