@@ -27,6 +27,7 @@
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
         <module name="org.tautua.markdownpapers.core" slot="1.2.7" optional="true"/>
+        <module name="com.github.rjeschke.txtmark" slot="0.8-c0dcd373ce" optional="true"/>
         <system export="true">
             <paths>
                 <path name="javax/tools"/>
