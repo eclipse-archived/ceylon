@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
@@ -174,11 +172,6 @@ public abstract class ToolLoader {
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,
             Method method, Map<Integer, ArgumentModel<?>> orderedArgumentModels) {
-        final PostConstruct postConstructAnno = method.getAnnotation(PostConstruct.class);
-        if (postConstructAnno != null) {
-            checkPostConstructMethod(method);
-            model.addPostConstruct(method);
-        }
         final Rest rest = method.getAnnotation(Rest.class);
         if (rest != null) {
             if (!isSetter(method)) {
@@ -237,16 +230,6 @@ public abstract class ToolLoader {
         argumentModel.setType(boolean.class);
         argumentModel.setMultiplicity(Multiplicity._0_OR_1);
         return argumentModel;
-    }
-
-    private void checkPostConstructMethod(Method method) {
-        final int modifiers = method.getModifiers();
-        if (!Modifier.isPublic(modifiers)) {
-            throw new ModelException("Method " + method + " is annotated with @PostConstruct but is not public ");
-        }
-        if (method.getParameterTypes().length != 0) {
-            throw new ModelException("Method " + method + " is annotated with @PostConstruct but requires a non-empty argument list");            
-        }
     }
 
     private void checkClass(Class<? extends Tool> cls) throws ModelException {

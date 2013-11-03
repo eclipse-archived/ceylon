@@ -1,7 +1,6 @@
 package com.redhat.ceylon.common.tool;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import com.redhat.ceylon.common.tool.OptionArgumentException.*;
+import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.UnknownOptionException;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
 
@@ -246,7 +246,7 @@ public class ToolFactory {
                 applyBindings();
                 handleRest();
                 assertAllRecognised();
-                invokePostConstructors();
+                invokeInitialize();
             } catch (IllegalAccessException e) {
                 // Programming error 
                 throw new ToolException(e);
@@ -358,13 +358,11 @@ public class ToolFactory {
             }
         }
 
-        private void invokePostConstructors() throws IllegalAccessException {
-            for (Method m : toolModel.getPostConstruct()) {
-                try {
-                    m.invoke(tool);
-                } catch (InvocationTargetException e) {
-                    throw new ToolInitializationException(e.getCause());
-                }
+        private void invokeInitialize() {
+            try {
+                tool.initialize();
+            } catch (Exception e) {
+                throw new ToolInitializationException(e);
             }
         }
         

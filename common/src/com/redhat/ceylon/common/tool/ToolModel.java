@@ -21,7 +21,6 @@ public class ToolModel<T extends Tool> {
     private Map<String, OptionModel<?>> optionsByName = new LinkedHashMap<>(1);
     private Map<Character, OptionModel<?>> optionsByShort = new HashMap<>(1);
     private List<ArgumentModel<?>> arguments = new ArrayList<>(1);
-    private List<Method> postConstruct = new ArrayList<>(1);
     private Class<T> toolClass;
     private Method rest;
     private SubtoolModel<?> subtoolModel;
@@ -102,15 +101,6 @@ public class ToolModel<T extends Tool> {
     
     public Class<T> getToolClass() {
         return toolClass;
-    }
-    
-    
-    public void addPostConstruct(Method method) {
-        postConstruct.add(method);
-    }
-    
-    public List<Method> getPostConstruct() {
-        return postConstruct;
     }
     
     public void setRest(Method method) {
