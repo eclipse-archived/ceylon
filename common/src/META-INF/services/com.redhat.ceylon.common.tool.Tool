@@ -1,1 +1,2 @@
-com.redhat.ceylon.common.config.CeylonConfigTool
+com.redhat.ceylon.common.tools.CeylonTool
+com.redhat.ceylon.common.tools.config.CeylonConfigTool

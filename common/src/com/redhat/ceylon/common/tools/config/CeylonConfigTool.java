@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package com.redhat.ceylon.common.config;
+package com.redhat.ceylon.common.tools.config;
 
 import java.io.File;
 import java.io.IOException;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.ConfigException;
+import com.redhat.ceylon.common.config.ConfigParser;
+import com.redhat.ceylon.common.config.ConfigWriter;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
