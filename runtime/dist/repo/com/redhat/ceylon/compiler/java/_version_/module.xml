@@ -26,6 +26,7 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
+        <module name="org.tautua.markdownpapers.core" slot="1.2.7" optional="true"/>
         <system export="true">
             <paths>
                 <path name="javax/tools"/>
