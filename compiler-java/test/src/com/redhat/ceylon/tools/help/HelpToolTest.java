@@ -51,10 +51,10 @@ public class HelpToolTest {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
         Assert.assertNotNull(model);
         try {
-            pluginFactory.bindArguments(model, Arrays.asList("example"));
+            pluginFactory.bindArguments(model, Arrays.asList("xfavbergbvuis12342w34"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getMessage(), e.getMessage().contains("Invalid value 'example' given for argument 'tool'"));
+            Assert.assertTrue(e.getMessage(), e.getMessage().contains("Invalid value 'xfavbergbvuis12342w34' given for argument 'tool'"));
         }
     }
     
