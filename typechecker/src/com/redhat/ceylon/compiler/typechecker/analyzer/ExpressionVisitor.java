@@ -25,6 +25,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSu
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
@@ -3747,13 +3748,13 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("package private type is not visible: " + 
                     baseDescription(that));
             }
+            //don't need to consider "protected" because
+            //toplevel types can't be declared protected
+            //and inherited protected member types are
+            //visible to subclasses
         }
     }
 
-    private static String baseDescription(Tree.BaseType that) {
-        return name(that.getIdentifier());
-    }
-    
     @Override
     public void visit(Tree.QualifiedType that) {
         super.visit(that);
@@ -3763,21 +3764,178 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("member type is not visible: " + 
                         qualifiedDescription(that), 400);
             }
-            else {
-                if (type.isProtectedVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("protected member type is not visible: " + 
+            else if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private member type is not visible: " + 
                         qualifiedDescription(that));
-                }
-                else if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private member type is not visible: " + 
+            }
+            //this is actually slightly too restrictive
+            //since a qualified type may in fact be an
+            //inherited member type, but in that case
+            //you can just get rid of the qualifier, so
+            //in fact this restriction is OK
+            else if (type.isProtectedVisibility() &&
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected member type is not visible: " + 
                         qualifiedDescription(that));
-                }
             }
         }
     }
 
+    private void checkBaseVisibility(Node that, TypedDeclaration member, 
+            String name) {
+        if (!member.isVisible(that.getScope())) {
+            that.addError("function or value is not visible: " +
+                    name, 400);
+        }
+        else if (member.isPackageVisibility() && 
+                !declaredInPackage(member, unit)) {
+            that.addError("package private function or value is not visible: " +
+                    name);
+        }
+        //don't need to consider "protected" because
+        //there are no toplevel members in Java and
+        //inherited protected members are visible to 
+        //subclasses
+    }
+    
+    private void checkQualifiedVisibility(Node that, TypedDeclaration member, 
+            String name, String container, boolean selfReference) {
+        if (!member.isVisible(that.getScope())) {
+            that.addError("method or attribute is not visible: " +
+                    name + " of " + container, 400);
+        }
+        else if (member.isPackageVisibility() && 
+                !declaredInPackage(member, unit)) {
+            that.addError("package private method or attribute is not visible: " +
+                    name + " of " + container);
+        }
+        //this is actually too restrictive since
+        //it doesn't take into account "other 
+        //instance" access (access from a different
+        //instance of the same type)
+        else if (member.isProtectedVisibility() && 
+                !selfReference && 
+                !declaredInPackage(member, unit)) {
+            that.addError("protected method or attribute is not visible: " +
+                    name + " of " + container);
+        }
+    }
+
+    private void checkBaseTypeAndConstructorVisibility(
+            Tree.BaseTypeExpression that, String name, TypeDeclaration type) {
+        //Note: the handling of "protected" here looks
+        //      wrong because Java has a crazy rule 
+        //      that you can't instantiate protected
+        //      member classes from a subclass
+        if (isOverloadedVersion(type)) {  
+            //it is a Java constructor
+            //get the actual type that
+            //owns the constructor
+            //Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
+            Declaration at = type.getExtendedTypeDeclaration();
+            if (!at.isVisible(that.getScope())) {
+                that.addError("type is not visible: " + name);
+            }
+            else if (at.isPackageVisibility() &&
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private type is not visible: " + name);
+            }
+            else if (at.isProtectedVisibility() &&
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected type is not visible: " + name);
+            }
+            else if (!type.isVisible(that.getScope())) {
+                that.addError("type constructor is not visible: " + name);
+            }
+            else if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private constructor is not visible: " + name);
+            }
+            else if (type.isProtectedVisibility() &&
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected constructor is not visible: " + name);
+            }
+        }
+        else {
+            if (!type.isVisible(that.getScope())) {
+                that.addError("type is not visible: " + name, 400);
+            }
+            else if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private type is not visible: " + name);
+            }
+            else if (type.isProtectedVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected type is not visible: " + name);
+            }
+        }
+    }
+    
+    private void checkQualifiedTypeAndConstructorVisibility(
+            Tree.QualifiedTypeExpression that, TypeDeclaration type,
+            String name, String container) {
+        //Note: the handling of "protected" here looks
+        //      wrong because Java has a crazy rule 
+        //      that you can't instantiate protected
+        //      member classes from a subclass
+        if (isOverloadedVersion(type)) {
+            //it is a Java constructor
+            //get the actual type that
+            //owns the constructor
+            //Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
+            Declaration at = type.getExtendedTypeDeclaration();
+            if (!at.isVisible(that.getScope())) {
+                that.addError("member type is not visible: " +
+                        name + " of " + container);
+            }
+            else if (at.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private member type is not visible: " +
+                        name + " of type " + container);
+            }
+            else if (at.isProtectedVisibility() &&
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected member type is not visible: " +
+                        name + " of type " + container);
+            }
+            else if (!type.isVisible(that.getScope())) {
+                that.addError("member type constructor is not visible: " +
+                        name + " of " + container);
+            }
+            else if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private member type constructor is not visible: " +
+                        name + " of " + container);
+            }
+            else if (type.isProtectedVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected member type constructor is not visible: " +
+                        name + " of " + container);
+            }
+        }
+        else {
+            if (!type.isVisible(that.getScope())) {
+                that.addError("member type is not visible: " +
+                        name + " of " + container, 400);
+            }
+            else if (type.isPackageVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("package private member type is not visible: " +
+                        name + " of " + container);
+            }
+            else if (type.isProtectedVisibility() && 
+                    !declaredInPackage(type, unit)) {
+                that.addError("protected member type is not visible: " +
+                        name + " of " + container);
+            }
+        }
+    }
+
+    private static String baseDescription(Tree.BaseType that) {
+        return name(that.getIdentifier());
+    }
+    
     private static String qualifiedDescription(Tree.QualifiedType that) {
         String name = name(that.getIdentifier());
         Declaration d = that.getOuterType().getTypeModel().getDeclaration();
@@ -3824,19 +3982,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkBaseVisibility(Node that, TypedDeclaration member, 
-            String name) {
-        if (!member.isVisible(that.getScope())) {
-            that.addError("function or value is not visible: " +
-                    name, 400);
-        }
-        else if (member.isPackageVisibility() && 
-                !declaredInPackage(member, unit)) {
-            that.addError("package private function or value is not visible: " +
-                    name);
-        }
-    }
-    
     private List<TypeParameter> getTypeParameters(Declaration member) {
         return member instanceof Generic ? 
                 ((Generic) member).getTypeParameters() : 
@@ -3937,25 +4082,6 @@ public class ExpressionVisitor extends Visitor {
 //                checkOverloadedReference(that);
             }
             checkSuperMember(that);
-        }
-    }
-
-    private void checkQualifiedVisibility(Node that, TypedDeclaration member, 
-            String name, String container, boolean selfReference) {
-        if (!member.isVisible(that.getScope())) {
-            that.addError("method or attribute is not visible: " +
-                    name + " of " + container, 400);
-        }
-        else if (member.isProtectedVisibility() && 
-                !selfReference && 
-                !declaredInPackage(member, unit)) {
-            that.addError("protected method or attribute is not visible: " +
-                    name + " of " + container);
-        }
-        else if (member.isPackageVisibility() && 
-                !declaredInPackage(member, unit)) {
-            that.addError("package private method or attribute is not visible: " +
-                    name + " of " + container);
         }
     }
 
@@ -4075,32 +4201,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             type = (TypeDeclaration) handleAbstraction(type, that);
             that.setDeclaration(type);
-            if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: " + name, 400);
-            }
-            else if (type instanceof Functional &&
-                    ((Functional) type).isOverloaded()) {  
-                //it is a Java constructor
-                Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
-                if (at.isPackageVisibility() &&
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private type is not visible: " + name);
-                }
-                else if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private constructor is not visible: " + name);
-                }
-                else if (type.isProtectedVisibility() &&
-                        !declaredInPackage(type, unit)) {
-                    that.addError("protected constructor is not visible: " + name);
-                }
-            }
-            else {
-                if (type.isPackageVisibility() && 
-                        !declaredInPackage(type, unit)) {
-                    that.addError("package private type is not visible: " + name);
-                }
-            }
+            checkBaseTypeAndConstructorVisibility(that, name, type);
             checkConcreteClass(type, that);
             Tree.TypeArguments tal = that.getTypeArguments();
             if (explicitTypeArguments(type, tal, that)) {
@@ -4254,51 +4355,9 @@ public class ExpressionVisitor extends Visitor {
             else {
                 type = (TypeDeclaration) handleAbstraction(type, that);
                 that.setDeclaration(type);
-                boolean selfReference = p instanceof Tree.This &&
+                checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
+                boolean selfReference = p instanceof Tree.This ||
                         p instanceof Tree.Super;
-                if (!type.isVisible(that.getScope())) {
-                    that.addError("member type is not visible: " +
-                            name + " of " + container, 400);
-                }
-                else if (type instanceof Functional &&
-                        ((Functional) type).isOverloaded()) {  
-                    //it is a Java constructor
-                    Declaration at = type.getContainer().getDirectMember(type.getName(), null, false);
-                    if (at.isProtectedVisibility() && 
-                            !declaredInPackage(type, unit)) {
-                        that.addError("protected member type is not visible: " +
-                                name + " of type " + container);
-                    }
-                    else if (at.isPackageVisibility() && 
-                            !declaredInPackage(type, unit)) {
-                        that.addError("package private member type is not visible: " +
-                                name + " of type " + container);
-                    }
-                    else if (type.isProtectedVisibility() && 
-                            !selfReference &&
-                            !declaredInPackage(type, unit)) {
-                        that.addError("protected member type constructor is not visible: " +
-                                name + " of " + container);
-                    }
-                    else if (type.isPackageVisibility() && 
-                            !declaredInPackage(type, unit)) {
-                        that.addError("package private member type constructor is not visible: " +
-                                name + " of " + container);
-                    }
-                }
-                else {
-                    if (type.isProtectedVisibility() && 
-                            !selfReference &&
-                            !declaredInPackage(type, unit)) {
-                        that.addError("protected member type is not visible: " +
-                                name + " of " + container);
-                    }
-                    else if (type.isPackageVisibility() && 
-                            !declaredInPackage(type, unit)) {
-                        that.addError("package private member type is not visible: " +
-                                name + " of " + container);
-                    }
-                }
                 if (!selfReference && !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
@@ -4335,7 +4394,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     private TypeDeclaration getDeclaration(Tree.QualifiedMemberOrTypeExpression that,
             ProducedType pt) {
         if (that.getStaticMethodReference()) {
