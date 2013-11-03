@@ -203,11 +203,11 @@ public class CeylonTool implements Tool {
         out.println(Tools.progName() + " version " + Versions.CEYLON_VERSION);
     }
     
-    public static void main(String[] args) throws Exception {
+    public static void main(String... args) throws Exception {
         System.exit(start(args));
     }
 
-    public static int start(String[] args) throws Exception {
+    public static int start(String... args) throws Exception {
         if (args.length > 0 && ARG_VERSION.equals(args[0])) {
             version(System.out);
             return SC_OK;
