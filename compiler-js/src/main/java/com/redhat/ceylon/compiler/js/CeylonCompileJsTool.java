@@ -166,6 +166,10 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     }
 
     @Override
+    public void initialize() {
+    }
+
+    @Override
     public void run() throws Exception {
         setSystemProperties();
         final Options opts = new Options()

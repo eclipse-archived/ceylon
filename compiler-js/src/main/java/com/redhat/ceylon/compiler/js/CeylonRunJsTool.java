@@ -331,6 +331,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     @Override
+    public void initialize() {
+    }
+
+    @Override
     public void run() throws Exception {
         setSystemProperties();
         //The timeout is to have enough time to start reading on the process streams
