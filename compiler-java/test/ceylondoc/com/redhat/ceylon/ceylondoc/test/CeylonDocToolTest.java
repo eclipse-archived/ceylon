@@ -80,7 +80,7 @@ public class CeylonDocToolTest {
         tool.setRepositoryAsStrings(Arrays.asList(repositories));
         tool.setModuleSpecs(moduleName);
         tool.setHaltOnError(throwOnError);
-        tool.init();
+        tool.initialize();
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
             Util.delete(dir);

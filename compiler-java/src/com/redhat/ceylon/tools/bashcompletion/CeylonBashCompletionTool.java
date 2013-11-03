@@ -117,6 +117,10 @@ public class CeylonBashCompletionTool implements Tool {
     public final void setToolLoader(ToolLoader toolLoader) {
         this.toolLoader = toolLoader;
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public void run() throws Exception {

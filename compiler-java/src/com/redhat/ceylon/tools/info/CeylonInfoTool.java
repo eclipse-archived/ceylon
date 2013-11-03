@@ -107,6 +107,10 @@ public class CeylonInfoTool extends RepoUsingTool {
         }
         this.depth = depth;
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public void run() throws Exception {

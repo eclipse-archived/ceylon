@@ -27,7 +27,6 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 
@@ -153,7 +152,7 @@ public class Main {
             ceylonDocTool.setOutputRepository(destDir, user, pass);
             ceylonDocTool.setIncludeNonShared(includeNonShared);
             ceylonDocTool.setIncludeSourceCode(includeSourceCode);
-            ceylonDocTool.init();
+            ceylonDocTool.initialize();
             ceylonDocTool.makeDoc();
         }catch(CeylondException x){
             System.err.println(CeylondMessages.msg("error", x.getLocalizedMessage()));

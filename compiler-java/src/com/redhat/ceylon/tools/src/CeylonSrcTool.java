@@ -71,6 +71,10 @@ public class CeylonSrcTool extends RepoUsingTool {
     public void setModuleSpecs(List<ModuleSpec> modules) {
         this.modules = modules;
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public void run() throws Exception {

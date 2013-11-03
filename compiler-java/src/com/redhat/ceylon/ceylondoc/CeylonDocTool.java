@@ -40,8 +40,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -163,7 +161,7 @@ public class CeylonDocTool extends RepoUsingTool {
         setRepositoryAsStrings(repositories);
         setModuleSpecs(moduleSpecs);
         setHaltOnError(haltOnError);
-        init();
+        initialize();
     }
     
     public List<File> getSourceFolders() {
@@ -265,8 +263,8 @@ public class CeylonDocTool extends RepoUsingTool {
         this.offline = offline;
     }
 
-    @PostConstruct
-    public void init() {
+    @Override
+    public void initialize() {
         setSystemProperties();
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){

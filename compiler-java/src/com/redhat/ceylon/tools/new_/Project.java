@@ -53,6 +53,10 @@ public abstract class Project implements Tool {
         }
         return directory;
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public final void run() throws Exception {

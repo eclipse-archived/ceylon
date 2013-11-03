@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -181,8 +179,8 @@ public class CeylonDocToolTool extends CeylonBaseTool {
         this.width = width;
     }
     
-    @PostConstruct
-    public void init() {
+    @Override
+    public void initialize() {
         setSystemProperties();
         if (!allPlumbing && !allPorcelain && (tools == null || tools.isEmpty())) {
             throw new IllegalStateException("No tools to process");

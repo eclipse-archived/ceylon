@@ -89,6 +89,10 @@ public class CeylonNewTool extends CeylonBaseTool {
             }
         }
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public void run() throws Exception {

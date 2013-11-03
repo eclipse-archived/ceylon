@@ -22,8 +22,6 @@ package com.redhat.ceylon.importjar;
 import java.io.File;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -69,7 +67,7 @@ public class CeylonImportJarTool extends CeylonBaseTool {
         this.pass = pass;
         this.jarFile = jarFile;
         this.verbose = verbose;
-        init();
+        initialize();
     }
 
     @OptionArgument(argumentName="name")
@@ -123,8 +121,8 @@ public class CeylonImportJarTool extends CeylonBaseTool {
         this.jarFile = jarFile;
     }
     
-    @PostConstruct
-    public void init() {
+    @Override
+    public void initialize() {
         setSystemProperties();
         if(jarFile == null || jarFile.isEmpty())
             throw new ImportJarException("error.jarFile.empty");

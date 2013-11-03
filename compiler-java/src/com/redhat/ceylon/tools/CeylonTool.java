@@ -320,6 +320,10 @@ public class CeylonTool implements Tool {
     }
 
     @Override
+    public void initialize() {
+    }
+
+    @Override
     public void run() throws Exception {
         if (version) {
             // --version is also handled in main(), so that you can at least do 
@@ -349,12 +353,12 @@ public class CeylonTool implements Tool {
         setupScriptEnvironment(processBuilder);
         processBuilder.redirectError(Redirect.INHERIT);
         processBuilder.redirectInput(Redirect.INHERIT);
-        if (!OSUtil.isWindows()) {
+        if (OSUtil.isWindows()) {
             processBuilder.redirectOutput(Redirect.INHERIT);
         }
         try {
             Process process = processBuilder.start();
-            if (OSUtil.isWindows()) {
+            if (!OSUtil.isWindows()) {
                 InputStream in = process.getInputStream();
                 InputStreamReader inread = new InputStreamReader(in);
                 BufferedReader bufferedreader = new BufferedReader(inread);

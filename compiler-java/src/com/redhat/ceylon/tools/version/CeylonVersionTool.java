@@ -162,6 +162,10 @@ public class CeylonVersionTool extends CeylonBaseTool {
     public void setModuleSpecs(List<ModuleSpec> modules) {
         this.modules = modules;
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public void run() throws IOException, RecognitionException {

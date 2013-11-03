@@ -93,6 +93,10 @@ public class CeylonHelpTool implements Tool {
     public void setOut(Appendable out) {
         this.out = out;
     }
+
+    @Override
+    public void initialize() {
+    }
     
     @Override
     public void run() {

@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.CeylonConfig;
@@ -287,8 +285,8 @@ public class CeylonCompileTool extends RepoUsingTool {
         }
     }
     
-    @PostConstruct
-    public void init() {
+    @Override
+    public void initialize() {
         setSystemProperties();
         compiler = new Main("ceylon compile");
         Options options = Options.instance(new Context());

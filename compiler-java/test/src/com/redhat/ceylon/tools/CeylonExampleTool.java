@@ -22,14 +22,12 @@ package com.redhat.ceylon.tools;
 import java.io.File;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
 
 /**
  * An example tool which demonstrates how to write a {@link Tool}.
@@ -159,11 +157,10 @@ public class CeylonExampleTool implements Tool {
     }
 
     /**
-     * Tools can have zero or more public no-arg @PostConstruct-annotated
-     * methods which will be called before {@link #run()}.
+     * The initialize methods initializes the tool
      */
-    @PostConstruct
-    public void init() {
+    @Override
+    public void initialize() {
         this.inited = true;
     }
     
