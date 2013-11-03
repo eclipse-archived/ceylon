@@ -3,9 +3,10 @@ package com.redhat.ceylon.tools;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.tools.ModuleSpec.Option;
-import static com.redhat.ceylon.tools.ModuleSpec.parse;
-import static com.redhat.ceylon.tools.ModuleSpec.DEFAULT_MODULE;
+import com.redhat.ceylon.common.tools.ModuleSpec.Option;
+
+import static com.redhat.ceylon.common.tools.ModuleSpec.DEFAULT_MODULE;
+import static com.redhat.ceylon.common.tools.ModuleSpec.parse;
 
 public class ModuleSpecTest {
 

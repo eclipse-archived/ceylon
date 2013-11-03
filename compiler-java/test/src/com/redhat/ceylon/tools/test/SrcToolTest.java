@@ -32,8 +32,8 @@ import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
-import com.redhat.ceylon.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.src.CeylonSrcTool;
 
 public class SrcToolTest extends CompilerTest {

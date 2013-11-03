@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.redhat.ceylon.common.tool.ToolException;
-import com.redhat.ceylon.tools.CeylonToolLoader;
+import com.redhat.ceylon.common.tools.CeylonToolLoader;
 
 public class TestingToolLoader extends CeylonToolLoader {
     

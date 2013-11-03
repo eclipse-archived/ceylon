@@ -33,7 +33,7 @@ import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.WordWrap;
-import com.redhat.ceylon.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.tools.help.model.Doc;
 import com.redhat.ceylon.tools.help.model.Visitor;
 

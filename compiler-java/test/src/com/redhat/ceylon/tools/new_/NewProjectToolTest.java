@@ -35,7 +35,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.tools.CeylonToolLoader;
+import com.redhat.ceylon.common.tools.CeylonToolLoader;
 
 public class NewProjectToolTest {
 

@@ -19,7 +19,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.tools.ModuleSpec;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 
 @Summary("Prints information about modules in repositories")
 @Description("When passed a search query like `*foo*` it will look at all the modules in all " +

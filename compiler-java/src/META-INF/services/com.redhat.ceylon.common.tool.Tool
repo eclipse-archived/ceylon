@@ -1,4 +1,3 @@
-com.redhat.ceylon.tools.CeylonTool
 com.redhat.ceylon.tools.bashcompletion.CeylonBashCompletionTool
 com.redhat.ceylon.compiler.CeylonCompileTool
 com.redhat.ceylon.ceylondoc.CeylonDocTool

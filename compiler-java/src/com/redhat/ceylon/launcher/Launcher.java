@@ -54,7 +54,7 @@ public class Launcher {
 
         // Find the main tool class
         String verbose = null;
-        Class<?> mainClass = loader.loadClass("com.redhat.ceylon.tools.CeylonTool");
+        Class<?> mainClass = loader.loadClass("com.redhat.ceylon.common.tools.CeylonTool");
         
         // Set up the arguments for the tool
         Object mainTool = mainClass.newInstance();

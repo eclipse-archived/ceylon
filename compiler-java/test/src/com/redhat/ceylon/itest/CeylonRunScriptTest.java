@@ -23,8 +23,8 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.itest.AntBasedTest.AntResult;
-import com.redhat.ceylon.tools.CeylonTool;
 
 public class CeylonRunScriptTest extends AntBasedTest {
 

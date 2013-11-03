@@ -36,7 +36,7 @@ import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.tools.ModuleSpec;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 
 @Summary("Imports a jar file into a Ceylon module repository")
 @Description("Imports the given `<jar-file>` using the module name and version " +

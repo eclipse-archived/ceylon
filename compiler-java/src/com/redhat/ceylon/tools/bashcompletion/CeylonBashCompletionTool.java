@@ -37,7 +37,7 @@ import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
-import com.redhat.ceylon.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Hidden
 @Summary( 

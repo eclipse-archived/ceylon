@@ -22,7 +22,7 @@ package com.redhat.ceylon.itest;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 public class CeylonDocScriptTest extends AntBasedTest {
 
