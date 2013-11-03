@@ -102,6 +102,10 @@ public class CeylonRunTool extends RepoUsingTool {
     }
 
     @Override
+    public void initialize() {
+    }
+
+    @Override
     public void run() throws IOException {
         setSystemProperties();
         ArrayList<String> argList = new ArrayList<String>();
