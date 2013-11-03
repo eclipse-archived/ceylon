@@ -4054,10 +4054,7 @@ public class ExpressionVisitor extends Visitor {
             else {
                 member = (TypedDeclaration) handleAbstraction(member, that);
                 that.setDeclaration(member);
-                boolean selfReference = 
-                        p instanceof Tree.This ||
-                        p instanceof Tree.Outer ||
-                        p instanceof Tree.Super;
+                boolean selfReference = isSelfReference(p);
                 checkQualifiedVisibility(that, member, name, container,
                         selfReference);
                 if (!selfReference && !member.isShared()) {
@@ -4083,6 +4080,13 @@ public class ExpressionVisitor extends Visitor {
             }
             checkSuperMember(that);
         }
+    }
+
+    private boolean isSelfReference(Tree.Primary p) {
+        return 
+                p instanceof Tree.This ||
+                p instanceof Tree.Outer ||
+                p instanceof Tree.Super;
     }
 
     private void checkSuperMember(Tree.QualifiedMemberOrTypeExpression that) {
@@ -4356,9 +4360,7 @@ public class ExpressionVisitor extends Visitor {
                 type = (TypeDeclaration) handleAbstraction(type, that);
                 that.setDeclaration(type);
                 checkQualifiedTypeAndConstructorVisibility(that, type, name, container);
-                boolean selfReference = p instanceof Tree.This ||
-                        p instanceof Tree.Super;
-                if (!selfReference && !type.isShared()) {
+                if (!isSelfReference(p) && !type.isShared()) {
                     type.setOtherInstanceAccess(true);
                 }
                 checkConcreteClass(type, that);
