@@ -3,14 +3,12 @@ package com.redhat.ceylon.common.tool.example;
 import java.io.File;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.Tool;
 
 /**
  * An example tool which demonstrates how to write a {@link Tool}.
@@ -185,15 +183,11 @@ public class TestExampleTool implements Tool {
     }
 
     /**
-     * Tools can have zero or more public no-arg @PostConstruct-annotated
-     * methods which will be called before {@link #run()}.
+     * The method used for initializing the tool
      */
-    @PostConstruct
-    public void init() throws Throwable {
+    @Override
+    public void initialize() {
         this.inited = true;
-        if (throwableClassName != null) {
-            throw (Throwable)Class.forName(throwableClassName).newInstance();
-        }
     }
     
     /**

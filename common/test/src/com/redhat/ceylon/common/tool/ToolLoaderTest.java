@@ -14,8 +14,6 @@ public class ToolLoaderTest {
         final ToolModel<TestExampleTool> model = new TestingToolLoader().loadToolModel("example");
         Assert.assertNotNull(model);
         Assert.assertEquals("example", model.getName());
-        Assert.assertEquals(1, model.getPostConstruct().size());
-        Assert.assertEquals(TestExampleTool.class.getMethod("init"), model.getPostConstruct().get(0));
         
         final OptionModel<?> longOptionModel = model.getOption("long-name");
         Assert.assertEquals("long-name", longOptionModel.getLongName());

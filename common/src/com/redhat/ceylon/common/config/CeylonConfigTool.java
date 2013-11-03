@@ -19,8 +19,6 @@ package com.redhat.ceylon.common.config;
 import java.io.File;
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
-
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -144,8 +142,8 @@ public class CeylonConfigTool extends CeylonBaseTool {
     @Description("Lists configuration values")
     public class List implements Tool {
 
-        @PostConstruct
-        public void init() {
+        @Override
+        public void initialize() {
             initSubtool();
         }
 
@@ -166,8 +164,8 @@ public class CeylonConfigTool extends CeylonBaseTool {
             this.key = key;
         }
 
-        @PostConstruct
-        public void init() {
+        @Override
+        public void initialize() {
             initSubtool();
         }
         
@@ -199,8 +197,8 @@ public class CeylonConfigTool extends CeylonBaseTool {
             this.values = values;
         }
 
-        @PostConstruct
-        public void init() {
+        @Override
+        public void initialize() {
             initUpdatingSubtool();
         }
         
@@ -227,8 +225,8 @@ public class CeylonConfigTool extends CeylonBaseTool {
             this.key = key;
         }
 
-        @PostConstruct
-        public void init() {
+        @Override
+        public void initialize() {
             initUpdatingSubtool();
         }
         
@@ -260,8 +258,8 @@ public class CeylonConfigTool extends CeylonBaseTool {
             this.newName = newName;
         }
 
-        @PostConstruct
-        public void init() {
+        @Override
+        public void initialize() {
             initUpdatingSubtool();
         }
         
@@ -281,8 +279,8 @@ public class CeylonConfigTool extends CeylonBaseTool {
             this.name = name;
         }
 
-        @PostConstruct
-        public void init() {
+        @Override
+        public void initialize() {
             initUpdatingSubtool();
         }
         
@@ -322,6 +320,10 @@ public class CeylonConfigTool extends CeylonBaseTool {
             }
             
             @Override
+            public void initialize() {
+            }
+            
+            @Override
             public void run() throws Exception {
                 // TODO Auto-generated method stub
                 
@@ -347,6 +349,10 @@ public class CeylonConfigTool extends CeylonBaseTool {
             }
             
             @Override
+            public void initialize() {
+            }
+            
+            @Override
             public void run() throws Exception {
                 // TODO Auto-generated method stub
                 
@@ -365,6 +371,10 @@ public class CeylonConfigTool extends CeylonBaseTool {
             }
             
             @Override
+            public void initialize() {
+            }
+            
+            @Override
             public void run() throws Exception {
                 // TODO Auto-generated method stub
                 
@@ -377,9 +387,17 @@ public class CeylonConfigTool extends CeylonBaseTool {
         }
         
         @Override
+        public void initialize() {
+        }
+        
+        @Override
         public void run() throws Exception {
             tool.run();
         }
+    }
+    
+    @Override
+    public void initialize() {
     }
     
     @Override

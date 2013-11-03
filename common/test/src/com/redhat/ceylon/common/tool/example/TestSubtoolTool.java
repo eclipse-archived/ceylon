@@ -16,6 +16,9 @@ public class TestSubtoolTool implements Tool {
             return foo;
         }
         @Override
+        public void initialize() {
+        }
+        @Override
         public void run() throws Exception {
             
         }
@@ -29,6 +32,9 @@ public class TestSubtoolTool implements Tool {
         }
         public boolean getBar() {
             return bar;
+        }
+        @Override
+        public void initialize() {
         }
         @Override
         public void run() throws Exception {
@@ -48,6 +54,11 @@ public class TestSubtoolTool implements Tool {
         return action;
     }
 
+    @Override
+    public void initialize() {
+    }
+
+    @Override
     public void run() throws Exception {
         
     }

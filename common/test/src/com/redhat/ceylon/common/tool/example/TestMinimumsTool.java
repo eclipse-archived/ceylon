@@ -21,6 +21,10 @@ public class TestMinimumsTool implements Tool {
     }
 
     @Override
+    public void initialize() {
+    }
+
+    @Override
     public void run() {
     }
 
