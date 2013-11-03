@@ -292,16 +292,18 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         List<File> srcDirs = DefaultToolOptions.getCompilerSourceDirs();
         for (File srcDir : srcDirs) {
             File moduleDir = new File(srcDir, name);
-            Files.walkFileTree(moduleDir.toPath(), new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    if (newest[0] == -1L || file.toFile().lastModified() > newest[0]) {
-                        newest[0] = file.toFile().lastModified();
+            if (moduleDir.isDirectory() && moduleDir.canRead()) {
+                Files.walkFileTree(moduleDir.toPath(), new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        if (newest[0] == -1L || file.toFile().lastModified() > newest[0]) {
+                            newest[0] = file.toFile().lastModified();
+                        }
+                        return FileVisitResult.CONTINUE;
                     }
-                    return FileVisitResult.CONTINUE;
-                }
-                
-            });
+                    
+                });
+            }
         }
         return newest[0];
     }
