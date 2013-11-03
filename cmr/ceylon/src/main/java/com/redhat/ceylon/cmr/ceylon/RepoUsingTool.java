@@ -208,10 +208,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     if (!srcVersions.isEmpty() && version.equals(srcVersions.iterator().next().getVersion())) {
                         // There seems to be source code that has the proper version
                         // Let's see if we can compile it...
-                        if (runCompiler(repoMgr, name, type)) {
-                            // All okay it seems, let's use this version
-                            versions = srcVersions;
+                        if (!runCompiler(repoMgr, name, type)) {
+                            return null;
                         }
+                        // All okay it seems, let's use this version
+                        versions = srcVersions;
                     }
                 }
                 if (versions.isEmpty()) {
@@ -236,10 +237,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     // Let's see if we can compile it...
                     String srcver = srcVersions.iterator().next().getVersion();
                     if (!checkCompilation || shouldRecompile(checkCompilation, repoMgr, name, srcver, type)) {
-                        if (runCompiler(repoMgr, name, type)) {
-                            // All okay it seems, let's use this version
-                            versions = srcVersions;
+                        if (!runCompiler(repoMgr, name, type)) {
+                            return null;
                         }
+                        // All okay it seems, let's use this version
+                        versions = srcVersions;
                     }
                 }
             }
