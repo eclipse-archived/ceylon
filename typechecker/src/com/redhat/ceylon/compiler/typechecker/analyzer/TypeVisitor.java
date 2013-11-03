@@ -255,7 +255,7 @@ public class TypeVisitor extends Visitor {
         for (ModuleImport imp : moduleToVisit.getImports()) {
             // skip non-exported modules
             if (!imp.isExport())
-                return false;
+                continue;
             if (findModuleInTransitiveImports(imp.getModule(), moduleToFind, visited))
                 return true;
         }
