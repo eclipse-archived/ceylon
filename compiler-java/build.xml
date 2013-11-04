@@ -58,7 +58,6 @@
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${antlr.lib}" />
         <pathelement path="${txtmark.lib}" />
-        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="test.compile.classpath">
@@ -82,6 +81,7 @@
         <pathelement path="${httpclient.lib}" />
         <pathelement path="${commons-codec.lib}" />
         <pathelement path="${commons-logging.lib}" />
+        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="integrationtest.run.classpath">
@@ -129,7 +129,6 @@
             <param name="file" value="${build.dist.repo}/${ceylon.compiler.jar}" />
         </antcall>
         <copy file="${txtmark.lib}" tofile="${build.dist.repo}/${txtmark.repo}"/>
-        <copy file="${markdownpapers.lib}" tofile="${build.dist.repo}/${markdownpapers.repo}"/>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon compiler module to default repo">
