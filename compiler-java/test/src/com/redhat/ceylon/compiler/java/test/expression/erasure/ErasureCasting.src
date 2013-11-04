@@ -127,7 +127,7 @@ final class erasureCasting_ {
                 return a;
             }
         };
-        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> ecACallable = (.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>)erasedReturnCallable;
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> ecACallable = (.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>)(.ceylon.language.Callable)erasedReturnCallable;
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> ecABCCallable = erasedParamCallable;
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised parameterisedRawAttr = rawParam;
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> parameterisedAttr = (.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>)rawParam;
