@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
@@ -505,7 +506,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public boolean isInheritedFromSupertype(final Declaration member) {
-        final List<ProducedType> signature = Util.getSignature(member);
+        final List<ProducedType> signature = getSignature(member);
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -513,7 +514,7 @@ public abstract class TypeDeclaration extends Declaration
                     return false;
                 }
                 else {
-                    Declaration dm = type.getDirectMember(member.getName(), signature, false);
+                    Declaration dm = type.getDirectMember(member.getName(), signature, true);
                     return dm!=null && dm.equals(member);
                 }
             }
