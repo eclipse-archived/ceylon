@@ -135,8 +135,25 @@ public abstract class BoxingVisitor extends Visitor {
                 CodegenUtil.markTypeErased(that);
             }
         }
+        if(that.getPrimary().getTypeModel() != null
+                && isRaw(that.getPrimary().getTypeModel())
+                && that.getTarget().getDeclaration() instanceof TypedDeclaration
+                && hasTypeParameters(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
+            CodegenUtil.markTypeErased(that);
+        }
     }
 
+    private boolean hasTypeParameters(ProducedType type) {
+        if(isTypeParameter(type))
+            return true;
+        for(ProducedType pt : type.getTypeArgumentList()){
+            if(hasTypeParameters(pt)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     @Override
     public void visit(Expression that) {
         super.visit(that);
@@ -160,6 +177,11 @@ public abstract class BoxingVisitor extends Visitor {
         super.visit(that);
         if (Util.isIndirectInvocation(that)
                 && !Decl.isJavaStaticPrimary(that.getPrimary())) {
+            // if the Callable is raw the invocation will be erased
+            if(that.getPrimary().getTypeModel() != null
+                    && isRaw(that.getPrimary().getTypeModel()))
+                CodegenUtil.markTypeErased(that);
+            
             // These are always boxed
             return;
         }
