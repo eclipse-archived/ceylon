@@ -103,31 +103,31 @@ void test<T>() {
     // toplevel attributes
     @type:"ValueDeclaration"
     value toplevelAttributeValue = `value attribute`;
-    @type:"Value<Integer>"
+    @type:"Value<Integer,Nothing>"
     value toplevelAttribute = `attribute`;
     @error:"does not accept type arguments: attribute"
     value toplevelAttributeErr = `attribute<String>`;
-    @type:"VariableDeclaration"
+    @type:"ValueDeclaration"
     value toplevelVariableAttributeValue = `value variableAttribute`;
-    @type:"Variable<Integer>"
+    @type:"Value<Integer,Integer>"
     value toplevelVariableAttribute = `variableAttribute`;
 
     // qualified attributes
     @type:"ValueDeclaration"
     value containerAttributeValue = `value Container.attribute`;
-    @type:"Attribute<Container,Integer>"
+    @type:"Attribute<Container,Integer,Nothing>"
     value containerAttribute = `Container.attribute`;
-    @type:"VariableDeclaration"
+    @type:"ValueDeclaration"
     value containerVariableAttributeValue = `value Container.variableAttribute`;
-    @type:"VariableAttribute<Container,Integer>"
+    @type:"Attribute<Container,Integer,Integer>"
     value containerVariableAttribute = `Container.variableAttribute`;
-    @type:"Attribute<ParameterisedContainer<String>,String>"
+    @type:"Attribute<ParameterisedContainer<String>,String,Nothing>"
     value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
     @type:"ValueDeclaration"
     value parameterisedContainerAttributeDeclValue = `value ParameterisedContainer.attribute`;
     @error
     value parameterisedContainerAttributeDecl = `ParameterisedContainer.attribute`;
-    @type:"VariableAttribute<ParameterisedContainer<String>,String>"
+    @type:"Attribute<ParameterisedContainer<String>,String,String>"
     value parameterisedContainerVariableAttribute = `ParameterisedContainer<String>.variableAttribute`;
     @error
     value parameterisedContainerVariableAttributeDecl = `ParameterisedContainer.variableAttribute`;
@@ -137,7 +137,7 @@ void test<T>() {
     value classParameter = `Container.parameter`;
     @type:"ValueDeclaration"
     value classParameterAndSharedAttributeValue = `value Container.parameterAndSharedAttribute`;
-    @type:"Attribute<Container,Integer>"
+    @type:"Attribute<Container,Integer,Nothing>"
     value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
     @error
     value classParameterMethodValue = `value Container.parameterAndMethod`;
@@ -154,7 +154,7 @@ void test<T>() {
     value parameterisedClassParameter = `ParameterisedContainer.parameter`;
     @error
     value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
-    @type:"Attribute<ParameterisedContainer<String>,Integer>"
+    @type:"Attribute<ParameterisedContainer<String>,Integer,Nothing>"
     value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
     @type:"ValueDeclaration"
     value parameterisedClassParameterAndSharedAttributeDeclValue = `value ParameterisedContainer.parameterAndSharedAttribute`;
@@ -164,14 +164,14 @@ void test<T>() {
     // class attributes that are parameters too
     @type:"ValueDeclaration"
     value classSharedAttributeAndParameterValue = `value Container.sharedAttributeAndParameter`;
-    @type:"Attribute<Container,Integer>"
+    @type:"Attribute<Container,Integer,Nothing>"
     value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
     @error
     value classAttributeAndParameterValue = `value Container.attributeAndParameter`;
     @error
     value classAttributeAndParameter = `Container.attributeAndParameter`;
 
-    @type:"Attribute<ParameterisedContainer<String>,Integer>"
+    @type:"Attribute<ParameterisedContainer<String>,Integer,Nothing>"
     value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
     @type:"ValueDeclaration"
     value parameterisedClassSharedAttributeAndParameterDeclValue = `value ParameterisedContainer.sharedAttributeAndParameter`;
@@ -325,7 +325,7 @@ void meta() {
     @error
     value cd8 = `Foo<Object>.Bar<List>`;
     
-    @type:"Value<Basic>" value p = `process`; 
+    @type:"Value<Basic,Nothing>" value p = `process`; 
 }
 
 void testPackagesModules() {
