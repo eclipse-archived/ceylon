@@ -24,6 +24,7 @@
 
     <!-- Classpath for the build tools. -->
     <path id="classpath">
+        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="test.run.classpath">
