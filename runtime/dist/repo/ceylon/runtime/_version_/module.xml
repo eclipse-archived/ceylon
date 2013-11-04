@@ -31,15 +31,10 @@
 
     <dependencies>
         <module name="ceylon.language" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.maven-support" slot="1.0" services="import" optional="true"/>
         <module name="org.jboss.modules" slot="1.1.3.GA"/>
         <module name="org.jboss.logmanager" slot="1.4.0.Final"/>
-        <system export="true">
-            <paths>
-                <path name="com/redhat/ceylon/common"/>
-                <path name="com/redhat/ceylon/common/tool"/>
-            </paths>
-        </system>
     </dependencies>
 </module>

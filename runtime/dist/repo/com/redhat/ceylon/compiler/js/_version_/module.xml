@@ -22,11 +22,11 @@
     </resources>
 
     <dependencies>
-        <module name="net.minidev.json-smart" slot="1.1.1"/>
-        <!--module name="ceylon.language" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
+        <module name="ceylon.language" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
+        <module name="net.minidev.json-smart" slot="1.1.1"/>
         <system export="true">
             <paths>
                 <path name="javax/tools"/>
@@ -36,6 +36,6 @@
                 <path name="javax/lang/model/util"/>
                 <path name="javax/annotation/processing"/>
             </paths>
-        </system-->
+        </system>
     </dependencies>
 </module>
