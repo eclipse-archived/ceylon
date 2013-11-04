@@ -62,7 +62,7 @@ function validate$typeparams(t,tparms,types) {
         throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
       var _tp = tparms[tp];
       var _ta = _type.tipo;
-      t.a[tp]= ta.t ? ta : {t:_type.tipo};
+      t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
       if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
         for (var j=0; j<restraints.length;j++) {
@@ -77,10 +77,17 @@ function validate$typeparams(t,tparms,types) {
 function tupleize$params(ps,aux) {
   if (!ps || ps.length==0)return {t:Empty};
   var tupa={t:'T',l:[]};
-  for (var i=0; i<ps.length;i++){
+  for (var i=ps.length-1; i>=ps.length;i--) {
     var e=ps[i].$t;
     if (typeof(e)==='string'&&aux&&aux[e])e=aux[e];
-    tupa.l.push(e);
+    if (tupa.t==='T') {//tuple
+      tupa.l.unshift(e);
+    } else { //union
+      tupa={t:'T',l:[e,tupa]};
+    }
+    if (ps[i].$def) {
+      tupa={t:'u',l:[{t:Empty},tupa]};
+    }
   }
   return tupa;
 }
@@ -101,26 +108,34 @@ function convert$params(ps,a) { //ps comes from metamodel.$ps, a is list of para
     return [];
   }
   if (a===undefined)a=[];
-  if (a.size!=ps.length || ps[ps.length-1].seq) {
-    var fa=[];
-    var sarg;
-    for (var i=0; i<ps.length;i++) { //check def/seq params
-      var p=ps[i];
-      if (a[i]===undefined) {
-        if (p.$def||p.seq)fa.push(undefined);
-        else {
-          throw InvocationException$meta$model(String$("Wrong number of arguments (should be " + ps.length + ")"));
-        }
-      } else if (sarg) {
-        sarg.push(a[i]);
-      } else if (p.seq) {
-        sarg=[]; fa.push(sarg);
-        for (var j=i; j<a.size;j++)sarg.push(a[j]);
-      } else {
-        fa.push(a[i]);
+  var fa=[];
+  var sarg;
+  for (var i=0; i<ps.length;i++) { //check def/seq params
+    var p=ps[i];
+    var val_t=sarg?sarg.$$targs$$.a.Element:p.$t;
+    if (a[i]===undefined) {
+      if (p.$def||p.seq)fa.push(undefined);
+      else {
+        throw InvocationException$meta$model(String$("Wrong number of arguments (should be " + ps.length + ")"));
       }
+    } else if (sarg) {
+      sarg.push(a[i]);
+    } else if (p.seq) {
+      sarg=[].reifyCeylonType(p.$t); fa.push(sarg);
+      val_t=sarg.$$targs$$.a.Element;
+      for (var j=i; j<a.size;j++){
+        if (typeof(val_t)==='string')console.log("TODO resolve type argument " + p.$t);
+        else if (!isOfType(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type:val_t}).string + " got " + className(a[j]));
+        sarg.push(a[j]);
+      }
+      i=j;
+    } else {
+      fa.push(a[i]);
     }
-    a = fa;
+    if (typeof(val_t)==='string')console.log("TODO resolve type argument " + val_t);
+    else if (a[i]!==undefined && !isOfType(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type:val_t}).string + " got " + className(a[i]));
   }
+  if (a.size>i)throw InvocationException$meta$model("Too many arguments");
+  a = fa;
   return a;
 }
