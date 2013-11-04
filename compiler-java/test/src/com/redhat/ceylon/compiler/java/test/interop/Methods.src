@@ -545,3 +545,19 @@ final class comprehensions_ {
         .com.redhat.ceylon.compiler.java.test.interop.comprehensions_.comprehensions();
     }
 }
+final class moreOverloads_ {
+    
+    private moreOverloads_() {
+    }
+    
+    static void moreOverloads() {
+        .java.nio.file.FileSystems.newFileSystem(.java.net.URI.create(""), new .java.util.HashMap<.java.lang.String, .java.lang.Object>());
+        new .java.io.BufferedReader(new .java.io.InputStreamReader(null));
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.channels.ServerSocketChannel.open()).bind(new .java.net.InetSocketAddress("", (int)1L));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.moreOverloads_.moreOverloads();
+    }
+}

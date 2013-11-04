@@ -18,7 +18,11 @@
  * MA  02110-1301, USA.
  */
 import java.lang { JString = String, JInteger = Integer }
-import java.io{File}
+import java.io { File, InputStreamReader, BufferedReader }
+import java.net { InetSocketAddress, URI }
+import java.nio.channels { ServerSocketChannel }
+import java.nio.file { FileSystems }
+import java.util { HashMap }
 
 @noanno
 @error
@@ -237,4 +241,11 @@ void comprehensions(){
     java.variadicFloat(1.0, *{for (i in 1..2) 2.0});
     java.variadicFloat(*[for (i in 1..2) 2.0]);
     java.variadicFloat(1.0, *[for (i in 1..2) 2.0]);
+}
+
+@noanno
+void moreOverloads(){
+    FileSystems.newFileSystem(URI.create(""), HashMap<JString,Object>());
+    BufferedReader(InputStreamReader(null));
+    ServerSocketChannel.open().bind(InetSocketAddress("",1));
 }
