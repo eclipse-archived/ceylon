@@ -514,7 +514,7 @@ public abstract class TypeDeclaration extends Declaration
                     return false;
                 }
                 else {
-                    Declaration dm = type.getDirectMember(member.getName(), signature, true);
+                    Declaration dm = type.getDirectMember(member.getName(), signature, false);
                     return dm!=null && dm.equals(member);
                 }
             }
