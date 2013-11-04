@@ -1,0 +1,4 @@
+summary=Génère la documentation sur un outil Ceylon
+
+description=Génère la documentation sur les `<outil>`s spécifiés dans le répertoire \
+nommé par l''option `--output`.
