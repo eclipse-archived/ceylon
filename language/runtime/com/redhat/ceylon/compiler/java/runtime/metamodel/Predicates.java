@@ -198,19 +198,6 @@ class Predicates {
         }
     };
     
-    /** Predicate on Declarations that accepts variable Value */
-    private static final Predicate<Declaration> DECLARATION_IS_VARIABLE = new Predicate<Declaration>() {  
-        @Override
-        public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
-                    && ((com.redhat.ceylon.compiler.typechecker.model.Value)declaration).isVariable();
-        }
-        @Override
-        public String toString() {
-            return "(kind = Variable)";
-        }
-    };
-    
     /** Predicate on Declarations that accepts Method */
     private static final Predicate<Declaration> DECLARATION_IS_FUNCTION = new Predicate<Declaration>() {  
         @Override
@@ -279,9 +266,7 @@ class Predicates {
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
             Class<?> declarationClass = (Class<?>)((TypeDescriptor.Class) kind).getKlass();
-            if (declarationClass == ceylon.language.meta.declaration.VariableDeclaration.class) {
-                return DECLARATION_IS_VARIABLE;
-            } else if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
+            if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
                 return DECLARATION_IS_VALUE;
             } else if (declarationClass == ceylon.language.meta.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;

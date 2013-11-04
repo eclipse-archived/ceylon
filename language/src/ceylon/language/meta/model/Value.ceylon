@@ -12,17 +12,21 @@
            print(val.get());
        }
  """
-shared interface Value<out Type=Anything>
-        satisfies ValueModel<Type> {
+shared interface Value<out Get=Anything, in Set=Nothing>
+        satisfies ValueModel<Get, Set> {
 
     "Reads the current value for this value binding. Note that in the case of getter
      values, this can throw if the getter throws."
-    shared formal Type get();
+    shared formal Get get();
     
+    "Changes this variable's value to the given new value. Note that in the case of
+     setter attributes, this can throw if the setter throws."
+    shared formal void set(Set newValue);
+
     "Non type-safe equivalent to [[Variable.set]], to be used when you don't know the variable
      type at compile-time. This only works if the underlying value is variable. Note that if
      the underlying variable is a setter, this can throw exceptions thrown in the setter block."
     throws(`class IncompatibleTypeException`, "If the specified new value is not of a subtype of this variable's type")
     throws(`class MutationException`, "If this value is not variable")
-    shared formal void unsafeSet(Anything newValue);
+    shared formal void setIfAssignable(Anything newValue);
 }

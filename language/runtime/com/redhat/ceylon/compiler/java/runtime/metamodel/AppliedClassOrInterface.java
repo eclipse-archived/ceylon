@@ -446,12 +446,14 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
-        @TypeParameter(value = "Type")
+        @TypeParameter(value = "Get"),
+        @TypeParameter(value = "Set")
     })
-    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>|ceylon.language::Null")
-    public <Container, Type>
-        ceylon.language.meta.model.Attribute<Container, Type> getAttribute(@Ignore TypeDescriptor $reifiedContainer, 
-                                                                        @Ignore TypeDescriptor $reifiedType, 
+    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>|ceylon.language::Null")
+    public <Container, Get, Set>
+        ceylon.language.meta.model.Attribute<Container, Get, Set> getAttribute(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                        @Ignore TypeDescriptor $reifiedGet, 
+                                                                        @Ignore TypeDescriptor $reifiedSet, 
                                                                         String name) {
         
         checkInit();
@@ -459,7 +461,7 @@ public abstract class AppliedClassOrInterface<Type>
         if(value == null)
             return null;
         ceylon.language.meta.model.Type<Container> appliedContainer = getAppliedContainer($reifiedContainer, value);
-        return value.<Container, Type>memberApply($reifiedContainer, $reifiedType, appliedContainer);
+        return value.<Container, Get, Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, appliedContainer);
     }
 
     @SuppressWarnings("unchecked")
@@ -478,19 +480,21 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
-        @TypeParameter(value = "Type")
+        @TypeParameter(value = "Get"),
+        @TypeParameter(value = "Set")
     })
-    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>|ceylon.language::Null")
-    public <Container, Type>
-        ceylon.language.meta.model.Attribute<Container, Type> getDeclaredAttribute(@Ignore TypeDescriptor $reifiedContainer, 
-                                                                        @Ignore TypeDescriptor $reifiedType, 
+    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>|ceylon.language::Null")
+    public <Container, Get, Set>
+        ceylon.language.meta.model.Attribute<Container, Get, Set> getDeclaredAttribute(@Ignore TypeDescriptor $reifiedContainer, 
+                                                                        @Ignore TypeDescriptor $reifiedGet, 
+                                                                        @Ignore TypeDescriptor $reifiedSet, 
                                                                         String name) {
         
         checkInit();
         final FreeValue value = declaration.findDeclaredValue(name);
         if(value == null)
             return null;
-        return value.memberApply($reifiedContainer, $reifiedType, 
+        return value.memberApply($reifiedContainer, $reifiedGet, $reifiedSet, 
                 (ceylon.language.meta.model.Type<Container>)this);
     }
 

@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import ceylon.language.Annotated$impl;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.SetterDeclaration$impl;
-import ceylon.language.meta.declaration.VariableDeclaration;
+import ceylon.language.meta.declaration.ValueDeclaration;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -26,14 +26,14 @@ public class FreeSetter
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeSetter.class);
     
-    private FreeVariable variable;
+    private FreeValue value;
     
     private Method declaredSetter;
 
-    public FreeSetter(FreeVariable freeVariable) {
-        this.variable = freeVariable;
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass(variable.declaration);
-        String setterName = Naming.getSetterName(variable.declaration);
+    public FreeSetter(FreeValue freeValue) {
+        this.value = freeValue;
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass(value.declaration);
+        String setterName = Naming.getSetterName(value.declaration);
         this.declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
     }
 
@@ -52,10 +52,9 @@ public class FreeSetter
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
-    @TypeInfo("ceylon.language.meta.declaration::VariableDeclaration")
     @Override
-    public VariableDeclaration getVariable() {
-        return variable;
+    public ValueDeclaration getVariable() {
+        return value;
     }
 
     @Override

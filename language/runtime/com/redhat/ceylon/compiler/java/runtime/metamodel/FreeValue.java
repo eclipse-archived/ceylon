@@ -6,6 +6,7 @@ import java.util.List;
 
 import ceylon.language.Anything;
 import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -51,33 +52,37 @@ public class FreeValue
     }
     
     @Override
-    @TypeInfo("ceylon.language.meta.model::Value<Type>")
+    @TypeInfo("ceylon.language.meta.model::Value<Get,Set>")
     @TypeParameters({
-        @TypeParameter("Type"),
+        @TypeParameter("Get"),
+        @TypeParameter("Set"),
     })
-    public <Type> ceylon.language.meta.model.Value<Type> apply(@Ignore TypeDescriptor $reifiedType){
+    public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
+                                                                      @Ignore TypeDescriptor $reifiedSet){
         if(!getToplevel())
             // FIXME: change type
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
-        Metamodel.checkReifiedTypeArgument("apply", "Value<$1>", Variance.OUT, typedReference.getType(), $reifiedType);
+        Metamodel.checkReifiedTypeArgument("apply", "Value<$1,$2>", 
+                Variance.OUT, typedReference.getType(), $reifiedGet,
+                Variance.IN, typedReference.getType(), $reifiedSet);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
-        return modelDecl.isVariable() 
-                ? new AppliedVariable<Type>(reifiedType, this, typedReference, null, null) 
-                : new AppliedValue<Type>(reifiedType, this, typedReference, null, null);
+        return new AppliedValue<Get,Set>(reifiedType, reifiedType, this, typedReference, null, null);
     }
 
-    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Type>")
+    @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>")
     @TypeParameters({
         @TypeParameter("Container"),
-        @TypeParameter("Type"),
+        @TypeParameter("Get"),
+        @TypeParameter("Set"),
     })
     @Override
-    public <Container, Type>
-        ceylon.language.meta.model.Attribute<Container, Type> memberApply(
+    public <Container, Get, Set>
+        ceylon.language.meta.model.Attribute<Container, Get, Set> memberApply(
                 @Ignore TypeDescriptor $reifiedContainer,
-                @Ignore TypeDescriptor $reifiedType,
+                @Ignore TypeDescriptor $reifiedGet,
+                @Ignore TypeDescriptor $reifiedSet,
                 @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType){
         if(getToplevel())
             // FIXME: change type
@@ -88,12 +93,11 @@ public class FreeValue
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
-        Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2>", 
+        Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2,$3>", 
                 Variance.IN, qualifyingType, $reifiedContainer,
-                Variance.OUT, typedReference.getType(), $reifiedType);
-        return modelDecl.isVariable() 
-                ? new AppliedVariableAttribute<Container,Type>(reifiedContainer, reifiedType, this, typedReference, containerType) 
-                : new AppliedAttribute<Container,Type>(reifiedContainer, reifiedType, this, typedReference, containerType);
+                Variance.OUT, typedReference.getType(), $reifiedGet,
+                Variance.IN, typedReference.getType(), $reifiedSet);
+        return new AppliedAttribute<Container,Get,Set>(reifiedContainer, reifiedType, reifiedType, this, typedReference, containerType);
     }
 
     @Override
@@ -105,14 +109,14 @@ public class FreeValue
     @TypeInfo("ceylon.language::Anything")
     @Override
     public Object get(){
-        return apply(Anything.$TypeDescriptor$).get();
+        return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType).get();
     }
 
     @TypeInfo("ceylon.language::Anything")
     @Override
     public Object memberGet(@Name("container") @TypeInfo("ceylon.language::Object") Object container){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
-        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, containerType).bind(container).get();
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).bind(container).get();
     }
 
     @Override
@@ -138,11 +142,32 @@ public class FreeValue
         return getName().equals(other.getName());
     }
 
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object set(@TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+        return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType).$setIfAssignable(newValue);
+    }
+
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object memberSet(@Name("container") @TypeInfo("ceylon.language::Object") Object container,
+            @TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+        ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
+        return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).bind(container).$setIfAssignable(newValue);
+    }
+
     @Override
     public String toString() {
         return "value "+super.toString();
     }
 
+    @TypeInfo("ceylon.language.meta.declaration::SetterDeclaration")
+    @Override
+    public SetterDeclaration getSetter() {
+        // FIXME: let's not allocate all the time
+        return new FreeSetter(this);
+    }
+    
     @Ignore
     @Override
     public TypeDescriptor $getType$() {

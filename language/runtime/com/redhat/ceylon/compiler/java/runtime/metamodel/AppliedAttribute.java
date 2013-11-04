@@ -22,32 +22,37 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
     @TypeParameter(value = "Container", variance = Variance.IN),
-    @TypeParameter(value = "Type", variance = Variance.OUT),
+    @TypeParameter(value = "Get", variance = Variance.OUT),
+    @TypeParameter(value = "Set", variance = Variance.IN),
 })
-public class AppliedAttribute<Container, Type> 
-    extends AppliedMember<Container, ceylon.language.meta.model.Value<? extends Type>>
-    implements ceylon.language.meta.model.Attribute<Container, Type> {
+public class AppliedAttribute<Container, Get, Set> 
+    extends AppliedMember<Container, ceylon.language.meta.model.Value<? extends Get, ? super Set>>
+    implements ceylon.language.meta.model.Attribute<Container, Get, Set> {
 
     protected FreeValue declaration;
     protected ProducedTypedReference typedReference;
-    private ceylon.language.meta.model.Type<? extends Type> closedType;
+    private ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
-    protected final TypeDescriptor $reifiedType;
+    protected final TypeDescriptor $reifiedGet;
+    @Ignore
+    protected final TypeDescriptor $reifiedSet;
     
     public AppliedAttribute(@Ignore TypeDescriptor $reifiedContainer, 
-                            @Ignore TypeDescriptor $reifiedType,
+                            @Ignore TypeDescriptor $reifiedGet,
+                            @Ignore TypeDescriptor $reifiedSet,
                             FreeValue declaration, ProducedTypedReference typedReference,
                             ceylon.language.meta.model.Type<? extends Object> container) {
-        super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Value.class, $reifiedType), container);
+        super($reifiedContainer, TypeDescriptor.klass(ceylon.language.meta.model.Value.class, $reifiedGet, $reifiedSet), container);
         this.declaration = declaration;
         this.typedReference = typedReference;
         this.closedType = Metamodel.getAppliedMetamodel(typedReference.getType());
-        this.$reifiedType = $reifiedType;
+        this.$reifiedGet = $reifiedGet;
+        this.$reifiedSet = $reifiedSet;
     }
 
     @Override
     @Ignore
-    public ValueModel$impl<Type> $ceylon$language$meta$model$ValueModel$impl() {
+    public ValueModel$impl<Get,Set> $ceylon$language$meta$model$ValueModel$impl() {
         return null;
     }
 
@@ -59,7 +64,7 @@ public class AppliedAttribute<Container, Type>
 
     @Override
     @Ignore
-    public Attribute$impl<Container, Type> $ceylon$language$meta$model$Attribute$impl() {
+    public Attribute$impl<Container, Get, Set> $ceylon$language$meta$model$Attribute$impl() {
         return null;
     }
 
@@ -70,95 +75,93 @@ public class AppliedAttribute<Container, Type>
     }
 
     @Override
-    @TypeInfo("ceylon.language.meta.model::Type<Type>")
-    public ceylon.language.meta.model.Type<? extends Type> getType() {
+    @TypeInfo("ceylon.language.meta.model::Type<Get>")
+    public ceylon.language.meta.model.Type<? extends Get> getType() {
         return closedType;
     }
     
     @Override
-    protected Value<? extends Type> bindTo(Object instance) {
-        return new AppliedValue<Type>($reifiedType, declaration, typedReference, getContainer(), instance);
+    protected Value<? extends Get, ? super Set> bindTo(Object instance) {
+        return new AppliedValue<Get,Set>($reifiedGet, $reifiedSet, declaration, typedReference, getContainer(), instance);
     }
 
     @Ignore
     @Override
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedContainer, $reifiedType);
+        return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedContainer, $reifiedGet, $reifiedSet);
     }
 
-    public static <ContainerType, ValueType> ceylon.language.meta.model.Attribute<ContainerType, ValueType> 
-        instance(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor reifiedValueType, 
+    public static <ContainerType, Get, Set> ceylon.language.meta.model.Attribute<ContainerType, Get, Set> 
+        instance(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor reifiedGet, @Ignore TypeDescriptor reifiedSet, 
                  FreeValue value, ProducedTypedReference valueTypedReference, 
                  com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
                  ceylon.language.meta.model.ClassOrInterface<? extends Object> container) {
-        return decl.isVariable()
-                ? new AppliedVariableAttribute<ContainerType, ValueType>($reifiedContainer, reifiedValueType, value, valueTypedReference, container)
-                : new AppliedAttribute<ContainerType, ValueType>($reifiedContainer, reifiedValueType, value, valueTypedReference, container);
+        return new AppliedAttribute<ContainerType, Get, Set>($reifiedContainer, reifiedGet, reifiedSet, value, valueTypedReference, container);
     }
     
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$() {
+    public Value<? extends Get, ? super Set> $callvariadic$() {
         return $callvariadic$(empty_.get_());
     }
     
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(
+    public Value<? extends Get, ? super Set> $callvariadic$(
             Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(
+    public Value<? extends Get, ? super Set> $callvariadic$(
             Object arg0, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(
+    public Value<? extends Get, ? super Set> $callvariadic$(
             Object arg0, Object arg1, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(
+    public Value<? extends Get, ? super Set> $callvariadic$(
             Object arg0, Object arg1, Object arg2, Sequential<?> varargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(Object... argsAndVarargs) {
+    public Value<? extends Get, ? super Set> $callvariadic$(Object... argsAndVarargs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(Object arg0) {
+    public Value<? extends Get, ? super Set> $callvariadic$(Object arg0) {
         return $callvariadic$(arg0, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(Object arg0, Object arg1) {
+    public Value<? extends Get, ? super Set> $callvariadic$(Object arg0, Object arg1) {
         return $callvariadic$(arg0, arg1, empty_.get_());
     }
 
     @Override
     @Ignore
-    public Value<? extends Type> $callvariadic$(Object arg0, Object arg1,
+    public Value<? extends Get, ? super Set> $callvariadic$(Object arg0, Object arg1,
             Object arg2) {
         return $callvariadic$(arg0, arg1, arg2, empty_.get_());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Value<? extends Type> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
-        return (Value<? extends Type>) Metamodel.bind(this, this.typedReference.getQualifyingType(), container);
+    public Value<? extends Get, ? super Set> bind(@TypeInfo("ceylon.language::Object") @Name("container") java.lang.Object container){
+        return (Value<? extends Get, ? super Set>) Metamodel.bind(this, this.typedReference.getQualifyingType(), container);
     }
 
     @Override
@@ -177,7 +180,7 @@ public class AppliedAttribute<Container, Type>
             return true;
         if(obj instanceof ceylon.language.meta.model.Attribute == false)
             return false;
-        ceylon.language.meta.model.Attribute<?,?> other = (ceylon.language.meta.model.Attribute<?,?>) obj;
+        ceylon.language.meta.model.Attribute<?,?,?> other = (ceylon.language.meta.model.Attribute<?,?,?>) obj;
         return getDeclaration().equals(other.getDeclaration())
                 && getDeclaringType().equals(other.getDeclaringType());
     }

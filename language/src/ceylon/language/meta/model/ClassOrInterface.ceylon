@@ -80,11 +80,11 @@ shared interface ClassOrInterface<out Type=Anything>
         given Arguments satisfies Anything[];
     
     "Gets an attribute by name. Returns `null` if not found."
-    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
-    shared formal Attribute<Container, Type>? getAttribute<Container=Nothing, Type=Anything>(String name);
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
+    shared formal Attribute<Container, Get, Set>? getAttribute<Container=Nothing, Get=Anything, Set=Nothing>(String name);
 
     "Gets an attribute by name. Returns `null` if not found."
-    throws(`class IncompatibleTypeException`, "If the specified `Container` or `Type` type arguments are not compatible with the actual result.")
-    shared formal Attribute<Container, Type>? getDeclaredAttribute<Container=Nothing, Type=Anything>(String name);
+    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
+    shared formal Attribute<Container, Get, Set>? getDeclaredAttribute<Container=Nothing, Get=Anything, Set=Nothing>(String name);
 }
 

@@ -1,9 +1,9 @@
 
-"A setter declaration for a `VariableDeclaration`."
+"A setter declaration for a variable `ValueDeclaration`."
 shared interface SetterDeclaration
         satisfies Annotated {
 
-    "The variable this setter is for."
-    shared formal VariableDeclaration variable;
+    "The variable value this setter is for."
+    shared formal ValueDeclaration variable;
     
 }

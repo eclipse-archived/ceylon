@@ -16,7 +16,7 @@
            print(boundAttribute.get());
        }
  """
-shared interface Attribute<in Container, out Type=Anything>
-        satisfies ValueModel<Type> & Member<Container, Value<Type>> {
-    shared actual formal Value<Type> bind(Object container);
+shared interface Attribute<in Container, out Get=Anything, in Set=Nothing>
+        satisfies ValueModel<Get,Set> & Member<Container, Value<Get,Set>> {
+    shared actual formal Value<Get,Set> bind(Object container);
 }

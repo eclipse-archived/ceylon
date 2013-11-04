@@ -9,12 +9,12 @@ import ceylon.language.meta.model {
    
    A value model can be either a toplevel [[Value]] or a member [[Attribute]].
  """
-shared interface ValueModel<out Type=Anything>
+shared interface ValueModel<out Get=Anything, in Set=Nothing>
         satisfies Model {
 
     "This value's declaration."
     shared formal actual ValueDeclaration declaration;
     
     "This value's closed type."
-    shared formal ClosedType<Type> type;
+    shared formal ClosedType<Get> type;
 }
