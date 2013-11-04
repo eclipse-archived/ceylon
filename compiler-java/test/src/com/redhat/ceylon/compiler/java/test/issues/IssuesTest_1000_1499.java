@@ -684,7 +684,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     public void testBug1392() {
         assertErrors("bug13xx/Bug1392",
                 new CompilerError(25, "protected constructor is not visible: LogManager"),
-                new CompilerError(26, "type is not visible: Class")
+                new CompilerError(26, "type constructor is not visible: Class")
         );
     }
 
@@ -711,7 +711,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     @Test
     public void testBug1405() {
         assertErrors("bug14xx/Bug1405",
-                new CompilerError(24, "member type is not visible: State of type Thread")
+                new CompilerError(24, "member type constructor is not visible: State of type Thread")
         );
     }
 
