@@ -275,13 +275,26 @@ public abstract class Declaration
         }
         else if (object instanceof Declaration) {
             Declaration that = (Declaration) object;
-            String myName = getName();
-            String otherName = that.getName();
-            return myName!=null && otherName!=null &&
-                        myName.equals(otherName) &&
-                    that.getDeclarationKind()==getDeclarationKind() &&
-                    (getContainer()==null && that.getContainer()==null ||
-                        that.getContainer().equals(getContainer()));
+            String thisName = getName();
+            String thatName = that.getName();
+            Scope thisContainer = getContainer();
+            Scope thatContainer = that.getContainer();
+            if (thisName==null || thatName==null || 
+                    !thisName.equals(thatName) ||
+                that.getDeclarationKind()!=getDeclarationKind() ||
+                thisContainer==null || thatContainer==null ||
+                    !thisContainer.equals(thatContainer)) {
+                return false;
+            }
+            else if (this instanceof Functional && 
+                    that instanceof Functional) {
+                boolean thisIsAbstraction = ((Functional) this).isAbstraction();
+                boolean thatIsAbstraction = ((Functional) that).isAbstraction();
+                return thisIsAbstraction==thatIsAbstraction;
+            }
+            else {
+                return true;
+            }
         }
         else {
             return false;

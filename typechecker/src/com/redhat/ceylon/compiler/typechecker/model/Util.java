@@ -216,9 +216,9 @@ public class Util {
 
     private static boolean underlyingTypesUnequal(ProducedType paramType,
             ProducedType sigType) {
-        return sigType.getUnderlyingType()==null || 
-                paramType.getUnderlyingType()==null || 
-                !sigType.getUnderlyingType().equals(paramType.getUnderlyingType());
+        String sut = sigType.getUnderlyingType();
+        String put = paramType.getUnderlyingType();
+        return sut==null || put==null || !sut.equals(put);
     }
     
     static boolean betterMatch(Declaration d, Declaration r) {
@@ -247,9 +247,10 @@ public class Util {
                 if (dplSize==rplSize) {
                     //if all parameters are of more specific
                     //or equal type, prefer it
+                    Unit unit = d.getUnit();
                     for (int i=0; i<dplSize; i++) {
-                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(i).getModel().getType());
-                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(i).getModel().getType());
+                        ProducedType paramType = unit.getDefiniteType(dpl.get(i).getModel().getType());
+                        ProducedType otherType = unit.getDefiniteType(rpl.get(i).getModel().getType());
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
                         if (!erase(paramType.getDeclaration())
                                     .inherits(erase(otherType.getDeclaration())) &&
@@ -259,11 +260,11 @@ public class Util {
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp){
-                        ProducedType paramType = d.getUnit().getDefiniteType(dpl.get(dplSize).getModel().getType());
-                        ProducedType otherType = d.getUnit().getDefiniteType(rpl.get(dplSize).getModel().getType());
+                        ProducedType paramType = unit.getDefiniteType(dpl.get(dplSize).getModel().getType());
+                        ProducedType otherType = unit.getDefiniteType(rpl.get(dplSize).getModel().getType());
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
-                        paramType = d.getUnit().getIteratedType(paramType);
-                        otherType = d.getUnit().getIteratedType(otherType);
+                        paramType = unit.getIteratedType(paramType);
+                        otherType = unit.getIteratedType(otherType);
                         if (isTypeUnknown(otherType) || isTypeUnknown(paramType)) return false;
                         if (!erase(paramType.getDeclaration())
                                 .inherits(erase(otherType.getDeclaration())) &&
