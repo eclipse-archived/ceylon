@@ -91,14 +91,6 @@ public class AppliedAttribute<Container, Get, Set>
         return TypeDescriptor.klass(AppliedAttribute.class, super.$reifiedContainer, $reifiedGet, $reifiedSet);
     }
 
-    public static <ContainerType, Get, Set> ceylon.language.meta.model.Attribute<ContainerType, Get, Set> 
-        instance(@Ignore TypeDescriptor $reifiedContainer, @Ignore TypeDescriptor reifiedGet, @Ignore TypeDescriptor reifiedSet, 
-                 FreeValue value, ProducedTypedReference valueTypedReference, 
-                 com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration decl,
-                 ceylon.language.meta.model.ClassOrInterface<? extends Object> container) {
-        return new AppliedAttribute<ContainerType, Get, Set>($reifiedContainer, reifiedGet, reifiedSet, value, valueTypedReference, container);
-    }
-    
     @Override
     @Ignore
     public Value<? extends Get, ? super Set> $callvariadic$() {
