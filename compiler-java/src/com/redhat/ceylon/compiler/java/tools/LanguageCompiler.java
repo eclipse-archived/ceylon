@@ -560,7 +560,9 @@ public class LanguageCompiler extends JavaCompiler {
                             // we recognise it with the unit
                             if(mod.getUnit() == phasedUnit.getUnit()){
                                 // set the package's module
-                                phasedUnit.getPackage().setModule(mod);
+                                Package pkg = phasedUnit.getPackage();
+                                pkg.setModule(mod);
+                                mod.getPackages().add(pkg);
                                 modulesLoadedFromSource.add(mod);
                                 break;
                             }
