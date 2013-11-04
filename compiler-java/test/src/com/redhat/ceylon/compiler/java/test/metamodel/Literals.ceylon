@@ -114,18 +114,18 @@ void literals<T>(){
     Attribute<LitParameterisedClass<Integer>,Integer> attributeType = `LitParameterisedClass<Integer>.attribute`;
     ValueDeclaration attributeDecl = `value LitParameterisedClass.attribute`;
 
-    Variable<Integer> variableType1 = `litVariable`;
-    VariableDeclaration variableType2 = `value litVariable`;
+    Value<Integer,Integer> variableType1 = `litVariable`;
+    ValueDeclaration variableType2 = `value litVariable`;
     value variableType3 = `litVariable`;
 
     // Attributes and variable attributes
 
-    VariableAttribute<LitClass,Integer> variableAttributeType1 = `LitClass.variableAttribute`;
-    VariableDeclaration variableAttributeType2 = `value LitClass.variableAttribute`;
+    Attribute<LitClass,Integer,Integer> variableAttributeType1 = `LitClass.variableAttribute`;
+    ValueDeclaration variableAttributeType2 = `value LitClass.variableAttribute`;
     value variableAttributeType3 = `LitClass.variableAttribute`;
 
-    VariableAttribute<LitParameterisedClass<Integer>,Integer> variableAttributeType = `LitParameterisedClass<Integer>.variableAttribute`;
-    VariableDeclaration variableAttributeDecl = `value LitParameterisedClass.variableAttribute`;
+    Attribute<LitParameterisedClass<Integer>,Integer,Integer> variableAttributeType = `LitParameterisedClass<Integer>.variableAttribute`;
+    ValueDeclaration variableAttributeDecl = `value LitParameterisedClass.variableAttribute`;
 
     // Functions
 

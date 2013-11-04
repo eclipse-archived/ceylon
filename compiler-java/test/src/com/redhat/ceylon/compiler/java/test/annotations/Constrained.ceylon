@@ -1,6 +1,5 @@
 import ceylon.language.meta.declaration {
     ValueDeclaration,
-    VariableDeclaration,
     Declaration,
     FunctionDeclaration,
     ClassDeclaration,
@@ -32,12 +31,6 @@ annotation final class ConstrainedToValue() satisfies OptionalAnnotation<Constra
 }
 
 annotation final class ConstrainedToValueSeq() satisfies SequencedAnnotation<ConstrainedToValueSeq, ValueDeclaration> {
-}
-
-annotation final class ConstrainedToVariable() satisfies OptionalAnnotation<ConstrainedToVariable, VariableDeclaration> {
-}
-
-annotation final class ConstrainedToVariableSeq() satisfies SequencedAnnotation<ConstrainedToVariableSeq, VariableDeclaration> {
 }
 
 annotation final class ConstrainedToPackage() satisfies OptionalAnnotation<ConstrainedToPackage, Package> {
