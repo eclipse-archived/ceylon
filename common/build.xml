@@ -56,6 +56,17 @@
         </copy>
     </target>
 
+    <target name="ceylon-common.jar" depends="compile">
+        <mkdir dir="${build.dist.repo}"/>
+        <jar destfile="${build.dist.repo}/${ceylon.common.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="build" depends="ceylon-common.jar">
+    </target>
+
     <!-- constant to declare a file binary for checksumsum -->
     <property name="checksum.binary-prefix" value=" *" />
     <!-- Helper target, used to create a sha1 checksum file  -->
@@ -93,17 +104,11 @@
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
     </target>
 
-    <target name="dist" depends="compile">
-        <mkdir dir="${build.dist.repo}" />
-
-        <zip destfile="${build.dist.repo}/${ceylon.common.jar}">
-            <fileset dir="${build.classes}">
-                <include name="**/*" />
-            </fileset>
-        </zip>
+    <target name="dist" depends="build">
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.common.jar}" />
         </antcall>
+        <copy file="${markdownpapers.lib}" tofile="${build.dist.repo}/${markdownpapers.repo}"/>
     </target>
 
     <target name="publish"
