@@ -73,6 +73,8 @@
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon-tests.car}" />
         <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
+        <pathelement path="${jboss-modules.lib}" />
+        <pathelement path="${jboss-logmanager.lib}" />
         <pathelement path="${jandex.lib}" />
         <pathelement path="${slf4j-simple.lib}" />
         <pathelement path="${slf4j-api.lib}" />
