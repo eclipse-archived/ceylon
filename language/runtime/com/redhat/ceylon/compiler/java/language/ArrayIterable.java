@@ -24,7 +24,6 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ignore
 @Ceylon(major = 6)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")

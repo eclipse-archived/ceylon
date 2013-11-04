@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+
 /**
  * <p>Thrown when a method has been declared, but not specified.</p>
  * 
@@ -11,6 +14,8 @@ package com.redhat.ceylon.compiler.java.language;
  *  
  * @author tom
  */
+@Ceylon(major = 6)
+@Class
 public class UninitializedMethodError extends Error {
 
     public UninitializedMethodError() {

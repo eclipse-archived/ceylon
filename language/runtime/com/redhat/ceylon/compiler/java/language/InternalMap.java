@@ -23,6 +23,8 @@ import ceylon.language.Set;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -35,16 +37,25 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
+@Ceylon(major = 6)
+@Class(extendsType="ceylon.language::Object")
 public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     private final java.util.Map<? extends Key, ? extends Item> m;
 
+    @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    @Ignore
     private final ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object> $ceylon$language$Container$this;
+    @Ignore
     private final ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object> $ceylon$language$Iterable$this;
+    @Ignore
     private final ceylon.language.Correspondence$impl<java.lang.Object, Item> $ceylon$language$Correspondence$this;
+    @Ignore
     private final ceylon.language.Map$impl<Key, Item> $ceylon$language$Map$this;
+    @Ignore
     private final ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>> $ceylon$language$Collection$this;
+    @Ignore
     private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     @Ignore

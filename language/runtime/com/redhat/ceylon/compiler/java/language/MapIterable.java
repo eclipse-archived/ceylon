@@ -15,8 +15,12 @@ import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -24,9 +28,19 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
+@Ceylon(major = 6)
+@Class(extendsType="ceylon.language::Object")
+@TypeParameters({
+    @TypeParameter("Element"),
+    @TypeParameter(value = "Absent", satisfies = "ceylon.language::Null"),
+    @TypeParameter("Result"),
+})
 public class MapIterable<Element, Absent, Result> implements Iterable<Result,Absent>, ReifiedType {
+    @Ignore
     private final ceylon.language.Iterable$impl<Result,Absent> $ceylon$language$Iterable$this;
+    @Ignore
     private final ceylon.language.Container$impl<Result,Absent> $ceylon$language$Container$this;
+    @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends Absent> iterable;
@@ -274,6 +288,6 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(MapIterable.class, $reifiedElement, $reifiedResult);
+        return TypeDescriptor.klass(MapIterable.class, $reifiedElement, $reifiedAbsent, $reifiedResult);
     }
 }

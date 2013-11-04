@@ -4,7 +4,6 @@ package com.redhat.ceylon.compiler.java.language;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
-import ceylon.language.Character;
 import ceylon.language.Comparison;
 import ceylon.language.Container$impl;
 import ceylon.language.Entry;
@@ -18,6 +17,7 @@ import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
-@Ignore
+@Ceylon(major = 6)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
 public abstract class AbstractIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {
@@ -47,7 +47,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Ignore
     private final Iterable[] $iterables;
 
-    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent) {
+    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
@@ -56,7 +56,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         this.$iterables = null;
     }
     
-    public AbstractIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, Iterable... iterables) {
+    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, Iterable... iterables) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
@@ -287,6 +287,6 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(AbstractIterable.class, $reifiedElement);
+        return TypeDescriptor.klass(AbstractIterable.class, $reifiedElement, $reifiedAbsent);
     }
 }

@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+
 /**
  * <p>Thrown when an unexpected subclass of a enumerated type is encountered, 
  * for example in an exhaustive {@code switch} statement.</p>
@@ -11,6 +14,8 @@ package com.redhat.ceylon.compiler.java.language;
  *  
  * @author tom
  */
+@Ceylon(major = 6)
+@Class
 public class EnumeratedTypeError extends Error {
 
     public EnumeratedTypeError(String message) {

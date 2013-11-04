@@ -15,6 +15,8 @@ import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
 
+import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -24,9 +26,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
+@Ceylon(major = 6)
+@Class(extendsType="ceylon.language::Object")
 public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {
+    @Ignore
     private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
+    @Ignore
     private final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
+    @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
@@ -270,6 +277,6 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(FilterIterable.class, $reifiedElement);
+        return TypeDescriptor.klass(FilterIterable.class, $reifiedElement, $reifiedAbsent);
     }
 }
