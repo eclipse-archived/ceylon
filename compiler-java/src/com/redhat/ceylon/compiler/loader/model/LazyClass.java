@@ -62,6 +62,11 @@ public class LazyClass extends Class implements LazyContainer {
     private boolean isTypeParamsLoaded2 = false;
     private boolean local = false;
 
+    @Override
+    protected java.lang.Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public LazyClass(ClassMirror classMirror, ModelCompleter completer, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
         this.classMirror = classMirror;
         this.completer = completer;

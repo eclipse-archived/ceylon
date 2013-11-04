@@ -38,4 +38,9 @@ public class FieldValue extends Value {
     public String getRealName(){
         return fieldName;
     }
+    
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
 }

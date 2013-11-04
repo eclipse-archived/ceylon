@@ -50,6 +50,11 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
     private boolean isTypeParamsLoaded2 = false;
     private boolean local;
 
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public LazyInterfaceAlias(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;

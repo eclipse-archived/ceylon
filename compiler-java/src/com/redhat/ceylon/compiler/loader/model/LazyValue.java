@@ -53,6 +53,11 @@ public class LazyValue extends Value implements LazyElement {
     private boolean isLoaded = false;
     private boolean isLoaded2 = false;
 
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public LazyValue(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;

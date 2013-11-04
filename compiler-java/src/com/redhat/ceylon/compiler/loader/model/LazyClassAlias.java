@@ -53,6 +53,11 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     private boolean isTypeParamsLoaded2 = false;
     private boolean local;
 
+    @Override
+    protected java.lang.Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public LazyClassAlias(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;

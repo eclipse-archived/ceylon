@@ -57,6 +57,11 @@ public class LazyInterface extends Interface implements LazyContainer {
     private boolean isAnnotationType = false;
     private boolean local;
 
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public LazyInterface(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;

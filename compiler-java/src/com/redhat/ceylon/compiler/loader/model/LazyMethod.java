@@ -59,6 +59,11 @@ public class LazyMethod extends Method implements LazyElement {
     private boolean isLoaded2 = false;
     private boolean defaultedAnnotation;
     
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public LazyMethod(ClassMirror classMirror, ModelCompleter completer) {
         this.classMirror = classMirror;
         this.completer = completer;

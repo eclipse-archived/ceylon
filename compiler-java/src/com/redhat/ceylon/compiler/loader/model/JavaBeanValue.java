@@ -30,6 +30,11 @@ public class JavaBeanValue extends Value {
     private String getterName;
     private String setterName;
 
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+
     public void setGetterName(String getterName) {
         this.getterName = getterName;
     }
