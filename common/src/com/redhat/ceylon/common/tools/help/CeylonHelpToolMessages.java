@@ -27,7 +27,7 @@ import com.redhat.ceylon.common.tool.Tools;
 
 public class CeylonHelpToolMessages extends Messages {
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(CeylonHelpToolMessages.class.getPackage().getName() + ".resources.sections");
+    public static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(CeylonHelpToolMessages.class.getPackage().getName() + ".resources.sections");
     
     public static String msg(String msgKey, Object... msgArgs) {
         return Messages.msg(RESOURCE_BUNDLE, msgKey, msgArgs);

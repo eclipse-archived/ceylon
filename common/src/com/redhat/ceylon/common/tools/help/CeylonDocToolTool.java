@@ -246,7 +246,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
 
     private void generateIndexHtml(List<Doc> docs) throws IOException {
         File indexFile = new File(dir, "index" + format.extension);
-        ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
+        ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         try (FileWriter writer = new FileWriter(indexFile)) {
             HtmlVisitor htmlOutput = (HtmlVisitor)Format.html.newOutput(this, writer);
             AbstractMl html = htmlOutput.getHtml();

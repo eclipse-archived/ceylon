@@ -59,7 +59,7 @@ public class HtmlVisitor implements Visitor {
     @Override
     public void start(Doc doc) {
         this.doc = doc;
-        ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
+        ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         if (!omitDoctype) {
             html.doctype("html").text("\n");
         }

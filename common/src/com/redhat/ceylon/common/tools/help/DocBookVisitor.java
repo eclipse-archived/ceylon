@@ -56,7 +56,7 @@ public class DocBookVisitor implements Visitor {
     @Override
     public void start(Doc doc) {
         this.doc = doc;
-        ResourceBundle bundle = ResourceBundle.getBundle("com.redhat.ceylon.tools.help.resources.sections");
+        ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         if (!omitDoctype) {
             docbook.doctype(
             		"refentry PUBLIC \"-//OASIS//DTD DocBook XML V4.1.2//EN\"\n"+
