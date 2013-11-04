@@ -65,6 +65,7 @@
         <pathelement path="${build.classes}" />
         <pathelement path="${junit.lib}" />
         <pathelement path="${cmr-maven.lib}" />
+        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="test.run.classpath">
@@ -83,7 +84,6 @@
         <pathelement path="${httpclient.lib}" />
         <pathelement path="${commons-codec.lib}" />
         <pathelement path="${commons-logging.lib}" />
-        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="integrationtest.run.classpath">
