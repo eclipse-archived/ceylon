@@ -31,6 +31,7 @@ import org.tautua.markdownpapers.ast.Document;
 import org.tautua.markdownpapers.parser.Parser;
 
 import com.redhat.ceylon.common.tool.WordWrap;
+import com.redhat.ceylon.common.tools.help.PlaintextMarkdownVisitor;
 
 public class PlaintextTest {
 

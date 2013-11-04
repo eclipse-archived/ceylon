@@ -31,7 +31,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.tools.help.CeylonHelpTool;
+import com.redhat.ceylon.common.tools.help.CeylonHelpTool;
 
 public class TopLevelToolTest {
 

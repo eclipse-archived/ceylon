@@ -29,7 +29,8 @@ import org.tautua.markdownpapers.HtmlEmitter;
 import org.tautua.markdownpapers.ast.Document;
 import org.tautua.markdownpapers.ast.Node;
 
-import com.redhat.ceylon.tools.help.Markdown.Section;
+import com.redhat.ceylon.common.tools.help.Markdown;
+import com.redhat.ceylon.common.tools.help.Markdown.Section;
 
 public class MarkdownTest {
 

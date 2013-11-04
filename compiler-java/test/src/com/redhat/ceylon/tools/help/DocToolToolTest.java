@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
+import com.redhat.ceylon.common.tools.help.CeylonDocToolTool;
 
 public class DocToolToolTest {
 
