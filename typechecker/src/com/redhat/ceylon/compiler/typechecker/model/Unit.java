@@ -897,15 +897,15 @@ public class Unit {
     
     public ProducedType getValueMetatype(ProducedTypedReference pr) {
         boolean variable = pr.getDeclaration().isVariable();
+        ProducedType getType = denotableType(pr.getType());
+        ProducedType setType = variable ? denotableType(pr.getType()) : new NothingType(this).getType();
         if (pr.getQualifyingType() != null) {
-            return producedType(getLanguageModuleModelTypeDeclaration(variable ? 
-                        "VariableAttribute" : "Attribute"),
-                    pr.getQualifyingType(), denotableType(pr.getType()));
+            return producedType(getLanguageModuleModelTypeDeclaration("Attribute"),
+                    pr.getQualifyingType(), getType, setType);
         }
         else {
-            return producedType(getLanguageModuleModelTypeDeclaration(variable ? 
-                        "Variable" : "Value"),
-                    denotableType(pr.getType()));
+            return producedType(getLanguageModuleModelTypeDeclaration("Value"),
+                    getType, setType);
         }
     }
     
@@ -1037,8 +1037,7 @@ public class Unit {
     }
     
     public ProducedType getValueDeclarationType(TypedDeclaration value) {
-        String name = value.isVariable() ? "VariableDeclaration" : "ValueDeclaration";
-        return getType(getLanguageModuleDeclarationTypeDeclaration(name));
+        return getType(getLanguageModuleDeclarationTypeDeclaration("ValueDeclaration"));
     }
     
     public TypeDeclaration getAnnotationDeclaration() {
