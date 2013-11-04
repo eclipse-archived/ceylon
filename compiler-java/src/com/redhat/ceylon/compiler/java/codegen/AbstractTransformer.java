@@ -1089,12 +1089,18 @@ public abstract class AbstractTransformer implements Transformation {
             // special case for Callable where we stop after the first type param
             boolean isCallable = isCeylonCallable(singleType);
             
-            for(ProducedType typeArg : singleType.getTypeArgumentList()){
+            for(Entry<TypeParameter, ProducedType> typeParam : singleType.getTypeArguments().entrySet()){
+                TypeParameter tp = typeParam.getKey();
+                ProducedType ta = typeParam.getValue();
                 // skip invalid input
-                if(typeArg == null)
+                if(tp == null || ta == null)
                     return false;
 
-                everyTypeArgumentIsErasedUnionIntersection &= isErasedUnionOrIntersection(typeArg);
+                // see makeTypeArgs: Nothing in contravariant position causes a raw type
+                if(tp.isContravariant() && ta.getDeclaration() instanceof NothingType)
+                    return true;
+                
+                everyTypeArgumentIsErasedUnionIntersection &= isErasedUnionOrIntersection(ta);
 
                 // Callable really has a single type arg in Java
                 if(isCallable)
