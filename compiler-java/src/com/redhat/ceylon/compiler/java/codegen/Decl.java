@@ -560,6 +560,8 @@ public class Decl {
     }
 
     private static boolean isValueTypeDecl(ProducedType type) {
+        if(type == null)
+            return false;
         type = type.resolveAliases();
         if ((type != null) && type.getDeclaration() instanceof LazyClass) {
             return ((LazyClass)type.getDeclaration()).isValueType();
