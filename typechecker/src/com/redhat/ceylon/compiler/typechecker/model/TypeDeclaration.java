@@ -505,6 +505,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public boolean isInheritedFromSupertype(final Declaration member) {
+        final List<ProducedType> signature = Util.getSignature(member);
         class Criteria implements ProducedType.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -512,7 +513,7 @@ public abstract class TypeDeclaration extends Declaration
                     return false;
                 }
                 else {
-                    Declaration dm = type.getDirectMember(member.getName(), null, false);
+                    Declaration dm = type.getDirectMember(member.getName(), signature, false);
                     return dm!=null && dm.equals(member);
                 }
             }
