@@ -26,4 +26,8 @@
     <resources>
         <resource-root path="com.redhat.ceylon.common-@ceylon-version@.jar"/>
     </resources>
+
+    <dependencies>
+        <module name="org.tautua.markdownpapers.core" slot="1.2.7" optional="true"/>
+    </dependencies>
 </module>
