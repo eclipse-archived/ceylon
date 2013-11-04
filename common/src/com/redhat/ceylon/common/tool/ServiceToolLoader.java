@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ public abstract class ServiceToolLoader extends ToolLoader {
 
     private final Class<?> serviceClass;
     private Set<String> pathPlugins;
+    private List<String> toolClassNames;
     
     public ServiceToolLoader(Class<?> serviceClass) {
         super();
@@ -67,14 +69,17 @@ public abstract class ServiceToolLoader extends ToolLoader {
     }
 
     @Override
-    protected Iterable<String> toolClassNames() {
-        List<String> result = new ArrayList<>();
-        Enumeration<URL> urls = getServiceMeta();
-        while (urls.hasMoreElements()) {
-            result.addAll(parseServiceInfo(urls.nextElement()));
+    protected synchronized Iterable<String> toolClassNames() {
+        if (toolClassNames == null) {
+            List<String> result = new ArrayList<>();
+            Enumeration<URL> urls = getServiceMeta();
+            while (urls.hasMoreElements()) {
+                result.addAll(parseServiceInfo(urls.nextElement()));
+            }
+            result.addAll(getPathPlugins());
+            toolClassNames = Collections.unmodifiableList(result);
         }
-        result.addAll(getPathPlugins());
-        return result;
+        return toolClassNames;
     }
 
     protected Set<String> getPathPlugins() {
