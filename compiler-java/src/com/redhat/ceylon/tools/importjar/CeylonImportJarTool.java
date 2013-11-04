@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.importjar;
+package com.redhat.ceylon.tools.importjar;
 
 import java.io.File;
 import java.util.Set;

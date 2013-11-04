@@ -32,8 +32,8 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
-import com.redhat.ceylon.importjar.CeylonImportJarTool;
-import com.redhat.ceylon.importjar.ImportJarException;
+import com.redhat.ceylon.tools.importjar.CeylonImportJarTool;
+import com.redhat.ceylon.tools.importjar.ImportJarException;
 
 public class ImportJarToolTest {
 

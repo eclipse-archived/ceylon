@@ -18,11 +18,10 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.importjar;
+package com.redhat.ceylon.tools.importjar;
 
 import java.io.IOException;
 
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 
