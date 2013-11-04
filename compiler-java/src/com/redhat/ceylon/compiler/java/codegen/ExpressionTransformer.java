@@ -1108,9 +1108,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                             ceylonLiteral(declaration.getName()));
                 memberCall = make().Apply(null, makeSelect(typeCall, "getMethod"), arguments);
             }else if(declaration instanceof Value){
-                JCExpression reifiedTypeExpr = makeReifiedTypeArgument(producedReference.getType());
+                JCExpression reifiedGetExpr = makeReifiedTypeArgument(producedReference.getType());
                 String getterName = "getAttribute";
-                memberCall = make().Apply(null, makeSelect(typeCall, getterName), List.of(reifiedContainerExpr, reifiedTypeExpr, 
+                ProducedType ptype;
+                if(!((Value)declaration).isVariable())
+                    ptype = typeFact().getNothingDeclaration().getType();
+                else
+                    ptype = producedReference.getType();
+                
+                JCExpression reifiedSetExpr = makeReifiedTypeArgument(ptype);
+                memberCall = make().Apply(null, makeSelect(typeCall, getterName), List.of(reifiedContainerExpr, reifiedGetExpr, reifiedSetExpr, 
                                                                                           ceylonLiteral(declaration.getName())));
             }else{
                 return makeErroneous(expr, "Unsupported member type: "+declaration);
@@ -1141,10 +1148,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         else if(declaration instanceof Method)
             memberClassName = "FunctionDeclaration";
         else if(declaration instanceof Value){
-            if(((TypedDeclaration) declaration).isVariable())
-                memberClassName = "VariableDeclaration";
-            else
-                memberClassName = "ValueDeclaration";
+            memberClassName = "ValueDeclaration";
         }else{
             return makeErroneous(node, "compiler bug: " + declaration + " is not a supported declaration literal");
         }
@@ -1169,12 +1173,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression toplevelCall = make().Apply(null, makeSelect(packageCall, getter), 
                                                  List.<JCExpression>of(ceylonLiteral(declaration.getName())));
         
-        // add a cast for variable declarations
-        if(declaration instanceof Value && ((Value) declaration).isVariable()){
-            ProducedType exprType = typeFact().getLanguageModuleDeclarationTypeDeclaration("VariableDeclaration").getType();
-            JCExpression typeClass = makeJavaType(exprType, JT_NO_PRIMITIVES);
-            return make().TypeCast(typeClass, toplevelCall);
-        }
         return toplevelCall;
     }
     
@@ -1184,7 +1182,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if(!expr.getWantsDeclaration()){
             ListBuffer<JCExpression> closedTypeArgs = new ListBuffer<JCExpression>();
-            // expr is of type Function<Type,Arguments> or Value<Type> so we can get its type like that
+            // expr is of type Function<Type,Arguments> or Value<Get,Set> so we can get its type like that
             JCExpression reifiedType = makeReifiedTypeArgument(expr.getTypeModel().getTypeArgumentList().get(0));
             closedTypeArgs.append(reifiedType);
             if(Decl.isMethod(declaration)){
@@ -1197,6 +1195,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // must apply it
                     closedTypeArgs.append(closedTypesExpr);
                 }
+            }else{
+                JCExpression reifiedSet;
+                ProducedType ptype;
+                if(!((Value)declaration).isVariable())
+                    ptype = typeFact().getNothingDeclaration().getType();
+                else
+                    ptype = expr.getTypeModel().getTypeArgumentList().get(0);
+                
+                reifiedSet = makeReifiedTypeArgument(ptype);
+                closedTypeArgs.append(reifiedSet);
             }
             toplevelCall = make().Apply(null, makeSelect(toplevelCall, "apply"), closedTypeArgs.toList());
             // add cast
