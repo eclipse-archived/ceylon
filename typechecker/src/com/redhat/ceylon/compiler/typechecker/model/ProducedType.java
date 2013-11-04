@@ -583,7 +583,9 @@ public class ProducedType extends ProducedReference {
             return superTypesCache.get(dec);
         }
         ProducedType superType = getSupertype(new SupertypeCriteria(dec));
-        if (!complexType) superTypesCache.put(dec, superType);
+        if (!complexType) {
+            superTypesCache.put(dec, superType);
+        }
         //if (!complexType) superTypesCache.put(dec, superType==null?null:new SoftReference<ProducedType>(superType));
         return superType;
     }

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.contains;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 
 import java.util.List;
@@ -277,8 +278,8 @@ public abstract class Declaration
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
-            Scope thisContainer = getContainer();
-            Scope thatContainer = that.getContainer();
+            Scope thisContainer = getAbstraction(getContainer());
+            Scope thatContainer = getAbstraction(that.getContainer());
             if (thisName==null || thatName==null || 
                     !thisName.equals(thatName) ||
                 that.getDeclarationKind()!=getDeclarationKind() ||
@@ -299,6 +300,14 @@ public abstract class Declaration
         else {
             return false;
         }
+    }
+
+    private Scope getAbstraction(Scope container) {
+        if (container instanceof Class && 
+                isOverloadedVersion((Class) container)) {
+            container = ((Class) container).getExtendedTypeDeclaration();
+        }
+        return container;
     }
     
     @Override
