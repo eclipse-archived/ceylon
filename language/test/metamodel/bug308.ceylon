@@ -1,4 +1,3 @@
-import ceylon.language.meta.model { Attribute, VariableAttribute }
 import ceylon.language.meta { type }
 
 @test

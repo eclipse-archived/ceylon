@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { Attribute, VariableAttribute }
+import ceylon.language.meta.model { Attribute }
 import ceylon.language.meta { type }
 
 class Bug318() {}

@@ -9,7 +9,6 @@ import ceylon.language.meta.model{
 }
 import ceylon.language.meta.declaration {
     ValueDeclaration,
-    VariableDeclaration,
     NestableDeclaration,
     FunctionDeclaration,
     ClassDeclaration,
@@ -28,8 +27,8 @@ ValueDeclaration aToplevelAttributeDecl {
     assert(is ValueDeclaration result = aPackage.getValue("aToplevelAttribute"));
     return result;
 }
-VariableDeclaration aToplevelGetterSetterDecl {
-    assert(is VariableDeclaration result = aPackage.getValue("aToplevelGetterSetter"));
+ValueDeclaration aToplevelGetterSetterDecl {
+    assert(is ValueDeclaration result = aPackage.getValue("aToplevelGetterSetter"));
     return result;
 }
 ValueDeclaration aToplevelObjectDecl {
@@ -328,7 +327,7 @@ shared void checkAAbstractClass() {
     // Members of abstract class
     // formalAttribute
     assert(exists fam=aAbstractClassDecl.apply<AAbstractClass>().getAttribute<AAbstractClass, String>("formalAttribute"));
-    assert(is VariableDeclaration fa=fam(AClass("")).declaration);
+    ValueDeclaration fa=fam(AClass("")).declaration;
     check(annotations(sharedAnnotation, fa) exists);
     check(annotations(actualAnnotation, fa) exists);
     assert(exists fadoc = annotations(docAnnotation, fa),
@@ -430,7 +429,7 @@ shared void checkAInterface() {
     
     // defaultGetterSetter
     assert(exists dgsm=iface.getAttribute<AInterface, String>("defaultGetterSetter"));
-    assert(is VariableDeclaration dgs = dgsm(AClass("")).declaration);
+    ValueDeclaration dgs = dgsm(AClass("")).declaration;
     check(annotations(sharedAnnotation, dgs) exists);
     check(annotations(defaultAnnotation, dgs) exists);
     assert(exists dgdoc = annotations(docAnnotation, dgs),
@@ -440,7 +439,7 @@ shared void checkAInterface() {
     
     // getterSetter
     assert(exists gsm=iface.getAttribute<AInterface, String>("getterSetter"));
-    assert(is VariableDeclaration gs = gsm(AClass("")).declaration);
+    ValueDeclaration gs = gsm(AClass("")).declaration;
     check(annotations(sharedAnnotation, gs) exists);
     assert(exists gsdoc = annotations(docAnnotation, gs),
             gsdoc.description == "AInterface.getter");
@@ -545,20 +544,6 @@ shared void checkAInterface() {
     // TODO assert(! nsmd in sharedAttribute);
     // TODO test with an object declaration
     
-    value sharedVariables = aInterfaceDecl.annotatedMemberDeclarations<VariableDeclaration, SharedAnnotation>();
-    check(! ficd in sharedVariables);
-    check(! dicd in sharedVariables);
-    check(! iid in sharedVariables);
-    check(! fa in sharedVariables);
-    check(gs in sharedVariables);
-    // TODO assert(ngs in sharedVariables);
-    check(! fmd in sharedVariables);
-    check(! dmd in sharedVariables);
-    check(! fmd in sharedVariables);
-    check(! md in sharedVariables);
-    // TODO assert(! nsmd in sharedVariables);
-    // TODO test with an object declaration
-    
     value sharedMethods = aInterfaceDecl.annotatedMemberDeclarations<FunctionDeclaration, SharedAnnotation>();
     check(! ficd in sharedMethods);
     check(! dicd in sharedMethods);
@@ -647,14 +632,6 @@ shared void checkPackage() {
     check(aToplevelGetterSetterDecl in sharedAttributes);
     check(! aToplevelFunctionDecl in sharedAttributes);
     
-    value sharedVariables = p.annotatedMembers<VariableDeclaration, SharedAnnotation>();
-    check(! aClassDecl in sharedVariables);
-    check(! aAbstractClassDecl in sharedVariables);
-    check(! aInterfaceDecl in sharedVariables);
-    check(! aToplevelAttributeDecl in sharedVariables);
-    check(aToplevelGetterSetterDecl in sharedVariables);
-    check(! aToplevelFunctionDecl in sharedVariables);
-    
     value sharedFunctions = p.annotatedMembers<FunctionDeclaration, SharedAnnotation>();
     check(! aClassDecl in sharedFunctions);
     check(! aAbstractClassDecl in sharedFunctions);
@@ -695,14 +672,6 @@ shared void checkPackage() {
     check(aToplevelAttributeDecl in seqAttributes);
     check(aToplevelGetterSetterDecl in seqAttributes);
     check(! aToplevelFunctionDecl in seqAttributes);
-    
-    value seqVariables = p.annotatedMembers<VariableDeclaration, Seq>();
-    check(! aClassDecl in seqVariables);
-    check(! aAbstractClassDecl in seqVariables);
-    check(! aInterfaceDecl in seqVariables);
-    check(! aToplevelAttributeDecl in seqVariables);
-    check(aToplevelGetterSetterDecl in seqVariables);
-    check(! aToplevelFunctionDecl in seqVariables);
     
     value seqFunctions = p.annotatedMembers<FunctionDeclaration, Seq>();
     check(! aClassDecl in seqFunctions);
