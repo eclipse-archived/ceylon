@@ -1,0 +1,138 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+interface Bug1419Val<Get, Set> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val$impl<? extends Get, ? super Set> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Val$impl();
+    
+    public abstract Get get();
+}
+final class Bug1419Val$impl<Get, Set> {
+    
+    Bug1419Val$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val<? extends Get, ? super Set> $this) {
+        this.$reified$Get = $reified$Get;
+        this.$reified$Set = $reified$Set;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val<? extends Get, ? super Set> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set) {
+        this.$reified$Set = $reified$Set;
+        this.$reified$Get = $reified$Get;
+    }
+}
+interface Bug1419Mem<Container, Member> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem$impl<? super Container, ? extends Member> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Mem$impl();
+    
+    public abstract Member bind(final Container instance);
+}
+final class Bug1419Mem$impl<Container, Member> {
+    
+    Bug1419Mem$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Member, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem<? super Container, ? extends Member> $this) {
+        this.$reified$Container = $reified$Container;
+        this.$reified$Member = $reified$Member;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Member;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem<? super Container, ? extends Member> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Member) {
+        this.$reified$Member = $reified$Member;
+        this.$reified$Container = $reified$Container;
+    }
+}
+interface Bug1419Attr<Container, Get, Set> extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem<Container, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val<? extends Get, ? super Set>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr$impl<? super Container, ? extends Get, ? super Set> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$impl();
+}
+final class Bug1419Attr$impl<Container, Get, Set> {
+    
+    Bug1419Attr$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr<? super Container, ? extends Get, ? super Set> $this) {
+        this.$reified$Container = $reified$Container;
+        this.$reified$Get = $reified$Get;
+        this.$reified$Set = $reified$Set;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr<? super Container, ? extends Get, ? super Set> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set) {
+        this.$reified$Set = $reified$Set;
+        this.$reified$Get = $reified$Get;
+        this.$reified$Container = $reified$Container;
+    }
+}
+interface Bug1419COI<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419COI$impl();
+    
+    public abstract <Container, Get, Set>.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr<? super Container, ? extends Get, ? super Set> getAttribute(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set, final .java.lang.String name);
+}
+final class Bug1419COI$impl<T> {
+    
+    Bug1419COI$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+}
+final class bug1419_ {
+    
+    private bug1419_() {
+    }
+    
+    static void bug1419(final .ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object> t, final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI<.java.lang.Object> t2) {
+        final .ceylon.language.meta.model.Attribute string1 = t.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
+        final .ceylon.language.meta.model.Attribute string2 = t.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
+        final .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3 = t.<.java.lang.Object, .ceylon.language.String, .ceylon.language.String>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, "str");
+        .java.lang.String $ceylontmp$assert$0 = null;
+        final .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3$6;
+        final .ceylon.language.meta.model.Attribute string2$4;
+        final .ceylon.language.meta.model.Attribute string1$2;
+        .ceylon.language.meta.model.Attribute string1$1 = null;
+        if ((string1$1 = string1) != null) {
+            string1$2 = string1$1;
+            .ceylon.language.meta.model.Attribute string2$3 = null;
+            if ((string2$3 = string2) != null) {
+                string2$4 = string2$3;
+                .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3$5 = null;
+                if ((string3$5 = string3) != null) {
+                    string3$6 = string3$5;
+                } else {
+                    string3$6 = null;
+                    $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tviolated ") + "exists string3";
+                }
+            } else {
+                string2$4 = null;
+                string3$6 = null;
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tviolated ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string3";
+            }
+        } else {
+            string1$2 = null;
+            string2$4 = null;
+            string3$6 = null;
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string3";
+        }
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        final .ceylon.language.meta.model.Value a1 = (.ceylon.language.meta.model.Value)string1$2.$call$(t);
+        final .ceylon.language.meta.model.Value a2 = (.ceylon.language.meta.model.Value)string2$4.$call$(t);
+        final .ceylon.language.meta.model.Value<? extends .ceylon.language.String, ? super .ceylon.language.String> a3 = string3$6.$call$(t);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4 = t2.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
+        final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4$9;
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4$8 = null;
+        if ((string4$8 = string4) != null) {
+            string4$9 = string4$8;
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists string4"));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val a4 = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val)string4$9.bind(t);
+    }
+}
