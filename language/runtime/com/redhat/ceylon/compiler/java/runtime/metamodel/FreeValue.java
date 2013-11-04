@@ -64,11 +64,18 @@ public class FreeValue
             throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
+
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType getType = typedReference.getType();
+        TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
+        // immutable values have Set=Nothing
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType setType = getVariable() ? 
+                getType : modelDecl.getUnit().getNothingDeclaration().getType();
+        TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
+        
         Metamodel.checkReifiedTypeArgument("apply", "Value<$1,$2>", 
-                Variance.OUT, typedReference.getType(), $reifiedGet,
-                Variance.IN, typedReference.getType(), $reifiedSet);
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
-        return new AppliedValue<Get,Set>(reifiedType, reifiedType, this, typedReference, null, null);
+                Variance.OUT, getType, $reifiedGet,
+                Variance.IN, setType, $reifiedSet);
+        return new AppliedValue<Get,Set>(reifiedGet, reifiedSet, this, typedReference, null, null);
     }
 
     @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>")
@@ -92,12 +99,19 @@ public class FreeValue
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
-        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(typedReference.getType());
+        
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType getType = typedReference.getType();
+        TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);
+        // immutable values have Set=Nothing
+        com.redhat.ceylon.compiler.typechecker.model.ProducedType setType = getVariable() ? 
+                getType : modelDecl.getUnit().getNothingDeclaration().getType();
+        TypeDescriptor reifiedSet = getVariable() ? reifiedGet : TypeDescriptor.NothingType;
+        
         Metamodel.checkReifiedTypeArgument("memberApply", "Attribute<$1,$2,$3>", 
                 Variance.IN, qualifyingType, $reifiedContainer,
-                Variance.OUT, typedReference.getType(), $reifiedGet,
-                Variance.IN, typedReference.getType(), $reifiedSet);
-        return new AppliedAttribute<Container,Get,Set>(reifiedContainer, reifiedType, reifiedType, this, typedReference, containerType);
+                Variance.OUT, getType, $reifiedGet,
+                Variance.IN, setType, $reifiedSet);
+        return new AppliedAttribute<Container,Get,Set>(reifiedContainer, reifiedGet, reifiedSet, this, typedReference, containerType);
     }
 
     @Override

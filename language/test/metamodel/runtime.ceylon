@@ -145,13 +145,17 @@ shared void checkMemberAttributes(){
     value noParamsType = type(noParamsInstance);
     assert(is Class<NoParams, []> noParamsType);
     
-    assert(exists string = noParamsType.getAttribute<NoParams, String, Nothing>("str"));
+    assert(exists string = noParamsType.getAttribute<NoParams, String>("str"));
     assert(!string.declaration.variable);
     assert(string.declaration.name == "str");
     assert(string.declaration.qualifiedName == "metamodel::NoParams.str");
     assert(string(noParamsInstance).get() == "a");
     assert(string.bind(noParamsInstance).get() == "a");
     assert(exists stringValue = string.declaration.memberGet(noParamsInstance), stringValue == "a");
+    // make sure immutable attributes have Set=Nothing
+    assert(!is Attribute<NoParams, String, String> string);
+    assert(!string(noParamsInstance) is Value<String, String>);
+    assert(!string.bind(noParamsInstance) is Value<String, String>);
     
     assert(exists integer = noParamsType.getAttribute<NoParams, Integer>("integer"));
     assert(integer(noParamsInstance).get() == 1);
@@ -511,6 +515,8 @@ shared void checkToplevelAttributes(){
     Value<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply<Integer>();
     assert(toplevelIntegerAttribute.get() == 1);
     assert(exists toplevelIntegerValue = toplevelIntegerDecl.get(), toplevelIntegerValue == 1);
+    // make sure immutable values have Set=Nothing
+    assert(!is Value<Integer, Integer> toplevelIntegerAttribute);
 
     assert(is ValueDeclaration toplevelStringDecl = pkg.getValue("toplevelString"));
     Value<String> toplevelStringAttribute = toplevelStringDecl.apply<String>();
@@ -1452,7 +1458,28 @@ shared void checkTypeArgumentChecks(){
         assert(is IncompatibleTypeException x);
     }
     try{
+        // invalid because non-mutable
+        `value NoParams.str`.memberApply<NoParams,String,String>(`NoParams`);
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    try{
+        // invalid because non-mutable
+        `value toplevelInteger`.apply<Integer,Integer>();
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    try{
         `NoParams`.getAttribute("str");
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    try{
+        // invalid because non-mutable
+        `NoParams`.getAttribute<NoParams,String,String>("str");
         assert(false);
     }catch(Exception x){
         assert(is IncompatibleTypeException x);
