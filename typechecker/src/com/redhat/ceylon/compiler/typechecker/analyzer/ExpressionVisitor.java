@@ -5770,7 +5770,12 @@ public class ExpressionVisitor extends Visitor {
                     //checkNonlocalType(that.getType(), t.getDeclaration());
                     if (d instanceof Class) {
 //                        checkNonlocal(that, t.getDeclaration());
-                        that.setTypeModel(unit.getClassMetatype(t));
+                        if (((Class) d).isAbstraction()) {
+                            that.addError("class constructor is overloaded");
+                        }
+                        else {
+                            that.setTypeModel(unit.getClassMetatype(t));
+                        }
                     }
                     else if (d instanceof Interface) {
                         that.setTypeModel(unit.getInterfaceMetatype(t));
@@ -5901,23 +5906,28 @@ public class ExpressionVisitor extends Visitor {
         }
         if (result instanceof Method) {
             Method method = (Method) result;
-            Tree.TypeArgumentList tal = that.getTypeArgumentList();
-            if (explicitTypeArguments(method, tal, null)) {
-                List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method),
-                        outerType);
-                if (tal != null) {
-                    tal.setTypeModels(ta);
-                }
-                if (acceptsTypeArguments(outerType, method, ta, tal, that, false)) {
-                    ProducedTypedReference pr = outerType==null ? 
-                            method.getProducedTypedReference(null, ta) : 
-                            outerType.getTypedMember(method, ta);
-                    that.setTarget(pr);
-                    that.setTypeModel(unit.getFunctionMetatype(pr));
-                }
+            if (method.isAbstraction()) {
+                that.addError("method is overloaded");
             }
             else {
-                that.addError("missing type arguments to: " + method.getName(unit));
+                Tree.TypeArgumentList tal = that.getTypeArgumentList();
+                if (explicitTypeArguments(method, tal, null)) {
+                    List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method),
+                            outerType);
+                    if (tal != null) {
+                        tal.setTypeModels(ta);
+                    }
+                    if (acceptsTypeArguments(outerType, method, ta, tal, that, false)) {
+                        ProducedTypedReference pr = outerType==null ? 
+                                method.getProducedTypedReference(null, ta) : 
+                                    outerType.getTypedMember(method, ta);
+                                that.setTarget(pr);
+                                that.setTypeModel(unit.getFunctionMetatype(pr));
+                    }
+                }
+                else {
+                    that.addError("missing type arguments to: " + method.getName(unit));
+                }
             }
         }
         else if (result instanceof Value) {
