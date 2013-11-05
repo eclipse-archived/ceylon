@@ -91,7 +91,7 @@ function typeLiteral$meta($$targs$$) {
       } else if (mdl['$mt'] === 'mthd') {
         return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
-        return AppliedValue(undefined,t,{Container:{t:mm.$cont},Type:mm.$t});
+        return AppliedValue(undefined,t,{Container:{t:mm.$cont},Get:mm.$t,Set:mdl['var']?mm.$t:{t:Nothing}});
       } else {
         console.log("WTF is a metatype " + mdl['$mt'] + " on a closed type???????");
       }

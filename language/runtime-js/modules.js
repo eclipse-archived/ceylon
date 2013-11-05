@@ -292,7 +292,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     function getValue(name$4) {
       var m = this.pkg[name$4];
       if (m && (m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt'] === 'obj')) {
-        return (m['var']==='1' ? OpenVariable:OpenValue)(this, m);
+        return OpenValue(this, m);
       }
       return null;
     }

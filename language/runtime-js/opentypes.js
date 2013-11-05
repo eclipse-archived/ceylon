@@ -213,37 +213,37 @@ $init$OpenFunction();
 
 //ClassDefinition OpenValue at X (38:0-45:0)
 function OpenValue(pkg, meta, that){
-    $init$OpenValue();
-    if (that===undefined)that=new OpenValue.$$;
-    that._pkg = pkg;
-    var _mm=meta.$$metamodel$$;
-    if (_mm === undefined) {
-      //it's a metamodel
-      that.meta=meta;
-      if (meta['$mt']==='prm') {
-        that.tipo={$$metamodel$$:meta};
-        //TODO I think we need to do something else here
-      } else {
-        that.tipo=_findTypeFromModel(pkg,meta);
-      }
-      _mm = that.tipo.$$metamodel$$;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        that.tipo.$$metamodel$$=_mm;
-      }
+  $init$OpenValue();
+  if (that===undefined)that=new OpenValue.$$;
+  that._pkg = pkg;
+  var _mm=meta.$$metamodel$$;
+  if (_mm === undefined) {
+    //it's a metamodel
+    that.meta=meta;
+    if (meta['$mt']==='prm') {
+      that.tipo={$$metamodel$$:meta};
+      //TODO I think we need to do something else here
     } else {
-      //it's a type
-      that.tipo = meta;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        meta.$$metamodel$$=_mm;
-      }
-      that.meta = get_model(_mm);
+      that.tipo=_findTypeFromModel(pkg,meta);
     }
-    that.name_=_mm.d===undefined?_mm['$nm']:_mm.d[_mm.d.length-1];
-    that.toplevel_=_mm.$cont === undefined;
-    ValueDeclaration$meta$declaration(that);
-    return that;
+    _mm = that.tipo.$$metamodel$$;
+    if (typeof(_mm)==='function') {
+      _mm=_mm();
+      that.tipo.$$metamodel$$=_mm;
+    }
+  } else {
+    //it's a type
+    that.tipo = meta;
+    if (typeof(_mm)==='function') {
+      _mm=_mm();
+      meta.$$metamodel$$=_mm;
+    }
+    that.meta = get_model(_mm);
+  }
+  that.name_=_mm.d===undefined?_mm['$nm']:_mm.d[_mm.d.length-1];
+  that.toplevel_=_mm.$cont === undefined;
+  ValueDeclaration$meta$declaration(that);
+  return that;
 }
 OpenValue.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:ValueDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','ValueDeclaration']};};
 function $init$OpenValue(){
@@ -259,7 +259,11 @@ defineAttr($$openValue,'container',function(){
             
             //MethodDefinition apply at X (39:4-39:68)
       $$openValue.$apply=function $apply($$$mptypes){
-        return (this.tipo.set?AppliedVariable:AppliedValue)(undefined,this.tipo,$$$mptypes);
+        var mm=this.tipo.$$metamodel$$;
+        if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+        if (!extendsType(mm.$t,$$$mptypes.Get))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
+        if (!extendsType($$$mptypes.Set,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
+        return AppliedValue(undefined,this.tipo,$$$mptypes);
       };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
 
       $$openValue.memberApply=function memberApply(cont,$mptypes) {
@@ -269,19 +273,19 @@ defineAttr($$openValue,'container',function(){
         }
         if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
           throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
-        if (!extendsType(mm.$t,$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type type argument");
+        if (!extendsType(mm.$t,$mptypes.Get))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
+        if (!extendsType($mptypes.Set,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
         return AppliedAttribute(this.meta.$nm,this.tipo,$mptypes);
       };$$openValue.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
-            //AttributeDeclaration defaulted at X (40:4-40:44)
-            defineAttr($$openValue,'defaulted',function(){
-                return false;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
-            
-            //AttributeDeclaration variadic at X (41:4-41:43)
-            defineAttr($$openValue,'variadic',function(){
-                var $$openValue=this;
-                return false;
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
+      defineAttr($$openValue,'defaulted',function(){
+        return false;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','defaulted']};});
+      defineAttr($$openValue,'variadic',function(){
+        return false;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
+      defineAttr($$openValue,'variable',function(){
+        return $findAnnotation(this.tipo,VariableAnnotation)!==null;
+      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
             
   defineAttr($$openValue,'openType',function(){
     if (this.tipo) {
@@ -313,50 +317,22 @@ defineAttr($$openValue,'toplevel',function(){return this.toplevel_;},undefined,f
     defineAttr($$openValue,'qualifiedName',function(){
       return String$($qname(this.tipo));
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
-        })(OpenValue.$$.prototype);
-    }
-    return OpenValue;
+    $$openValue.memberSet=function(c,v) {
+      if (!isOfType(c,{t:this.tipo.$$metamodel$$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
+      if (!isOfType(v,this.tipo.$$metamodel$$.$t))throw IncompatibleTypeException$meta$model("Incompatible value type");
+      if (!this.tipo.set)throw MutationException$meta$model($qname(this.tipo.$$metamodel$$)+" is not writable");
+      c[this.name]=v;
+    };
+    defineAttr($$openValue,'setter',function(){
+      return this.tipo.$$metamodel$$.set?OpenSetter(this):null;
+    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:SetterDeclaration$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','setter']};});
+
+    })(OpenValue.$$.prototype);
+  }
+  return OpenValue;
 }
 exports.$init$OpenValue=$init$OpenValue;
 $init$OpenValue();
-
-//ClassDefinition OpenVariable at opentypes.ceylon (60:0-62:0)
-function OpenVariable(pkg, meta, $$openVariable){
-    $init$OpenVariable();
-    if ($$openVariable===undefined)$$openVariable=new OpenVariable.$$;
-    VariableDeclaration$meta$declaration($$openVariable);
-    OpenValue(pkg, meta,$$openVariable);
-    return $$openVariable;
-}
-OpenVariable.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:OpenValue},satisfies:[{t:VariableDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','VariableDeclaration']};};
-function $init$OpenVariable(){
-  if (OpenVariable.$$===undefined){
-    initTypeProto(OpenVariable,'ceylon.language.meta.declaration::OpenVariable',VariableDeclaration$meta$declaration,OpenValue);
-    (function($$openVariable){
-      $$openVariable.memberSet=function(c,v) {
-        if (!isOfType(c,{t:this.tipo.$$metamodel$$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
-        if (!isOfType(v,this.tipo.$$metamodel$$.$t))throw IncompatibleTypeException$meta$model("Incompatible value type");
-        c[this.name]=v;
-      };
-            defineAttr($$openVariable,'setter',function(){
-              var $$openVariable=this;
-              return OpenSetter(this);
-            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:SetterDeclaration$meta$declaration},$cont:OpenVariable,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','VariableDeclaration','$at','setter']};});
-
-  $$openVariable.equals=function(other) {
-    if (isOfType(other, {t:OpenVariable}) && other.name.equals(this.name) && other.toplevel===this.toplevel && other.containingPackage.equals(this.containingPackage)) {
-      return other.meta==this.meta;
-    }
-    return false;
-  }
-  defineAttr($$openVariable,'string',function(){return String$("OpenVariable[" + this.containingPackage.name + "::" + this.name_+"]");},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
-
-        })(OpenVariable.$$.prototype);
-    }
-    return OpenVariable;
-}
-exports.$init$OpenVariable=$init$OpenVariable;
-$init$OpenVariable();
 
 //ClassDefinition OpenSetter at opentypes.ceylon (63:0-63:90)
 function OpenSetter(v, $$openSetter){
@@ -372,7 +348,7 @@ function $init$OpenSetter(){
     if (OpenSetter.$$===undefined){
         initTypeProto(OpenSetter,'ceylon.language.meta.declaration::OpenSetter',Basic,SetterDeclaration$meta$declaration);
         (function($$openSetter){
-            defineAttr($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:VariableDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
+            defineAttr($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
         })(OpenSetter.$$.prototype);
     }
     return OpenSetter;
@@ -1070,7 +1046,7 @@ function $init$ValParamDecl(){
         return this.param.seq!==undefined;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
       defineAttr($$valParamDecl,'variable',function(){
-        return this.param['var']!==undefined; //TODO revisar
+        return $findAnnotation(this.param,VariableAnnotation)!==null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:ValParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variable']};});
       defineAttr($$valParamDecl,'container',function(){
         return this.cont;
