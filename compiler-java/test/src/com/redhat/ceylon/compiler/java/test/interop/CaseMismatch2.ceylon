@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import com.redhat.ceylon.compiler.java.test.interop { JCM=\IjavaCaseMismatch { fld=\iField, mth=\iMethod, Kls=\IsubClass } }
+import com.redhat.ceylon.compiler.java.test.interop { JCM=\IjavaCaseMismatch { fld=\iField, mth=\iMethod, Kls=\IsubClass { baz } } }
 
 @noanno
 @error
@@ -29,4 +29,5 @@ void caseMismatch(){
     klass.mth();
     @error
     Kls klass2 = Kls();
+    Integer b = baz;
 }

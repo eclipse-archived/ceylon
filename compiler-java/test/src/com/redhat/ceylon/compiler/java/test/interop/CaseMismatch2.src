@@ -10,6 +10,7 @@ final class caseMismatch_ {
         final long i = klass.Field;
         klass.Method();
         final .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass klass2 = new .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass();
+        final long b = .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass.baz;
     }
     
     public static void main(.java.lang.String[] args) {
