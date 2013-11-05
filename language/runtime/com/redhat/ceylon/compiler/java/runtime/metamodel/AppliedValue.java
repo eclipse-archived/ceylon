@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -40,6 +41,8 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 public class AppliedValue<Get, Set> 
         implements ceylon.language.meta.model.Value<Get, Set>, ReifiedType {
 
+    private static final Class<?>[] NO_PARAMS = new Class<?>[0];
+    
     private ceylon.language.meta.model.Type<Get> type;
     @Ignore
     protected TypeDescriptor $reifiedGet;
@@ -83,8 +86,11 @@ public class AppliedValue<Get, Set>
             }
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
+                Class<?>[] params = NO_PARAMS;
+                if(MethodHandleUtil.isJavaArray(javaClass))
+                    params = MethodHandleUtil.getJavaArrayGetArrayParameterTypes(javaClass, getterName);
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
-                Method m = decl.isShared() ? javaClass.getMethod(getterName) : javaClass.getDeclaredMethod(getterName);
+                Method m = decl.isShared() ? javaClass.getMethod(getterName, params) : javaClass.getDeclaredMethod(getterName, params);
                 m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
@@ -128,24 +134,42 @@ public class AppliedValue<Get, Set>
             FieldValue fieldDecl = (FieldValue) decl;
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface)decl.getContainer());
             String fieldName = fieldDecl.getRealName();
-            try {
-                // fields are not inherited
-                Field f = javaClass.getDeclaredField(fieldName);
-                f.setAccessible(true);
-                getter = MethodHandles.lookup().unreflectGetter(f);
-                java.lang.Class<?> getterType = f.getType();
-                getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                getter = getter.bindTo(instance);
-                // we need to cast to Object because this is what comes out when calling it in $call
-                getter = getter.asType(MethodType.methodType(Object.class));
+            if(MethodHandleUtil.isJavaArray(javaClass)){
+                try {
+                    Method method = Array.class.getDeclaredMethod("getLength", Object.class);
+                    getter = MethodHandles.lookup().unreflect(method);
+                    java.lang.Class<?> getterType = method.getReturnType();
+                    getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
+                    getter = getter.bindTo(instance);
+                    // we need to cast to Object because this is what comes out when calling it in $call
+                    getter = getter.asType(MethodType.methodType(Object.class));
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException("Failed to find Array.getLength method for: "+decl, e);
+                } catch (SecurityException e) {
+                    throw new RuntimeException("Failed to find Array.getLength method for: "+decl, e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Failed to find Array.getLength method for: "+decl, e);
+                }
+            }else{
+                try {
+                    // fields are not inherited
+                    Field f = javaClass.getDeclaredField(fieldName);
+                    f.setAccessible(true);
+                    getter = MethodHandles.lookup().unreflectGetter(f);
+                    java.lang.Class<?> getterType = f.getType();
+                    getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
+                    getter = getter.bindTo(instance);
+                    // we need to cast to Object because this is what comes out when calling it in $call
+                    getter = getter.asType(MethodType.methodType(Object.class));
 
-                initSetter(decl, javaClass, getterType, instance, valueType);
-            } catch (NoSuchFieldException e) {
-                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
-            } catch (SecurityException e) {
-                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+                    initSetter(decl, javaClass, getterType, instance, valueType);
+                } catch (NoSuchFieldException e) {
+                    throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+                } catch (SecurityException e) {
+                    throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+                }
             }
         }else
             throw new RuntimeException("Unsupported attribute type: "+decl);
@@ -311,5 +335,4 @@ public class AppliedValue<Get, Set>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AppliedValue.class, $reifiedGet, $reifiedSet);
     }
-
 }

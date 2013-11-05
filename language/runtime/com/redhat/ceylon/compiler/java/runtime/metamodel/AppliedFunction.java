@@ -117,8 +117,14 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             // FIXME: deal with Java classes and overloading
             // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
             found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);;
+            boolean isArray = MethodHandleUtil.isJavaArray(javaClass);
             for(Method method : javaClass.getDeclaredMethods()){
                 if(!method.getName().equals(name))
+                    continue;
+                if(method.isBridge() || method.isSynthetic())
+                    continue;
+                // skip static methods if we're in array types
+                if(isArray && Modifier.isStatic(method.getModifiers()))
                     continue;
                 if(method.isAnnotationPresent(Ignore.class)){
                     // save method for later
@@ -139,7 +145,9 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
-                    // FIXME: proper checks
+                    if(defaultedMethods[i] == null)
+                        throw new RuntimeException("Missing defaulted method "+found.getName()
+                                +" with "+(i+firstDefaulted)+" parameters in "+found.getDeclaringClass());
                     dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction, parameterProducedTypes, variadic, false);
                 }
                 dispatch[i] = method;
@@ -157,18 +165,30 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, 
                                                   ProducedReference appliedFunction, List<ProducedType> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
-        MethodHandle method;
+        // save the parameter types before we mess with "found"
+        java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
+        MethodHandle method = null;
         try {
-            if(!Modifier.isPublic(found.getModifiers()));
-                found.setAccessible(true);
-            method = MethodHandles.lookup().unreflect(found);
+            if(MethodHandleUtil.isJavaArray(javaClass)){
+                if(found.getName().equals("get"))
+                    method = MethodHandleUtil.getJavaArrayGetterMethodHandle(javaClass);
+                else if(found.getName().equals("set"))
+                    method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
+                else if(found.getName().equals("copyTo")){
+                    found = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, found);
+                }
+            }
+            if(method == null){
+                if(!Modifier.isPublic(found.getModifiers()));
+                    found.setAccessible(true);
+                method = MethodHandles.lookup().unreflect(found);
+            }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
         }
         // box the return type
         method = MethodHandleUtil.boxReturnValue(method, found.getReturnType(), appliedFunction.getType());
         // we need to cast to Object because this is what comes out when calling it in $call
-        java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
         if(instance != null)
             method = method.bindTo(instance);
         method = method.asType(MethodType.methodType(Object.class, parameterTypes));

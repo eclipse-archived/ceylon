@@ -36,7 +36,16 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.compiler.java.language.BooleanArray;
+import com.redhat.ceylon.compiler.java.language.ByteArray;
+import com.redhat.ceylon.compiler.java.language.CharArray;
+import com.redhat.ceylon.compiler.java.language.DoubleArray;
+import com.redhat.ceylon.compiler.java.language.FloatArray;
+import com.redhat.ceylon.compiler.java.language.IntArray;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
+import com.redhat.ceylon.compiler.java.language.LongArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -134,12 +143,43 @@ public class Metamodel {
         else if(instance instanceof ReifiedType)
             return((ReifiedType) instance).$getType$();
         else
-            return null; // FIXME: interop?
+            return getJavaTypeDescriptor(instance.getClass());
     }
+    
+    private static TypeDescriptor getJavaArrayTypeDescriptor(Class<?> klass) {
+        if(klass == byte[].class)
+            return ByteArray.$TypeDescriptor$;
+        if(klass == short[].class)
+            return ShortArray.$TypeDescriptor$;
+        if(klass == int[].class)
+            return IntArray.$TypeDescriptor$;
+        if(klass == long[].class)
+            return LongArray.$TypeDescriptor$;
+        if(klass == float[].class)
+            return FloatArray.$TypeDescriptor$;
+        if(klass == double[].class)
+            return DoubleArray.$TypeDescriptor$;
+        if(klass == boolean[].class)
+            return BooleanArray.$TypeDescriptor$;
+        if(klass == char[].class)
+            return CharArray.$TypeDescriptor$;
+        TypeDescriptor componentType = getJavaTypeDescriptor(klass.getComponentType());
+        return TypeDescriptor.klass(ObjectArray.class, componentType);
+    }
+
+    private static TypeDescriptor getJavaTypeDescriptor(Class<?> klass) {
+        if(klass.isArray())
+            return getJavaArrayTypeDescriptor(klass);
+        // make sure java.lang.Object doesn't leak in the ceylon metamodel
+        if(klass == Object.class)
+            return ceylon.language.Object.$TypeDescriptor$;
+        return TypeDescriptor.klass(klass);
+    }
+
     public static boolean isReified(java.lang.Object o, TypeDescriptor type){
         TypeDescriptor instanceType = getTypeDescriptor(o);
         if(instanceType == null)
-            return false; // FIXME: interop?
+            return false;
         return instanceType.toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
     }
 

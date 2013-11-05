@@ -7,9 +7,19 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.BooleanArray;
+import com.redhat.ceylon.compiler.java.language.ByteArray;
+import com.redhat.ceylon.compiler.java.language.CharArray;
+import com.redhat.ceylon.compiler.java.language.DoubleArray;
+import com.redhat.ceylon.compiler.java.language.FloatArray;
+import com.redhat.ceylon.compiler.java.language.IntArray;
+import com.redhat.ceylon.compiler.java.language.LongArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -312,5 +322,219 @@ public class MethodHandleUtil {
         }else{
             return ((java.lang.reflect.Method)found).isVarArgs();
         }
+    }
+
+    public static boolean isJavaArray(Class<?> arrayClass){
+        return arrayClass == ByteArray.class
+                || arrayClass == ShortArray.class
+                || arrayClass == IntArray.class
+                || arrayClass == LongArray.class
+                || arrayClass == FloatArray.class
+                || arrayClass == DoubleArray.class
+                || arrayClass == CharArray.class
+                || arrayClass == BooleanArray.class
+                || arrayClass == ObjectArray.class
+                ;
+    }
+    
+    public static Method setupArrayConstructor(Class<?> arrayClass, Object[] defaultedMethods){
+        if(arrayClass == ByteArray.class)
+            return MethodHandleUtil.setupArrayConstructor("byteArrayConstructor", byte.class, defaultedMethods);
+        if(arrayClass == ShortArray.class)
+            return MethodHandleUtil.setupArrayConstructor("shortArrayConstructor", short.class, defaultedMethods);
+        if(arrayClass == IntArray.class)
+            return MethodHandleUtil.setupArrayConstructor("intArrayConstructor", int.class, defaultedMethods);
+        if(arrayClass == LongArray.class)
+            return MethodHandleUtil.setupArrayConstructor("longArrayConstructor", long.class, defaultedMethods);
+        if(arrayClass == FloatArray.class)
+            return MethodHandleUtil.setupArrayConstructor("floatArrayConstructor", float.class, defaultedMethods);
+        if(arrayClass == DoubleArray.class)
+            return MethodHandleUtil.setupArrayConstructor("doubleArrayConstructor", double.class, defaultedMethods);
+        if(arrayClass == CharArray.class)
+            return MethodHandleUtil.setupArrayConstructor("charArrayConstructor", char.class, defaultedMethods);
+        if(arrayClass == BooleanArray.class)
+            return MethodHandleUtil.setupArrayConstructor("booleanArrayConstructor", boolean.class, defaultedMethods);
+        if(arrayClass == ObjectArray.class)
+            return MethodHandleUtil.setupArrayConstructor("objectArrayConstructor", Object.class, defaultedMethods, true);
+        throw new RuntimeException("Array type not supported yet: "+arrayClass);
+    }
+
+    public static Method setupArrayConstructor(String name, Class<?> elementType, Object[] defaultedMethods){
+        return setupArrayConstructor(name, elementType, defaultedMethods, false);
+    }
+    
+    public static Method setupArrayConstructor(String name, Class<?> elementType, Object[] defaultedMethods, boolean withTypeParameter){
+        try {
+            Method found;
+            if(withTypeParameter){
+                found = MethodHandleUtil.class.getDeclaredMethod(name, TypeDescriptor.class, int.class, elementType);
+                defaultedMethods[0] = MethodHandleUtil.class.getDeclaredMethod(name, TypeDescriptor.class, int.class);
+            }else{
+                found = MethodHandleUtil.class.getDeclaredMethod(name, int.class, elementType);
+                defaultedMethods[0] = MethodHandleUtil.class.getDeclaredMethod(name, int.class);
+            }
+            defaultedMethods[1] = found;
+            return found;
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Failed to find array method constructor "+name+" in MethodHandleUtil", e);
+        } catch (SecurityException e) {
+            throw new RuntimeException("Failed to find array method constructor "+name+" in MethodHandleUtil", e);
+        }
+    }
+
+    public static byte[] byteArrayConstructor(int size){
+        return new byte[size];
+    }
+
+    public static byte[] byteArrayConstructor(int size, byte element){
+        byte[] ret = new byte[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+
+    public static short[] shortArrayConstructor(int size){
+        return new short[size];
+    }
+
+    public static short[] shortArrayConstructor(int size, short element){
+        short[] ret = new short[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+
+    public static int[] intArrayConstructor(int size){
+        return new int[size];
+    }
+
+    public static int[] intArrayConstructor(int size, int element){
+        int[] ret = new int[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+    
+    public static long[] longArrayConstructor(int size){
+        return new long[size];
+    }
+
+    public static long[] longArrayConstructor(int size, long element){
+        long[] ret = new long[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+
+    public static float[] floatArrayConstructor(int size){
+        return new float[size];
+    }
+
+    public static float[] floatArrayConstructor(int size, float element){
+        float[] ret = new float[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+    
+    public static double[] doubleArrayConstructor(int size){
+        return new double[size];
+    }
+
+    public static double[] doubleArrayConstructor(int size, double element){
+        double[] ret = new double[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+
+    public static char[] charArrayConstructor(int size){
+        return new char[size];
+    }
+
+    public static char[] charArrayConstructor(int size, char element){
+        char[] ret = new char[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+    
+    public static boolean[] booleanArrayConstructor(int size){
+        return new boolean[size];
+    }
+
+    public static boolean[] booleanArrayConstructor(int size, boolean element){
+        boolean[] ret = new boolean[size];
+        Arrays.fill(ret, element);
+        return ret;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] objectArrayConstructor(@Ignore TypeDescriptor $reifiedT, int size){
+        Class<T> componentType = Util.<T>getJavaClassForDescriptor($reifiedT);
+        return (T[]) java.lang.reflect.Array.newInstance(componentType, size);
+    }
+
+    public static <T> T[] objectArrayConstructor(@Ignore TypeDescriptor $reifiedT, int size, T element){
+        Class<T> componentType = Util.<T>getJavaClassForDescriptor($reifiedT);
+        @SuppressWarnings("unchecked")
+        T[] ret = (T[]) java.lang.reflect.Array.newInstance(componentType, size);
+        Arrays.fill(ret, element);
+        return ret;
+    }
+
+    public static MethodHandle getJavaArrayGetterMethodHandle(Class<?> arrayClass) {
+        Class<?> arrayType = getJavaArrayType(arrayClass);
+        return MethodHandles.arrayElementGetter(arrayType);
+    }
+
+    public static MethodHandle getJavaArraySetterMethodHandle(Class<?> arrayClass) {
+        Class<?> arrayType = getJavaArrayType(arrayClass);
+        return MethodHandles.arrayElementSetter(arrayType);
+    }
+
+    private static Class<?> getJavaArrayType(Class<?> arrayClass) {
+        Class<?> arrayType = null;
+        if(arrayClass == ByteArray.class)
+            arrayType = byte[].class;
+        if(arrayClass == ShortArray.class)
+            arrayType = short[].class;
+        if(arrayClass == IntArray.class)
+            arrayType = int[].class;
+        if(arrayClass == LongArray.class)
+            arrayType = long[].class;
+        if(arrayClass == FloatArray.class)
+            arrayType = float[].class;
+        if(arrayClass == DoubleArray.class)
+            arrayType = double[].class;
+        if(arrayClass == CharArray.class)
+            arrayType = char[].class;
+        if(arrayClass == BooleanArray.class)
+            arrayType = boolean[].class;
+        // FIXME: extract array component type properly
+        if(arrayClass == ObjectArray.class)
+            arrayType = Object[].class;
+        if(arrayType == null)
+            throw new RuntimeException("Array type not supported yet: "+arrayClass);
+        return arrayType;
+    }
+
+    public static Method getJavaArrayCopyToMethod(Class<?> arrayClass, Method found) {
+        Class<?> arrayType = getJavaArrayType(arrayClass);
+        try{
+            switch(found.getParameterTypes().length){
+            case 1: return arrayClass.getDeclaredMethod("copyTo", arrayType, arrayType);
+            case 2: return arrayClass.getDeclaredMethod("copyTo", arrayType, arrayType, int.class);
+            case 3: return arrayClass.getDeclaredMethod("copyTo", arrayType, arrayType, int.class, int.class);
+            case 4: return arrayClass.getDeclaredMethod("copyTo", arrayType, arrayType, int.class, int.class, int.class);
+            default:
+                throw new RuntimeException("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes());
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes(), e);
+        } catch (SecurityException e) {
+            throw new RuntimeException("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes(), e);
+        }
+    }
+
+    public static Class<?>[] getJavaArrayGetArrayParameterTypes(Class<?> arrayClass, String getterName) {
+        Class<?> arrayType = getJavaArrayType(arrayClass);
+        if(getterName.equals("getArray") 
+                || (arrayClass == IntArray.class && getterName.equals("getCodePointArray")))
+            return new Class<?>[]{arrayType};
+        throw new RuntimeException("No such property in Java array "+arrayClass+": "+getterName);
     }
 }
