@@ -85,7 +85,7 @@ function $init$AppliedClass(){
       $$clase.$apply=function(a){
         var mdl=get_model(this.tipo.$$metamodel$$);
         if (mdl&&mdl.$mt==='obj')throw InvocationException$meta$model("Cannot instantiate anonymous class");
-        a=convert$params(this.tipo.$$metamodel$$.$ps,a);
+        a=convert$params(this.tipo.$$metamodel$$,a);
         if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);
       };$$clase.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.model','Class','$m','apply'],$t:'Type'};};
@@ -561,7 +561,7 @@ defineAttr(f,'declaration',function(){
   return f._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
   f.$apply=function(a){
-    a=convert$params(mm.$ps,a);
+    a=convert$params(mm,a);
     if (ttargs) {
       var _a=[];
       for (var i=0;i<a.size;i++)_a.push(a.$get(i));
