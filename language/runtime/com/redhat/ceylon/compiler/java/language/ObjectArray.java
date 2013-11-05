@@ -39,7 +39,7 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
-    @TypeInfo(value = "T|ceylon.language::Null")
+    @TypeInfo(value = "T", uncheckedNull = true)
     public T get(int index) {
         throw Util.makeJavaArrayWrapperException();
     }
