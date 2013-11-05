@@ -59,13 +59,16 @@ function AppliedClass(tipo,$$targs$$,that){
       return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
     },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$$metamodel$$);
     that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
+    that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
     that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
-    that.getVariableAttribute=ClassOrInterface$meta$model.$$.prototype.getVariableAttribute;
+    that.getDeclaredAttribute=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute;
     that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
     that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
     that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
-    that.equals=ClassModel$meta$model.$$.prototype.equals;
+    that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
     that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
+    that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
+    that.equals=ClassModel$meta$model.$$.prototype.equals;
     that.isTypeOf=ClassOrInterface$meta$model.$$.prototype.isTypeOf;
     that.isSuperTypeOf=ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf;
     that.isSubTypeOf=ClassOrInterface$meta$model.$$.prototype.isSubTypeOf;
