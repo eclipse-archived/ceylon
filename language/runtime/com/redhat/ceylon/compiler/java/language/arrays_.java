@@ -481,8 +481,7 @@ public final class arrays_ {
             }
             throw new RuntimeException("Invalid source array type: "+array.toArray());
         }
-        // FIXME: we need to figure out the erasure of the Iterable element type
-        return Util.<T>toArray(values, (Class<T>)java.lang.Object.class);
+        return Util.<T>toArray(values, Util.<T>getJavaClassForDescriptor($reifiedT));
     }
 
     public <T> T[] asObjectArray(@Ignore TypeDescriptor $reifiedT, @Name("array") Array<T> array){
