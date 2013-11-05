@@ -324,7 +324,7 @@ defineAttr($$openValue,'toplevel',function(){return this.toplevel_;},undefined,f
       c[this.name]=v;
     };
     defineAttr($$openValue,'setter',function(){
-      return this.tipo.$$metamodel$$.set?OpenSetter(this):null;
+      return OpenSetter(this);
     },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:SetterDeclaration$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','setter']};});
 
     })(OpenValue.$$.prototype);
