@@ -176,7 +176,7 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
         var _ints = false;
         for (var i = 0; i < t1.l.length; i++) {
             var partial = extendsType(t1.l[i], t2);
-            if (t1.t==='u') {
+            if (t1.t==='i') {
                 unions = partial||unions;
             } else {
                 inters = partial&&inters;
