@@ -34,7 +34,7 @@ GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=fun
     }
     return null;
   }
-  console.log("TODO IMPL GenericDeclaration.getTypeParameterDeclaration(" + name$14 + ")");
+  console.log("TODO GenericDeclaration.getTypeParameterDeclaration(" + name$14 + ")");
   return null;
 };
 GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:TypeParameter$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$m','getTypeParameterDeclaration']};};

@@ -289,10 +289,12 @@ defineAttr($$openValue,'container',function(){
       if (typeof(mm)==='function'){
         mm=mm(); this.tipo.$$metamodel$$=mm;
       }
-if (typeof(mm.$t)==='string')return OpenTypeParam(mm.$cont,mm.$t);
+      if (typeof(mm.$t)==='string') {
+        return OpenTypeParam(mm.$cont,mm.$t);
+      }
       return _openTypeFromTarg(mm.$t);
     }
-    throw Error("IMPL OpenValue.openType");
+    throw Error("OpenValue.openType-we don't have a metamodel!");
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','openType']};});
 
 defineAttr($$openValue,'name',function(){return this.name_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','name']};});
@@ -455,7 +457,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
             //MethodDeclaration annotatedMemberDeclarations at X (55:2-56:66)
             $$openClass.annotatedMemberDeclarations=function ($$$mptypes){
                 var $$openClass=this;
-console.log("IMPL OpenClass.annotatedMemberDeclarations()");
+                console.log("IMPL OpenClass.annotatedMemberDeclarations()");
                 return getEmpty();
             };
             $$openClass.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','annotatedMemberDeclarations']};};
@@ -588,20 +590,9 @@ defineAttr($$openInterface,'string',function(){
                 return getEmpty();
             };
             $$openInterface.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','annotatedMemberDeclarations']};};
-            
-           
-            //AttributeGetterDefinition openType at X (86:2-86:43)
             defineAttr($$openInterface,'openType',function(){
               return FreeInterface(this);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','openType']};});
-           
-            //MethodDeclaration getTypeParameterDeclaration at X (88:2-88:79)
-            $$openInterface.getTypeParameterDeclaration=function (name$21){
-              throw Error("IMPL OpenInterface.getTypeParameterDeclaration");
-            };
-            $$openInterface.getTypeParameterDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:TypeParameter$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','getTypeParameterDeclaration']};};
-            
-            //AttributeDeclaration superclassDeclaration at X (90:2-90:86)
             defineAttr($$openInterface,'extendedType',function(){
               var sc = this.tipo.$$metamodel$$['super'];
               if (sc === undefined)return null;
@@ -678,7 +669,7 @@ function $init$OpenAlias(){
         throw Error("IMPL OpenAlias.containingPackage");
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Package$meta$declaration},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','containingPackage']};});
       defineAttr($$openAlias,'containingModule',function(){
-        throw wrapexc(Exception(String$("OpenAlias.containingModule",26)),'12:42-12:87','caca.ceylon');
+        throw Exception(String$("IMPL OpenAlias.containingModule"));
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Module$meta$declaration},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','containingModule']};});
       defineAttr($$openAlias,'container',function(){
         var cont=this.$$targs$$.Container;
@@ -713,9 +704,6 @@ function $init$OpenAlias(){
       defineAttr($$openAlias,'name',function(){
         return String$(this._alias.$$metamodel$$.d[this._alias.$$metamodel$$.d.length-1]);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','name']};});
-      defineAttr($$openAlias,'containingPackage',function(){
-        throw Error("IMPL OpenAlias.containingPackage");
-      },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Package$meta$declaration},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','containingPackage']};});
       defineAttr($$openAlias,'string',function(){return StringBuilder().append(String$("alias ")).append(this.qualifiedName).string;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','string']};});
     })(OpenAlias.$$.prototype);
   }
@@ -1037,13 +1025,13 @@ function $init$FunParamDecl(){
       //MethodDef apply at caca.ceylon (31:2-32:74)
       $$funParamDecl.$apply=function $apply(typeArguments$11,$$$mptypes){
           if(typeArguments$11===undefined){typeArguments$11=getEmpty();}
-          throw wrapexc(Exception(String$("IMPL apply",10)),'32:43-32:72','');
+          throw Exception(String$("IMPL FunParamDecl.apply"));
       };$$funParamDecl.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:'Arguments',Type:'Return'}},$ps:[{$nm:'typeArguments',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:FunParamDecl,$tp:{Return:{'def':{t:Anything}},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
       
       //MethodDef memberApply at caca.ceylon (33:2-34:80)
       $$funParamDecl.memberApply=function memberApply(containerType$12,typeArguments$13,$$$mptypes){
           if(typeArguments$13===undefined){typeArguments$13=getEmpty();}
-          throw wrapexc(Exception(String$("IMPL memberApply",16)),'34:43-34:78','');
+          throw Exception(String$("IMPL FunParamDecl.memberApply"));
       };$$funParamDecl.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Return',Container:'Container'}},$ps:[{$nm:'containerType',$mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},$an:function(){return[];}},{$nm:'typeArguments',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:FunParamDecl,$tp:{Container:{'def':{t:Nothing}},Return:{'def':{t:Anything}},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
     })(FunParamDecl.$$.prototype);
   }
@@ -1112,12 +1100,12 @@ function $init$ValParamDecl(){
       //MethodDef apply at caca.ceylon (57:2-57:84)
       $$valParamDecl.$apply=function $apply($$$mptypes){
           var $$valParamDecl=this;
-          throw wrapexc(Exception(String$("IMPL apply",10)),'57:53-57:82','');
+          throw Exception(String$("IMPL ValParamDecl.apply"));
       };$$valParamDecl.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:'Type'}},$ps:[],$cont:ValParamDecl,$tp:{Type:{'def':{t:Anything}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
       //MethodDef memberApply at caca.ceylon (58:2-58:166)
       $$valParamDecl.memberApply=function memberApply(containerType$20,$$$mptypes){
           var $$valParamDecl=this;
-          throw wrapexc(Exception(String$("IMPL memberApply",16)),'58:129-58:164','');
+          throw Exception(String$("IMPL ValParamDecl.memberApply"));
       };$$valParamDecl.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Attribute$meta$model,a:{Type:'Type',Container:'Container'}},$ps:[{$nm:'containerType',$mt:'prm',$t:{t:Type$meta$model,a:{Type:'Container'}},$an:function(){return[];}}],$cont:ValParamDecl,$tp:{Container:{'def':{t:Nothing}},Type:{'def':{t:Anything}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
     })(ValParamDecl.$$.prototype);
   }

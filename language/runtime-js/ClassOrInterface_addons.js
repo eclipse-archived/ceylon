@@ -194,7 +194,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
     }
     return getEmpty();
   }
-  throw wrapexc(Exception(String$("IMPL ClassOrInterface.typeArguments ")),'15:63-15:99','?');
+  throw Exception(String$("ClassOrInterface.typeArguments-we don't have a metamodel!"));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     var mm = this.tipo.$$metamodel$$;

@@ -293,7 +293,7 @@ function $init$AppliedMemberInterface(){
     (function($$appliedMemberInterface){
       $$appliedMemberInterface.$bind=function $bind(container$2){
         var $$appliedMemberInterface=this;
-        throw wrapexc(Exception(String$("IMPL MemberInterface.bind",25)),'5:59-5:103','caca.ceylon');
+        throw Exception(String$("IMPL MemberInterface.bind"));
       };$$appliedMemberInterface.$bind.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Interface$meta$model,a:{Type:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
     })(AppliedMemberInterface.$$.prototype);
   }
@@ -370,7 +370,7 @@ defineAttr($$appliedUnionType,'hash',function(){
 
             $$appliedUnionType.isSuperTypeOf=function isSuperTypeOf(type$21){
                 var $$appliedUnionType=this;
-                throw wrapexc(Exception(String$("IMPL AppliedUnionType.isSuperTypeOf")),'70:67-70:103','?');
+                throw Exception(String$("IMPL AppliedUnionType.isSuperTypeOf"));
             };$$appliedUnionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isSuperTypeOf']};};
 
       $$appliedUnionType.isExactly=function isExactly(type$22){
@@ -470,7 +470,7 @@ defineAttr($$appliedIntersectionType,'hash',function(){
 
             $$appliedIntersectionType.isSuperTypeOf=function isSuperTypeOf(type$24){
                 var $$appliedIntersectionType=this;
-                throw wrapexc(Exception(String$("IMPL AppliedIntersectionType.isSuperTypeOf")),'78:67-78:103','?');
+                throw Exception(String$("IMPL AppliedIntersectionType.isSuperTypeOf"));
             };$$appliedIntersectionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isSuperTypeOf']};};
 
       $$appliedIntersectionType.isExactly=function isExactly(type$25){
