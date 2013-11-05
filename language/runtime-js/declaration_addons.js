@@ -1,23 +1,50 @@
 //Addendum to model.declaration.ClassOrInterfaceDeclaration
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function (name$20,$$$mptypes){
-  var $$oi=this;
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function (name$20,$$$mptypes,noInherit){
   var _m=undefined;
   if (extendsType($$$mptypes.Kind, {t:ValueDeclaration$meta$declaration})) {
-    var _d = $$oi.meta.$at ? $$oi.meta.$at[name$20] : undefined;
-    if (_d)_d=_findTypeFromModel($$oi.containingPackage,_d,$$oi.tipo);
-    if (_d)_m=OpenValue($$oi.containingPackage, _d);
-  } else if (extendsType($$$mptypes.Kind, {t:FunctionDeclaration$meta$declaration})) {
-    var _d = $$oi.meta.$m ? $$oi.meta.$m[name$20] : undefined;
-    if (_d)_d=_findTypeFromModel($$oi.containingPackage,_d,$$oi.tipo);
-    if(_d)_m=OpenFunction($$oi.packageContainer, _d);
-  } else if (extendsType($$$mptypes.Kind, {t:ClassDeclaration$meta$declaration})) {
-    var _d = $$oi.meta.$c ? $$oi.meta.$c[name$20] : undefined;
-    if (_d)_d=_findTypeFromModel($$oi.containingPackage,_d,$$oi.tipo);
-    if(_d)_m=OpenClass($$oi.containingPackage, _d);
-  } else if (extendsType($$$mptypes.Kind, {t:InterfaceDeclaration$meta$declaration})) {
-    var _d = $$oi.meta.$i ? $$oi.meta.$i[name$20] : undefined;
-    if (_d)_d=_findTypeFromModel($$oi.containingPackage,_d,$$oi.tipo);
-    if(_d)_m=OpenInterface($$oi.containingPackage, _d);
+    var _d = this.tipo.$$.prototype['$prop$get'+name$20[0].toUpperCase()+name$20.substring(1)];
+    if (_d){
+      if (noInherit) {
+        var mm=_d.$$metamodel$$;
+        if (typeof(mm)==='function'){mm=mm();_d.$$metamodel$$=mm;}
+        if (mm.$cont!==this.tipo)return null;
+      }
+      _m=OpenValue(this.containingPackage, _d);
+    }
+  }
+  if (!_m && extendsType($$$mptypes.Kind, {t:FunctionDeclaration$meta$declaration})) {
+    var _d = this.tipo.$$.prototype[name$20];
+    if(_d){
+      if (noInherit) {
+        var mm=_d.$$metamodel$$;
+        if (typeof(mm)==='function'){mm=mm();_d.$$metamodel$$=mm;}
+        if (mm.$cont!==this.tipo)return null;
+      }
+      _m=OpenFunction(this.packageContainer, _d);
+    }
+  }
+  if (!_m && extendsType($$$mptypes.Kind, {t:ClassOrInterfaceDeclaration$meta$declaration})) {
+    var nom=name$20+'$'+this.name;
+    var _d = this.tipo.$$.prototype[nom];
+    if (!_d) {
+      if (noInherit)return null;
+      var pere=this.tipo.$$metamodel$$['super'];
+      while (!_d && pere) {
+        var mm=pere.t.$$metamodel$$;
+        if (typeof(mm)==='function'){mm=mm();pere.t.$$metamodel$$=mm;}
+        nom=mm&&mm.d?name$20+'$'+mm.d[mm.d.length-1]:undefined;
+        if(nom)_d=this.tipo.$$.prototype[nom];
+        if (!_d)pere=mm['super'];
+      }
+    }
+    if(_d){
+      var wantsClass=extendsType($$$mptypes.Kind,{t:ClassDeclaration$meta$declaration});
+      var wantsIface=extendsType($$$mptypes.Kind,{t:InterfaceDeclaration$meta$declaration});
+      if (typeof(_d.$$metamodel$$)==='function')_d.$$metamodel$$=_d.$$metamodel$$();
+      var _mdl=get_model(_d.$$metamodel$$);
+      if ((wantsClass && _mdl.$mt!=='cls') || (wantsIface && _mdl.$mt!=='ifc'))return null;
+      _m=(_mdl.$mt==='cls'?OpenClass:OpenInterface)(this.containingPackage, _d);
+    }
   }
   if (_m) {
     _m.$parent=this;
@@ -27,8 +54,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getMemberDeclaration']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration=function(nm,$mptypes){
-  console.log("IMPL ClassOrInterfaceDeclaration.getDeclaredMemberDeclaration("+nm+")");
-  return this.getMemberDeclaration(nm,$mptypes);
+  return this.getMemberDeclaration(nm,$mptypes,1);
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getDeclaredMemberDeclaration']};};
 defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations',function(){
