@@ -215,4 +215,58 @@ shared class FreeUnion(List<OpenType> ts) satisfies OpenUnion {
 shared class FreeIntersection(List<OpenType> ts) satisfies OpenIntersection {
     shared actual List<OpenType> satisfiedTypes => ts;
 }
+class FunParamDecl() satisfies FunctionDeclaration {
+  shared actual Boolean parameter=true;
+  shared actual Boolean defaulted { throw Exception("IMPL defaulted"); }
+  shared actual Boolean variadic { throw Exception("IMPL variadic"); }
+
+  shared actual Package|NestableDeclaration container { throw Exception("IMPL container"); }
+  shared actual Package containingPackage { throw Exception("IMPL containingPackage"); }
+  shared actual Module containingModule { throw Exception("IMPL containingModule"); }
+  shared actual OpenType openType { throw Exception("IMPL openType"); }
+  shared actual Boolean annotation=false;
+  shared actual Boolean shared=false;
+  shared actual Boolean toplevel=false;
+  shared actual Boolean formal=false;
+  shared actual Boolean default=false;
+  shared actual Boolean actual=false;
+  shared actual String qualifiedName { throw Exception("IMPL qualifiedName"); }
+  shared actual String name {throw Exception("IMPL name"); }
+
+  shared actual TypeParameter[] typeParameterDeclarations { throw Exception("IMPL typeParameterDeclarations"); }
+  shared actual TypeParameter? getTypeParameterDeclaration(String name) { throw Exception("IMPL getTypeParameterDeclaration()"); }
+  shared actual Annotation[] annotations<out Annotation>()
+    given Annotation satisfies AnnotationType { throw Exception("IMPL annotations()"); }
+
+  shared actual FunctionOrValueDeclaration[] parameterDeclarations { throw Exception("IMPL parameterDeclarations"); }
+  shared actual FunctionOrValueDeclaration? getParameterDeclaration(String name) { throw Exception("IMPL getParameterDeclaration()"); }
+  shared actual Function<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(AppliedType<Anything>* typeArguments)
+    given Arguments satisfies Anything[] { throw Exception("IMPL apply"); }
+  shared actual Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(AppliedType<Container> containerType, AppliedType<Anything>* typeArguments)
+    given Arguments satisfies Anything[] { throw Exception("IMPL memberApply"); }
+}
+
+class ValParamDecl() satisfies ValueDeclaration {
+  shared actual Boolean parameter=true;
+  shared actual Boolean defaulted { throw Exception("IMPL defaulted"); }
+  shared actual Boolean variadic { throw Exception("IMPL variadic"); }
+  shared actual Boolean variable { throw Exception("IMPL variable"); }
+
+  shared actual Package|NestableDeclaration container { throw Exception("IMPL container"); }
+  shared actual Package containingPackage { throw Exception("IMPL containingPackage"); }
+  shared actual Module containingModule { throw Exception("IMPL containingModule"); }
+  shared actual OpenType openType { throw Exception("IMPL openType"); }
+  shared actual Boolean shared=false;
+  shared actual Boolean toplevel=false;
+  shared actual Boolean formal=false;
+  shared actual Boolean default=false;
+  shared actual Boolean actual=false;
+  shared actual String qualifiedName { throw Exception("IMPL qualifiedName"); }
+  shared actual String name {throw Exception("IMPL name"); }
+  shared actual Annotation[] annotations<out Annotation>()
+    given Annotation satisfies AnnotationType { throw Exception("IMPL annotations()"); }
+
+  shared actual Value<Type> apply<Type=Anything>() { throw Exception("IMPL apply"); }
+  shared actual Attribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType) { throw Exception("IMPL memberApply"); }
+}
 
