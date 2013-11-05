@@ -39,6 +39,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -395,10 +396,18 @@ public class MiscTest extends CompilerTest {
         Assert.assertFalse(JDKUtils.isOracleJDKAnyPackage("fr.epardaud"));
     }
     
+    private String script() {
+        if (OSUtil.isWindows()) {
+            return "../ceylon-dist/dist/bin/ceylon.bat";
+        } else {
+            return "../ceylon-dist/dist/bin/ceylon";
+        }
+    }
+    
     @Test
     public void testLaunchDistCeylon() throws IOException, InterruptedException {
         String[] args1 = {
-                "../ceylon-dist/dist/bin/ceylon",
+                script(),
                 "compile",
                 "--src",
                 "../ceylon-dist/dist/samples/helloworld/source",
@@ -408,7 +417,7 @@ public class MiscTest extends CompilerTest {
         };
         launchCeylon(args1);
         String[] args2 = {
-                "../ceylon-dist/dist/bin/ceylon",
+                script(),
                 "doc",
                 "--src",
                 "../ceylon-dist/dist/samples/helloworld/source",
@@ -418,7 +427,7 @@ public class MiscTest extends CompilerTest {
         };
         launchCeylon(args2);
         String[] args3 = {
-                "../ceylon-dist/dist/bin/ceylon",
+                script(),
                 "run",
                 "--rep",
                 "build/test-cars",
