@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 
 public class LauncherUtil {
@@ -13,6 +12,10 @@ public class LauncherUtil {
     
     private static final String CEYLON_REPO = "repo";
     private static final String CEYLON_LIBS = "lib";
+    
+    // Can't use OSUtil.isWindows() here because these classes are put in the
+    // ceylon-bootstrap.jar that doesn't have access to ceylon-common
+    private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
     
     public static File determineHome() throws URISyntaxException {
         // Determine the Ceylon home/install folder
@@ -84,7 +87,7 @@ public class LauncherUtil {
         String path = System.getenv("PATH");
         if (path != null) {
             String ceylonScriptName;
-            if (OSUtil.isWindows()) {
+            if (IS_WINDOWS) {
                 ceylonScriptName = "ceylon.bat";
             } else {
                 ceylonScriptName = "ceylon";
