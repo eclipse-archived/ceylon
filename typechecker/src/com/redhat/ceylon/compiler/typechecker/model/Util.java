@@ -123,7 +123,7 @@ public class Util {
     }
     
     static boolean hasMatchingSignature(List<ProducedType> signature, 
-            boolean ellipsis, Declaration d, boolean excludeAbstractClasses) {
+            boolean spread, Declaration d, boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
                 d instanceof Class && ((Class) d).isAbstract()) {
             return false;
@@ -134,18 +134,20 @@ public class Util {
                 return false;
             }
             else {
+                Unit unit = d.getUnit();
                 List<ParameterList> pls = f.getParameterLists();
                 if (pls!=null && !pls.isEmpty()) {
                     List<Parameter> params = pls.get(0).getParameters();
                     int size = params.size();
                     boolean hasSeqParam = pls.get(0).hasSequencedParameter();
+                    int sigSize = signature.size();
                     if (hasSeqParam) {
                         size--;
-                        if (signature.size()<size) {
+                        if (sigSize<size) {
                             return false;
                         }
                     }
-                    else if (signature.size()!=size) {
+                    else if (sigSize!=size) {
                         return false;
                     }
                     for (int i=0; i<size; i++) {
@@ -156,26 +158,26 @@ public class Util {
                     }
                     if (hasSeqParam) {
                         ProducedType pdt = params.get(size).getModel().getType();
+                        ProducedType ipdt = unit.getIteratedType(pdt);
                         if (pdt==null) return false;
-                        if (ellipsis){
-                            // we must have exactly one spread param
-                            if (signature.size() != size+1) return false;
-                            ProducedType sdt = signature.get(size);
-                            ProducedType isdt = d.getUnit().getIteratedType(sdt);
-                            ProducedType ipdt = d.getUnit().getIteratedType(pdt);
-                            if (!matches(ipdt, isdt, d)) return false;
-                        }
-                        else {
-                            pdt = d.getUnit().getIteratedType(pdt);
-                            for (int j=size; j<signature.size(); j++) {
-                                ProducedType sdt = signature.get(j);
-                                if (!matches(pdt, sdt, d)) return false;
+                        for (int i=size; i<sigSize; i++) {
+                            if (spread && i==sigSize-1) {
+                                ProducedType sdt = signature.get(i);
+                                ProducedType isdt = unit.getIteratedType(sdt);
+                                if (!matches(ipdt, isdt, d)) return false;
+                            }
+                            else {
+                                ProducedType sdt = signature.get(i);
+                                if (!matches(ipdt, sdt, d)) return false;
                             }
                         }
                     }
-                    else if (ellipsis) {
-                        // if the method doesn't take sequenced params and we have an ellipsis
-                        // let's not use it since we expect a variadic method
+                    else if (spread) {
+                        // if the method doesn't take sequenced params
+                        // and we have an ellipsis let's not use it 
+                        // since we expect a variadic method
+                        // TODO: this is basically wrong now that we
+                        //       can spread tuples
                         return false;
                     }
                     return true;
