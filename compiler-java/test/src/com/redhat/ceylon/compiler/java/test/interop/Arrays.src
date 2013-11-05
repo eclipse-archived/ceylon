@@ -307,7 +307,7 @@ final class test_longs_ {
         .ceylon.language.Integer n$44;
         if ((n$44 = n) != null) {
             final long n$45 = n$44.longValue();
-            items[(int)1L] = (int)n$45;
+            items[(int)1L] = n$45;
         }
         java.take_longs(items);
     }
