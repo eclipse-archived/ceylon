@@ -168,8 +168,9 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // save the parameter types before we mess with "found"
         java.lang.Class<?>[] parameterTypes = found.getParameterTypes();
         MethodHandle method = null;
+        boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
         try {
-            if(MethodHandleUtil.isJavaArray(javaClass)){
+            if(isJavaArray){
                 if(found.getName().equals("get"))
                     method = MethodHandleUtil.getJavaArrayGetterMethodHandle(javaClass);
                 else if(found.getName().equals("set"))
@@ -189,7 +190,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         // box the return type
         method = MethodHandleUtil.boxReturnValue(method, found.getReturnType(), appliedFunction.getType());
         // we need to cast to Object because this is what comes out when calling it in $call
-        if(instance != null)
+        if(instance != null 
+                && (isJavaArray || !Modifier.isStatic(found.getModifiers())))
             method = method.bindTo(instance);
         method = method.asType(MethodType.methodType(Object.class, parameterTypes));
         int typeParametersCount = found.getTypeParameters().length;

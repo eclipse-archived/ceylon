@@ -6,6 +6,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 import ceylon.language.meta.model.IncompatibleTypeException;
@@ -87,7 +88,8 @@ public class AppliedValue<Get, Set>
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
                 Class<?>[] params = NO_PARAMS;
-                if(MethodHandleUtil.isJavaArray(javaClass))
+                boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
+                if(isJavaArray)
                     params = MethodHandleUtil.getJavaArrayGetArrayParameterTypes(javaClass, getterName);
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
                 Method m = decl.isShared() ? javaClass.getMethod(getterName, params) : javaClass.getDeclaredMethod(getterName, params);
@@ -95,7 +97,10 @@ public class AppliedValue<Get, Set>
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                getter = getter.bindTo(instance);
+                if(instance != null 
+                        // XXXArray.getArray is static but requires an instance as first param
+                        && (isJavaArray || !Modifier.isStatic(m.getModifiers())))
+                    getter = getter.bindTo(instance);
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 
@@ -140,7 +145,9 @@ public class AppliedValue<Get, Set>
                     getter = MethodHandles.lookup().unreflect(method);
                     java.lang.Class<?> getterType = method.getReturnType();
                     getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                    getter = getter.bindTo(instance);
+                    // this one is static but requires an instance a first param
+                    if(instance != null)
+                        getter = getter.bindTo(instance);
                     // we need to cast to Object because this is what comes out when calling it in $call
                     getter = getter.asType(MethodType.methodType(Object.class));
                 } catch (NoSuchMethodException e) {
@@ -158,7 +165,8 @@ public class AppliedValue<Get, Set>
                     getter = MethodHandles.lookup().unreflectGetter(f);
                     java.lang.Class<?> getterType = f.getType();
                     getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                    getter = getter.bindTo(instance);
+                    if(instance != null && !Modifier.isStatic(f.getModifiers()))
+                        getter = getter.bindTo(instance);
                     // we need to cast to Object because this is what comes out when calling it in $call
                     getter = getter.asType(MethodType.methodType(Object.class));
 
@@ -185,7 +193,8 @@ public class AppliedValue<Get, Set>
                 Method m = javaClass.getMethod(setterName, getterReturnType);
                 m.setAccessible(true);
                 setter = MethodHandles.lookup().unreflect(m);
-                setter = setter.bindTo(instance);
+                if(instance != null && !Modifier.isStatic(m.getModifiers()))
+                    setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
             } catch (NoSuchMethodException e) {
@@ -217,7 +226,8 @@ public class AppliedValue<Get, Set>
                 Field f = javaClass.getField(fieldName);
                 f.setAccessible(true);
                 setter = MethodHandles.lookup().unreflectSetter(f);
-                setter = setter.bindTo(instance);
+                if(instance != null && !Modifier.isStatic(f.getModifiers()))
+                    setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
             } catch (NoSuchFieldException e) {

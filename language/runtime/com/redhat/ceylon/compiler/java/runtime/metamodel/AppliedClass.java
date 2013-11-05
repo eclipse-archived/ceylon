@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 import ceylon.language.Sequential;
@@ -193,6 +194,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
+        boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
+        boolean isStatic = Modifier.isStatic(javaClass.getModifiers());
         try {
             if(found instanceof java.lang.reflect.Constructor){
                 ((java.lang.reflect.Constructor<?>) found).setAccessible(true);
@@ -206,7 +209,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
         }
-        boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null;
+        boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null && !isStatic;
         // we need to cast to Object because this is what comes out when calling it in $call
         
         // if it's a java member we will be using the member constructor which has an extra synthetic parameter so we can't bind it
@@ -214,7 +217,8 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         if(isJavaMember)
             constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
         // now bind it to the object
-        if(instance != null)
+        if(instance != null
+                && (isJavaArray || !isStatic))
             constructor = constructor.bindTo(instance);
         // if it was not a java member we have no extra synthetic instance parameter and we need to get rid of it before casting
         if(!isJavaMember)
