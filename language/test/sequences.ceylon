@@ -167,8 +167,8 @@ void test_concatenate() {
 void test_zip() {
     value keys = { 1, 2, 3, 4, 5, 6 };
     value items = { "one", "two", "three", "four", "five" };
-    value z1 = zip(keys, items);
-    value z2 = zip(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
+    value z1 = zipEntries(keys, items);
+    value z2 = zipEntries(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
     check(z1.size==5, "zip 1:`` z1 ``");
     check(z2.size==6, "zip 2:`` z2 ``");
 }
