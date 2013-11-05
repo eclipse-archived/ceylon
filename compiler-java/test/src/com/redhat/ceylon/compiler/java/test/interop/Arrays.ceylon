@@ -88,7 +88,7 @@ void test_booleans() {
     for(x in 0:matrix.size){
         matrix.set(x, BooleanArray(2));
     }
-    Array<BooleanArray> boolArray = matrix.array;
+    Array<BooleanArray?> boolArray = matrix.array;
     
     // reified stuff
     Object o = items;
@@ -296,9 +296,9 @@ void test_Strings() {
     java.take_Strings(items);
     
     ObjectArray<String> ceylonStrings = arrays.javaStringArrayToCeylonStringArray(items);
-    Array<String> ceylonStringArray = ceylonStrings.array;
+    Array<String?> ceylonStringArray = ceylonStrings.array;
     ObjectArray<JString> javaStrings = arrays.ceylonStringArrayToJavaStringArray(ceylonStrings);
-    Array<JString> javaStringArray = javaStrings.array;
+    Array<JString?> javaStringArray = javaStrings.array;
     ObjectArray<JString> javaStrings2 = arrays.toJavaStringArray(ceylonStringArray);
     ObjectArray<String> ceylonStrings2 = arrays.toStringArray(javaStringArray);
 }
