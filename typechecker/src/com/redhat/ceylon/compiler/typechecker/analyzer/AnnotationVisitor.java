@@ -632,7 +632,7 @@ public class AnnotationVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            if (that.getStaticMethodReference()) {
+            if (that.getStaticMethodReference() && !dec.isStaticallyImportable()) {
                 that.addError("ambiguous static reference to overloaded method or class: " +
                         dec.getName(that.getUnit()) + " is overloaded");
             }
