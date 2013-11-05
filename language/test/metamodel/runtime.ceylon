@@ -411,6 +411,8 @@ shared void checkMemberTypes(){
     assert(exists privateMemberType = `PrivateClass`.getDeclaredClassOrInterface<PrivateClass, Class<Object,[]>>("Inner"));
     value privateMember = privateMemberType(PrivateClass())();
     assert(privateMember.string == "c");
+    assert(exists privateInheritedMember1 = `PrivateSubclass`.getClassOrInterface<PrivateSubclass, Class<Object,[]>>("OtherInner"));
+    assert(!`PrivateSubclass`.getDeclaredClass<PrivateSubclass, PrivateClass.OtherInner,[]>("OtherInner") exists);
     
     // make super extendedType and satisfiedTypes work with members
     assert(exists isbExtendedType = `ContainerClass.InnerSubClass`.extendedType, isbExtendedType == `ContainerClass.InnerClass`);
@@ -928,6 +930,10 @@ shared void checkModifiers(){
     value mods = `class Modifiers`;
     assert(!mods.annotation, !mods.final, mods.abstract, mods.shared, !mods.formal, !mods.actual, !mods.default);
     assert(exists inner = mods.getDeclaredMemberDeclaration<ClassDeclaration>("NonShared"));
+    value submods = `class SubModifiers`;
+    assert(exists decltest2 = submods.getMemberDeclaration<ClassDeclaration>("Private2"));
+    assert(!submods.getDeclaredMemberDeclaration<ClassDeclaration>("Private2") exists);
+    assert(exists decltest4 = submods.getDeclaredMemberDeclaration<ClassDeclaration>("SubPrivate"));
     assert(!inner.abstract, !inner.shared, !inner.formal, !inner.actual, !inner.default);
     assert(exists m = mods.getMemberDeclaration<FunctionDeclaration>("method"));
     assert(!m.annotation, m.shared, m.formal, !m.actual, !m.default, !m.parameter);
@@ -1324,6 +1330,7 @@ shared void checkInheritedVsDeclared(){
     assert(exists inheritedMethod, inheritedMethod == `Top<String>.inheritedMethod`);
     
     assert(!bottomType.getDeclaredMethod("inheritedMethod") exists);
+    assert(bottomType.getDeclaredMethod("myOwnBottomMethod") exists);
 
     value declaredMethod = bottomType.getMethod<Nothing,Anything,Nothing>("declaredMethod");
     assert(exists declaredMethod, declaredMethod == `BottomClass.declaredMethod`);
@@ -1336,6 +1343,7 @@ shared void checkInheritedVsDeclared(){
     
     value declaredAttribute = bottomType.getAttribute<Nothing,Anything>("declaredAttribute");
     assert(exists declaredAttribute, declaredAttribute == `BottomClass.declaredAttribute`);
+    assert(bottomType.getDeclaredAttribute<BottomClass,String>("declaredAttribute") exists);
 
     // class
     value inheritedClass = bottomType.getClass<Nothing,Anything,Nothing>("InheritedClass");
@@ -1354,6 +1362,7 @@ shared void checkInheritedVsDeclared(){
     
     value declaredClass2 = bottomType.getClassOrInterface<Nothing,Class<Anything,Nothing>>("DeclaredClass");
     assert(exists declaredClass2, declaredClass2 == `BottomClass.DeclaredClass`);
+    assert(bottomType.getDeclaredClassOrInterface<Nothing,Class<Anything,Nothing>>("DeclaredClass") exists);
     
     // interface
     value inheritedInterface = bottomType.getInterface<Nothing,Anything>("InheritedInterface");
@@ -1363,6 +1372,7 @@ shared void checkInheritedVsDeclared(){
     
     value declaredInterface = bottomType.getInterface<Nothing,Anything>("DeclaredInterface");
     assert(exists declaredInterface, declaredInterface == `BottomClass.DeclaredInterface`);
+    assert(bottomType.getDeclaredInterface<Nothing,Anything>("DeclaredInterface") exists);
 
     // interface via class or interface
     value inheritedInterface2 = bottomType.getClassOrInterface<Nothing,Interface<Anything>>("InheritedInterface");
@@ -1372,6 +1382,7 @@ shared void checkInheritedVsDeclared(){
     
     value declaredInterface2 = bottomType.getClassOrInterface<Nothing,Interface<Anything>>("DeclaredInterface");
     assert(exists declaredInterface2, declaredInterface2 == `BottomClass.DeclaredInterface`);
+    assert(bottomType.getDeclaredClassOrInterface<Nothing,Interface<Anything>>("DeclaredInterface") exists);
 }
 
 @test

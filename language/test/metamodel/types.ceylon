@@ -31,7 +31,9 @@ class PrivateClass(){
         string = "c";
     }
     string = "d";
+    shared class OtherInner(){}
 }
+class PrivateSubclass() extends PrivateClass() {}
 
 shared class NoParams(){
     shared variable String str2 = "a";
@@ -269,6 +271,10 @@ shared abstract class Modifiers(){
     class NonShared(){}
     shared formal Boolean method();
     shared actual default String string = "yup";
+    shared class Private2() {}
+}
+shared abstract class SubModifiers() extends Modifiers() {
+    class SubPrivate(){}
 }
 
 shared final class Final(){}
@@ -316,4 +322,5 @@ shared abstract class BottomClass() extends MiddleClass<Object>() satisfies Midd
     shared formal String declaredAttribute;
     shared class DeclaredClass(){}
     shared interface DeclaredInterface{}
+    shared void myOwnBottomMethod(){}
 }
