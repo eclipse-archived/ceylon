@@ -8,7 +8,7 @@ shared void testCurries() {
     check(p2(8)==256, "p2 [2]");
     value triple = compose(curry(veces)(3), p2);
     check(triple(8)==768, "p2 [3]");
-    //TODO: flatten, ,unflatten, shuffle
+    //TODO: flatten, shuffle
     
     check(unflatten(function () => 1)([]) == 1, "unflatten 0");
     check(unflatten(function (Integer a = 2) => a)([]) == 2, "unflatten 0.1");
