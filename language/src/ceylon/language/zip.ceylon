@@ -16,9 +16,9 @@ shared {Result*} zip<Result,FirstArgument,SecondArgument>(
         given FirstArgument satisfies Object
         given SecondArgument satisfies Object {
     value iter = secondArguments.iterator();
-    return [ for (firstArg in firstArguments) 
+    return { for (firstArg in firstArguments) 
                 if (!is Finished secondArg=iter.next()) 
-                    zipping(firstArg,secondArg) ];
+                    zipping(firstArg,secondArg) };
 }
 
 "Given two streams, form a new stream consisting of
