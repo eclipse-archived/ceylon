@@ -904,4 +904,33 @@ public class Util {
             }
         }
     }
+
+    public static <T> java.lang.Class<T> getJavaClassForDescriptor(TypeDescriptor descriptor) {
+        if(descriptor == TypeDescriptor.NothingType
+                || descriptor == ceylon.language.Object.$TypeDescriptor$
+                || descriptor == ceylon.language.Anything.$TypeDescriptor$
+                || descriptor == ceylon.language.Basic.$TypeDescriptor$
+                || descriptor == ceylon.language.Null.$TypeDescriptor$
+                || descriptor == ceylon.language.Identifiable.$TypeDescriptor$)
+            return (java.lang.Class<T>) Object.class;
+        if(descriptor instanceof TypeDescriptor.Class)
+            return (java.lang.Class<T>) ((TypeDescriptor.Class) descriptor).getKlass();
+        if(descriptor instanceof TypeDescriptor.Member)
+            return getJavaClassForDescriptor(((TypeDescriptor.Member) descriptor).getMember());
+        if(descriptor instanceof TypeDescriptor.Intersection)
+            return (java.lang.Class<T>) Object.class;
+        if(descriptor instanceof TypeDescriptor.Union){
+            TypeDescriptor.Union union = (TypeDescriptor.Union) descriptor;
+            TypeDescriptor[] members = union.getMembers();
+            // special case for optional types
+            if(members.length == 2){
+                if(members[0] == ceylon.language.Null.$TypeDescriptor$)
+                    return getJavaClassForDescriptor(members[1]);
+                if(members[1] == ceylon.language.Null.$TypeDescriptor$)
+                    return getJavaClassForDescriptor(members[0]);
+            }
+            return (java.lang.Class<T>) Object.class;
+        }
+        return (java.lang.Class<T>) Object.class;
+    }
 }
