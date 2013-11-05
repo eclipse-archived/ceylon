@@ -9,16 +9,29 @@
  
  for every `0<=i<min({xs.size,ys.size})`."
 shared {Result*} zip<Result,FirstArgument,SecondArgument>(
+    Result zipping(FirstArgument firstArg, SecondArgument secondArg),
     {FirstArgument*} firstArguments, 
-    {SecondArgument*} secondArguments, 
-    Result zipping(FirstArgument firstArg, SecondArgument secondArg)
-)
-        given FirstArgument satisfies Object
-        given SecondArgument satisfies Object {
-    value iter = secondArguments.iterator();
-    return { for (firstArg in firstArguments) 
-                if (!is Finished secondArg=iter.next()) 
-                    zipping(firstArg,secondArg) };
+    {SecondArgument*} secondArguments
+) {
+    object iterable satisfies {Result*} {
+        shared actual Iterator<Result> iterator() {
+            value first = firstArguments.iterator();
+            value second = secondArguments.iterator();
+            object iterator satisfies Iterator<Result> {
+                shared actual Result|Finished next() {
+                    if (!is Finished firstArg=first.next(),
+                        !is Finished secondArg=second.next()) {
+                        return zipping(firstArg,secondArg);
+                    }
+                    else {
+                        return finished;
+                    }
+                }
+            }
+            return iterator;
+        }
+    }
+    return iterable;
 }
 
 "Given two streams, form a new stream consisting of
@@ -34,10 +47,11 @@ shared {Result*} zip<Result,FirstArgument,SecondArgument>(
      zipEntries(xs,ys)[i]==xs[i]->ys[i]
  
  for every `0<=i<min({xs.size,ys.size})`."
-shared {<Key->Item>*} zipEntries<Key,Item>({Key*} keys, {Item*} items)
+shared {<Key->Item>*} zipEntries<Key,Item>
+        ({Key*} keys, {Item*} items)
         given Key satisfies Object
         given Item satisfies Object
-        => zip(keys, items, Entry<Key,Item>);
+        => zip(Entry<Key,Item>, keys, items);
 
 "Given two streams, form a new stream consisting of
  all pairs where, for any given index in the resulting
@@ -53,11 +67,12 @@ shared {<Key->Item>*} zipEntries<Key,Item>({Key*} keys, {Item*} items)
      zipPairs(xs,ys)[i]==[xs[i],ys[i]]
  
  for every `0<=i<min({xs.size,ys.size})`."
-shared {[First,Second]*} zipPairs<First,Second>(
-    {First*} firstElements, 
-    {Second*} secondElements
-)
-        given First satisfies Object
-        given Second satisfies Object
-        => zip(firstElements, secondElements,
-                (First first,Second second)=>[first,second]);
+shared {[First,Second]*} zipPairs<First,Second>
+        ({First*} firstElements, {Second*} secondElements)
+        => zip((First first,Second second)=>[first,second],
+                firstElements, secondElements);
+
+shared {Tuple<Element|Head,Head,Tail>*} combine<Element,Head,Tail>
+        ({Head*} heads, {Tail*} tails)
+        given Tail satisfies Element[]
+        => zip(Tuple<Element|Head,Head,Tail>, heads, tails);
