@@ -266,18 +266,8 @@ public abstract class Declaration
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
 
-    private java.lang.Class<?> findModelClass(Declaration dec) {
-        java.lang.Class<?> clazz = dec.getClass();
-        java.lang.Class<?> declarationClass = Declaration.class;
-        java.lang.Package modelPackage = declarationClass.getPackage();
-        while (! clazz.getPackage().equals(modelPackage)) {
-            java.lang.Class<?> superClass = clazz.getSuperclass();
-            if (! declarationClass.isAssignableFrom(superClass)) {
-                break;
-            }
-            clazz = superClass;
-        }
-        return clazz;
+    protected java.lang.Class<?> getModelClass() {
+        return getClass();
     }
     
     @Override
@@ -291,7 +281,7 @@ public abstract class Declaration
         }
         
         if (object instanceof Declaration) {
-            if (findModelClass(this) != findModelClass((Declaration)object)) {
+            if (this.getModelClass() != ((Declaration) object).getModelClass()) {
                 return false;
             }
             Declaration that = (Declaration) object;
