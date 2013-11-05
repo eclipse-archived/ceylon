@@ -2391,9 +2391,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Callable has a variadic 1-param method that if you invoke it with a Java Object[] will confuse javac and give
                 // preference to the variadic method instead of the $call$(Object) one, so we force a cast to Object to resolve it
                 // This is not required for primitive arrays since they are not Object[]
-                if(numArguments == 1 && invocation.isIndirect() && isJavaObjectArray(invocation.getArgumentType(0))){
-                    exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(typeFact().getObjectDeclaration().getType()), exprAndType.expression),
-                            exprAndType.type);
+                if(numArguments == 1 
+                        && invocation.isIndirect()){
+                    ProducedType argumentType = invocation.getArgumentType(0);
+                    if(isJavaObjectArray(argumentType)
+                            || isNull(argumentType)){
+                        exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(typeFact().getObjectDeclaration().getType()), exprAndType.expression),
+                                exprAndType.type);
+                    }
                 }
             } else {
                 // we must have a sequenced param

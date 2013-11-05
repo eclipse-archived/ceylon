@@ -34,4 +34,7 @@ void variadicArraysMethods() {
     value intArray = IntArray(0);
     // does not require an Object cast
     f(intArray);
+    // also requires an Object cast
+    Callable<Object,[Object?]> f2 = nothing;
+    f2(null);
 }
