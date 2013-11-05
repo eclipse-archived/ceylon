@@ -33,6 +33,11 @@ final class variadicArraysMethods_ {
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$2$0, new .java.lang.Object[(int)$ceylontmp$2$0.getSize()][]);
         ));
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
+        final .java.lang.Object[] objectArray1 = new .java.lang.Object[(int)0L];
+        f.$call$((.java.lang.Object)objectArray1);
+        final int[] intArray = new int[(int)0L];
+        f.$call$(intArray);
     }
     
     public static void main(.java.lang.String[] args) {

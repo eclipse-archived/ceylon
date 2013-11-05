@@ -671,6 +671,14 @@ public class Decl {
                 || name.equals("java.lang::CharArray");
     }
 
+    public static boolean isJavaObjectArray(TypeDeclaration decl) {
+        if(decl instanceof Class == false)
+            return false;
+        Class c = (Class) decl;
+        String name = c.getQualifiedNameString();
+        return name.equals("java.lang::ObjectArray");
+    }
+
     public static boolean isAnnotationClassOrConstructor(Declaration container) {
         return isAnnotationClass(container) || isAnnotationConstructor(container);
     }

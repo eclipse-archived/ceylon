@@ -1543,6 +1543,19 @@ public abstract class AbstractTransformer implements Transformation {
         return Decl.isJavaArray(decl);
     }
 
+    public boolean isJavaObjectArray(ProducedType type) {
+        if(type == null)
+            return false;
+        type = simplifyType(type);
+        if(type == null)
+            return false;
+        return isJavaObjectArray(type.getDeclaration());
+    }
+
+    public static boolean isJavaObjectArray(TypeDeclaration decl) {
+        return Decl.isJavaObjectArray(decl);
+    }
+
     public static boolean isJavaArrays(TypeDeclaration decl) {
         if(decl instanceof Class == false)
             return false;

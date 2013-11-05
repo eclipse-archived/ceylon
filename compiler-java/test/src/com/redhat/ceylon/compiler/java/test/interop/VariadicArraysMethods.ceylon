@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { ObjectArray, arrays }
+import java.lang { IntArray, ObjectArray, arrays }
 
 @noanno
 void variadicArraysMethods() {
@@ -25,4 +25,13 @@ void variadicArraysMethods() {
 
     Iterable<ObjectArray<Object>> objectArray = {arrays.toObjectArray<Object>{"a"}, arrays.toObjectArray<Object>{"b"}};
     java.variadicObjectArray(*objectArray);
+    
+    // Callable has a variadic param which can mess things up
+    Callable<Object,[Object]> f = nothing;
+    value objectArray1 = ObjectArray<Object>(0);
+    // requires an Object cast
+    f(objectArray1);
+    value intArray = IntArray(0);
+    // does not require an Object cast
+    f(intArray);
 }
