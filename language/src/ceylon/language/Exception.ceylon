@@ -1,3 +1,5 @@
+import ceylon.language { printTrace=printStackTrace }
+
 "The supertype of all exceptions. A subclass represents
  a more specific kind of problem, and may define 
  additional attributes which propagate information about
@@ -25,7 +27,7 @@ shared native class Exception(description=null, cause=null) {
     
     "Print the stack trace to the standard error of
      the virtual machine process."
-    shared void printStackTrace() 
-            => package.printStackTrace(this);
+    see (`function printTrace`)
+    shared void printStackTrace() => printTrace(this);
     
 }
