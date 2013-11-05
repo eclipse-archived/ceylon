@@ -765,7 +765,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, BoxingStrategy boxingStrategy) {
-        if(exprType == null)
+        if(exprType == null || boxingStrategy != BoxingStrategy.UNBOXED)
             return ret;
         ProducedType definiteExprType = simplifyType(exprType);
         if(definiteExprType == null)
