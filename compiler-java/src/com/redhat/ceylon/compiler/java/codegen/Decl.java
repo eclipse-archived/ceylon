@@ -577,6 +577,9 @@ public class Decl {
                 && isCeylon((Class)model);
     }
     
+    /**
+     * WARNING: this only works for Ceylon declarations!!!
+     */
     public static String className(Declaration decl) {
         String name = decl.getQualifiedNameString().replace("::", ".");
         if (Character.isLowerCase(decl.getName().charAt(0))) {

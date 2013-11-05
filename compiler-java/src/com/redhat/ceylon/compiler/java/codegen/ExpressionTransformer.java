@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
+import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Prefix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -3753,7 +3754,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
             }
             if (qualExpr == null && decl.isStaticallyImportable()) {
-                qualExpr = naming.makeQuotedFQIdent(Decl.className((Declaration) decl.getContainer()));
+                qualExpr = naming.makeDeclName(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
             }
             if (Decl.isPrivateAccessRequiringUpcast(expr)) {
                 qualExpr = makePrivateAccessUpcast(expr, qualExpr);
