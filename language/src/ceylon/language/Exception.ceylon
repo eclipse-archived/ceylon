@@ -17,14 +17,15 @@ shared native class Exception(description=null, cause=null) {
      implementation returns the description, if any, or 
      otherwise the message of the cause, if any."
     see (`value cause`)
-    shared default String message =>
-            description else cause?.message else "";
+    shared default String message 
+            => description else cause?.message else "";
     
-    shared actual default String string =>
-            className(this) + " \"``message``\"";
+    shared actual default String string 
+            => className(this) + " \"``message``\"";
     
     "Print the stack trace to the standard error of
      the virtual machine process."
-    shared native void printStackTrace();
+    shared void printStackTrace() 
+            => package.printStackTrace(this);
     
 }
