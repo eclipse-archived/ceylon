@@ -211,4 +211,27 @@ public class JavaType {
             }
         }
     }
+    
+    public static int staticField = 2;
+
+    private static int staticField2 = 2;
+
+    public static int getStaticGetter(){
+        return staticField2;
+    }
+
+    public static void setStaticGetter(int v){
+        staticField2 = v;
+    }
+    
+    public static int staticMethod(int v){
+        return v;
+    }
+    
+    public static class StaticClass{
+        public final int v;
+        public StaticClass(int v){
+            this.v = v;
+        }
+    }
 }

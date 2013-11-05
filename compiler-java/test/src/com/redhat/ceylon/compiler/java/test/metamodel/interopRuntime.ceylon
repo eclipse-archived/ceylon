@@ -1,4 +1,4 @@
-import ceylon.language.meta.model { Class, Attribute, Function }
+import ceylon.language.meta.model { Class, Attribute, Function, Method, MemberClass }
 import ceylon.language.meta { type }
 import java.lang { ByteArray, ShortArray, IntArray, LongArray, FloatArray, DoubleArray, CharArray, BooleanArray, ObjectArray, arrays }
 
@@ -172,6 +172,59 @@ void interopRuntime(){
     assert(is Attribute<JavaType,Object,Object> objectFieldAttr = javaType.getAttribute<JavaType,Object,Object>("objectField"));
     assert(objectFieldAttr(instance).get() == "b");
     objectFieldAttr(instance).set("b");
+
+    //
+    // Static members
+    
+    value staticFieldAttr = `JavaType.staticField`;
+    // FIXME: support later
+    //assert(staticFieldAttr(null).get() == 2);
+    //staticFieldAttr(null).set(3);
+    //assert(staticFieldAttr(null).get() == 3);
+    // make sure it also works with an instance
+    staticFieldAttr(instance).set(4);
+    assert(staticFieldAttr(instance).get() == 4);
+    
+    // make sure this passes too
+    javaType.getAttribute<JavaType,Integer,Integer>("staticField");
+    // FIXME: support later
+    //javaType.getAttribute<Null,Integer,Integer>("staticField");
+
+    value staticGetterAttr = `JavaType.staticGetter`;
+    // FIXME: support later
+    //assert(staticGetterAttr(null).get() == 2);
+    //staticGetterAttr(null).set(3);
+    //assert(staticGetterAttr(null).get() == 3);
+    // make sure it also works with an instance
+    staticGetterAttr(instance).set(4);
+    assert(staticGetterAttr(instance).get() == 4);
+
+    // make sure this passes too
+    javaType.getAttribute<JavaType,Integer,Integer>("staticGetter");
+    // FIXME: support later
+    //javaType.getAttribute<Null,Integer,Integer>("staticGetter");
+
+    value staticMethod = `JavaType.staticMethod`;
+    // FIXME: support later
+    //assert(staticMethod(null)(2) == 2);
+    // make sure it also works with an instance
+    assert(staticMethod(instance)(4) == 4);
+
+    // make sure this passes too
+    javaType.getMethod<JavaType,Integer,[Integer]>("staticMethod");
+    // FIXME: support later
+    //javaType.getMethod<Null,Integer,[Integer]>("staticMethod");
+
+    value staticClass = `JavaType.StaticClass`;
+    // FIXME: support later
+    //assert(staticClass(null)(2).v == 2);
+    // make sure it also works with an instance
+    assert(staticClass(instance)(4).v == 4);
+
+    // make sure this passes too
+    javaType.getClass<JavaType,JavaType.StaticClass,[Integer]>("StaticClass");
+    // FIXME: support later
+    //javaType.getClass<Null,JavaType.StaticClass,[Integer]>("StaticClass");
 
     //
     // Member types
