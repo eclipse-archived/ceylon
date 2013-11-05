@@ -13,7 +13,7 @@ final class variadicArraysMethods_ {
                     {
                         .com.redhat.ceylon.compiler.java.language.arrays_ arg$0$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
                         .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
-                        .ceylon.language.Iterable arg$0$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")});
+                        .ceylon.language.Iterable arg$0$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("a")});
                     }
                     returning arg$0$callable$.<.java.lang.Object>toObjectArray(arg$0$reified$0, arg$0$0);
                 ),
@@ -22,7 +22,7 @@ final class variadicArraysMethods_ {
                     {
                         .com.redhat.ceylon.compiler.java.language.arrays_ arg$1$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
                         .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
-                        .ceylon.language.Iterable arg$1$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("b")});
+                        .ceylon.language.Iterable arg$1$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("b")});
                     }
                     returning arg$1$callable$.<.java.lang.Object>toObjectArray(arg$1$reified$0, arg$1$0);
                 )});
