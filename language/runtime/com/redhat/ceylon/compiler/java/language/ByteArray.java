@@ -31,9 +31,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class ByteArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor = TypeDescriptor.klass(byte[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(ByteArray.class);
     
     public ByteArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") byte element){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public ByteArray(@Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 

@@ -31,17 +31,22 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class LongArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(long[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(LongArray.class);
 
     public LongArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") long element){
         throw Util.makeJavaArrayWrapperException();
     }
 
-    public int get(int index) {
+    @Ignore
+    public LongArray(@Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 
-    public void set(int index, int element) {
+    public long get(int index) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    public void set(int index, long element) {
         throw Util.makeJavaArrayWrapperException();
     }
 

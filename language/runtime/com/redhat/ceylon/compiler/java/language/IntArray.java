@@ -31,9 +31,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class IntArray implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(int[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(IntArray.class);
 
     public IntArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") int element){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public IntArray(int size){
         throw Util.makeJavaArrayWrapperException();
     }
 

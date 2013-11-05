@@ -34,7 +34,12 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
-    @TypeInfo(value = "T", uncheckedNull = true)
+    @Ignore
+    public ObjectArray(@Name("size") int size){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @TypeInfo(value = "T|ceylon.language::Null")
     public T get(int index) {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -51,7 +56,7 @@ public final class ObjectArray<T> implements ReifiedType {
         return Array.instance(array);
     }
 
-    @TypeInfo("ceylon.language::Array<T>")
+    @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>")
     public ceylon.language.Array<T> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
@@ -63,12 +68,12 @@ public final class ObjectArray<T> implements ReifiedType {
 
     @Ignore
     public static <T> void copyTo(T[] array, T[] destination, int sourcePosition){
-        System.arraycopy(array, sourcePosition, destination, 0, array.length);
+        System.arraycopy(array, sourcePosition, destination, 0, array.length-sourcePosition);
     }
 
     @Ignore
     public static <T> void copyTo(T[] array, T[] destination, int sourcePosition, int destinationPosition){
-        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length);
+        System.arraycopy(array, sourcePosition, destination, destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore

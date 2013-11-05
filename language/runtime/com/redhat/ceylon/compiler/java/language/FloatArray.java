@@ -31,9 +31,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class FloatArray implements ReifiedType {
 
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(float[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FloatArray.class);
 
     public FloatArray(@Name("size") int size, @TypeInfo("ceylon.language::Float") @Defaulted @Name("element") float element){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public FloatArray(@Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 

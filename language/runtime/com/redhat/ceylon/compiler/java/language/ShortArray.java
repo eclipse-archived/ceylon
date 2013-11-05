@@ -31,9 +31,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class ShortArray implements ReifiedType {
     
     @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(short[].class);
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(ShortArray.class);
     
     public ShortArray(@Name("size") int size, @TypeInfo("ceylon.language::Integer") @Defaulted @Name("element") short element){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public ShortArray(@Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
 
