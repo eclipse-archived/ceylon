@@ -40,9 +40,9 @@ defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclara
     var p = parms[i];
 //TODO set "parameter" to true
     if (p.$pt === 'f') {
-      console.log("parametro funcional");
+      rv.push(FunParamDecl(this,p));
     } else {
-      rv.push(OpenValue(that.containingPackage, p));
+      rv.push(ValParamDecl(this,p));
     }
   }
   return rv.reifyCeylonType({Element:{t:FunctionOrValueDeclaration$meta$declaration},Absent:{t:Null}});
