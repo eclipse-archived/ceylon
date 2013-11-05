@@ -97,11 +97,28 @@ function $qname(mm) {
   }
   if (typeof(mm.$$metamodel$$)==='function')mm.$$metamodel$$=mm.$$metamodel();
   if (mm.$$metamodel$$)mm=mm.$$metamodel$$;
+  if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
   return qn;
 }
-function convert$params(ps,a) { //ps comes from metamodel.$ps, a is list of params
+function resolve$typearg(ta,mm) {
+  var r=mm.$tp?mm.$tp[ta]:undefined;
+  while (!r && mm.$cont) {
+    mm=mm.$cont;
+    if (mm.$tp)r=mm.$tp[ta];
+  }
+  if (r) {
+    if (r.satisfies)
+      return r.satisfies.length==1?r.satisfies[0]:{t:'i',l:r.satisfies};
+    return {t:Anything};
+  }
+  console.log("MISSING definition of type argument " + ta + " in " + $qname(mm));
+  return {t:Anything};
+}
+
+function convert$params(mm,a) {
+  var ps=mm.$ps;
   if (ps===undefined || ps.length===0){
     if (a && a.size>0)
       throw InvocationException$meta$model(String$("Passing parameters to no-args callable"));
@@ -112,7 +129,8 @@ function convert$params(ps,a) { //ps comes from metamodel.$ps, a is list of para
   var sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
     var p=ps[i];
-    var val_t=sarg?sarg.$$targs$$.a.Element:p.$t;
+    var val_t=sarg?sarg.$$targs$$.a.Element:p.$t,mm;
+    if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
     if (a[i]===undefined) {
       if (p.$def||p.seq)fa.push(undefined);
       else {
@@ -123,17 +141,16 @@ function convert$params(ps,a) { //ps comes from metamodel.$ps, a is list of para
     } else if (p.seq) {
       sarg=[].reifyCeylonType(p.$t); fa.push(sarg);
       val_t=sarg.$$targs$$.a.Element;
+      if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
       for (var j=i; j<a.size;j++){
-        if (typeof(val_t)==='string')console.log("TODO resolve type argument " + p.$t);
-        else if (!isOfType(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type:val_t}).string + " got " + className(a[j]));
+        if (!isOfType(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type:val_t}).string + " got " + className(a[j]));
         sarg.push(a[j]);
       }
       i=j;
     } else {
       fa.push(a[i]);
     }
-    if (typeof(val_t)==='string')console.log("TODO resolve type argument " + val_t);
-    else if (a[i]!==undefined && !isOfType(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type:val_t}).string + " got " + className(a[i]));
+    if (a[i]!==undefined && !isOfType(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type:val_t}).string + " got " + className(a[i]));
   }
   if (a.size>i)throw InvocationException$meta$model("Too many arguments");
   a = fa;
