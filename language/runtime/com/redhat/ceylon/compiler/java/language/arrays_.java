@@ -467,7 +467,7 @@ public final class arrays_ {
     }
 
     public <T> T[] toObjectArray(@Ignore TypeDescriptor $reifiedT, 
-                                 @TypeInfo("ceylon.language::Iterable<T,ceylon.language::Null>")
+                                 @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
                                  @Name("values")
                                  Iterable<? extends T,? extends java.lang.Object> values){
         if(values instanceof Array){
@@ -484,7 +484,8 @@ public final class arrays_ {
         return Util.<T>toArray(values, Util.<T>getJavaClassForDescriptor($reifiedT));
     }
 
-    public <T> T[] asObjectArray(@Ignore TypeDescriptor $reifiedT, @Name("array") Array<T> array){
+    public <T> T[] asObjectArray(@Ignore TypeDescriptor $reifiedT, 
+            @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>") @Name("array") Array<T> array){
         // simplest is same underlying type
         if(array.toArray() instanceof java.lang.Object[]){
             @SuppressWarnings("unchecked")
@@ -494,7 +495,7 @@ public final class arrays_ {
         throw new RuntimeException("Invalid source array type: "+array.toArray());
     }
 
-    public java.lang.String[] toJavaStringArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
+    public java.lang.String[] toJavaStringArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::String|ceylon.language::Null,ceylon.language::Null>")
                                                 @Name("values")
                                                 Iterable<? extends String,? extends java.lang.Object> values){
         if(values instanceof Array){
@@ -505,7 +506,7 @@ public final class arrays_ {
                 ceylon.language.String[] src = (ceylon.language.String[]) array.toArray();
                 java.lang.String[] dst = new java.lang.String[src.length];
                 for(int i=0;i<src.length;i++)
-                    dst[i] = src[i].toString();
+                    dst[i] = src[i] != null ? src[i].toString() : null;
                 return dst;
             }
             throw new RuntimeException("Invalid source array type: "+array.toArray());
@@ -513,7 +514,7 @@ public final class arrays_ {
         return Util.toJavaStringArray(values);
     }
 
-    public String[] toStringArray(@TypeInfo("ceylon.language::Iterable<java.lang::String,ceylon.language::Null>")
+    public String[] toStringArray(@TypeInfo("ceylon.language::Iterable<java.lang::String|ceylon.language::Null,ceylon.language::Null>")
                                   @Name("values")
                                   Iterable<? extends java.lang.String,? extends java.lang.Object> values){
         if(values instanceof Array){
@@ -550,7 +551,7 @@ public final class arrays_ {
     public java.lang.String[] ceylonStringArrayToJavaStringArray(@Name("array") String[] array){
         java.lang.String[] dst = new java.lang.String[array.length];
         for(int i=0;i<array.length;i++)
-            dst[i] = array[i].toString();
+            dst[i] = array[i] != null ? array[i].toString() : null;
         return dst;
     }
 }
