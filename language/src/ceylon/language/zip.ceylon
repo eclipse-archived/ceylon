@@ -39,7 +39,25 @@ shared {<Key->Item>*} zipEntries<Key,Item>({Key*} keys, {Item*} items)
         given Item satisfies Object
         => zip(keys, items, Entry<Key,Item>);
 
-shared {[Key,Item]*} zipPairs<Key,Item>({Key*} keys, {Item*} items)
-        given Key satisfies Object
-        given Item satisfies Object
-        => zip(keys, items, (Key key,Item item)=>[key,item]);
+"Given two streams, form a new stream consisting of
+ all pairs where, for any given index in the resulting
+ stream, the first element of the pair is the element 
+ occurring at the same index in the first stream, and 
+ the second element of the pair is the element occurring 
+ at the same index in the second stream. The length of 
+ the resulting stream is the length of the shorter of the 
+ two given streams. 
+ 
+ Thus:
+ 
+     zipPairs(xs,ys)[i]==[xs[i],ys[i]]
+ 
+ for every `0<=i<min({xs.size,ys.size})`."
+shared {[First,Second]*} zipPairs<First,Second>(
+    {First*} firstElements, 
+    {Second*} secondElements
+)
+        given First satisfies Object
+        given Second satisfies Object
+        => zip(firstElements, secondElements,
+                (First first,Second second)=>[first,second]);
