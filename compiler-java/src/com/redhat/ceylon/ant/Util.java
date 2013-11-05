@@ -20,9 +20,12 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+
+import com.redhat.ceylon.launcher.LauncherUtil;
 
 public class Util {
     private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") > -1;
@@ -44,13 +47,7 @@ public class Util {
      * Tries to find the given script either user-specified or detected
      */
     public static String findCeylonScript(File defaultValue, Project project) {
-        if (defaultValue != null
-                && (defaultValue.getName().contains("ceylonc")
-                        || defaultValue.getName().contains("ceylond"))) {
-            project.log("The Ceylon ant tasks now use the ceylon tool for " +
-                    "their executable attribute", Project.MSG_WARN);
-        }
-        String scriptName = "ceylon";
+        String scriptName = getScriptName("ceylon");
         if(defaultValue != null){
             if(!defaultValue.exists())
                 throw new BuildException("Failed to find '"+scriptName+"' executable in "+defaultValue.getPath());
@@ -58,17 +55,16 @@ public class Util {
                 throw new BuildException("Cannot execute '"+scriptName+"' executable in "+defaultValue.getPath()+" (not executable)");
             return defaultValue.getAbsolutePath();
         }
-        // try to guess from the "ceylon.home" project property
-        String ceylonHome = project.getProperty("ceylon.home");
-        if(ceylonHome == null || ceylonHome.isEmpty()){
-            // try again from the CEYLON_HOME env var
-            ceylonHome = System.getenv("CEYLON_HOME");
+        File ceylonHome = null;
+        try {
+            ceylonHome = LauncherUtil.determineHome();
+        } catch (URISyntaxException e) {
+            throw new BuildException("Failed to determine Ceylon home", e);
         }
-        if(ceylonHome == null || ceylonHome.isEmpty())
+        if(ceylonHome == null)
             throw new BuildException("Failed to find Ceylon home, specify the ceylon.home property or set the CEYLON_HOME environment variable");
         // now try to find the executable
-        String scriptPath = ceylonHome + File.separatorChar + "bin" + File.separatorChar + getScriptName(scriptName);
-        File script = new File(scriptPath);
+        File script = new File(new File(ceylonHome, "bin"), scriptName);
         if(!script.exists())
             throw new BuildException("Failed to find '"+scriptName+"' executable in "+ceylonHome);
         if(!script.canExecute())
