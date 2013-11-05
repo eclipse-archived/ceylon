@@ -4508,7 +4508,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (d instanceof Method) {
             out("Function");
         } else if (d instanceof Value) {
-            out(((Value) d).isVariable() ? "Variable" : "Value");
+            out("Value");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
             out("Intersection");
         } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
@@ -4641,12 +4641,10 @@ public class GenerateJsVisitor extends Visitor
             } else if (that instanceof ValueLiteral || d instanceof Value) {
                 Value vd = (Value)d;
                 if (vd.isMember()) {
-                    out(clAlias, vd.isVariable()?"$init$AppliedVariableAttribute$meta$model()('":
-                        "$init$AppliedAttribute$meta$model()('");
+                    out(clAlias, "$init$AppliedAttribute$meta$model()('");
                     out(d.getName(), "',");
                 } else {
-                    out(clAlias, vd.isVariable() ? "$init$AppliedVariable$meta$model()(undefined,"
-                            : "$init$AppliedValue$meta$model()(undefined,");
+                    out(clAlias, "$init$AppliedValue$meta$model()(undefined,");
                 }
                 if (ltype == null) {
                     qualify(that, d);
