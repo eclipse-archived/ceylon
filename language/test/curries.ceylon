@@ -77,16 +77,16 @@ shared void testCurries() {
     function fun(Float x, Integer i) => x+i;
     value unflatFun = unflatten(fun);
     value flatFun = flatten(unflatFun);
-    check((unflatFun of Object) is Float([Float, Integer]), "");
-    check((flatFun of Object) is Float(Float, Integer), "");
-    check(!(flatFun of Object) is Float([Float, Integer]), "");
-    check(!(unflatFun of Object) is Float(Float, Integer), "");
+    check((unflatFun of Object) is Float([Float, Integer]), "unflatFun 1");
+    check((flatFun of Object) is Float(Float, Integer), "unflatFun 2");
+    check(!(flatFun of Object) is Float([Float, Integer]), "unflatFun 3");
+    check(!(unflatFun of Object) is Float(Float, Integer), "unflatFun 4");
     
-    check(([1.0,""].rest.filter((String elem) => true) of Object) is {String*}, "");
-    check(([1.0,""].rest of Object) is List<String>, "");
-    (([Float, String] tup)=>check((tup of Object) is [Float,String]))([1.0,""]);
-    flatten(([Float] tup)=>check((tup of Object) is [Float]))(1.0);
-    flatten(([Float, String] tup)=>check((tup of Object) is [Float, String]))(1.0, "");
-    flatten(([Float, Float, String] tup)=>check((tup of Object) is [Float, Float, String]))(1.0, 2.0, "");
+    check(([1.0,""].rest.filter((String elem) => true) of Object) is {String*}, "wat 1");
+    check(([1.0,""].rest of Object) is List<String>, "wat 2");
+    (([Float, String] tup)=>check((tup of Object) is [Float,String], "wat 3"))([1.0,""]);
+    flatten(([Float] tup)=>check((tup of Object) is [Float], "flatten 6"))(1.0);
+    flatten(([Float, String] tup)=>check((tup of Object) is [Float, String], "flatten 7"))(1.0, "");
+    flatten(([Float, Float, String] tup)=>check((tup of Object) is [Float, Float, String], "flatten 8"))(1.0, 2.0, "");
     
 }
