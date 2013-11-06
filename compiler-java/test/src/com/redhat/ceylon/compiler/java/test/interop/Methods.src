@@ -554,6 +554,15 @@ final class moreOverloads_ {
         .java.nio.file.FileSystems.newFileSystem(.java.net.URI.create(""), new .java.util.HashMap<.java.lang.String, .java.lang.Object>());
         new .java.io.BufferedReader(new .java.io.InputStreamReader(null));
         .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.channels.ServerSocketChannel.open()).bind(new .java.net.InetSocketAddress("", (int)1L));
+        .java.nio.file.Files.copy(.java.nio.file.Paths.get(new .java.net.URI("", "", "")), .java.nio.file.Paths.get(new .java.net.URI("")), (
+            let
+            {
+                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$24$0 = .ceylon.language.ArraySequence.<.java.nio.file.StandardCopyOption>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class)), new .java.lang.Object[]{
+                        .java.nio.file.StandardCopyOption.REPLACE_EXISTING,
+                        .java.nio.file.StandardCopyOption.COPY_ATTRIBUTES}).getSequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$24$0, new .java.nio.file.CopyOption[(int)$ceylontmp$24$0.getSize() + 1], .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.file.StandardCopyOption.ATOMIC_MOVE));
+        ));
     }
     
     public static void main(.java.lang.String[] args) {

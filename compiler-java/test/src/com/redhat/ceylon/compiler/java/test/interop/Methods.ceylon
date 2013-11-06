@@ -21,7 +21,12 @@ import java.lang { JString = String, JInteger = Integer }
 import java.io { File, InputStreamReader, BufferedReader }
 import java.net { InetSocketAddress, URI }
 import java.nio.channels { ServerSocketChannel }
-import java.nio.file { FileSystems }
+import java.nio.file { 
+    FileSystems,
+    Files, 
+    Paths, 
+    StandardCopyOption
+}
 import java.util { HashMap }
 
 @noanno
@@ -248,4 +253,7 @@ void moreOverloads(){
     FileSystems.newFileSystem(URI.create(""), HashMap<JString,Object>());
     BufferedReader(InputStreamReader(null));
     ServerSocketChannel.open().bind(InetSocketAddress("",1));
+    Files.copy(Paths.get(URI("", "", "")), Paths.get(URI("")), StandardCopyOption.\iATOMIC_MOVE, 
+            *{StandardCopyOption.\iREPLACE_EXISTING, StandardCopyOption.\iCOPY_ATTRIBUTES});
+
 }
