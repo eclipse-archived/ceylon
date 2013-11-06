@@ -2,6 +2,10 @@ import check { ... }
 
 shared alias Strinteger => String|Integer;
 
+shared class Test284(Strinteger x) {
+  print(x);
+}
+
 shared class AliasingClass() {
     shared interface AliasingIface {
         shared Boolean aliasingIface() { return true; }
