@@ -26,7 +26,8 @@ public abstract class Constants {
     public static final String DEFAULT_RESOURCE_DIR = "resource";
     public static final String DEFAULT_MODULE_DIR = "modules";
     
-    public static final String DEFAULT_RUNNER_COMPILATION_FLAGS = "never";
+    public static final String DEFAULT_RUNTOOL_COMPILATION_FLAGS = "never";
+    public static final String DEFAULT_TESTTOOL_COMPILATION_FLAGS = "never";
     
     public static final String REPO_URL_CEYLON = "http://modules.ceylon-lang.org/test";
 }

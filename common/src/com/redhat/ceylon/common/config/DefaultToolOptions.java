@@ -16,7 +16,8 @@ public class DefaultToolOptions {
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
     
-    public final static String RUNNER_COMPILE = "runner.compile";
+    public final static String RUNTOOL_COMPILE = "runtool.compile";
+    public final static String TESTTOOL_COMPILE = "testtool.compile";
     
     private DefaultToolOptions() {
     }
@@ -71,11 +72,19 @@ public class DefaultToolOptions {
         return new File(Repositories.withConfig(config).getOutputRepository().getUrl());
     }
     
-    public static String getRunnerCompileFlags() {
-        return getRunnerCompileFlags(CeylonConfig.get());
+    public static String getRunToolCompileFlags() {
+        return getRunToolCompileFlags(CeylonConfig.get());
     }
 
-    public static String getRunnerCompileFlags(CeylonConfig config) {
-        return config.getOption(RUNNER_COMPILE, Constants.DEFAULT_RUNNER_COMPILATION_FLAGS);
+    public static String getRunToolCompileFlags(CeylonConfig config) {
+        return config.getOption(RUNTOOL_COMPILE, Constants.DEFAULT_RUNTOOL_COMPILATION_FLAGS);
+    }
+    
+    public static String getTestToolCompileFlags() {
+        return getTestToolCompileFlags(CeylonConfig.get());
+    }
+
+    public static String getTestToolCompileFlags(CeylonConfig config) {
+        return config.getOption(TESTTOOL_COMPILE, Constants.DEFAULT_TESTTOOL_COMPILATION_FLAGS);
     }
 }
