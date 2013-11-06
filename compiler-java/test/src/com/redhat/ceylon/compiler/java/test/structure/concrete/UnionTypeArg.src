@@ -4,7 +4,6 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     UnionTypeArg() {
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
     }
     protected final .ceylon.language.Iterable$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
@@ -183,12 +182,6 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     public .ceylon.language.List repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Container$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Container$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
-    }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     
     @.java.lang.Override
@@ -226,7 +219,6 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     
     UnionTypeArgOverride() {
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
     }
     protected final .ceylon.language.Iterable$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
@@ -394,12 +386,6 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.List repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
-    }
-    protected final .ceylon.language.Container$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Container$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     

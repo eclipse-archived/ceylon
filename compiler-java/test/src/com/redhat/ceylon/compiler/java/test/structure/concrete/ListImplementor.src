@@ -7,7 +7,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<X>($reified$X, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<X>($reified$X, this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<X, .java.lang.Object>($reified$X, .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<X, .java.lang.Object>($reified$X, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$X), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends X>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, X>(.ceylon.language.Integer.$TypeDescriptor$, $reified$X, this);
@@ -301,12 +300,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.List<? extends X> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
-    }
-    protected final .ceylon.language.Container$impl<? extends X, ? extends .java.lang.Object> $ceylon$language$Container$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends X, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     

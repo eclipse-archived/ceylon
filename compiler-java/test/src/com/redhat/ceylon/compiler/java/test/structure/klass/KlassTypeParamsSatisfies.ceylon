@@ -19,8 +19,8 @@
  */
 @noanno
 class KlassTypeParamsSatisfies<U,V,W>()
-    given U satisfies Container<Integer>
+    given U satisfies Invertable<Integer>
     given V satisfies Summable<Integer>
-    given W satisfies Container<Integer> & Summable<Integer>
+    given W satisfies Invertable<Integer> & Summable<Integer>
 {
 }

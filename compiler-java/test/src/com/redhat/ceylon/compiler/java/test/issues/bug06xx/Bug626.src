@@ -4,7 +4,6 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     Bug626() {
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
         this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
@@ -183,12 +182,6 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     @.java.lang.Override
     public .ceylon.language.List<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
-    }
-    protected final .ceylon.language.Container$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Container$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     

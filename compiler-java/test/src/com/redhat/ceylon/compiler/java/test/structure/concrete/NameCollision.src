@@ -1,36 +1,186 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-interface Container {
+interface Iterable {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$impl();
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.Container.class);
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable.class);
 }
-final class Container$impl {
+final class Iterable$impl {
     
-    Container$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this) {
+    Iterable$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable $this) {
         this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container $this;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable $this;
 }
-class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Container, .ceylon.language.Container<.ceylon.language.Integer, .java.lang.Object> {
+class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable, .ceylon.language.Iterable<.ceylon.language.Integer, .java.lang.Object> {
     
     NameCollision() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl(this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl(this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
         this.empty = true;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$;
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Container$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Container$this$;
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$;
     }
-    protected final .ceylon.language.Container$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Container$this$;
+    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
+    public .ceylon.language.Iterable$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
+        return $ceylon$language$Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$Iterable$this$.getSize();
+    }
+    
+    @.java.lang.Override
+    public boolean longerThan(final long length) {
+        return $ceylon$language$Iterable$this$.longerThan(length);
+    }
+    
+    @.java.lang.Override
+    public boolean shorterThan(final long length) {
+        return $ceylon$language$Iterable$this$.shorterThan(length);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getRest() {
+        return $ceylon$language$Iterable$this$.getRest();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> getSequence() {
+        return $ceylon$language$Iterable$this$.getSequence();
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.map($reified$Result, collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> filter(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.filter(selecting);
+    }
+    
+    @.java.lang.Override
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.find(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.findLast(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return $ceylon$language$Iterable$this$.sort(comparing);
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return $ceylon$language$Iterable$this$.collect($reified$Result, collecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> select(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.select(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean any(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.any(selecting);
+    }
+    
+    @.java.lang.Override
+    public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.every(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> skipping(final long skip) {
+        return $ceylon$language$Iterable$this$.skipping(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> taking(final long take) {
+        return $ceylon$language$Iterable$this$.taking(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
+        return $ceylon$language$Iterable$this$.skippingWhile(skip);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
+        return $ceylon$language$Iterable$this$.takingWhile(take);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> by(final long step) {
+        return $ceylon$language$Iterable$this$.by(step);
+    }
+    
+    @.java.lang.Override
+    public long count(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.count(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> getIndexed() {
+        return $ceylon$language$Iterable$this$.getIndexed();
+    }
+    
+    @.java.lang.Override
+    public <Other>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> following(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.following($reified$Other, head);
+    }
+    
+    @.java.lang.Override
+    public <Other, OtherAbsent>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent> chain(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OtherAbsent, final .ceylon.language.Iterable<? extends Other, ? extends OtherAbsent> other) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends OtherAbsent>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.chain($reified$Other, $reified$OtherAbsent, other);
+    }
+    
+    @.java.lang.Override
+    public <Default>.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
+        return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.defaultNullElements($reified$Default, defaultValue);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return $ceylon$language$Iterable$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> cycle(final long times) {
+        return $ceylon$language$Iterable$this$.cycle(times);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.Integer> repeat(final long times) {
+        return $ceylon$language$Iterable$this$.repeat(times);
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     
@@ -47,6 +197,11 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.java.lang.Override
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this$.containsAny(elements);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     private final boolean empty;
     

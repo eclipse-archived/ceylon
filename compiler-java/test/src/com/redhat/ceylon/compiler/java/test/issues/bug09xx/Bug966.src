@@ -12,7 +12,6 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<Element>($reified$Element, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<Element>($reified$Element, this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<Element, .java.lang.Object>($reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
         this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element, this);
@@ -318,12 +317,6 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> cycle(final long times) {
         return $ceylon$language$Iterable$this$.cycle(times);
-    }
-    protected final .ceylon.language.Container$impl<? extends Element, ? extends .java.lang.Object> $ceylon$language$Container$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends Element, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     

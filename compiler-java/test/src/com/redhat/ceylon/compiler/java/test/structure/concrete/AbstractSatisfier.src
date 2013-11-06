@@ -18,7 +18,6 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
         this.$reified$T = $reified$T;
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl(this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
-        this.$ceylon$language$Container$this$ = new .ceylon.language.Container$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Container<T, .java.lang.Object>)(.ceylon.language.Container)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -198,12 +197,6 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
     @.java.lang.Override
     public .ceylon.language.List<? extends T> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
-    }
-    protected final .ceylon.language.Container$impl<? extends T, ? extends .java.lang.Object> $ceylon$language$Container$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Container$impl<? extends T, ? extends .java.lang.Object> $ceylon$language$Container$impl() {
-        return $ceylon$language$Container$this$;
     }
     protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
     

@@ -17,12 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language{C=Container}
+import ceylon.language{I=Iterable}
 @noanno
-interface Container {
+interface Iterable {
 }
 @noanno
-class NameCollision() satisfies Container&C<Integer> {
+class NameCollision() satisfies Iterable&I<Integer> {
+    shared actual Iterator<Integer> iterator() => nothing;
     shared actual Boolean empty = true;
     shared actual Boolean contains(Object element){ return false; }
     shared actual Integer first { return nothing; }
