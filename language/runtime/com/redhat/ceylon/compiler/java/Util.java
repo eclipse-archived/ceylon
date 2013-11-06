@@ -30,6 +30,14 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class Util {
+
+    static {
+        // Make sure the rethrow class is loaded if ever we need to rethrow
+        // errors such as StackOverflowError, otherwise if we have to rethrow it
+        // we will not be able to load that class since we've ran out of stack
+        // see https://github.com/ceylon/ceylon.language/issues/311
+        ceylon.language.impl.rethrow_.class.toString();
+    }
     
     public static String declClassName(String name) {
         return name.replace("::", ".");
