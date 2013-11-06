@@ -410,7 +410,6 @@
             executable="${ceylon.compiler.loc}"
             src="${test.src}"
             sysrep="${build.test.repo}"
-        	optimize="true"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
