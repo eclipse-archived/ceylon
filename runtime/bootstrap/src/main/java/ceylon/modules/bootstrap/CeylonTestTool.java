@@ -8,8 +8,10 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
@@ -38,6 +40,7 @@ public class CeylonTestTool extends RepoUsingTool {
     private List<String> moduleNameOptVersionList;
     private List<String> testList;
     private List<String> argumentList;
+    private String compileFlags;
 
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -57,6 +60,14 @@ public class CeylonTestTool extends RepoUsingTool {
     @Description("Specifies which tests will be run.")
     public void setTests(List<String> testList) {
         this.testList = testList;
+    }
+
+    @Option
+    @OptionArgument(argumentName = "flags")
+    @Description("Determines if and how compilation should be handled." +
+            "Allowed flags include: `never`, `once`, `force`, `check`.")
+    public void setCompile(String compile) {
+        this.compileFlags = compile;
     }
 
     @Rest
@@ -88,6 +99,15 @@ public class CeylonTestTool extends RepoUsingTool {
             args.addAll(argumentList);
         }
         
+        if (compileFlags == null) {
+            compileFlags = DefaultToolOptions.getTestToolCompileFlags();
+            if (compileFlags.isEmpty()) {
+                compileFlags = COMPILE_NEVER;
+            }
+        } else if (compileFlags.isEmpty()) {
+            compileFlags = COMPILE_ONCE;
+        }
+        
         CeylonRunTool ceylonRunTool = new CeylonRunTool();
         ceylonRunTool.setModule(CEYLON_TEST_MODULE);
         ceylonRunTool.setRun(CEYLON_TEST_RUN_FUNCTION);
@@ -112,7 +132,8 @@ public class CeylonTestTool extends RepoUsingTool {
                 moduleVersion,
                 ModuleQuery.Type.JVM,
                 Versions.JVM_BINARY_MAJOR_VERSION,
-                Versions.JVM_BINARY_MINOR_VERSION);
+                Versions.JVM_BINARY_MINOR_VERSION,
+                compileFlags);
 
         return moduleVersion != null ? moduleName + "/" + moduleVersion : null;
     }
