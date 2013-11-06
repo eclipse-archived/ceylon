@@ -37,6 +37,11 @@ public final class printStackTrace_
     }
     
     @Ignore
+    public static void printStackTrace(final java.lang.Throwable throwable) {
+        printStackTrace(throwable, printStackTrace$writeLine());
+    }
+    
+    @Ignore
     public static Callable<java.lang.Object> printStackTrace$writeLine() {
         return new AbstractCallable<java.lang.Object>(Anything.$TypeDescriptor$, 
                 TypeDescriptor.klass(Tuple.class, String.$TypeDescriptor$, String.$TypeDescriptor$, Empty.$TypeDescriptor$),
