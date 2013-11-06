@@ -33,6 +33,7 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -169,6 +170,15 @@ public class CeylonRunTool extends RepoUsingTool {
             }
         }
 
+        if (compileFlags == null) {
+            compileFlags = DefaultToolOptions.getRunToolCompileFlags();
+            if (compileFlags.isEmpty()) {
+                compileFlags = COMPILE_NEVER;
+            }
+        } else if (compileFlags.isEmpty()) {
+            compileFlags = COMPILE_ONCE;
+        }
+        
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
                 getRepositoryManager(),
