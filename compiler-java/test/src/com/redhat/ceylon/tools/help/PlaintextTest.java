@@ -54,7 +54,7 @@ public class PlaintextTest {
             }
         }
         
-        Assert.assertEquals(sb.toString(), sw.toString());
+        Assert.assertEquals(sb.toString(), sw.toString().replace("\r\n", "\n"));
     }
     
     @Test

@@ -865,106 +865,106 @@ public class CeylonDocToolTest {
         String linkStart = "<a class='link' href='" + repoUrl + "/com/redhat/ceylon/ceylondoc/test/modules/dependency";
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(linkStart + "/b/1.0/module-doc/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>B</a> fceB"));
+                Pattern.compile(Pattern.quote(linkStart + "/b/1.0/module-doc/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>B</a> fceB")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile(linkStart + "/c/1.0/module-doc/C.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.c::C'>C</a> fceC"));
+                Pattern.compile(Pattern.quote(linkStart + "/c/1.0/module-doc/C.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.c::C'>C</a> fceC")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("b = " + linkStart + "/b/1.0/module-doc/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'>b</a>"));
+                Pattern.compile(Pattern.quote("b = " + linkStart + "/b/1.0/module-doc/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'>b</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("B = " + linkStart + "/b/1.0/module-doc/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>B</a>"));
+                Pattern.compile(Pattern.quote("B = " + linkStart + "/b/1.0/module-doc/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>B</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("B.b = " + linkStart + "/b/1.0/module-doc/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'>B.b</a>"));
+                Pattern.compile(Pattern.quote("B.b = " + linkStart + "/b/1.0/module-doc/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'>B.b</a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("b2 = " + linkStart + "/b/1.0/module-doc/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'>b2</a>"));
+                Pattern.compile(Pattern.quote("b2 = " + linkStart + "/b/1.0/module-doc/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'>b2</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("B2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'>B2</a>"));
+                Pattern.compile(Pattern.quote("B2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'>B2</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>B2.b2</a>"));
+                Pattern.compile(Pattern.quote("B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>B2.b2</a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = " + linkStart + "/b/1.0/module-doc/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b</a>"));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b = " + linkStart + "/b/1.0/module-doc/index.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::b</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B = " + linkStart + "/b/1.0/module-doc/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B</a>"));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B = " + linkStart + "/b/1.0/module-doc/B.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = " + linkStart + "/b/1.0/module-doc/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b</a>"));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b = " + linkStart + "/b/1.0/module-doc/B.type.html#b' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b::B.b</a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = " + linkStart + "/b/1.0/module-doc/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2</a>"));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2 = " + linkStart + "/b/1.0/module-doc/bb/index.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::b2</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2</a>"));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2</a>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2</a>"));
+                Pattern.compile(Pattern.quote("com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2 = " + linkStart + "/b/1.0/module-doc/bb/B2.type.html#b2' title='Go to com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b.bb::B2.b2</a>")));
     }
     
     private void assertSharedParameterOfClass(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<td id='printHello' nowrap><i class='icon-shared-member'></i>printHello</td>"));
+                Pattern.compile(Pattern.quote("<td id='printHello' nowrap><i class='icon-shared-member'></i>printHello</td>")));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> printHello\\(<span title='ceylon.language::String'>String</span> name\\)</div>"));
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> <span class='void'>void</span> printHello(<span title='ceylon.language::String'>String</span> name)</div>")));
     }
     
     private void assertAliases(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("Aliases"));        
+                Pattern.compile(Pattern.quote("Aliases")));        
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<td id='AliasEntry' nowrap><i class='icon-type-alias'></i>AliasEntry</td>"));
+                Pattern.compile(Pattern.quote("<td id='AliasEntry' nowrap><i class='icon-type-alias'></i>AliasEntry</td>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> AliasEntry<span class='type-parameter'>&lt;T&gt;</span><div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T</span><span class='type-parameter-keyword'> satisfies </span><span title='ceylon.language::Object'>Object</span></div><div class='type-alias-specifier'><span class='specifier'>=> </span><span class='type-parameter'>T</span>-&gt;<span class='type-parameter'>T</span></div>"));
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> AliasEntry<span class='type-parameter'>&lt;T&gt;</span><div class='type-parameter-constraint'><span class='type-parameter-keyword'>given </span><span class='type-parameter'>T</span><span class='type-parameter-keyword'> satisfies </span><span title='ceylon.language::Object'>Object</span></div><div class='type-alias-specifier'><span class='specifier'>=> </span><span class='type-parameter'>T</span>-&gt;<span class='type-parameter'>T</span></div>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<td id='AliasStubs' nowrap><i class='icon-decoration-deprecated'><i class='icon-type-alias'></i></i>AliasStubs</td>"));
+                Pattern.compile(Pattern.quote("<td id='AliasStubs' nowrap><i class='icon-decoration-deprecated'><i class='icon-type-alias'></i></i>AliasStubs</td>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> AliasStubs<span class='specifier-operator'> => </span><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>|<a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>|<a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'>StubException</a>|<span title='ceylon.language::Null'>Null</span></div>")); 
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> AliasStubs<span class='specifier-operator'> => </span><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a>") + "|" + Pattern.quote("<a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>") + "|" + Pattern.quote("<a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'>StubException</a>") + "|" + Pattern.quote("<span title='ceylon.language::Null'>Null</span></div>"))); 
         
         assertMatchInFile(destDir, "StubClassWithAlias.type.html",
-                Pattern.compile("Nested Aliases"));
+                Pattern.compile(Pattern.quote("Nested Aliases")));
         assertMatchInFile(destDir, "StubClassWithAlias.type.html",
-                Pattern.compile("<td id='InnerAliasNumber' nowrap><i class='icon-type-alias'></i>InnerAliasNumber</td><td>"));        
+                Pattern.compile(Pattern.quote("<td id='InnerAliasNumber' nowrap><i class='icon-type-alias'></i>InnerAliasNumber</td><td>")));
     }
     
     private void assertPackageNavigation(File destDir) throws Exception {
         assertMatchInFile(destDir, "a/index.html",
-                Pattern.compile("<span class='sub-navbar-label'>package</span><i class='icon-package'></i><span class='sub-navbar-name'><a class='link' href='../index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>.<a class='link-custom-text' href='../a/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a'>a</a></span>"));
+                Pattern.compile(Pattern.quote("<span class='sub-navbar-label'>package</span><i class='icon-package'></i><span class='sub-navbar-name'><a class='link' href='../index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>.<a class='link-custom-text' href='../a/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a'>a</a></span>")));
         assertMatchInFile(destDir, "a/aa/index.html",
-                Pattern.compile("<span class='sub-navbar-label'>package</span><i class='icon-package'></i><span class='sub-navbar-name'><a class='link' href='../../index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>.<a class='link-custom-text' href='../../a/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a'>a</a>.<a class='link-custom-text' href='../../a/aa/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a.aa'>aa</a></span>"));
+                Pattern.compile(Pattern.quote("<span class='sub-navbar-label'>package</span><i class='icon-package'></i><span class='sub-navbar-name'><a class='link' href='../../index.html#section-package' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single'>com.redhat.ceylon.ceylondoc.test.modules.single</a>.<a class='link-custom-text' href='../../a/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a'>a</a>.<a class='link-custom-text' href='../../a/aa/index.html' title='Go to package com.redhat.ceylon.ceylondoc.test.modules.single.a.aa'>aa</a></span>")));
     }
     
     private void assertSubpackages(File destDir) throws Exception {
         assertMatchInFile(destDir, "a/index.html",
-                Pattern.compile("<tr class='table-header' title='Click for expand/collapse'><td colspan='2'><i class='icon-expand'></i>Subpackages</td></tr>"));
+                Pattern.compile(Pattern.quote("<tr class='table-header' title='Click for expand/collapse'><td colspan='2'><i class='icon-expand'></i>Subpackages</td></tr>")));
         assertMatchInFile(destDir, "a/index.html",
-                Pattern.compile("<tr><td><i class='icon-package'></i><a class='link' href='../a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>"));
+                Pattern.compile(Pattern.quote("<tr><td><i class='icon-package'></i><a class='link' href='../a/aa/index.html'>com.redhat.ceylon.ceylondoc.test.modules.single.a.aa</a></td><td></td></tr>")));
     }
     
     private void assertSubtypesHierarchy(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubInterface.type.html",
-                Pattern.compile("<div class='subtypes-hierarchy section'>" +
+                Pattern.compile(Pattern.quote("<div class='subtypes-hierarchy section'>" +
                 		        "<a href='#' class='title' title='Click for expand/collapse'>All Known Subtypes Hierarchy <i class='icon-collapse'></i></a>" +
-                		        "<ul class='inheritance inheritance-0' style='display: none'>"));
+                		        "<ul class='inheritance inheritance-0' style='display: none'>")));
     }
     
     private void assertAnnotations(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<table id='section-annotations'"));
+                Pattern.compile(Pattern.quote("<table id='section-annotations'")));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<td id='stubAnnotationBar' nowrap><i class='icon-shared-member'><i class='icon-decoration-annotation'></i></i>stubAnnotationBar</td>"));
+                Pattern.compile(Pattern.quote("<td id='stubAnnotationBar' nowrap><i class='icon-shared-member'><i class='icon-decoration-annotation'></i></i>stubAnnotationBar</td>")));
         assertMatchInFile(destDir, "index.html", 
-                Pattern.compile("<td id='StubAnnotationBar' nowrap><i class='icon-class'><i class='icon-decoration-annotation'></i></i><a class='link-discreet' href='StubAnnotationBar.type.html'>StubAnnotationBar</a></td>"));
+                Pattern.compile(Pattern.quote("<td id='StubAnnotationBar' nowrap><i class='icon-class'><i class='icon-decoration-annotation'></i></i><a class='link-discreet' href='StubAnnotationBar.type.html'>StubAnnotationBar</a></td>")));
         
         assertMatchInFile(destDir, "StubAnnotationBar.type.html", 
-                Pattern.compile("<span class='sub-navbar-label'>annotation</span>"));
+                Pattern.compile(Pattern.quote("<span class='sub-navbar-label'>annotation</span>")));
         assertMatchInFile(destDir, "StubAnnotationBar.type.html", 
-                Pattern.compile("<div class='annotationConstructors section'><span class='title'>Annotation Constructors: </span><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>"));
+                Pattern.compile(Pattern.quote("<div class='annotationConstructors section'><span class='title'>Annotation Constructors: </span><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>")));
         
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<div class='doc section'><p>The stub annotated function.</p>\n</div>" +
-                		        "<div class='annotations section'><span class='title'>Annotations: </span><ul>"));
+                Pattern.compile(Pattern.quote("<div class='doc section'><p>The stub annotated function.</p>\n</div>" +
+                		        "<div class='annotations section'><span class='title'>Annotations: </span><ul>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<li><a class='link' href='index.html#stubAnnotationFoo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationFoo'>stubAnnotationFoo</a>" +
-                		"\\(" +
+                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationFoo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationFoo'>stubAnnotationFoo</a>" +
+                		"(" +
                 		"<span class='literal'>&quot;abc&quot;</span>, " +
                 		"<span class='literal'>'a'</span>, " +
                 		"<span class='literal'>123</span>, " +
@@ -972,40 +972,40 @@ public class CeylonDocToolTest {
                 		"true, " +
                 		"`<span class='keyword'>class </span><a class='link' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>`, " +
                 		"`<span class='keyword'>package </span>ceylon.language.meta`, " +
-                		"\\[\\], " +
-                		"\\[<span class='literal'>0</span>, <span class='literal'>1</span>\\], " +
-                		"\\{\\}, " +
-                		"\\{<span class='literal'>0.0</span>, <span class='literal'>1.1</span>\\}" +
-                		"\\)</li>"));
+                		"[], " +
+                		"[<span class='literal'>0</span>, <span class='literal'>1</span>], " +
+                		"{}, " +
+                		"{<span class='literal'>0.0</span>, <span class='literal'>1.1</span>}" +
+                		")</li>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
-                		"\\(<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>\\(<span class='literal'>&quot;baz&quot;</span>\\)\\)</li>"));
+                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
+                		"(<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>(<span class='literal'>&quot;baz&quot;</span>))</li>")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
-                		"\\{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>\\{s=<span class='literal'>&quot;baz&quot;</span>;\\};\\}</li>"));
+                Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
+                		"{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>{s=<span class='literal'>&quot;baz&quot;</span>;};}</li>")));
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<table id='section-dependencies'"));        
+                Pattern.compile(Pattern.quote("<table id='section-dependencies'")));
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<tr><td class='shrink'><span title='shared import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.b 1.0'><i class='icon-module'><i class='icon-module-exported-decoration'></i></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/b/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>"));        
+                Pattern.compile(Pattern.quote("<tr><td class='shrink'><span title='shared import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.b 1.0'><i class='icon-module'><i class='icon-module-exported-decoration'></i></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/b/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.b</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>")));        
         assertMatchInFile(destDir, "index.html",
-                Pattern.compile("<tr><td class='shrink'><span title='import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.c 1.0'><i class='icon-module'></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.c</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>"));        
+                Pattern.compile(Pattern.quote("<tr><td class='shrink'><span title='import of module com.redhat.ceylon.ceylondoc.test.modules.dependency.c 1.0'><i class='icon-module'></i></span><a class='link' href='http://acme.com/repo/com/redhat/ceylon/ceylondoc/test/modules/dependency/c/1.0/module-doc/index.html' title='Go to module'>com.redhat.ceylon.ceylondoc.test.modules.dependency.c</a></td><td class='shrink'>1.0</td><td><div class='description import-description'></div></td></tr>")));        
     }
 
     private void assertBug659ShowInheritedMembers(File destDir) throws Exception {
     	assertMatchInFile(destDir, "StubClass.type.html",
-    			Pattern.compile("Inherited Methods"));
+    			Pattern.compile(Pattern.quote("Inherited Methods")));
     	assertMatchInFile(destDir, "StubClass.type.html",
-    			Pattern.compile("<td>Methods inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a>"));
+    			Pattern.compile(Pattern.quote("<td>Methods inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a>, <a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a>")));
     }
 
     private void assertBug691AbbreviatedOptionalType(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span title='ceylon.language::String'>String</span>\\? bug691AbbreviatedOptionalType1\\(\\)</div>"));
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> <span title='ceylon.language::String'>String</span>? bug691AbbreviatedOptionalType1()</div>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>\\? bug691AbbreviatedOptionalType2<span class='type-parameter'>&lt;Element&gt;</span>\\(\\)</div>"));
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> <span class='type-parameter'>Element</span>? bug691AbbreviatedOptionalType2<span class='type-parameter'>&lt;Element&gt;</span>()</div>")));
     }
     
     private void assertBug839(File destDir) throws Exception {
@@ -1015,18 +1015,18 @@ public class CeylonDocToolTest {
 
     private void assertBug968(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{<span title='ceylon.language::Integer'>Integer</span>\\*\\} bug968_1\\(\\)</div>"));
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> {<span title='ceylon.language::Integer'>Integer</span>*} bug968_1()</div>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='signature'><span class='modifiers'>shared</span> \\{<span title='ceylon.language::Integer'>Integer</span>\\+\\} bug968_2\\(\\)</div>"));
+                Pattern.compile(Pattern.quote("<div class='signature'><span class='modifiers'>shared</span> {<span title='ceylon.language::Integer'>Integer</span>+} bug968_2()</div>")));
     }
 
     private void assertBug927LoadingAndSortingInheritedMembers(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile("Inherited Attributes"));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i><span title='ceylon.language::Object'>Object</span><div class='inherited-members'>hash, string</div></td>"));
+                Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i><span title='ceylon.language::Object'>Object</span><div class='inherited-members'>hash, string</div></td>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#string' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.string'>string</a></div></td>"));
+                Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#string' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.string'>string</a></div></td>")));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

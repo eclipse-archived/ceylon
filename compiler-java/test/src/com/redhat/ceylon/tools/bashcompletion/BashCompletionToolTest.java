@@ -76,7 +76,7 @@ public class BashCompletionToolTest {
         } 
         Assert.assertEquals(
                 "example \n" +
-        		"", new String(out.toByteArray()));
+        		"", new String(out.toByteArray()).replace("\r\n", "\n"));
     }
     
     @Test
@@ -94,7 +94,7 @@ public class BashCompletionToolTest {
         } finally {
            restoreStdout();
         } 
-        Assert.assertEquals("example \n", new String(out.toByteArray()));
+        Assert.assertEquals("example \n", new String(out.toByteArray()).replace("\r\n", "\n"));
     }
     
     @Test
@@ -120,7 +120,7 @@ public class BashCompletionToolTest {
                 "--pure-option\n"+
                 "--short-name\\=\n"+
                 "--thread-state\\=\n"+
-                "", new String(out.toByteArray()));
+                "", new String(out.toByteArray()).replace("\r\n", "\n"));
     }
     
     @Test
@@ -142,7 +142,7 @@ public class BashCompletionToolTest {
         Assert.assertEquals(
                 "--list-option\\=\n" +
                 "--long-name\n" +
-                "", new String(out.toByteArray()));
+                "", new String(out.toByteArray()).replace("\r\n", "\n"));
     }
     
     @Test
@@ -161,7 +161,7 @@ public class BashCompletionToolTest {
         } finally {
            restoreStdout();
         } 
-        String files = new String(out.toByteArray());
+        String files = new String(out.toByteArray()).replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--file=src/\n"));
         Assert.assertTrue(files, files.contains("--file=test/\n"));
     }
@@ -182,7 +182,7 @@ public class BashCompletionToolTest {
         } finally {
            restoreStdout();
         } 
-        String files = new String(out.toByteArray());
+        String files = new String(out.toByteArray()).replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--file=src/"));
         Assert.assertFalse(files, files.contains("--file=test/ \n"));
     }
@@ -203,7 +203,7 @@ public class BashCompletionToolTest {
         } finally {
            restoreStdout();
         } 
-        String files = new String(out.toByteArray());
+        String files = new String(out.toByteArray()).replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--thread-state=NEW\n"));
         Assert.assertTrue(files, files.contains("--thread-state=BLOCKED\n"));
         Assert.assertTrue(files, files.contains("--thread-state=RUNNABLE\n"));
@@ -225,7 +225,7 @@ public class BashCompletionToolTest {
         } finally {
            restoreStdout();
         } 
-        String files = new String(out.toByteArray());
+        String files = new String(out.toByteArray()).replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--thread-state=NEW \n"));
         Assert.assertFalse(files, files.contains("--thread-state=BLOCKED \n"));
         Assert.assertFalse(files, files.contains("--thread-state=RUNNABLE \n"));

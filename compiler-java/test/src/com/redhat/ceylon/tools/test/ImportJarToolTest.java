@@ -85,7 +85,9 @@ public class ImportJarToolTest {
                     "test/1.0", "test/src/com/redhat/ceylon/tools/test/nonexistent.jar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Jar file test/src/com/redhat/ceylon/tools/test/nonexistent.jar does not exist", e.getMessage());
+            String jarName = "test/src/com/redhat/ceylon/tools/test/nonexistent.jar";
+            jarName = jarName.replace('/', File.separatorChar);
+            Assert.assertEquals("Jar file " +jarName + " does not exist", e.getMessage());
         }
     }
     
@@ -141,7 +143,9 @@ public class ImportJarToolTest {
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertTrue(e.getCause() instanceof ImportJarException);
-            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml does not exist", e.getCause().getMessage());
+            String xmlName = "test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml";
+            xmlName = xmlName.replace('/', File.separatorChar);
+            Assert.assertEquals("Descriptor file " + xmlName + " does not exist", e.getCause().getMessage());
         }
     }
 

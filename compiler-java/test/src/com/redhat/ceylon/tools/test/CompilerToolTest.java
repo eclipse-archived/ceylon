@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.tools.test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -80,7 +81,7 @@ public class CompilerToolTest {
                     Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Module com.redhat.ceylon.tools.test.nosuchmodule not found in source directories: test/src", e.getMessage());   
+            Assert.assertEquals("Module com.redhat.ceylon.tools.test.nosuchmodule not found in source directories: test" + File.separator + "src", e.getMessage());   
         }
     }
     
