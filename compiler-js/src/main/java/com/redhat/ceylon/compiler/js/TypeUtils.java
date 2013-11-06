@@ -757,17 +757,25 @@ public class TypeUtils {
         public void generateAnnotations();
     }
 
-    private static class ModelAnnotationGenerator implements RuntimeMetamodelAnnotationGenerator {
+    static class ModelAnnotationGenerator implements RuntimeMetamodelAnnotationGenerator {
         private final GenerateJsVisitor gen;
         private final Declaration d;
         private final Node node;
+        private boolean includeAnnotationKey=true;
         ModelAnnotationGenerator(GenerateJsVisitor generator, Declaration decl, Node n) {
             gen = generator;
             d = decl;
             node = n;
         }
+        public ModelAnnotationGenerator omitKey() {
+            includeAnnotationKey=false;
+            return this;
+        }
         @Override public void generateAnnotations() {
-            gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":function(){return[");
+            if (includeAnnotationKey) {
+                gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
+            }
+            gen.out("function(){return[");
             boolean first = true;
             for (Annotation a : d.getAnnotations()) {
                 if (first) first=false; else gen.out(",");
