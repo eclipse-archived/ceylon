@@ -47,11 +47,17 @@ import com.redhat.ceylon.common.tool.Summary;
                 "The `<module>` may optionally include a version."
 )
 @RemainingSections(
-        "##EXAMPLE\n" +
-                "\n" +
-                "The following would execute the `com.example.foobar` module:\n" +
-                "\n" +
-                "    ceylon run com.example.foobar/1.0.0"
+        "## Configuration file" +
+        "\n\n" +
+        "The run tool accepts the following option from the Ceylon configuration file: " +
+        "`runtool.compile` " +
+        "(the equivalent option on the command line always has precedence)." +
+        "\n\n" +
+        "## EXAMPLE" +
+        "\n\n" +
+        "The following would execute the `com.example.foobar` module:" +
+         "\n\n" +
+         "    ceylon run com.example.foobar/1.0.0"
 )
 public class CeylonRunTool extends RepoUsingTool {
     private static final String CEYLON_RUNTIME = "ceylon.runtime";
