@@ -32,8 +32,6 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     @Ignore
     private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
     @Ignore
-    private final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
-    @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
@@ -46,7 +44,6 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     public FilterIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent,
             Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Boolean> selecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         f = selecting;
@@ -58,12 +55,6 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Element,Absent> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore

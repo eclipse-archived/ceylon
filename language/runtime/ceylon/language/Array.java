@@ -37,8 +37,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Ignore
     protected final Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
-    protected final Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
-    @Ignore
     protected final Collection$impl<Element> $ceylon$language$Collection$this;
     @Ignore
     protected final List$impl<Element> $ceylon$language$List$this;
@@ -143,7 +141,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = new Category$impl(this);
-        this.$ceylon$language$Container$this = new Container$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Iterable$this = new Iterable$impl<Element,java.lang.Object>($reifiedElement, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this = new Collection$impl<Element>($reifiedElement, this);
         this.$ceylon$language$List$this = new List$impl<Element>($reifiedElement, this);
@@ -159,12 +156,6 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Element,java.lang.Object> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore

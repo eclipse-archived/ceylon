@@ -5,7 +5,6 @@ import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
 import ceylon.language.Comparison;
-import ceylon.language.Container$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
@@ -37,8 +36,6 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Ignore
     protected final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
     @Ignore
-    protected final ceylon.language.Container$impl<Element,Absent> $ceylon$language$Container$this;
-    @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore
     private TypeDescriptor $reifiedElement;
@@ -49,7 +46,6 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$reifiedElement = $reifiedElement;
         this.$reifiedAbsent = $reifiedAbsent;
@@ -58,7 +54,6 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     
     public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, Iterable... iterables) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.$reifiedElement = $reifiedElement;
         this.$reifiedAbsent = $reifiedAbsent;
@@ -74,12 +69,6 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Element,Absent> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore

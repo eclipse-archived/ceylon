@@ -46,8 +46,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore
-    private final ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object> $ceylon$language$Container$this;
-    @Ignore
     private final ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
     private final ceylon.language.Correspondence$impl<java.lang.Object, Item> $ceylon$language$Correspondence$this;
@@ -67,7 +65,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     public InternalMap(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,
             final java.util.Map<? extends Key, ? extends Item> map) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor$, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(ceylon.language.Object.$TypeDescriptor$, $reifiedItem, this);
         this.$ceylon$language$Map$this = new ceylon.language.Map$impl<Key, Item>($reifiedKey, $reifiedItem, this);
@@ -84,12 +81,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Entry<? extends Key,? extends Item>,java.lang.Object> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore

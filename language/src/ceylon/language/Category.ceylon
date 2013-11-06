@@ -17,7 +17,6 @@
    to form a meaningful `Category` using a different
    equivalence relation. For example, an `IdentitySet` is
    a meaningful `Category`."""
-see (`interface Container`)
 by ("Gavin")
 shared interface Category {
     

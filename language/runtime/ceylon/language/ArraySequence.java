@@ -31,8 +31,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore
-    private final ceylon.language.Container$impl<Element,java.lang.Object> $ceylon$language$Container$this;
-    @Ignore
     private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
     private final ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this;
@@ -124,7 +122,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first, long length, boolean copy) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, $reifiedElement, this);
@@ -180,12 +177,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Element,java.lang.Object> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore

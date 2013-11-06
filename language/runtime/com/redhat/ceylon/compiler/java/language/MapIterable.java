@@ -39,8 +39,6 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     @Ignore
     private final ceylon.language.Iterable$impl<Result,Absent> $ceylon$language$Iterable$this;
     @Ignore
-    private final ceylon.language.Container$impl<Result,Absent> $ceylon$language$Container$this;
-    @Ignore
     private final ceylon.language.Category$impl $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends Absent> iterable;
@@ -55,7 +53,6 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     public MapIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, @Ignore TypeDescriptor $reifiedResult,
             Iterable<? extends Element, ? extends Absent> iterable, Callable<? extends Result> collecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,Absent>($reifiedResult, $reifiedAbsent, this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Result,Absent>($reifiedResult, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
         this.iterable = iterable;
         this.sel = collecting;
@@ -68,12 +65,6 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Result,Absent> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore

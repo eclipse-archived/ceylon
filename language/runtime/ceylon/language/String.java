@@ -33,8 +33,6 @@ public final class String
     @Ignore
     protected final ceylon.language.Category$impl $ceylon$language$Category$this;
     @Ignore
-    protected final ceylon.language.Container$impl<Character,java.lang.Object> $ceylon$language$Container$this;
-    @Ignore
     protected final ceylon.language.Iterable$impl<Character,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
     protected final ceylon.language.List$impl<Character> $ceylon$language$List$this;
@@ -58,7 +56,6 @@ public final class String
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     final Iterable<? extends Character, ? extends java.lang.Object> characters) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor$, this);
@@ -83,7 +80,6 @@ public final class String
     @Ignore
     public String(final java.lang.String string) {
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
-        this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor$, this);
@@ -99,12 +95,6 @@ public final class String
     @Override
     public Category$impl $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
-    }
-
-    @Ignore
-    @Override
-    public Container$impl<Character,java.lang.Object> $ceylon$language$Container$impl(){
-        return $ceylon$language$Container$this;
     }
 
     @Ignore
@@ -1698,8 +1688,6 @@ public final class String
         @Ignore
         private final ceylon.language.Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$this;
         @Ignore
-        private final ceylon.language.Container$impl<String,java.lang.Object> $ceylon$language$Container$this;
-        @Ignore
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
@@ -1712,7 +1700,6 @@ public final class String
                 Callable<? extends Boolean> separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this);
-            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.separator = separator;
@@ -1730,12 +1717,6 @@ public final class String
         @Override
         public Category$impl $ceylon$language$Category$impl(){
             return $ceylon$language$Category$this;
-        }
-
-        @Ignore
-        @Override
-        public Container$impl<String,java.lang.Object> $ceylon$language$Container$impl(){
-            return $ceylon$language$Container$this;
         }
 
         @Ignore
@@ -2083,8 +2064,6 @@ public final class String
         @Ignore
         private final ceylon.language.Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$this;
         @Ignore
-        private final ceylon.language.Container$impl<Integer,java.lang.Object> $ceylon$language$Container$this;
-        @Ignore
         private final ceylon.language.Category$impl $ceylon$language$Category$this;
         
         private final java.lang.String str;
@@ -2092,7 +2071,6 @@ public final class String
 
         public Inclusions(java.lang.String str, java.lang.String oc) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this);
-            this.$ceylon$language$Container$this = new ceylon.language.Container$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this);
             this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
             this.str = str;
             this.oc = oc;
@@ -2102,12 +2080,6 @@ public final class String
         @Override
         public Category$impl $ceylon$language$Category$impl(){
             return $ceylon$language$Category$this;
-        }
-
-        @Ignore
-        @Override
-        public Container$impl<Integer,java.lang.Object> $ceylon$language$Container$impl(){
-            return $ceylon$language$Container$this;
         }
 
         @Ignore

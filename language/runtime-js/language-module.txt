@@ -25,7 +25,7 @@ Sequential,Sequence,Empty
 #this requires impl of keys requires reified generics
 Keys,Correspondence,Finished
 
-Binary,Cloneable,Closeable,Ranged,Container,Iterator,Collection,Category,List,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral,Scalable,NegativeNumberException,OverflowException,InitializationException
+Binary,Cloneable,Closeable,Ranged,Iterator,Collection,Category,List,Tuple,ChainedIterator,Entry,Comparable,Invertable,Summable,Ordinal,Numeric,Scalar,Exponentiable,Integral,Scalable,NegativeNumberException,OverflowException,InitializationException
 #Number
 Set,Range,Singleton,AssertionException
 Map,LazyMap,LazyList,LazySet

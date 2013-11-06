@@ -1,7 +1,7 @@
 import ceylon.language { internalFirst = first }
 
-"""Abstract supertype of containers whose elements may be 
-   iterated. An iterable container need not be finite, but
+"""Abstract supertype of categories whose elements may be 
+   iterated. An iterable category need not be finite, but
    its elements must at least be countable. There may not
    be a well-defined iteration order, and so the order of
    iterated elements may not be stable.
@@ -72,7 +72,7 @@ import ceylon.language { internalFirst = first }
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
-        satisfies Container<Element,Absent> 
+        satisfies Category
         given Absent satisfies Null {
     
     "An iterator for the elements belonging to this 
@@ -81,7 +81,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Determines if the iterable object is empty, that is
      to say, if the iterator returns no elements."
-    shared actual default Boolean empty =>
+    shared default Boolean empty =>
             iterator().next() is Finished;
     
     shared default Integer size => count((Element e) => true);
@@ -123,18 +123,18 @@ shared interface Iterable<out Element, out Absent=Null>
     shared actual default Boolean contains(Object element) => 
             any(ifExists(element.equals));
     
-    "The first element returned by the iterator, if any.
-     This should always produce the same value as
-     `iterable.iterator().head`."
-    shared actual default Absent|Element first =>
+    "The first element returned by the iterator, if any,
+     of `null` if the iterable object is empty."
+    shared default Absent|Element first =>
             internalFirst(this);
     
-    "The last element returned by the iterator, if any.
-     Iterables are potentially infinite, so calling this
+    "The last element returned by the iterator, if any,
+     of `null` if the iterable object is empty. Iterable
+     objects are potentially infinite, so calling this
      might never return; also, this implementation will
      iterate through all the elements, which might be
      very time-consuming."
-    shared actual default Absent|Element last {
+    shared default Absent|Element last {
         variable Absent|Element e = first;
         for (x in this) {
             e = x;
