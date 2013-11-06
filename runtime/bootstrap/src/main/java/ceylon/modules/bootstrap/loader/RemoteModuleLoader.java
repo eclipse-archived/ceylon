@@ -23,6 +23,7 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class RemoteModuleLoader extends BootstrapModuleLoader {
             throw new IllegalArgumentException("Null delegate");
 
         this.delegate = delegate;
-        this.rootURL = SecurityActions.getProperty("modules.remote.root.url", "http://modules.ceylon-lang.org/");
+        this.rootURL = SecurityActions.getProperty("modules.remote.root.url", Constants.REPO_URL_CEYLON);
         this.ceylonVersion = SecurityActions.getProperty("ceylon.modules.version", DEFAULT_CEYLON_VERSION);
         this.repoRoot = new File(getCeylonRepository());
     }
