@@ -57,6 +57,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -91,7 +92,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
 @Summary("Generates Ceylon API documentation from Ceylon source files")
 @Description("The default module repositories are `modules` and " +
-        "http://modules.ceylon-lang.org, and the default source directory is `source`. " +
+        Constants.REPO_URL_CEYLON+", and the default source directory is `source`. " +
         "The default output module repository is `modules`." +
         "\n\n"+
         "The `<modules>` are the names (with an optional version) of the modules " +
@@ -228,8 +229,8 @@ public class CeylonDocTool extends RepoUsingTool {
             "\n\n" +
             "Examples:\n" +
             "\n" +
-            "    --link https://modules.ceylon-lang.org/\n" +
-            "    --link ceylon.math=https://modules.ceylon-lang.org/\n"+
+            "    --link "+Constants.REPO_URL_CEYLON+"\n" +
+            "    --link ceylon.math="+Constants.REPO_URL_CEYLON+"\n"+
             "    --link com.example=http://example.com/ceylondoc/")
     public void setLinks(List<String> linkArgs) {
         this.links = new ArrayList<String>();

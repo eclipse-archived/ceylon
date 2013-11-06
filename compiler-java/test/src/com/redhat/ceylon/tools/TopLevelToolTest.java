@@ -28,6 +28,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tools.CeylonTool;
@@ -316,8 +317,8 @@ public class TopLevelToolTest {
 "\n"+
 "            Examples:\n"+
 "\n"+
-"            --link https://modules.ceylon-lang.org/\n"+
-"            --link ceylon.math=https://modules.ceylon-lang.org/\n"+
+"            --link "+Constants.REPO_URL_CEYLON+"\n"+
+"            --link ceylon.math="+Constants.REPO_URL_CEYLON+"\n"+
 "\n"+
 "Run 'ceylon help doc' for more help", 
         out.getErr().trim().replace("\r", ""));

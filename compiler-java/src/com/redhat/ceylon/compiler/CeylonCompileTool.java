@@ -52,7 +52,7 @@ import com.sun.tools.javac.util.Options;
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
 @Description("The default module repositories are `modules` and " +
-		"http://modules.ceylon-lang.org, while the default source directory is `source` " +
+		Constants.REPO_URL_CEYLON+", while the default source directory is `source` " +
 		"and the default resource directory is `resource`. " +
 		"The default output module repository is `modules`." +
 		"\n\n" +
