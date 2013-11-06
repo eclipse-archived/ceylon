@@ -23,20 +23,20 @@ public class LauncherUtil {
         // First try the ceylon.home system property
         String ceylonHomeStr = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
         if (ceylonHomeStr == null) {
-            // Second try the CEYLON_HOME environment variable
-            ceylonHomeStr = System.getenv(Constants.ENV_CEYLON_HOME_DIR);
-        }
-        if (ceylonHomeStr == null) {
-            // Then try to deduce it from the location of the current JAR file
+            // Second try to deduce it from the location of the current JAR file
             // (assuming $CEYLON_HOME/lib/ceylon-bootstrap.jar)
             File jar = determineRuntimeJar();
             ceylonHome = jar.getParentFile().getParentFile();
             if (!checkHome(ceylonHome)) {
-                // As a last ditch effort see if we can find "ceylon" in the system's shell
-                // path and decuce the home folder from that (assuming $CEYLON_HOME/bin/ceylon)
-                File script = findCeylonScript();
-                if (script != null) {
-                    ceylonHome = script.getParentFile().getParentFile();
+                // Third try the CEYLON_HOME environment variable
+                ceylonHomeStr = System.getenv(Constants.ENV_CEYLON_HOME_DIR);
+                if (ceylonHomeStr == null) {
+                    // As a last ditch effort see if we can find "ceylon" in the system's shell
+                    // path and decuce the home folder from that (assuming $CEYLON_HOME/bin/ceylon)
+                    File script = findCeylonScript();
+                    if (script != null) {
+                        ceylonHome = script.getParentFile().getParentFile();
+                    }
                 }
             }
         } else {
