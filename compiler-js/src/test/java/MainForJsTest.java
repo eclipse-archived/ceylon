@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class MainForJsTest {
     
     public static void main(String[] args) throws Exception {
-        final Options opts = new Options().addRepo("build/runtime").outDir("build/test/modules");
+        final Options opts = new Options().addRepo("build/runtime").outDir("build/test/opt_modules");
         final RepositoryManager repoman = CeylonUtils.repoManager()
                 .cwd(opts.getCwd())
                 .systemRepo(opts.getSystemRepo())
@@ -43,7 +43,7 @@ public class MainForJsTest {
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
         }
-        System.out.println("Compiling without optimization");
+        System.out.println("Compiling in prototype style");
         JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(true);
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
@@ -51,8 +51,8 @@ public class MainForJsTest {
             jsc.printErrorsAndCount(System.out);
             System.out.println("Skipping output validation.");
         }
-        System.out.println("Compiling with optimization");
-        jsc = new JsCompiler(typeChecker, opts.optimize(true).outDir("build/test/opt_modules")).stopOnErrors(false);
+        System.out.println("Compiling in lexical scope style");
+        jsc = new JsCompiler(typeChecker, opts.optimize(false).outDir("build/test/modules")).stopOnErrors(false);
         if (jsc.generate()) {
             validateOutput(typeChecker, opts);
         } else {
