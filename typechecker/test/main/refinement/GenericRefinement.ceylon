@@ -172,6 +172,6 @@ class GenericRefinement() {
         object obj 
             extends Object()
             satisfies Empty & 
-                Container<Nothing,Absent> {}
+                Iterable<Nothing,Absent> {}
     }
 }

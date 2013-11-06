@@ -13,5 +13,5 @@
 
 @error interface SubWithoutSuperTypeArgs satisfies Comparable {}
 @error interface SubWithSuperTypeArgs satisfies Sized<String> {}
-@error interface SubWithSuperTypeArgs satisfies Container<String,String> {}
+@error interface SubWithSuperTypeArgs satisfies Iterable<String,String> {}
 @error interface SubWithExtraSuperTypeArgs satisfies Comparable<SubWithExtraSuperTypeArgs,Integer> {}

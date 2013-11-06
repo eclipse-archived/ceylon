@@ -550,7 +550,7 @@ class Generics() {
     abstract class S(String s)=>String(s);
 
     void unsatisfiable1<T>() @error given T satisfies Null&String {}
-    void unsatisfiable2<T>() @error given T satisfies Null&Container<Anything> {}
+    void unsatisfiable2<T>() @error given T satisfies Null&Iterable<Anything> {}
     void unsatisfiable3<T>() @error given T satisfies Holder<String>&Holder<Integer> {}
     void unsatisfiable4<T>() @error given T satisfies Holder<Object>&Holder<T> {}
     void unsatisfiable5<T>() @error given T satisfies N&S {}
