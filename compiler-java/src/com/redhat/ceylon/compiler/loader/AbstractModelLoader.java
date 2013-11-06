@@ -3739,4 +3739,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         return false;
     }
+
+    protected boolean isModuleOrPackageDescriptorName(String name) {
+        return name.equals("module_") || name.equals("package_");
+    }
 }

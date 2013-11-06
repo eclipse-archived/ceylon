@@ -95,7 +95,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
                 if(dollar > 0)
                     continue;
                 // skip module/package declarations too (do not strip before checking)
-                if(lastPart.equals("module_") || lastPart.equals("package_"))
+                if(isModuleOrPackageDescriptorName(lastPart))
                     continue;
 
                 // the logic for lower-cased names should be abstracted somewhere sane

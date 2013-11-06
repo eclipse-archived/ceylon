@@ -182,6 +182,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     // avoid member classes
                     if(((ClassSymbol)m).getNestingKind() != NestingKind.TOP_LEVEL)
                         continue;
+                    // skip module and package descriptors
+                    if(isModuleOrPackageDescriptorName(m.name.toString()))
+                        continue;
                     convertToDeclaration(lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
                 }
             }
