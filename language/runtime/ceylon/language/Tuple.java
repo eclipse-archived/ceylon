@@ -93,7 +93,13 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     @Ignore
     @java.lang.Override
     protected Tuple<Element, ? extends First, ? extends Rest> backedBy$hidden(Element[] array, long first, long length) {
-        return new Tuple<Element, First, Rest>($reifiedElement, array, first, length, false);
+        return new Tuple<Element, First, Rest>($getReifiedElement$(), array, first, length, false);
+    }
+    
+    @Ignore
+    @java.lang.Override
+    protected TypeDescriptor $getReifiedElement$() {
+        return $getUnionOfAllType(0);
     }
     
     @com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -257,7 +263,10 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     @com.redhat.ceylon.compiler.java.metadata.Ignore
     private TypeDescriptor $getType(int offset) {
         if (offset < getSize()) {
-            return TypeDescriptor.klass(Tuple.class, $getUnionOfAllType(offset), $getElementType(offset), $getType(offset + 1));
+            return TypeDescriptor.klass(Tuple.class, 
+                    $getUnionOfAllType(offset), 
+                    $getElementType(offset), 
+                    $getType(offset + 1));
         } else {
             return empty_.$TypeDescriptor$;
         }

@@ -58,7 +58,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     final int length;
     
     @Ignore
-    protected TypeDescriptor $reifiedElement;
+    private TypeDescriptor $reifiedElement;
 
     /**
      * The public (Ceylon) initializer. Note that if elements is an 
@@ -352,7 +352,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public class ArrayListIterator extends AbstractIterator<Element> {
 
         public ArrayListIterator() {
-            super($reifiedElement);
+            super($getReifiedElement$());
         }
 
         private long idx = first;
@@ -609,11 +609,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, Null.$TypeDescriptor$, $reifiedResult, this, f);
+        return new MapIterable<Element, java.lang.Object, Result>($getReifiedElement$(), Null.$TypeDescriptor$, $reifiedResult, this, f);
     }
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f);
+        return new FilterIterable<Element,  Null>($getReifiedElement$(), Null.$TypeDescriptor$, this, f);
     }
     @Override
     @Ignore
@@ -627,7 +627,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f).getSequence();
+        return new FilterIterable<Element,  Null>($getReifiedElement$(), Null.$TypeDescriptor$, this, f).getSequence();
     }
 
     @Override
@@ -760,5 +760,10 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(ArraySequence.class, $reifiedElement);
+    }
+    
+    @Ignore
+    protected TypeDescriptor $getReifiedElement$() {
+        return $reifiedElement;
     }
 }
