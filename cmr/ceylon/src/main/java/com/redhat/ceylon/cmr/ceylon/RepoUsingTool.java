@@ -169,20 +169,16 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     protected static final String COMPILE_NEVER = "never";
     protected static final String COMPILE_ONCE = "once";
+    protected static final String COMPILE_CHECK = "check";
     protected static final String COMPILE_FORCE = "force";
     
     protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor, String compileFlags) throws IOException {
-        if (compileFlags == null) {
-            compileFlags = DefaultToolOptions.getRunnerCompileFlags();
-            if (compileFlags.isEmpty()) {
-                compileFlags = COMPILE_NEVER;
-            }
-        } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_ONCE;
+        if (compileFlags == null || compileFlags.isEmpty()) {
+            compileFlags = COMPILE_NEVER;
         }
-        boolean forceCompilation = compileFlags.contains("force");
-        boolean checkCompilation = compileFlags.contains("check");
-        boolean allowCompilation = forceCompilation || checkCompilation || compileFlags.contains("once");
+        boolean forceCompilation = compileFlags.contains(COMPILE_FORCE);
+        boolean checkCompilation = compileFlags.contains(COMPILE_CHECK);
+        boolean allowCompilation = forceCompilation || checkCompilation || compileFlags.contains(COMPILE_ONCE);
         
         if (!forceCompilation && ("default".equals(name) || version != null)) {
             // If we have the default module or a version we first try it the quick way
