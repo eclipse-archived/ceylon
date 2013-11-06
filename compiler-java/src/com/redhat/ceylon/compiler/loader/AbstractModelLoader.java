@@ -1002,7 +1002,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return null;
         }
         // only create it if it exists
-        if(loadPackage(module, pkgName, false)){
+        if(((LazyModule)module).containsPackage(pkgName) && loadPackage(module, pkgName, false)){
             return findOrCreatePackage(module, pkgName);
         }
         return null;

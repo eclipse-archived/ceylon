@@ -182,9 +182,6 @@ public abstract class LazyModule extends Module {
     public boolean containsPackage(String pkgName){
         String moduleName = getNameAsString();
         if(!isJava){
-            // default packages contain it all
-            if(isDefault())
-                return true;
             for(Package pkg : super.getPackages()){
                 if(pkg.getNameAsString().equals(pkgName))
                     return true;
