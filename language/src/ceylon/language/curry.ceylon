@@ -1,5 +1,12 @@
-"Curries a function, returning a function of multiple parameter lists,
- given a function of multiple parameters."
+"Curries a function, returning a function with two 
+ parameter lists, given a function with at least
+ one parameter. The first parameter list of the 
+ returned function has just the first parameter
+ of the original function, and the second parameter
+ list has the remaining parameters.
+ 
+ That is, if `fun` has type `W(X,Y,Z)` then 
+ `curry(fun)` has type `W(Y,Z)(X)`."
 see(`function uncurry`, `function compose`)
 shared Callable<Return,Rest> curry<Return,Argument,First,Rest>
             (Callable<Return,Tuple<Argument,First,Rest>> f)
@@ -9,8 +16,17 @@ shared Callable<Return,Rest> curry<Return,Argument,First,Rest>
                 => flatten((Rest args) 
                         => unflatten(f)(Tuple(first, args)));
 
-"Uncurries a function, returning a function with multiple parameters, 
- given a function with multiple parameter lists."
+"Uncurries a function, returning a function with 
+ one parameter list, given a function with two
+ parameter lists, where the first parameter list
+ has exactly one parameter. The parameter list
+ of the returned function has the parameter of
+ the first parameter list of the original
+ function, followed by all parameters of the
+ second parameter list.
+ 
+ That is, if `fun` has type `W(Y,Z)(X)` then 
+ `uncurry(fun)` has type `W(X,Y,Z)`."
 see(`function curry`, `function compose`)
 shared Callable<Return,Tuple<Argument,First,Rest>> uncurry<Return,Argument,First,Rest>
             (Callable<Return,Rest> f(First first))
