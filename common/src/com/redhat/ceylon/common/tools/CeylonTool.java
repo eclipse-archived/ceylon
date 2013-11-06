@@ -390,6 +390,11 @@ public class CeylonTool implements Tool {
         env.put("CEYLON_VERSION_NAME", Versions.CEYLON_VERSION_NAME);
     }
 
+    // WARNING: this is called by reflection: do not REMOVE!!!
+    public Tool getTool() {
+        return getTool(getToolModel());
+    }
+    
     public Tool getTool(ToolModel<?> model) {
         Tool tool = null;
         if (model == null) {
