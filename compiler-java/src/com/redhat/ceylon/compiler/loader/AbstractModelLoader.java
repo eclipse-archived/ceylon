@@ -1078,7 +1078,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         String quotedQualifiedName = Util.quoteJavaKeywords(pkg.getQualifiedNameString());
         // FIXME: not sure the toplevel package can have a package declaration
-        String className = quotedQualifiedName.isEmpty() ? "package" : quotedQualifiedName + ".package";
+        String className = quotedQualifiedName.isEmpty() ? "package_" : quotedQualifiedName + ".package_";
         logVerbose("[Trying to look up package from "+className+"]");
         Module module = pkg.getModule();
         if(module == null)
