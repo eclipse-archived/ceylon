@@ -1330,7 +1330,13 @@ shared void checkInheritedVsDeclared(){
     assert(exists inheritedMethod, inheritedMethod == `Top<String>.inheritedMethod`);
     
     assert(!bottomType.getDeclaredMethod("inheritedMethod") exists);
-    assert(bottomType.getDeclaredMethod("myOwnBottomMethod") exists);
+    try{
+        bottomType.getDeclaredMethod("myOwnBottomMethod");
+        assert(false);
+    }catch(Exception x){
+        assert(is IncompatibleTypeException x);
+    }
+    assert(bottomType.getDeclaredMethod<Nothing,Anything,Nothing>("myOwnBottomMethod") exists);
 
     value declaredMethod = bottomType.getMethod<Nothing,Anything,Nothing>("declaredMethod");
     assert(exists declaredMethod, declaredMethod == `BottomClass.declaredMethod`);
