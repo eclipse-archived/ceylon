@@ -466,8 +466,15 @@ public class RefinementVisitor extends Visitor {
     }
     
     static String message(Declaration refined) {
-        return refined.getName() + " in " + 
+        String container;
+        if (refined.getContainer() instanceof Declaration) {
+            container = " in " + 
                 ((Declaration) refined.getContainer()).getName();
+        }
+        else {
+            container = "";
+        }
+        return refined.getName() + container;
     }
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,

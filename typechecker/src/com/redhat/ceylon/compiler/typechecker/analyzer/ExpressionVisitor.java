@@ -708,7 +708,11 @@ public class ExpressionVisitor extends Visitor {
                         !d.isDefinedInScope(cs)) {
                     //then it must be inherited ... TODO: is this totally correct? 
                     //so it's actually a refinement of a formal declaration!
-                    if (d instanceof Value) {
+                    if (d.getContainer()==that.getScope()) {
+                        that.addError("parameter declaration hides refining member: " +
+                                d.getName() + " (rename parameter)");
+                    }
+                    else if (d instanceof Value) {
                         refine((Value) d, bme, that, (ClassOrInterface) cs);
                     }
                     else if (d instanceof Method) {
