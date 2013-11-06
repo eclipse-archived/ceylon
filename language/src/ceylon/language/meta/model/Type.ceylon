@@ -18,14 +18,14 @@ shared interface Type<out Type=Anything> /* of ClassOrInterface
                                  | nothingType */ {
     
     "True if the given instance is of this type, or is of a subtype of this type."
-    shared formal Boolean isTypeOf(Anything instance);
+    shared formal Boolean typeOf(Anything instance);
 
     "True if the given type is a supertype of this type."
-    shared formal Boolean isSuperTypeOf(AppliedType<Anything> type);
+    shared formal Boolean supertypeOf(AppliedType<Anything> type);
     
     "True if the given type is a subtype of this type."
-    shared default Boolean isSubTypeOf(AppliedType<Anything> type) => type.isSuperTypeOf(this);
+    shared default Boolean subtypeOf(AppliedType<Anything> type) => type.supertypeOf(this);
 
     "True if the given type is a exactly this type."
-    shared formal Boolean isExactly(AppliedType<Anything> type);
+    shared formal Boolean exactly(AppliedType<Anything> type);
 }

@@ -185,20 +185,20 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface=function(name,type
 };ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:MemberInterface$meta$model},$ps:[],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{satisfies:[{t:Sequential,a:{Element:{t:Anything}}}]}},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredInterface']};};
 
 
-ClassOrInterface$meta$model.$$.prototype.isTypeOf=function isTypeOf(instance$8){
+ClassOrInterface$meta$model.$$.prototype.typeOf=function typeOf(instance$8){
   var _t={t:this.tipo};
   if (this.$targs)_t.a=this.$targs;
   return isOfType(instance$8,_t);
 };
-ClassOrInterface$meta$model.$$.prototype.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isTypeOf']};};
-ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf=function isSuperTypeOf(type$9){
+ClassOrInterface$meta$model.$$.prototype.typeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','typeOf']};};
+ClassOrInterface$meta$model.$$.prototype.supertypeOf=function supertypeOf(type$9){
   return extendsType({t:type$9.tipo}, {t:this.tipo});
 };
-ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isSuperTypeOf']};};
-ClassOrInterface$meta$model.$$.prototype.isExactly=function isExactly(type$10){
+ClassOrInterface$meta$model.$$.prototype.supertypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','supertypeOf']};};
+ClassOrInterface$meta$model.$$.prototype.exactly=function exactly(type$10){
   return type$10.tipo && this.tipo === type$10.tipo;
 };
-ClassOrInterface$meta$model.$$.prototype.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','isExactly']};};
+ClassOrInterface$meta$model.$$.prototype.exactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','exactly']};};
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   var mm = this.tipo.$$metamodel$$;
   if (typeof(mm)==='function') {

@@ -1387,29 +1387,29 @@ shared void checkInheritedVsDeclared(){
 
 @test
 shared void checkTests(){
-    assert(`NoParams`.isTypeOf(NoParams()));
-    assert(!`Integer`.isTypeOf(NoParams()));
-    assert(`TPA & TPB`.isTypeOf(TP1()));
-    assert(!`TPA & TPB & Integer`.isTypeOf(TP1()));
-    assert(`NoParams | Integer`.isTypeOf(NoParams()));
-    assert(!`String | Integer`.isTypeOf(NoParams()));
-    assert(!`Nothing`.isTypeOf(NoParams()));
+    assert(`NoParams`.typeOf(NoParams()));
+    assert(!`Integer`.typeOf(NoParams()));
+    assert(`TPA & TPB`.typeOf(TP1()));
+    assert(!`TPA & TPB & Integer`.typeOf(TP1()));
+    assert(`NoParams | Integer`.typeOf(NoParams()));
+    assert(!`String | Integer`.typeOf(NoParams()));
+    assert(!`Nothing`.typeOf(NoParams()));
     
-    assert(`NoParams`.isSubTypeOf(`Object`));
-    assert(!`NoParams`.isSubTypeOf(`TPA`));
-    assert(`Nothing`.isSubTypeOf(`Nothing`));
-    assert(`Nothing`.isSubTypeOf(`NoParams`));
+    assert(`NoParams`.subtypeOf(`Object`));
+    assert(!`NoParams`.subtypeOf(`TPA`));
+    assert(`Nothing`.subtypeOf(`Nothing`));
+    assert(`Nothing`.subtypeOf(`NoParams`));
 
-    assert(`Object`.isSuperTypeOf(`NoParams`));
-    assert(!`TPA`.isSuperTypeOf(`NoParams`));
-    assert(`Nothing`.isSuperTypeOf(`Nothing`));
-    assert(!`Nothing`.isSuperTypeOf(`Object`));
+    assert(`Object`.supertypeOf(`NoParams`));
+    assert(!`TPA`.supertypeOf(`NoParams`));
+    assert(`Nothing`.supertypeOf(`Nothing`));
+    assert(!`Nothing`.supertypeOf(`Object`));
 
-    assert(`NoParams`.isExactly(`NoParams`));
-    assert(!`NoParams`.isExactly(`Object`));
-    assert(`TPA & TPB`.isExactly(`TPB & TPA & TPB`));
-    assert(`Nothing`.isExactly(`Nothing`));
-    assert(!`Nothing`.isExactly(`Object`));
+    assert(`NoParams`.exactly(`NoParams`));
+    assert(!`NoParams`.exactly(`Object`));
+    assert(`TPA & TPB`.exactly(`TPB & TPA & TPB`));
+    assert(`Nothing`.exactly(`Nothing`));
+    assert(!`Nothing`.exactly(`Object`));
 }
 
 @test

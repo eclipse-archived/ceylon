@@ -23,9 +23,9 @@ shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Argumen
   shared actual Attribute<Container, Type>? getAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
   shared actual VariableAttribute<Container, Type>? getVariableAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
 
-  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
-  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
-  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean typeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean supertypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean exactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
 }
 
@@ -42,9 +42,9 @@ shared class AppliedInterface<out Type>() satisfies Interface<Type>
   shared actual Attribute<Container, Type>? getAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
   shared actual VariableAttribute<Container, Type>? getVariableAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
 
-  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
-  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
-  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean typeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean supertypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean exactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
 }
 
@@ -67,17 +67,17 @@ shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,A
 shared class AppliedUnionType<out Union=Anything>() satisfies UnionType<Union> {
   shared actual List<ClosedType<Union>> caseTypes { throw Exception("Implement case types"); }
 
-  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
-  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
-  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean typeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean supertypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean exactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
 }
 
 shared class AppliedIntersectionType<out Union=Anything>() satisfies IntersectionType<Union> {
   shared actual List<ClosedType<Union>> satisfiedTypes { throw Exception("Implement satisfied types"); }
 
-  shared actual Boolean isTypeOf(Anything instance) { throw Exception("Class declaration"); }
-  shared actual Boolean isSuperTypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
-  shared actual Boolean isExactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean typeOf(Anything instance) { throw Exception("Class declaration"); }
+  shared actual Boolean supertypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
+  shared actual Boolean exactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
 }
 
 shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing>()

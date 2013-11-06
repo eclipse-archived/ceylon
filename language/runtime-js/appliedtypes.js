@@ -69,10 +69,10 @@ function AppliedClass(tipo,$$targs$$,that){
     that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
     that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
     that.equals=ClassModel$meta$model.$$.prototype.equals;
-    that.isTypeOf=ClassOrInterface$meta$model.$$.prototype.isTypeOf;
-    that.isSuperTypeOf=ClassOrInterface$meta$model.$$.prototype.isSuperTypeOf;
-    that.isSubTypeOf=ClassOrInterface$meta$model.$$.prototype.isSubTypeOf;
-    that.isExactly=ClassOrInterface$meta$model.$$.prototype.isExactly;
+    that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
+    that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
+    that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
+    that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
   }
   set_type_args(that,$$targs$$);
   Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments:that.$$targs$$.Arguments,Type:that.$$targs$$.Type},that);
@@ -357,7 +357,7 @@ defineAttr($$appliedUnionType,'hash',function(){
                 return $$appliedUnionType._types; //TODO type
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:Type$meta$model,a:{Type:'Union'}}}},$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$at','caseTypes']};});
 
-      $$appliedUnionType.isTypeOf=function isTypeOf(instance$20){
+      $$appliedUnionType.typeOf=function typeOf(instance$20){
         var tipos=[];
         for (var i=0; i < this._types.length;i++) {
           var _t = this._types[i];
@@ -369,20 +369,20 @@ defineAttr($$appliedUnionType,'hash',function(){
           tipos.push(_t);
         }
         return isOfType(instance$20,{t:'u',l:tipos});
-      };$$appliedUnionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isTypeOf']};};
+      };$$appliedUnionType.typeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','typeOf']};};
 
-            $$appliedUnionType.isSuperTypeOf=function isSuperTypeOf(type$21){
+            $$appliedUnionType.supertypeOf=function supertypeOf(type$21){
                 var $$appliedUnionType=this;
-                throw Exception(String$("IMPL AppliedUnionType.isSuperTypeOf"));
-            };$$appliedUnionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isSuperTypeOf']};};
+                throw Exception(String$("IMPL AppliedUnionType.supertypeOf"));
+            };$$appliedUnionType.supertypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','supertypeOf']};};
 
-      $$appliedUnionType.isExactly=function isExactly(type$22){
+      $$appliedUnionType.exactly=function exactly(type$22){
         if (isOfType(type$25, {t:AppliedUnionType})) {
           for (var i=0; i<this._types.length;i++) {
             var myt = this._types[i];
             var was=false;
             for (var j=0; j<type$25._types.length;j++) {
-              was |= myt.isExactly(type$25._types[j]);
+              was |= myt.exactly(type$25._types[j]);
             }
             if (!was)return false;
           }
@@ -391,14 +391,14 @@ defineAttr($$appliedUnionType,'hash',function(){
             var myt = type$25._types[i];
             var was=false;
             for (var j=0; j<this._types.length;j++) {
-              was |= myt.isExactly(this._types[j]);
+              was |= myt.exactly(this._types[j]);
             }
             if (!was)return false;
           }
           return true;
         }
         return false;
-      };$$appliedUnionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','isExactly']};};
+      };$$appliedUnionType.exactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','exactly']};};
 
     })(AppliedUnionType.$$.prototype);
   }
@@ -457,7 +457,7 @@ defineAttr($$appliedIntersectionType,'hash',function(){
                 return $$appliedIntersectionType._types;
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:List,a:{Element:{t:Type$meta$model,a:{Type:'Union'}}}},$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$at','satisfiedTypes']};});
 
-      $$appliedIntersectionType.isTypeOf=function isTypeOf(instance$23){
+      $$appliedIntersectionType.typeOf=function typeOf(instance$23){
         var tipos=[];
         for (var i=0; i < this._types.length;i++) {
           var _t = this._types[i];
@@ -469,20 +469,20 @@ defineAttr($$appliedIntersectionType,'hash',function(){
           tipos.push(_t);
         }
         return isOfType(instance$23,{t:'i',l:tipos});
-      };$$appliedIntersectionType.isTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isTypeOf']};};
+      };$$appliedIntersectionType.typeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','typeOf']};};
 
-            $$appliedIntersectionType.isSuperTypeOf=function isSuperTypeOf(type$24){
+            $$appliedIntersectionType.supertypeOf=function supertypeOf(type$24){
                 var $$appliedIntersectionType=this;
-                throw Exception(String$("IMPL AppliedIntersectionType.isSuperTypeOf"));
-            };$$appliedIntersectionType.isSuperTypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isSuperTypeOf']};};
+                throw Exception(String$("IMPL AppliedIntersectionType.supertypeOf"));
+            };$$appliedIntersectionType.supertypeOf.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','supertypeOf']};};
 
-      $$appliedIntersectionType.isExactly=function isExactly(type$25){
+      $$appliedIntersectionType.exactly=function exactly(type$25){
         if (isOfType(type$25, {t:AppliedIntersectionType})) {
           for (var i=0; i<this._types.length;i++) {
             var myt = this._types[i];
             var was=false;
             for (var j=0; j<type$25._types.length;j++) {
-              was |= myt.isExactly(type$25._types[j]);
+              was |= myt.exactly(type$25._types[j]);
             }
             if (!was)return false;
           }
@@ -491,14 +491,14 @@ defineAttr($$appliedIntersectionType,'hash',function(){
             var myt = type$25._types[i];
             var was=false;
             for (var j=0; j<this._types.length;j++) {
-              was |= myt.isExactly(this._types[j]);
+              was |= myt.exactly(this._types[j]);
             }
             if (!was)return false;
           }
           return true;
         }
         return false;
-      };$$appliedIntersectionType.isExactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','isExactly']};};
+      };$$appliedIntersectionType.exactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','exactly']};};
 
     })(AppliedIntersectionType.$$.prototype);
   }

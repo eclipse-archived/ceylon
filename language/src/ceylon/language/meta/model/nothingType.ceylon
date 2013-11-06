@@ -3,11 +3,11 @@ shared object nothingType satisfies Type<Nothing> {
     
     string => "Nothing";
     
-    isTypeOf(Anything instance) => false;
+    typeOf(Anything instance) => false;
     
-    isSuperTypeOf(Type<Anything> type) => isExactly(type);
+    supertypeOf(Type<Anything> type) => exactly(type);
     
-    isSubTypeOf(Type<Anything> type) => true;
+    subtypeOf(Type<Anything> type) => true;
     
-    isExactly(Type<Anything> type) => type == nothingType;
+    exactly(Type<Anything> type) => type == nothingType;
 }

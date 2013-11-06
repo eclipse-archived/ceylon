@@ -108,22 +108,22 @@ public class AppliedIntersectionType<Intersection>
     }
 
     @Override
-    public boolean isTypeOf(@TypeInfo("ceylon.language::Anything") Object instance){
+    public boolean typeOf(@TypeInfo("ceylon.language::Anything") Object instance){
         return Metamodel.isTypeOf(model, instance);
     }
 
     @Override
-    public boolean isSuperTypeOf(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
+    public boolean supertypeOf(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isSuperTypeOf(model, type);
     }
     
     @Override
-    public boolean isSubTypeOf(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
+    public boolean subtypeOf(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isSubTypeOf(model, type);
     }
 
     @Override
-    public boolean isExactly(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
+    public boolean exactly(@TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>") ceylon.language.meta.model.Type<? extends Object> type){
         return Metamodel.isExactly(model, type);
     }
 }
