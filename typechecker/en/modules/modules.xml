@@ -894,7 +894,7 @@ module org.hibernate.test "3.0.0.beta" {
         module that we are running.</para>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylon -rep http://jboss.org/ceylon/modules \
@@ -987,7 +987,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
@@ -1054,7 +1054,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonp org.hibernate/3.0.0.beta
@@ -1135,7 +1135,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>,
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
         and the default source directory is <literal>source</literal>.
         The default output module repository is <literal>modules</literal>.</para>
         
@@ -1207,7 +1207,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>. The default output
+        and <literal>http://modules.ceylon-lang.org/repo</literal>. The default output
         module repository is <literal>modules</literal>.</para>
         
         <programlisting>ceylonr org.hibernate/3.0.0.beta org.hibernate.test/3.0.0.beta org.hibernate.example/3.0.0.beta \
@@ -1250,7 +1250,7 @@ module org.hibernate.test "3.0.0.beta" {
         </itemizedlist>
         
         <para>The default module repositories are <literal>modules</literal>
-        and <literal>http://modules.ceylon-lang.org</literal>. The default output 
+        and <literal>http://modules.ceylon-lang.org/repo</literal>. The default output 
         source directory is <literal>source</literal>.</para>
         
         <programlisting>ceylonf org.hibernate.example/3.0.0.beta \
