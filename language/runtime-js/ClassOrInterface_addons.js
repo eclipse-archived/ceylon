@@ -49,6 +49,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
       if (typeof(_t)==='string') {
         var _ta;
         if (this.$targs && this.$targs[_t])_t=this.$targs[_t];
+        else if ($$$mptypes.Container && $$$mptypes.Container.a && $$$mptypes.Container.a[_t])_t=$$$mptypes.Container.a[_t];
         else if (mm.$tp && mm.$tp[_t])_ta=mm.$tp[_t];
         else if (this.tipo.$$metamodel$$.$tp && this.tipo.$$metamodel$$.$tp[_t])_ta=this.tipo.$$metamodel$$.$tp[_t];
         if (_ta && _ta.satisfies)_t=_ta.satisfies.length===1?_ta.satisfies[0]:{t:'i',l:_ta.satisfies};
