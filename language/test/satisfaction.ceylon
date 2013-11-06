@@ -68,24 +68,34 @@ class MyIterator() satisfies Iterator<Integer> {
         return r;
     }
 }
-/*class MySequence() satisfies Sequence<Integer> {
-    shared actual Integer lastIndex = 0;
-    shared actual Integer first = 1;
-    shared actual Integer[] rest = {};
-    shared actual Integer hash = 1;
-    shared actual Boolean equals(Object other) { return false; }
-    shared actual MySequence clone { return MySequence(); }
-    shared actual Sequence<Integer> reversed { return this; }
+class MySequence() satisfies Sequence<Integer> {
+    shared actual Integer lastIndex => 0;
+    shared actual Integer first => 1;
+    shared actual Integer last => 1;
+    shared actual Integer size => 1;
+    shared actual Iterator<Integer> iterator() => (super of List<Integer>).iterator();
+    shared actual Integer[] rest => [];
+    shared actual Integer hash => 1;
+    shared actual Boolean equals(Object other) => (super of List<Integer>).equals(other);
+    shared actual Boolean contains(Object element) => element==1;
+    shared actual MySequence clone => MySequence();
+    shared actual Sequence<Integer> reversed => this;
     shared actual Integer? get(Integer index) {
         return index==0 then 1 else null;
     }
     shared actual Integer[] segment(Integer from, Integer length) {
-        return from==0 && length>0 then this else {};
+        return this;
     }
-    shared actual Integer[] span(Integer from, Integer? to) {
-        return from==0 then this else {};
+    shared actual Integer[] span(Integer from, Integer to) {
+        return this;
     }
-}*/
+    shared actual Integer[] spanFrom(Integer from) {
+        return this;
+    }
+    shared actual Integer[] spanTo(Integer to) {
+        return this;
+    }
+}
 class MyRanged() satisfies Ranged<Integer, Iterable<Character>>&Iterable<Character> {
     value contents = 'a'..'z';
     shared actual Iterable<Character> span(Integer from, Integer to) {
@@ -179,9 +189,9 @@ shared void testSatisfaction() {
     if (!myiter.next() is Finished) {
         fail("Iterator [2]");
     }
-    /*check(MySequence().last==MySequence().first, "Sequence[1]");
-    check(!nonempty MySequence().rest, "Sequence[2]");
-    check(MySequence().reversed==MySequence(), "Sequence[3]");*/
+    check(MySequence().last==MySequence().first, "Sequence[1]");
+    check(!MySequence().rest nonempty, "Sequence[2]");
+    check(MySequence().reversed==MySequence(), "Sequence[3]");
     check(MyRanged().spanFrom(23).sequence=={'x', 'y', 'z'}, "Ranged[1]");
     check(MyRanged().spanTo(2).sequence=={'a','b','c'}, "Ranged[2]");
     check(MyRanged().span(1,3).sequence=={'b','c','d'}, "Ranged[3]");
