@@ -19,7 +19,19 @@ class MyComparable() satisfies Comparable<MyComparable> {
         return p <=> other.p;
     }
 }
-/*class MyContainerWithLastElement() satisfies Container<Integer,Null> {
+see (`interface Category`)
+by ("Gavin")
+deprecated ("Will be removed in Ceylon 1.0.")
+shared interface Container<out Element, out Absent=Null>
+        satisfies Category
+        given Absent satisfies Null {
+    shared formal Boolean empty;
+    shared formal Absent|Element first;
+    shared formal Absent|Element last;        
+}
+deprecated ("Will be removed in Ceylon 1.0.")
+shared interface EmptyContainer => Container<Nothing,Null>;
+class MyContainerWithLastElement() satisfies Container<Integer,Null> {
     shared actual Integer? first { return 1; }
     shared actual Integer? last { return 2; }
     shared actual Boolean empty { return false; }
@@ -36,18 +48,18 @@ class MyContainerWithoutLastElement() satisfies Container<Integer,Null> {
     shared actual Integer? last { return null; }
     shared actual Boolean empty { return false; }
     shared actual Boolean contains(Object element) => element == 1;
-}*/
+}
 class MyCloseable() satisfies Closeable {
     shared variable Boolean opened = false;
     shared actual void open() { opened=true;}
     shared actual void close(Exception? e) {opened=false;}
 }
-/*class MyContainer() satisfies EmptyContainer {
+class MyContainer() satisfies EmptyContainer {
     shared actual Null first { return null; }
     shared actual Null last { return null; }
     shared actual Boolean empty = true;
     shared actual Boolean contains(Object element) => false;
-}*/
+}
 class MyIterator() satisfies Iterator<Integer> {
     variable value done = false;
     shared actual Integer|Finished next() {
@@ -140,7 +152,7 @@ shared void testSatisfaction() {
     check('l' in collection, "Collection.contains");
     check(collection.string == "{ h, e, l, l, o }", "Collection.string");
     check(MyComparable() <= MyComparable(), "Comparable.compare");
-    /*variable Container<Integer,Null> cwfe = MyContainerWithLastElement();
+    variable Container<Integer,Null> cwfe = MyContainerWithLastElement();
     check(cwfe.first exists, "Container.first [1]");
     check(cwfe.last exists,  "Container.last  [1]");
     cwfe = MyContainerWithoutFirstElement();
@@ -148,14 +160,14 @@ shared void testSatisfaction() {
     check(cwfe.last exists, "Container.last [2]");
     cwfe = MyContainerWithoutLastElement();
     check(cwfe.first exists, "Container.first [1]");
-    check(!cwfe.last exists, "Container.first [2]");*/
+    check(!cwfe.last exists, "Container.first [2]");
     value clsbl = MyCloseable();
     check(!clsbl.opened, "Closeable [1]");
     clsbl.open();
     check(clsbl.opened, "Closeable [2]");
     clsbl.close(null);
     check(!clsbl.opened, "Closeable [3]");
-    //check(MyContainer().empty, "Container");
+    check(MyContainer().empty, "Container");
     variable Sequential<Integer> myfixed = {};//MyNone();
     check(!myfixed nonempty, "None");
     myfixed = [1];//MySome();
