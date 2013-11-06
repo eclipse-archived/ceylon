@@ -31,15 +31,21 @@ import com.redhat.ceylon.compiler.loader.JsModuleManager;
 
 @Summary("Executes a Ceylon program")
 @Description(
-"Executes the ceylon program specified as the `<module>` argument. "+
-"The `<module>` should include a version."
+        "Executes the ceylon program specified as the `<module>` argument. " +
+        "The `<module>` may optionally include a version."
 )
 @RemainingSections(
-"##EXAMPLE\n" +
-"\n" +
-"The following would execute the `com.example.foobar` module:\n" +
-"\n" +
-"    ceylon run-js com.example.foobar/1.0.0"
+        "## Configuration file" +
+        "\n\n" +
+        "The run-js tool accepts the following option from the Ceylon configuration file: " +
+        "`runtool.compile` " +
+        "(the equivalent option on the command line always has precedence)." +
+        "\n\n" +
+        "## EXAMPLE" +
+        "\n\n" +
+        "The following would execute the `com.example.foobar` module:" +
+         "\n\n" +
+         "    ceylon run-js com.example.foobar/1.0.0"
 )
 public class CeylonRunJsTool extends RepoUsingTool {
 
