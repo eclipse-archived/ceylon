@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 public class CeylonCompileJsTool extends RepoUsingTool {
 
     private boolean profile = false;
-    private boolean optimize = false;
+    private boolean optimize = true;
     private boolean modulify = true;
     private boolean indent = true;
     private boolean comments = false;
@@ -66,9 +66,9 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     }
 
     @Option
-    @Description("Create prototype-style JS code")
-    public void setOptimize(boolean optimize) {
-        this.optimize = optimize;
+    @Description("Create lexical scope-style JS code")
+    public void setLexicalScopeStyle(boolean flag) {
+        this.optimize = !flag;
     }
 
     @Option(longName="no-module")

@@ -21,7 +21,7 @@ public class Options {
     private String pass;
     private List<String> srcDirs = new ArrayList<String>();
     private String outDir = DefaultToolOptions.getCompilerOutDir().getPath();
-    private boolean optimize;
+    private boolean optimize = true;
     private boolean modulify = true;
     private boolean indent = true;
     private boolean comment = true;
