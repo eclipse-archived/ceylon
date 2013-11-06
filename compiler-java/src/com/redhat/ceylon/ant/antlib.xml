@@ -12,7 +12,7 @@
     <typedef name="ceylon-run-js" classname="com.redhat.ceylon.ant.CeylonRunJsAntTask"/>
     
     <typedef name="ceylon-test" classname="com.redhat.ceylon.ant.CeylonTestAntTask"/>
-    <!--typedef name="ceylon-run-js" classname="com.redhat.ceylon.ant.CeylonRunJsAntTask"/-->
+    <typedef name="ceylon-test-js" classname="com.redhat.ceylon.ant.CeylonTestJsAntTask"/>
     
     <typedef name="ceylon-doc" classname="com.redhat.ceylon.ant.CeylonDocAntTask"/>
     <typedef name="ceylon-import-jar" classname="com.redhat.ceylon.ant.CeylonImportJarAntTask"/>
