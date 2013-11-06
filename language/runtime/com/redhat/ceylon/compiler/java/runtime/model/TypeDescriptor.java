@@ -74,6 +74,7 @@ public abstract class TypeDescriptor {
             return b.toString();
         }
 
+        @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager){
             return toProducedType(null, moduleManager);
         }
