@@ -410,6 +410,7 @@
             executable="${ceylon.compiler.loc}"
             src="${test.src}"
             sysrep="${build.test.repo}"
+        	optimize="true"
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
@@ -425,6 +426,20 @@
             module="default">
             <rep url="build/test" />
         </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="metamodel/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+    	<!-- This does not pass yet
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="annotations/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+        -->
     </target>
 
     <target name="test" depends="test.java,test.js" 
