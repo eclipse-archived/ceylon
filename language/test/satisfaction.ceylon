@@ -147,6 +147,45 @@ class MyCorrespondence() satisfies Correspondence<Integer, Character> {
     value a = "abcdef";
     shared actual Character? get(Integer k) { return a[k]; }
 }
+class MyIterable() satisfies {String+} {
+    shared actual Iterator<String> iterator() {
+        object iterator satisfies Iterator<String> {
+            variable value i=0;
+            shared actual String|Finished next() {
+                switch (i++)
+                case (0) {
+                    return "foo";
+                }
+                case (1) {
+                    return "bar";
+                }
+                else {
+                    return finished;
+                }
+            }
+        }
+        return iterator;
+    }
+}
+
+class MyScalable(Float[] floats) 
+        satisfies Scalable<Float,MyScalable> {
+    scale(Float scalar) => MyScalable([ for (x in floats) x*scalar ]);
+    shared actual Boolean equals(Object that) {
+        if (is MyScalable that) {
+            return floats==that.floats;
+        }
+        return false;
+    }
+}
+
+class MyEnumerable(Float f) 
+        satisfies Enumerable<MyEnumerable>&Comparable<MyEnumerable> {
+    integerValue => f.integer;
+    predecessor => MyEnumerable(f+1);
+    successor => MyEnumerable(f-1);
+    compare(MyEnumerable other) => f<=>other.f;
+}
 
 @test
 shared void testSatisfaction() {
@@ -221,4 +260,14 @@ shared void testSatisfaction() {
     check(!corr[100] exists, "Correspondence[2]");
     check(corr.defines(3), "Correspondence[3]");
     check(corr[4] is Character, "Correspondence[4]");
+    
+    variable String foobar = "";
+    for (s in MyIterable()) {
+        foobar+=s;
+    }
+    check(foobar=="foobar", "Iterable[1]");
+    check(MyScalable([1.0,2.0]).scale(2.0)==MyScalable([2.0,4.0]), "Scalable[1]");
+    value r = MyEnumerable(1.0)..MyEnumerable(5.0);
+    check(r.size==5, "Enumerable[1]");
+    check(r.first<r.last, "Enumerable[2]");
 }
