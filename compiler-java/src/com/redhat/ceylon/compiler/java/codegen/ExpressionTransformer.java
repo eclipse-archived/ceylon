@@ -688,6 +688,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private boolean hasTypeParameters(ProducedType type) {
+        // if we will erase a type to Sequential, we know Sequential has type parameters
+        if(willEraseToSequential(type))
+            return true;
         if (!type.getTypeArgumentList().isEmpty()) {
             return true;
         }
