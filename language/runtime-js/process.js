@@ -152,8 +152,8 @@ if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
         if(string)process.stdout.write(string.valueOf());
     }
     process$proto.writeLine = function(line) {
-        if(line)this.write(line.valueOf());
-        this.write(linesep.valueOf());
+        if(line)process$proto.write(line.valueOf());
+        process$proto.write(linesep.valueOf());
     }
 } else if ((typeof console !== "undefined") && (console.log !== undefined)) {
     process$proto.writeLine = function(line) {
@@ -170,8 +170,8 @@ if ((typeof process !== "undefined") && (process.stderr !== undefined)) {
         if(string)process.stderr.write(string.valueOf());
     }
     process$proto.writeErrorLine = function(line) {
-        if(line)this.writeError(line.valueOf());
-        this.writeError(linesep.valueOf());
+        if(line)process$proto.writeError(line.valueOf());
+        process$proto.writeError(linesep.valueOf());
     }
 } else if ((typeof console !== "undefined") && (console.error !== undefined)) {
     process$proto.writeErrorLine = function(line) {
