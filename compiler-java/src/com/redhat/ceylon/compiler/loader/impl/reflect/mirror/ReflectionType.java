@@ -34,6 +34,7 @@ import java.util.Map;
 
 import javax.lang.model.type.TypeKind;
 
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacTypeParameter;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -72,6 +73,7 @@ public class ReflectionType implements TypeMirror {
     }
     
     private String unquote(String s) {
+        s = Naming.stripLeadingDollar(s);
         if (Util.isInitialLowerCase(s) && s.charAt(s.length()-1) == '_') {
             return s.substring(0, s.length()-1);
         }

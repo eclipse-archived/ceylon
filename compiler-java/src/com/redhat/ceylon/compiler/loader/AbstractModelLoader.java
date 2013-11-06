@@ -337,6 +337,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (index != -1){
             name = name.substring(index+1);
         }
+        // remove any possibly quoting char
+        name = Naming.stripLeadingDollar(name);
         if(!name.isEmpty()){
             char c = name.charAt(0);
             return Util.isLowerCase(c);

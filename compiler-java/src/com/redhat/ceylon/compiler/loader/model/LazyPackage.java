@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationConstructorParameter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationInvocation;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -144,6 +145,7 @@ public class LazyPackage extends Package {
 
     private String getQualifiedName(final String pkgName, String name) {
         // FIXME: some refactoring needed
+        name = Naming.quoteIfModuleOrPackageName(name);
         String className = pkgName.isEmpty() ? name : Util.quoteJavaKeywords(pkgName) + "." + name;
         return className;
     }

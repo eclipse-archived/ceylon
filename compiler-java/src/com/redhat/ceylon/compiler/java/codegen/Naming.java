@@ -1183,9 +1183,15 @@ public class Naming implements LocalId {
     }
 
     static String quoteClassName(String name) {
-        return Util.isInitialLowerCase(name) ? name + "_" : name;
+        return Util.isInitialLowerCase(name) ? quoteIfModuleOrPackageName(name) + "_" : name;
     }
     
+    public static String quoteIfModuleOrPackageName(String name) {
+        if(name.equals("module") || name.equals("package"))
+            return "$"+name;
+        return name;
+    }
+
     /** 
      * Gets the class name of the given declaration, with the given options
      * @param decl The declaration
