@@ -33,6 +33,11 @@ public class JavaMethod extends Method {
     private boolean defaultedAnnotation;
     public final MethodMirror mirror;
     
+    @Override
+    protected Class<?> getModelClass() {
+        return getClass().getSuperclass(); 
+    }
+    
     public JavaMethod(MethodMirror mirror){
         this.mirror = mirror;
     }
