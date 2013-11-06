@@ -61,6 +61,7 @@ public class PhasedUnit {
     private boolean refinementValidated = false;
     private boolean flowAnalyzed = false;
     private boolean fullyTyped = false;
+    private boolean usageAnalyzed = false;
     private boolean literalsProcessed = false;
 
     public VirtualFile getSrcDir() {
@@ -286,10 +287,13 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseUsage() {
-        ReferenceCounter rc = new ReferenceCounter();
-		compilationUnit.visit(rc);
-        compilationUnit.visit(new UsageVisitor(rc));
-        compilationUnit.visit(new DeprecationVisitor());
+        if (! usageAnalyzed) {
+            ReferenceCounter rc = new ReferenceCounter();
+            compilationUnit.visit(rc);
+            compilationUnit.visit(new UsageVisitor(rc));
+            compilationUnit.visit(new DeprecationVisitor());
+            usageAnalyzed = true;
+        }
     }
 
     public void generateStatistics(StatisticsVisitor statsVisitor) {

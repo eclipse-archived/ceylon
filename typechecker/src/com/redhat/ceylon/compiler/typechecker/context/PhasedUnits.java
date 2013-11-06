@@ -1,11 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
@@ -15,7 +11,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -28,9 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class PhasedUnits {
-    private Map<VirtualFile, PhasedUnit> phasedUnitPerFile = new LinkedHashMap<VirtualFile, PhasedUnit>();
-    private Map<String, PhasedUnit> phasedUnitPerRelativePath = new HashMap<String, PhasedUnit>();
+public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private final Context context;
     private final ModuleManager moduleManager;
     private List<String> moduleFilters;
@@ -56,41 +49,8 @@ public class PhasedUnits {
         this.moduleFilters = moduleFilters;
     }
     
-    public void addPhasedUnit(VirtualFile unitFile, PhasedUnit phasedUnit) {
-        this.phasedUnitPerFile.put(unitFile, phasedUnit);
-        this.phasedUnitPerRelativePath.put(phasedUnit.getPathRelativeToSrcDir(), phasedUnit);
-    }
-
-    public void removePhasedUnitForRelativePath(String relativePath) {
-        PhasedUnit phasedUnit = this.phasedUnitPerRelativePath.get(relativePath);
-        Unit unit = phasedUnit.getUnit();
-        if (unit != null) {
-            unit.getPackage().removeUnit(unit);
-        }
-        this.phasedUnitPerRelativePath.remove(relativePath);
-        this.phasedUnitPerFile.remove(phasedUnit.getUnitFile());
-    }
-
     public ModuleManager getModuleManager() {
         return moduleManager;
-    }
-
-    public List<PhasedUnit> getPhasedUnits() {
-        Collection<PhasedUnit> units = phasedUnitPerFile.values();
-        List<PhasedUnit> list = new ArrayList<PhasedUnit>(units.size());
-        list.addAll(units);
-        return list;
-    }
-
-    public PhasedUnit getPhasedUnit(VirtualFile file) {
-        return phasedUnitPerFile.get(file);
-    }
-
-    public PhasedUnit getPhasedUnitFromRelativePath(String relativePath) {
-        if (relativePath.startsWith("/")) {
-            relativePath = relativePath.substring(1);
-        }
-        return phasedUnitPerRelativePath.get(relativePath);
     }
 
     public void parseUnits(List<VirtualFile> srcDirectories) {
@@ -260,5 +220,15 @@ public class PhasedUnits {
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    @Override
+    protected PhasedUnit toStoredType(PhasedUnit phasedUnit) {
+        return phasedUnit;
+    }
+
+    @Override
+    protected PhasedUnit fromStoredType(PhasedUnit storedValue, String path) {
+        return storedValue;
     }
 }

@@ -364,14 +364,14 @@ public class ModuleManager {
         }
         else {
             
-            PhasedUnits modulePhasedUnit = createPhasedUnits();
-            phasedUnitsOfDependencies.add(modulePhasedUnit);
+            PhasedUnits modulePhasedUnits = createPhasedUnits();
             ClosableVirtualFile virtualArtifact= null;
             try {
                 virtualArtifact = context.getVfs().getFromZipFile(sourceArtifact.artifact());
-                modulePhasedUnit.parseUnit(virtualArtifact);
+                modulePhasedUnits.parseUnit(virtualArtifact);
                 //populate module.getDependencies()
-                modulePhasedUnit.visitModules();
+                modulePhasedUnits.visitModules();
+                addToPhasedUnitsOfDependencies(modulePhasedUnits, phasedUnitsOfDependencies, module);
             } catch (Exception e) {
                 StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
@@ -385,6 +385,10 @@ public class ModuleManager {
         }
     }
 
+    protected void addToPhasedUnitsOfDependencies(PhasedUnits modulePhasedUnits, List<PhasedUnits> phasedUnitsOfDependencies, Module module) {
+        phasedUnitsOfDependencies.add(modulePhasedUnits);
+    }
+    
     protected PhasedUnits createPhasedUnits() {
         return new PhasedUnits(getContext());
     }

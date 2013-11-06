@@ -266,15 +266,24 @@ public abstract class Declaration
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
 
+    protected java.lang.Class<?> getModelClass() {
+        return getClass();
+    }
+    
     @Override
     public boolean equals(Object object) {
         if (this==object) {
             return true;
         }
-        else if (object==null || object.getClass()!=getClass()) {
+        
+        if(object == null) {
             return false;
         }
-        else if (object instanceof Declaration) {
+        
+        if (object instanceof Declaration) {
+            if (this.getModelClass() != ((Declaration) object).getModelClass()) {
+                return false;
+            }
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
