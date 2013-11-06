@@ -458,6 +458,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = make().TypeCast(targetType, result);
                 }else if(// expression was forcibly erased
                          exprErased
+                         // expression type cannot be trusted to be true, most probably because we had to satisfy Java type parameter
+                         // bounds that are different from what we think the expression type should be
+                         || exprUntrustedType
                          // some type parameter somewhere needs a cast
                          || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters, downCast)
                          // if the exprType is raw and the expected type isn't
