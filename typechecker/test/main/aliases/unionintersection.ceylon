@@ -1,17 +1,28 @@
-interface Cntnr => Container<Anything>; 
+interface Arr<Element> 
+        satisfies Container<Element>&
+        Correspondence<Integer,Element> 
+        given Element satisfies Object {}
+
+interface Cntnr => Container<Anything>;
+interface Crrspnd => Correspondence<Integer,Object>;
 
 class Inty() {} class Floaty() {}
 alias Number => Inty|Floaty;
-alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>;
-alias C => Container<Anything>&Category;
-alias E => Cntnr&Category;
+alias ListLike<T> given T satisfies Object => List<T>|Map<Integer,T>|Arr<T>;
+alias CC => Container<Anything>&Category;
+alias EE => Cntnr&Category;
+alias C => Correspondence<Integer,Object>&Category;
+alias E => Crrspnd&Category;
 
 Number n = Inty();
 Number x = Floaty();
 [Float, Float] pair = nothing;
 ListLike<Float> list = pair;
+Arr<String> arr = nothing;
 C c = list;
 E e = list;
+CC cc = arr;
+EE ee = arr;
 
 shared alias Strings => List<String>;
 
@@ -23,8 +34,10 @@ void local() {
 }
 
 class Outer() {
-    shared alias Cs => List<Container<Anything>&Category>;
+    shared alias Cs => List<Correspondence<Integer,Object>&Category>;
     shared Cs cs = [ c, c ];
+    shared alias CCs => List<Container<Anything>&Category>;
+    shared CCs ccs = [ cc, cc, cc ];
 }
 
 Outer.Cs cs = Outer().cs;
@@ -40,7 +53,7 @@ void testSwitch(Number nn, C cc) {
     switch (nn)
     case (is Inty) {}
     case (is Floaty) {}
-    print(cc.empty);
+    print(cc.keys);
     print(cc.contains(1.0));
     print("hello" in cc);
 }
@@ -49,7 +62,7 @@ void testSwitch2(Number nn, E ee) {
     switch (nn)
     case (is Inty) {}
     case (is Floaty) {}
-    print(ee.empty);
+    print(ee.keys);
     print(ee.contains(1.0));
     print("hello" in ee);
 }
