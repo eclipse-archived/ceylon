@@ -27,18 +27,17 @@ package com.redhat.ceylon.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
-import org.apache.tools.ant.types.Path;
 
 
 public class CeylonRunAntTask extends CeylonAntTask {
 
     static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
     
-    private Path src;   
     private String run;
     private String module;
     private String systemRepository;
     private RepoSet reposet = new RepoSet();
+    private String compileFlags;
     
     public CeylonRunAntTask() {
         super("run");
@@ -49,18 +48,6 @@ public class CeylonRunAntTask extends CeylonAntTask {
      */
     protected boolean shouldSpawnJvm() {
         return true;
-    }
-
-	/**
-     * Set the source directories to find the source Java and Ceylon files.
-     * @param src the source directories as a path
-     */
-    public void setSrc(Path src) {
-        if (this.src == null) {
-            this.src = src;
-        } else {
-            this.src.append(src);
-        }
     }
 
     /**
@@ -98,6 +85,13 @@ public class CeylonRunAntTask extends CeylonAntTask {
     }
 
     /**
+     * Sets compile flags
+     */
+    public void setCompile(String compileFlags) {
+        this.compileFlags = compileFlags;
+    }
+
+    /**
      * Check that all required attributes have been set and nothing silly has
      * been entered.
      * 
@@ -116,11 +110,11 @@ public class CeylonRunAntTask extends CeylonAntTask {
         if(run != null){
             cmd.createArgument().setValue("--run=" + run);
         }
-        if(src != null){
-            cmd.createArgument().setValue("--src="+src.toString());
-        }
         if (systemRepository != null) {
             cmd.createArgument().setValue("--sysrep=" + systemRepository);
+        }
+        if(compileFlags != null){
+            cmd.createArgument().setValue("--compile=" + compileFlags);
         }
         
         for(Repo rep : this.reposet.getRepos()){

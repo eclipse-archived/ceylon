@@ -36,6 +36,7 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
     private String func;
     private RepoSet reposet = new RepoSet();
     private String systemRepository;
+    private String compileFlags;
 
     public CeylonRunJsAntTask() {
         super("run-js");
@@ -76,6 +77,13 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
         func = value;
     }
 
+    /**
+     * Sets compile flags
+     */
+    public void setCompile(String compileFlags) {
+        this.compileFlags = compileFlags;
+    }
+
     @Override
     protected void checkParameters() {
         super.checkParameters();
@@ -91,6 +99,9 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
         }
         if (systemRepository != null) {
             cmd.createArgument().setValue("--sysrep=" + systemRepository);
+        }
+        if(compileFlags != null){
+            cmd.createArgument().setValue("--compile=" + compileFlags);
         }
         
         for (Repo rep : reposet.getRepos()) {

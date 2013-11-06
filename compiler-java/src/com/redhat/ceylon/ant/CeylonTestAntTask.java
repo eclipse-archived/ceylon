@@ -37,6 +37,7 @@ public class CeylonTestAntTask extends CeylonAntTask {
     private final ModuleSet moduleSet = new ModuleSet();
     private String systemRepository;
     private RepoSet reposet = new RepoSet();
+    private String compileFlags;
     
     public CeylonTestAntTask() {
         super("test");
@@ -84,6 +85,13 @@ public class CeylonTestAntTask extends CeylonAntTask {
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
     }
+
+    /**
+     * Sets compile flags
+     */
+    public void setCompile(String compileFlags) {
+        this.compileFlags = compileFlags;
+    }
     
     /**
      * Check that all required attributes have been set and nothing silly has
@@ -103,6 +111,9 @@ public class CeylonTestAntTask extends CeylonAntTask {
     protected void completeCommandline(Commandline cmd) {
         if (systemRepository != null) {
             cmd.createArgument().setValue("--sysrep=" + systemRepository);
+        }
+        if(compileFlags != null){
+            cmd.createArgument().setValue("--compile=" + compileFlags);
         }
         
         for(Repo rep : this.reposet.getRepos()){
