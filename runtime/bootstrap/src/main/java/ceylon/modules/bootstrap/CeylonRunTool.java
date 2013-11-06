@@ -64,7 +64,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private List<String> args = Collections.emptyList();
 
     public CeylonRunTool() {
-        super(CeylonRunMessages.RESOURCE_BUNDLE);
+        super(CeylonMessages.RESOURCE_BUNDLE);
     }
     
     @Argument(argumentName = "module", multiplicity = "1", order = 1)

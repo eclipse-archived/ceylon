@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 
 import com.redhat.ceylon.common.Messages;
 
-public class CeylonRunMessages extends Messages {
+public class CeylonMessages extends Messages {
 
     public static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("ceylon.modules.bootstrap.resources.messages");
 
