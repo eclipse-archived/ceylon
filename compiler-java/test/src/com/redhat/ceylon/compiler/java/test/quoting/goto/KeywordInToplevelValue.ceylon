@@ -20,3 +20,9 @@
 @noanno
 @error
 shared Integer goto = 0;
+
+@noanno
+shared Integer \imodule = 0;
+
+@noanno
+shared Integer \ipackage = 0;

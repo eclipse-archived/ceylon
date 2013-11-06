@@ -22,3 +22,47 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     }
 }
+public final class $module_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private $module_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_()};
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_.class);
+    }
+}
+public final class $package_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private $package_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_()};
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_.class);
+    }
+}

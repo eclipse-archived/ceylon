@@ -20,3 +20,9 @@
 @noanno
 @error
 shared object transient {}
+
+@noanno
+shared object \imodule {}
+
+@noanno
+shared object \ipackage {}

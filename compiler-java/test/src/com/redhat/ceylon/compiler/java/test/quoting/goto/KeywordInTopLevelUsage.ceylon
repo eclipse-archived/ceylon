@@ -17,16 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared Integer \ipackage() {
-    return 0;
-}
-
-shared Integer \imodule() {
-    return 0;
-}
-
 @noanno
-void user(){
+void keywordInTopLevelUsage(){
     Integer a = \ipackage();
     Integer b = \imodule();
 }

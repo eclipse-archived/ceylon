@@ -188,4 +188,10 @@ public class QuotingTest extends CompilerTest {
         compareWithJavaSource("lettercase/UpperObject");
         compile("lettercase/UpperObjectUsage.ceylon");
     }
+
+    @Test
+    public void testQuotedTopLevel(){
+        compile("goto/KeywordInToplevelMethod.ceylon");
+        compile("goto/KeywordInTopLevelUsage.ceylon");
+    }
 }

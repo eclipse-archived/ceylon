@@ -23,3 +23,15 @@ shared Integer strictfp {
 }
 assign strictfp {
 }
+
+@noanno
+shared Integer \imodule {
+    return 0;
+}
+assign \imodule {}
+
+@noanno
+shared Integer \ipackage {
+    return 0;
+}
+assign \ipackage {}

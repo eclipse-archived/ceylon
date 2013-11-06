@@ -17,3 +17,37 @@ public final class goto_ {
         }
     }
 }
+public final class $module_ {
+    
+    private $module_() {
+    }
+    private static final long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    public static long get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
+        }
+    }
+}
+public final class $package_ {
+    
+    private $package_() {
+    }
+    private static final long[] value;
+    static {
+        value = new long[]{0L};
+    }
+    
+    public static long get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
+        }
+    }
+}
