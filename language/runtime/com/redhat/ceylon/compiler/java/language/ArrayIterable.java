@@ -5,7 +5,6 @@ import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
 import ceylon.language.Comparison;
-import ceylon.language.Container$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;

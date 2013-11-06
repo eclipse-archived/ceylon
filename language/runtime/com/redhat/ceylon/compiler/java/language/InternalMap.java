@@ -7,7 +7,6 @@ import ceylon.language.Cloneable$impl;
 import ceylon.language.Collection;
 import ceylon.language.Collection$impl;
 import ceylon.language.Comparison;
-import ceylon.language.Container$impl;
 import ceylon.language.Correspondence$impl;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
