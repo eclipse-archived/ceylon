@@ -386,7 +386,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         ToolModel<Tool> model = pluginLoader.loadToolModel(toolName);
         Tool tool = pluginFactory.bindArguments(model, args);
         try {
-            msg("compiling").newline();
+            msg("compiling", name).newline();
             tool.run();
             // Make sure we can find the newly created module
             repoMgr.refresh(false);
