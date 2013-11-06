@@ -1598,6 +1598,10 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        if (d.getSetter() != null && d.getSetter().getAnnotations() != null && !d.getSetter().getAnnotations().isEmpty()) {
+            out(",");
+            new TypeUtils.ModelAnnotationGenerator(this, d.getSetter(), that).omitKey().generateAnnotations();
+        }
         out(");");
     }
     
