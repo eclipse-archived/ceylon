@@ -5,10 +5,6 @@
         <format property="NOW" pattern="yyyyMMddHHmm" />
     </tstamp>
 
-    <!-- Make sure nobody is overriding CEYLON_HOME -->
-    <property environment="env" />  
-    <property name="env.CEYLON_HOME" value=""/> 
-
     <property file="build.properties"/>
     <property name="projects.dir" value="${basedir}/projects"/>
     <property name="ceylon.dist.dir" value="${basedir}/dist"/>
