@@ -74,4 +74,19 @@ shared void testCurries() {
     value h2 = uncurry(g2);
     check(h2(3.0, 3.0)==6.0, "call uncurried");
     
+    function fun(Float x, Integer i) => x+i;
+    value unflatFun = unflatten(fun);
+    value flatFun = flatten(unflatFun);
+    check((unflatFun of Object) is Float([Float, Integer]), "");
+    check((flatFun of Object) is Float(Float, Integer), "");
+    check(!(flatFun of Object) is Float([Float, Integer]), "");
+    check(!(unflatFun of Object) is Float(Float, Integer), "");
+    
+    check(([1.0,""].rest.filter((String elem) => true) of Object) is {String*}, "");
+    check(([1.0,""].rest of Object) is List<String>, "");
+    (([Float, String] tup)=>check((tup of Object) is [Float,String]))([1.0,""]);
+    flatten(([Float] tup)=>check((tup of Object) is [Float]))(1.0);
+    flatten(([Float, String] tup)=>check((tup of Object) is [Float, String]))(1.0, "");
+    flatten(([Float, Float, String] tup)=>check((tup of Object) is [Float, Float, String]))(1.0, 2.0, "");
+    
 }
