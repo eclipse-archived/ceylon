@@ -25,7 +25,7 @@ final class variance_ {
             }
         };
         final .java.lang.Object ret2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.classMethod(var));
-        final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance m = .com.redhat.ceylon.compiler.java.Util.checkNull(var.<.com.redhat.ceylon.compiler.java.test.interop.JavaVariance>method(var));
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance m = (.com.redhat.ceylon.compiler.java.test.interop.JavaVariance)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull(var.<.com.redhat.ceylon.compiler.java.test.interop.JavaVariance>method(var));
         final .java.lang.Object v1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.roField);
         final .java.lang.Object v2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.rwField);
         final .java.lang.Object v3 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRoProperty());
