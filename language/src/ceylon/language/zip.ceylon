@@ -1,7 +1,7 @@
 "Given two streams, form a new stream by applying a 
  function to the arguments in the given streams. The 
  length of the resulting stream is the length of 
- the shorter of the two given streams. 
+ the shorter of the two given streams.
  
  Thus:
  
@@ -40,13 +40,13 @@ shared {Result*} zip<Result,FirstArgument,SecondArgument>(
  at the same index in the first stream, and the item is 
  the element occurring at the same index in the second 
  stream. The length of the resulting stream is the 
- length of the shorter of the two given streams. 
+ length of the shorter of the two given streams.
  
  Thus:
  
-     zipEntries(xs,ys)[i]==xs[i]->ys[i]
+     zipEntries(keys,items)[i]==keys[i]->items[i]
  
- for every `0<=i<min({xs.size,ys.size})`."
+ for every `0<=i<min({keys.size,items.size})`."
 shared {<Key->Item>*} zipEntries<Key,Item>
         ({Key*} keys, {Item*} items)
         given Key satisfies Object
@@ -60,7 +60,7 @@ shared {<Key->Item>*} zipEntries<Key,Item>
  the second element of the pair is the element occurring 
  at the same index in the second stream. The length of 
  the resulting stream is the length of the shorter of the 
- two given streams. 
+ two given streams.
  
  Thus:
  
@@ -72,6 +72,17 @@ shared {[First,Second]*} zipPairs<First,Second>
         => zip((First first,Second second)=>[first,second],
                 firstElements, secondElements);
 
+"Given a stream of values, and a stream of tuples, produce
+ a new stream of tuples formed by prepending the values in
+ the first stream to the tuples in the second stream. The 
+ length of the resulting stream is the length of the shorter 
+ of the two given streams.
+ 
+ Thus:
+ 
+     combine(heads, tails)[i]==[heads[i],*tails[i]]
+ 
+ for every `0<=i<min({heads.size,tails.size})`."
 shared {Tuple<Element|Head,Head,Tail>*} combine<Element,Head,Tail>
         ({Head*} heads, {Tail*} tails)
         given Tail satisfies Element[]
