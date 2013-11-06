@@ -46,6 +46,14 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
   if (mm) {
     if (mm.$t){
       _t=mm.$t;
+      if (typeof(_t)==='string') {
+        var _ta;
+        if (this.$targs && this.$targs[_t])_t=this.$targs[_t];
+        else if (mm.$tp && mm.$tp[_t])_ta=mm.$tp[_t];
+        else if (this.tipo.$$metamodel$$.$tp && this.tipo.$$metamodel$$.$tp[_t])_ta=this.tipo.$$metamodel$$.$tp[_t];
+        if (_ta && _ta.satisfies)_t=_ta.satisfies.length===1?_ta.satisfies[0]:{t:'i',l:_ta.satisfies};
+        if (typeof(_t)==='string')_t={t:Anything};
+      }
       if (!extendsType(_t,$$$mptypes.Type))throw IncompatibleTypeException$meta$model("Incompatible Type argument");
     }
     validate$params(mm.$ps,_a,"Wrong number of Arguments for getMethod");
