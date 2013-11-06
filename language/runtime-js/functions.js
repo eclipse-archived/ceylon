@@ -22,10 +22,12 @@ function nonempty(value) {
 
 function isOfType(obj, type) {
   if (type && type.t) {
-    if (type.t == 'i' || type.t == 'u') {
+    if (type.t==='i' || type.t==='u') {
       return isOfTypes(obj, type);
+    } else if (type.t==='T') {
+      type=$retuple(type);
     }
-    if (obj === null || obj === undefined) {
+    if (obj===null || obj===undefined) {
       return type.t===Null || type.t===Anything;
     }
     if (obj.getT$all === undefined) {
