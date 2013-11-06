@@ -22,6 +22,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -84,7 +85,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     @OptionArgument(longName="rep", argumentName="url")
     @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
-            "(default: `modules`, `~/.ceylon/repo`, http://modules.ceylon-lang.org)")
+            "(default: `modules`, `~/.ceylon/repo`, "+Constants.REPO_URL_CEYLON+")")
     public void setRepository(List<URI> repo) {
         this.repo = repo;
     }

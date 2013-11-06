@@ -27,7 +27,6 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface RepositoryManager {
-    static final String MODULES_CEYLON_LANG_ORG = "http://modules.ceylon-lang.org/test";
     static final String DEFAULT_MODULE = "default";
 
     /**

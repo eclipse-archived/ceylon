@@ -41,6 +41,7 @@ import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -279,7 +280,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testPropertiesGet() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
         RepositoryBuilder rb = builder.repositoryBuilder();
-        Repository repository = rb.buildRepository("http://modules.ceylon-lang.org/test");
+        Repository repository = rb.buildRepository(Constants.REPO_URL_CEYLON);
         builder.addRepository(repository);
         RepositoryManager manager = builder.buildRepository();
 
