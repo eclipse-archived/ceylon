@@ -9,6 +9,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.ConfigParser;
@@ -135,7 +136,7 @@ public class RepositoriesTest {
     public void testGetDefaultOtherLookupRepositories() {
         Repository[] lookup = defaultRepos.getOtherLookupRepositories();
         Assert.assertTrue(lookup.length == 1);
-        assertRepository(lookup[0], "REMOTE", Repositories.REPO_URL_CEYLON, null, null);
+        assertRepository(lookup[0], "REMOTE", Constants.REPO_URL_CEYLON, null, null);
     }
     
     @Test

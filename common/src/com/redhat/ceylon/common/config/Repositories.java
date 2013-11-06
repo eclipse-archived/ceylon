@@ -97,8 +97,6 @@ public class Repositories {
     private static final String ITEM_USER = "user";
     private static final String ITEM_URL = "url";
     
-    public static final String REPO_URL_CEYLON = "http://modules.ceylon-lang.org/test";
-
     private static Repositories instance;
     
     public static Repositories get() {
@@ -210,7 +208,7 @@ public class Repositories {
                 return new SimpleRepository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null);
             } else if (REPO_NAME_REMOTE.equals(repoName)) {
                 // http://modules.ceylon-lang.org
-                return new SimpleRepository(REPO_NAME_REMOTE, REPO_URL_CEYLON, null);
+                return new SimpleRepository(REPO_NAME_REMOTE, Constants.REPO_URL_CEYLON, null);
             }
             return null;
         }
