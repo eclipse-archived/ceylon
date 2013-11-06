@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.loader;
 
 import java.util.Map;
+import java.util.Objects;
 
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -11,7 +12,14 @@ public class JsonModule extends Module {
 
     public void setModel(Map<String, Object> value) {
         if (model != null) {
-            throw new IllegalStateException("JsonModule should only receive model once");
+            final String modName = (String)model.get("$mod-name");
+            final String modVers = (String)model.get("$mod-version");
+            if (!(Objects.equals(modName, value.get("$mod-name"))
+                    && Objects.equals(modVers, value.get("$mod-version")))) {
+                throw new IllegalStateException("JsonModule " + modName+"/"+modVers
+                        + " receives new module " + value.get("$mod-name")+"/"+value.get("$mod-version"));
+            }
+            return;
         }
         model = value;
     }
