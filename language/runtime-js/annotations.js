@@ -4,11 +4,11 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
   if (typeof(mm) === 'function') {
     mm = mm();
   }
-  if (mm && mm['$an']) {
-    var anns = mm['$an'];
+  if (mm && mm.$an) {
+    var anns=mm.$an;
     if (typeof(anns) === 'function') {
-      anns = anns();
-      mm['$an'] = anns;
+      anns=anns();
+      mm.$an=anns;
     }
     if (anntype.tipo.$$.T$all['ceylon.language::OptionalAnnotation'] !== undefined) {
       //find the first one and return it
@@ -27,5 +27,8 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
   }
   return null;
 }
-annotations$meta.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Values',$ps:[{$nm:'annotationType',$mt:'prm',$t:{t:ClassOrInterface$meta$model,a:{Type:{t:ConstrainedAnnotation,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement'}],$tp:{Value:{'satisfies':[{t:ConstrainedAnnotation$meta$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}]},Values:{},ProgramElement:{'satisfies':[{t:Annotated$meta$model}]}},$an:function(){return[shared(),$native()];},d:['ceylon.language.meta','annotations']};};
+annotations$meta.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Values',$ps:[
+  {$nm:'annotationType',$mt:'prm',$t:{t:Class$meta$model,a:{Type:{t:ConstrainedAnnotation,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement'}],
+  $tp:{Value:{'satisfies':[{t:ConstrainedAnnotation$meta$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}]},Values:{},ProgramElement:{'var':'in','satisfies':[{t:Annotated$meta$model}]}},
+  $an:function(){return[shared(),$native()];},d:['ceylon.language.meta','annotations']};};
 exports.annotations$meta=annotations$meta;
