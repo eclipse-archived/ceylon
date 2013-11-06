@@ -624,6 +624,7 @@ $init$OpenInterface();
 function OpenAlias(alias, $$openAlias){
   $init$OpenAlias();
   if ($$openAlias===undefined)$$openAlias=new OpenAlias.$$;
+  if (typeof(alias)==='function')alias=alias();
   $$openAlias._alias = alias;
   //Get model from path
   var mm=alias.$$metamodel$$;
