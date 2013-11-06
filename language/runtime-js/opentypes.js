@@ -336,12 +336,20 @@ $init$OpenValue();
 
 //ClassDefinition OpenSetter at opentypes.ceylon (63:0-63:90)
 function OpenSetter(v, $$openSetter){
-    $init$OpenSetter();
-    if ($$openSetter===undefined)$$openSetter=new OpenSetter.$$;
-    $$openSetter.variable_=v;
-    SetterDeclaration$meta$declaration($$openSetter);
-    $$openSetter.tipo=v.tipo.set;
-    return $$openSetter;
+  $init$OpenSetter();
+  if ($$openSetter===undefined)$$openSetter=new OpenSetter.$$;
+  $$openSetter.variable_=v;
+  SetterDeclaration$meta$declaration($$openSetter);
+  $$openSetter.tipo=v.tipo.set;
+  if (v.tipo.set && v.tipo.set.setter$anns) {
+    var mm={};
+    var omm=v.tipo.set.$$metamodel$$;
+    if (typeof(omm)==='function')omm=omm();
+    for (var k in omm)mm[k]=omm[k];
+    mm.$an=v.tipo.set.setter$anns;
+    v.tipo.set.$$metamodel$$=mm;
+  }
+  return $$openSetter;
 }
 OpenSetter.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
 function $init$OpenSetter(){
@@ -925,7 +933,7 @@ function FunParamDecl(cont,param,$$funParamDecl){
   FunctionDeclaration$meta$declaration($$funParamDecl);
   $$funParamDecl.cont=cont;
   $$funParamDecl.param=param;
-  $$funParamDecl.tipo={$$metamodel$$:{$cont:cont.tipo,$t:param.$t,$ps:param.$ps,$mt:'prm',d:cont.tipo.$$metamodel$$.d}};
+  $$funParamDecl.tipo={$$metamodel$$:{$cont:cont.tipo,$t:param.$t,$ps:param.$ps,$mt:'prm',d:cont.tipo.$$metamodel$$.d,$an:param.$an}};
 
   $$funParamDecl.$prop$getParameter={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:FunParamDecl,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
   $$funParamDecl.$prop$getParameter.get=function(){return true;};
@@ -1022,7 +1030,7 @@ function ValParamDecl(cont,param,$$valParamDecl){
   ValueDeclaration$meta$declaration($$valParamDecl);
   $$valParamDecl.cont=cont;
   $$valParamDecl.param=param;
-  $$valParamDecl.tipo={$$metamodel$$:{$cont:cont.tipo,$t:param.$t,$mt:'prm',d:cont.tipo.$$metamodel$$.d}};
+  $$valParamDecl.tipo={$$metamodel$$:{$cont:cont.tipo,$t:param.$t,$mt:'prm',d:cont.tipo.$$metamodel$$.d,$an:param.$an}};
 
   $$valParamDecl.$prop$getParameter.get=function(){return true;};
   $$valParamDecl.$prop$getShared.get=function(){return false;};
