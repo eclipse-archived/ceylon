@@ -6,14 +6,15 @@ function $init$native$Exception$before(exc) {
     _caller = _caller.caller;
   }
 }
-Exception.$$.prototype.printStackTrace = function() {
-  var _c = className(this);
-  if (this.message.size > 0) {
-    _c += ' "' + this.message + '"';
+function printStackTrace(exc, _write) {
+  if (_write===undefined)_write=getProcess().writeErrorLine;
+  var _c = className(exc);
+  if (exc.message.size > 0) {
+    _c += ' "' + exc.message + '"';
   }
-  print(_c);
-  for (var i=0; i<this.stack_trace.length; i++) {
-    var f = this.stack_trace[i];
+  _write(_c);
+  for (var i=0; i<exc.stack_trace.length; i++) {
+    var f = exc.stack_trace[i];
     var mm = f.$$metamodel$$;
     if (typeof(mm)==='function') {
       mm = mm();
@@ -22,12 +23,14 @@ Exception.$$.prototype.printStackTrace = function() {
     if (mm) {
       var _src = '';
       if (i==0) {
-        if (this.$loc && this.$file) _src = ' (' + this.$file + " " + this.$loc + ')';
+        if (exc.$loc && exc.$file) _src = ' (' + exc.$file + " " + exc.$loc + ')';
       }
-      print("    at " + mm.d[0] + "::" + mm.d[mm.d.length-1] + _src);
+      _write("    at " + mm.d[0] + "::" + mm.d[mm.d.length-1] + _src);
     }
   }
 }
-Exception.$$.prototype.printStackTrace.$$metamodel$$=function(){
-  return{mod:$$METAMODEL$$,d:['ceylon.language','Exception','$m','printStackTrace'],$t:{t:Anything},$ps:[]};
-}
+printStackTrace.$$metamodel$$=function(){
+  return{mod:$$METAMODEL$$,d:['ceylon.language','printStackTrace'],$t:{t:Anything},$ps:[
+    {$nm:'exception',$t:{t:Exception},$mt:'prm'},{$nm:'write',$t:{t:Callable,a:{Return:{t:Anything},Arguments:{t:'T',l:[{t:String$}]}}},$mt:'prm','$def':1}
+  ]};};
+exports.printStackTrace=printStackTrace;
