@@ -109,9 +109,6 @@ public class TypeUtils {
         } else if (pt.isUnknown()) {
             gen.out(GenerateJsVisitor.getClAlias(), "Anything");
         } else {
-            if (t.isAlias()) {
-                t = t.getExtendedType().getDeclaration();
-            }
             //This wasn't needed but now we seem to get imported decls with no package when compiling ceylon.language.model types
             boolean qual = imported;
             final String modAlias = imported ? gen.getNames().moduleAlias(t.getUnit().getPackage().getModule()) : null;
@@ -150,12 +147,11 @@ public class TypeUtils {
      * already existing params. */
     static void typeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen) {
         TypeDeclaration type = pt.getDeclaration();
-        if (type.isAlias()) {
-            type = type.getExtendedTypeDeclaration();
-        }
         if (!outputTypeList(node, pt, gen)) {
             if (type instanceof TypeParameter) {
                 resolveTypeParameter(node, (TypeParameter)type, gen);
+            } else if (type instanceof TypeAlias) {
+                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen);
             } else {
                 gen.out("{t:");
                 outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen);
@@ -170,7 +166,7 @@ public class TypeUtils {
 
     /** Appends an object with the type's type and list of union/intersection types. */
     static boolean outputTypeList(Node node, final ProducedType pt, GenerateJsVisitor gen) {
-        final TypeDeclaration d = pt.getDeclaration();
+        TypeDeclaration d = pt.getDeclaration();
         final List<ProducedType> subs;
         if (d instanceof IntersectionType) {
             gen.out("{t:'i");
@@ -178,7 +174,7 @@ public class TypeUtils {
         } else if (d instanceof UnionType) {
             gen.out("{t:'u");
             subs = d.getCaseTypes();
-        } else if (d.getQualifiedNameString().equals("ceylon.language::Tuple")) {
+        } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             gen.out("{t:'T");
             subs = getTupleTypes(pt);
         } else {
@@ -625,11 +621,10 @@ public class TypeUtils {
         }
         if (!outputMetamodelTypeList(pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
-            if (type.isAlias()) {
-                type = type.getExtendedTypeDeclaration();
-            }
             if (type instanceof TypeParameter) {
                 gen.out("'", type.getNameAsString(), "'");
+            } else if (type instanceof TypeAlias) {
+                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen);
             } else {
                 gen.out("{t:");
                 outputQualifiedTypename(gen.isImported(pkg, type), pt, gen);

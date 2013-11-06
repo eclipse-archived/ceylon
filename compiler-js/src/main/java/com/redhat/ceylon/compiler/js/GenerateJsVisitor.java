@@ -422,7 +422,11 @@ public class GenerateJsVisitor extends Visitor
                 && isCaptured(d)) {
             beginNewLine();
             outerSelf(d);
-            out(".", names.name(d), "=", names.name(d), ";");
+            String dname=names.name(d);
+            if (dname.endsWith("()")){
+                dname = dname.substring(0, dname.length()-2);
+            }
+            out(".", dname, "=", dname, ";");
             endLine();
             shared = true;
         }
@@ -502,11 +506,14 @@ public class GenerateJsVisitor extends Visitor
         if (path.length() > 0) {
             path += '.';
         }
-        out(names.self(outer), ".", names.name(d), "=");
+        String tname = names.name(d);
+        tname = tname.substring(0, tname.length()-2);
+        String _tmp=names.createTempVariable();
+        out(names.self(outer), ".", tname, "=function(){var ", _tmp, "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
-        endLine(true);
-        out(names.name(d), ".$$metamodel$$=");
+        out(";", _tmp, ".$$metamodel$$=");
         TypeUtils.encodeForRuntime(that,d,this);
+        out(";return ", _tmp, ";}");
         endLine(true);
     }
 
@@ -730,11 +737,13 @@ public class GenerateJsVisitor extends Visitor
         TypeAlias d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         comment(that);
-        out("var ", names.name(d), "=");
+        final String tname=names.createTempVariable();
+        out(function, names.name(d), "{var ", tname, "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
-        out(";",names.name(d), ".$$metamodel$$=");
+        out(";", tname, ".$$metamodel$$=");
         TypeUtils.encodeForRuntime(that, d, this);
-        endLine(true);
+        out(";return ", tname, ";}");
+        endLine();
         share(d);
     }
 
@@ -814,9 +823,6 @@ public class GenerateJsVisitor extends Visitor
         if (satisfiedTypes!=null) {
             for (StaticType st: satisfiedTypes.getTypes()) {
                 TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
-                if (typeDecl.isAlias()) {
-                    typeDecl = typeDecl.getExtendedTypeDeclaration();
-                }
                 qualify(that, typeDecl);
                 out(names.name((ClassOrInterface)typeDecl), "(");
                 if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
@@ -3018,7 +3024,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else if (d != null && (d.isShared() || inProto) && isMember) {
-            TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
+            TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d : that.getScope().getInheritingDeclaration(d);
             if (id==null) {
                 //a shared local declaration
                 return names.self((TypeDeclaration)d.getContainer());

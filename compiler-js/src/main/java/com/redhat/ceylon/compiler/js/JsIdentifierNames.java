@@ -334,6 +334,9 @@ public class JsIdentifierNames {
             }
             name += rootName;
         }
+        if (decl instanceof TypeAlias) {
+            name+="()";
+        }
         return name;
     }
     
