@@ -170,11 +170,15 @@ public abstract class CompilerTest {
     }
     
     protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
+        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, expectedErrors);
+    }
+    
+    protected void assertErrors(String[] ceylonFiles, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         ErrorCollector collector = new ErrorCollector();
         
-        CeyloncTaskImpl task = getCompilerTask(options, collector, new String[] {ceylon+".ceylon"});
+        CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
 
         // now compile it all the way
         Throwable ex = null;

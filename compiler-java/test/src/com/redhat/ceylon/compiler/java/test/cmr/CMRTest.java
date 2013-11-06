@@ -1019,4 +1019,22 @@ public class CMRTest extends CompilerTest {
                 new CompilerError(1, "source code imports two different versions of the same module: version 1 and version 2 of bug1062.javaA")
                 );
     }
+
+    @Test
+    public void testMdlDefaultImportsInexistantPackage() throws IOException{
+        // we do it twice to make sure existing class files do not confuse it
+        for(int i=0;i<2;i++){
+            assertErrors(new String[]{
+                    "modules/defaultImportsInexistantPackage/file.ceylon",
+                    "modules/defaultImportsInexistantPackage/isModule/module.ceylon",
+                    "modules/defaultImportsInexistantPackage/isModule/package.ceylon",
+                    "modules/defaultImportsInexistantPackage/isModule/foo.ceylon",
+                },
+                defaultOptions,
+                null,
+                new CompilerError( 1, "package not found in imported modules: doesnotExist"),
+                new CompilerError( 2, "package not found in imported modules: com.redhat.ceylon.compiler.java.test.cmr.modules.defaultImportsInexistantPackage.isModule")
+            );
+        }
+    }
 }
