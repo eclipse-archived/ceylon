@@ -178,29 +178,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private void uploadToHerd(Node parent, ArtifactContext context, File folder) {
-        log.debug("Uploading folder to Herd");
-        try {
-            File zip = IOUtils.zipFolder(folder);
-            log.debug("Herd module-doc zip file is at " + zip.getAbsolutePath());
-            try {
-                context.setSuffixes(ArtifactContext.API_DOCS_ZIPPED);
-                final String[] names = cache.getArtifactNames(context);
-                if (names.length != 1) {
-                    throw new RepositoryException("ArtifactContext should have a single suffix");
-                }
-                final String label = names[0];
-                if (parent instanceof OpenNode) {
-                    OpenNode.class.cast(parent).addContent(label, new FileInputStream(zip), context);
-                } else {
-                    throw new IllegalArgumentException("Expected open node: " + parent);
-                }
-            } finally {
-                //noinspection ResultOfMethodCallIgnored
-                zip.delete();
-            }
-        } catch (IOException e) {
-            throw new RepositoryException("Failed to upload module-doc zip to Herd repository", e);
-        }
+        log.debug("Not uploading folder to Herd: module-doc zip will be used instead");
     }
 
     protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {
