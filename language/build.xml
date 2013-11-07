@@ -408,6 +408,7 @@
     <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup">
         <ceylon-compile-js
             executable="${ceylon.compiler.loc}"
+            encoding="UTF-8"
             src="${test.src}"
             sysrep="${build.test.repo}"
             out="${build.test}">
