@@ -586,8 +586,11 @@ shared void checkModuleAndImports() {
     assert(exists dep = deps[0]);
     check("check" == dep.name, "module 2");
     check("0.1" == dep.version, "module 3");
-    assert(exists depdoc = annotations(docAnnotation, dep));
-    check(depdoc.description == "Neither deprecated nor optional really, but we want to test ModuleImports", "module 4");
+    if (exists depdoc = annotations(docAnnotation, dep)) {
+      check(depdoc.description == "Neither deprecated nor optional really, but we want to test ModuleImports", "module 4");
+    } else {
+      fail("module 4");
+    }
     check(annotations(optAnnotation, dep) exists, "module 5");
     check(annotations(deprecatedAnnotation, dep) exists, "module 6");
     
