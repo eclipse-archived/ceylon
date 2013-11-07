@@ -36,7 +36,6 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
   var fun = this.tipo[name];
   if (!fun) fun = this.tipo.$$.prototype[name];
   if (!fun) return null;
-  if (typeof(fun)!=='function')return null;
   var mm=fun.$$metamodel$$;
   if (typeof(mm)==='function') {
     mm=mm();fun.$$metamodel$$=mm;

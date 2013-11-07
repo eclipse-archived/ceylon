@@ -1,5 +1,5 @@
 //Addendum to model.declaration.ClassOrInterfaceDeclaration
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function (name$20,$$$mptypes,noInherit){
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function(name$20,$$$mptypes,noInherit){
   var _m=undefined;
   if (extendsType($$$mptypes.Kind, {t:ValueDeclaration$meta$declaration})) {
     var _d = this.tipo.$$.prototype['$prop$get'+name$20[0].toUpperCase()+name$20.substring(1)];
@@ -103,13 +103,13 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
     var mt = m['$mt'];
     var _d;
     if (mt === 'mthd') {
-      _d=OpenFunction(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:FunctionDeclaration$meta$declaration}});//OpenFunction(pkg, m);
     } else if (mt==='cls') {
-      _d=OpenClass(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:ClassDeclaration$meta$declaration}});//OpenClass(pkg, m);
     } else if (mt==='ifc') {
-      _d=OpenInterface(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:InterfaceDeclaration$meta$declaration}});//OpenInterface(pkg, m);
     } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
-      _d=OpenValue(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:ValueDeclaration$meta$declaration}});//OpenValue(pkg, m);
     }
     if (_d) {
       _d.$parent=this;
