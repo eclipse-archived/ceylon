@@ -1,6 +1,11 @@
 /*Native Implementation of annotations() */
 function annotations$meta(anntype, progelem, $$$mptypes) {
   var mm = progelem.tipo?progelem.tipo.$$metamodel$$:progelem.$$metamodel$$;
+  if (!mm && $$$mptypes.ProgramElement && extendsType($$$mptypes.ProgramElement,{t:Module$meta$declaration})) {
+    var rv = progelem.annotations({Annotation:$$$mptypes.Value});
+    if (anntype.tipo.$$.T$all['ceylon.language::OptionalAnnotation'] !== undefined)return rv&&rv.length?rv[0]:null;
+    return rv;
+  }
   if (typeof(mm) === 'function') {
     mm = mm();
   }
