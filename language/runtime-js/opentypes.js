@@ -438,14 +438,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
       defineAttr($$openClass,'annotation',function(){
         return $findAnnotation(this.tipo,AnnotationAnnotation)!==null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','annotation']};});
-            //MethodDeclaration annotatedMemberDeclarations at X (55:2-56:66)
-            $$openClass.annotatedMemberDeclarations=function ($$$mptypes){
-                var $$openClass=this;
-                console.log("IMPL OpenClass.annotatedMemberDeclarations()");
-                return getEmpty();
-            };
-            $$openClass.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$m','annotatedMemberDeclarations']};};
-            
+           
             //AttributeGetterDefinition openType at X (61:2-61:43)
             defineAttr($$openClass,'openType',function(){
               return FreeClass(this);
@@ -568,12 +561,6 @@ defineAttr($$openInterface,'string',function(){
   return String$("interface " + this.qualifiedName);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
            
-            //MethodDeclaration annotatedMemberDeclarations at X (80:2-81:66)
-            $$openInterface.annotatedMemberDeclarations=function ($$$mptypes){
-                var $$openInterface=this;
-                return getEmpty();
-            };
-            $$openInterface.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$m','annotatedMemberDeclarations']};};
             defineAttr($$openInterface,'openType',function(){
               return FreeInterface(this);
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:OpenType$meta$declaration},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','openType']};});

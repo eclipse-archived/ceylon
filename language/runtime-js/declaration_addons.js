@@ -171,3 +171,29 @@ defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container'
   }
   return this.containingPackage;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration.NestableDeclaration','$at','container']};});
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclarations=function($$$mptypes,list){
+  if (list===undefined)list=this.memberDeclarations({Kind:$$$mptypes.Kind});
+  if (list.length) {
+    var rv=[];
+    for (var i=0; i < list.length; i++) {
+      var mm = list[i].tipo.$$metamodel$$;
+      if (typeof(mm)==='function'){mm=mm();list[i].tipo.$$metamodel$$=mm;}
+      var anns = mm.$an;
+      if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
+      for (var j=0; j<anns.length; j++) {
+        if (isOfType(anns[j],$$$mptypes.Annotation)) {
+          rv.push(list[i]);
+          break;
+        }
+      }
+    }
+    if (rv.length)return rv.reifyCeylonType({Element:$$$mptypes.Kind});
+  }
+  return getEmpty();
+};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:ClassOrInterfaceDeclaration$meta$declarationl,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','annotatedMemberDeclarations']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedDeclaredMemberDeclarations=function ($$$mptypes){
+  return this.annotatedMemberDeclarations($$$mptypes,this.memberDeclarations({Kind:$$$mptypes.Kind}));
+};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedDeclaredMemberDeclarations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:ClassOrInterfaceDeclaration$meta$declarationl,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]},Annotation:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','annotatedDeclaredMemberDeclarations']};};
+
