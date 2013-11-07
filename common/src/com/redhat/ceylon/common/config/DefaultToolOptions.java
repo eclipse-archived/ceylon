@@ -15,6 +15,7 @@ public class DefaultToolOptions {
     
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
+    public final static String COMPILER_DOC = "compiler.doc";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String TESTTOOL_COMPILE = "testtool.compile";
@@ -63,7 +64,20 @@ public class DefaultToolOptions {
             return Collections.singletonList(new File(Constants.DEFAULT_RESOURCE_DIR));
         }
     }
-    
+
+    public static List<File> getCompilerDocDirs() {
+        return getCompilerDocDirs(CeylonConfig.get());
+    }
+
+    public static List<File> getCompilerDocDirs(CeylonConfig config) {
+        String[] dirs = config.getOptionValues(COMPILER_DOC);
+        if (dirs != null) {
+            return Arrays.asList(FileUtil.pathsToFileArray(dirs));
+        } else {
+            return Collections.singletonList(new File(Constants.DEFAULT_DOC_DIR));
+        }
+    }
+
     public static File getCompilerOutDir() {
         return getCompilerOutDir(CeylonConfig.get());
     }
