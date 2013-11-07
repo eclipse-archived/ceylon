@@ -172,16 +172,35 @@ public class IOUtils {
         }
         return new String(chars);
     }
+
+    public static class ZipRoot{
+        public final File root;
+        public final String prefix;
+        
+        public ZipRoot(File root, String prefix){
+            this.root = root;
+            this.prefix = prefix;
+        }
+    }
     
     public static File zipFolder(File root) throws IOException{
-        if(!root.isDirectory())
-            throw new IOException("Zip root must be a folder");
+        return zipFolders(new ZipRoot(root, ""));
+    }
+    
+    public static File zipFolders(ZipRoot... zipRoots) throws IOException{
+        for(ZipRoot zipRoot : zipRoots){
+            if(!zipRoot.root.isDirectory())
+                throw new IOException("Zip root must be a folder");
+        }
         File zipFile = File.createTempFile("module-doc", ".zip");
         try{
             ZipOutputStream os = new ZipOutputStream(new FileOutputStream(zipFile));
             try{
-                for(File f : root.listFiles())
-                    zipInternal("", f, os);
+                for(ZipRoot zipRoot : zipRoots){
+                    for(File f : zipRoot.root.listFiles()){
+                        zipInternal(zipRoot.prefix, f, os);
+                    }
+                }
             }finally{
                 os.flush();
                 os.close();
