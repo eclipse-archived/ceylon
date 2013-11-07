@@ -439,63 +439,13 @@ public class GenerateJsVisitor extends Visitor
         if (errVisitor.hasErrors(that))return;
         Class d = that.getDeclarationModel();
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
-        comment(that);
-        Tree.ClassSpecifier ext = that.getClassSpecifier();
-        out(function, names.name(d), "(");
-        //Generate each parameter because we need to append one at the end
-        for (Parameter p: that.getParameterList().getParameters()) {
-            p.visit(this);
-            out(", ");
-        }
-        TypeArgumentList targs = ext.getType().getTypeArgumentList();
-        if (targs != null && !targs.getTypes().isEmpty()) {
-            out("$$targs$$,");
-        }
-        self(d);
-        out(")");
-        TypeDeclaration aliased = ext.getType().getDeclarationModel();
-        out("{return ");
-        qualify(ext.getType(), aliased);
-        out(names.name(aliased), "(");
-        if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
-            ext.getInvocationExpression().getPositionalArgumentList().visit(this);
-            if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()) {
-                out(",");
-            }
-        } else {
-            out("/*PENDIENTE NAMED ARG CLASS DECL */");
-        }
-        if (targs != null && !targs.getTypes().isEmpty()) {
-            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                    aliased.getTypeParameters(), targs.getTypeModels());
-            if (invargs != null) {
-                TypeUtils.printTypeArguments(that, invargs, this);
-            } else {
-                out("/*TARGS != TPARAMS!!!! WTF?????*/");
-            }
-            out(",");
-        }
-        self(d);
-        out(");}");
-        endLine();
-        out(names.name(d), ".$$=");
-        qualify(ext, aliased);
-        out(names.name(aliased), ".$$;");
-        endLine();
-        out(names.name(d),".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(that, d, this);
-        share(d);
+        classDeclaration(that);
     }
 
     private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
-        comment(that);
-        TypeDeclaration dec = that.getClassSpecifier().getType().getTypeModel().getDeclaration();
-        String path = qualifiedPath(that, dec, true);
-        if (path.length() > 0) {
-            path += '.';
-        }
-        out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";");
+        classDeclaration(that);
+        final String tname = names.name(that.getDeclarationModel());
+        out(names.self(outer), ".", tname, "=", tname, ";");
         endLine();
     }
 
@@ -619,8 +569,8 @@ public class GenerateJsVisitor extends Visitor
 
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
-        Class d = classDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
+        final String tname = names.name(classDef.getDeclarationModel());
+        out(names.self(type), ".", tname, "=", tname, ";");
         endLine();
     }
 
@@ -631,6 +581,58 @@ public class GenerateJsVisitor extends Visitor
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             classDefinition(that);
         }
+    }
+
+    private void classDeclaration(ClassDeclaration that) {
+        comment(that);
+        final com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
+        final String aname = names.name(d);
+        final Tree.ClassSpecifier ext = that.getClassSpecifier();
+        out(function, aname, "(");
+        //Generate each parameter because we need to append one at the end
+        for (Parameter p: that.getParameterList().getParameters()) {
+            p.visit(this);
+            out(", ");
+        }
+        TypeArgumentList targs = ext.getType().getTypeArgumentList();
+        if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
+            out("$$targs$$,");
+        }
+        self(d);
+        out(")");
+        TypeDeclaration aliased = ext.getType().getDeclarationModel();
+        out("{return ");
+        qualify(that, aliased);
+        out(names.name(aliased), "(");
+        if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
+            ext.getInvocationExpression().getPositionalArgumentList().visit(this);
+            if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()) {
+                out(",");
+            }
+        } else {
+            out("/*PENDIENTE NAMED ARG CLASS DECL */");
+        }
+        if (targs != null && !targs.getTypes().isEmpty()) {
+            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
+                    aliased.getTypeParameters(), targs.getTypeModels());
+            if (invargs != null) {
+                TypeUtils.printTypeArguments(that, invargs, this);
+            } else {
+                out("/*TARGS != TPARAMS!!!! WTF?????*/");
+            }
+            out(",");
+        }
+        self(d);
+        out(");}");
+        endLine();
+        out(aname, ".$$=");
+        qualify(that, aliased);
+        out(names.name(aliased), ".$$;");
+        endLine();
+        out(aname,".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
+        endLine(true);
+        share(d);
     }
 
     private void classDefinition(ClassDefinition that) {
