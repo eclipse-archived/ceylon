@@ -70,6 +70,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private String herdCompleteVersionsURL;
     private String herdSearchModulesURL;
     private String herdRequestedApi;
+    private int herdVersion = 1; // assume 1 until we find otherwise
 
     protected URLContentStore(String root, Logger log, boolean offline) {
         this(root, log, offline, null);
@@ -79,11 +80,12 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         if (root == null)
             throw new IllegalArgumentException("Null root url");
         this.root = root;
-        this.herdRequestedApi = apiVersion != null ? apiVersion : "2";
+        this.herdRequestedApi = apiVersion != null ? apiVersion : "3";
         if(apiVersion != null
                 && !apiVersion.equals("1")
-                && !apiVersion.equals("2"))
-            throw new IllegalArgumentException("Only Herd APIs 1 or 2 are supported: requested API "+apiVersion);
+                && !apiVersion.equals("2")
+                && !apiVersion.equals("3"))
+            throw new IllegalArgumentException("Only Herd APIs 1 to 3 are supported: requested API "+apiVersion);
     }
 
     @Override
@@ -104,7 +106,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             return false;
         }
         try{
-            // we support both API 1 and 2
+            // we support both API 1 to 3
             URL rootURL = getURL("?version="+herdRequestedApi);
             HttpURLConnection con = (HttpURLConnection) rootURL.openConnection();
             try{
@@ -113,6 +115,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     return false;
                 String herdVersion = con.getHeaderField("X-Herd-Version");
                 log.debug("Herd version: "+herdVersion);
+                try{
+                    this.herdVersion = Integer.parseInt(herdVersion);
+                }catch(NumberFormatException x){
+                    log.debug("Non-integer Herd version: "+herdVersion);
+                }
                 boolean ret = herdVersion != null && !herdVersion.isEmpty();
                 if(ret){
                     collectHerdLinks(con);
@@ -310,7 +317,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         case SRC:
             return "source";
         case CODE:
-            return "code";
+            if(herdVersion >= 3)
+                return "code";
+            else
+                return "all";
         case ALL:
             // TODO Implement retrieval of various types at at time
             return "all";
