@@ -537,7 +537,7 @@ public class CMRTest extends CompilerTest {
         jarOutputFolder.mkdirs();
 
         compileJavaModule(jarOutputFolder, classesOutputFolder, moduleName+".modules.jarDependency.java", "1.0",
-                moduleName.replace('.', File.separatorChar)+"/modules/jarDependency/java/JavaDependency.java");
+                moduleName.replace('.', '/')+"/modules/jarDependency/java/JavaDependency.java");
         
         // Try to compile the ceylon module
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", jarOutputFolder.getPath()), 
@@ -563,7 +563,9 @@ public class CMRTest extends CompilerTest {
         File[] javaSourceFiles = new File[sourceFileNames.length];
         for (int i = 0; i < javaSourceFiles.length; i++) {
             javaSourceFiles[i] = new File(sourceFolder, sourceFileNames[i]);
-            String sourceDir = sourceFileNames[i].substring(0, sourceFileNames[i].lastIndexOf(File.separatorChar));
+            String sfn = sourceFileNames[i].replace(File.separatorChar, '/');
+            int p = sfn.lastIndexOf('/');
+            String sourceDir = sfn.substring(0, p);
             sourceDirectories.add(sourceDir);
         }
         Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(javaSourceFiles);
@@ -744,7 +746,7 @@ public class CMRTest extends CompilerTest {
         
         ErrorCollector collector = new ErrorCollector();
         // Compile module A/2 with B importing A/1
-        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a2:"+getPackagePath()+"/modules/multiversion/b"),
+        result = getCompilerTask(Arrays.asList("-src", getPackagePath()+"/modules/multiversion/a2"+File.pathSeparator+getPackagePath()+"/modules/multiversion/b"),
                 collector,
                 "modules/multiversion/a2/a/module.ceylon", "modules/multiversion/a2/a/package.ceylon", "modules/multiversion/a2/a/A.ceylon",
                 "modules/multiversion/b/b/module.ceylon", "modules/multiversion/b/b/B.ceylon").call();
