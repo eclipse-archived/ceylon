@@ -441,7 +441,7 @@ public class MethodDefinitionBuilder
 
     public MethodDefinitionBuilder resultType(Method method, int flags) {
         if (method.isParameter()) {
-            if (Decl.isUnboxedVoid(method)) {
+            if (Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
                 return resultType(gen.makeJavaTypeAnnotations(method, false), gen.make().Type(gen.syms().voidType));
             } else {
                 Parameter parameter = method.getInitializerParameter();

@@ -862,7 +862,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             JCExpression expr = callBuilder.build();
             JCStatement body;
-            if (Decl.isUnboxedVoid(method)) {
+            if (isVoid(methodDecl) && Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
                 body = make().Exec(expr);
             } else {
                 expr = expressionGen().applyErasureAndBoxing(expr, paramModel.getType(), true, CodegenUtil.getBoxingStrategy(method), paramModel.getType());
