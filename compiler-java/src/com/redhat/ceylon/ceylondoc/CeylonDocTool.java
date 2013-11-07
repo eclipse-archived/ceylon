@@ -150,6 +150,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private TypeChecker typeChecker;
     private String encoding;
     private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
+    private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
 
     public CeylonDocTool() {
         super(CeylondMessages.RESOURCE_BUNDLE);
@@ -192,6 +193,13 @@ public class CeylonDocTool extends RepoUsingTool {
             " (default: `./source`)")
     public void setSource(List<File> source) {
         setSourceFolders(source);
+    }
+
+    @OptionArgument(longName="doc", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
+    @Description("A directory containing your module documentation (default: `./doc`)")
+    public void setDocFolders(List<File> docFolders) {
+        this.docFolders = docFolders;
     }
 
     public boolean isHaltOnError() {
@@ -535,16 +543,35 @@ public class CeylonDocTool extends RepoUsingTool {
                 ArtifactContext artifactDocsZip = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS_ZIPPED);
                 
                 File outputFolder = getOutputFolder(module);
-                File zipFile = IOUtils.zipFolder(outputFolder);
-                File zipSha1File = ShaSigner.sign(zipFile, log, verbose != null);
+                
+                // find all doc folders to zip
+                List<File> existingDocFolders = new ArrayList<File>(docFolders.size());
+                for(File docFolder : docFolders){
+                    File moduleDocFolder = new File(docFolder, join("/", module.getName()));
+                    if(moduleDocFolder.exists())
+                        existingDocFolders.add(moduleDocFolder);
+                }
 
+                // make the doc zip roots
+                IOUtils.ZipRoot[] roots = new IOUtils.ZipRoot[1+existingDocFolders.size()];
+                roots[0] = new IOUtils.ZipRoot(outputFolder, "api");
+                int d=1;
+                for(File docFolder : existingDocFolders){
+                    roots[d] = new IOUtils.ZipRoot(docFolder, "doc");
+                }
+                File docZipFile = IOUtils.zipFolders(roots);
+                File docZipSha1File = ShaSigner.sign(docZipFile, log, verbose != null);
+                
                 repositoryRemoveArtifact(outputRepository, artifactDocs);
                 repositoryRemoveArtifact(outputRepository, artifactDocsZip);
                 repositoryRemoveArtifact(outputRepository, artifactDocsZip.getSha1Context());
                 
                 repositoryPutArtifact(outputRepository, artifactDocs, outputFolder);
-                repositoryPutArtifact(outputRepository, artifactDocsZip, zipFile);
-                repositoryPutArtifact(outputRepository, artifactDocsZip.getSha1Context(), zipSha1File);
+                repositoryPutArtifact(outputRepository, artifactDocsZip, docZipFile);
+                repositoryPutArtifact(outputRepository, artifactDocsZip.getSha1Context(), docZipSha1File);
+                
+                docZipFile.delete();
+                docZipSha1File.delete();
             }
             if (!documentedOne) {
                 log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));

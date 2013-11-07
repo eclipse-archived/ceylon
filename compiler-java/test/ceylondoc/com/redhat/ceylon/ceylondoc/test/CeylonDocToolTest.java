@@ -33,6 +33,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,10 +62,11 @@ public class CeylonDocToolTest {
     @Rule 
     public TestName name = new TestName();
     
-    private CeylonDocTool tool(List<File> pathname, List<String> moduleName, 
+    private CeylonDocTool tool(List<File> pathname, List<File> docFolders, List<String> moduleName, 
             boolean throwOnError, String... repositories)
             throws Exception {
         CeylonDocTool tool = new CeylonDocTool();
+        tool.setDocFolders(docFolders);
         tool.setSourceFolders(pathname); 
         tool.setRepositoryAsStrings(Arrays.asList(repositories));
         tool.setModuleSpecs(moduleName);
@@ -77,11 +79,18 @@ public class CeylonDocToolTest {
         tool.setOutputRepository(dir.getAbsolutePath(), null, null);
         return tool;
     }
-    
+
     private CeylonDocTool tool(String pathname, String moduleName, 
             boolean throwOnError, String... repositories)
             throws Exception {
+        return tool(pathname, "doc", throwOnError, repositories);
+    }
+
+    private CeylonDocTool tool(String pathname, String docPath, String moduleName, 
+            boolean throwOnError, String... repositories)
+            throws Exception {
         return tool(Arrays.asList(new File(pathname)),
+                Arrays.asList(new File(docPath)),
                 Arrays.asList(moduleName),
                 throwOnError, repositories);
     }
@@ -171,9 +180,10 @@ public class CeylonDocToolTest {
 
     private void moduleA(boolean includeNonShared) throws Exception {
         String pathname = "test/ceylondoc";
+        String docname = "test/ceylondoc-doc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
 
-        CeylonDocTool tool = tool(pathname, moduleName, true);
+        CeylonDocTool tool = tool(pathname, docname, moduleName, true);
         tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
@@ -277,7 +287,7 @@ public class CeylonDocToolTest {
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.externallinks");
 
-        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), modules, true, "build/ceylon-cars");
+        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), Collections.<File>emptyList(), modules, true, "build/ceylon-cars");
         tool.setLinks(Arrays.asList(linkArgs));
         tool.makeDoc();
 
@@ -433,7 +443,9 @@ public class CeylonDocToolTest {
                 "ceylon.test",
         };
         
-        CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")), Arrays.asList(fullModuleNames), true, 
+        CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")),
+                Collections.<File>emptyList(),
+                Arrays.asList(fullModuleNames), true, 
                 "build/CeylonDocToolTest/" + name.getMethodName() + "-native");
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);

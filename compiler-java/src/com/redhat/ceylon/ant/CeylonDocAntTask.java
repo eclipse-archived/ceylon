@@ -27,10 +27,16 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
+import org.apache.tools.ant.types.Path;
+
+import com.redhat.ceylon.common.Constants;
 
 public class CeylonDocAntTask extends LazyCeylonAntTask {
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
@@ -42,6 +48,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
 
     private ModuleSet moduleset = new ModuleSet();
     private LinkSet linkset = new LinkSet();
+    private Path doc;
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
@@ -51,6 +58,30 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
         super("doc");
     }
     
+    /**
+     * Set the doc directories to find the doc files.
+     * @param res the doc directories as a path
+     */
+    public void setDoc(Path res) {
+        if (this.doc == null) {
+            this.doc = res;
+        } else {
+            this.doc.append(res);
+        }
+    }
+
+    public List<File> getDoc() {
+        if (this.doc == null) {
+            return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_DOC_DIR));
+        }
+        String[] paths = this.doc.list();
+        ArrayList<File> result = new ArrayList<File>(paths.length);
+        for (String path : paths) {
+            result.add(getProject().resolveFile(path));
+        }
+        return result;
+    }
+
     /**
      * Include even non-shared declarations
      */
@@ -160,6 +191,9 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
             cmd.createArgument().setValue("--ignore-missing-doc");
         if(ignoreBrokenLink)
             cmd.createArgument().setValue("--ignore-broken-link");
+        for (File doc : getDoc()) {
+            cmd.createArgument().setValue("--doc=" + doc.getAbsolutePath());
+        }
         // links
         for (Link link : linkset.getLinks()) {
             log("Adding link: "+link, Project.MSG_VERBOSE);
