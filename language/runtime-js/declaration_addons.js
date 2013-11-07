@@ -76,24 +76,28 @@ defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclara
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=function($$$mptypes){
   var filter;
   var defs=[];
-  if (extendsType($$$mptypes.Kind,{t:FunctionDeclaration$meta$declaration})||extendsType($$$mptypes.Kind,{t:FunctionOrValueDeclaration$meta$declaration})) {
-    for (var df in this.meta['$m']) {
-      defs.push(this.meta['$m'][df]);
+  if (extendsType($$$mptypes.Kind,{t:FunctionOrValueDeclaration$meta$declaration})) {
+    if (!extendsType($$$mptypes.Kind,{t:ValueDeclaration$meta$declaration})) {
+      for (var df in this.meta['$m']) {
+        defs.push(this.meta['$m'][df]);
+      }
+    }
+    if (!extendsType($$$mptypes.Kind,{t:FunctionDeclaration$meta$declaration})) {
+      for (var df in this.meta['$at']) {
+        defs.push(this.meta['$at'][df]);
+      }
     }
   }
-  if (extendsType($$$mptypes.Kind,{t:ValueDeclaration$meta$declaration})||extendsType($$$mptypes.Kind,{t:FunctionOrValueDeclaration$meta$declaration})) {
-    for (var df in this.meta['$at']) {
-      defs.push(this.meta['$at'][df]);
+  if (extendsType($$$mptypes.Kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
+    if (!extendsType($$$mptypes.Kind,{t:ClassDeclaration$meta$declaration})) {
+      for (var df in this.meta['$i']) {
+        defs.push(this.meta['$i'][df]);
+      }
     }
-  }
-  if (extendsType($$$mptypes.Kind,{t:ClassDeclaration$meta$declaration})||extendsType($$$mptypes.Kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
-    for (var df in this.meta['$c']) {
-      defs.push(this.meta['$c'][df]);
-    }
-  }
-  if (extendsType($$$mptypes.Kind,{t:InterfaceDeclaration$meta$declaration})||extendsType($$$mptypes.Kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
-    for (var df in this.meta['$i']) {
-      defs.push(this.meta['$i'][df]);
+    if (!extendsType($$$mptypes.Kind,{t:InterfaceDeclaration$meta$declaration})) {
+      for (var df in this.meta['$c']) {
+        defs.push(this.meta['$c'][df]);
+      }
     }
   }
   var pkg = this.containingPackage;
@@ -103,13 +107,13 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
     var mt = m['$mt'];
     var _d;
     if (mt === 'mthd') {
-      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:FunctionDeclaration$meta$declaration}});//OpenFunction(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:FunctionDeclaration$meta$declaration}});
     } else if (mt==='cls') {
-      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:ClassDeclaration$meta$declaration}});//OpenClass(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:ClassDeclaration$meta$declaration}});
     } else if (mt==='ifc') {
-      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:InterfaceDeclaration$meta$declaration}});//OpenInterface(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:InterfaceDeclaration$meta$declaration}});
     } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
-      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:ValueDeclaration$meta$declaration}});//OpenValue(pkg, m);
+      _d=this.getMemberDeclaration(m.$nm, {Kind:{t:ValueDeclaration$meta$declaration}});
     }
     if (_d) {
       _d.$parent=this;
