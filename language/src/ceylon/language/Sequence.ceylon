@@ -30,26 +30,26 @@ shared interface Sequence<out Element>
     shared actual formal Integer lastIndex;
     
     "The first element of the sequence, that is, the
-         element with index `0`."
+     element with index `0`."
     shared actual formal Element first;
 
     "The last element of the sequence, that is, the
-         element with index `sequence.lastIndex`."
+     element with index `sequence.lastIndex`."
     shared actual formal Element last;
     
     "Returns `false`, since every `Sequence` contains at
-         least one element."
+     least one element."
     shared actual Boolean empty => false;
     
     "Reverse this sequence, returning a new nonempty
-         sequence."
+     sequence."
     shared actual formal [Element+] reversed;
     
-    "This sequence."
+    "This nonempty sequence."
     shared default actual [Element+] sequence => this;
     
     "The rest of the sequence, without the first 
-         element."
+     element."
     shared actual formal Element[] rest;
     
     "A nonempty sequence containing the elements of this
@@ -75,9 +75,11 @@ shared interface Sequence<out Element>
         return s;
     }
     
+    "This nonempty sequence."
     shared actual default [Element+] clone => this;
     
-    shared actual default String string => (super of Sequential<Element>).string;
+    shared actual default String string 
+            => (super of Sequential<Element>).string;
     
     shared actual default Boolean shorterThan(Integer length) 
             => (super of List<Element>).shorterThan(length);
@@ -85,8 +87,8 @@ shared interface Sequence<out Element>
     shared actual default Boolean longerThan(Integer length) 
             => (super of List<Element>).longerThan(length);
     
-    shared default actual Element? findLast(
-            Boolean selecting(Element elem))
+    shared default actual Element? findLast
+                (Boolean selecting(Element elem))
             => (super of List<Element>).findLast(selecting);
     
     shared actual default Element[] repeat(Integer times)

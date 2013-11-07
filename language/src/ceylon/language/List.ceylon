@@ -266,6 +266,8 @@ shared interface List<out Element>
         }
     }
     
+    "Determines if the given value occurs at the 
+     given index in this list."
     shared default Boolean occursAt(Integer index, Anything element) {
          value elem = this[index];
          if (exists element) {
@@ -280,7 +282,9 @@ shared interface List<out Element>
              return !elem exists;
          }
     }
-        
+    
+    "Determines if the given value occurs as an 
+     element in this list."
     shared default Boolean occurs(Anything element) {
          for (index in 0:size) {
              if (occursAt(index,element)) {
@@ -290,6 +294,9 @@ shared interface List<out Element>
          return false;
     }
     
+    "Determines if this list contains the given 
+     value. Equivalent to `occurs()`."
+    see (`function occurs`)
     shared actual default Boolean contains(Object element) 
             => occurs(element);
         
@@ -334,6 +341,9 @@ shared interface List<out Element>
                     //TODO: fix this awful hack
                     if (selecting(this[index] else nothing)) index };
     
+    "Trim the elements satisfying the given predicate
+     function from the start and end of this list, 
+     returning a list no longer than this list."
     shared default List<Element> trim(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             variable Integer from=-1;
@@ -363,6 +373,9 @@ shared interface List<out Element>
         }
     }
     
+    "Trim the elements satisfying the given predicate
+     function from the start of this list, returning 
+     a list no longer than this list."
     shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in 0..l) {
@@ -374,6 +387,9 @@ shared interface List<out Element>
         return [];
     }
     
+    "Trim the elements satisfying the given predicate
+     function from the end of this list, returning a 
+     list no longer than this list."
     shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in l..0) {

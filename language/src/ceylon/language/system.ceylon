@@ -15,5 +15,5 @@ shared native object system {
     "Returns the IETF language tag representing the default locale for this system."
     shared native String locale;
     
-    shared actual String string => "system";
+    string => "system";
 }

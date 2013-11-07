@@ -135,7 +135,7 @@ shared final class Range<Element>(first, last)
         return c;
     }
     
-    "Determines if the range includes the given object."
+    "Determines if this range includes the given object."
     shared actual Boolean contains(Object element) {
         if (is Element element) {
             return containsElement(element);
@@ -145,6 +145,7 @@ shared final class Range<Element>(first, last)
         }
     }
     
+    "Determines if this range includes the given value."
     shared actual Boolean occurs(Anything element) {
         if (is Element element) {
             return containsElement(element);

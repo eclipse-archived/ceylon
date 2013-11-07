@@ -84,6 +84,10 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Boolean empty =>
             iterator().next() is Finished;
     
+    "The number of elements returned by the iterator of
+     this iterable object, if the iterator terminates.
+     In the case of an iterable whose elements are not
+     countable, this operation never terminates."
     shared default Integer size => count((Element e) => true);
     
     "Determines if this iterable object has more elements
@@ -327,6 +331,10 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
+    "Produce an `Iterable` containing the elements of
+     this iterable object, after skipping the leading 
+     elements until the given predicate function returns
+     `false`."
     shared default {Element*} skippingWhile(Boolean skip(Element elem)) {
         object iterable satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
@@ -354,6 +362,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
+    "Produce an `Iterable` containing the leading elements 
+     of this iterable object until the given predicate 
+     function returns `false`."
     shared default {Element*} takingWhile(Boolean take(Element elem)) {
         object iterable satisfies {Element*} {
             shared actual Iterator<Element> iterator() {

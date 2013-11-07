@@ -104,6 +104,7 @@ shared annotation DocAnnotation doc(
     "Documentation, in Markdown syntax, about the annotated element"
     String description) => DocAnnotation(description);
 
+"The annotation class for [[see]]."
 shared final annotation class SeeAnnotation(
     "The program elements being referred to."
     shared Declaration* programElements)
@@ -126,6 +127,7 @@ shared annotation AuthorsAnnotation by(
     "The authors, in Markdown syntax, of the annotated element"
     String* authors) => AuthorsAnnotation(*authors);
 
+"The annotation class for [[throws]]."
 shared final annotation class ThrownExceptionAnnotation(
     "The [[Exception]] type that this thrown."
     shared Declaration type,

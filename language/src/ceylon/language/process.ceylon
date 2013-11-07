@@ -57,8 +57,10 @@ shared native object process {
      of the virtual machine process."
     shared native String readLine();
     
+    "Force the virtual machine to terminate with 
+     the given exit code."
     shared native void exit(Integer code);
     
-    shared actual String string => "process";
+    string => "process";
     
 }

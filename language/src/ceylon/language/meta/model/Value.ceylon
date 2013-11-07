@@ -23,10 +23,13 @@ shared interface Value<out Get=Anything, in Set=Nothing>
      setter attributes, this can throw if the setter throws."
     shared formal void set(Set newValue);
 
-    "Non type-safe equivalent to [[Variable.set]], to be used when you don't know the variable
-     type at compile-time. This only works if the underlying value is variable. Note that if
-     the underlying variable is a setter, this can throw exceptions thrown in the setter block."
-    throws(`class IncompatibleTypeException`, "If the specified new value is not of a subtype of this variable's type")
-    throws(`class MutationException`, "If this value is not variable")
+    "Non type-safe equivalent to [[Value.set]], to be used when you don't know the 
+     variable type at compile-time. This only works if the underlying value is 
+     variable. Note that if the underlying variable is a setter, this can throw 
+     exceptions thrown in the setter block."
+    throws(`class IncompatibleTypeException`, 
+           "If the specified new value is not of a subtype of this variable's type")
+    throws(`class MutationException`, 
+           "If this value is not variable")
     shared formal void setIfAssignable(Anything newValue);
 }

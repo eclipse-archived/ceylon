@@ -8,5 +8,8 @@
  - `x+x == 2**x`"
 shared interface Scalable<in Scale, out Value> of Value 
         given Value satisfies Scalable<Scale,Value> {
+    
+    "Scale this value by the given scale factor."
     shared formal Value scale(Scale scalar);
+    
 }

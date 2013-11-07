@@ -42,13 +42,16 @@
    `span()`, and `segment()` require iteration from the 
    beginning of the string to the given index."""
 by ("Gavin")
-shared native final class String(shared {Character*} characters)
+shared native final class String(characters)
         extends Object()
         satisfies List<Character> & 
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,String> &
                   Cloneable<String> {
+    
+    "The characters that form this string."
+    shared {Character*} characters;
     
     "This string, with all characters in lowercase."
     shared native String lowercased;

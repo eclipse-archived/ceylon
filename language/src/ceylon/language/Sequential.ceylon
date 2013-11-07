@@ -32,9 +32,19 @@ shared interface Sequential<out Element>
     shared actual default Element[] repeat(Integer times)
             => cycle(times).sequence;
     
+    "Select the first elements of this sequence, returning 
+     a sequence no longer than the given length. If this 
+     sequence is shorter than the given length, return this 
+     sequence. Otherwise return a sequence of the given 
+     length."
     shared actual default Element[] initial(Integer length)
             => this[0:length];
     
+    "Select the last elements of the sequence, returning a 
+     sequence no longer than the given length. If this 
+     sequence is shorter than the given length, return this 
+     sequence. Otherwise return a sequence of the given 
+     length."
     shared actual default Element[] terminal(Integer length) {
         if (exists l = lastIndex, length>0) {
             return this[l-length+1..l];
@@ -44,15 +54,25 @@ shared interface Sequential<out Element>
         }
     }
     
+    "Trim the elements satisfying the given predicate
+     function from the start and end of this sequence, 
+     returning a sequence no longer than this sequence."
     shared actual default Element[] trim(Boolean trimming(Element elem))
             => super.trim(trimming).sequence; //TODO: inefficient?
     
+    "Trim the elements satisfying the given predicate
+     function from the start of this sequence, returning 
+     a sequence no longer than this sequence."
     shared actual default Element[] trimLeading(Boolean trimming(Element elem))
             => super.trimLeading(trimming).sequence; //TODO: inefficient?
     
+    "Trim the elements satisfying the given predicate
+     function from the end of this sequence, returning 
+     a sequence no longer than this sequence."
     shared actual default Element[] trimTrailing(Boolean trimming(Element elem))
             => super.trimTrailing(trimming).sequence; //TODO: inefficient?
     
+    "This sequence."
     shared actual default Element[] clone => this;
     
     "A string of form `\"[ x, y, z ]\"` where `x`, `y`, 

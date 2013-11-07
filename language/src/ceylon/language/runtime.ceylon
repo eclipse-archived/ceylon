@@ -10,6 +10,7 @@ shared native object runtime  {
     "Returns the version of the runtime / virtual machine this process is running on."
     shared native String version;
     
+    "The number of bits used to represent the value of an `Integer`."
     shared native Integer integerSize;
     
     "The minimum `Integer` value that can be represented by the runtime.
@@ -28,5 +29,5 @@ shared native object runtime  {
      `Integer(n+1) = Integer(n) + 1` with `Integer(0) = 0`"
     shared native Integer maxIntegerValue;
     
-    shared actual String string => "runtime [``name`` / ``version``]";
+    string => "runtime [``name`` / ``version``]";
 }

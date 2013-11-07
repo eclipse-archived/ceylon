@@ -1,6 +1,6 @@
 "An immutable `Sequence` implemented using the platform's 
  native array type. Where possible copying of the underlying 
- array is avoided."
+ array is avoided. Direct use of this type is discouraged."
 see (`class SequenceBuilder`, `class SequenceAppender`)
 shared final native class ArraySequence<out Element>({Element+} elements) 
         satisfies Sequence<Element> {

@@ -16,5 +16,5 @@ shared native object operatingSystem {
     "The character used on this platform to use as a separator between several paths in a list of paths."
     shared native String pathSeparator;
     
-    shared actual String string => "operating system [``name`` / ``version``]";
+    string => "operating system [``name`` / ``version``]";
 }

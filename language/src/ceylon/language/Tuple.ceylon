@@ -51,11 +51,14 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         given First satisfies Element
         given Rest satisfies Element[] {
     
+    "The first element of this tuple."
     shared actual First first;
     
+    "A tuple with the elements of this tuple, except
+     for the first element."
     shared actual Rest rest;
     
-    shared actual Integer size => 1 + rest.size;
+    size => 1 + rest.size;
     
     shared actual Element? get(Integer index) {
         switch (index<=>0)
@@ -82,9 +85,6 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         }
     }
     
-    shared actual [Element+] reversed =>
-            rest.reversed.withTrailing(first);
-    
     shared actual Element[] segment(Integer from, Integer length) {
         if(length <= 0){
             return [];
@@ -106,13 +106,13 @@ shared final class Tuple<out Element, out First, out Rest=[]>
                 else this[realEnd:realFrom-realEnd+1].reversed.sequence;
     }
     
-    shared actual Element[] spanTo(Integer to) =>
-            to<0 then [] else span(0, to);
+    spanTo(Integer to) => to<0 then [] else span(0, to);
     
-    shared actual Element[] spanFrom(Integer from) =>
-            span(from, size);
+    spanFrom(Integer from) => span(from, size);
     
-    shared actual Tuple<Element,First,Rest> clone => this;
+    clone => this;
+    
+    reversed => rest.reversed.withTrailing(first);
     
     shared actual Iterator<Element> iterator() {
         object iterator satisfies Iterator<Element> {

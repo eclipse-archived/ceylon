@@ -9,9 +9,6 @@
 by ("Gavin")
 shared final class Entry<out Key, out Item>(key, item)
         extends Object()
-        //TODO: disabled for now for performance 
-        /*extends Tuple<Key|Item,Key,Tuple<Item,Item>>
-                (key,Tuple(item,[]))*/
         given Key satisfies Object
         given Item satisfies Object {
     
@@ -21,11 +18,13 @@ shared final class Entry<out Key, out Item>(key, item)
     "The value associated with the key."
     shared Item item;
     
+    "A pair (2 element tuple) with the key and
+     item of this entry."
     shared [Key,Item] pair => [key,item];
     
-    "Determines if this entry is equal to the given
-     entry. Two entries are equal if they have the same
-     key and the same value."
+    "Determines if this entry is equal to the given entry. 
+     Two entries are equal if they have the same key and 
+     the same value."
     shared actual Boolean equals(Object that) {
         if (is Entry<Object,Object> that) {
             return this.key==that.key &&
@@ -36,8 +35,7 @@ shared final class Entry<out Key, out Item>(key, item)
         }
     }
     
-    shared actual Integer hash => 
-            (31 + key.hash) * 31 + item.hash;
+    hash => (31 + key.hash) * 31 + item.hash;
     
     "Returns a description of the entry in the form 
      `key->item`."
