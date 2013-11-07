@@ -310,6 +310,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         case SRC:
             return "source";
         case CODE:
+            return "code";
         case ALL:
             // TODO Implement retrieval of various types at at time
             return "all";
