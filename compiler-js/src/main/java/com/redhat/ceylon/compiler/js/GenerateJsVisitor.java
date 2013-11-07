@@ -594,7 +594,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         //declareSelf(d);
         referenceOuter(d);
-        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
@@ -678,7 +678,7 @@ public class GenerateJsVisitor extends Visitor
         referenceOuter(d);
         initParameters(that.getParameterList(), d, null);
         
-        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
@@ -989,7 +989,7 @@ public class GenerateJsVisitor extends Visitor
                 com.redhat.ceylon.compiler.typechecker.model.ParameterList _pl =
                         ((com.redhat.ceylon.compiler.typechecker.model.Class)d).getParameterList();
                 if (_pl != null) {
-                    plist = new ArrayList<>();
+                    plist = new ArrayList<>(_pl.getParameters().size());
                     plist.addAll(_pl.getParameters());
                     enter |= !plist.isEmpty();
                 }
@@ -2611,7 +2611,7 @@ public class GenerateJsVisitor extends Visitor
         final ClassBody body = that.getClassBody();
         SatisfiedTypes sts = that.getSatisfiedTypes();
         
-        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
@@ -4395,7 +4395,7 @@ public class GenerateJsVisitor extends Visitor
         if (sarg == null) {
         	out(clAlias, "getEmpty()");
         } else {
-        	List<Map<TypeParameter,ProducedType>> targs = new ArrayList<Map<TypeParameter,ProducedType>>();
+        	List<Map<TypeParameter,ProducedType>> targs = new ArrayList<Map<TypeParameter,ProducedType>>(3);
         	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
         	boolean spread = !positionalArguments.isEmpty() 
         			&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
@@ -4550,8 +4550,23 @@ public class GenerateJsVisitor extends Visitor
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
                 "'),");
         if (d.isMember()) {
-            qualify(that, (Declaration)d.getContainer());
-            out(names.name((Declaration)d.getContainer()), ".$$.prototype.");
+            Declaration _md = d;
+            ArrayList<Declaration> parents = new ArrayList<>(3);
+            while (_md.isMember()) {
+                _md=(Declaration)_md.getContainer();
+                parents.add(0, _md);
+            }
+            boolean first=true;
+            boolean imported=false;
+            for (Declaration _d : parents) {
+                if (first){
+                    imported = qualify(that, _d);
+                    first=false;
+                }
+                if (!imported)out("$init$");
+                out(names.name(_d), imported?".$$.prototype.":"().$$.prototype.");
+                imported=true;
+            }
         } else {
             qualify(that, d);
         }
