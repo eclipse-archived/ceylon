@@ -204,7 +204,11 @@ public class CeylonTool implements Tool {
     }
     
     public static void main(String... args) throws Exception {
-        System.exit(start(args));
+        int exit = start(args);
+        // WARNING: NEVER CALL EXIT IF WE STILL HAVE DAEMON THREADS RUNNING AND WE'VE NO REASON TO EXIT WITH A NON-ZERO CODE
+        if(exit != 0)
+            System.exit(exit);
+        start(args);
     }
 
     public static int start(String... args) throws Exception {
