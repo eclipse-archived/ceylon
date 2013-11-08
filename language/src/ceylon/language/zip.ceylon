@@ -33,7 +33,7 @@ shared {<Key->Item>*} zipEntries<Key,Item>
  for every `0<=i<min({xs.size,ys.size})`."
 shared {[First,Second]*} zipPairs<First,Second>
         ({First*} firstElements, {Second*} secondElements)
-        => mapPairs((First first,Second second)=>[first,second],
+        => mapPairs((First first,Second second) => [first,second],
                 firstElements, secondElements);
 
 "Given a stream of values, and a stream of tuples, produce
