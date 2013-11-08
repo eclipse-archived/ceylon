@@ -82,7 +82,12 @@ public class DocToolToolTest {
     private void assertTxtFiles(String toolName) throws IOException {
         List<File> files = Arrays.asList(dir.listFiles());
         Assert.assertFalse(files.isEmpty());
-        File file = new File(dir, "ceylon-" + toolName + ".txt");
+        String name;
+        if(!toolName.isEmpty())
+            name = "ceylon-" + toolName + ".txt";
+        else
+            name = "ceylon.txt";    
+        File file = new File(dir, name);
         Assert.assertTrue(file+" not in output", files.contains(file));
         dump(file);
     }
