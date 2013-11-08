@@ -91,8 +91,10 @@ function Modulo(meta, $$modulo){
     if (typeof(deps[0]) === 'string') {
       var _d = [];
       for (var i=0; i<deps.length;i++) {
-        var spos = deps[i].lastIndexOf('/');
-        _d.push(Importa(String$(deps[i].substring(0,spos)), String$(deps[i].substring(spos+1))));
+        if (!deps[i].match('^ceylon\\.language/')) {
+          var spos = deps[i].lastIndexOf('/');
+          _d.push(Importa(String$(deps[i].substring(0,spos)), String$(deps[i].substring(spos+1))));
+        }
       }
       deps = _d.reifyCeylonType({Element:{t:Import$meta$declaration}});
       mm['$mod-deps'] = deps;
@@ -169,6 +171,9 @@ return version;},undefined,{mod:$$METAMODEL$$,$t:{t:Boolean$},$cont:Importa,$an:
       }
       return this._cont;
     },undefined,{mod:$$METAMODEL$$,$t:{t:Module$meta$declaration},$cont:Importa,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Import','$at','container']});
+  defineAttr($$importa,'string',function(){
+    return String$("import " + name + "/" + version);
+  },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:Importa,d:['ceylon.language','Object','$at','string']};});
     return $$importa;
 }
 Importa.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:Import$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Import']};
