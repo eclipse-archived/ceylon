@@ -80,11 +80,11 @@ public class TypeUtils {
                 if (d instanceof TypeParameter) {
                     resolveTypeParameter(node, (TypeParameter)d, gen);
                 } else {
-                    gen.out("{t:");
+                    closeBracket = pt.getDeclaration() instanceof TypeAlias==false;
+                    if (closeBracket)gen.out("{t:");
                     outputQualifiedTypename(
                             gen.isImported(node == null ? null : node.getUnit().getPackage(), pt.getDeclaration()),
                             pt, gen);
-                    closeBracket = true;
                 }
                 if (hasParams) {
                     gen.out(",a:");
