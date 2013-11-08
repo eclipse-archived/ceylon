@@ -141,7 +141,7 @@
                 <listitem>
                     <para>the declaration is a parameter or type parameter, and the
                     program element sequentially occurs in the body of the parameterized 
-                    declaration,</para>
+                    declaration, or</para>
                 </listitem>
                 <listitem>
                     <para>the program element is a control structure variable or 
