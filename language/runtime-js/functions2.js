@@ -51,7 +51,7 @@ function flatten(tf, $$$mptypes) {
     }
     return tf(t, t.$$targs$$);
   };
-  rf.$$targs$$=$$$mptypes;
+  rf.$$targs$$={Return:$$$mptypes.Return,Arguments:$$$mptypes.Args};
   return rf;
 }
 flatten.$$metamodel$$=function(){return{
@@ -91,7 +91,7 @@ function unflatten(ff, $$$mptypes) {
       return ff.apply(ru, a);
     }
   }
-  ru.$$targs$$=$$$mptypes;
+  ru.$$targs$$={Return:$$$mptypes.Return,Arguments:{t:'T',l:[$$$mptypes.Args]}};
   return ru;
 }
 unflatten.$$metamodel$$=function(){return{
