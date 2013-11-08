@@ -24,7 +24,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.ImportableScope;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -1924,7 +1923,6 @@ public class GenerateJsVisitor extends Visitor
                         out(",undefined");
                     }
                     out(",");
-                    //TODO if attributeNode is null then annotations should come from decl
                     if (attributeNode == null) {
                         TypeUtils.encodeForRuntime(attributeNode, decl, this);
                     } else {
