@@ -28,6 +28,7 @@ import java.io.PrintStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class CeylonTool implements Tool {
     
     
     private String toolName;
-    private List<String> toolArgs;
+    private List<String> toolArgs = Collections.<String>emptyList();
     private boolean stacktraces = false;
     private ToolLoader pluginLoader;
     private ToolFactory pluginFactory;
