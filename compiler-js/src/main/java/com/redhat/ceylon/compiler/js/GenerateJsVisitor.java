@@ -1431,8 +1431,8 @@ public class GenerateJsVisitor extends Visitor
                 }
                 paramList.visit(this);
                 beginBlock();
-                initSelf(that.getBlock());
-                initParameters(paramList, d.getTypeDeclaration(), d);
+                if (count==0)initSelf(that.getBlock());
+                initParameters(paramList, null, d);
                 count++;
             }
             visitStatements(that.getBlock().getStatements());
