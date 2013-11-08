@@ -242,7 +242,6 @@ public class InvocationGenerator {
                 Map<String, String> argVarNames, boolean superAccess, Tree.TypeArguments targs) {
         boolean firstList = true;
         for (com.redhat.ceylon.compiler.typechecker.model.ParameterList plist : func.getParameterLists()) {
-            List<String> argNames = argList.getNamedArgumentList().getArgumentNames();
             boolean first=true;
             if (firstList && superAccess) {
                 gen.out(".call(this");
@@ -253,19 +252,15 @@ public class InvocationGenerator {
             }
             for (Parameter p : plist.getParameters()) {
                 if (!first) gen.out(",");
-                boolean namedArgumentGiven = argNames.contains(p.getName());
-                if (namedArgumentGiven) {
-                    gen.out(argVarNames.get(p.getName()));
-                } else if (p.isSequenced()) {
-                    gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
-                } else if (argList.getSequencedArgument()!=null) {
-                    String pname = argVarNames.get(p.getName());
-                    gen.out(pname==null ? "undefined" : pname);
-                } else if (p.isDefaulted()) {
-                    gen.out("undefined");
+                final String vname = argVarNames.get(p.getName());
+                if (vname == null) {
+                    if (p.isDefaulted()) {
+                        gen.out("undefined");
+                    } else {
+                        gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
+                    }
                 } else {
-                    //It's an empty Iterable
-                    gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
+                    gen.out(vname);
                 }
                 first = false;
             }
