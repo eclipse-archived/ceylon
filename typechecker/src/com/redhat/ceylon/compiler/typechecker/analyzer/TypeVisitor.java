@@ -1376,7 +1376,7 @@ public class TypeVisitor extends Visitor {
     
     private void checkDefaultArg(Tree.SpecifierOrInitializerExpression se, Parameter p) {
         if (se!=null) {
-            if (se.getScope().getScope() instanceof Specification) {
+            if (se.getScope() instanceof Specification) {
                 se.addError("parameter of specification statement may not define default value");
             }
             else {

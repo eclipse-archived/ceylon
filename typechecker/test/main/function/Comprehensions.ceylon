@@ -102,12 +102,3 @@ void comprehensions() {
 class SuperWithIter({Character*} iter) {}
 class BadSubWithIter(variable String s) extends SuperWithIter({for (@error c in s) c}) {}
 class GoodSubWithIter(String s) extends SuperWithIter({for (c in s) c}) {}
-
-Character? char = 'C';
-{Character*} chars => { for (char in "hell") char.uppercased }; 
-
-void dupeNames() {
-    Character? char = null;
-    variable {Character*} chars = { for (char in "hello") char.uppercased };
-    chars = { for (char in "goodbye") char.uppercased };
-}
