@@ -18,6 +18,15 @@ String order(String product, Integer count=1, Float discount=0.0,
           "``discount``, comments: ``commentStr``";
 }
 
+class A293(shared String s){}
+class B293(shared String s){}
+class C293(String s, A293 a, B293 b, String c="c"){
+  check(s=="issue 293","issue 293.1");
+  check(a.s=="a", "issue 293.2");
+  check(b.s=="b", "issue 293.3");
+  check(c=="c", "issue 293.4");
+}
+
 void testNamedArguments() {
   check(namedFunc {
     object iter satisfies Iterable<Integer> {
@@ -60,4 +69,13 @@ void testNamedArguments() {
   check(order { product = "Bee"; count = 531; "Express delivery", "Send individually" }
         =="Order 'Bee', quantity 531, discount 0, comments: 'Express delivery', 'Send individually'",
         "defaulted & sequenced named [3]");
+  C293 {
+    "issue 293";
+    A293 {
+      s="a";
+    };
+    B293 {
+      s="b";
+    };
+  };
 }
