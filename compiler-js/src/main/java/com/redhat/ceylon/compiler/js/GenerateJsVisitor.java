@@ -456,10 +456,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ClassDeclaration that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        Class d = that.getDeclarationModel();
-        if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
+        if (opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) return;
         classDeclaration(that);
     }
 
@@ -490,47 +487,15 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InterfaceDeclaration that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        Interface d = that.getDeclarationModel();
-        if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
-        //It's pointless declaring interface aliases outside of classes/interfaces
-        Scope scope = that.getScope();
-        if (scope instanceof InterfaceAlias) {
-            scope = scope.getContainer();
+        if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
+            interfaceDeclaration(that);
         }
-        comment(that);
-        out(function, names.name(d), "(");
-        self(d);
-        if (!d.getTypeParameters().isEmpty())out(",$$targs$$");
-        out(")");
-        beginBlock();
-        ProducedType pt = that.getTypeSpecifier().getType().getTypeModel();
-        TypeDeclaration dec = pt.getDeclaration();
-        qualify(that,dec);
-        out(names.name(dec), "(");
-        self(d);
-        if (!pt.getTypeArguments().isEmpty()) {
-            out(",");
-            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this);
-        }
-        out(");");
-        endBlock();
-        endLine();
-        out(names.name(d),".$$metamodel$$=");
-        TypeUtils.encodeForRuntime(that, d, this);
-        share(d);
     }
 
     private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, InterfaceDeclaration that) {
-        comment(that);
-        TypeDeclaration dec = that.getTypeSpecifier().getType().getTypeModel().getDeclaration();
-        String path = qualifiedPath(that, dec, true);
-        if (path.length() > 0) {
-            path += '.';
-        }
-        out(names.self(outer), ".", names.name(that.getDeclarationModel()), "=",
-                path, names.name(dec), ";");
+        interfaceDeclaration(that);
+        final String tname = names.name(that.getDeclarationModel());
+        out(names.self(outer), ".", tname, "=", tname, ";");
         endLine();
     }
 
@@ -543,15 +508,15 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(InterfaceDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             interfaceDefinition(that);
         }
     }
 
     private void interfaceDefinition(InterfaceDefinition that) {
-        Interface d = that.getDeclarationModel();
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        final Interface d = that.getDeclarationModel();
         comment(that);
 
         out(function, names.name(d), "(");
@@ -597,16 +562,46 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ClassDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
         if (!(opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember())) {
             classDefinition(that);
         }
     }
 
-    private void classDeclaration(ClassDeclaration that) {
+    private void interfaceDeclaration(InterfaceDeclaration that) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
         comment(that);
-        final com.redhat.ceylon.compiler.typechecker.model.Class d = that.getDeclarationModel();
+        final Interface d = that.getDeclarationModel();
+        final String aname = names.name(d);
+        Tree.StaticType ext = that.getTypeSpecifier().getType();
+        out(function, aname, "(");
+        if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
+            out("$$targs$$,");
+        }
+        self(d);
+        out("){");
+        final ProducedType pt = ext.getTypeModel();
+        final TypeDeclaration aliased = pt.getDeclaration();
+        qualify(that,aliased);
+        out(names.name(aliased), "(");
+        if (!pt.getTypeArguments().isEmpty()) {
+            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this);
+            out(",");
+        }
+        self(d);
+        out(");}");
+        endLine();
+        out(aname,".$$metamodel$$=");
+        TypeUtils.encodeForRuntime(that, d, this);
+        endLine(true);
+        share(d);
+    }
+
+    private void classDeclaration(ClassDeclaration that) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        comment(that);
+        final Class d = that.getDeclarationModel();
         final String aname = names.name(d);
         final Tree.ClassSpecifier ext = that.getClassSpecifier();
         out(function, aname, "(");
@@ -615,14 +610,12 @@ public class GenerateJsVisitor extends Visitor
             p.visit(this);
             out(", ");
         }
-        TypeArgumentList targs = ext.getType().getTypeArgumentList();
         if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
             out("$$targs$$,");
         }
         self(d);
-        out(")");
+        out("){return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
-        out("{return ");
         qualify(that, aliased);
         out(names.name(aliased), "(");
         if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
@@ -633,14 +626,9 @@ public class GenerateJsVisitor extends Visitor
         } else {
             out("/*PENDIENTE NAMED ARG CLASS DECL */");
         }
-        if (targs != null && !targs.getTypes().isEmpty()) {
-            Map<TypeParameter, ProducedType> invargs = TypeUtils.matchTypeParametersWithArguments(
-                    aliased.getTypeParameters(), targs.getTypeModels());
-            if (invargs != null) {
-                TypeUtils.printTypeArguments(that, invargs, this);
-            } else {
-                out("/*TARGS != TPARAMS!!!! WTF?????*/");
-            }
+        Map<TypeParameter, ProducedType> invargs = ext.getType().getTypeModel().getTypeArguments();
+        if (invargs != null && !invargs.isEmpty()) {
+            TypeUtils.printTypeArguments(that, invargs, this);
             out(",");
         }
         self(d);
@@ -657,7 +645,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void classDefinition(ClassDefinition that) {
-        Class d = that.getDeclarationModel();
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        final Class d = that.getDeclarationModel();
         comment(that);
         out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
@@ -1169,12 +1159,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(ObjectDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
         Value d = that.getDeclarationModel();
         if (!(opts.isOptimize() && d.isClassOrInterfaceMember())) {
             objectDefinition(that);
         } else {
+            //Don't even bother with nodes that have errors
+            if (errVisitor.hasErrors(that))return;
             Class c = (Class) d.getTypeDeclaration();
             comment(that);
             outerSelf(d);
@@ -1186,10 +1176,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void objectDefinition(ObjectDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
         comment(that);
-        Value d = that.getDeclarationModel();
+        final Value d = that.getDeclarationModel();
         boolean addToPrototype = opts.isOptimize() && d.isClassOrInterfaceMember();
-        Class c = (Class) d.getTypeDeclaration();
+        final Class c = (Class) d.getTypeDeclaration();
 
         out(function, names.name(c));
         Map<TypeParameter, ProducedType> targs=new HashMap<TypeParameter, ProducedType>();
@@ -1336,13 +1328,13 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MethodDeclaration that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
         methodDeclaration(null, that);
     }
     
     private void methodDeclaration(TypeDeclaration outer, MethodDeclaration that) {
-        Method m = that.getDeclarationModel();
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        final Method m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
             // method(params) => expr
             if (outer == null) {
@@ -1403,10 +1395,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MethodDefinition that) {
-        Method d = that.getDeclarationModel();
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        if (!((opts.isOptimize() && that.getDeclarationModel().isClassOrInterfaceMember()) || isNative(d))) {
+        final Method d = that.getDeclarationModel();
+        if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
             methodDefinition(that);
@@ -1418,7 +1408,9 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void methodDefinition(MethodDefinition that) {
-        Method d = that.getDeclarationModel();
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
+        final Method d = that.getDeclarationModel();
         if (that.getParameterLists().size() == 1) {
             out(function, names.name(d));
             ParameterList paramList = that.getParameterLists().get(0);
