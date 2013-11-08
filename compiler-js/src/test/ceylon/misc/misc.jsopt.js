@@ -1,65 +1,95 @@
 (function(define) { define(function(require, exports, module) {
-//!!!METAMODEL:{"$mod-deps":["ceylon.language\/0.6","check\/0.1","members\/0.1"],"$mod-name":"misc","$mod-version":"0.1","misc":{"doIt":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"prm","$pt":"f","$nm":"f"}]],"$mt":"mthd","$nm":"doIt"},"testLate":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testLate"},"F":{"super":{"$pk":"misc","$nm":"Foo"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$alias":"1","$nm":"F"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test"},"var":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"mthd","$an":{"shared":[]},"$nm":"var"},"AliasingClass":{"$i":{"AliasingIface":{"$mt":"ifc","$an":{"shared":[]},"$m":{"aliasingIface":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingIface"}},"$nm":"AliasingIface"}},"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"AliasingInner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"aliasingInner":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingInner"}},"$nm":"AliasingInner"}},"$nm":"AliasingClass"},"Matrix":{"$mt":"ifc","$tp":[{"$nm":"Cell"}],"$alias":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"Cell"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequence"},"$nm":"Matrix"},"MiMatrix":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"gridSize"}],"satisfies":[{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"},"get":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}]},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"i"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"get"},"spanTo":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanTo"},"equals":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"equals"},"contains":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"contains"},"spanFrom":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"from"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanFrom"}},"$at":{"lastIndex":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"lastIndex"},"clone":{"$t":{"$pk":"misc","$nm":"MiMatrix"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"clone"},"hash":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"hash"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"string"},"sb":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"SequenceBuilder"},"$mt":"attr","$nm":"sb"},"grid":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$nm":"grid"},"rest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"rest"},"reversed":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"reversed"},"first":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"first"},"size":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"size"}},"$nm":"MiMatrix"},"LateTestParent":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$hdn":"1","$mt":"prm","seq":"1","$pt":"v","$nm":"children"}],"$mt":"cls","$at":{"children":{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[]},"$nm":"children"}},"$nm":"LateTestParent"},"TestObjects":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"a"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"b"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"c"}],"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"}},"$nm":"TestObjects"},"Bivariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"variance":"in","$nm":"In"},{"variance":"out","$nm":"Out"}],"$an":{"shared":[]},"$nm":"Bivariant"},"testAliasing":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testAliasing"},"AliasingSub2":{"super":{"$pk":"misc","$nm":"AliasingSubclass"},"$mt":"cls","$at":{"iface":{"$t":{"$pk":"misc","$nm":"AliasedIface"},"$mt":"gttr","$an":{"shared":[]},"$nm":"iface"}},"$nm":"AliasingSub2"},"Foo":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$hdn":"1","$mt":"prm","$pt":"v","$nm":"name"}],"$mt":"cls","$an":{"shared":[]},"$m":{"inc":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"inc"},"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"printName"}},"$at":{"count":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"count"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"string"},"counter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"variable":[]},"$nm":"counter"},"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"Foo"},"Bar":{"super":{"$pk":"misc","$nm":"Foo"},"satisfies":[{"$pk":"misc","$nm":"X"}],"$mt":"cls","$an":{"shared":[]},"$m":{"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"printName"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"incOuter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"incOuter"}},"$nm":"Inner"}},"$nm":"Bar"},"X":{"$mt":"ifc","$an":{"shared":[]},"$m":{"helloWorld":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"helloWorld"}},"$nm":"X"},"Container":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"Outer"}],"$an":{"shared":[]},"$c":{"Member":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"Inner"}],"$an":{"shared":[]},"$c":{"Child":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"InnerMost"}],"$an":{"shared":[]},"$nm":"Child"}},"$nm":"Member"}},"$nm":"Container"},"Covariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"variance":"out","$nm":"Element"}],"$an":{"shared":[]},"$nm":"Covariant"},"runtimeMethod":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"param"}]],"$mt":"mthd","$nm":"runtimeMethod"},"Top1":{"$mt":"ifc","$an":{"shared":[]},"$nm":"Top1"},"Strinteger":{"$mt":"als","$an":{"shared":[]},"$alias":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"}]},"$nm":"Strinteger"},"Middle1":{"satisfies":[{"$pk":"misc","$nm":"Top1"}],"$mt":"ifc","$an":{"shared":[]},"$nm":"Middle1"},"foob":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$at":{"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"foob"},"LateTestChild":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$at":{"parent":{"$t":{"$pk":"misc","$nm":"LateTestParent"},"$mt":"attr","$an":{"shared":[],"late":[]},"$nm":"parent"}},"$nm":"LateTestChild"},"Invariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"Element"}],"$an":{"shared":[]},"$nm":"Invariant"},"AliasingSubclass":{"$i":{"AliasedIface":{"$mt":"ifc","$an":{"shared":[]},"$alias":{"$pk":"misc","$nm":"AliasingIface"},"$nm":"AliasedIface"}},"super":{"$pk":"misc","$nm":"AliasingClass"},"$mt":"cls","$m":{"aliasingSubclass":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingSubclass"}},"$c":{"InnerAlias":{"super":{"$pk":"misc","$nm":"AliasingInner"},"$mt":"cls","$an":{"shared":[]},"$alias":"1","$nm":"InnerAlias"},"SubAlias":{"super":{"$pk":"misc","$nm":"InnerAlias"},"$mt":"cls","$an":{"shared":[]},"$nm":"SubAlias"}},"$nm":"AliasingSubclass"},"Contravariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"variance":"in","$nm":"Element"}],"$an":{"shared":[]},"$nm":"Contravariant"},"test_objects":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"test_objects"},"testReifiedRuntime":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testReifiedRuntime"},"Bottom1":{"satisfies":[{"$pk":"misc","$nm":"Middle1"}],"$mt":"ifc","$an":{"shared":[]},"$nm":"Bottom1"},"Listleton":{"super":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"}],"$pk":"ceylon.language","$nm":"Singleton"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"prm","$pt":"v","$nm":"l"}],"$mt":"cls","$tp":[{"$nm":"T"}],"$alias":"1","$nm":"Listleton"},"printAll":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$pt":"v","$nm":"strings"}]],"$mt":"mthd","$nm":"printAll"},"printBoth":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"x"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"y"}]],"$mt":"mthd","$nm":"printBoth"}}}
-var $$$cl2592=require('ceylon/language/0.6/ceylon.language-0.6');
-var $$$c2593=require('check/0.1/check-0.1');
+var $$METAMODEL$$={"$mod-deps":["ceylon.language\/1.0.0","check\/0.1","members\/0.1"],"$mod-name":"misc","$mod-version":"0.1","$mod-bin":"6.0","misc":{"doIt":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"prm","$pt":"f","$nm":"f"}]],"$mt":"mthd","$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"f"}},"$nm":"doIt"},"testLate":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testLate"},"F":{"super":{"$pk":"misc","$nm":"Foo"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$nm":"name"}],"$mt":"cls","$alias":"1","$nm":"F"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test","$o":{"x":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$m":{"y":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"y"}},"$nm":"x"}}},"var":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"mthd","$an":{"shared":[]},"$nm":"var"},"AliasingClass":{"$i":{"AliasingIface":{"$mt":"ifc","$an":{"shared":[]},"$m":{"aliasingIface":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingIface"}},"$nm":"AliasingIface"}},"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$c":{"AliasingInner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"aliasingInner":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingInner"}},"$nm":"AliasingInner"}},"$nm":"AliasingClass"},"Matrix":{"$mt":"ifc","$tp":[{"$nm":"Cell"}],"$alias":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"Cell"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequence"},"$nm":"Matrix"},"Test2":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$tp":[{"$mt":"tpm","$nm":"T1"}],"$pk":"misc","$nm":"TestInterface1"}],"$mt":"cls","$tp":[{"$nm":"T1"}],"$nm":"Test2"},"MiMatrix":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"gridSize"}],"satisfies":[{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"},"get":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}]},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"i"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"get"},"spanTo":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanTo"},"equals":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"equals"},"segment":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"from"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"length"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"segment"},"contains":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$nm":"other"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"contains"},"spanFrom":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"from"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanFrom"},"span":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"from"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"span"}},"$at":{"lastIndex":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"lastIndex"},"gridSize":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$nm":"gridSize"},"clone":{"$t":{"$pk":"misc","$nm":"MiMatrix"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"clone"},"last":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"last"},"hash":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"hash"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"string"},"sb":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"SequenceBuilder"},"$mt":"attr","$nm":"sb"},"grid":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"grid"},"rest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"rest"},"reversed":{"$t":{"$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"misc","$nm":"Matrix"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"reversed"},"first":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequence"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"first"},"size":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"size"}},"$nm":"MiMatrix"},"LateTestParent":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$hdn":"1","$mt":"prm","seq":"1","$an":{"shared":[]},"$nm":"children"}],"$mt":"cls","$at":{"children":{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$pk":"misc","$nm":"LateTestChild"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"attr","$an":{"shared":[]},"$nm":"children"}},"$nm":"LateTestParent"},"TestObjects":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"a"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"b"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"c"}],"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator","$o":{"iter":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Iterator"}],"$mt":"obj","$m":{"next":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Finished"}]},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"next"}},"$at":{"index":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"variable":[]},"$nm":"index"}},"$nm":"iter"}}}},"$at":{"b":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$nm":"b"},"c":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$nm":"c"},"a":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$nm":"a"}},"$nm":"TestObjects"},"Issue225Alias":{"$mt":"als","$an":{"shared":[]},"$alias":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"}]},"$nm":"Issue225Alias"},"Bivariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"variance":"in","$nm":"In"},{"variance":"out","$nm":"Out"}],"$an":{"shared":[]},"$nm":"Bivariant"},"testAliasing":{"$i":{"AliasedIface2":{"$mt":"ifc","$alias":{"$pk":"misc","$nm":"AliasingIface"},"$nm":"AliasedIface2"}},"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$m":{"use":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$pk":"misc","$nm":"AliasedIface2"},"$mt":"prm","$nm":"aif"}]],"$mt":"mthd","$nm":"use"},"cualquiera":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Boolean"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$nm":"bits"}]],"$mt":"mthd","$nm":"cualquiera"}},"$c":{"InnerSubalias":{"super":{"$pk":"misc","$nm":"AliasingSubclass"},"$mt":"cls","$alias":"1","$nm":"InnerSubalias"}},"$nm":"testAliasing"},"AliasingSub2":{"super":{"$pk":"misc","$nm":"AliasingSubclass"},"$mt":"cls","$at":{"iface":{"$t":{"$pk":"misc","$nm":"AliasedIface"},"$mt":"gttr","$an":{"shared":[]},"$nm":"iface","$o":{"aliased":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$pk":"misc","$nm":"AliasedIface"}],"$mt":"obj","$nm":"aliased"}}}},"$nm":"AliasingSub2"},"Foo":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$hdn":"1","$mt":"prm","$an":{"shared":[]},"$nm":"name"}],"$mt":"cls","$an":{"shared":[]},"$m":{"inc":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"inc"},"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"printName"}},"$at":{"count":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"count"},"string":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"string"},"counter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"shared":[],"actual":[],"variable":[]},"$nm":"counter"},"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"Foo"},"Bar":{"super":{"$pk":"misc","$nm":"Foo"},"satisfies":[{"$pk":"misc","$nm":"X"}],"$mt":"cls","$an":{"shared":[]},"$m":{"printName":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"printName"}},"$c":{"Inner":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$an":{"shared":[]},"$m":{"incOuter":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"incOuter"}},"$nm":"Inner"}},"$nm":"Bar"},"X":{"$mt":"ifc","$an":{"shared":[]},"$m":{"helloWorld":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"helloWorld"}},"$nm":"X"},"Container":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"Outer"}],"$an":{"shared":[]},"$c":{"Member":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"Inner"}],"$an":{"shared":[]},"$c":{"Child":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"InnerMost"}],"$an":{"shared":[]},"$nm":"Child"}},"$nm":"Member"}},"$nm":"Container"},"Covariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"variance":"out","$nm":"Element"}],"$an":{"shared":[]},"$nm":"Covariant"},"runtimeMethod":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"param"}]],"$mt":"mthd","$nm":"runtimeMethod"},"Top1":{"$mt":"ifc","$an":{"shared":[]},"$nm":"Top1"},"Strinteger":{"$mt":"als","$an":{"shared":[]},"$alias":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"}]},"$nm":"Strinteger"},"Middle1":{"satisfies":[{"$pk":"misc","$nm":"Top1"}],"$mt":"ifc","$an":{"shared":[]},"$nm":"Middle1"},"m1":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"m1"},"m2":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"m2"},"m3":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"m3"},"container249":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"attr","$nm":"container249"},"Test1":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"misc","$nm":"TestInterface1"}],"$mt":"cls","$tp":[{"$nm":"T"}],"$nm":"Test1"},"foob":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$at":{"name":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"attr","$an":{"shared":[]},"$nm":"name"}},"$nm":"foob"},"LateTestChild":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$at":{"parent":{"$t":{"$pk":"misc","$nm":"LateTestParent"},"$mt":"attr","$an":{"shared":[],"late":[]},"$nm":"parent"}},"$nm":"LateTestChild"},"Invariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"Element"}],"$an":{"shared":[]},"$nm":"Invariant"},"issue225_1":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"}]},"$mt":"prm","$nm":"content"}]],"$mt":"mthd","$an":{"shared":[]},"$nm":"issue225_1"},"AliasingSubclass":{"$i":{"AliasedIface":{"$mt":"ifc","$an":{"shared":[]},"$alias":{"$pk":"misc","$nm":"AliasingIface"},"$nm":"AliasedIface"}},"super":{"$pk":"misc","$nm":"AliasingClass"},"$mt":"cls","$m":{"aliasingSubclass":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"mthd","$an":{"shared":[]},"$nm":"aliasingSubclass"}},"$c":{"InnerAlias":{"super":{"$pk":"misc","$nm":"AliasingInner"},"$mt":"cls","$an":{"shared":[]},"$alias":"1","$nm":"InnerAlias"},"SubAlias":{"super":{"$pk":"misc","$nm":"InnerAlias"},"$mt":"cls","$an":{"shared":[]},"$nm":"SubAlias"}},"$nm":"AliasingSubclass"},"issue225_2":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$pk":"misc","$nm":"Issue225Alias"},"$mt":"prm","$nm":"content"}]],"$mt":"mthd","$an":{"shared":[]},"$nm":"issue225_2"},"testStackTrace":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testStackTrace"},"TestInterface1":{"$mt":"ifc","$tp":[{"$nm":"T"}],"$nm":"TestInterface1"},"Contravariant":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"variance":"in","$nm":"Element"}],"$an":{"shared":[]},"$nm":"Contravariant"},"object249":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"obj","$an":{"shared":[]},"$at":{"int":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[]},"$nm":"int"}},"$nm":"object249"},"test_objects":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"test_objects"},"testReifiedRuntime":{"$i":{"TestInterface2":{"$mt":"ifc","$tp":[{"variance":"in","$nm":"T"}],"$nm":"TestInterface2"}},"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$c":{"Local":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$tp":[{"$nm":"T"}],"$nm":"Local"},"Test3":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"misc","$nm":"TestInterface2"}],"$mt":"cls","$tp":[{"variance":"in","$nm":"T"}],"$nm":"Test3"},"Test4":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$tp":[{"$mt":"tpm","$nm":"T1"}],"$pk":"misc","$nm":"TestInterface2"}],"$mt":"cls","$tp":[{"variance":"in","$nm":"T1"}],"$nm":"Test4"}},"$nm":"testReifiedRuntime"},"Bottom1":{"satisfies":[{"$pk":"misc","$nm":"Middle1"}],"$mt":"ifc","$an":{"shared":[]},"$nm":"Bottom1"},"Listleton":{"super":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"}],"$pk":"ceylon.language","$nm":"Singleton"},"$ps":[{"$t":{"$md":"ceylon.language","$tp":[{"$mt":"tpm","$nm":"T"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"prm","$nm":"l"}],"$mt":"cls","$tp":[{"$nm":"T"}],"$alias":"1","$nm":"Listleton"},"Test284":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$pk":"misc","$nm":"Strinteger"},"$mt":"prm","$nm":"x"}],"$mt":"cls","$an":{"shared":[]},"$at":{"x":{"$t":{"$pk":"misc","$nm":"Strinteger"},"$mt":"attr","$nm":"x"}},"$nm":"Test284"},"printAll":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$nm":"strings"}]],"$mt":"mthd","$nm":"printAll"},"printBoth":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$nm":"x"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$nm":"y"}]],"$mt":"mthd","$nm":"printBoth"}}};
+exports.$$METAMODEL$$=function(){return $$METAMODEL$$;};
+var $$$cl1=require('ceylon/language/1.0.0/ceylon.language-1.0.0');
+$$$cl1.$addmod$($$$cl1,'ceylon.language/1.0.0');
+var $$$c2=require('check/0.1/check-0.1');
+$$$cl1.$addmod$($$$c2,'check/0.1');
 
-//ClassDefinition AliasingClass at aliases.ceylon (5:0-12:0)
+//TypeAliasDecl Strinteger at aliases.ceylon (3:0-3:41)
+function Strinteger(){var tmpvar$856={t:'u', l:[{t:$$$cl1.String},{t:$$$cl1.Integer}]};tmpvar$856.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$an:function(){return[$$$cl1.shared()];},d:['misc','Strinteger']};};return tmpvar$856;}
+exports.Strinteger=Strinteger;
+
+//ClassDef Test284 at aliases.ceylon (5:0-7:0)
+function Test284(x$857, $$test284){
+    $init$Test284();
+    if ($$test284===undefined)$$test284=new Test284.$$;
+    $$test284.x$857_=x$857;
+    $$$cl1.print($$test284.x$857);
+    return $$test284;
+}
+Test284.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[{$nm:'x',$mt:'prm',$t:Strinteger(),$an:function(){return[];}}],$an:function(){return[$$$cl1.shared()];},d:['misc','Test284']};};
+exports.Test284=Test284;
+function $init$Test284(){
+    if (Test284.$$===undefined){
+        $$$cl1.initTypeProto(Test284,'misc::Test284',$$$cl1.Basic);
+        (function($$test284){
+            $$$cl1.defineAttr($$test284,'x$857',function(){return this.x$857_;},undefined,function(){return{mod:$$METAMODEL$$,$t:Strinteger(),$cont:Test284,d:['misc','Test284','$at','x']};});
+        })(Test284.$$.prototype);
+    }
+    return Test284;
+}
+exports.$init$Test284=$init$Test284;
+$init$Test284();
+
+//ClassDef AliasingClass at aliases.ceylon (9:0-16:0)
 function AliasingClass($$aliasingClass){
     $init$AliasingClass();
     if ($$aliasingClass===undefined)$$aliasingClass=new AliasingClass.$$;
     return $$aliasingClass;
 }
+AliasingClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingClass']};};
 exports.AliasingClass=AliasingClass;
 function $init$AliasingClass(){
     if (AliasingClass.$$===undefined){
-        $$$cl2592.initTypeProto(AliasingClass,'misc::AliasingClass',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(AliasingClass,'misc::AliasingClass',$$$cl1.Basic);
         (function($$aliasingClass){
             
-            //InterfaceDefinition AliasingIface at aliases.ceylon (6:4-8:4)
+            //InterfaceDef AliasingIface at aliases.ceylon (10:4-12:4)
             function AliasingIface$AliasingClass($$aliasingIface$AliasingClass){
                 $$aliasingIface$AliasingClass.$$outer=this;
             }
+            AliasingIface$AliasingClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$cont:AliasingClass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingClass','$i','AliasingIface']};};
             function $init$AliasingIface$AliasingClass(){
                 if (AliasingIface$AliasingClass.$$===undefined){
-                    $$$cl2592.initTypeProto(AliasingIface$AliasingClass,'misc::AliasingClass.AliasingIface');
+                    $$$cl1.initTypeProtoI(AliasingIface$AliasingClass,'misc::AliasingClass.AliasingIface');
                     AliasingClass.AliasingIface$AliasingClass=AliasingIface$AliasingClass;
                     (function($$aliasingIface$AliasingClass){
                         
-                        //MethodDefinition aliasingIface at aliases.ceylon (7:8-7:54)
+                        //MethodDef aliasingIface at aliases.ceylon (11:8-11:54)
                         $$aliasingIface$AliasingClass.aliasingIface=function aliasingIface(){
                             var $$aliasingIface$AliasingClass=this;
                             return true;
-                        };$$aliasingIface$AliasingClass.aliasingIface.$$metamodel$$={$nm:'aliasingIface',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[]};
+                        };$$aliasingIface$AliasingClass.aliasingIface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[],$cont:AliasingIface$AliasingClass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingClass','$i','AliasingIface','$m','aliasingIface']};};
                     })(AliasingIface$AliasingClass.$$.prototype);
                 }
-                AliasingIface$AliasingClass.$$.$$metamodel$$={$nm:'AliasingIface',$mt:'ifc','satisfies':[]};
                 return AliasingIface$AliasingClass;
             }
             $$aliasingClass.$init$AliasingIface$AliasingClass=$init$AliasingIface$AliasingClass;
             $init$AliasingIface$AliasingClass();
             $$aliasingClass.AliasingIface$AliasingClass=AliasingIface$AliasingClass;
             
-            //ClassDefinition AliasingInner at aliases.ceylon (9:4-11:4)
+            //ClassDef AliasingInner at aliases.ceylon (13:4-15:4)
             function AliasingInner$AliasingClass($$aliasingInner$AliasingClass){
                 $init$AliasingInner$AliasingClass();
                 if ($$aliasingInner$AliasingClass===undefined)$$aliasingInner$AliasingClass=new this.AliasingInner$AliasingClass.$$;
                 $$aliasingInner$AliasingClass.$$outer=this;
                 return $$aliasingInner$AliasingClass;
             }
+            AliasingInner$AliasingClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$cont:AliasingClass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingClass','$c','AliasingInner']};};
             function $init$AliasingInner$AliasingClass(){
                 if (AliasingInner$AliasingClass.$$===undefined){
-                    $$$cl2592.initTypeProto(AliasingInner$AliasingClass,'misc::AliasingClass.AliasingInner',$$$cl2592.Basic);
+                    $$$cl1.initTypeProto(AliasingInner$AliasingClass,'misc::AliasingClass.AliasingInner',$$$cl1.Basic);
                     AliasingClass.AliasingInner$AliasingClass=AliasingInner$AliasingClass;
                     (function($$aliasingInner$AliasingClass){
                         
-                        //MethodDefinition aliasingInner at aliases.ceylon (10:8-10:54)
+                        //MethodDef aliasingInner at aliases.ceylon (14:8-14:54)
                         $$aliasingInner$AliasingClass.aliasingInner=function aliasingInner(){
                             var $$aliasingInner$AliasingClass=this;
                             return true;
-                        };$$aliasingInner$AliasingClass.aliasingInner.$$metamodel$$={$nm:'aliasingInner',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[]};
+                        };$$aliasingInner$AliasingClass.aliasingInner.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[],$cont:AliasingInner$AliasingClass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingClass','$c','AliasingInner','$m','aliasingInner']};};
                     })(AliasingInner$AliasingClass.$$.prototype);
                 }
-                AliasingInner$AliasingClass.$$.$$metamodel$$={$nm:'AliasingInner',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
                 return AliasingInner$AliasingClass;
             }
             $$aliasingClass.$init$AliasingInner$AliasingClass=$init$AliasingInner$AliasingClass;
@@ -67,28 +97,31 @@ function $init$AliasingClass(){
             $$aliasingClass.AliasingInner$AliasingClass=AliasingInner$AliasingClass;
         })(AliasingClass.$$.prototype);
     }
-    AliasingClass.$$.$$metamodel$$={$nm:'AliasingClass',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
     return AliasingClass;
 }
 exports.$init$AliasingClass=$init$AliasingClass;
 $init$AliasingClass();
 
-//ClassDefinition AliasingSubclass at aliases.ceylon (14:0-22:0)
+//ClassDef AliasingSubclass at aliases.ceylon (18:0-26:0)
 function AliasingSubclass($$aliasingSubclass){
     $init$AliasingSubclass();
     if ($$aliasingSubclass===undefined)$$aliasingSubclass=new AliasingSubclass.$$;
     AliasingClass($$aliasingSubclass);
     return $$aliasingSubclass;
 }
+AliasingSubclass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AliasingClass},$ps:[],d:['misc','AliasingSubclass']};};
 function $init$AliasingSubclass(){
     if (AliasingSubclass.$$===undefined){
-        $$$cl2592.initTypeProto(AliasingSubclass,'misc::AliasingSubclass',AliasingClass);
+        $$$cl1.initTypeProto(AliasingSubclass,'misc::AliasingSubclass',$init$AliasingClass());
         (function($$aliasingSubclass){
             
-            //ClassDeclaration InnerAlias at aliases.ceylon (15:4-15:48)
-            $$aliasingSubclass.InnerAlias$AliasingSubclass=$$aliasingSubclass.AliasingInner$AliasingClass;
+            //ClassDecl InnerAlias at aliases.ceylon (19:4-19:48)
+            function InnerAlias$AliasingSubclass($$innerAlias$AliasingSubclass){return $$aliasingSubclass.AliasingInner$AliasingClass($$innerAlias$AliasingSubclass);}
+            InnerAlias$AliasingSubclass.$$=$$aliasingSubclass.AliasingInner$AliasingClass.$$;
+            InnerAlias$AliasingSubclass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AliasingClass.AliasingInner$AliasingClass},$ps:[],$cont:AliasingSubclass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingSubclass','$c','InnerAlias']};};
+            $$aliasingSubclass.InnerAlias$AliasingSubclass=InnerAlias$AliasingSubclass;
             
-            //ClassDefinition SubAlias at aliases.ceylon (16:4-16:50)
+            //ClassDef SubAlias at aliases.ceylon (20:4-20:50)
             function SubAlias$AliasingSubclass($$subAlias$AliasingSubclass){
                 $init$SubAlias$AliasingSubclass();
                 if ($$subAlias$AliasingSubclass===undefined)$$subAlias$AliasingSubclass=new this.SubAlias$AliasingSubclass.$$;
@@ -96,488 +129,582 @@ function $init$AliasingSubclass(){
                 $$subAlias$AliasingSubclass.$$outer.InnerAlias$AliasingSubclass($$subAlias$AliasingSubclass);
                 return $$subAlias$AliasingSubclass;
             }
+            SubAlias$AliasingSubclass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AliasingSubclass.InnerAlias$AliasingSubclass},$ps:[],$cont:AliasingSubclass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingSubclass','$c','SubAlias']};};
             function $init$SubAlias$AliasingSubclass(){
                 if (SubAlias$AliasingSubclass.$$===undefined){
-                    $$$cl2592.initTypeProto(SubAlias$AliasingSubclass,'misc::AliasingSubclass.SubAlias',$$aliasingSubclass.InnerAlias$AliasingSubclass);
+                    $$$cl1.initTypeProto(SubAlias$AliasingSubclass,'misc::AliasingSubclass.SubAlias',$$aliasingSubclass.InnerAlias$AliasingSubclass);
                     AliasingSubclass.SubAlias$AliasingSubclass=SubAlias$AliasingSubclass;
                 }
-                SubAlias$AliasingSubclass.$$.$$metamodel$$={$nm:'SubAlias',$mt:'cls','super':{t:AliasingClass.AliasingInner$AliasingClass},'satisfies':[]};
                 return SubAlias$AliasingSubclass;
             }
             $$aliasingSubclass.$init$SubAlias$AliasingSubclass=$init$SubAlias$AliasingSubclass;
             $init$SubAlias$AliasingSubclass();
             $$aliasingSubclass.SubAlias$AliasingSubclass=SubAlias$AliasingSubclass;
             
-            //MethodDefinition aliasingSubclass at aliases.ceylon (18:4-20:4)
+            //MethodDef aliasingSubclass at aliases.ceylon (22:4-24:4)
             $$aliasingSubclass.aliasingSubclass=function aliasingSubclass(){
                 var $$aliasingSubclass=this;
                 return $$aliasingSubclass.SubAlias$AliasingSubclass().aliasingInner();
-            };$$aliasingSubclass.aliasingSubclass.$$metamodel$$={$nm:'aliasingSubclass',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[]};
-            //InterfaceDeclaration AliasedIface at aliases.ceylon (21:4-21:50)
-            $$aliasingSubclass.AliasedIface$AliasingSubclass=$$aliasingSubclass.AliasingIface$AliasingClass;
+            };$$aliasingSubclass.aliasingSubclass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[],$cont:AliasingSubclass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingSubclass','$m','aliasingSubclass']};};
+            
+            //InterfaceDecl AliasedIface at aliases.ceylon (25:4-25:50)
+            function AliasedIface$AliasingSubclass($$aliasedIface$AliasingSubclass){$$aliasingSubclass.AliasingIface$AliasingClass($$aliasedIface$AliasingSubclass);}
+            AliasedIface$AliasingSubclass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$cont:AliasingSubclass,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingSubclass','$i','AliasedIface']};};
+            $$aliasingSubclass.AliasedIface$AliasingSubclass=AliasedIface$AliasingSubclass;
         })(AliasingSubclass.$$.prototype);
     }
-    AliasingSubclass.$$.$$metamodel$$={$nm:'AliasingSubclass',$mt:'cls','super':{t:AliasingClass},'satisfies':[]};
     return AliasingSubclass;
 }
 exports.$init$AliasingSubclass=$init$AliasingSubclass;
 $init$AliasingSubclass();
 
-//ClassDefinition AliasingSub2 at aliases.ceylon (24:0-30:0)
+//ClassDef AliasingSub2 at aliases.ceylon (28:0-34:0)
 function AliasingSub2($$aliasingSub2){
     $init$AliasingSub2();
     if ($$aliasingSub2===undefined)$$aliasingSub2=new AliasingSub2.$$;
     AliasingSubclass($$aliasingSub2);
     return $$aliasingSub2;
 }
+AliasingSub2.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AliasingSubclass},$ps:[],d:['misc','AliasingSub2']};};
 function $init$AliasingSub2(){
     if (AliasingSub2.$$===undefined){
-        $$$cl2592.initTypeProto(AliasingSub2,'misc::AliasingSub2',AliasingSubclass);
+        $$$cl1.initTypeProto(AliasingSub2,'misc::AliasingSub2',$init$AliasingSubclass());
         (function($$aliasingSub2){
             
-            //AttributeGetterDefinition iface at aliases.ceylon (25:4-29:4)
-            $$$cl2592.defineAttr($$aliasingSub2,'iface',function(){
+            //AttributeGetterDef iface at aliases.ceylon (29:4-33:4)
+            $$$cl1.defineAttr($$aliasingSub2,'iface',function(){
                 var $$aliasingSub2=this;
                 
-                //ObjectDefinition aliased at aliases.ceylon (26:8-27:8)
-                function aliased$3395(){
-                    var $$aliased$3395=new aliased$3395.$$;
-                    $$aliasingSub2.AliasingIface$AliasingClass($$aliased$3395);
-                    return $$aliased$3395;
-                }
-                function $init$aliased$3395(){
-                    if (aliased$3395.$$===undefined){
-                        $$$cl2592.initTypeProto(aliased$3395,'misc::AliasingSub2.iface.aliased',$$$cl2592.Basic,$$aliasingSub2.$init$AliasingIface$AliasingClass());
+                //ObjectDef aliased at aliases.ceylon (30:8-31:8)
+                function aliased$858(){
+                    var $$aliased$858=new aliased$858.$$;
+                    $$aliasingSub2.AliasedIface$AliasingSubclass($$aliased$858);
+                    return $$aliased$858;
+                };aliased$858.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},satisfies:[{t:AliasingSubclass.AliasedIface$AliasingSubclass}],d:['misc','AliasingSub2','$at','iface','$o','aliased']};};
+                function $init$aliased$858(){
+                    if (aliased$858.$$===undefined){
+                        $$$cl1.initTypeProto(aliased$858,'misc::AliasingSub2.iface.aliased',$$$cl1.Basic,$$aliasingSub2.$init$AliasingIface$AliasingClass());
                     }
-                    aliased$3395.$$.$$metamodel$$={$nm:'aliased',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[{t:AliasingClass.AliasingIface$AliasingClass}]};
-                    return aliased$3395;
+                    return aliased$858;
                 }
-                $init$aliased$3395();
-                var aliased$3396=aliased$3395();
-                var getAliased$3396=function(){
-                    return aliased$3396;
+                $init$aliased$858();
+                var aliased$859;
+                function getAliased$859(){
+                    if (aliased$859===undefined){aliased$859=$init$aliased$858()();aliased$859.$$metamodel$$=getAliased$859.$$metamodel$$;}
+                    return aliased$859;
                 }
-                return getAliased$3396();
-            });
+                getAliased$859.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:aliased$858},d:['misc','AliasingSub2','$at','iface','$o','aliased']};};
+                $prop$getAliased$859={get:getAliased$859,$$metamodel$$:getAliased$859.$$metamodel$$};
+                return getAliased$859();
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:AliasingSubclass.AliasedIface$AliasingSubclass},$cont:AliasingSub2,$an:function(){return[$$$cl1.shared()];},d:['misc','AliasingSub2','$at','iface']};});
         })(AliasingSub2.$$.prototype);
     }
-    AliasingSub2.$$.$$metamodel$$={$nm:'AliasingSub2',$mt:'cls','super':{t:AliasingSubclass},'satisfies':[]};
     return AliasingSub2;
 }
 exports.$init$AliasingSub2=$init$AliasingSub2;
 $init$AliasingSub2();
 
-//ClassDeclaration Listleton at aliases.ceylon (33:0-33:54)
-function Listleton(l$3397, $$targs$$,$$listleton){return $$$cl2592.Singleton(l$3397,{Element:{t:$$$cl2592.List,a:{Element:$$targs$$.T}}},$$listleton);}
-Listleton.$$=$$$cl2592.Singleton.$$;
+//InterfaceDecl Matrix at aliases.ceylon (36:0-36:43)
+function Matrix($$targs$$,$$matrix){$$$cl1.Sequence({Element:{t:$$$cl1.Sequence,a:{Element:$$targs$$.Cell}}},$$matrix);}
+Matrix.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$tp:{Cell:{}},d:['misc','Matrix']};};
 
-//ClassDefinition MiMatrix at aliases.ceylon (35:0-66:0)
-function MiMatrix(gridSize$3398, $$miMatrix){
+//ClassDecl Listleton at aliases.ceylon (37:0-37:54)
+function Listleton(l$860, $$targs$$,$$listleton){return $$$cl1.Singleton(l$860,{Element:{t:$$$cl1.List,a:{Element:$$targs$$.T}}},$$listleton);}
+Listleton.$$=$$$cl1.Singleton.$$;
+Listleton.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.List,a:{Element:'T'}}}},$ps:[{$nm:'l',$mt:'prm',$t:{t:$$$cl1.List,a:{Element:'T'}},$an:function(){return[];}}],$tp:{T:{}},d:['misc','Listleton']};};
+
+//ClassDef MiMatrix at aliases.ceylon (39:0-70:0)
+function MiMatrix(gridSize$861, $$miMatrix){
     $init$MiMatrix();
     if ($$miMatrix===undefined)$$miMatrix=new MiMatrix.$$;
-    $$miMatrix.$$targs$$={Cell:{t:$$$cl2592.Integer}};
-    $$$cl2592.Sequence($$miMatrix);
-    $$$cl2592.add_type_arg($$miMatrix,'Cell',{t:$$$cl2592.Integer});
+    $$miMatrix.$$targs$$={Cell:{t:$$$cl1.Integer}};
+    $$miMatrix.gridSize$861_=gridSize$861;
+    Matrix({Cell:{t:$$$cl1.Integer}},$$miMatrix);
+    $$$cl1.add_type_arg($$miMatrix,'Cell',{t:$$$cl1.Integer});
     
-    //AttributeDeclaration sb at aliases.ceylon (36:4-36:44)
-    $$miMatrix.sb$3399_=$$$cl2592.SequenceBuilder({Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}});
-    //'for' statement at aliases.ceylon (37:4-39:4)
-    var it$3400 = $$$cl2592.Range((1),gridSize$3398,{Element:{t:$$$cl2592.Integer}}).iterator();
-    var i$3401;while ((i$3401=it$3400.next())!==$$$cl2592.getFinished()){
-        $$miMatrix.sb$3399.append($$$cl2592.Comprehension(function(){
-            //Comprehension at aliases.ceylon (38:20-38:43)
-            var it$3402=$$$cl2592.Range((1),gridSize$3398,{Element:{t:$$$cl2592.Integer}}).iterator();
-            var j$3403=$$$cl2592.getFinished();
-            var next$j$3403=function(){return j$3403=it$3402.next();}
-            next$j$3403();
+    //AttributeDecl sb at aliases.ceylon (40:4-40:44)
+    $$miMatrix.sb$862_=$$$cl1.SequenceBuilder({Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}});
+    $$miMatrix.$prop$getSb$862={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.SequenceBuilder,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$cont:MiMatrix,d:['misc','MiMatrix','$at','sb']};}};
+    $$miMatrix.$prop$getSb$862.get=function(){return sb$862};
+    //'for' statement at aliases.ceylon (41:4-43:4)
+    var it$863 = $$$cl1.Range((1),$$miMatrix.gridSize$861,{Element:{t:$$$cl1.Integer}}).iterator();
+    var i$864;while ((i$864=it$863.next())!==$$$cl1.getFinished()){
+        $$miMatrix.sb$862.append($$$cl1.Comprehension(function(){
+            //Comprehension at aliases.ceylon (42:20-42:43)
+            var it$865=$$$cl1.Range((1),$$miMatrix.gridSize$861,{Element:{t:$$$cl1.Integer}}).iterator();
+            var j$866=$$$cl1.getFinished();
+            var next$j$866=function(){return j$866=it$865.next();}
+            next$j$866();
             return function(){
-                if(j$3403!==$$$cl2592.getFinished()){
-                    var j$3403$3404=j$3403;
-                    var tmpvar$3405=j$3403$3404;
-                    next$j$3403();
-                    return tmpvar$3405;
+                if(j$866!==$$$cl1.getFinished()){
+                    var j$866$867=j$866;
+                    var tmpvar$868=j$866$867;
+                    next$j$866();
+                    return tmpvar$868;
                 }
-                return $$$cl2592.getFinished();
+                return $$$cl1.getFinished();
             }
-        },{Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.Integer}}).sequence);
+        },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}).sequence);
     }
     
-    //AttributeDeclaration grid at aliases.ceylon (40:4-40:24)
-    var g$3406;
-    if($$$cl2592.nonempty((g$3406=$$miMatrix.sb$3399.sequence))){
-        var grid$3407=g$3406;
-        $$$cl2592.defineAttr($$miMatrix,'grid$3407',function(){return grid$3407;});
+    //AttributeDecl grid at aliases.ceylon (44:4-44:24)
+    $$miMatrix.$prop$getGrid$869={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:Matrix,a:{Cell:{t:$$$cl1.Integer}}},$cont:MiMatrix,d:['misc','MiMatrix','$at','grid']};}};
+    var g$870;
+    if($$$cl1.nonempty((g$870=$$miMatrix.sb$862.sequence))){
+        var grid$869=g$870;
+        $$$cl1.defineAttr($$miMatrix,'grid$869',function(){return grid$869;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Matrix,a:{Cell:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual(),$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','grid']};});
     }else {
-        var grid$3407=$$$cl2592.Tuple($$$cl2592.Tuple((1),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}});
-        $$$cl2592.defineAttr($$miMatrix,'grid$3407',function(){return grid$3407;});
+        var grid$869=$$$cl1.Tuple($$$cl1.Tuple((1),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}});
+        $$$cl1.defineAttr($$miMatrix,'grid$869',function(){return grid$869;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Matrix,a:{Cell:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual(),$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','grid']};});
     }
     
-    //AttributeDeclaration string at aliases.ceylon (47:4-47:45)
-    $$miMatrix.string$3408_=$$miMatrix.grid$3407.string;
+    //AttributeDecl string at aliases.ceylon (51:4-51:45)
+    $$miMatrix.string$871_=$$miMatrix.grid$869.string;
+    $$miMatrix.$prop$getString={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','string']};}};
+    $$miMatrix.$prop$getString.get=function(){return string};
     
-    //AttributeDeclaration hash at aliases.ceylon (48:4-48:42)
-    $$miMatrix.hash$3409_=$$miMatrix.grid$3407.hash;
-    var span=$$$cl2592.$JsCallable((opt$3410=$$miMatrix.grid$3407,$$$cl2592.JsCallable(opt$3410,opt$3410!==null?opt$3410.span:null)),[{$nm:'from',$mt:'prm',$t:{t:$$$cl2592.Integer}},{$nm:'to',$mt:'prm',$t:{t:$$$cl2592.Integer}}],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}}});
-    $$miMatrix.span=span;
-    var opt$3410;
-    var segment=$$$cl2592.$JsCallable((opt$3411=$$miMatrix.grid$3407,$$$cl2592.JsCallable(opt$3411,opt$3411!==null?opt$3411.segment:null)),[{$nm:'from',$mt:'prm',$t:{t:$$$cl2592.Integer}},{$nm:'length',$mt:'prm',$t:{t:$$$cl2592.Integer}}],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}}});
-    $$miMatrix.segment=segment;
-    var opt$3411;
+    //AttributeDecl hash at aliases.ceylon (52:4-52:42)
+    $$miMatrix.hash$872_=$$miMatrix.grid$869.hash;
+    $$miMatrix.$prop$getHash={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','hash']};}};
+    $$miMatrix.$prop$getHash.get=function(){return hash};
+    $$miMatrix.span=function span(from$873,to$874){return (opt$875=$$miMatrix.grid$869,$$$cl1.JsCallable(opt$875,opt$875!==null?opt$875.span:null))(from$873,to$874);};
+    var opt$875;
+    $$miMatrix.segment=function segment(from$876,length$877){return (opt$878=$$miMatrix.grid$869,$$$cl1.JsCallable(opt$878,opt$878!==null?opt$878.segment:null))(from$876,length$877);};
+    var opt$878;
     
-    //AttributeDeclaration reversed at aliases.ceylon (52:4-52:58)
-    $$miMatrix.reversed$3412_=$$miMatrix.grid$3407.reversed;
+    //AttributeDecl reversed at aliases.ceylon (56:4-56:58)
+    $$miMatrix.reversed$879_=$$miMatrix.grid$869.reversed;
+    $$miMatrix.$prop$getReversed={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:Matrix,a:{Cell:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','reversed']};}};
+    $$miMatrix.$prop$getReversed.get=function(){return reversed};
     
-    //AttributeDeclaration lastIndex at aliases.ceylon (53:4-53:52)
-    $$miMatrix.lastIndex$3413_=$$miMatrix.grid$3407.lastIndex;
+    //AttributeDecl lastIndex at aliases.ceylon (57:4-57:52)
+    $$miMatrix.lastIndex$880_=$$miMatrix.grid$869.lastIndex;
+    $$miMatrix.$prop$getLastIndex={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','lastIndex']};}};
+    $$miMatrix.$prop$getLastIndex.get=function(){return lastIndex};
     
-    //AttributeDeclaration rest at aliases.ceylon (55:4-55:47)
-    $$miMatrix.rest$3414_=$$miMatrix.grid$3407.rest;
+    //AttributeDecl rest at aliases.ceylon (59:4-59:47)
+    $$miMatrix.rest$881_=$$miMatrix.grid$869.rest;
+    $$miMatrix.$prop$getRest={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','rest']};}};
+    $$miMatrix.$prop$getRest.get=function(){return rest};
     
-    //AttributeDeclaration first at aliases.ceylon (56:4-56:47)
-    $$miMatrix.first$3415_=$$miMatrix.grid$3407.first;
+    //AttributeDecl first at aliases.ceylon (60:4-60:47)
+    $$miMatrix.first$882_=$$miMatrix.grid$869.first;
+    $$miMatrix.$prop$getFirst={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','first']};}};
+    $$miMatrix.$prop$getFirst.get=function(){return first};
     
-    //AttributeDeclaration clone at aliases.ceylon (57:4-57:40)
+    //AttributeDecl clone at aliases.ceylon (61:4-61:40)
+    $$miMatrix.$prop$getClone={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:MiMatrix},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','clone']};}};
+    $$miMatrix.$prop$getClone.get=function(){return clone};
     
-    //AttributeDeclaration size at aliases.ceylon (58:4-58:43)
+    //AttributeDecl size at aliases.ceylon (62:4-62:43)
+    $$miMatrix.$prop$getSize={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','size']};}};
+    $$miMatrix.$prop$getSize.get=function(){return size};
     return $$miMatrix;
 }
+MiMatrix.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[{$nm:'gridSize',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}}],satisfies:[{t:Matrix,a:{Cell:{t:$$$cl1.Integer}}}],d:['misc','MiMatrix']};};
 function $init$MiMatrix(){
     if (MiMatrix.$$===undefined){
-        $$$cl2592.initTypeProto(MiMatrix,'misc::MiMatrix',$$$cl2592.Basic,$$$cl2592.Sequence);
+        $$$cl1.initTypeProto(MiMatrix,'misc::MiMatrix',$$$cl1.Basic,$$$cl1.Sequence);
         (function($$miMatrix){
             
-            //AttributeDeclaration sb at aliases.ceylon (36:4-36:44)
-            $$$cl2592.defineAttr($$miMatrix,'sb$3399',function(){return this.sb$3399_;});
+            //AttributeDecl sb at aliases.ceylon (40:4-40:44)
+            $$$cl1.defineAttr($$miMatrix,'sb$862',function(){return this.sb$862_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.SequenceBuilder,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$cont:MiMatrix,d:['misc','MiMatrix','$at','sb']};});
             
-            //AttributeDeclaration grid at aliases.ceylon (40:4-40:24)
+            //AttributeDecl grid at aliases.ceylon (44:4-44:24)
             
-            //MethodDefinition iterator at aliases.ceylon (46:4-46:76)
+            //MethodDef iterator at aliases.ceylon (50:4-50:76)
             $$miMatrix.iterator=function iterator(){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3407.iterator();
-            };$$miMatrix.iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[]};
-            //AttributeDeclaration string at aliases.ceylon (47:4-47:45)
-            $$$cl2592.defineAttr($$miMatrix,'string',function(){return this.string$3408_;});
+                return $$miMatrix.grid$869.iterator();
+            };$$miMatrix.iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[],$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$m','iterator']};};
             
-            //AttributeDeclaration hash at aliases.ceylon (48:4-48:42)
-            $$$cl2592.defineAttr($$miMatrix,'hash',function(){return this.hash$3409_;});
+            //AttributeDecl string at aliases.ceylon (51:4-51:45)
+            $$$cl1.defineAttr($$miMatrix,'string',function(){return this.string$871_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','string']};});
             
-            //MethodDeclaration equals at aliases.ceylon (49:4-49:68)
-            $$miMatrix.equals=function (other$3416){
+            //AttributeDecl hash at aliases.ceylon (52:4-52:42)
+            $$$cl1.defineAttr($$miMatrix,'hash',function(){return this.hash$872_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','hash']};});
+            
+            //MethodDecl equals at aliases.ceylon (53:4-53:68)
+            $$miMatrix.equals=function (other$883){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3407.equals(other$3416);
+                return $$miMatrix.grid$869.equals(other$883);
             };
-            $$miMatrix.equals.$$metamodel$$={$nm:'equals',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl2592.Object}}]};
+            $$miMatrix.equals.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object},$an:function(){return[];}}],$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$m','equals']};};
             
-            //AttributeDeclaration reversed at aliases.ceylon (52:4-52:58)
-            $$$cl2592.defineAttr($$miMatrix,'reversed',function(){return this.reversed$3412_;});
+            //AttributeDecl reversed at aliases.ceylon (56:4-56:58)
+            $$$cl1.defineAttr($$miMatrix,'reversed',function(){return this.reversed$879_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Matrix,a:{Cell:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','reversed']};});
             
-            //AttributeDeclaration lastIndex at aliases.ceylon (53:4-53:52)
-            $$$cl2592.defineAttr($$miMatrix,'lastIndex',function(){return this.lastIndex$3413_;});
+            //AttributeDecl lastIndex at aliases.ceylon (57:4-57:52)
+            $$$cl1.defineAttr($$miMatrix,'lastIndex',function(){return this.lastIndex$880_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','lastIndex']};});
             
-            //MethodDeclaration get at aliases.ceylon (54:4-54:55)
-            $$miMatrix.get=function (i$3417){
+            //MethodDecl get at aliases.ceylon (58:4-58:55)
+            $$miMatrix.$get=function (i$884){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3407.get(i$3417);
+                return $$miMatrix.grid$869.$get(i$884);
             };
-            $$miMatrix.get.$$metamodel$$={$nm:'get',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Null},{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}]},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
+            $$miMatrix.$get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:'u', l:[{t:$$$cl1.Null},{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}]},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}}],$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$m','get']};};
             
-            //AttributeDeclaration rest at aliases.ceylon (55:4-55:47)
-            $$$cl2592.defineAttr($$miMatrix,'rest',function(){return this.rest$3414_;});
+            //AttributeDecl rest at aliases.ceylon (59:4-59:47)
+            $$$cl1.defineAttr($$miMatrix,'rest',function(){return this.rest$881_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','rest']};});
             
-            //AttributeDeclaration first at aliases.ceylon (56:4-56:47)
-            $$$cl2592.defineAttr($$miMatrix,'first',function(){return this.first$3415_;});
+            //AttributeDecl first at aliases.ceylon (60:4-60:47)
+            $$$cl1.defineAttr($$miMatrix,'first',function(){return this.first$882_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','first']};});
             
-            //AttributeDeclaration clone at aliases.ceylon (57:4-57:40)
-            $$$cl2592.defineAttr($$miMatrix,'clone',function(){
+            //AttributeDecl clone at aliases.ceylon (61:4-61:40)
+            $$$cl1.defineAttr($$miMatrix,'clone',function(){
                 var $$miMatrix=this;
                 return $$miMatrix;
-            });
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:MiMatrix},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','clone']};});
             
-            //AttributeDeclaration size at aliases.ceylon (58:4-58:43)
-            $$$cl2592.defineAttr($$miMatrix,'size',function(){
+            //AttributeDecl size at aliases.ceylon (62:4-62:43)
+            $$$cl1.defineAttr($$miMatrix,'size',function(){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3407.size;
-            });
+                return $$miMatrix.grid$869.size;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','size']};});
             
-            //MethodDeclaration contains at aliases.ceylon (59:4-59:72)
-            $$miMatrix.contains=function (other$3418){
+            //MethodDecl contains at aliases.ceylon (63:4-63:72)
+            $$miMatrix.contains=function (other$885){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3407.contains(other$3418);
+                return $$miMatrix.grid$869.contains(other$885);
             };
-            $$miMatrix.contains.$$metamodel$$={$nm:'contains',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl2592.Object}}]};
-            $$$cl2592.defineAttr($$miMatrix,'last',function(){
+            $$miMatrix.contains.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[{$nm:'other',$mt:'prm',$t:{t:$$$cl1.Object},$an:function(){return[];}}],$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$m','contains']};};
+            $$$cl1.defineAttr($$miMatrix,'last',function(){
                 var $$miMatrix=this;
-                return $$miMatrix.grid$3407.last;
-            });
+                return $$miMatrix.grid$869.last;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}},$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$at','last']};});
             
-            //MethodDeclaration spanTo at aliases.ceylon (61:4-62:41)
-            $$miMatrix.spanTo=function (to$3419){
+            //MethodDecl spanTo at aliases.ceylon (65:4-66:41)
+            $$miMatrix.spanTo=function (to$886){
                 var $$miMatrix=this;
-                return (opt$3420=(to$3419.compare((0)).equals($$$cl2592.getSmaller())?$$$cl2592.getEmpty():null),opt$3420!==null?opt$3420:$$miMatrix.span((0),to$3419));
+                return (opt$887=(to$886.compare((0)).equals($$$cl1.getSmaller())?$$$cl1.getEmpty():null),opt$887!==null?opt$887:$$miMatrix.span((0),to$886));
             };
-            $$miMatrix.spanTo.$$metamodel$$={$nm:'spanTo',$mt:'mthd',$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
+            $$miMatrix.spanTo.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}}],$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$m','spanTo']};};
             
-            //MethodDeclaration spanFrom at aliases.ceylon (64:4-65:28)
-            $$miMatrix.spanFrom=function (from$3421){
+            //MethodDecl spanFrom at aliases.ceylon (68:4-69:28)
+            $$miMatrix.spanFrom=function (from$888){
                 var $$miMatrix=this;
-                return $$miMatrix.span(from$3421,$$miMatrix.size);
+                return $$miMatrix.span(from$888,$$miMatrix.size);
             };
-            $$miMatrix.spanFrom.$$metamodel$$={$nm:'spanFrom',$mt:'mthd',$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Sequence,a:{Element:{t:$$$cl2592.Integer}}}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};
+            $$miMatrix.spanFrom.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Sequence,a:{Element:{t:$$$cl1.Integer}}}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}}],$cont:MiMatrix,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','MiMatrix','$m','spanFrom']};};
+            $$$cl1.defineAttr($$miMatrix,'gridSize$861',function(){return this.gridSize$861_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:MiMatrix,d:['misc','MiMatrix','$at','gridSize']};});
         })(MiMatrix.$$.prototype);
     }
-    MiMatrix.$$.$$metamodel$$={$nm:'MiMatrix',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[{t:$$$cl2592.Sequence,a:{Cell:{t:$$$cl2592.Integer}}}]};
     return MiMatrix;
 }
 exports.$init$MiMatrix=$init$MiMatrix;
 $init$MiMatrix();
-var opt$3420;
+var opt$887;
 
-//MethodDefinition testAliasing at aliases.ceylon (68:0-86:0)
+//MethodDef issue225_1 at aliases.ceylon (72:0-72:47)
+function issue225_1(content$889){
+}
+exports.issue225_1=issue225_1;
+issue225_1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[{$nm:'content',$mt:'prm',$t:{t:'u', l:[{t:$$$cl1.Integer},{t:$$$cl1.String}]},$an:function(){return[];}}],$an:function(){return[$$$cl1.shared()];},d:['misc','issue225_1']};};
+
+//TypeAliasDecl Issue225Alias at aliases.ceylon (73:0-73:44)
+function Issue225Alias(){var tmpvar$890={t:'u', l:[{t:$$$cl1.Integer},{t:$$$cl1.String}]};tmpvar$890.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$an:function(){return[$$$cl1.shared()];},d:['misc','Issue225Alias']};};return tmpvar$890;}
+exports.Issue225Alias=Issue225Alias;
+
+//MethodDef issue225_2 at aliases.ceylon (74:0-74:46)
+function issue225_2(content$891){
+}
+exports.issue225_2=issue225_2;
+issue225_2.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[{$nm:'content',$mt:'prm',$t:Issue225Alias(),$an:function(){return[];}}],$an:function(){return[$$$cl1.shared()];},d:['misc','issue225_2']};};
+
+//MethodDef testAliasing at aliases.ceylon (76:0-94:0)
 function testAliasing(){
-    $$$cl2592.print($$$cl2592.String("testing type aliases",20));
-    $$$c2593.check(AliasingSubclass().aliasingSubclass(),$$$cl2592.String("Aliased member class",20));
+    $$$cl1.print($$$cl1.String("testing type aliases",20));
+    $$$c2.check(AliasingSubclass().aliasingSubclass(),$$$cl1.String("Aliased member class",20));
     
-    //ClassDeclaration InnerSubalias at aliases.ceylon (71:4-71:47)
-    function InnerSubalias$3422($$innerSubalias$3422){return AliasingSubclass($$innerSubalias$3422);}
-    InnerSubalias$3422.$$=AliasingSubclass.$$;
-    $$$c2593.check(InnerSubalias$3422().aliasingSubclass(),$$$cl2592.String("Aliased top-level class",23));
+    //ClassDecl InnerSubalias at aliases.ceylon (79:4-79:47)
+    function InnerSubalias$892($$innerSubalias$892){return AliasingSubclass($$innerSubalias$892);}
+    InnerSubalias$892.$$=AliasingSubclass.$$;
+    InnerSubalias$892.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:AliasingSubclass},$ps:[],d:['misc','testAliasing','$c','InnerSubalias']};};
+    $$$c2.check(InnerSubalias$892().aliasingSubclass(),$$$cl1.String("Aliased top-level class",23));
     
-    //MethodDefinition use at aliases.ceylon (74:4-74:65)
-    function use$3423(aif$3424){
-        return aif$3424.aliasingIface();
-    };use$3423.$$metamodel$$={$nm:'use',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'aif',$mt:'prm',$t:{t:AliasingClass.AliasingIface$AliasingClass}}]};//use$3423.$$targs$$={Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:AliasingClass.AliasingIface$AliasingClass},Element:{t:AliasingClass.AliasingIface$AliasingClass}}},Return:{t:$$$cl2592.Boolean}};
-    $$$c2593.check(use$3423(AliasingSub2().iface),$$$cl2592.String("Aliased member interface",24));
+    //InterfaceDecl AliasedIface2 at aliases.ceylon (81:4-81:58)
+    function AliasedIface2$893($$aliasedIface2$893){AliasingIface$AliasingClass($$aliasedIface2$893);}
+    AliasedIface2$893.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['misc','testAliasing','$i','AliasedIface2']};};
     
-    //AttributeDeclaration xxxxx at aliases.ceylon (76:4-76:24)
-    var xxxxx$3425=(5);
-    $$$c2593.check($$$cl2592.isOfType(xxxxx$3425,{t:$$$cl2592.Integer}),$$$cl2592.String("Type alias",10));
-    $$$c2593.check(Listleton($$$cl2592.Tuple($$$cl2592.Tuple((1),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.Tuple($$$cl2592.Tuple((2),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.Tuple($$$cl2592.Tuple((3),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}),{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}),{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}).first,{T:{t:$$$cl2592.Integer}}).string.equals($$$cl2592.String("[[1]]",5)),$$$cl2592.StringBuilder().appendAll([$$$cl2592.String("class alias ",12),Listleton($$$cl2592.Tuple($$$cl2592.Tuple((1),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.Tuple($$$cl2592.Tuple((2),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.Tuple($$$cl2592.Tuple((3),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}),{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}),{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}},First:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Element:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}}}).first,{T:{t:$$$cl2592.Integer}}).string,$$$cl2592.String(" instead of [ [ 1 ] ]",21)]).string);
-    $$$c2593.check(MiMatrix((2)).string.equals($$$cl2592.String("[[1, 2], [1, 2]]",16)),$$$cl2592.StringBuilder().appendAll([$$$cl2592.String("interface alias ",16),MiMatrix((2)).string,$$$cl2592.String(" instead of [[1, 2], [1, 2]]",28)]).string);
+    //MethodDef use at aliases.ceylon (82:4-82:65)
+    function use$894(aif$895){
+        return aif$895.aliasingIface();
+    };use$894.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[{$nm:'aif',$mt:'prm',$t:{t:AliasedIface2$893},$an:function(){return[];}}],d:['misc','testAliasing','$m','use']};};
+    $$$c2.check(use$894(AliasingSub2().iface),$$$cl1.String("Aliased member interface",24));
     
-    //AttributeDeclaration xxxxx1 at aliases.ceylon (80:4-80:21)
-    var xxxxx1$3426=(6);
+    //AttributeDecl xxxxx at aliases.ceylon (84:4-84:24)
+    var xxxxx$896=(5);
+    $$$c2.check($$$cl1.isOfType(xxxxx$896,{t:$$$cl1.Integer}),$$$cl1.String("Type alias",10));
+    $$$c2.check(Listleton($$$cl1.Tuple($$$cl1.Tuple((1),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.Tuple($$$cl1.Tuple((2),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.Tuple($$$cl1.Tuple((3),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}}),{Rest:{t:'T', l:[{t:'T', l:[{t:$$$cl1.Integer}]}]},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}}),{Rest:{t:'T', l:[{t:'T', l:[{t:$$$cl1.Integer}]},{t:'T', l:[{t:$$$cl1.Integer}]}]},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}}).first,{T:{t:$$$cl1.Integer}}).string.equals($$$cl1.String("[[1]]",5)),$$$cl1.StringBuilder().appendAll([$$$cl1.String("class alias ",12),Listleton($$$cl1.Tuple($$$cl1.Tuple((1),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.Tuple($$$cl1.Tuple((2),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.Tuple($$$cl1.Tuple((3),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}}),{Rest:{t:'T', l:[{t:'T', l:[{t:$$$cl1.Integer}]}]},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}}),{Rest:{t:'T', l:[{t:'T', l:[{t:$$$cl1.Integer}]},{t:'T', l:[{t:$$$cl1.Integer}]}]},First:{t:'T', l:[{t:$$$cl1.Integer}]},Element:{t:'T', l:[{t:$$$cl1.Integer}]}}).first,{T:{t:$$$cl1.Integer}}).string,$$$cl1.String(" instead of [ [ 1 ] ]",21)]).string);
+    $$$c2.check(MiMatrix((2)).string.equals($$$cl1.String("[[1, 2], [1, 2]]",16)),$$$cl1.StringBuilder().appendAll([$$$cl1.String("interface alias ",16),MiMatrix((2)).string,$$$cl1.String(" instead of [[1, 2], [1, 2]]",28)]).string);
     
-    //AttributeDeclaration xxxxx2 at aliases.ceylon (81:4-81:26)
-    var xxxxx2$3427=$$$cl2592.String("XXXX",4);
-    $$$c2593.check($$$cl2592.isOfType(xxxxx1$3426,{ t:'u', l:[{t:$$$cl2592.String},{t:$$$cl2592.Integer}]}),$$$cl2592.String("is String|Integer",17));
-    $$$c2593.check($$$cl2592.isOfType(xxxxx2$3427,{ t:'i', l:[{t:$$$cl2592.String},{t:$$$cl2592.List,a:{Element:{t:$$$cl2592.Anything}}}]}),$$$cl2592.String("is String&List",14));
+    //AttributeDecl xxxxx1 at aliases.ceylon (88:4-88:21)
+    var xxxxx1$897=(6);
     
-    //MethodDeclaration cualquiera at aliases.ceylon (84:4-84:51)
-    var cualquiera$3428=function (bits$3429){
-        if(bits$3429===undefined){bits$3429=$$$cl2592.getEmpty();}
-        return $$$cl2592.any(bits$3429);
+    //AttributeDecl xxxxx2 at aliases.ceylon (89:4-89:26)
+    var xxxxx2$898=$$$cl1.String("XXXX",4);
+    $$$c2.check($$$cl1.isOfType(xxxxx1$897,{t:'u', l:[{t:$$$cl1.String},{t:$$$cl1.Integer}]}),$$$cl1.String("is String|Integer",17));
+    $$$c2.check($$$cl1.isOfType(xxxxx2$898,{t:'i', l:[{t:$$$cl1.String},{t:$$$cl1.List,a:{Element:{t:$$$cl1.Anything}}}]}),$$$cl1.String("is String&List",14));
+    
+    //MethodDecl cualquiera at aliases.ceylon (92:4-92:51)
+    var cualquiera$899=function (bits$900){
+        if(bits$900===undefined){bits$900=$$$cl1.getEmpty();}
+        return $$$cl1.any(bits$900);
     };
-    cualquiera$3428.$$metamodel$$={$nm:'cualquiera',$mt:'mthd',$t:{t:$$$cl2592.Boolean},$ps:[{$nm:'bits',$mt:'prm',seq:1,$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.Boolean}}}}]};
-    $$$c2593.check(cualquiera$3428([true,true,true].reifyCeylonType({Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.true$3430}})),$$$cl2592.String("seq arg method alias",20));
-};testAliasing.$$metamodel$$={$nm:'testAliasing',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};//testAliasing.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}};
+    cualquiera$899.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Boolean},$ps:[{$nm:'bits',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Boolean}}},$an:function(){return[];}}],d:['misc','testAliasing','$m','cualquiera']};};
+    $$$c2.check(cualquiera$899([true,true,true].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.true$901}})),$$$cl1.String("seq arg method alias",20));
+};testAliasing.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','testAliasing']};};
 
-//ClassDefinition LateTestChild at late_support.ceylon (3:0-5:0)
+//MethodDef m1 at exceptions.ceylon (1:0-3:0)
+function m1(){
+    throw $$$cl1.wrapexc($$$cl1.Exception($$$cl1.String("Catch me!",9)),'2:2-2:30','misc/exceptions.ceylon');
+};m1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','m1']};};
+
+//MethodDef m2 at exceptions.ceylon (5:0-7:0)
+function m2(){
+    m1();
+};m2.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','m2']};};
+
+//MethodDef m3 at exceptions.ceylon (9:0-11:0)
+function m3(){
+    m2();
+};m3.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','m3']};};
+
+//MethodDef testStackTrace at exceptions.ceylon (13:0-21:0)
+function testStackTrace(){
+    try{
+        $$$cl1.print($$$cl1.String("Coming up, a strack trace...",28));
+        m3();
+    }catch(ex$902){
+        if (ex$902.getT$name === undefined) ex$902=$$$cl1.NativeException(ex$902);
+        if($$$cl1.isOfType(ex$902,{t:$$$cl1.Exception})){
+            ex$902.printStackTrace();
+        }
+        else{throw ex$902}
+    }
+    $$$cl1.print($$$cl1.String("You should have seen a stack trace",34));
+};testStackTrace.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','testStackTrace']};};
+
+//ClassDef LateTestChild at late_support.ceylon (3:0-5:0)
 function LateTestChild($$lateTestChild){
     $init$LateTestChild();
     if ($$lateTestChild===undefined)$$lateTestChild=new LateTestChild.$$;
     
-    //AttributeDeclaration parent at late_support.ceylon (4:4-4:37)
-    $$lateTestChild.parent$3431_=undefined;
+    //AttributeDecl parent at late_support.ceylon (4:4-4:37)
+    $$lateTestChild.parent$903_=undefined;
+    $$lateTestChild.$prop$getParent={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:LateTestParent},$cont:LateTestChild,$an:function(){return[$$$cl1.shared(),$$$cl1.late()];},d:['misc','LateTestChild','$at','parent']};}};
+    $$lateTestChild.$prop$getParent.get=function(){return parent};
     return $$lateTestChild;
 }
+LateTestChild.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],d:['misc','LateTestChild']};};
 function $init$LateTestChild(){
     if (LateTestChild.$$===undefined){
-        $$$cl2592.initTypeProto(LateTestChild,'misc::LateTestChild',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(LateTestChild,'misc::LateTestChild',$$$cl1.Basic);
         (function($$lateTestChild){
             
-            //AttributeDeclaration parent at late_support.ceylon (4:4-4:37)
-            $$$cl2592.defineAttr($$lateTestChild,'parent',function(){if (this.parent$3431_===undefined)throw $$$cl2592.InitializationException($$$cl2592.String('Attempt to read unitialized attribute «parent»'));return this.parent$3431_;},function(parent$3432){if(this.parent$3431_!==undefined)throw $$$cl2592.InitializationException($$$cl2592.String('Attempt to reassign immutable attribute «parent»'));return this.parent$3431_=parent$3432;});
+            //AttributeDecl parent at late_support.ceylon (4:4-4:37)
+            $$$cl1.defineAttr($$lateTestChild,'parent',function(){if (this.parent$903_===undefined)throw $$$cl1.InitializationException($$$cl1.String('Attempt to read unitialized attribute «parent»'));return this.parent$903_;},function(parent$904){if(this.parent$903_!==undefined)throw $$$cl1.InitializationException($$$cl1.String('Attempt to reassign immutable attribute «parent»'));return this.parent$903_=parent$904;},function(){return{mod:$$METAMODEL$$,$t:{t:LateTestParent},$cont:LateTestChild,$an:function(){return[$$$cl1.shared(),$$$cl1.late()];},d:['misc','LateTestChild','$at','parent']};});
         })(LateTestChild.$$.prototype);
     }
-    LateTestChild.$$.$$metamodel$$={$nm:'LateTestChild',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
     return LateTestChild;
 }
 exports.$init$LateTestChild=$init$LateTestChild;
 $init$LateTestChild();
 
-//ClassDefinition LateTestParent at late_support.ceylon (7:0-12:0)
-function LateTestParent(children$3433, $$lateTestParent){
+//ClassDef LateTestParent at late_support.ceylon (7:0-12:0)
+function LateTestParent(children, $$lateTestParent){
     $init$LateTestParent();
     if ($$lateTestParent===undefined)$$lateTestParent=new LateTestParent.$$;
-    if(children$3433===undefined){children$3433=$$$cl2592.getEmpty();}
+    if(children===undefined){children=$$$cl1.getEmpty();}
     
-    //AttributeDeclaration children at late_support.ceylon (8:4-8:34)
-    $$lateTestParent.children$3434_=children$3433;
+    //AttributeDecl children at late_support.ceylon (8:4-8:34)
+    $$lateTestParent.children$905_=children;
+    $$lateTestParent.$prop$getChildren={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequential,a:{Element:{t:LateTestChild}}},$cont:LateTestParent,$an:function(){return[$$$cl1.shared()];},d:['misc','LateTestParent','$at','children']};}};
+    $$lateTestParent.$prop$getChildren.get=function(){return children};
     //'for' statement at late_support.ceylon (9:4-11:4)
-    var it$3435 = $$lateTestParent.children.iterator();
-    var child$3436;while ((child$3436=it$3435.next())!==$$$cl2592.getFinished()){
-        (child$3436.parent=$$lateTestParent);
+    var it$906 = $$lateTestParent.children.iterator();
+    var child$907;while ((child$907=it$906.next())!==$$$cl1.getFinished()){
+        (child$907.parent=$$lateTestParent);
     }
     return $$lateTestParent;
 }
+LateTestParent.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[{$nm:'children',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:LateTestChild}}},$an:function(){return[$$$cl1.shared()];}}],d:['misc','LateTestParent']};};
 function $init$LateTestParent(){
     if (LateTestParent.$$===undefined){
-        $$$cl2592.initTypeProto(LateTestParent,'misc::LateTestParent',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(LateTestParent,'misc::LateTestParent',$$$cl1.Basic);
         (function($$lateTestParent){
             
-            //AttributeDeclaration children at late_support.ceylon (8:4-8:34)
-            $$$cl2592.defineAttr($$lateTestParent,'children',function(){return this.children$3434_;});
+            //AttributeDecl children at late_support.ceylon (8:4-8:34)
+            $$$cl1.defineAttr($$lateTestParent,'children',function(){return this.children$905_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Sequential,a:{Element:{t:LateTestChild}}},$cont:LateTestParent,$an:function(){return[$$$cl1.shared()];},d:['misc','LateTestParent','$at','children']};});
         })(LateTestParent.$$.prototype);
     }
-    LateTestParent.$$.$$metamodel$$={$nm:'LateTestParent',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
     return LateTestParent;
 }
 exports.$init$LateTestParent=$init$LateTestParent;
 $init$LateTestParent();
 
-//MethodDefinition testLate at late_support.ceylon (14:0-33:0)
+//MethodDef testLate at late_support.ceylon (14:0-33:0)
 function testLate(){
     
-    //AttributeDeclaration kids at late_support.ceylon (15:4-15:51)
-    var kids$3437=[LateTestChild(),LateTestChild()].reifyCeylonType({Absent:{t:$$$cl2592.Nothing},Element:{t:LateTestChild}});
-    LateTestParent(kids$3437);
+    //AttributeDecl kids at late_support.ceylon (15:4-15:51)
+    var kids$908=[LateTestChild(),LateTestChild()].reifyCeylonType({Absent:{t:$$$cl1.Nothing},Element:{t:LateTestChild}});
+    LateTestParent(kids$908);
     try{
-        LateTestParent(kids$3437);
-        $$$c2593.fail($$$cl2592.String("reassigning to late attribute should fail",41));
-    }catch(ex$3438){
-        if (ex$3438.getT$name === undefined) ex$3438=$$$cl2592.NativeException(ex$3438);
-        if($$$cl2592.isOfType(ex$3438,{t:$$$cl2592.InitializationException})){
-            $$$c2593.check(true);
+        LateTestParent(kids$908);
+        $$$c2.fail($$$cl1.String("reassigning to late attribute should fail",41));
+    }catch(ex$909){
+        if (ex$909.getT$name === undefined) ex$909=$$$cl1.NativeException(ex$909);
+        if($$$cl1.isOfType(ex$909,{t:$$$cl1.InitializationException})){
+            $$$c2.check(true);
         }
-        else if($$$cl2592.isOfType(ex$3438,{t:$$$cl2592.Exception})){
-            $$$c2593.fail($$$cl2592.String("wrong exception thrown for late attribute",41));
+        else if($$$cl1.isOfType(ex$909,{t:$$$cl1.Exception})){
+            $$$c2.fail($$$cl1.String("wrong exception thrown for late attribute",41));
         }
-        else{throw ex$3438}
+        else{throw ex$909}
     }
     try{
-        $$$cl2592.print(LateTestChild().parent);
-        $$$c2593.fail($$$cl2592.String("Reading uninitialized late attribute should fail",48));
-    }catch(ex$3439){
-        if (ex$3439.getT$name === undefined) ex$3439=$$$cl2592.NativeException(ex$3439);
-        if($$$cl2592.isOfType(ex$3439,{t:$$$cl2592.InitializationException})){
-            $$$c2593.check(true);
+        $$$cl1.print(LateTestChild().parent);
+        $$$c2.fail($$$cl1.String("Reading uninitialized late attribute should fail",48));
+    }catch(ex$910){
+        if (ex$910.getT$name === undefined) ex$910=$$$cl1.NativeException(ex$910);
+        if($$$cl1.isOfType(ex$910,{t:$$$cl1.InitializationException})){
+            $$$c2.check(true);
         }
-        else if($$$cl2592.isOfType(ex$3439,{t:$$$cl2592.Exception})){
-            $$$c2593.fail($$$cl2592.String("wrong exception thrown for late attribute",41));
+        else if($$$cl1.isOfType(ex$910,{t:$$$cl1.Exception})){
+            $$$c2.fail($$$cl1.String("wrong exception thrown for late attribute",41));
         }
-        else{throw ex$3439}
+        else{throw ex$910}
     }
-};testLate.$$metamodel$$={$nm:'testLate',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};//testLate.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}};
+};testLate.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','testLate']};};
 
-//InterfaceDefinition X at misc.ceylon (1:0-5:0)
+//InterfaceDef X at misc.ceylon (1:0-5:0)
 function X($$x){
 }
+X.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$an:function(){return[$$$cl1.shared()];},d:['misc','X']};};
 exports.X=X;
 function $init$X(){
     if (X.$$===undefined){
-        $$$cl2592.initTypeProto(X,'misc::X');
+        $$$cl1.initTypeProtoI(X,'misc::X');
         (function($$x){
             
-            //MethodDefinition helloWorld at misc.ceylon (2:4-4:4)
+            //MethodDef helloWorld at misc.ceylon (2:4-4:4)
             $$x.helloWorld=function helloWorld(){
                 var $$x=this;
-                $$$cl2592.print($$$cl2592.String("hello world",11));
-            };$$x.helloWorld.$$metamodel$$={$nm:'helloWorld',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};
+                $$$cl1.print($$$cl1.String("hello world",11));
+            };$$x.helloWorld.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$cont:X,$an:function(){return[$$$cl1.shared()];},d:['misc','X','$m','helloWorld']};};
         })(X.$$.prototype);
     }
-    X.$$.$$metamodel$$={$nm:'X',$mt:'ifc','satisfies':[]};
     return X;
 }
 exports.$init$X=$init$X;
 $init$X();
 
-//ClassDefinition Foo at misc.ceylon (7:0-17:0)
-function Foo(name$3440, $$foo){
+//ClassDef Foo at misc.ceylon (7:0-17:0)
+function Foo(name, $$foo){
     $init$Foo();
     if ($$foo===undefined)$$foo=new Foo.$$;
     
-    //AttributeDeclaration name at misc.ceylon (8:4-8:22)
-    $$foo.name$3441_=name$3440;
+    //AttributeDecl name at misc.ceylon (8:4-8:22)
+    $$foo.name$911_=name;
+    $$foo.$prop$getName={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:Foo,$an:function(){return[$$$cl1.shared()];},d:['misc','Foo','$at','name']};}};
+    $$foo.$prop$getName.get=function(){return name};
     
-    //AttributeDeclaration counter at misc.ceylon (9:4-9:28)
-    $$foo.counter$3442_=(0);
+    //AttributeDecl counter at misc.ceylon (9:4-9:28)
+    $$foo.counter$912_=(0);
+    $$foo.$prop$getCounter$912={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:Foo,$an:function(){return[$$$cl1.variable()];},d:['misc','Foo','$at','counter']};}};
+    $$foo.$prop$getCounter$912.get=function(){return counter$912};
     
-    //AttributeDeclaration string at misc.ceylon (15:4-15:57)
-    $$foo.string$3443_=$$$cl2592.StringBuilder().appendAll([$$$cl2592.String("Foo(",4),$$foo.name.string,$$$cl2592.String(")",1)]).string;
+    //AttributeDecl string at misc.ceylon (15:4-15:57)
+    $$foo.string$913_=$$$cl1.StringBuilder().appendAll([$$$cl1.String("Foo(",4),$$foo.name.string,$$$cl1.String(")",1)]).string;
+    $$foo.$prop$getString={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:Foo,$an:function(){return[$$$cl1.shared(),$$$cl1.$default(),$$$cl1.actual()];},d:['misc','Foo','$at','string']};}};
+    $$foo.$prop$getString.get=function(){return string};
     $$foo.inc();
     return $$foo;
 }
+Foo.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[{$nm:'name',$mt:'prm',$t:{t:$$$cl1.String},$an:function(){return[$$$cl1.shared()];}}],$an:function(){return[$$$cl1.shared()];},d:['misc','Foo']};};
 exports.Foo=Foo;
 function $init$Foo(){
     if (Foo.$$===undefined){
-        $$$cl2592.initTypeProto(Foo,'misc::Foo',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(Foo,'misc::Foo',$$$cl1.Basic);
         (function($$foo){
             
-            //AttributeDeclaration name at misc.ceylon (8:4-8:22)
-            $$$cl2592.defineAttr($$foo,'name',function(){return this.name$3441_;});
+            //AttributeDecl name at misc.ceylon (8:4-8:22)
+            $$$cl1.defineAttr($$foo,'name',function(){return this.name$911_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:Foo,$an:function(){return[$$$cl1.shared()];},d:['misc','Foo','$at','name']};});
             
-            //AttributeDeclaration counter at misc.ceylon (9:4-9:28)
-            $$$cl2592.defineAttr($$foo,'counter$3442',function(){return this.counter$3442_;},function(counter$3444){return this.counter$3442_=counter$3444;});
+            //AttributeDecl counter at misc.ceylon (9:4-9:28)
+            $$$cl1.defineAttr($$foo,'counter$912',function(){return this.counter$912_;},function(counter$914){return this.counter$912_=counter$914;},function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:Foo,$an:function(){return[$$$cl1.variable()];},d:['misc','Foo','$at','counter']};});
             
-            //AttributeGetterDefinition count at misc.ceylon (10:4-10:43)
-            $$$cl2592.defineAttr($$foo,'count',function(){
+            //AttributeGetterDef count at misc.ceylon (10:4-10:43)
+            $$$cl1.defineAttr($$foo,'count',function(){
                 var $$foo=this;
-                return $$foo.counter$3442;
-            });
-            //MethodDefinition inc at misc.ceylon (11:4-11:43)
+                return $$foo.counter$912;
+            },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:Foo,$an:function(){return[$$$cl1.shared()];},d:['misc','Foo','$at','count']};});
+            //MethodDef inc at misc.ceylon (11:4-11:43)
             $$foo.inc=function inc(){
                 var $$foo=this;
-                $$foo.counter$3442=$$foo.counter$3442.plus((1));
-            };$$foo.inc.$$metamodel$$={$nm:'inc',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};
-            //MethodDefinition printName at misc.ceylon (12:4-14:4)
+                $$foo.counter$912=$$foo.counter$912.plus((1));
+            };$$foo.inc.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$cont:Foo,$an:function(){return[$$$cl1.shared()];},d:['misc','Foo','$m','inc']};};
+            
+            //MethodDef printName at misc.ceylon (12:4-14:4)
             $$foo.printName=function printName(){
                 var $$foo=this;
-                $$$cl2592.print($$$cl2592.String("foo name = ",11).plus($$foo.name));
-            };$$foo.printName.$$metamodel$$={$nm:'printName',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};
-            //AttributeDeclaration string at misc.ceylon (15:4-15:57)
-            $$$cl2592.defineAttr($$foo,'string',function(){return this.string$3443_;});
+                $$$cl1.print($$$cl1.String("foo name = ",11).plus($$foo.name));
+            };$$foo.printName.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$cont:Foo,$an:function(){return[$$$cl1.shared(),$$$cl1.$default()];},d:['misc','Foo','$m','printName']};};
+            
+            //AttributeDecl string at misc.ceylon (15:4-15:57)
+            $$$cl1.defineAttr($$foo,'string',function(){return this.string$913_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:Foo,$an:function(){return[$$$cl1.shared(),$$$cl1.$default(),$$$cl1.actual()];},d:['misc','Foo','$at','string']};});
         })(Foo.$$.prototype);
     }
-    Foo.$$.$$metamodel$$={$nm:'Foo',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
     return Foo;
 }
 exports.$init$Foo=$init$Foo;
 $init$Foo();
 
-//ClassDefinition Bar at misc.ceylon (19:0-34:0)
+//ClassDef Bar at misc.ceylon (19:0-34:0)
 function Bar($$bar){
     $init$Bar();
     if ($$bar===undefined)$$bar=new Bar.$$;
-    Foo($$$cl2592.String("Hello",5),$$bar);
+    Foo($$$cl1.String("Hello",5),$$bar);
     X($$bar);
     return $$bar;
 }
+Bar.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Foo},$ps:[],satisfies:[{t:X}],$an:function(){return[$$$cl1.shared()];},d:['misc','Bar']};};
 exports.Bar=Bar;
 function $init$Bar(){
     if (Bar.$$===undefined){
-        $$$cl2592.initTypeProto(Bar,'misc::Bar',Foo,$init$X());
+        $$$cl1.initTypeProto(Bar,'misc::Bar',$init$Foo(),$init$X());
         (function($$bar){
             
-            //MethodDefinition printName at misc.ceylon (20:4-24:4)
+            //MethodDef printName at misc.ceylon (20:4-24:4)
             $$bar.printName=function printName(){
                 var $$bar=this;
-                $$$cl2592.print($$$cl2592.String("bar name = ",11).plus($$bar.name));
+                $$$cl1.print($$$cl1.String("bar name = ",11).plus($$bar.name));
                 $$bar.getT$all()['misc::Foo'].$$.prototype.printName.call(this);
                 $$bar.getT$all()['misc::Foo'].$$.prototype.printName.call(this);
-            };$$bar.printName.$$metamodel$$={$nm:'printName',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};
-            //ClassDefinition Inner at misc.ceylon (25:4-31:4)
+            };$$bar.printName.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$cont:Bar,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','Bar','$m','printName']};};
+            
+            //ClassDef Inner at misc.ceylon (25:4-31:4)
             function Inner$Bar($$inner$Bar){
                 $init$Inner$Bar();
                 if ($$inner$Bar===undefined)$$inner$Bar=new this.Inner$Bar.$$;
                 $$inner$Bar.$$outer=this;
-                $$$cl2592.print($$$cl2592.String("creating inner class of :",25).plus($$inner$Bar.$$outer.name));
+                $$$cl1.print($$$cl1.String("creating inner class of :",25).plus($$inner$Bar.$$outer.name));
                 return $$inner$Bar;
             }
+            Inner$Bar.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$cont:Bar,$an:function(){return[$$$cl1.shared()];},d:['misc','Bar','$c','Inner']};};
             function $init$Inner$Bar(){
                 if (Inner$Bar.$$===undefined){
-                    $$$cl2592.initTypeProto(Inner$Bar,'misc::Bar.Inner',$$$cl2592.Basic);
+                    $$$cl1.initTypeProto(Inner$Bar,'misc::Bar.Inner',$$$cl1.Basic);
                     Bar.Inner$Bar=Inner$Bar;
                     (function($$inner$Bar){
                         
-                        //MethodDefinition incOuter at misc.ceylon (28:8-30:8)
+                        //MethodDef incOuter at misc.ceylon (28:8-30:8)
                         $$inner$Bar.incOuter=function incOuter(){
                             var $$inner$Bar=this;
                             $$inner$Bar.$$outer.inc();
-                        };$$inner$Bar.incOuter.$$metamodel$$={$nm:'incOuter',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};
+                        };$$inner$Bar.incOuter.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$cont:Inner$Bar,$an:function(){return[$$$cl1.shared()];},d:['misc','Bar','$c','Inner','$m','incOuter']};};
                     })(Inner$Bar.$$.prototype);
                 }
-                Inner$Bar.$$.$$metamodel$$={$nm:'Inner',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
                 return Inner$Bar;
             }
             $$bar.$init$Inner$Bar=$init$Inner$Bar;
@@ -585,338 +712,396 @@ function $init$Bar(){
             $$bar.Inner$Bar=Inner$Bar;
         })(Bar.$$.prototype);
     }
-    Bar.$$.$$metamodel$$={$nm:'Bar',$mt:'cls','super':{t:Foo},'satisfies':[{t:X}]};
     return Bar;
 }
 exports.$init$Bar=$init$Bar;
 $init$Bar();
 
-//MethodDefinition printBoth at misc.ceylon (36:0-38:0)
-function printBoth(x$3445,y$3446){
-    $$$cl2592.print(x$3445.plus($$$cl2592.String(", ",2)).plus(y$3446));
-};printBoth.$$metamodel$$={$nm:'printBoth',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl2592.String}},{$nm:'y',$mt:'prm',$t:{t:$$$cl2592.String}}]};//printBoth.$$targs$$={Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.String},Element:{t:$$$cl2592.String}}},Return:{t:$$$cl2592.Anything}};
+//MethodDef printBoth at misc.ceylon (36:0-38:0)
+function printBoth(x$915,y$916){
+    $$$cl1.print(x$915.plus($$$cl1.String(", ",2)).plus(y$916));
+};printBoth.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.String},$an:function(){return[];}},{$nm:'y',$mt:'prm',$t:{t:$$$cl1.String},$an:function(){return[];}}],d:['misc','printBoth']};};
 
-//MethodDefinition doIt at misc.ceylon (40:0-42:0)
-function doIt(f$3447){
-    f$3447();
-    f$3447();
-};doIt.$$metamodel$$={$nm:'doIt',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[{$nm:'f',$mt:'prm',$t:{t:$$$cl2592.Anything}}]};//doIt.$$targs$$={Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Anything},Element:{t:$$$cl2592.Anything}}},Return:{t:$$$cl2592.Anything}};
+//MethodDef doIt at misc.ceylon (40:0-42:0)
+function doIt(f$917){
+    f$917();
+    f$917();
+};doIt.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[{$nm:'f',$mt:'prm',$pt:'f',$t:{t:$$$cl1.Anything},$an:function(){return[];}}],d:['misc','doIt']};};
 
-//ObjectDefinition foob at misc.ceylon (44:0-46:0)
-function foob$3448(){
-    var $$foob=new foob$3448.$$;
+//ObjectDef foob at misc.ceylon (44:0-46:0)
+function foob$918(){
+    var $$foob=new foob$918.$$;
     
-    //AttributeDeclaration name at misc.ceylon (45:4-45:30)
-    $$foob.name$3449_=$$$cl2592.String("Gavin",5);
+    //AttributeDecl name at misc.ceylon (45:4-45:30)
+    $$foob.name$919_=$$$cl1.String("Gavin",5);
+    $$foob.$prop$getName.get=function(){return name};
     return $$foob;
-}
-function $init$foob$3448(){
-    if (foob$3448.$$===undefined){
-        $$$cl2592.initTypeProto(foob$3448,'misc::foob',$$$cl2592.Basic);
+};foob$918.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},d:['misc','foob']};};
+function $init$foob$918(){
+    if (foob$918.$$===undefined){
+        $$$cl1.initTypeProto(foob$918,'misc::foob',$$$cl1.Basic);
     }
-    foob$3448.$$.$$metamodel$$={$nm:'foob',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
-    return foob$3448;
+    return foob$918;
 }
-exports.$init$foob$3448=$init$foob$3448;
-$init$foob$3448();
+exports.$init$foob$918=$init$foob$918;
+$init$foob$918();
 (function($$foob){
     
-    //AttributeDeclaration name at misc.ceylon (45:4-45:30)
-    $$$cl2592.defineAttr($$foob,'name',function(){return this.name$3449_;});
-})(foob$3448.$$.prototype);
-var foob$3450=foob$3448();
-var getFoob=function(){
-    return foob$3450;
+    //AttributeDecl name at misc.ceylon (45:4-45:30)
+    $$$cl1.defineAttr($$foob,'name',function(){return this.name$919_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$cont:foob$918,$an:function(){return[$$$cl1.shared()];},d:['misc','foob','$at','name']};});
+})(foob$918.$$.prototype);
+var foob$920;
+function getFoob(){
+    if (foob$920===undefined){foob$920=$init$foob$918()();foob$920.$$metamodel$$=getFoob.$$metamodel$$;}
+    return foob$920;
 }
+getFoob.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:foob$918},d:['misc','foob']};};
+$prop$getFoob={get:getFoob,$$metamodel$$:getFoob.$$metamodel$$};
+exports.$prop$getFoob=$prop$getFoob;
 
-//MethodDefinition printAll at misc.ceylon (48:0-48:32)
-function printAll(strings$3451){
-    if(strings$3451===undefined){strings$3451=$$$cl2592.getEmpty();}
-};printAll.$$metamodel$$={$nm:'printAll',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[{$nm:'strings',$mt:'prm',seq:1,$t:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.String}}}}]};//printAll.$$targs$$={Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.String}}},Element:{t:$$$cl2592.Sequential,a:{Element:{t:$$$cl2592.String}}}}},Return:{t:$$$cl2592.Anything}};
+//MethodDef printAll at misc.ceylon (48:0-48:32)
+function printAll(strings$921){
+    if(strings$921===undefined){strings$921=$$$cl1.getEmpty();}
+};printAll.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[{$nm:'strings',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.String}}},$an:function(){return[];}}],d:['misc','printAll']};};
 
-//ClassDeclaration F at misc.ceylon (50:0-50:33)
-function F(name$3452, $$f){return Foo(name$3452,$$f);}
+//ClassDecl F at misc.ceylon (50:0-50:33)
+function F(name$922, $$f){return Foo(name$922,$$f);}
 F.$$=Foo.$$;
+F.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:Foo},$ps:[{$nm:'name',$mt:'prm',$t:{t:$$$cl1.String},$an:function(){return[];}}],d:['misc','F']};};
 
-//MethodDefinition var at misc.ceylon (52:0-52:33)
+//MethodDef var at misc.ceylon (52:0-52:33)
 function $var(){
     return (5);
 }
 exports.$var=$var;
-$var.$$metamodel$$={$nm:'var',$mt:'mthd',$t:{t:$$$cl2592.Integer},$ps:[]};//$var.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Integer}};
+$var.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$ps:[],$an:function(){return[$$$cl1.shared()];},d:['misc','var']};};
 
-//ClassDefinition TestObjects at objects.ceylon (3:0-17:0)
-function TestObjects(a$3453, b$3454, c$3455, $$testObjects){
+//AttributeDecl container249 at misc.ceylon (55:0-55:41)
+var container249$923;function $valinit$container249$923(){if (container249$923===undefined)container249$923=$$$cl1.Tuple(getObject249().$int,$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}});return container249$923;};$valinit$container249$923();
+function getContainer249(){return $valinit$container249$923();}
+var $prop$getContainer249={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}},d:['misc','container249']};}};
+exports.$prop$getContainer249=$prop$getContainer249;
+$prop$getContainer249.get=function(){return container249$923};
+
+//ObjectDef object249 at misc.ceylon (56:0-58:0)
+function object249$924(){
+    var $$object249=new object249$924.$$;
+    
+    //AttributeDecl int at misc.ceylon (57:2-57:24)
+    $$object249.int$925_=(1);
+    $$object249.$prop$getInt={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:object249$924,$an:function(){return[$$$cl1.shared()];},d:['misc','object249','$at','int']};}};
+    $$object249.$prop$getInt.get=function(){return $int};
+    return $$object249;
+};object249$924.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$an:function(){return[$$$cl1.shared()];},d:['misc','object249']};};
+function $init$object249$924(){
+    if (object249$924.$$===undefined){
+        $$$cl1.initTypeProto(object249$924,'misc::object249',$$$cl1.Basic);
+    }
+    return object249$924;
+}
+exports.$init$object249$924=$init$object249$924;
+$init$object249$924();
+(function($$object249){
+    
+    //AttributeDecl int at misc.ceylon (57:2-57:24)
+    $$$cl1.defineAttr($$object249,'$int',function(){return this.int$925_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:object249$924,$an:function(){return[$$$cl1.shared()];},d:['misc','object249','$at','int']};});
+})(object249$924.$$.prototype);
+var object249$926;
+function getObject249(){
+    if (object249$926===undefined){object249$926=$init$object249$924()();object249$926.$$metamodel$$=getObject249.$$metamodel$$;}
+    return object249$926;
+}
+exports.getObject249=getObject249;
+getObject249.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:object249$924},$an:function(){return[$$$cl1.shared()];},d:['misc','object249']};};
+$prop$getObject249={get:getObject249,$$metamodel$$:getObject249.$$metamodel$$};
+exports.$prop$getObject249=$prop$getObject249;
+exports.$mod$ans$=function(){return[$$$cl1.by([$$$cl1.String("Enrique Zamudio",15),$$$cl1.String("Ivo Kasiuk",10)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}))];};
+exports.$mod$imps=function(){return{
+'check/0.1':[],
+'members/0.1':[]
+};};
+
+//ClassDef TestObjects at objects.ceylon (3:0-17:0)
+function TestObjects(a$927, b$928, c$929, $$testObjects){
     $init$TestObjects();
     if ($$testObjects===undefined)$$testObjects=new TestObjects.$$;
-    $$testObjects.$$targs$$={Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.Integer}};
-    $$testObjects.a$3453=a$3453;
-    $$testObjects.b$3454=b$3454;
-    $$testObjects.c$3455=c$3455;
-    $$$cl2592.Iterable($$testObjects);
-    $$$cl2592.add_type_arg($$testObjects,'Absent',{t:$$$cl2592.Null});
-    $$$cl2592.add_type_arg($$testObjects,'Element',{t:$$$cl2592.Integer});
+    $$testObjects.$$targs$$={Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}};
+    $$testObjects.a$927_=a$927;
+    $$testObjects.b$928_=b$928;
+    $$testObjects.c$929_=c$929;
+    $$$cl1.Iterable({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}},$$testObjects);
+    $$$cl1.add_type_arg($$testObjects,'Absent',{t:$$$cl1.Null});
+    $$$cl1.add_type_arg($$testObjects,'Element',{t:$$$cl1.Integer});
     return $$testObjects;
 }
+TestObjects.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}},{$nm:'b',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}},{$nm:'c',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}}],satisfies:[{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}}],d:['misc','TestObjects']};};
 function $init$TestObjects(){
     if (TestObjects.$$===undefined){
-        $$$cl2592.initTypeProto(TestObjects,'misc::TestObjects',$$$cl2592.Basic,$$$cl2592.Iterable);
+        $$$cl1.initTypeProto(TestObjects,'misc::TestObjects',$$$cl1.Basic,$$$cl1.Iterable);
         (function($$testObjects){
             
-            //MethodDefinition iterator at objects.ceylon (4:2-16:2)
+            //MethodDef iterator at objects.ceylon (4:2-16:2)
             $$testObjects.iterator=function iterator(){
                 var $$testObjects=this;
                 
-                //ObjectDefinition iter at objects.ceylon (5:4-14:4)
-                function iter$3456($$targs$$){
-                    var $$iter$3456=new iter$3456.$$;
-                    $$iter$3456.$$targs$$=$$targs$$;
-                    $$$cl2592.Iterator($$iter$3456);
-                    $$$cl2592.add_type_arg($$iter$3456,'Element',{t:$$$cl2592.Integer});
+                //ObjectDef iter at objects.ceylon (5:4-14:4)
+                function iter$930($$targs$$){
+                    var $$iter$930=new iter$930.$$;
+                    $$iter$930.$$targs$$=$$targs$$;
+                    $$$cl1.Iterator({Element:{t:$$$cl1.Integer}},$$iter$930);
+                    $$$cl1.add_type_arg($$iter$930,'Element',{t:$$$cl1.Integer});
                     
-                    //AttributeDeclaration index at objects.ceylon (6:6-6:30)
-                    $$iter$3456.index$3457_=(0);
-                    return $$iter$3456;
-                }
-                function $init$iter$3456(){
-                    if (iter$3456.$$===undefined){
-                        $$$cl2592.initTypeProto(iter$3456,'misc::TestObjects.iterator.iter',$$$cl2592.Basic,$$$cl2592.Iterator);
+                    //AttributeDecl index at objects.ceylon (6:6-6:30)
+                    $$iter$930.index$931_=(0);
+                    $$iter$930.$prop$getIndex$931={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:iter$930,$an:function(){return[$$$cl1.variable()];},d:['misc','TestObjects','$m','iterator','$o','iter','$at','index']};}};
+                    $$iter$930.$prop$getIndex$931.get=function(){return index$931};
+                    return $$iter$930;
+                };iter$930.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},satisfies:[{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}}],d:['misc','TestObjects','$m','iterator','$o','iter']};};
+                function $init$iter$930(){
+                    if (iter$930.$$===undefined){
+                        $$$cl1.initTypeProto(iter$930,'misc::TestObjects.iterator.iter',$$$cl1.Basic,$$$cl1.Iterator);
                     }
-                    iter$3456.$$.$$metamodel$$={$nm:'iter',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.Integer}}}]};
-                    return iter$3456;
+                    return iter$930;
                 }
-                $init$iter$3456();
-                (function($$iter$3456){
+                $init$iter$930();
+                (function($$iter$930){
                     
-                    //AttributeDeclaration index at objects.ceylon (6:6-6:30)
-                    $$$cl2592.defineAttr($$iter$3456,'index$3457',function(){return this.index$3457_;},function(index$3458){return this.index$3457_=index$3458;});
+                    //AttributeDecl index at objects.ceylon (6:6-6:30)
+                    $$$cl1.defineAttr($$iter$930,'index$931',function(){return this.index$931_;},function(index$932){return this.index$931_=index$932;},function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:iter$930,$an:function(){return[$$$cl1.variable()];},d:['misc','TestObjects','$m','iterator','$o','iter','$at','index']};});
                     
-                    //MethodDefinition next at objects.ceylon (7:6-13:6)
-                    $$iter$3456.next=function next(){
-                        var $$iter$3456=this;
-                        (oldindex$3459=$$iter$3456.index$3457,$$iter$3456.index$3457=oldindex$3459.successor,oldindex$3459);
-                        var oldindex$3459;
-                        if($$iter$3456.index$3457.equals((1))){
-                            return $$testObjects.a$3453;
+                    //MethodDef next at objects.ceylon (7:6-13:6)
+                    $$iter$930.next=function next(){
+                        var $$iter$930=this;
+                        (oldindex$933=$$iter$930.index$931,$$iter$930.index$931=oldindex$933.successor,oldindex$933);
+                        var oldindex$933;
+                        if($$iter$930.index$931.equals((1))){
+                            return $$testObjects.a$927;
                         }else {
-                            if($$iter$3456.index$3457.equals((2))){
-                                return $$testObjects.b$3454;
+                            if($$iter$930.index$931.equals((2))){
+                                return $$testObjects.b$928;
                             }else {
-                                if($$iter$3456.index$3457.equals((3))){
-                                    return $$testObjects.c$3455;
+                                if($$iter$930.index$931.equals((3))){
+                                    return $$testObjects.c$929;
                                 }
                             }
                         }
-                        return $$$cl2592.getFinished();
-                    };$$iter$3456.next.$$metamodel$$={$nm:'next',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl2592.Integer},{t:$$$cl2592.Finished}]},$ps:[]};
-                })(iter$3456.$$.prototype);
-                var iter$3460=iter$3456({Element:{t:$$$cl2592.Integer}});
-                var getIter$3460=function(){
-                    return iter$3460;
+                        return $$$cl1.getFinished();
+                    };$$iter$930.next.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:'u', l:[{t:$$$cl1.Integer},{t:$$$cl1.Finished}]},$ps:[],$cont:iter$930,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','TestObjects','$m','iterator','$o','iter','$m','next']};};
+                })(iter$930.$$.prototype);
+                var iter$934;
+                function getIter$934(){
+                    if (iter$934===undefined){iter$934=$init$iter$930()({Element:{t:$$$cl1.Integer}});iter$934.$$metamodel$$=getIter$934.$$metamodel$$;}
+                    return iter$934;
                 }
-                return getIter$3460();
-            };$$testObjects.iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl2592.Iterator,a:{Element:{t:$$$cl2592.Integer}}},$ps:[]};
+                getIter$934.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:iter$930},d:['misc','TestObjects','$m','iterator','$o','iter']};};
+                $prop$getIter$934={get:getIter$934,$$metamodel$$:getIter$934.$$metamodel$$};
+                return getIter$934();
+            };$$testObjects.iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}},$ps:[],$cont:TestObjects,$an:function(){return[$$$cl1.shared(),$$$cl1.actual()];},d:['misc','TestObjects','$m','iterator']};};
+            $$$cl1.defineAttr($$testObjects,'a$927',function(){return this.a$927_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:TestObjects,d:['misc','TestObjects','$at','a']};});
+            $$$cl1.defineAttr($$testObjects,'b$928',function(){return this.b$928_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:TestObjects,d:['misc','TestObjects','$at','b']};});
+            $$$cl1.defineAttr($$testObjects,'c$929',function(){return this.c$929_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Integer},$cont:TestObjects,d:['misc','TestObjects','$at','c']};});
         })(TestObjects.$$.prototype);
     }
-    TestObjects.$$.$$metamodel$$={$nm:'TestObjects',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[{t:$$$cl2592.Iterable,a:{Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.Integer}}}]};
     return TestObjects;
 }
 exports.$init$TestObjects=$init$TestObjects;
 $init$TestObjects();
 
-//MethodDefinition test_objects at objects.ceylon (19:0-42:0)
+//MethodDef test_objects at objects.ceylon (19:0-42:0)
 function test_objects(){
-    $$$cl2592.print($$$cl2592.String("testing objects",15));
+    $$$cl1.print($$$cl1.String("testing objects",15));
     
-    //AttributeDeclaration t1 at objects.ceylon (21:2-21:42)
-    var t1$3461=TestObjects((1),(2),(3)).iterator();
+    //AttributeDecl t1 at objects.ceylon (21:2-21:42)
+    var t1$935=TestObjects((1),(2),(3)).iterator();
     
-    //AttributeDeclaration t2 at objects.ceylon (22:2-22:42)
-    var t2$3462=TestObjects((1),(2),(3)).iterator();
-    var i$3463;
-    if($$$cl2592.isOfType((i$3463=t1$3461.next()),{t:$$$cl2592.Integer})){
-        $$$c2593.check(i$3463.equals((1)),$$$cl2592.String("objects 1",9));
+    //AttributeDecl t2 at objects.ceylon (22:2-22:42)
+    var t2$936=TestObjects((1),(2),(3)).iterator();
+    var i$937;
+    if($$$cl1.isOfType((i$937=t1$935.next()),{t:$$$cl1.Integer})){
+        $$$c2.check(i$937.equals((1)),$$$cl1.String("objects 1",9));
     }
-    var i$3464;
-    if($$$cl2592.isOfType((i$3464=t1$3461.next()),{t:$$$cl2592.Integer})){
-        $$$c2593.check(i$3464.equals((2)),$$$cl2592.String("objects 2",9));
+    var i$938;
+    if($$$cl1.isOfType((i$938=t1$935.next()),{t:$$$cl1.Integer})){
+        $$$c2.check(i$938.equals((2)),$$$cl1.String("objects 2",9));
     }
-    var i$3465;
-    if($$$cl2592.isOfType((i$3465=t2$3462.next()),{t:$$$cl2592.Integer})){
-        $$$c2593.check(i$3465.equals((1)),$$$cl2592.String("objects 3",9));
+    var i$939;
+    if($$$cl1.isOfType((i$939=t2$936.next()),{t:$$$cl1.Integer})){
+        $$$c2.check(i$939.equals((1)),$$$cl1.String("objects 3",9));
     }
-    var i$3466;
-    if($$$cl2592.isOfType((i$3466=t1$3461.next()),{t:$$$cl2592.Integer})){
-        $$$c2593.check(i$3466.equals((3)),$$$cl2592.String("objects 4",9));
+    var i$940;
+    if($$$cl1.isOfType((i$940=t1$935.next()),{t:$$$cl1.Integer})){
+        $$$c2.check(i$940.equals((3)),$$$cl1.String("objects 4",9));
     }
-    $$$c2593.check($$$cl2592.isOfType(t1$3461.next(),{t:$$$cl2592.Finished}),$$$cl2592.String("objects 5",9));
-    var i$3467;
-    if($$$cl2592.isOfType((i$3467=t2$3462.next()),{t:$$$cl2592.Integer})){
-        $$$c2593.check(i$3467.equals((2)),$$$cl2592.String("objects 6",9));
+    $$$c2.check($$$cl1.isOfType(t1$935.next(),{t:$$$cl1.Finished}),$$$cl1.String("objects 5",9));
+    var i$941;
+    if($$$cl1.isOfType((i$941=t2$936.next()),{t:$$$cl1.Integer})){
+        $$$c2.check(i$941.equals((2)),$$$cl1.String("objects 6",9));
     }
-    var i$3468;
-    if($$$cl2592.isOfType((i$3468=t2$3462.next()),{t:$$$cl2592.Integer})){
-        $$$c2593.check(i$3468.equals((3)),$$$cl2592.String("objects 7",9));
+    var i$942;
+    if($$$cl1.isOfType((i$942=t2$936.next()),{t:$$$cl1.Integer})){
+        $$$c2.check(i$942.equals((3)),$$$cl1.String("objects 7",9));
     }
-};test_objects.$$metamodel$$={$nm:'test_objects',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};//test_objects.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}};
+};test_objects.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','test_objects']};};
 
-//InterfaceDefinition Top1 at reifiedRuntime.ceylon (3:0-3:22)
+//InterfaceDef Top1 at reifiedRuntime.ceylon (3:0-3:22)
 function Top1($$top1){
 }
+Top1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$an:function(){return[$$$cl1.shared()];},d:['misc','Top1']};};
 exports.Top1=Top1;
 function $init$Top1(){
     if (Top1.$$===undefined){
-        $$$cl2592.initTypeProto(Top1,'misc::Top1');
+        $$$cl1.initTypeProtoI(Top1,'misc::Top1');
     }
-    Top1.$$.$$metamodel$$={$nm:'Top1',$mt:'ifc','satisfies':[]};
     return Top1;
 }
 exports.$init$Top1=$init$Top1;
 $init$Top1();
 
-//InterfaceDefinition Middle1 at reifiedRuntime.ceylon (4:0-4:40)
+//InterfaceDef Middle1 at reifiedRuntime.ceylon (4:0-4:40)
 function Middle1($$middle1){
     Top1($$middle1);
 }
+Middle1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,satisfies:[{t:Top1}],$an:function(){return[$$$cl1.shared()];},d:['misc','Middle1']};};
 exports.Middle1=Middle1;
 function $init$Middle1(){
     if (Middle1.$$===undefined){
-        $$$cl2592.initTypeProto(Middle1,'misc::Middle1',$init$Top1());
+        $$$cl1.initTypeProtoI(Middle1,'misc::Middle1',$init$Top1());
     }
-    Middle1.$$.$$metamodel$$={$nm:'Middle1',$mt:'ifc','satisfies':[{t:Top1}]};
     return Middle1;
 }
 exports.$init$Middle1=$init$Middle1;
 $init$Middle1();
 
-//InterfaceDefinition Bottom1 at reifiedRuntime.ceylon (5:0-5:43)
+//InterfaceDef Bottom1 at reifiedRuntime.ceylon (5:0-5:43)
 function Bottom1($$bottom1){
     Middle1($$bottom1);
 }
+Bottom1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,satisfies:[{t:Middle1}],$an:function(){return[$$$cl1.shared()];},d:['misc','Bottom1']};};
 exports.Bottom1=Bottom1;
 function $init$Bottom1(){
     if (Bottom1.$$===undefined){
-        $$$cl2592.initTypeProto(Bottom1,'misc::Bottom1',$init$Middle1());
+        $$$cl1.initTypeProtoI(Bottom1,'misc::Bottom1',$init$Middle1());
     }
-    Bottom1.$$.$$metamodel$$={$nm:'Bottom1',$mt:'ifc','satisfies':[{t:Middle1}]};
     return Bottom1;
 }
 exports.$init$Bottom1=$init$Bottom1;
 $init$Bottom1();
 
-//ClassDefinition Invariant at reifiedRuntime.ceylon (7:0-7:34)
+//ClassDef Invariant at reifiedRuntime.ceylon (7:0-7:34)
 function Invariant($$targs$$,$$invariant){
     $init$Invariant();
     if ($$invariant===undefined)$$invariant=new Invariant.$$;
-    $$$cl2592.set_type_args($$invariant,$$targs$$);
+    $$$cl1.set_type_args($$invariant,$$targs$$);
     return $$invariant;
 }
+Invariant.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{Element:{}},$an:function(){return[$$$cl1.shared()];},d:['misc','Invariant']};};
 exports.Invariant=Invariant;
 function $init$Invariant(){
     if (Invariant.$$===undefined){
-        $$$cl2592.initTypeProto(Invariant,'misc::Invariant',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(Invariant,'misc::Invariant',$$$cl1.Basic);
     }
-    Invariant.$$.$$metamodel$$={$nm:'Invariant',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{Element:{}},'satisfies':[]};
     return Invariant;
 }
 exports.$init$Invariant=$init$Invariant;
 $init$Invariant();
 
-//ClassDefinition Covariant at reifiedRuntime.ceylon (8:0-8:38)
+//ClassDef Covariant at reifiedRuntime.ceylon (8:0-8:38)
 function Covariant($$targs$$,$$covariant){
     $init$Covariant();
     if ($$covariant===undefined)$$covariant=new Covariant.$$;
-    $$$cl2592.set_type_args($$covariant,$$targs$$);
+    $$$cl1.set_type_args($$covariant,$$targs$$);
     return $$covariant;
 }
+Covariant.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{Element:{'var':'out'}},$an:function(){return[$$$cl1.shared()];},d:['misc','Covariant']};};
 exports.Covariant=Covariant;
 function $init$Covariant(){
     if (Covariant.$$===undefined){
-        $$$cl2592.initTypeProto(Covariant,'misc::Covariant',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(Covariant,'misc::Covariant',$$$cl1.Basic);
     }
-    Covariant.$$.$$metamodel$$={$nm:'Covariant',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{Element:{'var':'out',}},'satisfies':[]};
     return Covariant;
 }
 exports.$init$Covariant=$init$Covariant;
 $init$Covariant();
 
-//ClassDefinition Contravariant at reifiedRuntime.ceylon (9:0-9:41)
+//ClassDef Contravariant at reifiedRuntime.ceylon (9:0-9:41)
 function Contravariant($$targs$$,$$contravariant){
     $init$Contravariant();
     if ($$contravariant===undefined)$$contravariant=new Contravariant.$$;
-    $$$cl2592.set_type_args($$contravariant,$$targs$$);
+    $$$cl1.set_type_args($$contravariant,$$targs$$);
     return $$contravariant;
 }
+Contravariant.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{Element:{'var':'in'}},$an:function(){return[$$$cl1.shared()];},d:['misc','Contravariant']};};
 exports.Contravariant=Contravariant;
 function $init$Contravariant(){
     if (Contravariant.$$===undefined){
-        $$$cl2592.initTypeProto(Contravariant,'misc::Contravariant',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(Contravariant,'misc::Contravariant',$$$cl1.Basic);
     }
-    Contravariant.$$.$$metamodel$$={$nm:'Contravariant',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{Element:{'var':'in',}},'satisfies':[]};
     return Contravariant;
 }
 exports.$init$Contravariant=$init$Contravariant;
 $init$Contravariant();
 
-//ClassDefinition Bivariant at reifiedRuntime.ceylon (10:0-10:41)
+//ClassDef Bivariant at reifiedRuntime.ceylon (10:0-10:41)
 function Bivariant($$targs$$,$$bivariant){
     $init$Bivariant();
     if ($$bivariant===undefined)$$bivariant=new Bivariant.$$;
-    $$$cl2592.set_type_args($$bivariant,$$targs$$);
+    $$$cl1.set_type_args($$bivariant,$$targs$$);
     return $$bivariant;
 }
+Bivariant.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{In:{'var':'in'},Out:{'var':'out'}},$an:function(){return[$$$cl1.shared()];},d:['misc','Bivariant']};};
 exports.Bivariant=Bivariant;
 function $init$Bivariant(){
     if (Bivariant.$$===undefined){
-        $$$cl2592.initTypeProto(Bivariant,'misc::Bivariant',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(Bivariant,'misc::Bivariant',$$$cl1.Basic);
     }
-    Bivariant.$$.$$metamodel$$={$nm:'Bivariant',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{In:{'var':'in',},Out:{'var':'out',}},'satisfies':[]};
     return Bivariant;
 }
 exports.$init$Bivariant=$init$Bivariant;
 $init$Bivariant();
 
-//ClassDefinition Container at reifiedRuntime.ceylon (12:0-16:0)
+//ClassDef Container at reifiedRuntime.ceylon (12:0-16:0)
 function Container($$targs$$,$$container){
     $init$Container();
     if ($$container===undefined)$$container=new Container.$$;
-    $$$cl2592.set_type_args($$container,$$targs$$);
+    $$$cl1.set_type_args($$container,$$targs$$);
     return $$container;
 }
+Container.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{Outer:{}},$an:function(){return[$$$cl1.shared()];},d:['misc','Container']};};
 exports.Container=Container;
 function $init$Container(){
     if (Container.$$===undefined){
-        $$$cl2592.initTypeProto(Container,'misc::Container',$$$cl2592.Basic);
+        $$$cl1.initTypeProto(Container,'misc::Container',$$$cl1.Basic);
         (function($$container){
             
-            //ClassDefinition Member at reifiedRuntime.ceylon (13:4-15:4)
+            //ClassDef Member at reifiedRuntime.ceylon (13:4-15:4)
             function Member$Container($$targs$$,$$member$Container){
                 $init$Member$Container();
                 if ($$member$Container===undefined)$$member$Container=new this.Member$Container.$$;
-                $$$cl2592.set_type_args($$member$Container,$$targs$$);
+                $$$cl1.set_type_args($$member$Container,$$targs$$);
                 $$member$Container.$$outer=this;
                 return $$member$Container;
             }
+            Member$Container.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$cont:Container,$tp:{Inner:{}},$an:function(){return[$$$cl1.shared()];},d:['misc','Container','$c','Member']};};
             function $init$Member$Container(){
                 if (Member$Container.$$===undefined){
-                    $$$cl2592.initTypeProto(Member$Container,'misc::Container.Member',$$$cl2592.Basic);
+                    $$$cl1.initTypeProto(Member$Container,'misc::Container.Member',$$$cl1.Basic);
                     Container.Member$Container=Member$Container;
                     (function($$member$Container){
                         
-                        //ClassDefinition Child at reifiedRuntime.ceylon (14:8-14:40)
+                        //ClassDef Child at reifiedRuntime.ceylon (14:8-14:40)
                         function Child$Member$Container($$targs$$,$$child$Member$Container){
                             $init$Child$Member$Container();
                             if ($$child$Member$Container===undefined)$$child$Member$Container=new this.Child$Member$Container.$$;
-                            $$$cl2592.set_type_args($$child$Member$Container,$$targs$$);
+                            $$$cl1.set_type_args($$child$Member$Container,$$targs$$);
                             $$child$Member$Container.$$outer=this;
                             return $$child$Member$Container;
                         }
+                        Child$Member$Container.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$cont:Member$Container,$tp:{InnerMost:{}},$an:function(){return[$$$cl1.shared()];},d:['misc','Container','$c','Member','$c','Child']};};
                         function $init$Child$Member$Container(){
                             if (Child$Member$Container.$$===undefined){
-                                $$$cl2592.initTypeProto(Child$Member$Container,'misc::Container.Member.Child',$$$cl2592.Basic);
+                                $$$cl1.initTypeProto(Child$Member$Container,'misc::Container.Member.Child',$$$cl1.Basic);
                                 Container.Member$Container.Child$Member$Container=Child$Member$Container;
                             }
-                            Child$Member$Container.$$.$$metamodel$$={$nm:'Child',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{InnerMost:{}},'satisfies':[]};
                             return Child$Member$Container;
                         }
                         $$member$Container.$init$Child$Member$Container=$init$Child$Member$Container;
@@ -924,7 +1109,6 @@ function $init$Container(){
                         $$member$Container.Child$Member$Container=Child$Member$Container;
                     })(Member$Container.$$.prototype);
                 }
-                Member$Container.$$.$$metamodel$$={$nm:'Member',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{Inner:{}},'satisfies':[]};
                 return Member$Container;
             }
             $$container.$init$Member$Container=$init$Member$Container;
@@ -932,185 +1116,301 @@ function $init$Container(){
             $$container.Member$Container=Member$Container;
         })(Container.$$.prototype);
     }
-    Container.$$.$$metamodel$$={$nm:'Container',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{Outer:{}},'satisfies':[]};
     return Container;
 }
 exports.$init$Container=$init$Container;
 $init$Container();
 
-//MethodDefinition runtimeMethod at reifiedRuntime.ceylon (18:0-20:0)
-function runtimeMethod(param$3469){
-    return $$$cl2592.getNothing();
-};runtimeMethod.$$metamodel$$={$nm:'runtimeMethod',$mt:'mthd',$t:{t:$$$cl2592.String},$ps:[{$nm:'param',$mt:'prm',$t:{t:$$$cl2592.Integer}}]};//runtimeMethod.$$targs$$={Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}};
+//InterfaceDef TestInterface1 at reifiedRuntime.ceylon (18:0-18:29)
+function TestInterface1($$targs$$,$$testInterface1){
+    $$$cl1.set_type_args($$testInterface1,$$targs$$);
+}
+TestInterface1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$tp:{T:{}},d:['misc','TestInterface1']};};
+function $init$TestInterface1(){
+    if (TestInterface1.$$===undefined){
+        $$$cl1.initTypeProtoI(TestInterface1,'misc::TestInterface1');
+    }
+    return TestInterface1;
+}
+exports.$init$TestInterface1=$init$TestInterface1;
+$init$TestInterface1();
 
-//MethodDefinition testReifiedRuntime at reifiedRuntime.ceylon (22:0-81:0)
+//ClassDef Test1 at reifiedRuntime.ceylon (19:0-19:46)
+function Test1($$targs$$,$$test1){
+    $init$Test1();
+    if ($$test1===undefined)$$test1=new Test1.$$;
+    $$$cl1.set_type_args($$test1,$$targs$$);
+    TestInterface1($$test1.$$targs$$===undefined?$$targs$$:{T:$$test1.$$targs$$.T},$$test1);
+    return $$test1;
+}
+Test1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{T:{}},satisfies:[{t:TestInterface1,a:{T:'T'}}],d:['misc','Test1']};};
+function $init$Test1(){
+    if (Test1.$$===undefined){
+        $$$cl1.initTypeProto(Test1,'misc::Test1',$$$cl1.Basic,$init$TestInterface1());
+    }
+    return Test1;
+}
+exports.$init$Test1=$init$Test1;
+$init$Test1();
+
+//ClassDef Test2 at reifiedRuntime.ceylon (20:0-20:48)
+function Test2($$targs$$,$$test2){
+    $init$Test2();
+    if ($$test2===undefined)$$test2=new Test2.$$;
+    $$$cl1.set_type_args($$test2,$$targs$$);
+    TestInterface1($$test2.$$targs$$===undefined?$$targs$$:{T:$$test2.$$targs$$.T1},$$test2);
+    return $$test2;
+}
+Test2.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{T1:{}},satisfies:[{t:TestInterface1,a:{T:'T1'}}],d:['misc','Test2']};};
+function $init$Test2(){
+    if (Test2.$$===undefined){
+        $$$cl1.initTypeProto(Test2,'misc::Test2',$$$cl1.Basic,$init$TestInterface1());
+    }
+    return Test2;
+}
+exports.$init$Test2=$init$Test2;
+$init$Test2();
+
+//MethodDef runtimeMethod at reifiedRuntime.ceylon (22:0-24:0)
+function runtimeMethod(param$943){
+    return $$$cl1.getNothing();
+};runtimeMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.String},$ps:[{$nm:'param',$mt:'prm',$t:{t:$$$cl1.Integer},$an:function(){return[];}}],d:['misc','runtimeMethod']};};
+
+//MethodDef testReifiedRuntime at reifiedRuntime.ceylon (26:0-98:0)
 function testReifiedRuntime(){
-    $$$cl2592.print($$$cl2592.String("Reified generics",16));
+    $$$cl1.print($$$cl1.String("Reified generics",16));
     
-    //AttributeDeclaration member at reifiedRuntime.ceylon (24:4-24:57)
-    var member$3470=Container({Outer:{t:$$$cl2592.String}}).Member$Container({Inner:{t:$$$cl2592.Integer}});
-    $$$c2593.check($$$cl2592.isOfType(member$3470,{t:Container.Member$Container,a:{Outer:{t:$$$cl2592.String},Inner:{t:$$$cl2592.Integer}}}),$$$cl2592.String("reified runtime inner 1",23));
-    $$$c2593.check((!$$$cl2592.isOfType(member$3470,{t:Container.Member$Container,a:{Outer:{t:$$$cl2592.Integer},Inner:{t:$$$cl2592.Integer}}})),$$$cl2592.String("reified runtime inner 2",23));
-    $$$c2593.check((!$$$cl2592.isOfType(member$3470,{t:Container.Member$Container,a:{Outer:{t:$$$cl2592.String},Inner:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime inner 3",23));
+    //AttributeDecl member at reifiedRuntime.ceylon (28:4-28:57)
+    var member$944=Container({Outer:{t:$$$cl1.String}}).Member$Container({Inner:{t:$$$cl1.Integer}});
+    $$$c2.check($$$cl1.isOfType(member$944,{t:Container.Member$Container,a:{Outer:{t:$$$cl1.String},Inner:{t:$$$cl1.Integer}}}),$$$cl1.String("reified runtime inner 1",23));
+    $$$c2.check((!$$$cl1.isOfType(member$944,{t:Container.Member$Container,a:{Outer:{t:$$$cl1.Integer},Inner:{t:$$$cl1.Integer}}})),$$$cl1.String("reified runtime inner 2",23));
+    $$$c2.check((!$$$cl1.isOfType(member$944,{t:Container.Member$Container,a:{Outer:{t:$$$cl1.String},Inner:{t:$$$cl1.String}}})),$$$cl1.String("reified runtime inner 3",23));
     
-    //AttributeDeclaration member2 at reifiedRuntime.ceylon (29:4-29:77)
-    var member2$3471=Container({Outer:{t:$$$cl2592.String}}).Member$Container({Inner:{t:$$$cl2592.Integer}}).Child$Member$Container({InnerMost:{t:$$$cl2592.Character}});
-    $$$c2593.check($$$cl2592.isOfType(member2$3471,{t:Container.Member$Container.Child$Member$Container,a:{Outer:{t:$$$cl2592.String},Inner:{t:$$$cl2592.Integer},InnerMost:{t:$$$cl2592.Character}}}),$$$cl2592.String("reified runtime inner 4",23));
+    //AttributeDecl member2 at reifiedRuntime.ceylon (33:4-33:77)
+    var member2$945=Container({Outer:{t:$$$cl1.String}}).Member$Container({Inner:{t:$$$cl1.Integer}}).Child$Member$Container({InnerMost:{t:$$$cl1.Character}});
+    $$$c2.check($$$cl1.isOfType(member2$945,{t:Container.Member$Container.Child$Member$Container,a:{Outer:{t:$$$cl1.String},Inner:{t:$$$cl1.Integer},InnerMost:{t:$$$cl1.Character}}}),$$$cl1.String("reified runtime inner 4",23));
     
-    //AttributeDeclaration invTop1 at reifiedRuntime.ceylon (32:4-32:38)
-    var invTop1$3472=Invariant({Element:{t:Top1}});
-    $$$c2593.check($$$cl2592.isOfType(invTop1$3472,{t:Invariant,a:{Element:{t:Top1}}}),$$$cl2592.String("reified runtime invariant 1",27));
-    $$$c2593.check((!$$$cl2592.isOfType(invTop1$3472,{t:Invariant,a:{Element:{t:Middle1}}})),$$$cl2592.String("reified runtime invariant 2",27));
-    $$$c2593.check((!$$$cl2592.isOfType(invTop1$3472,{t:Invariant,a:{Element:{t:Bottom1}}})),$$$cl2592.String("reified runtime invariant 3",27));
+    //AttributeDecl invTop1 at reifiedRuntime.ceylon (36:4-36:38)
+    var invTop1$946=Invariant({Element:{t:Top1}});
+    $$$c2.check($$$cl1.isOfType(invTop1$946,{t:Invariant,a:{Element:{t:Top1}}}),$$$cl1.String("reified runtime invariant 1",27));
+    $$$c2.check((!$$$cl1.isOfType(invTop1$946,{t:Invariant,a:{Element:{t:Middle1}}})),$$$cl1.String("reified runtime invariant 2",27));
+    $$$c2.check((!$$$cl1.isOfType(invTop1$946,{t:Invariant,a:{Element:{t:Bottom1}}})),$$$cl1.String("reified runtime invariant 3",27));
     
-    //AttributeDeclaration invMiddle1 at reifiedRuntime.ceylon (37:4-37:44)
-    var invMiddle1$3473=Invariant({Element:{t:Middle1}});
-    $$$c2593.check((!$$$cl2592.isOfType(invMiddle1$3473,{t:Invariant,a:{Element:{t:Top1}}})),$$$cl2592.String("reified runtime invariant 4",27));
-    $$$c2593.check($$$cl2592.isOfType(invMiddle1$3473,{t:Invariant,a:{Element:{t:Middle1}}}),$$$cl2592.String("reified runtime invariant 5",27));
-    $$$c2593.check((!$$$cl2592.isOfType(invMiddle1$3473,{t:Invariant,a:{Element:{t:Bottom1}}})),$$$cl2592.String("reified runtime invariant 6",27));
+    //AttributeDecl invMiddle1 at reifiedRuntime.ceylon (41:4-41:44)
+    var invMiddle1$947=Invariant({Element:{t:Middle1}});
+    $$$c2.check((!$$$cl1.isOfType(invMiddle1$947,{t:Invariant,a:{Element:{t:Top1}}})),$$$cl1.String("reified runtime invariant 4",27));
+    $$$c2.check($$$cl1.isOfType(invMiddle1$947,{t:Invariant,a:{Element:{t:Middle1}}}),$$$cl1.String("reified runtime invariant 5",27));
+    $$$c2.check((!$$$cl1.isOfType(invMiddle1$947,{t:Invariant,a:{Element:{t:Bottom1}}})),$$$cl1.String("reified runtime invariant 6",27));
     
-    //AttributeDeclaration covMiddle1 at reifiedRuntime.ceylon (42:4-42:44)
-    var covMiddle1$3474=Covariant({Element:{t:Middle1}});
-    $$$c2593.check($$$cl2592.isOfType(covMiddle1$3474,{t:Covariant,a:{Element:{t:Top1}}}),$$$cl2592.String("reified runtime covariant 1",27));
-    $$$c2593.check($$$cl2592.isOfType(covMiddle1$3474,{t:Covariant,a:{Element:{t:Middle1}}}),$$$cl2592.String("reified runtime covariant 2",27));
-    $$$c2593.check((!$$$cl2592.isOfType(covMiddle1$3474,{t:Covariant,a:{Element:{t:Bottom1}}})),$$$cl2592.String("reified runtime covariant 3",27));
+    //AttributeDecl covMiddle1 at reifiedRuntime.ceylon (46:4-46:44)
+    var covMiddle1$948=Covariant({Element:{t:Middle1}});
+    $$$c2.check($$$cl1.isOfType(covMiddle1$948,{t:Covariant,a:{Element:{t:Top1}}}),$$$cl1.String("reified runtime covariant 1",27));
+    $$$c2.check($$$cl1.isOfType(covMiddle1$948,{t:Covariant,a:{Element:{t:Middle1}}}),$$$cl1.String("reified runtime covariant 2",27));
+    $$$c2.check((!$$$cl1.isOfType(covMiddle1$948,{t:Covariant,a:{Element:{t:Bottom1}}})),$$$cl1.String("reified runtime covariant 3",27));
     
-    //AttributeDeclaration contravMiddle1 at reifiedRuntime.ceylon (47:4-47:52)
-    var contravMiddle1$3475=Contravariant({Element:{t:Middle1}});
-    $$$c2593.check((!$$$cl2592.isOfType(contravMiddle1$3475,{t:Contravariant,a:{Element:{t:Top1}}})),$$$cl2592.String("reified runtime contravariant 1",31));
-    $$$c2593.check($$$cl2592.isOfType(contravMiddle1$3475,{t:Contravariant,a:{Element:{t:Middle1}}}),$$$cl2592.String("reified runtime contravariant 2",31));
-    $$$c2593.check($$$cl2592.isOfType(contravMiddle1$3475,{t:Contravariant,a:{Element:{t:Bottom1}}}),$$$cl2592.String("reified runtime contravariant 3",31));
+    //AttributeDecl contravMiddle1 at reifiedRuntime.ceylon (51:4-51:52)
+    var contravMiddle1$949=Contravariant({Element:{t:Middle1}});
+    $$$c2.check((!$$$cl1.isOfType(contravMiddle1$949,{t:Contravariant,a:{Element:{t:Top1}}})),$$$cl1.String("reified runtime contravariant 1",31));
+    $$$c2.check($$$cl1.isOfType(contravMiddle1$949,{t:Contravariant,a:{Element:{t:Middle1}}}),$$$cl1.String("reified runtime contravariant 2",31));
+    $$$c2.check($$$cl1.isOfType(contravMiddle1$949,{t:Contravariant,a:{Element:{t:Bottom1}}}),$$$cl1.String("reified runtime contravariant 3",31));
     
-    //AttributeDeclaration bivMiddle1 at reifiedRuntime.ceylon (52:4-52:52)
-    var bivMiddle1$3476=Bivariant({Out:{t:Middle1},In:{t:Middle1}});
-    $$$c2593.check((!$$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Top1},In:{t:Top1}}})),$$$cl2592.String("reified runtime bivariant 1",27));
-    $$$c2593.check((!$$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Middle1},In:{t:Top1}}})),$$$cl2592.String("reified runtime bivariant 2",27));
-    $$$c2593.check((!$$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Bottom1},In:{t:Top1}}})),$$$cl2592.String("reified runtime bivariant 3",27));
-    $$$c2593.check($$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Top1},In:{t:Middle1}}}),$$$cl2592.String("reified runtime bivariant 4",27));
-    $$$c2593.check($$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Middle1},In:{t:Middle1}}}),$$$cl2592.String("reified runtime bivariant 5",27));
-    $$$c2593.check((!$$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Bottom1},In:{t:Middle1}}})),$$$cl2592.String("reified runtime bivariant 6",27));
-    $$$c2593.check($$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Top1},In:{t:Bottom1}}}),$$$cl2592.String("reified runtime bivariant 7",27));
-    $$$c2593.check($$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Middle1},In:{t:Bottom1}}}),$$$cl2592.String("reified runtime bivariant 8",27));
-    $$$c2593.check((!$$$cl2592.isOfType(bivMiddle1$3476,{t:Bivariant,a:{Out:{t:Bottom1},In:{t:Bottom1}}})),$$$cl2592.String("reified runtime bivariant 9",27));
+    //AttributeDecl bivMiddle1 at reifiedRuntime.ceylon (56:4-56:52)
+    var bivMiddle1$950=Bivariant({Out:{t:Middle1},In:{t:Middle1}});
+    $$$c2.check((!$$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Top1},In:{t:Top1}}})),$$$cl1.String("reified runtime bivariant 1",27));
+    $$$c2.check((!$$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Middle1},In:{t:Top1}}})),$$$cl1.String("reified runtime bivariant 2",27));
+    $$$c2.check((!$$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Bottom1},In:{t:Top1}}})),$$$cl1.String("reified runtime bivariant 3",27));
+    $$$c2.check($$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Top1},In:{t:Middle1}}}),$$$cl1.String("reified runtime bivariant 4",27));
+    $$$c2.check($$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Middle1},In:{t:Middle1}}}),$$$cl1.String("reified runtime bivariant 5",27));
+    $$$c2.check((!$$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Bottom1},In:{t:Middle1}}})),$$$cl1.String("reified runtime bivariant 6",27));
+    $$$c2.check($$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Top1},In:{t:Bottom1}}}),$$$cl1.String("reified runtime bivariant 7",27));
+    $$$c2.check($$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Middle1},In:{t:Bottom1}}}),$$$cl1.String("reified runtime bivariant 8",27));
+    $$$c2.check((!$$$cl1.isOfType(bivMiddle1$950,{t:Bivariant,a:{Out:{t:Bottom1},In:{t:Bottom1}}})),$$$cl1.String("reified runtime bivariant 9",27));
     
-    //ClassDefinition Local at reifiedRuntime.ceylon (63:4-63:21)
-    function Local$3477($$targs$$,$$local$3477){
-        $init$Local$3477();
-        if ($$local$3477===undefined)$$local$3477=new Local$3477.$$;
-        $$$cl2592.set_type_args($$local$3477,$$targs$$);
-        return $$local$3477;
+    //ClassDef Local at reifiedRuntime.ceylon (67:4-67:21)
+    function Local$951($$targs$$,$$local$951){
+        $init$Local$951();
+        if ($$local$951===undefined)$$local$951=new Local$951.$$;
+        $$$cl1.set_type_args($$local$951,$$targs$$);
+        return $$local$951;
     }
-    function $init$Local$3477(){
-        if (Local$3477.$$===undefined){
-            $$$cl2592.initTypeProto(Local$3477,'misc::testReifiedRuntime.Local',$$$cl2592.Basic);
+    Local$951.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{T:{}},d:['misc','testReifiedRuntime','$c','Local']};};
+    function $init$Local$951(){
+        if (Local$951.$$===undefined){
+            $$$cl1.initTypeProto(Local$951,'misc::testReifiedRuntime.Local',$$$cl1.Basic);
         }
-        Local$3477.$$.$$metamodel$$={$nm:'Local',$mt:'cls','super':{t:$$$cl2592.Basic},$tp:{T:{}},'satisfies':[]};
-        return Local$3477;
+        return Local$951;
     }
-    $init$Local$3477();
+    $init$Local$951();
     
-    //AttributeDeclaration localInteger at reifiedRuntime.ceylon (65:4-65:42)
-    var localInteger$3478=Local$3477({T:{t:$$$cl2592.Integer}});
-    $$$c2593.check($$$cl2592.isOfType(localInteger$3478,{t:Local$3477,a:{T:{t:$$$cl2592.Integer}}}),$$$cl2592.String("reified runtime local 1",23));
+    //AttributeDecl localInteger at reifiedRuntime.ceylon (69:4-69:42)
+    var localInteger$952=Local$951({T:{t:$$$cl1.Integer}});
+    $$$c2.check($$$cl1.isOfType(localInteger$952,{t:Local$951,a:{T:{t:$$$cl1.Integer}}}),$$$cl1.String("reified runtime local 1",23));
     
-    //AttributeDeclaration m at reifiedRuntime.ceylon (68:4-68:28)
-    var m$3479=$$$cl2592.$JsCallable(runtimeMethod,[/*WARNING: got ceylon.language::Object instead of Callable*/],{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}});
-    $$$c2593.check($$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.String}}}),$$$cl2592.String("reified runtime callable 1",26));
-    $$$c2593.check((!$$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Integer}}})),$$$cl2592.String("reified runtime callable 2",26));
-    $$$c2593.check((!$$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.String},Element:{t:$$$cl2592.String}}},Return:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime callable 3",26));
-    $$$c2593.check((!$$$cl2592.isOfType(m$3479,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime callable 4",26));
+    //AttributeDecl m at reifiedRuntime.ceylon (72:4-72:28)
+    var m$953=$$$cl1.$JsCallable(runtimeMethod,[{$nm:'p2',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:'T', l:[{t:$$$cl1.Integer}]},Return:{t:$$$cl1.String}});
+    $$$c2.check($$$cl1.isOfType(m$953,{t:$$$cl1.Callable,a:{Arguments:{t:'T', l:[{t:$$$cl1.Integer}]},Return:{t:$$$cl1.String}}}),$$$cl1.String("reified runtime callable 1",26));
+    $$$c2.check((!$$$cl1.isOfType(m$953,{t:$$$cl1.Callable,a:{Arguments:{t:'T', l:[{t:$$$cl1.Integer}]},Return:{t:$$$cl1.Integer}}})),$$$cl1.String("reified runtime callable 2",26));
+    $$$c2.check((!$$$cl1.isOfType(m$953,{t:$$$cl1.Callable,a:{Arguments:{t:'T', l:[{t:$$$cl1.String}]},Return:{t:$$$cl1.String}}})),$$$cl1.String("reified runtime callable 3",26));
+    $$$c2.check((!$$$cl1.isOfType(m$953,{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.String}}})),$$$cl1.String("reified runtime callable 4",26));
     
-    //AttributeDeclaration m2 at reifiedRuntime.ceylon (73:4-73:34)
-    var m2$3480=$$$cl2592.$JsCallable(testReifiedRuntime,[/*WARNING: got ceylon.language::Object instead of Callable*/],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}});
-    $$$c2593.check($$$cl2592.isOfType(m2$3480,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}}}),$$$cl2592.String("reified runtime callable 5",26));
-    $$$c2593.check((!$$$cl2592.isOfType(m2$3480,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.String}}})),$$$cl2592.String("reified runtime callable 6",26));
-    $$$c2593.check((!$$$cl2592.isOfType(m2$3480,{t:$$$cl2592.Callable,a:{Arguments:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.Integer},Element:{t:$$$cl2592.Integer}}},Return:{t:$$$cl2592.Anything}}})),$$$cl2592.String("reified runtime callable 7",26));
+    //AttributeDecl m2 at reifiedRuntime.ceylon (77:4-77:34)
+    var m2$954=$$$cl1.$JsCallable(testReifiedRuntime,[],{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}});
+    $$$c2.check($$$cl1.isOfType(m2$954,{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}}}),$$$cl1.String("reified runtime callable 5",26));
+    $$$c2.check((!$$$cl1.isOfType(m2$954,{t:$$$cl1.Callable,a:{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.String}}})),$$$cl1.String("reified runtime callable 6",26));
+    $$$c2.check((!$$$cl1.isOfType(m2$954,{t:$$$cl1.Callable,a:{Arguments:{t:'T', l:[{t:$$$cl1.Integer}]},Return:{t:$$$cl1.Anything}}})),$$$cl1.String("reified runtime callable 7",26));
     
-    //AttributeDeclaration rec1 at reifiedRuntime.ceylon (78:4-78:80)
-    var rec1$3481=$$$cl2592.Singleton($$$cl2592.Entry((1),$$$cl2592.Singleton($$$cl2592.String("x",1),{Element:{t:$$$cl2592.String}}),{Key:{t:$$$cl2592.Integer},Item:{t:$$$cl2592.Singleton,a:{Element:{t:$$$cl2592.String}}}}),{Element:{t:$$$cl2592.Entry,a:{Key:{t:$$$cl2592.Integer},Item:{t:$$$cl2592.Singleton,a:{Element:{t:$$$cl2592.String}}}}}});
-    $$$c2593.check($$$cl2592.isOfType(rec1$3481,{t:$$$cl2592.Singleton,a:{Element:{t:$$$cl2592.Entry,a:{Key:{t:$$$cl2592.Integer},Item:{t:$$$cl2592.Singleton,a:{Element:{t:$$$cl2592.String}}}}}}}),$$$cl2592.String("#188 [1]",8));
-    $$$c2593.check((!$$$cl2592.isOfType(rec1$3481,{t:$$$cl2592.Singleton,a:{Element:{t:$$$cl2592.Entry,a:{Key:{t:$$$cl2592.Integer},Item:{t:$$$cl2592.Singleton,a:{Element:{t:$$$cl2592.Integer}}}}}}})),$$$cl2592.String("#188 [2]",8));
-};testReifiedRuntime.$$metamodel$$={$nm:'testReifiedRuntime',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};//testReifiedRuntime.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}};
-var $$$m3482=require('members/0.1/members-0.1');
+    //AttributeDecl rec1 at reifiedRuntime.ceylon (82:4-82:80)
+    var rec1$955=$$$cl1.Singleton($$$cl1.Entry((1),$$$cl1.Singleton($$$cl1.String("x",1),{Element:{t:$$$cl1.String}}),{Key:{t:$$$cl1.Integer},Item:{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.String}}}}),{Element:{t:$$$cl1.Entry,a:{Key:{t:$$$cl1.Integer},Item:{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.String}}}}}});
+    $$$c2.check($$$cl1.isOfType(rec1$955,{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.Entry,a:{Key:{t:$$$cl1.Integer},Item:{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.String}}}}}}}),$$$cl1.String("#188 [1]",8));
+    $$$c2.check((!$$$cl1.isOfType(rec1$955,{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.Entry,a:{Key:{t:$$$cl1.Integer},Item:{t:$$$cl1.Singleton,a:{Element:{t:$$$cl1.Integer}}}}}}})),$$$cl1.String("#188 [2]",8));
+    
+    //InterfaceDef TestInterface2 at reifiedRuntime.ceylon (87:4-87:36)
+    function TestInterface2$956($$targs$$,$$testInterface2$956){
+        $$$cl1.set_type_args($$testInterface2$956,$$targs$$);
+    }
+    TestInterface2$956.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$tp:{T:{'var':'in'}},d:['misc','testReifiedRuntime','$i','TestInterface2']};};
+    function $init$TestInterface2$956(){
+        if (TestInterface2$956.$$===undefined){
+            $$$cl1.initTypeProtoI(TestInterface2$956,'misc::testReifiedRuntime.TestInterface2');
+        }
+        return TestInterface2$956;
+    }
+    $init$TestInterface2$956();
+    
+    //ClassDef Test3 at reifiedRuntime.ceylon (88:4-88:53)
+    function Test3$957($$targs$$,$$test3$957){
+        $init$Test3$957();
+        if ($$test3$957===undefined)$$test3$957=new Test3$957.$$;
+        $$$cl1.set_type_args($$test3$957,$$targs$$);
+        TestInterface2$956($$test3$957.$$targs$$===undefined?$$targs$$:{T:$$test3$957.$$targs$$.T},$$test3$957);
+        return $$test3$957;
+    }
+    Test3$957.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{T:{'var':'in'}},satisfies:[{t:TestInterface2$956,a:{T:'T'}}],d:['misc','testReifiedRuntime','$c','Test3']};};
+    function $init$Test3$957(){
+        if (Test3$957.$$===undefined){
+            $$$cl1.initTypeProto(Test3$957,'misc::testReifiedRuntime.Test3',$$$cl1.Basic,$init$TestInterface2$956());
+        }
+        return Test3$957;
+    }
+    $init$Test3$957();
+    
+    //ClassDef Test4 at reifiedRuntime.ceylon (89:4-89:55)
+    function Test4$958($$targs$$,$$test4$958){
+        $init$Test4$958();
+        if ($$test4$958===undefined)$$test4$958=new Test4$958.$$;
+        $$$cl1.set_type_args($$test4$958,$$targs$$);
+        TestInterface2$956($$test4$958.$$targs$$===undefined?$$targs$$:{T:$$test4$958.$$targs$$.T1},$$test4$958);
+        return $$test4$958;
+    }
+    Test4$958.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},$ps:[],$tp:{T1:{'var':'in'}},satisfies:[{t:TestInterface2$956,a:{T:'T1'}}],d:['misc','testReifiedRuntime','$c','Test4']};};
+    function $init$Test4$958(){
+        if (Test4$958.$$===undefined){
+            $$$cl1.initTypeProto(Test4$958,'misc::testReifiedRuntime.Test4',$$$cl1.Basic,$init$TestInterface2$956());
+        }
+        return Test4$958;
+    }
+    $init$Test4$958();
+    
+    //AttributeDecl o1 at reifiedRuntime.ceylon (90:4-90:31)
+    var o1$959=Test1({T:{t:$$$cl1.String}});
+    $$$c2.check($$$cl1.isOfType(o1$959,{t:TestInterface1,a:{T:{t:$$$cl1.String}}}),$$$cl1.String("Issue #221 [1]",14));
+    
+    //AttributeDecl o2 at reifiedRuntime.ceylon (92:4-92:31)
+    var o2$960=Test2({T1:{t:$$$cl1.String}});
+    $$$c2.check($$$cl1.isOfType(o2$960,{t:TestInterface1,a:{T:{t:$$$cl1.String}}}),$$$cl1.String("Issue #221 [2]",14));
+    
+    //AttributeDecl o3 at reifiedRuntime.ceylon (94:4-94:31)
+    var o3$961=Test3$957({T:{t:$$$cl1.String}});
+    $$$c2.check($$$cl1.isOfType(o3$961,{t:TestInterface2$956,a:{T:{t:$$$cl1.String}}}),$$$cl1.String("Issue #221 [3]",14));
+    
+    //AttributeDecl o4 at reifiedRuntime.ceylon (96:4-96:31)
+    var o4$962=Test4$958({T1:{t:$$$cl1.String}});
+    $$$c2.check($$$cl1.isOfType(o4$962,{t:TestInterface2$956,a:{T:{t:$$$cl1.String}}}),$$$cl1.String("Issue #221 [4]",14));
+};testReifiedRuntime.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],d:['misc','testReifiedRuntime']};};
+var $$$m963=require('members/0.1/members-0.1');
+$$$cl1.$addmod$($$$m963,'members/0.1');
 
-//MethodDefinition test at testit.ceylon (4:0-44:0)
+//MethodDef test at testit.ceylon (4:0-45:0)
 function test(){
     
-    //AttributeDeclaration name at testit.ceylon (5:4-5:24)
-    var name$3483=$$$cl2592.String("hello",5);
-    $$$cl2592.print(name$3483);
+    //AttributeDecl name at testit.ceylon (5:4-5:24)
+    var name$964=$$$cl1.String("hello",5);
+    $$$cl1.print(name$964);
     
-    //AttributeDeclaration foo at testit.ceylon (7:4-7:28)
-    var foo$3484=Foo($$$cl2592.String("goodbye",7));
-    printBoth(name$3483,foo$3484.name);
-    (y$3485=$$$cl2592.String("y",1),x$3486=$$$cl2592.String("x",1),printBoth(x$3486,y$3485));
-    var y$3485,x$3486;
-    foo$3484.inc();
-    foo$3484.inc();
-    $$$c2593.check(foo$3484.count.equals((3)),$$$cl2592.String("Foo.count",9));
-    $$$c2593.check(foo$3484.string.equals($$$cl2592.String("Foo(goodbye)",12)),$$$cl2592.String("Foo.string",10));
-    foo$3484.printName();
+    //AttributeDecl foo at testit.ceylon (7:4-7:28)
+    var foo$965=Foo($$$cl1.String("goodbye",7));
+    printBoth(name$964,foo$965.name);
+    (y$966=$$$cl1.String("y",1),x$967=$$$cl1.String("x",1),printBoth(x$967,y$966));
+    var y$966,x$967;
+    foo$965.inc();
+    foo$965.inc();
+    $$$c2.check(foo$965.count.equals((3)),$$$cl1.String("Foo.count",9));
+    $$$c2.check(foo$965.string.equals($$$cl1.String("Foo(goodbye)",12)),$$$cl1.String("Foo.string",10));
+    foo$965.printName();
     Bar().printName();
     Bar().Inner$Bar();
-    doIt($$$cl2592.$JsCallable((opt$3487=foo$3484,$$$cl2592.JsCallable(opt$3487,opt$3487!==null?opt$3487.inc:null)),[],{Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}}));
-    var opt$3487;
-    $$$c2593.check(foo$3484.count.equals((5)),$$$cl2592.String("Foo.count [2]",13));
-    doIt($$$cl2592.$JsCallable(Bar,[],{Arguments:{t:$$$cl2592.Empty},Return:{t:Bar}}));
-    $$$cl2592.print(getFoob().name);
+    doIt($$$cl1.$JsCallable((opt$968=foo$965,$$$cl1.JsCallable(opt$968,opt$968!==null?opt$968.inc:null)),[],{Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}}));
+    var opt$968;
+    $$$c2.check(foo$965.count.equals((5)),$$$cl1.String("Foo.count [2]",13));
+    doIt($$$cl1.$JsCallable(Bar,[],{Arguments:{t:$$$cl1.Empty},Return:{t:Bar}}));
+    $$$cl1.print(getFoob().name);
     
-    //ObjectDefinition x at testit.ceylon (20:4-24:4)
-    function x$3488(){
-        var $$x$3488=new x$3488.$$;
-        return $$x$3488;
-    }
-    function $init$x$3488(){
-        if (x$3488.$$===undefined){
-            $$$cl2592.initTypeProto(x$3488,'misc::test.x',$$$cl2592.Basic);
+    //ObjectDef x at testit.ceylon (20:4-24:4)
+    function x$969(){
+        var $$x$969=new x$969.$$;
+        return $$x$969;
+    };x$969.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl1.Basic},d:['misc','test','$o','x']};};
+    function $init$x$969(){
+        if (x$969.$$===undefined){
+            $$$cl1.initTypeProto(x$969,'misc::test.x',$$$cl1.Basic);
         }
-        x$3488.$$.$$metamodel$$={$nm:'x',$mt:'cls','super':{t:$$$cl2592.Basic},'satisfies':[]};
-        return x$3488;
+        return x$969;
     }
-    $init$x$3488();
-    (function($$x$3488){
+    $init$x$969();
+    (function($$x$969){
         
-        //MethodDefinition y at testit.ceylon (21:8-23:8)
-        $$x$3488.y=function y(){
-            var $$x$3488=this;
-            $$$cl2592.print($$$cl2592.String("xy",2));
-        };$$x$3488.y.$$metamodel$$={$nm:'y',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};
-    })(x$3488.$$.prototype);
-    var x$3489=x$3488();
-    var getX$3489=function(){
-        return x$3489;
+        //MethodDef y at testit.ceylon (21:8-23:8)
+        $$x$969.y=function y(){
+            var $$x$969=this;
+            $$$cl1.print($$$cl1.String("xy",2));
+        };$$x$969.y.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$cont:x$969,$an:function(){return[$$$cl1.shared()];},d:['misc','test','$o','x','$m','y']};};
+    })(x$969.$$.prototype);
+    var x$970;
+    function getX$970(){
+        if (x$970===undefined){x$970=$init$x$969()();x$970.$$metamodel$$=getX$970.$$metamodel$$;}
+        return x$970;
     }
-    getX$3489().y();
+    getX$970.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:x$969},d:['misc','test','$o','x']};};
+    $prop$getX$970={get:getX$970,$$metamodel$$:getX$970.$$metamodel$$};
+    getX$970().y();
     
-    //AttributeDeclaration b at testit.ceylon (26:4-26:17)
-    var b$3490=Bar();
-    b$3490.Inner$Bar().incOuter();
-    b$3490.Inner$Bar().incOuter();
-    b$3490.Inner$Bar().incOuter();
-    $$$c2593.check(b$3490.count.equals((4)),$$$cl2592.String("Bar.count",9));
-    printAll([$$$cl2592.String("hello",5),$$$cl2592.String("world",5)].reifyCeylonType({Absent:{t:$$$cl2592.Null},Element:{t:$$$cl2592.String}}));
-    (strings$3491=$$$cl2592.Tuple($$$cl2592.String("hello",5),$$$cl2592.Tuple($$$cl2592.String("world",5),$$$cl2592.getEmpty(),{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.String},Element:{t:$$$cl2592.String}}),{Rest:{t:$$$cl2592.Tuple,a:{Rest:{t:$$$cl2592.Empty},First:{t:$$$cl2592.String},Element:{t:$$$cl2592.String}}},First:{t:$$$cl2592.String},Element:{t:$$$cl2592.String}}),printAll(strings$3491));
-    var strings$3491;
+    //AttributeDecl b at testit.ceylon (26:4-26:17)
+    var b$971=Bar();
+    b$971.Inner$Bar().incOuter();
+    b$971.Inner$Bar().incOuter();
+    b$971.Inner$Bar().incOuter();
+    $$$c2.check(b$971.count.equals((4)),$$$cl1.String("Bar.count",9));
+    printAll([$$$cl1.String("hello",5),$$$cl1.String("world",5)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}));
+    (strings$972=$$$cl1.Tuple($$$cl1.String("hello",5),$$$cl1.Tuple($$$cl1.String("world",5),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}),{Rest:{t:'T', l:[{t:$$$cl1.String}]},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}),printAll(strings$972));
+    var strings$972;
     
-    //AttributeDeclaration c at testit.ceylon (34:4-34:26)
-    var c$3492=$$$m3482.Counter((0));
-    c$3492.inc();
-    c$3492.inc();
-    $$$c2593.check(c$3492.count.equals((2)),$$$cl2592.String("Counter.count",13));
+    //AttributeDecl c at testit.ceylon (34:4-34:26)
+    var c$973=$$$m963.Counter((0));
+    c$973.inc();
+    c$973.inc();
+    $$$c2.check(c$973.count.equals((2)),$$$cl1.String("Counter.count",13));
     
-    //AttributeDeclaration v2 at testit.ceylon (38:4-38:20)
-    var v2$3493=$var();
+    //AttributeDecl v2 at testit.ceylon (38:4-38:20)
+    var v2$974=$var();
     test_objects();
     testAliasing();
     testLate();
     testReifiedRuntime();
-    $$$c2593.results();
+    testStackTrace();
+    $$$c2.results();
 }
 exports.test=test;
-test.$$metamodel$$={$nm:'test',$mt:'mthd',$t:{t:$$$cl2592.Anything},$ps:[]};//test.$$targs$$={Arguments:{t:$$$cl2592.Empty},Return:{t:$$$cl2592.Anything}};
+test.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl1.Anything},$ps:[],$an:function(){return[$$$cl1.shared()];},d:['misc','test']};};
 });
 }(typeof define==='function' && define.amd ? define : function (factory) {
 if (typeof exports!=='undefined') { factory(require, exports, module);

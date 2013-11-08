@@ -1,394 +1,417 @@
 (function(define) { define(function(require, exports, module) {
-//!!!METAMODEL:{"$mod-deps":["ceylon.language\/0.6","check\/0.1","functions\/0.1"],"$mod-name":"invocations","$mod-version":"0.1","invocations":{"AmbiguousParent":{"$mt":"ifc","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"formal":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"formal":[]},"$nm":"whatever"}},"$nm":"AmbiguousParent"},"testQualified":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testQualified"},"testSpread":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testSpread"},"Ambiguous1":{"satisfies":[{"$pk":"invocations","$nm":"AmbiguousParent"}],"$mt":"ifc","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"whatever"}},"$nm":"Ambiguous1"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"test"},"mixseqs":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Character"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$pt":"v","$nm":"chars"},{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$pt":"v","$nm":"nums"}]],"$mt":"mthd","$nm":"mixseqs"},"Ambiguous2":{"satisfies":[{"$pk":"invocations","$nm":"AmbiguousParent"}],"$mt":"ifc","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"whatever"}},"$nm":"Ambiguous2"},"QualifiedB":{"super":{"$pk":"invocations","$nm":"QualifiedA"},"$mt":"cls","$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"},"g":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"mthd","$an":{"shared":[]},"$nm":"g"}},"$at":{"a":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"shared":[],"actual":[],"variable":[]},"$nm":"a"},"supera":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"supera"}},"$nm":"QualifiedB"},"QualifiedA":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$at":{"a":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"shared":[],"default":[],"variable":[]},"$nm":"a"}},"$nm":"QualifiedA"},"spread2":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$pt":"v","$nm":"a"}]],"$mt":"mthd","$nm":"spread2"},"spread1":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$pt":"v","$nm":"a"}]],"$mt":"mthd","$nm":"spread1"},"testNamedArguments":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testNamedArguments"},"TestList":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"},"get":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"}]},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"index"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"get"},"equals":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$pt":"v","$nm":"that"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"equals"},"spanTo":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanTo"},"segment":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"from"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"length"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"segment"},"spanFrom":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"from"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanFrom"},"span":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"from"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"span"}},"$at":{"lastIndex":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"}]},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"lastIndex"},"clone":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"clone"},"hash":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"hash"},"reversed":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"reversed"},"rest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"rest"}},"$nm":"TestList"},"namedFunc":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$pt":"v","$nm":"iter"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"desc"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"i"}]],"$mt":"prm","$pt":"f","$nm":"match"}]],"$mt":"mthd","$nm":"namedFunc"},"order":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$pt":"v","$nm":"product"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$def":"1","$nm":"count"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Float"},"$mt":"prm","$pt":"v","$def":"1","$nm":"discount"},{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$pt":"v","$def":"1","$nm":"comments"}]],"$mt":"mthd","$nm":"order"},"QualifyAmbiguousSupertypes":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"prm","$pt":"v","$nm":"one"}],"satisfies":[{"$pk":"invocations","$nm":"Ambiguous1"},{"$pk":"invocations","$nm":"Ambiguous2"}],"$mt":"cls","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$pt":"v","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"whatever"}},"$nm":"QualifyAmbiguousSupertypes"}}}
-var $$$cl1=require('ceylon/language/0.6/ceylon.language-0.6');
-var $$$f597=require('functions/0.1/functions-0.1');
-var $$$c2=require('check/0.1/check-0.1');
+var $$METAMODEL$$={"$mod-deps":["ceylon.language\/1.0.0","check\/0.1","functions\/0.1"],"$mod-name":"invocations","$mod-version":"0.1","invocations":{"AmbiguousParent":{"$mt":"ifc","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"formal":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"default":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"attr","$an":{"shared":[],"formal":[]},"$nm":"whatever"}},"$nm":"AmbiguousParent"},"testQualified":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testQualified"},"testSpread":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testSpread"},"Ambiguous1":{"satisfies":[{"$pk":"invocations","$nm":"AmbiguousParent"}],"$mt":"ifc","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"whatever"}},"$nm":"Ambiguous1"},"test":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$m":{"p":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"i"}]],"$mt":"mthd","$nm":"p"}},"$nm":"test"},"mixseqs":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Character"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$nm":"chars"},{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$nm":"nums"}]],"$mt":"mthd","$nm":"mixseqs"},"Ambiguous2":{"satisfies":[{"$pk":"invocations","$nm":"AmbiguousParent"}],"$mt":"ifc","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"default":[],"actual":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"default":[],"actual":[]},"$nm":"whatever"}},"$nm":"Ambiguous2"},"QualifiedB":{"super":{"$pk":"invocations","$nm":"QualifiedA"},"$mt":"cls","$m":{"f":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$an":{"shared":[]},"$nm":"f"},"g":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"mthd","$an":{"shared":[]},"$nm":"g"}},"$at":{"a":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"shared":[],"actual":[],"variable":[]},"$nm":"a"},"supera":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[]},"$nm":"supera"}},"$nm":"QualifiedB"},"QualifiedA":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$mt":"cls","$at":{"a":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"var":"1","$mt":"attr","$an":{"shared":[],"default":[],"variable":[]},"$nm":"a"}},"$nm":"QualifiedA"},"spread2":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$nm":"a"}]],"$mt":"mthd","$nm":"spread2"},"spread1":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$nm":"a"}]],"$mt":"mthd","$nm":"spread1"},"testNamedArguments":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Anything"},"$mt":"mthd","$nm":"testNamedArguments","$o":{"iter":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"}],"$mt":"obj","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"}},"$nm":"iter"}}},"spread5":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"a"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"b"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"c"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$def":"1","$nm":"d"}]],"$mt":"mthd","$nm":"spread5"},"TestList":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"satisfies":[{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"}],"$mt":"cls","$m":{"iterator":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"Iterator"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"iterator"},"get":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"}]},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"index"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"get"},"equals":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Object"},"$mt":"prm","$nm":"that"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"equals"},"spanTo":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanTo"},"segment":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"from"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"length"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"segment"},"spanFrom":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"from"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"spanFrom"},"span":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"from"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"to"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"span"}},"$at":{"lastIndex":{"$t":{"comp":"u","$ts":[{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Null"},{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"}]},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"lastIndex"},"clone":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"clone"},"hash":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"hash"},"reversed":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"reversed"},"rest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"}],"$pk":"ceylon.language","$nm":"List"},"$mt":"attr","$an":{"shared":[],"actual":[]},"$nm":"rest"}},"$nm":"TestList"},"spread3":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"a"},{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"}],"$pk":"ceylon.language","$nm":"Sequential"},"$mt":"prm","seq":"1","$nm":"b"}]],"$mt":"mthd","$nm":"spread3"},"spread4":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"a"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"b"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"c"}]],"$mt":"mthd","$nm":"spread4"},"namedFunc":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Integer"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$nm":"iter"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$nm":"desc"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"i"}]],"$mt":"prm","$pt":"f","$nm":"match"}]],"$mt":"mthd","$m":{"match":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"i"}]],"$mt":"mthd","$nm":"match"}},"$nm":"namedFunc"},"order":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"prm","$nm":"product"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$def":"1","$nm":"count"},{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Float"},"$mt":"prm","$def":"1","$nm":"discount"},{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},"$mt":"prm","$def":"1","$nm":"comments"}]],"$mt":"mthd","$nm":"order"},"QualifyAmbiguousSupertypes":{"super":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Basic"},"$ps":[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"prm","$nm":"one"}],"satisfies":[{"$pk":"invocations","$nm":"Ambiguous1"},{"$pk":"invocations","$nm":"Ambiguous2"}],"$mt":"cls","$m":{"doSomething":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"doSomething"},"somethingElse":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"String"},"$ps":[[{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"prm","$nm":"x"}]],"$mt":"mthd","$an":{"shared":[],"actual":[]},"$nm":"somethingElse"}},"$at":{"whatever":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Integer"},"$mt":"gttr","$an":{"shared":[],"actual":[]},"$nm":"whatever"},"one":{"$t":{"$md":"ceylon.language","$pk":"ceylon.language","$nm":"Boolean"},"$mt":"attr","$nm":"one"}},"$nm":"QualifyAmbiguousSupertypes"},"staticJoinTest":{"$t":{"$md":"ceylon.language","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Null"}],"$pk":"ceylon.language","$nm":"Iterable"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Empty"}],"$pk":"ceylon.language","$nm":"Tuple"}],"$pk":"ceylon.language","$nm":"Callable"},{"$md":"ceylon.language","$mt":"tpm","$tp":[{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"String"},{"$md":"ceylon.language","$mt":"tpm","$pk":"ceylon.language","$nm":"Empty"}],"$pk":"ceylon.language","$nm":"Tuple"}],"$pk":"ceylon.language","$nm":"Callable"},"$mt":"attr","$nm":"staticJoinTest"}},"$mod-bin":"6.0"};
+exports.$$METAMODEL$$=function(){return $$METAMODEL$$;};
+var $$$cl4138=require('ceylon/language/1.0.0/ceylon.language-1.0.0');
+$$$cl4138.$addmod$($$$cl4138,'ceylon.language/1.0.0');
+var $$$f4764=require('functions/0.1/functions-0.1');
+$$$cl4138.$addmod$($$$f4764,'functions/0.1');
+var $$$c4139=require('check/0.1/check-0.1');
+$$$cl4138.$addmod$($$$c4139,'check/0.1');
 
-//MethodDeclaration mixseqs at invocations.ceylon (4:0-4:107)
-var mixseqs=function (chars$598,nums$599){
-    if(nums$599===undefined){nums$599=$$$cl1.getEmpty();}
-    return $$$cl1.StringBuilder().appendAll([$$$cl1.String("C:",2),(opt$600=chars$598.first,opt$600!==null?opt$600:$$$cl1.String("?",1)).string,$$$cl1.String(" #",2),(opt$601=nums$599.get((0)),opt$601!==null?opt$601:$$$cl1.String("?",1)).string]).string;
+//MethodDecl mixseqs at invocations.ceylon (4:0-4:107)
+var mixseqs=function (chars$4765,nums$4766){
+    if(nums$4766===undefined){nums$4766=$$$cl4138.getEmpty();}
+    return $$$cl4138.StringBuilder().appendAll([$$$cl4138.String("C:",2),(opt$4767=chars$4765.first,opt$4767!==null?opt$4767:$$$cl4138.String("?",1)).string,$$$cl4138.String(" #",2),(opt$4768=nums$4766.$get((0)),opt$4768!==null?opt$4768:$$$cl4138.String("?",1)).string]).string;
 };
-mixseqs.$$metamodel$$={$nm:'mixseqs',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'chars',$mt:'prm',$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Character}}}},{$nm:'nums',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Integer}}}}]};
-var opt$600,opt$601;
+mixseqs.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'chars',$mt:'prm',$t:{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Character}}},$an:function(){return[];}},{$nm:'nums',$mt:'prm',seq:1,$t:{t:$$$cl4138.Sequential,a:{Element:{t:$$$cl4138.Integer}}},$an:function(){return[];}}],d:['invocations','mixseqs']};};
+var opt$4767,opt$4768;
 
-//MethodDefinition test at invocations.ceylon (6:0-33:0)
+//AttributeDecl staticJoinTest at invocations.ceylon (5:0-5:54)
+var staticJoinTest$4769;function $valinit$staticJoinTest$4769(){if (staticJoinTest$4769===undefined)staticJoinTest$4769=$$$cl4138.$JsCallable(function(x){return $$$cl4138.String.$$.prototype.join.bind(x);},[{$nm:'p2',$mt:'prm',$t:{t:$$$cl4138.String}}],{Arguments:{t:'T', l:[{t:$$$cl4138.String}]},Return:{t:$$$cl4138.Callable,a:{Arguments:{t:'T', l:[{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}}]},Return:{t:$$$cl4138.String}}}});return staticJoinTest$4769;};$valinit$staticJoinTest$4769();
+function getStaticJoinTest(){return $valinit$staticJoinTest$4769();}
+exports.getStaticJoinTest=getStaticJoinTest;
+var $prop$getStaticJoinTest={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Callable,a:{Arguments:{t:'T',l:[{$t:{t:$$$cl4138.String}}]},Return:{t:$$$cl4138.Callable,a:{Arguments:{t:'T',l:[{$t:{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}}}]},Return:{t:$$$cl4138.String}}}}},d:['invocations','staticJoinTest']};}};
+exports.$prop$getStaticJoinTest=$prop$getStaticJoinTest;
+$prop$getStaticJoinTest.get=getStaticJoinTest;
+getStaticJoinTest.$$metamodel$$=$prop$getStaticJoinTest.$$metamodel$$;
+
+//MethodDef test at invocations.ceylon (7:0-35:0)
 function test(){
-    $$$f597.helloWorld();
-    ($$$f597.helloWorld());
-    $$$f597.hello($$$cl1.String("world",5));
-    (name$602=$$$cl1.String("world",5),$$$f597.hello(name$602));
-    var name$602;
-    $$$f597.helloAll([$$$cl1.String("someone",7),$$$cl1.String("someone else",12)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}));
-    (names$603=$$$cl1.Tuple($$$cl1.String("someone",7),$$$cl1.Tuple($$$cl1.String("someone else",12),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}),{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}},First:{t:$$$cl1.String},Element:{t:$$$cl1.String}}),$$$f597.helloAll(names$603));
-    var names$603;
+    $$$f4764.helloWorld();
+    ($$$f4764.helloWorld());
+    $$$f4764.hello($$$cl4138.String("world",5));
+    (name$4770=$$$cl4138.String("world",5),$$$f4764.hello(name$4770));
+    var name$4770;
+    $$$f4764.helloAll([$$$cl4138.String("someone",7),$$$cl4138.String("someone else",12)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}));
+    (names$4771=$$$cl4138.Tuple($$$cl4138.String("someone",7),$$$cl4138.Tuple($$$cl4138.String("someone else",12),$$$cl4138.getEmpty(),{Rest:{t:$$$cl4138.Empty},First:{t:$$$cl4138.String},Element:{t:$$$cl4138.String}}),{Rest:{t:'T', l:[{t:$$$cl4138.String}]},First:{t:$$$cl4138.String},Element:{t:$$$cl4138.String}}),$$$f4764.helloAll(names$4771));
+    var names$4771;
     
-    //AttributeDeclaration s1 at invocations.ceylon (13:4-13:28)
-    var s1$604=$$$f597.toString((99));
+    //AttributeDecl s1 at invocations.ceylon (14:4-14:28)
+    var s1$4772=$$$f4764.toString((99));
     
-    //AttributeDeclaration s2 at invocations.ceylon (14:4-14:36)
-    var s2$605=(obj$606=(99),$$$f597.toString(obj$606));
-    var obj$606;
+    //AttributeDecl s2 at invocations.ceylon (15:4-15:36)
+    var s2$4773=(obj$4774=(99),$$$f4764.toString(obj$4774));
+    var obj$4774;
     
-    //AttributeDeclaration f1 at invocations.ceylon (15:4-15:29)
-    var f1$607=$$$f597.add($$$cl1.Float(1.0),$$$cl1.Float(1.0).negativeValue);
+    //AttributeDecl f1 at invocations.ceylon (16:4-16:29)
+    var f1$4775=$$$f4764.add($$$cl4138.Float(1.0),$$$cl4138.Float(1.0).negativeValue);
     
-    //AttributeDeclaration f2 at invocations.ceylon (16:4-16:37)
-    var f2$608=(x$609=$$$cl1.Float(1.0),y$610=$$$cl1.Float(1.0).negativeValue,$$$f597.add(x$609,y$610));
-    var x$609,y$610;
+    //AttributeDecl f2 at invocations.ceylon (17:4-17:37)
+    var f2$4776=(x$4777=$$$cl4138.Float(1.0),y$4778=$$$cl4138.Float(1.0).negativeValue,$$$f4764.add(x$4777,y$4778));
+    var x$4777,y$4778;
     
-    //MethodDefinition p at invocations.ceylon (17:4-19:4)
-    function p$611(i$612){
-        $$$cl1.print(i$612);
-    };p$611.$$metamodel$$={$nm:'p',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//p$611.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.Anything}};
-    $$$f597.repeat((10),$$$cl1.$JsCallable(p$611,[{$nm:'i',$mt:'prm',$t:{t:$$$cl1.Integer}}],{Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.Anything}}));
+    //MethodDef p at invocations.ceylon (18:4-20:4)
+    function p$4779(i$4780){
+        $$$cl4138.print(i$4780);
+    };p$4779.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Anything},$ps:[{$nm:'i',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],d:['invocations','test','$m','p']};};
+    $$$f4764.repeat((10),$$$cl4138.$JsCallable(p$4779,[{$nm:'i',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],{Arguments:{t:'T', l:[{t:$$$cl4138.Integer}]},Return:{t:$$$cl4138.Anything}}));
     testNamedArguments();
     testQualified();
-    $$$c2.check(mixseqs($$$cl1.Tuple($$$cl1.Character(97),$$$cl1.Tuple($$$cl1.Character(98),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Character},Element:{t:$$$cl1.Character}}),{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Character},Element:{t:$$$cl1.Character}}},First:{t:$$$cl1.Character},Element:{t:$$$cl1.Character}}),[(1),(2),(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}})).equals($$$cl1.String("C:a #1",6)));
-    $$$c2.check(mixseqs([$$$cl1.Character(98),$$$cl1.Character(99)].reifyCeylonType({Absent:{t:$$$cl1.Nothing},Element:{t:$$$cl1.Character}}),[(2),(3),(4)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}})).equals($$$cl1.String("C:b #2",6)));
-    $$$c2.check(mixseqs($$$cl1.String("hola",4).sequence,[(3),(4),(5)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}})).equals($$$cl1.String("C:h #3",6)));
-    $$$c2.check((chars$613=$$$cl1.Comprehension(function(){
-        //Comprehension at invocations.ceylon (26:18-26:47)
-        var it$614=$$$cl1.String("hola",4).iterator();
-        var c$615=$$$cl1.getFinished();
-        var next$c$615=function(){return c$615=it$614.next();}
-        next$c$615();
+    $$$c4139.check(mixseqs($$$cl4138.Tuple($$$cl4138.Character(97),$$$cl4138.Tuple($$$cl4138.Character(98),$$$cl4138.getEmpty(),{Rest:{t:$$$cl4138.Empty},First:{t:$$$cl4138.Character},Element:{t:$$$cl4138.Character}}),{Rest:{t:'T', l:[{t:$$$cl4138.Character}]},First:{t:$$$cl4138.Character},Element:{t:$$$cl4138.Character}}),[(1),(2),(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}})).equals($$$cl4138.String("C:a #1",6)));
+    $$$c4139.check(mixseqs([$$$cl4138.Character(98),$$$cl4138.Character(99)].reifyCeylonType({Absent:{t:$$$cl4138.Nothing},Element:{t:$$$cl4138.Character}}),[(2),(3),(4)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}})).equals($$$cl4138.String("C:b #2",6)));
+    $$$c4139.check(mixseqs($$$cl4138.String("hola",4).sequence,[(3),(4),(5)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}})).equals($$$cl4138.String("C:h #3",6)));
+    $$$c4139.check((chars$4781=$$$cl4138.Comprehension(function(){
+        //Comprehension at invocations.ceylon (27:18-27:47)
+        var it$4782=$$$cl4138.String("hola",4).iterator();
+        var c$4783=$$$cl4138.getFinished();
+        var next$c$4783=function(){return c$4783=it$4782.next();}
+        next$c$4783();
         return function(){
-            if(c$615!==$$$cl1.getFinished()){
-                var c$615$616=c$615;
-                var tmpvar$617=c$615$616.uppercased;
-                next$c$615();
-                return tmpvar$617;
+            if(c$4783!==$$$cl4138.getFinished()){
+                var c$4783$4784=c$4783;
+                var tmpvar$4785=c$4783$4784.uppercased;
+                next$c$4783();
+                return tmpvar$4785;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Character}}),mixseqs(chars$613,$$$cl1.getEmpty())).equals($$$cl1.String("C:H #?",6)));
-    var chars$613;
-    $$$c2.check((nums$618=$$$cl1.Tuple((2),$$$cl1.Tuple((1),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),chars$619=$$$cl1.String("hola",4).valueOf(),mixseqs(chars$619,nums$618)).equals($$$cl1.String("C:h #2",6)));
-    var nums$618,chars$619;
-    $$$c2.check((nums$620=$$$cl1.Tuple((4),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),chars$621=$$$cl1.Comprehension(function(){
-        //Comprehension at invocations.ceylon (28:28-28:46)
-        var it$622=$$$cl1.String("hola",4).iterator();
-        var c$623=$$$cl1.getFinished();
-        var next$c$623=function(){return c$623=it$622.next();}
-        next$c$623();
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Character}}),mixseqs(chars$4781,$$$cl4138.getEmpty())).equals($$$cl4138.String("C:H #?",6)));
+    var chars$4781;
+    $$$c4139.check((nums$4786=$$$cl4138.Tuple((2),$$$cl4138.Tuple((1),$$$cl4138.getEmpty(),{Rest:{t:$$$cl4138.Empty},First:{t:$$$cl4138.Integer},Element:{t:$$$cl4138.Integer}}),{Rest:{t:'T', l:[{t:$$$cl4138.Integer}]},First:{t:$$$cl4138.Integer},Element:{t:$$$cl4138.Integer}}),chars$4787=$$$cl4138.String("hola",4).valueOf(),mixseqs(chars$4787,nums$4786)).equals($$$cl4138.String("C:h #2",6)));
+    var nums$4786,chars$4787;
+    $$$c4139.check((nums$4788=$$$cl4138.Tuple((4),$$$cl4138.getEmpty(),{Rest:{t:$$$cl4138.Empty},First:{t:$$$cl4138.Integer},Element:{t:$$$cl4138.Integer}}),chars$4789=$$$cl4138.Comprehension(function(){
+        //Comprehension at invocations.ceylon (29:28-29:46)
+        var it$4790=$$$cl4138.String("hola",4).iterator();
+        var c$4791=$$$cl4138.getFinished();
+        var next$c$4791=function(){return c$4791=it$4790.next();}
+        next$c$4791();
         return function(){
-            if(c$623!==$$$cl1.getFinished()){
-                var c$623$624=c$623;
-                var tmpvar$625=c$623$624;
-                next$c$623();
-                return tmpvar$625;
+            if(c$4791!==$$$cl4138.getFinished()){
+                var c$4791$4792=c$4791;
+                var tmpvar$4793=c$4791$4792;
+                next$c$4791();
+                return tmpvar$4793;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Character}}),mixseqs(chars$621,nums$620)).equals($$$cl1.String("C:h #4",6)));
-    var nums$620,chars$621;
-    $$$c2.check((chars$626=$$$cl1.String("hola",4).valueOf(),mixseqs(chars$626,$$$cl1.getEmpty())).equals($$$cl1.String("C:h #?",6)));
-    var chars$626;
-    $$$c2.check((chars$627=[$$$cl1.Character(72),$$$cl1.Character(73)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Character}}),mixseqs(chars$627,$$$cl1.getEmpty())).equals($$$cl1.String("C:H #?",6)));
-    var chars$627;
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Character}}),mixseqs(chars$4789,nums$4788)).equals($$$cl4138.String("C:h #4",6)));
+    var nums$4788,chars$4789;
+    $$$c4139.check((chars$4794=$$$cl4138.String("hola",4).valueOf(),mixseqs(chars$4794,$$$cl4138.getEmpty())).equals($$$cl4138.String("C:h #?",6)));
+    var chars$4794;
+    $$$c4139.check((chars$4795=[$$$cl4138.Character(72),$$$cl4138.Character(73)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Character}}),mixseqs(chars$4795,$$$cl4138.getEmpty())).equals($$$cl4138.String("C:H #?",6)));
+    var chars$4795;
+    $$$c4139.check(getStaticJoinTest()($$$cl4138.String("**",2))([$$$cl4138.String("a",1),$$$cl4138.String("b",1),$$$cl4138.String("c",1)].reifyCeylonType({Absent:{t:$$$cl4138.Nothing},Element:{t:$$$cl4138.String}})).equals($$$cl4138.String("a**b**c",7)),$$$cl4138.String("static String.join test",23));
     testSpread();
-    $$$c2.results();
+    $$$c4139.results();
 }
 exports.test=test;
-test.$$metamodel$$={$nm:'test',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//test.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};
+test.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Anything},$ps:[],$an:function(){return[$$$cl4138.shared()];},d:['invocations','test']};};
+exports.$mod$ans$=function(){return[$$$cl4138.by([$$$cl4138.String("Enrique Zamudio",15),$$$cl4138.String("Ivo Kasiuk",10)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}))];};
+exports.$mod$imps=function(){return{
+'check/0.1':[],
+'functions/0.1':[]
+};};
 
-//MethodDefinition namedFunc at named.ceylon (4:0-11:0)
-function namedFunc(iter$628,desc$629,match$630){
+//MethodDef namedFunc at named.ceylon (4:0-11:0)
+function namedFunc(iter$4796,desc$4797,match$4798){
     //'for' statement at named.ceylon (5:2-9:2)
-    var it$631 = iter$628.iterator();
-    var i$632;while ((i$632=it$631.next())!==$$$cl1.getFinished()){
-        if(match$630(i$632)){
-            return $$$cl1.StringBuilder().appendAll([desc$629.string,$$$cl1.String(": ",2),i$632.string]).string;
+    var it$4799 = iter$4796.iterator();
+    var i$4800;while ((i$4800=it$4799.next())!==$$$cl4138.getFinished()){
+        if(match$4798(i$4800)){
+            return $$$cl4138.StringBuilder().appendAll([desc$4797.string,$$$cl4138.String(": ",2),i$4800.string]).string;
         }
     }
-    return $$$cl1.String("[NOT FOUND]",11);
-};namedFunc.$$metamodel$$={$nm:'namedFunc',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'iter',$mt:'prm',$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}}},{$nm:'desc',$mt:'prm',$t:{t:$$$cl1.String}},{$nm:'match',$mt:'prm',$t:{t:$$$cl1.Boolean}}]};//namedFunc.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Boolean},Element:{t:$$$cl1.Boolean}}},Return:{t:$$$cl1.String}};
+    return $$$cl4138.String("[NOT FOUND]",11);
+};namedFunc.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'iter',$mt:'prm',$t:{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}},$an:function(){return[];}},{$nm:'desc',$mt:'prm',$t:{t:$$$cl4138.String},$an:function(){return[];}},{$nm:'match',$mt:'prm',$pt:'f',$t:{t:$$$cl4138.Boolean},$an:function(){return[];}}],d:['invocations','namedFunc']};};
 
-//MethodDefinition order at named.ceylon (14:0-19:0)
-function order(product$633,count$634,discount$635,comments$636){
-    if(count$634===undefined){count$634=(1);}
-    if(discount$635===undefined){discount$635=$$$cl1.Float(0.0);}
-    if(comments$636===undefined){comments$636=$$$cl1.getEmpty();}
+//MethodDef order at named.ceylon (14:0-19:0)
+function order(product$4801,count$4802,discount$4803,comments$4804){
+    if(count$4802===undefined){count$4802=(1);}
+    if(discount$4803===undefined){discount$4803=$$$cl4138.Float(0.0);}
+    if(comments$4804===undefined){comments$4804=$$$cl4138.getEmpty();}
     
-    //AttributeDeclaration commentStr at named.ceylon (16:4-16:64)
-    var commentStr$637=(strings$638=$$$cl1.Comprehension(function(){
+    //AttributeDecl commentStr at named.ceylon (16:4-16:64)
+    var commentStr$4805=(strings$4806=$$$cl4138.Comprehension(function(){
         //Comprehension at named.ceylon (16:34-16:62)
-        var it$639=comments$636.iterator();
-        var c$640=$$$cl1.getFinished();
-        var next$c$640=function(){return c$640=it$639.next();}
-        next$c$640();
+        var it$4807=comments$4804.iterator();
+        var c$4808=$$$cl4138.getFinished();
+        var next$c$4808=function(){return c$4808=it$4807.next();}
+        next$c$4808();
         return function(){
-            if(c$640!==$$$cl1.getFinished()){
-                var c$640$641=c$640;
-                var tmpvar$642=$$$cl1.StringBuilder().appendAll([$$$cl1.String("\'",1),c$640$641.string,$$$cl1.String("\'",1)]).string;
-                next$c$640();
-                return tmpvar$642;
+            if(c$4808!==$$$cl4138.getFinished()){
+                var c$4808$4809=c$4808;
+                var tmpvar$4810=$$$cl4138.StringBuilder().appendAll([$$$cl4138.String("\'",1),c$4808$4809.string,$$$cl4138.String("\'",1)]).string;
+                next$c$4808();
+                return tmpvar$4810;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}),(opt$643=$$$cl1.String(", ",2),$$$cl1.JsCallable(opt$643,opt$643!==null?opt$643.join:null))(strings$638));
-    var strings$638,opt$643;
-    return $$$cl1.StringBuilder().appendAll([$$$cl1.String("Order \'",7),product$633.string,$$$cl1.String("\', quantity ",12),count$634.string,$$$cl1.String(", discount ",11)]).string.plus($$$cl1.StringBuilder().appendAll([discount$635.string,$$$cl1.String(", comments: ",12),commentStr$637.string]).string);
-};order.$$metamodel$$={$nm:'order',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'product',$mt:'prm',$t:{t:$$$cl1.String}},{$nm:'count',$mt:'prm',$def:1,$t:{t:$$$cl1.Integer}},{$nm:'discount',$mt:'prm',$def:1,$t:{t:$$$cl1.Float}},{$nm:'comments',$mt:'prm',$def:1,$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}}}]};//order.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}},Element:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}}}},Return:{t:$$$cl1.String}};
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}),(opt$4811=$$$cl4138.String(", ",2),$$$cl4138.JsCallable(opt$4811,opt$4811!==null?opt$4811.join:null))(strings$4806));
+    var strings$4806,opt$4811;
+    return $$$cl4138.StringBuilder().appendAll([$$$cl4138.String("Order \'",7),product$4801.string,$$$cl4138.String("\', quantity ",12),count$4802.string,$$$cl4138.String(", discount ",11)]).string.plus($$$cl4138.StringBuilder().appendAll([discount$4803.string,$$$cl4138.String(", comments: ",12),commentStr$4805.string]).string);
+};order.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'product',$mt:'prm',$t:{t:$$$cl4138.String},$an:function(){return[];}},{$nm:'count',$mt:'prm',$def:1,$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'discount',$mt:'prm',$def:1,$t:{t:$$$cl4138.Float},$an:function(){return[];}},{$nm:'comments',$mt:'prm',$def:1,$t:{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}},$an:function(){return[];}}],d:['invocations','order']};};
 
-//MethodDefinition testNamedArguments at named.ceylon (21:0-63:0)
+//MethodDef testNamedArguments at named.ceylon (21:0-63:0)
 function testNamedArguments(){
-    $$$c2.check((iter$644=(function(){
+    $$$c4139.check((iter$4812=(function(){
         //ObjectArgument iter at named.ceylon (23:4-26:4)
-        function iter$645(){
-            var $$iter$645=new iter$645.$$;
-            $$$cl1.Iterable($$iter$645);
-            $$$cl1.add_type_arg($$iter$645,'Absent',{t:$$$cl1.Null});
-            $$$cl1.add_type_arg($$iter$645,'Element',{t:$$$cl1.Integer});
+        function iter$4813(){
+            var $$iter$4813=new iter$4813.$$;
+            $$$cl4138.Iterable({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}},$$iter$4813);
+            $$$cl4138.add_type_arg($$iter$4813,'Absent',{t:$$$cl4138.Null});
+            $$$cl4138.add_type_arg($$iter$4813,'Element',{t:$$$cl4138.Integer});
             
-            //MethodDeclaration iterator at named.ceylon (24:6-25:38)
+            //MethodDecl iterator at named.ceylon (24:6-25:38)
             var iterator=function (){
-                return [(1),(3),(5),(8),(9)].reifyCeylonType({Absent:{t:$$$cl1.Nothing},Element:{t:$$$cl1.Integer}}).iterator();
+                return [(1),(3),(5),(8),(9)].reifyCeylonType({Absent:{t:$$$cl4138.Nothing},Element:{t:$$$cl4138.Integer}}).iterator();
             };
-            iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}},$ps:[]};
-            $$iter$645.iterator=iterator;
-            return $$iter$645;
+            iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Iterator,a:{Element:{t:$$$cl4138.Integer}}},$ps:[],$cont:iter$4813,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','testNamedArguments','$o','iter','$m','iterator']};};
+            $$iter$4813.iterator=iterator;
+            return $$iter$4813;
         }
-        function $init$iter$645(){
-            if (iter$645.$$===undefined){
-                $$$cl1.initTypeProto(iter$645,'invocations::testNamedArguments.iter',$$$cl1.Basic,$$$cl1.Iterable);
+        iter$4813.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl4138.Basic},satisfies:[{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}}],d:['invocations','testNamedArguments','$o','iter']};};
+        function $init$iter$4813(){
+            if (iter$4813.$$===undefined){
+                $$$cl4138.initTypeProto(iter$4813,'invocations::testNamedArguments.iter',$$$cl4138.Basic,$$$cl4138.Iterable);
             }
-            iter$645.$$.$$metamodel$$={$nm:'iter',$mt:'cls','super':{t:$$$cl1.Basic},'satisfies':[{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}}]};
-            return iter$645;
+            return iter$4813;
         }
-        $init$iter$645();
-        return iter$645(new iter$645.$$);
-    }()),desc$646=(function(){
+        $init$iter$4813();
+        return iter$4813(new iter$4813.$$);
+    }()),desc$4814=(function(){
         //AttributeArgument desc at named.ceylon (27:4-29:4)
-        return $$$cl1.String("Even",4);
-    }()),match$647=function (i$648){
-        return i$648.remainder((2)).equals((0));
-    },namedFunc(iter$644,desc$646,match$647)).equals($$$cl1.String("Even: 8",7)),$$$cl1.String("named arguments 1",17));
-    var iter$644,desc$646,match$647;
-    $$$c2.check((iter$649=(function(){
+        return $$$cl4138.String("Even",4);
+    }()),match$4815=function (i$4816){
+        return i$4816.remainder((2)).equals((0));
+    },namedFunc(iter$4812,desc$4814,match$4815)).equals($$$cl4138.String("Even: 8",7)),$$$cl4138.String("named arguments 1",17));
+    var iter$4812,desc$4814,match$4815;
+    $$$c4139.check((iter$4817=(function(){
         //ObjectArgument iter at named.ceylon (35:4-39:4)
-        function iter$650(){
-            var $$iter$650=new iter$650.$$;
-            $$$cl1.Iterable($$iter$650);
-            $$$cl1.add_type_arg($$iter$650,'Absent',{t:$$$cl1.Null});
-            $$$cl1.add_type_arg($$iter$650,'Element',{t:$$$cl1.Integer});
+        function iter$4818(){
+            var $$iter$4818=new iter$4818.$$;
+            $$$cl4138.Iterable({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}},$$iter$4818);
+            $$$cl4138.add_type_arg($$iter$4818,'Absent',{t:$$$cl4138.Null});
+            $$$cl4138.add_type_arg($$iter$4818,'Element',{t:$$$cl4138.Integer});
             
-            //MethodDefinition iterator at named.ceylon (36:6-38:6)
+            //MethodDef iterator at named.ceylon (36:6-38:6)
             function iterator(){
-                return [(2),(4),(6),(8),(9),(10)].reifyCeylonType({Absent:{t:$$$cl1.Nothing},Element:{t:$$$cl1.Integer}}).iterator();
+                return [(2),(4),(6),(8),(9),(10)].reifyCeylonType({Absent:{t:$$$cl4138.Nothing},Element:{t:$$$cl4138.Integer}}).iterator();
             }
-            $$iter$650.iterator=iterator;
-            iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}},$ps:[]};//iterator.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.Integer}}}};
-            return $$iter$650;
+            $$iter$4818.iterator=iterator;
+            iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Iterator,a:{Element:{t:$$$cl4138.Integer}}},$ps:[],$cont:iter$4818,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','testNamedArguments','$o','iter','$m','iterator']};};
+            return $$iter$4818;
         }
-        function $init$iter$650(){
-            if (iter$650.$$===undefined){
-                $$$cl1.initTypeProto(iter$650,'invocations::testNamedArguments.iter',$$$cl1.Basic,$$$cl1.Iterable);
+        iter$4818.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl4138.Basic},satisfies:[{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}}],d:['invocations','testNamedArguments','$o','iter']};};
+        function $init$iter$4818(){
+            if (iter$4818.$$===undefined){
+                $$$cl4138.initTypeProto(iter$4818,'invocations::testNamedArguments.iter',$$$cl4138.Basic,$$$cl4138.Iterable);
             }
-            iter$650.$$.$$metamodel$$={$nm:'iter',$mt:'cls','super':{t:$$$cl1.Basic},'satisfies':[{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}}]};
-            return iter$650;
+            return iter$4818;
         }
-        $init$iter$650();
-        return iter$650(new iter$650.$$);
-    }()),desc$651=(function(){
+        $init$iter$4818();
+        return iter$4818(new iter$4818.$$);
+    }()),desc$4819=(function(){
         //AttributeArgument desc at named.ceylon (40:4-42:4)
-        return $$$cl1.String("Odd",3);
-    }()),match$652=function (x$653){
-        return x$653.remainder((2)).equals((1));
-    },namedFunc(iter$649,desc$651,match$652)).equals($$$cl1.String("Odd: 9",6)),$$$cl1.String("named arguments 2",17));
-    var iter$649,desc$651,match$652;
-    $$$c2.check((desc$654=$$$cl1.String("Even",4),match$655=function (x$656){
-        return x$656.equals((2));
-    },iter$657=[(1),(5),(4),(3),(2),(9)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),namedFunc(iter$657,desc$654,match$655)).equals($$$cl1.String("Even: 2",7)),$$$cl1.String("named arguments 3",17));
-    var desc$654,match$655,iter$657;
-    $$$c2.check((desc$658=$$$cl1.String("Even",4),match$659=function (x$660){
-        return x$660.equals((2));
-    },iter$661=$$$cl1.Comprehension(function(){
+        return $$$cl4138.String("Odd",3);
+    }()),match$4820=(function (x$4821){
+        return x$4821.remainder((2)).equals((1));
+    }),namedFunc(iter$4817,desc$4819,match$4820)).equals($$$cl4138.String("Odd: 9",6)),$$$cl4138.String("named arguments 2",17));
+    var iter$4817,desc$4819,match$4820;
+    $$$c4139.check((desc$4822=$$$cl4138.String("Even",4),match$4823=(function (x$4824){
+        return x$4824.equals((2));
+    }),iter$4825=[(1),(5),(4),(3),(2),(9)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),namedFunc(iter$4825,desc$4822,match$4823)).equals($$$cl4138.String("Even: 2",7)),$$$cl4138.String("named arguments 3",17));
+    var desc$4822,match$4823,iter$4825;
+    $$$c4139.check((desc$4826=$$$cl4138.String("Even",4),match$4827=(function (x$4828){
+        return x$4828.equals((2));
+    }),iter$4829=$$$cl4138.Comprehension(function(){
         //Comprehension at named.ceylon (53:4-53:21)
-        var it$662=$$$cl1.Range((10),(1),{Element:{t:$$$cl1.Integer}}).iterator();
-        var i$663=$$$cl1.getFinished();
-        var next$i$663=function(){return i$663=it$662.next();}
-        next$i$663();
+        var it$4830=$$$cl4138.Range((10),(1),{Element:{t:$$$cl4138.Integer}}).iterator();
+        var i$4831=$$$cl4138.getFinished();
+        var next$i$4831=function(){return i$4831=it$4830.next();}
+        next$i$4831();
         return function(){
-            if(i$663!==$$$cl1.getFinished()){
-                var i$663$664=i$663;
-                var tmpvar$665=i$663$664;
-                next$i$663();
-                return tmpvar$665;
+            if(i$4831!==$$$cl4138.getFinished()){
+                var i$4831$4832=i$4831;
+                var tmpvar$4833=i$4831$4832;
+                next$i$4831();
+                return tmpvar$4833;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),namedFunc(iter$661,desc$658,match$659)).equals($$$cl1.String("Even: 2",7)),$$$cl1.String("named arguments 4",17));
-    var desc$658,match$659,iter$661;
-    $$$c2.check((product$666=$$$cl1.String("Mouse",5),order(product$666,undefined,undefined,undefined)).equals($$$cl1.String("Order \'Mouse\', quantity 1, discount 0, comments: ",49)),$$$cl1.String("defaulted & sequenced named [1]",31));
-    var product$666;
-    $$$c2.check((product$667=$$$cl1.String("Rhinoceros",10),discount$668=$$$cl1.Float(10.0),order(product$667,undefined,discount$668,undefined)).equals($$$cl1.String("Order \'Rhinoceros\', quantity 1, discount 10, comments: ",55)),$$$cl1.String("defaulted & sequenced named [2]",31));
-    var product$667,discount$668;
-    $$$c2.check((product$669=$$$cl1.String("Bee",3),count$670=(531),comments$671=[$$$cl1.String("Express delivery",16).valueOf(),$$$cl1.String("Send individually",17).valueOf()].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.String}}),order(product$669,count$670,undefined,comments$671)).equals($$$cl1.String("Order \'Bee\', quantity 531, discount 0, comments: \'Express delivery\', \'Send individually\'",88)),$$$cl1.String("defaulted & sequenced named [3]",31));
-    var product$669,count$670,comments$671;
-};testNamedArguments.$$metamodel$$={$nm:'testNamedArguments',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//testNamedArguments.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),namedFunc(iter$4829,desc$4826,match$4827)).equals($$$cl4138.String("Even: 2",7)),$$$cl4138.String("named arguments 4",17));
+    var desc$4826,match$4827,iter$4829;
+    $$$c4139.check((product$4834=$$$cl4138.String("Mouse",5),order(product$4834,undefined,undefined,undefined)).equals($$$cl4138.String("Order \'Mouse\', quantity 1, discount 0, comments: ",49)),$$$cl4138.String("defaulted & sequenced named [1]",31));
+    var product$4834;
+    $$$c4139.check((product$4835=$$$cl4138.String("Rhinoceros",10),discount$4836=$$$cl4138.Float(10.0),order(product$4835,undefined,discount$4836,undefined)).equals($$$cl4138.String("Order \'Rhinoceros\', quantity 1, discount 10, comments: ",55)),$$$cl4138.String("defaulted & sequenced named [2]",31));
+    var product$4835,discount$4836;
+    $$$c4139.check((product$4837=$$$cl4138.String("Bee",3),count$4838=(531),comments$4839=[$$$cl4138.String("Express delivery",16).valueOf(),$$$cl4138.String("Send individually",17).valueOf()].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.String}}),order(product$4837,count$4838,undefined,comments$4839)).equals($$$cl4138.String("Order \'Bee\', quantity 531, discount 0, comments: \'Express delivery\', \'Send individually\'",88)),$$$cl4138.String("defaulted & sequenced named [3]",31));
+    var product$4837,count$4838,comments$4839;
+};testNamedArguments.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Anything},$ps:[],d:['invocations','testNamedArguments']};};
 
-//InterfaceDefinition AmbiguousParent at qualified.ceylon (4:0-10:0)
+//InterfaceDef AmbiguousParent at qualified.ceylon (4:0-10:0)
 function AmbiguousParent($$ambiguousParent){
+    $$ambiguousParent.$prop$getWhatever={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:AmbiguousParent,$an:function(){return[$$$cl4138.shared(),$$$cl4138.formal()];},d:['invocations','AmbiguousParent','$at','whatever']};}};
     
-    //MethodDefinition somethingElse at qualified.ceylon (7:4-9:4)
-    function somethingElse(x$672){
-        return $$$cl1.StringBuilder().appendAll([$$$cl1.String("something ",10),x$672.string,$$$cl1.String(" else",5)]).string;
+    //MethodDef somethingElse at qualified.ceylon (7:4-9:4)
+    function somethingElse(x$4840){
+        return $$$cl4138.StringBuilder().appendAll([$$$cl4138.String("something ",10),x$4840.string,$$$cl4138.String(" else",5)]).string;
     }
     $$ambiguousParent.somethingElse=somethingElse;
-    somethingElse.$$metamodel$$={$nm:'somethingElse',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//somethingElse.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}};
+    somethingElse.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:AmbiguousParent,$an:function(){return[$$$cl4138.shared(),$$$cl4138.$default()];},d:['invocations','AmbiguousParent','$m','somethingElse']};};
 }
+AmbiguousParent.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['invocations','AmbiguousParent']};};
 function $init$AmbiguousParent(){
     if (AmbiguousParent.$$===undefined){
-        $$$cl1.initTypeProto(AmbiguousParent,'invocations::AmbiguousParent');
+        $$$cl4138.initTypeProtoI(AmbiguousParent,'invocations::AmbiguousParent');
     }
-    AmbiguousParent.$$.$$metamodel$$={$nm:'AmbiguousParent',$mt:'ifc','satisfies':[]};
     return AmbiguousParent;
 }
 exports.$init$AmbiguousParent=$init$AmbiguousParent;
 $init$AmbiguousParent();
 
-//InterfaceDefinition Ambiguous1 at qualified.ceylon (11:0-22:0)
+//InterfaceDef Ambiguous1 at qualified.ceylon (11:0-22:0)
 function Ambiguous1($$ambiguous1){
     AmbiguousParent($$ambiguous1);
     $$ambiguous1.somethingElse$$invocations$AmbiguousParent=$$ambiguous1.somethingElse;
     
-    //MethodDefinition doSomething at qualified.ceylon (12:4-14:4)
+    //MethodDef doSomething at qualified.ceylon (12:4-14:4)
     function doSomething(){
-        return $$$cl1.String("ambiguous 1",11);
+        return $$$cl4138.String("ambiguous 1",11);
     }
     $$ambiguous1.doSomething=doSomething;
-    doSomething.$$metamodel$$={$nm:'doSomething',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[]};//doSomething.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.String}};
+    doSomething.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[],$cont:Ambiguous1,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.$default()];},d:['invocations','Ambiguous1','$m','doSomething']};};
     
-    //AttributeGetterDefinition whatever at qualified.ceylon (15:4-15:55)
-    $$$cl1.defineAttr($$ambiguous1,'whatever',function(){
+    //AttributeGetterDef whatever at qualified.ceylon (15:4-15:55)
+    $$$cl4138.defineAttr($$ambiguous1,'whatever',function(){
         return (1);
-    });
+    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:Ambiguous1,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.$default()];},d:['invocations','Ambiguous1','$at','whatever']};});
     
-    //MethodDefinition somethingElse at qualified.ceylon (16:4-21:4)
-    function somethingElse(x$673){
-        if(x$673.remainder((2)).equals((0))){
-            return $$ambiguous1.somethingElse$$invocations$AmbiguousParent(x$673);
+    //MethodDef somethingElse at qualified.ceylon (16:4-21:4)
+    function somethingElse(x$4841){
+        if(x$4841.remainder((2)).equals((0))){
+            return $$ambiguous1.somethingElse$$invocations$AmbiguousParent(x$4841);
         }
-        return $$$cl1.StringBuilder().appendAll([$$$cl1.String("Ambiguous1 something ",21),x$673.string,$$$cl1.String(" else",5)]).string;
+        return $$$cl4138.StringBuilder().appendAll([$$$cl4138.String("Ambiguous1 something ",21),x$4841.string,$$$cl4138.String(" else",5)]).string;
     }
     $$ambiguous1.somethingElse=somethingElse;
-    somethingElse.$$metamodel$$={$nm:'somethingElse',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//somethingElse.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}};
+    somethingElse.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:Ambiguous1,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.$default()];},d:['invocations','Ambiguous1','$m','somethingElse']};};
 }
+Ambiguous1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,satisfies:[{t:AmbiguousParent}],d:['invocations','Ambiguous1']};};
 function $init$Ambiguous1(){
     if (Ambiguous1.$$===undefined){
-        $$$cl1.initTypeProto(Ambiguous1,'invocations::Ambiguous1',$init$AmbiguousParent());
+        $$$cl4138.initTypeProtoI(Ambiguous1,'invocations::Ambiguous1',$init$AmbiguousParent());
     }
-    Ambiguous1.$$.$$metamodel$$={$nm:'Ambiguous1',$mt:'ifc','satisfies':[{t:AmbiguousParent}]};
     return Ambiguous1;
 }
 exports.$init$Ambiguous1=$init$Ambiguous1;
 $init$Ambiguous1();
 
-//InterfaceDefinition Ambiguous2 at qualified.ceylon (23:0-31:0)
+//InterfaceDef Ambiguous2 at qualified.ceylon (23:0-31:0)
 function Ambiguous2($$ambiguous2){
     AmbiguousParent($$ambiguous2);
     
-    //MethodDefinition doSomething at qualified.ceylon (24:4-26:4)
+    //MethodDef doSomething at qualified.ceylon (24:4-26:4)
     function doSomething(){
-        return $$$cl1.String("ambiguous 2",11);
+        return $$$cl4138.String("ambiguous 2",11);
     }
     $$ambiguous2.doSomething=doSomething;
-    doSomething.$$metamodel$$={$nm:'doSomething',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[]};//doSomething.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.String}};
+    doSomething.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[],$cont:Ambiguous2,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.$default()];},d:['invocations','Ambiguous2','$m','doSomething']};};
     
-    //AttributeGetterDefinition whatever at qualified.ceylon (27:4-27:55)
-    $$$cl1.defineAttr($$ambiguous2,'whatever',function(){
+    //AttributeGetterDef whatever at qualified.ceylon (27:4-27:55)
+    $$$cl4138.defineAttr($$ambiguous2,'whatever',function(){
         return (2);
-    });
+    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:Ambiguous2,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.$default()];},d:['invocations','Ambiguous2','$at','whatever']};});
     
-    //MethodDefinition somethingElse at qualified.ceylon (28:4-30:4)
-    function somethingElse(x$674){
-        return $$$cl1.StringBuilder().appendAll([$$$cl1.String("Ambiguous2 ",11),x$674.string,$$$cl1.String(" something else",15)]).string;
+    //MethodDef somethingElse at qualified.ceylon (28:4-30:4)
+    function somethingElse(x$4842){
+        return $$$cl4138.StringBuilder().appendAll([$$$cl4138.String("Ambiguous2 ",11),x$4842.string,$$$cl4138.String(" something else",15)]).string;
     }
     $$ambiguous2.somethingElse=somethingElse;
-    somethingElse.$$metamodel$$={$nm:'somethingElse',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//somethingElse.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}};
+    somethingElse.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:Ambiguous2,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.$default()];},d:['invocations','Ambiguous2','$m','somethingElse']};};
 }
+Ambiguous2.$$metamodel$$=function(){return{mod:$$METAMODEL$$,satisfies:[{t:AmbiguousParent}],d:['invocations','Ambiguous2']};};
 function $init$Ambiguous2(){
     if (Ambiguous2.$$===undefined){
-        $$$cl1.initTypeProto(Ambiguous2,'invocations::Ambiguous2',$init$AmbiguousParent());
+        $$$cl4138.initTypeProtoI(Ambiguous2,'invocations::Ambiguous2',$init$AmbiguousParent());
     }
-    Ambiguous2.$$.$$metamodel$$={$nm:'Ambiguous2',$mt:'ifc','satisfies':[{t:AmbiguousParent}]};
     return Ambiguous2;
 }
 exports.$init$Ambiguous2=$init$Ambiguous2;
 $init$Ambiguous2();
 
-//ClassDefinition QualifyAmbiguousSupertypes at qualified.ceylon (33:0-47:0)
-function QualifyAmbiguousSupertypes(one$675, $$qualifyAmbiguousSupertypes){
+//ClassDef QualifyAmbiguousSupertypes at qualified.ceylon (33:0-47:0)
+function QualifyAmbiguousSupertypes(one$4843, $$qualifyAmbiguousSupertypes){
     $init$QualifyAmbiguousSupertypes();
     if ($$qualifyAmbiguousSupertypes===undefined)$$qualifyAmbiguousSupertypes=new QualifyAmbiguousSupertypes.$$;
-    $$qualifyAmbiguousSupertypes.one$675=one$675;
+    $$qualifyAmbiguousSupertypes.one$4843_=one$4843;
     Ambiguous1($$qualifyAmbiguousSupertypes);
     $$qualifyAmbiguousSupertypes.doSomething$$invocations$Ambiguous1=$$qualifyAmbiguousSupertypes.doSomething;
-    $$$cl1.copySuperAttr($$qualifyAmbiguousSupertypes,'whatever','$$invocations$Ambiguous1');
+    $$$cl4138.copySuperAttr($$qualifyAmbiguousSupertypes,'whatever','$$invocations$Ambiguous1');
     $$qualifyAmbiguousSupertypes.somethingElse$$invocations$Ambiguous1=$$qualifyAmbiguousSupertypes.somethingElse;
     Ambiguous2($$qualifyAmbiguousSupertypes);
     $$qualifyAmbiguousSupertypes.doSomething$$invocations$Ambiguous2=$$qualifyAmbiguousSupertypes.doSomething;
-    $$$cl1.copySuperAttr($$qualifyAmbiguousSupertypes,'whatever','$$invocations$Ambiguous2');
+    $$$cl4138.copySuperAttr($$qualifyAmbiguousSupertypes,'whatever','$$invocations$Ambiguous2');
     $$qualifyAmbiguousSupertypes.somethingElse$$invocations$Ambiguous2=$$qualifyAmbiguousSupertypes.somethingElse;
+    $$$cl4138.defineAttr($$qualifyAmbiguousSupertypes,'one$4843',function(){return this.one$4843_;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Boolean},$cont:QualifyAmbiguousSupertypes,d:['invocations','QualifyAmbiguousSupertypes','$at','one']};});
     
-    //MethodDefinition doSomething at qualified.ceylon (35:4-37:4)
+    //MethodDef doSomething at qualified.ceylon (35:4-37:4)
     function doSomething(){
-        return (opt$676=(one$675?$$qualifyAmbiguousSupertypes.doSomething$$invocations$Ambiguous1():null),opt$676!==null?opt$676:$$qualifyAmbiguousSupertypes.doSomething$$invocations$Ambiguous2());
-        var opt$676;
+        return (opt$4844=(one$4843?$$qualifyAmbiguousSupertypes.doSomething$$invocations$Ambiguous1():null),opt$4844!==null?opt$4844:$$qualifyAmbiguousSupertypes.doSomething$$invocations$Ambiguous2());
+        var opt$4844;
     }
     $$qualifyAmbiguousSupertypes.doSomething=doSomething;
-    doSomething.$$metamodel$$={$nm:'doSomething',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[]};//doSomething.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.String}};
+    doSomething.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[],$cont:QualifyAmbiguousSupertypes,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','QualifyAmbiguousSupertypes','$m','doSomething']};};
     
-    //AttributeGetterDefinition whatever at qualified.ceylon (38:4-43:4)
-    $$$cl1.defineAttr($$qualifyAmbiguousSupertypes,'whatever',function(){
-        if(one$675){
+    //AttributeGetterDef whatever at qualified.ceylon (38:4-43:4)
+    $$$cl4138.defineAttr($$qualifyAmbiguousSupertypes,'whatever',function(){
+        if(one$4843){
             return $$qualifyAmbiguousSupertypes.whatever$$invocations$Ambiguous1;
         }
         return $$qualifyAmbiguousSupertypes.whatever$$invocations$Ambiguous2;
-    });
+    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:QualifyAmbiguousSupertypes,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','QualifyAmbiguousSupertypes','$at','whatever']};});
     
-    //MethodDefinition somethingElse at qualified.ceylon (44:4-46:4)
-    function somethingElse(x$677){
-        return (opt$678=(one$675?$$qualifyAmbiguousSupertypes.somethingElse$$invocations$Ambiguous1(x$677):null),opt$678!==null?opt$678:$$qualifyAmbiguousSupertypes.somethingElse$$invocations$Ambiguous2(x$677));
-        var opt$678;
+    //MethodDef somethingElse at qualified.ceylon (44:4-46:4)
+    function somethingElse(x$4845){
+        return (opt$4846=(one$4843?$$qualifyAmbiguousSupertypes.somethingElse$$invocations$Ambiguous1(x$4845):null),opt$4846!==null?opt$4846:$$qualifyAmbiguousSupertypes.somethingElse$$invocations$Ambiguous2(x$4845));
+        var opt$4846;
     }
     $$qualifyAmbiguousSupertypes.somethingElse=somethingElse;
-    somethingElse.$$metamodel$$={$nm:'somethingElse',$mt:'mthd',$t:{t:$$$cl1.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//somethingElse.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.String}};
+    somethingElse.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.String},$ps:[{$nm:'x',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:QualifyAmbiguousSupertypes,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','QualifyAmbiguousSupertypes','$m','somethingElse']};};
     return $$qualifyAmbiguousSupertypes;
 }
+QualifyAmbiguousSupertypes.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl4138.Basic},$ps:[{$nm:'one',$mt:'prm',$t:{t:$$$cl4138.Boolean},$an:function(){return[];}}],satisfies:[{t:Ambiguous1},{t:Ambiguous2}],d:['invocations','QualifyAmbiguousSupertypes']};};
 function $init$QualifyAmbiguousSupertypes(){
     if (QualifyAmbiguousSupertypes.$$===undefined){
-        $$$cl1.initTypeProto(QualifyAmbiguousSupertypes,'invocations::QualifyAmbiguousSupertypes',$$$cl1.Basic,$init$Ambiguous1(),$init$Ambiguous2());
+        $$$cl4138.initTypeProto(QualifyAmbiguousSupertypes,'invocations::QualifyAmbiguousSupertypes',$$$cl4138.Basic,$init$Ambiguous1(),$init$Ambiguous2());
     }
-    QualifyAmbiguousSupertypes.$$.$$metamodel$$={$nm:'QualifyAmbiguousSupertypes',$mt:'cls','super':{t:$$$cl1.Basic},'satisfies':[{t:Ambiguous1},{t:Ambiguous2}]};
     return QualifyAmbiguousSupertypes;
 }
 exports.$init$QualifyAmbiguousSupertypes=$init$QualifyAmbiguousSupertypes;
 $init$QualifyAmbiguousSupertypes();
 
-//ClassDefinition QualifiedA at qualified.ceylon (49:0-51:0)
+//ClassDef QualifiedA at qualified.ceylon (49:0-51:0)
 function QualifiedA($$qualifiedA){
     $init$QualifiedA();
     if ($$qualifiedA===undefined)$$qualifiedA=new QualifiedA.$$;
     
-    //AttributeDeclaration a at qualified.ceylon (50:2-50:37)
+    //AttributeDecl a at qualified.ceylon (50:2-50:37)
     var a=(0);
-    $$$cl1.defineAttr($$qualifiedA,'a',function(){return a;},function(a$679){return a=a$679;});
+    $$$cl4138.defineAttr($$qualifiedA,'a',function(){return a;},function(a$4847){return a=a$4847;},function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:QualifiedA,$an:function(){return[$$$cl4138.shared(),$$$cl4138.$default(),$$$cl4138.variable()];},d:['invocations','QualifiedA','$at','a']};});
+    $$qualifiedA.$prop$getA={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:QualifiedA,$an:function(){return[$$$cl4138.shared(),$$$cl4138.$default(),$$$cl4138.variable()];},d:['invocations','QualifiedA','$at','a']};}};
+    $$qualifiedA.$prop$getA.get=function(){return a};
     return $$qualifiedA;
 }
+QualifiedA.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl4138.Basic},$ps:[],d:['invocations','QualifiedA']};};
 function $init$QualifiedA(){
     if (QualifiedA.$$===undefined){
-        $$$cl1.initTypeProto(QualifiedA,'invocations::QualifiedA',$$$cl1.Basic);
+        $$$cl4138.initTypeProto(QualifiedA,'invocations::QualifiedA',$$$cl4138.Basic);
     }
-    QualifiedA.$$.$$metamodel$$={$nm:'QualifiedA',$mt:'cls','super':{t:$$$cl1.Basic},'satisfies':[]};
     return QualifiedA;
 }
 exports.$init$QualifiedA=$init$QualifiedA;
 $init$QualifiedA();
 
-//ClassDefinition QualifiedB at qualified.ceylon (52:0-61:0)
+//ClassDef QualifiedB at qualified.ceylon (52:0-61:0)
 function QualifiedB($$qualifiedB){
     $init$QualifiedB();
     if ($$qualifiedB===undefined)$$qualifiedB=new QualifiedB.$$;
@@ -397,274 +420,313 @@ function QualifiedB($$qualifiedB){
     $$qualifiedB.a$$invocations$QualifiedA=$$qualifiedB.a;
     $$qualifiedB.a$$invocations$QualifiedA=$$qualifiedB.a;
     
-    //AttributeDeclaration a at qualified.ceylon (53:2-53:36)
+    //AttributeDecl a at qualified.ceylon (53:2-53:36)
     var a=(0);
-    $$$cl1.defineAttr($$qualifiedB,'a',function(){return a;},function(a$680){return a=a$680;});
+    $$$cl4138.defineAttr($$qualifiedB,'a',function(){return a;},function(a$4848){return a=a$4848;},function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:QualifiedB,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual(),$$$cl4138.variable()];},d:['invocations','QualifiedB','$at','a']};});
+    $$qualifiedB.$prop$getA.get=function(){return a};
     
-    //MethodDefinition f at qualified.ceylon (54:2-56:2)
+    //MethodDef f at qualified.ceylon (54:2-56:2)
     function f(){
-        (olda$681=$$qualifiedB.a$$invocations$QualifiedA,$$qualifiedB.a$$invocations$QualifiedA=olda$681.successor,olda$681);
-        var olda$681;
+        (tmp$4849=$$qualifiedB,olda$4850=tmp$4849.a$$invocations$QualifiedA,tmp$4849.a$$invocations$QualifiedA=olda$4850.successor,olda$4850);
+        var tmp$4849,olda$4850;
     }
     $$qualifiedB.f=f;
-    f.$$metamodel$$={$nm:'f',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//f.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};
+    f.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Anything},$ps:[],$cont:QualifiedB,$an:function(){return[$$$cl4138.shared()];},d:['invocations','QualifiedB','$m','f']};};
     
-    //MethodDefinition g at qualified.ceylon (57:2-59:2)
+    //MethodDef g at qualified.ceylon (57:2-59:2)
     function g(){
-        return ($$qualifiedB.a$$invocations$QualifiedA=$$qualifiedB.a$$invocations$QualifiedA.successor);
+        return (tmp$4851=$$qualifiedB,tmp$4851.a$$invocations$QualifiedA=tmp$4851.a$$invocations$QualifiedA.successor);
+        var tmp$4851;
     }
     $$qualifiedB.g=g;
-    g.$$metamodel$$={$nm:'g',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[]};//g.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Integer}};
+    g.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$ps:[],$cont:QualifiedB,$an:function(){return[$$$cl4138.shared()];},d:['invocations','QualifiedB','$m','g']};};
     
-    //AttributeGetterDefinition supera at qualified.ceylon (60:2-60:48)
-    $$$cl1.defineAttr($$qualifiedB,'supera',function(){
+    //AttributeGetterDef supera at qualified.ceylon (60:2-60:58)
+    $$$cl4138.defineAttr($$qualifiedB,'supera',function(){
         return $$qualifiedB.a$$invocations$QualifiedA;
-    });
+    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:QualifiedB,$an:function(){return[$$$cl4138.shared()];},d:['invocations','QualifiedB','$at','supera']};});
     return $$qualifiedB;
 }
+QualifiedB.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:QualifiedA},$ps:[],d:['invocations','QualifiedB']};};
 function $init$QualifiedB(){
     if (QualifiedB.$$===undefined){
-        $$$cl1.initTypeProto(QualifiedB,'invocations::QualifiedB',QualifiedA);
+        $$$cl4138.initTypeProto(QualifiedB,'invocations::QualifiedB',$init$QualifiedA());
     }
-    QualifiedB.$$.$$metamodel$$={$nm:'QualifiedB',$mt:'cls','super':{t:QualifiedA},'satisfies':[]};
     return QualifiedB;
 }
 exports.$init$QualifiedB=$init$QualifiedB;
 $init$QualifiedB();
 
-//ClassDefinition TestList at qualified.ceylon (63:0-76:0)
+//ClassDef TestList at qualified.ceylon (63:0-76:0)
 function TestList($$testList){
     $init$TestList();
     if ($$testList===undefined)$$testList=new TestList.$$;
-    $$testList.$$targs$$={Element:{t:$$$cl1.String}};
-    $$$cl1.List($$testList);
-    $$$cl1.add_type_arg($$testList,'Element',{t:$$$cl1.String});
+    $$testList.$$targs$$={Element:{t:$$$cl4138.String}};
+    $$$cl4138.List({Element:{t:$$$cl4138.String}},$$testList);
+    $$$cl4138.add_type_arg($$testList,'Element',{t:$$$cl4138.String});
     $$testList.equals$$ceylon$language$List=$$testList.equals;
-    $$$cl1.copySuperAttr($$testList,'hash','$$ceylon$language$List');
+    $$$cl4138.copySuperAttr($$testList,'hash','$$ceylon$language$List');
     
-    //AttributeDeclaration clone at qualified.ceylon (64:4-64:41)
-    var clone=$$$cl1.getEmpty();
-    $$$cl1.defineAttr($$testList,'clone',function(){return clone;});
+    //AttributeDecl clone at qualified.ceylon (64:4-64:41)
+    var clone=$$$cl4138.getEmpty();
+    $$$cl4138.defineAttr($$testList,'clone',function(){return clone;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','clone']};});
+    $$testList.$prop$getClone={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','clone']};}};
+    $$testList.$prop$getClone.get=function(){return clone};
     
-    //MethodDefinition get at qualified.ceylon (65:4-65:60)
-    function get(index$682){
+    //MethodDef get at qualified.ceylon (65:4-65:60)
+    function $get(index$4852){
         return null;
     }
-    $$testList.get=get;
-    get.$$metamodel$$={$nm:'get',$mt:'mthd',$t:{ t:'u', l:[{t:$$$cl1.Null},{t:$$$cl1.String}]},$ps:[{$nm:'index',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//get.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{ t:'u', l:[{t:$$$cl1.Null},{t:$$$cl1.String}]}};
+    $$testList.$get=$get;
+    $get.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:'u', l:[{t:$$$cl4138.Null},{t:$$$cl4138.String}]},$ps:[{$nm:'index',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','get']};};
     
-    //AttributeDeclaration lastIndex at qualified.ceylon (66:4-66:43)
+    //AttributeDecl lastIndex at qualified.ceylon (66:4-66:43)
     var lastIndex=null;
-    $$$cl1.defineAttr($$testList,'lastIndex',function(){return lastIndex;});
+    $$$cl4138.defineAttr($$testList,'lastIndex',function(){return lastIndex;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u', l:[{t:$$$cl4138.Null},{t:$$$cl4138.Integer}]},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','lastIndex']};});
+    $$testList.$prop$getLastIndex={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:'u', l:[{t:$$$cl4138.Null},{t:$$$cl4138.Integer}]},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','lastIndex']};}};
+    $$testList.$prop$getLastIndex.get=function(){return lastIndex};
     
-    //AttributeDeclaration rest at qualified.ceylon (67:4-67:40)
-    var rest=$$$cl1.getEmpty();
-    $$$cl1.defineAttr($$testList,'rest',function(){return rest;});
+    //AttributeDecl rest at qualified.ceylon (67:4-67:40)
+    var rest=$$$cl4138.getEmpty();
+    $$$cl4138.defineAttr($$testList,'rest',function(){return rest;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','rest']};});
+    $$testList.$prop$getRest={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','rest']};}};
+    $$testList.$prop$getRest.get=function(){return rest};
     
-    //AttributeDeclaration reversed at qualified.ceylon (68:4-68:44)
-    var reversed=$$$cl1.getEmpty();
-    $$$cl1.defineAttr($$testList,'reversed',function(){return reversed;});
+    //AttributeDecl reversed at qualified.ceylon (68:4-68:44)
+    var reversed=$$$cl4138.getEmpty();
+    $$$cl4138.defineAttr($$testList,'reversed',function(){return reversed;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','reversed']};});
+    $$testList.$prop$getReversed={$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','reversed']};}};
+    $$testList.$prop$getReversed.get=function(){return reversed};
     
-    //MethodDefinition segment at qualified.ceylon (69:4-69:82)
-    function segment(from$683,length$684){
-        return $$$cl1.getEmpty();
+    //MethodDef segment at qualified.ceylon (69:4-69:82)
+    function segment(from$4853,length$4854){
+        return $$$cl4138.getEmpty();
     }
     $$testList.segment=segment;
-    segment.$$metamodel$$={$nm:'segment',$mt:'mthd',$t:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'length',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//segment.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}}};
+    segment.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'length',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','segment']};};
     
-    //MethodDefinition span at qualified.ceylon (70:4-70:75)
-    function span(from$685,to$686){
-        return $$$cl1.getEmpty();
+    //MethodDef span at qualified.ceylon (70:4-70:75)
+    function span(from$4855,to$4856){
+        return $$$cl4138.getEmpty();
     }
     $$testList.span=span;
-    span.$$metamodel$$={$nm:'span',$mt:'mthd',$t:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer}},{$nm:'to',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//span.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}}};
+    span.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'to',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','span']};};
     
-    //MethodDefinition spanTo at qualified.ceylon (71:4-71:63)
-    function spanTo(to$687){
-        return $$$cl1.getEmpty();
+    //MethodDef spanTo at qualified.ceylon (71:4-71:63)
+    function spanTo(to$4857){
+        return $$$cl4138.getEmpty();
     }
     $$testList.spanTo=spanTo;
-    spanTo.$$metamodel$$={$nm:'spanTo',$mt:'mthd',$t:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//spanTo.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}}};
+    spanTo.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$ps:[{$nm:'to',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','spanTo']};};
     
-    //MethodDefinition spanFrom at qualified.ceylon (72:4-72:67)
-    function spanFrom(from$688){
-        return $$$cl1.getEmpty();
+    //MethodDef spanFrom at qualified.ceylon (72:4-72:67)
+    function spanFrom(from$4858){
+        return $$$cl4138.getEmpty();
     }
     $$testList.spanFrom=spanFrom;
-    spanFrom.$$metamodel$$={$nm:'spanFrom',$mt:'mthd',$t:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl1.Integer}}]};//spanFrom.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},Return:{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}}};
+    spanFrom.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}},$ps:[{$nm:'from',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','spanFrom']};};
     
-    //MethodDeclaration iterator at qualified.ceylon (73:4-73:62)
+    //MethodDecl iterator at qualified.ceylon (73:4-73:62)
     var iterator=function (){
-        return $$$cl1.getEmptyIterator();
+        return $$$cl4138.getEmptyIterator();
     };
-    iterator.$$metamodel$$={$nm:'iterator',$mt:'mthd',$t:{t:$$$cl1.Iterator,a:{Element:{t:$$$cl1.String}}},$ps:[]};
+    iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Iterator,a:{Element:{t:$$$cl4138.String}}},$ps:[],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','iterator']};};
     $$testList.iterator=iterator;
     
-    //MethodDefinition equals at qualified.ceylon (74:4-74:75)
-    function equals(that$689){
-        return $$testList.equals$$ceylon$language$List(that$689);
+    //MethodDef equals at qualified.ceylon (74:4-74:93)
+    function equals(that$4859){
+        return $$testList.equals$$ceylon$language$List(that$4859);
     }
     $$testList.equals=equals;
-    equals.$$metamodel$$={$nm:'equals',$mt:'mthd',$t:{t:$$$cl1.Boolean},$ps:[{$nm:'that',$mt:'prm',$t:{t:$$$cl1.Object}}]};//equals.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Object},Element:{t:$$$cl1.Object}}},Return:{t:$$$cl1.Boolean}};
+    equals.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Boolean},$ps:[{$nm:'that',$mt:'prm',$t:{t:$$$cl4138.Object},$an:function(){return[];}}],$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$m','equals']};};
     
-    //AttributeGetterDefinition hash at qualified.ceylon (75:4-75:52)
-    $$$cl1.defineAttr($$testList,'hash',function(){
+    //AttributeGetterDef hash at qualified.ceylon (75:4-75:70)
+    $$$cl4138.defineAttr($$testList,'hash',function(){
         return $$testList.hash$$ceylon$language$List;
-    });
+    },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$cont:TestList,$an:function(){return[$$$cl4138.shared(),$$$cl4138.actual()];},d:['invocations','TestList','$at','hash']};});
     return $$testList;
 }
+TestList.$$metamodel$$=function(){return{mod:$$METAMODEL$$,'super':{t:$$$cl4138.Basic},$ps:[],satisfies:[{t:$$$cl4138.List,a:{Element:{t:$$$cl4138.String}}}],d:['invocations','TestList']};};
 function $init$TestList(){
     if (TestList.$$===undefined){
-        $$$cl1.initTypeProto(TestList,'invocations::TestList',$$$cl1.Basic,$$$cl1.List);
+        $$$cl4138.initTypeProto(TestList,'invocations::TestList',$$$cl4138.Basic,$$$cl4138.List);
     }
-    TestList.$$.$$metamodel$$={$nm:'TestList',$mt:'cls','super':{t:$$$cl1.Basic},'satisfies':[{t:$$$cl1.List,a:{Element:{t:$$$cl1.String}}}]};
     return TestList;
 }
 exports.$init$TestList=$init$TestList;
 $init$TestList();
 
-//MethodDefinition testQualified at qualified.ceylon (78:0-97:0)
+//MethodDef testQualified at qualified.ceylon (78:0-97:0)
 function testQualified(){
     
-    //AttributeDeclaration q1 at qualified.ceylon (79:4-79:47)
-    var q1$690=QualifyAmbiguousSupertypes(true);
+    //AttributeDecl q1 at qualified.ceylon (79:4-79:47)
+    var q1$4860=QualifyAmbiguousSupertypes(true);
     
-    //AttributeDeclaration q2 at qualified.ceylon (80:4-80:48)
-    var q2$691=QualifyAmbiguousSupertypes(false);
-    $$$c2.check(q1$690.doSomething().equals($$$cl1.String("ambiguous 1",11)),$$$cl1.String("qualified super calls [1]",25));
-    $$$c2.check(q2$691.doSomething().equals($$$cl1.String("ambiguous 2",11)),$$$cl1.String("qualified super calls [2]",25));
-    $$$c2.check(q1$690.whatever.equals((1)),$$$cl1.String("qualified super attrib [1]",26));
-    $$$c2.check(q2$691.whatever.equals((2)),$$$cl1.String("qualified super attrib [2]",26));
-    $$$c2.check(q1$690.somethingElse((5)).equals($$$cl1.String("Ambiguous1 something 5 else",27)),$$$cl1.String("qualified super method [1]",26));
-    $$$c2.check(q1$690.somethingElse((6)).equals($$$cl1.String("something 6 else",16)),$$$cl1.String("qualified super method [2]",26));
-    $$$c2.check(q2$691.somethingElse((5)).equals($$$cl1.String("Ambiguous2 5 something else",27)),$$$cl1.String("qualified super method [3]",26));
-    $$$c2.check(q2$691.somethingElse((6)).equals($$$cl1.String("Ambiguous2 6 something else",27)),$$$cl1.String("qualified super method [4]",26));
+    //AttributeDecl q2 at qualified.ceylon (80:4-80:48)
+    var q2$4861=QualifyAmbiguousSupertypes(false);
+    $$$c4139.check(q1$4860.doSomething().equals($$$cl4138.String("ambiguous 1",11)),$$$cl4138.String("qualified super calls [1]",25));
+    $$$c4139.check(q2$4861.doSomething().equals($$$cl4138.String("ambiguous 2",11)),$$$cl4138.String("qualified super calls [2]",25));
+    $$$c4139.check(q1$4860.whatever.equals((1)),$$$cl4138.String("qualified super attrib [1]",26));
+    $$$c4139.check(q2$4861.whatever.equals((2)),$$$cl4138.String("qualified super attrib [2]",26));
+    $$$c4139.check(q1$4860.somethingElse((5)).equals($$$cl4138.String("Ambiguous1 something 5 else",27)),$$$cl4138.String("qualified super method [1]",26));
+    $$$c4139.check(q1$4860.somethingElse((6)).equals($$$cl4138.String("something 6 else",16)),$$$cl4138.String("qualified super method [2]",26));
+    $$$c4139.check(q2$4861.somethingElse((5)).equals($$$cl4138.String("Ambiguous2 5 something else",27)),$$$cl4138.String("qualified super method [3]",26));
+    $$$c4139.check(q2$4861.somethingElse((6)).equals($$$cl4138.String("Ambiguous2 6 something else",27)),$$$cl4138.String("qualified super method [4]",26));
     
-    //AttributeDeclaration qb at qualified.ceylon (89:4-89:27)
-    var qb$692=QualifiedB();
-    $$$c2.check(qb$692.a.equals(qb$692.supera),$$$cl1.String("Qualified attribute [1]",23));
-    qb$692.f();
-    $$$c2.check((tmp$693=qb$692,tmp$693.a=tmp$693.a.successor).equals(qb$692.supera),$$$cl1.String("Qualified attribute [2]",23));
-    var tmp$693;
-    $$$c2.check((tmp$694=qb$692,tmp$694.a=tmp$694.a.successor).equals(qb$692.g()),$$$cl1.String("Qualified attribute [3]",23));
-    var tmp$694;
+    //AttributeDecl qb at qualified.ceylon (89:4-89:27)
+    var qb$4862=QualifiedB();
+    $$$c4139.check(qb$4862.a.equals(qb$4862.supera),$$$cl4138.String("Qualified attribute [1]",23));
+    qb$4862.f();
+    $$$c4139.check((tmp$4863=qb$4862,tmp$4863.a=tmp$4863.a.successor).equals(qb$4862.supera),$$$cl4138.String("Qualified attribute [2]",23));
+    var tmp$4863;
+    $$$c4139.check((tmp$4864=qb$4862,tmp$4864.a=tmp$4864.a.successor).equals(qb$4862.g()),$$$cl4138.String("Qualified attribute [3]",23));
+    var tmp$4864;
     
-    //AttributeDeclaration tl at qualified.ceylon (94:4-94:25)
-    var tl$695=TestList();
-    $$$c2.check(tl$695.hash.equals($$$cl1.getEmpty().hash),$$$cl1.String("List::hash",10));
-    $$$c2.check(tl$695.equals($$$cl1.getEmpty()),$$$cl1.String("List::equals",12));
-};testQualified.$$metamodel$$={$nm:'testQualified',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//testQualified.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};
+    //AttributeDecl tl at qualified.ceylon (94:4-94:25)
+    var tl$4865=TestList();
+    $$$c4139.check(tl$4865.hash.equals($$$cl4138.getEmpty().hash),$$$cl4138.String("super of List.hash",18));
+    $$$c4139.check(tl$4865.equals($$$cl4138.getEmpty()),$$$cl4138.String("super of List.equals",20));
+};testQualified.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Anything},$ps:[],d:['invocations','testQualified']};};
 
-//MethodDefinition spread1 at spread.ceylon (4:0-10:0)
-function spread1(a$696){
-    if(a$696===undefined){a$696=$$$cl1.getEmpty();}
+//MethodDef spread1 at spread.ceylon (4:0-10:0)
+function spread1(a$4866){
+    if(a$4866===undefined){a$4866=$$$cl4138.getEmpty();}
     
-    //AttributeDeclaration r at spread.ceylon (5:2-5:23)
-    var r$697=(0);
-    var setR$697=function(r$698){return r$697=r$698;};
+    //AttributeDecl r at spread.ceylon (5:2-5:23)
+    var r$4867=(0);
+    function setR$4867(r$4868){return r$4867=r$4868;};
     //'for' statement at spread.ceylon (6:2-8:2)
-    var it$699 = a$696.iterator();
-    var i$700;while ((i$700=it$699.next())!==$$$cl1.getFinished()){
-        (r$697=r$697.plus(i$700));
+    var it$4869 = a$4866.iterator();
+    var i$4870;while ((i$4870=it$4869.next())!==$$$cl4138.getFinished()){
+        (r$4867=r$4867.plus(i$4870));
     }
-    return r$697;
-};spread1.$$metamodel$$={$nm:'spread1',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'a',$mt:'prm',seq:1,$t:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Integer}}}}]};//spread1.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Integer}}},Element:{t:$$$cl1.Sequential,a:{Element:{t:$$$cl1.Integer}}}}},Return:{t:$$$cl1.Integer}};
+    return r$4867;
+};spread1.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$ps:[{$nm:'a',$mt:'prm',seq:1,$t:{t:$$$cl4138.Sequential,a:{Element:{t:$$$cl4138.Integer}}},$an:function(){return[];}}],d:['invocations','spread1']};};
 
-//MethodDefinition spread2 at spread.ceylon (12:0-18:0)
-function spread2(a$701){
+//MethodDef spread2 at spread.ceylon (12:0-18:0)
+function spread2(a$4871){
     
-    //AttributeDeclaration r at spread.ceylon (13:2-13:23)
-    var r$702=(0);
-    var setR$702=function(r$703){return r$702=r$703;};
+    //AttributeDecl r at spread.ceylon (13:2-13:23)
+    var r$4872=(0);
+    function setR$4872(r$4873){return r$4872=r$4873;};
     //'for' statement at spread.ceylon (14:2-16:2)
-    var it$704 = a$701.iterator();
-    var i$705;while ((i$705=it$704.next())!==$$$cl1.getFinished()){
-        (r$702=r$702.plus(i$705));
+    var it$4874 = a$4871.iterator();
+    var i$4875;while ((i$4875=it$4874.next())!==$$$cl4138.getFinished()){
+        (r$4872=r$4872.plus(i$4875));
     }
-    return r$702;
-};spread2.$$metamodel$$={$nm:'spread2',$mt:'mthd',$t:{t:$$$cl1.Integer},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}}}]};//spread2.$$targs$$={Arguments:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}},Element:{t:$$$cl1.Iterable,a:{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}}}},Return:{t:$$$cl1.Integer}};
+    return r$4872;
+};spread2.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl4138.Iterable,a:{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}},$an:function(){return[];}}],d:['invocations','spread2']};};
 
-//MethodDefinition testSpread at spread.ceylon (20:0-32:0)
+//MethodDef spread3 at spread.ceylon (19:0-25:0)
+function spread3(a$4876,b$4877){
+    if(b$4877===undefined){b$4877=$$$cl4138.getEmpty();}
+    
+    //AttributeDecl r at spread.ceylon (20:2-20:22)
+    var r$4878=a$4876;
+    function setR$4878(r$4879){return r$4878=r$4879;};
+    //'for' statement at spread.ceylon (21:2-23:2)
+    var it$4880 = b$4877.iterator();
+    var i$4881;while ((i$4881=it$4880.next())!==$$$cl4138.getFinished()){
+        (r$4878=r$4878.plus(i$4881));
+    }
+    return r$4878;
+};spread3.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'b',$mt:'prm',seq:1,$t:{t:$$$cl4138.Sequential,a:{Element:{t:$$$cl4138.Integer}}},$an:function(){return[];}}],d:['invocations','spread3']};};
+
+//MethodDef spread4 at spread.ceylon (26:0-28:0)
+function spread4(a$4882,b$4883,c$4884){
+    return a$4882.plus(b$4883).plus(c$4884);
+};spread4.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'b',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'c',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],d:['invocations','spread4']};};
+
+//MethodDef spread5 at spread.ceylon (29:0-31:0)
+function spread5(a$4885,b$4886,c$4887,d$4888){
+    if(d$4888===undefined){d$4888=(20);}
+    return a$4885.plus(b$4886).plus(c$4887).minus(d$4888);
+};spread5.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Integer},$ps:[{$nm:'a',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'b',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'c',$mt:'prm',$t:{t:$$$cl4138.Integer},$an:function(){return[];}},{$nm:'d',$mt:'prm',$def:1,$t:{t:$$$cl4138.Integer},$an:function(){return[];}}],d:['invocations','spread5']};};
+
+//MethodDef testSpread at spread.ceylon (33:0-48:0)
 function testSpread(){
     
-    //AttributeDeclaration ints at spread.ceylon (21:2-21:23)
-    var ints$706=$$$cl1.Tuple((8),$$$cl1.Tuple((9),$$$cl1.Tuple((10),$$$cl1.getEmpty(),{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}),{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Tuple,a:{Rest:{t:$$$cl1.Empty},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}}},First:{t:$$$cl1.Integer},Element:{t:$$$cl1.Integer}});
-    $$$c2.check(spread1([(1),(2),(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}})).equals((6)),$$$cl1.String("spread [1]",10));
-    $$$c2.check(spread1(ints$706).equals((27)),$$$cl1.String("spread [2]",10));
-    $$$c2.check(spread1([(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}).chain(ints$706,{Element:{t:$$$cl1.Integer}})).equals((30)),$$$cl1.String("spread [3]",10));
-    $$$c2.check(spread1($$$cl1.Comprehension(function(){
-        //Comprehension at spread.ceylon (25:16-25:35)
-        var it$707=ints$706.iterator();
-        var i$708=$$$cl1.getFinished();
-        var next$i$708=function(){return i$708=it$707.next();}
-        next$i$708();
+    //AttributeDecl ints at spread.ceylon (34:2-34:23)
+    var ints$4889=$$$cl4138.Tuple((8),$$$cl4138.Tuple((9),$$$cl4138.Tuple((10),$$$cl4138.getEmpty(),{Rest:{t:$$$cl4138.Empty},First:{t:$$$cl4138.Integer},Element:{t:$$$cl4138.Integer}}),{Rest:{t:'T', l:[{t:$$$cl4138.Integer}]},First:{t:$$$cl4138.Integer},Element:{t:$$$cl4138.Integer}}),{Rest:{t:'T', l:[{t:$$$cl4138.Integer},{t:$$$cl4138.Integer}]},First:{t:$$$cl4138.Integer},Element:{t:$$$cl4138.Integer}});
+    $$$c4139.check(spread1([(1),(2),(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}})).equals((6)),$$$cl4138.String("spread [1]",10));
+    $$$c4139.check(spread1(ints$4889).equals((27)),$$$cl4138.String("spread [2]",10));
+    $$$c4139.check(spread1([(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}).chain(ints$4889,{Element:{t:$$$cl4138.Integer}})).equals((30)),$$$cl4138.String("spread [3]",10));
+    $$$c4139.check(spread1($$$cl4138.Comprehension(function(){
+        //Comprehension at spread.ceylon (38:16-38:35)
+        var it$4890=ints$4889.iterator();
+        var i$4891=$$$cl4138.getFinished();
+        var next$i$4891=function(){return i$4891=it$4890.next();}
+        next$i$4891();
         return function(){
-            if(i$708!==$$$cl1.getFinished()){
-                var i$708$709=i$708;
-                var tmpvar$710=i$708$709.times((10));
-                next$i$708();
-                return tmpvar$710;
+            if(i$4891!==$$$cl4138.getFinished()){
+                var i$4891$4892=i$4891;
+                var tmpvar$4893=i$4891$4892.times((10));
+                next$i$4891();
+                return tmpvar$4893;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}})).equals((270)),$$$cl1.String("spread [4]",10));
-    $$$c2.check(spread1([(2),(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}).chain($$$cl1.Comprehension(function(){
-        //Comprehension at spread.ceylon (26:20-26:39)
-        var it$711=ints$706.iterator();
-        var i$712=$$$cl1.getFinished();
-        var next$i$712=function(){return i$712=it$711.next();}
-        next$i$712();
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}})).equals((270)),$$$cl4138.String("spread [4]",10));
+    $$$c4139.check(spread1([(2),(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}).chain($$$cl4138.Comprehension(function(){
+        //Comprehension at spread.ceylon (39:20-39:39)
+        var it$4894=ints$4889.iterator();
+        var i$4895=$$$cl4138.getFinished();
+        var next$i$4895=function(){return i$4895=it$4894.next();}
+        next$i$4895();
         return function(){
-            if(i$712!==$$$cl1.getFinished()){
-                var i$712$713=i$712;
-                var tmpvar$714=i$712$713.times((10));
-                next$i$712();
-                return tmpvar$714;
+            if(i$4895!==$$$cl4138.getFinished()){
+                var i$4895$4896=i$4895;
+                var tmpvar$4897=i$4895$4896.times((10));
+                next$i$4895();
+                return tmpvar$4897;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}})).equals((275)),$$$cl1.String("spread [5]",10));
-    $$$c2.check((a$715=[(1),(2),(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),spread2(a$715)).equals((6)),$$$cl1.String("spread [6]",10));
-    var a$715;
-    $$$c2.check((a$716=ints$706,spread2(a$716)).equals((27)),$$$cl1.String("spread [7]",10));
-    var a$716;
-    $$$c2.check((a$717=[(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}).chain(ints$706,{Element:{t:$$$cl1.Integer}}),spread2(a$717)).equals((30)),$$$cl1.String("spread [8]",10));
-    var a$717;
-    $$$c2.check((a$718=$$$cl1.Comprehension(function(){
-        //Comprehension at spread.ceylon (30:16-30:35)
-        var it$719=ints$706.iterator();
-        var i$720=$$$cl1.getFinished();
-        var next$i$720=function(){return i$720=it$719.next();}
-        next$i$720();
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}})).equals((275)),$$$cl4138.String("spread [5]",10));
+    $$$c4139.check((a$4898=[(1),(2),(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),spread2(a$4898)).equals((6)),$$$cl4138.String("spread [6]",10));
+    var a$4898;
+    $$$c4139.check((a$4899=ints$4889,spread2(a$4899)).equals((27)),$$$cl4138.String("spread [7]",10));
+    var a$4899;
+    $$$c4139.check((a$4900=[(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}).chain(ints$4889,{Element:{t:$$$cl4138.Integer}}),spread2(a$4900)).equals((30)),$$$cl4138.String("spread [8]",10));
+    var a$4900;
+    $$$c4139.check((a$4901=$$$cl4138.Comprehension(function(){
+        //Comprehension at spread.ceylon (43:16-43:35)
+        var it$4902=ints$4889.iterator();
+        var i$4903=$$$cl4138.getFinished();
+        var next$i$4903=function(){return i$4903=it$4902.next();}
+        next$i$4903();
         return function(){
-            if(i$720!==$$$cl1.getFinished()){
-                var i$720$721=i$720;
-                var tmpvar$722=i$720$721.times((10));
-                next$i$720();
-                return tmpvar$722;
+            if(i$4903!==$$$cl4138.getFinished()){
+                var i$4903$4904=i$4903;
+                var tmpvar$4905=i$4903$4904.times((10));
+                next$i$4903();
+                return tmpvar$4905;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),spread2(a$718)).equals((270)),$$$cl1.String("spread [9]",10));
-    var a$718;
-    $$$c2.check((a$723=[(2),(3)].reifyCeylonType({Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}).chain($$$cl1.Comprehension(function(){
-        //Comprehension at spread.ceylon (31:20-31:39)
-        var it$724=ints$706.iterator();
-        var i$725=$$$cl1.getFinished();
-        var next$i$725=function(){return i$725=it$724.next();}
-        next$i$725();
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),spread2(a$4901)).equals((270)),$$$cl4138.String("spread [9]",10));
+    var a$4901;
+    $$$c4139.check((a$4906=[(2),(3)].reifyCeylonType({Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}).chain($$$cl4138.Comprehension(function(){
+        //Comprehension at spread.ceylon (44:20-44:39)
+        var it$4907=ints$4889.iterator();
+        var i$4908=$$$cl4138.getFinished();
+        var next$i$4908=function(){return i$4908=it$4907.next();}
+        next$i$4908();
         return function(){
-            if(i$725!==$$$cl1.getFinished()){
-                var i$725$726=i$725;
-                var tmpvar$727=i$725$726.times((10));
-                next$i$725();
-                return tmpvar$727;
+            if(i$4908!==$$$cl4138.getFinished()){
+                var i$4908$4909=i$4908;
+                var tmpvar$4910=i$4908$4909.times((10));
+                next$i$4908();
+                return tmpvar$4910;
             }
-            return $$$cl1.getFinished();
+            return $$$cl4138.getFinished();
         }
-    },{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),{Absent:{t:$$$cl1.Null},Element:{t:$$$cl1.Integer}}),spread2(a$723)).equals((275)),$$$cl1.String("spread [10]",11));
-    var a$723;
-};testSpread.$$metamodel$$={$nm:'testSpread',$mt:'mthd',$t:{t:$$$cl1.Anything},$ps:[]};//testSpread.$$targs$$={Arguments:{t:$$$cl1.Empty},Return:{t:$$$cl1.Anything}};
+    },{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),{Absent:{t:$$$cl4138.Null},Element:{t:$$$cl4138.Integer}}),spread2(a$4906)).equals((275)),$$$cl4138.String("spread [10]",11));
+    var a$4906;
+    $$$c4139.check(spread3((1),ints$4889).equals((28)),$$$cl4138.String("spread [11]",11));
+    $$$c4139.check(spread4(ints$4889.$get(0),ints$4889.$get(1)||undefined,ints$4889.$get(2)||undefined).equals((27)),$$$cl4138.String("spread [12]",11));
+    $$$c4139.check(spread5(ints$4889.$get(0),ints$4889.$get(1)||undefined,ints$4889.$get(2)||undefined,ints$4889.$get(3)||undefined).equals((7)),$$$cl4138.String("spread [13]",11));
+};testSpread.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:$$$cl4138.Anything},$ps:[],d:['invocations','testSpread']};};
 });
 }(typeof define==='function' && define.amd ? define : function (factory) {
 if (typeof exports!=='undefined') { factory(require, exports, module);
