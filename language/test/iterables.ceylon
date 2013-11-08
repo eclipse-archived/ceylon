@@ -232,9 +232,9 @@ shared void testIterables() {
 	value ia = {};
 	value ib = { 1, 2, 3, 4, 5 };
 	value ic = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
-	value ix = zip(plus<Integer>, ia, ia);
-	value iy = zip(plus<Integer>, ib, ib);
-	value iz = zip(plus<Integer>, ic, ic);
+	value ix = mapPairs(plus<Integer>, ia, ia);
+	value iy = mapPairs(plus<Integer>, ib, ib);
+	value iz = mapPairs(plus<Integer>, ic, ic);
 	print(ix);
 	print(iy);
     check(ix.string=="{}", "Iterable.string [1]");
@@ -244,7 +244,7 @@ shared void testIterables() {
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
-    Iterable<String> combined = zip((Character c, Integer i) => "comb ``c``+``i``",
+    Iterable<String> combined = mapPairs((Character c, Integer i) => "comb ``c``+``i``",
                                                "hello", { 1,2,3,4 });
     check(combined.sequence.size==4, "combine [1]");
     check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");
