@@ -234,11 +234,11 @@ shared void gol() {
     
     Boolean draw() {
         value newXXXdead = life.evolve();
-        value new = newXXXdead[0];
+        value newCell = newXXXdead[0];
         value dead = newXXXdead[1];
-        print("draw (new=``new.size``, dead=``dead.size``)");
+        print("draw (new=``newCell.size``, dead=``dead.size``)");
         
-        if (prevCount >= 0 && prevNew == new.size && prevDead == dead.size) {
+        if (prevCount >= 0 && prevNew == newCell.size && prevDead == dead.size) {
             if (prevCount > 10) {
                 print("Stable state, loop detected");
                 prevCount = -1;
@@ -247,17 +247,17 @@ shared void gol() {
                 prevCount++;
             }
         } else {
-            prevNew = new.size;
+            prevNew = newCell.size;
             prevDead = dead.size;
         }
                 
         void drawCell(Cell c) {
         }
         
-        drawCells(new, drawCell);
+        drawCells(newCell, drawCell);
         drawCells(dead, drawCell);
   
-        if (!new.empty || !dead.empty) {
+        if (!newCell.empty || !dead.empty) {
             // Draw more
         } else {
             print("Stable state, stopped");
