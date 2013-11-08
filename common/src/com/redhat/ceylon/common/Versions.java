@@ -17,7 +17,7 @@ public class Versions {
     public static final int CEYLON_VERSION_MINOR = 0;
     public static final int CEYLON_VERSION_RELEASE = 0;
     public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR + "." + CEYLON_VERSION_RELEASE;
-    public static final String CEYLON_VERSION_NAME = "Buckaroo Banzai";
+    public static final String CEYLON_VERSION_NAME = "No More Mr Nice Guy";
     public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " (" + CEYLON_VERSION_NAME + ")";
 
     /**
