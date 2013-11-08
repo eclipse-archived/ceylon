@@ -36,7 +36,6 @@ class Parameter() {
     void m16(Boolean int) { }
     void m17(Boolean long) { }
     void m18(Boolean native) { }
-    void m19(Boolean new) { }
     void m21(Boolean private) { }
     void m22(Boolean protected) { }
     void m23(Boolean public) { }

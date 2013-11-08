@@ -12,7 +12,7 @@ import java.lang {
     Thread {
         State {
             runnable=\iRUNNABLE,
-            new=\iNEW,
+            neww=\iNEW,
             blocked=\iBLOCKED
         }
     }
@@ -52,16 +52,16 @@ javaAnnotationClass {
     classesExact={`class String`};
 }
 javaAnnotationEnum {
-    threadState=new;
+    threadState=neww;
     threadStates={runnable, blocked};
 }
 javaAnnotationAnnotation {
     annotation=javaAnnotationEnum{
-        threadState=new;
+        threadState=neww;
         threadStates={runnable, blocked};
     };
     annotations={javaAnnotationEnum{
-        threadState=new;
+        threadState=neww;
         threadStates={runnable, blocked};
     }};
 }

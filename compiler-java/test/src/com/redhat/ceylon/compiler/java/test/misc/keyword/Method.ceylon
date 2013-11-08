@@ -36,7 +36,6 @@ class Method() {
     void int() {}
     void long() {}
     void native() {}
-    void new() {}
     void private() {}
     void protected() {}
     void public() {}

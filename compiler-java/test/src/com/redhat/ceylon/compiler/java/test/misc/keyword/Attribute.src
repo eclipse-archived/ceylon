@@ -20,7 +20,6 @@ class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         this.int = false;
         this.long = false;
         this.native = false;
-        this.new = false;
         this.private = false;
         this.protected = false;
         this.public = false;
@@ -116,11 +115,6 @@ class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public final boolean getNative() {
         return native;
-    }
-    private final boolean new;
-    
-    public final boolean getNew() {
-        return new;
     }
     private final boolean private;
     

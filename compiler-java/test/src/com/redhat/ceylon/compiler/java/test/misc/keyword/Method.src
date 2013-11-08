@@ -56,9 +56,6 @@ class Method implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final void native$priv$() {
     }
     
-    private final void new$priv$() {
-    }
-    
     private final void private$priv$() {
     }
     

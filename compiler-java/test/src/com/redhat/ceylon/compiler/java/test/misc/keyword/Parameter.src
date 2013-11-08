@@ -56,9 +56,6 @@ class Parameter implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     private final void m18$priv$(final boolean native) {
     }
     
-    private final void m19$priv$(final boolean new) {
-    }
-    
     private final void m21$priv$(final boolean private) {
     }
     

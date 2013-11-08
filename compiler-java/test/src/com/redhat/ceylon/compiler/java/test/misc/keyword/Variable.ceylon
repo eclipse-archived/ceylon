@@ -37,7 +37,6 @@ class Variable() {
         Boolean int = false;
         Boolean long = false;
         Boolean native = false;
-        Boolean new = false;
         Boolean private = false;
         Boolean protected = false;
         Boolean public = false;

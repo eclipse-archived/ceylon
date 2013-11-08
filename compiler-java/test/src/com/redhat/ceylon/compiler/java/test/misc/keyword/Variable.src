@@ -23,7 +23,6 @@ class Variable implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         final boolean int = false;
         final boolean long = false;
         final boolean native = false;
-        final boolean new = false;
         final boolean private = false;
         final boolean protected = false;
         final boolean public = false;
