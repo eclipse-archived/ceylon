@@ -28,6 +28,8 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.log.JDKModuleLogger;
 
+import ceylon.modules.CeylonRuntimeException;
+
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
@@ -217,6 +219,10 @@ public class CeylonRunTool extends RepoUsingTool {
         } catch (Error err) {
             throw err;
         } catch (RuntimeException e) {
+            // get around a class loader issue
+            if(e instanceof CeylonRuntimeException == false
+                    && e.getClass().getName().equals("ceylon.modules.CeylonRuntimeException"))
+                throw new CeylonRuntimeException(e.getMessage());
             throw e;
         } catch (Throwable t) {
             throw new RuntimeException(t);
