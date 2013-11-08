@@ -142,6 +142,13 @@ function $init$OpenFunction(){
   if (OpenFunction.$$===undefined){
     initTypeProto(OpenFunction,'ceylon.language.meta.declaration::OpenFunction',Basic,FunctionDeclaration$meta$declaration);
     (function($$openFunction){
+$$openFunction.equals=function(o) {
+  if (isOfType(o,{t:OpenFunction})) {
+    return o.tipo === this.tipo;
+  }
+  return false;
+}
+$$openFunction.equals.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},d:['ceylon.language','Object','$m','equals']};}
 defineAttr($$openFunction,'container',function(){
   if (this.$parent)return this.$parent;
   if (this.toplevel)return this.containingPackage;
