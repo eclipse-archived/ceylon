@@ -155,9 +155,9 @@
         is exists nonempty
         </literal></para>
         
-        <comment><para>Note: <literal>abstracts</para>, <literal>new</para>, and 
-        <literal>let</para> are reserved for possible use in a future release of
-        the language.</comment>
+        <comment><para>Note: <literal>abstracts</literal>, <literal>new</literal>,
+        and <literal>let</literal> are reserved for possible use in a future release 
+        of the language.</para></comment>
         
     </section>
     
