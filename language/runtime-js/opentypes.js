@@ -414,7 +414,6 @@ $$openClass.classApply=function(targs,$mptypes) {
     //TODO generate targs
   }
   validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
-  //TODO this is wrong
   return this.$apply(targs,$mptypes);//TODO tupleize
 }
 $$openClass.memberClassApply=function(cont,targs,$mptypes){

@@ -173,8 +173,6 @@ defineAttr(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this=
 var $infinity = Float(Infinity);
 function getInfinity() { return $infinity; }
 exports.$prop$getInfinity={get:getInfinity,$$metamodel$$:function(){return{mod:$$METAMODEL$$,$t:{t:Float},d:['ceylon.language','infinity']};}};
-//TODO metamodel
-//function getNegativeInfinity() { return Float(-Infinity); }
 
 exports.Integer=Integer;
 exports.Float=Float;

@@ -12,4 +12,4 @@ return this._decl;
 InterfaceModel$meta$model.$$.prototype.equals=function(o){
 return isOfType(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==this.tipo && this.typeArguments.equals(o.typeArguments);
 };
-//TODO equals metamodel
+InterfaceModel$meta$model.$$.prototype.equals.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},d:['ceylon.language','Object','$m','equals'],$ps:[{$nm:'other',$t:{t:Object$}}],$cont:InterfaceModel$meta$model};}

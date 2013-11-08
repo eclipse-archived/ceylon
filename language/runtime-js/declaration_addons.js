@@ -66,7 +66,6 @@ defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclara
   var rv = [];
   for (var i=0; i<parms.length;i++) {
     var p = parms[i];
-//TODO set "parameter" to true
     if (p.$pt === 'f') {
       rv.push(FunParamDecl(this,p));
     } else {
