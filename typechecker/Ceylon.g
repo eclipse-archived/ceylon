@@ -3574,8 +3574,16 @@ FUNCTION_MODIFIER
     :   'function'
     ;
 
+LET
+    :   'let'
+    ;
+
 MODULE
     :   'module'
+    ;
+
+NEW
+    :   'new'
     ;
 
 PACKAGE

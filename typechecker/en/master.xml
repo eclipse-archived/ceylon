@@ -22,8 +22,8 @@
     <bookinfo>
         <title>The Ceylon Language</title>
         <subtitle>Say more, more clearly</subtitle>
-        <releaseinfo>Community review draft (M6)</releaseinfo>
-        <author><firstname>Gavin</firstname><surname>King</surname></author>        
+        <releaseinfo>Final release draft (1.0)</releaseinfo>
+        <author><firstname>Gavin</firstname><surname>King</surname></author>
     </bookinfo>
 
     <toc/>

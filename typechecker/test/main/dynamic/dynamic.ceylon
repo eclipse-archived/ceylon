@@ -52,13 +52,13 @@ void run() {
 
 void newit() {
     dynamic {
-        dynamic new = value {
+        dynamic nuevo = value {
             x="hello";
             y="world";
             bar(dynamic name) => "oops ``name``";
         };
-        print(new.x + " " + new.y);
-        print(new.bar("dynamic"));
+        print(nuevo.x + " " + nuevo.y);
+        print(nuevo.bar("dynamic"));
         dynamic aa = value { a=1; b=2; 5,6,7,8 };
     }
 }

@@ -19,13 +19,13 @@ class DefaultTypeArgs() {
     
     class X<T>(T t) {
         shared class Y<S=[T]>(S s) {}
-        shared Y<Z> new<W,Z=T|W>() => nothing;
+        shared Y<Z> nuevo<W,Z=T|W>() => nothing;
         shared class New<W,Z=T|W>() {}
     }
     
     X<String>.Y xy1 = X("hello").Y(["goodbye"]);
     X<String>.Y<[Integer]> xy2 = X("hello").Y([1]);
-    @type:"DefaultTypeArgs.X<Integer>.Y<Integer|Float>" X(1).new<Float>();
+    @type:"DefaultTypeArgs.X<Integer>.Y<Integer|Float>" X(1).nuevo<Float>();
     @type:"DefaultTypeArgs.X<Integer>.New<Float,Integer|Float>" X(1).New<Float>();
     X<Integer>.New<Float> xn1 = nothing;
     X<Integer>.New<Float,Integer|Float> xn2 = xn1;

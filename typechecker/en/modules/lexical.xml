@@ -145,15 +145,19 @@
         
         <para><literal>
         assembly module package import
-        alias class interface object given value assign void function
+        alias class interface object given value assign void function new
         of extends satisfies abstracts
         in out
         return break continue throw
         assert dynamic
-        if else switch case for while try catch finally then
+        if else switch case for while try catch finally then let
         this outer super
         is exists nonempty
         </literal></para>
+        
+        <comment><para>Note: <literal>abstracts</para>, <literal>new</para>, and 
+        <literal>let</para> are reserved for possible use in a future release of
+        the language.</comment>
         
     </section>
     
