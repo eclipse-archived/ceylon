@@ -380,13 +380,67 @@ Used with another target such as 'package'">
 
     <target name="generate-tooldoc">
         <exec executable="${ceylon.dist.dir}/bin/ceylon" failonerror="yes">
-        	<arg value="--stacktraces"/>
+            <arg value="--stacktraces"/>
             <arg value="doc-tool"/>
             <arg value="--output=${ceylon.dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
             <arg value="--all-plumbing"/>
             <arg value="--all-porcelain"/>
-        </exec>	
+        </exec>
+        <if>
+            <available file="/usr/bin/docbook2x-man" type="file" />
+            <then>
+                <exec executable="${ceylon.dist.dir}/bin/ceylon" failonerror="yes">
+                    <arg value="--stacktraces"/>
+                    <arg value="doc-tool"/>
+                    <arg value="--output=${ceylon.dist.dir}/doc/en/toolset"/>
+                    <arg value="--format"/>
+                    <arg value="docbook"/>
+                    <arg value="--all-plumbing"/>
+                    <arg value="--all-porcelain"/>
+                </exec>
+                <foreach target="generate-tooldoc-man" param="toolfile">
+                    <path>
+                        <fileset dir="${ceylon.dist.dir}/doc/en/toolset">
+                            <include name="**/*.xml"/>
+                        </fileset>
+                    </path>
+                </foreach>
+                <mkdir dir="${ceylon.dist.dir}/doc/man/man1"/>
+                <move todir="${ceylon.dist.dir}/doc/man/man1">
+                      <fileset dir="${ceylon.dist.dir}/doc/en/toolset/">
+                        <include name="*.1"/>
+                      </fileset>
+                </move>
+            </then>
+            <else>
+                <echo message="Not generating man pages since you do not have /usr/bin/docbook2x-man installed"/>
+            </else>
+        </if>
+    </target>
+    
+    <target name="generate-tooldoc-man">
+        <echo message="doc for ${toolfile}"/>
+        <dirname property="toolfile.dir" file="${toolfile}"/>
+        <basename property="toolfile.file" file="${toolfile}"/>
+        <echo message="chdir in ${toolfile.dir} and docbookx2-man ${toolfile.file}"/>
+        <exec executable="docbook2x-man" dir="${toolfile.dir}">
+            <arg value="${toolfile.file}"/>
+        </exec>
+        <propertyregex property="toolfile.name"
+                       input="${toolfile.file}"
+                       regexp="ceylon-(.*).xml"
+                       select="\1"
+                       casesensitive="false" />
+        <if>
+            <resourceexists>
+                <file file="${toolfile.dir}/ceylon_${toolfile.name}.1"/>
+            </resourceexists>
+         <then>
+            <move file="${toolfile.dir}/ceylon_${toolfile.name}.1" tofile="${toolfile.dir}/ceylon-${toolfile.name}.1"></move>
+         </then>
+        </if>
+        <delete file="${toolfile}"/>
     </target>
 
     <target name="get-code" depends="local,get-code-internal"
