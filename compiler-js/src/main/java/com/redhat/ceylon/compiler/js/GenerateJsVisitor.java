@@ -270,9 +270,30 @@ public class GenerateJsVisitor extends Visitor
             require(clm);
         }
         if (!that.getModuleDescriptors().isEmpty()) {
+            ModuleDescriptor md = that.getModuleDescriptors().get(0);
             out("exports.$mod$ans$=");
-            TypeUtils.outputAnnotationsFunction(that.getModuleDescriptors().get(0).getAnnotationList(), this);
+            TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), this);
             endLine(true);
+            if (md.getImportModuleList() != null && !md.getImportModuleList().getImportModules().isEmpty()) {
+                out("exports.$mod$imps=function(){return{");
+                endLine();
+                boolean first=true;
+                for (ImportModule im : md.getImportModuleList().getImportModules()) {
+                    final StringBuilder path=new StringBuilder("'");
+                    for (Identifier id : im.getImportPath().getIdentifiers()) {
+                        if (path.length()>1)path.append('.');
+                        path.append(id.getText());
+                    }
+                    final String qv = im.getVersion().getText();
+                    path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
+                    if (first)first=false;else{out(",");endLine();}
+                    out(path.toString(), ":");
+                    TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), this);
+                }
+                endLine();
+                out("};};");
+                endLine();
+            }
         }
         if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
