@@ -83,7 +83,7 @@ public class CeylonDocToolTest {
     private CeylonDocTool tool(String pathname, String moduleName, 
             boolean throwOnError, String... repositories)
             throws Exception {
-        return tool(pathname, "doc", throwOnError, repositories);
+        return tool(pathname, "doc", moduleName, throwOnError, repositories);
     }
 
     private CeylonDocTool tool(String pathname, String docPath, String moduleName, 
