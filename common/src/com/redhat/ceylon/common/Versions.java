@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.0.0 "Buckaroo Banzai"
+    // The current version is Ceylon 1.0.0 "No More Mr Nice Guy"
     // This comment is here so this file will show up in searches for the current version number
     
     //****************************************************************************************************
