@@ -199,30 +199,17 @@ function Paquete(name, container, pkg, $$paquete){
     var container=container;
     defineAttr($$paquete,'container',function(){return container;},undefined,{mod:$$METAMODEL$$,$t:{t:Module$meta$declaration},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','container']});
     function members($$$mptypes){
-      var filter;
-      if (extendsType($$$mptypes.Kind,{t:FunctionDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='mthd'; };
-      } else if (extendsType($$$mptypes.Kind,{t:ValueDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt']==='obj'; };
-      } else if (extendsType($$$mptypes.Kind,{t:ClassDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='cls'; };
-      } else if (extendsType($$$mptypes.Kind,{t:InterfaceDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='ifc'; };
-      } else if (extendsType($$$mptypes.Kind,{t:FunctionOrValueDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='mthd' || m['$mt']==='attr' || m['$mt']==='gttr' || m['$mt']==='obj'; };
-      } else if (extendsType($$$mptypes.Kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='cls' || m['$mt']==='ifc'; };
-      } else if (extendsType($$$mptypes.Kind,{t:AliasDeclaration$meta$declaration})) {
-        filter = function(m) { return m['$mt']==='als'; };
-      } else {
-        //Dejamos pasar todo
-        filter = function(m) { return true; }
-      }
+      var filter=[];
+      if (extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('mthd');
+      if (extendsType({t:ValueDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('attr','gttr','obj');
+      if (extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('cls');
+      if (extendsType({t:InterfaceDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('ifc');
+      if (extendsType({t:AliasDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('als');
       var r=[];
       for (var mn in this.pkg) {
         var m = this.pkg[mn];
-        if (filter(m) && m['$an'] && m['$an']['shared']) {
-          var mt = m['$mt'];
+        var mt = m['$mt'];
+        if (filter.indexOf(mt)>=0 && m['$an'] && m['$an']['shared']) {
           if (mt === 'mthd') {
             r.push(OpenFunction(this, m));
           } else if (mt==='cls') {
