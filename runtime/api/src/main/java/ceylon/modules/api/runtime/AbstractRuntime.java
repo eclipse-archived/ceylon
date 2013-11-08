@@ -134,6 +134,9 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 runClassName = RUN_INFO_CLASS;
             else
                 runClassName = name + "." + RUN_INFO_CLASS;
+        }else{
+            // replace any :: with a dot to allow for both java and ceylon-style run methods
+            runClassName = runClassName.replace("::", ".");
         }
         invokeRun(cl, runClassName, conf.arguments);
     }
