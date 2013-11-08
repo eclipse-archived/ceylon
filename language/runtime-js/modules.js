@@ -365,7 +365,6 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
         if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
       }
       return r.reifyCeylonType({Element:$$$mptypes.Annotation});
-        return getEmpty();
     }
     $$paquete.annotations=annotations;
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','annotations']};
