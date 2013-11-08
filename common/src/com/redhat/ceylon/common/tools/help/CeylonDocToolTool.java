@@ -222,6 +222,8 @@ public class CeylonDocToolTool extends CeylonBaseTool {
                 models.add(docBuilder.buildDoc(toolModel));
             }
         }
+
+        models.add(docBuilder.buildDoc(toolLoader.loadToolModel(""), true));
         
         return models;
     }
@@ -241,7 +243,10 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     }
 
     private String filename(Doc doc) {
-        return Tools.progName() + "-" + doc.getName() + format.extension;
+        if(doc.getName().isEmpty())
+            return Tools.progName() + format.extension;
+        else
+            return Tools.progName() + "-" + doc.getName() + format.extension;
     }
 
     private void generateIndexHtml(List<Doc> docs) throws IOException {
@@ -255,7 +260,8 @@ public class CeylonDocToolTool extends CeylonBaseTool {
             List<Doc> porcelain = new ArrayList<>();
             List<Doc> plumbing = new ArrayList<>();
             for (Doc model : docs) {
-                if (model.getToolModel().isPorcelain()) {
+                if (model.getToolModel().isPorcelain()
+                        || model.getName().isEmpty()) {
                     porcelain.add(model);
                 } else if (model.getToolModel().isPlumbing()) {
                     plumbing.add(model);
