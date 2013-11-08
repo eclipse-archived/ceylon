@@ -1190,6 +1190,16 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.SpecifierOrInitializerExpression that) {
+        Specification s = new Specification();
+        s.setId(id++);
+        visitElement(that, s);
+        Scope o = enterScope(s);
+        super.visit(that);
+        exitScope(o);
+    }
+    
+    @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term lhs = that.getBaseMemberExpression();
         if (lhs instanceof Tree.ParameterizedExpression) {
