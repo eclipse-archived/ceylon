@@ -872,29 +872,33 @@ public class GenerateJsVisitor extends Visitor
 
         ExtendedType extendedType = null;
         SatisfiedTypes satisfiedTypes = null;
-        ClassOrInterface decl = null;
+        final ClassOrInterface decl;
+        final List<Statement> stmts;
         if (type instanceof ClassDefinition) {
             ClassDefinition classDef = (ClassDefinition) type;
             extendedType = classDef.getExtendedType();
             satisfiedTypes = classDef.getSatisfiedTypes();
             decl = classDef.getDeclarationModel();
+            stmts = classDef.getClassBody().getStatements();
         } else if (type instanceof InterfaceDefinition) {
             satisfiedTypes = ((InterfaceDefinition) type).getSatisfiedTypes();
             decl = ((InterfaceDefinition) type).getDeclarationModel();
+            stmts = ((InterfaceDefinition) type).getInterfaceBody().getStatements();
         } else if (type instanceof ObjectDefinition) {
             ObjectDefinition objectDef = (ObjectDefinition) type;
             extendedType = objectDef.getExtendedType();
             satisfiedTypes = objectDef.getSatisfiedTypes();
             decl = (ClassOrInterface)objectDef.getDeclarationModel().getTypeDeclaration();
+            stmts = objectDef.getClassBody().getStatements();
+        } else {
+            stmts = null;
+            decl = null;
         }
         final PrototypeInitCallback callback = new PrototypeInitCallback() {
             @Override
             public void addToPrototypeCallback() {
-                if (type instanceof ClassDefinition) {
-                    com.redhat.ceylon.compiler.typechecker.model.Class c = ((ClassDefinition)type).getDeclarationModel();
-                    addToPrototype(type, c, ((ClassDefinition)type).getClassBody().getStatements());
-                } else if (type instanceof InterfaceDefinition) {
-                    addToPrototype(type, ((InterfaceDefinition)type).getDeclarationModel(), ((InterfaceDefinition)type).getInterfaceBody().getStatements());
+                if (decl != null) {
+                    addToPrototype(type, decl, stmts);
                 }
             }
         };
@@ -1216,8 +1220,6 @@ public class GenerateJsVisitor extends Visitor
         endLine(true);
 
         typeInitialization(that);
-
-        addToPrototype(that, c, that.getClassBody().getStatements());
 
         if (!addToPrototype) {
             out("var ", names.name(d));
