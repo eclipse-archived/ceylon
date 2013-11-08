@@ -59,6 +59,15 @@ class ShortcutRefineTest3(String f(Integer i), Boolean flag) satisfies RefineTes
     }
 }
 
+class Padre290(String s) {
+  shared String passed => s;
+  shared actual default String string => "Padre ``s``";
+}
+class Hija290(algo) extends Padre290("Viene de ``algo``") {
+  shared String algo;
+  string => "Hija ``algo``";
+}
+
 void testMisc() {
   value testcat = TestCategory();
   check(testcat.contains(1), "Category.contains");
@@ -94,4 +103,5 @@ void testMisc() {
   check(reftst3b.s1=="two", "attribute refinement lazy, with conditional specifier");
   check(reftst3b.s2(123)=="x=15129", "method refinement parametrized, with conditional specifier");
   //check(reftst3b.s2()=="x=49", "method refinement parametrized, defaulted, with conditional specifier");
+  check(Hija290("hey").passed=="Viene de hey", "Bug 290");
 }
