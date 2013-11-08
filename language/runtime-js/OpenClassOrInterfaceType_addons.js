@@ -12,6 +12,15 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments
       } else if (typeof(rtp)==='string') {
         targ = OpenTvar(OpenTypeParam(this.declaration.tipo,rtp));
       } else {
+        if (rtp.t==='i'||rtp.t==='u') {
+          //resolve case types
+          var nrtp={t:rtp.t,l:[]};
+          for (var i=0;i<rtp.l.length;i++) {
+            var _ct=rtp.l[i];
+            nrtp.l.push(typeof(_ct)==='string'?OpenTvar(OpenTypeParam(this.declaration.tipo,_ct)):_ct);
+          }
+          rtp=nrtp;
+        }
         targ = _openTypeFromTarg(rtp);
       }
       targs.push(Entry(otp, targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));

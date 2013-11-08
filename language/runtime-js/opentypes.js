@@ -25,8 +25,8 @@ function _findTypeFromModel(pkg,mdl,cont) {
   }
   var out=cont?cont.$$.prototype:mod.meta;
   var rv=out[nm];
-  if (rv===undefined)rv=out['$init$'+nm];
   if (rv===undefined)rv=out['$'+nm];
+  if (rv===undefined)rv=out['$init$'+nm]();
   return rv;
 }
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
@@ -34,7 +34,8 @@ function _openTypeFromTarg(targ) {
   if (targ.t==='u' || targ.t==='i') {
     var tl=[];
     for (var i=0; i < targ.l.length; i++) {
-      tl.push(_openTypeFromTarg(targ.l[i]));
+      var _ct=targ.l[i];
+      tl.push(_ct.t?_openTypeFromTarg(_ct):_ct);
     }
     return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({Element:{t:OpenType$meta$declaration}}));
   } else if (targ.t==='T') {
