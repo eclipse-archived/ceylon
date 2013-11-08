@@ -1539,9 +1539,13 @@ public class GenerateJsVisitor extends Visitor
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null) && !pd.isHidden() && pd.getModel().isCaptured()) {
+            if ((typeDecl != null) && pd.getModel().isCaptured()) {
                 self(typeDecl);
                 out(".", paramName, "_=", paramName, ";");
+                if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
+                    self(typeDecl);
+                    out(".", paramName, "=", paramName, ";");
+                }
                 endLine();
             }
         }
@@ -1711,9 +1715,9 @@ public class GenerateJsVisitor extends Visitor
         Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
-        String classParam = null;
-        if (d.getContainer() instanceof Functional) {
-            classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
+        com.redhat.ceylon.compiler.typechecker.model.Parameter param = null;
+        if (d.isParameter()) {
+            param = ((Functional)d.getContainer()).getParameter(d.getName());
         }
         if (d.isFormal()) {
             if (!opts.isOptimize())generateAttributeMetamodel(that, false, false);
@@ -1722,7 +1726,7 @@ public class GenerateJsVisitor extends Visitor
             final boolean isLate = d.isLate();
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
-            final boolean addGetter = (specInitExpr != null) || (classParam != null) || !d.isMember()
+            final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
                     || d.isVariable() || isLate;
             final boolean addSetter = (d.isVariable() || isLate) && !defineAsProperty(d);
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
@@ -1735,10 +1739,6 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         super.visit(that);
                     }
-                    endLine(true);
-                } else if (classParam != null) {
-                    outerSelf(d);
-                    out(".", names.privateName(d), "=", classParam);
                     endLine(true);
                 }
             }
@@ -1786,7 +1786,7 @@ public class GenerateJsVisitor extends Visitor
             }
             else {
                 if (addGetter) {
-                    generateAttributeGetter(that, d, specInitExpr, classParam);
+                    generateAttributeGetter(that, d, specInitExpr, names.name(param));
                 }
                 if (addSetter) {
                     final String varName = names.name(d);
@@ -1978,13 +1978,13 @@ public class GenerateJsVisitor extends Visitor
         if (d.isFormal()) {
             generateAttributeMetamodel(that, false, false);
         } else {
-            String classParam = null;
-            if (d.getContainer() instanceof Functional) {
-                classParam = names.name(((Functional)d.getContainer()).getParameter(d.getName()));
+            com.redhat.ceylon.compiler.typechecker.model.Parameter param = null;
+            if (d.isParameter()) {
+                param = ((Functional)d.getContainer()).getParameter(d.getName());
             }
             final boolean isLate = d.isLate();
             if ((that.getSpecifierOrInitializerExpression() != null) || d.isVariable()
-                        || classParam != null || isLate) {
+                        || param != null || isLate) {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
@@ -2026,21 +2026,22 @@ public class GenerateJsVisitor extends Visitor
                     endLine(true);
                 }
                 else {
-                    final String privname = names.privateName(d);
-                    out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
+                    final String atname = names.name(d);
+                    final String privname = param == null ? names.privateName(d) : names.name(param)+"_";
+                    out(clAlias, "defineAttr(", names.self(outer), ",'", atname,
                             "',function(){");
                     if (isLate) {
-                        generateUnitializedAttributeReadCheck("this."+privname, names.name(d));
+                        generateUnitializedAttributeReadCheck("this."+privname, atname);
                     }
                     out("return this.", privname, ";}");
                     if (d.isVariable() || isLate) {
-                        final String param = names.createTempVariable(d.getName());
-                        out(",function(", param, "){");
+                        final String pname = names.createTempVariable(d.getName());
+                        out(",function(", pname, "){");
                         if (isLate && !d.isVariable()) {
-                            generateImmutableAttributeReassignmentCheck("this."+privname, names.name(d));
+                            generateImmutableAttributeReassignmentCheck("this."+privname, atname);
                         }
                         out("return this.", privname,
-                                "=", param, ";}");
+                                "=", pname, ";}");
                     } else {
                         out(",undefined");
                     }
