@@ -18,7 +18,10 @@ public class Launcher {
     private static volatile CeylonClassLoader ceylonClassLoader;
 
     public static void main(String[] args) throws Throwable {
-        System.exit(run(args));
+        int exit = run(args);
+        // WARNING: NEVER CALL EXIT IF WE STILL HAVE DAEMON THREADS RUNNING AND WE'VE NO REASON TO EXIT WITH A NON-ZERO CODE
+        if(exit != 0)
+            System.exit(exit);
     }
 
     public static int run(String... args) throws Throwable {
