@@ -264,7 +264,8 @@ public class AnnotationVisitor extends Visitor {
         if (!c.isFinal()) {
             that.addError("annotation class must be final");
         }
-        if (!c.getExtendedTypeDeclaration()
+        if (c.getExtendedTypeDeclaration() != null
+                && !c.getExtendedTypeDeclaration()
                 .equals(that.getUnit().getBasicDeclaration())) {
             that.addError("annotation class must directly extend Basic");
         }
