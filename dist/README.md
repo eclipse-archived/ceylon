@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the pre-1.0 "Buckaroo Banzai" release of the Ceylon command line tools (version 
-1.0.0). This is a pre-release version of the platform for review by the community.
+This is the 1.0 "No More Mr Nice Guy" release of the Ceylon command line tools (version 
+1.0.0). This is a production version of the platform.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
@@ -16,6 +16,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 ## Distribution layout
 
 - `bin`            - Unix/Windows commands
+- `contrib`        - Sample Ceylon command-line plugins
 - `doc`            - Documentation about Ceylon including the spec in HTML and PDF format
 - `lib`            - Required libraries for the Ceylon commands
 - `repo`           - Required bootstrap Ceylon modules (language, tools)
@@ -72,18 +73,23 @@ If that's not the case you'll have to manually update those projects or first st
 After the build finishes the command line tools will be located in the `bin` directory.
 
 - `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
-    * `new`        - Creates a new Ceylon project
+    * `new`        - Create a new Ceylon project
     * `compile`    - Compile a Ceylon program for the Java backend
     * `compile-js` - Compile a Ceylon program for the JavaScript backend
     * `doc`        - Document a Ceylon program
+    * `info`       - Print information about modules in repositories
+    * `new`        - Generate a new Ceylon project
     * `run`        - Run a Ceylon program on the Java VM
     * `run-js`     - Run a Ceylon program on node.js (JavaScript)
+    * `src`        - Fetch source archives from a repository and extract them
+    * `test`       - Test a Ceylon program on the Java VM
+    * `version`    - Show and update version numbers in module descriptors
     * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
     * `help`       - Displays help about another tool
 
 The API documentation for the language module `ceylon.language` may be found here:
 
-- `repo/ceylon/language/0.6/module-doc`
+- `repo/ceylon/language/1.0.0/module-doc`
 
 ## Running the sample programs
 
@@ -170,7 +176,7 @@ platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "quantal" 12.10 (64 bit) JDK 1.7.0_09 (IcedTea) Node 0.6.19
+- Ubuntu "quantal" 12.10 (64 bit) JDK 1.7.0_09 (IcedTea) Node 0.10.15
 - Fedora 17 (64 bit) JDK 1.7.0_09 (IcedTea)
 - Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
 
@@ -181,7 +187,6 @@ platforms to make sure it works:
 
 ### OSX
 
-- OSX 10 Lion (10.7.3) JDK 1.7.0_05 (Oracle) Node 0.6.19
 - OSX 10 Lion (10.8.5) JDK 1.7.0_40 (Oracle) Node 0.10.17
 
 ## License
