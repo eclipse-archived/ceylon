@@ -3233,28 +3233,45 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(AddAssignOp that) {
-        arithmeticAssignOp(that, "plus");
+        assignOp(that, "plus", false);
     }
 
     @Override public void visit(SubtractAssignOp that) {
-        arithmeticAssignOp(that, "minus");
+        assignOp(that, "minus", false);
     }
 
     @Override public void visit(MultiplyAssignOp that) {
-        arithmeticAssignOp(that, "times");
+        assignOp(that, "times", false);
     }
 
     @Override public void visit(DivideAssignOp that) {
-        arithmeticAssignOp(that, "divided");
+        assignOp(that, "divided", false);
     }
 
     @Override public void visit(RemainderAssignOp that) {
-        arithmeticAssignOp(that, "remainder");
+        assignOp(that, "remainder", false);
     }
 
-    private void arithmeticAssignOp(final ArithmeticAssignmentOp that,
-                                    final String functionName) {
+    public void visit(Tree.ComplementAssignOp that) {
+        assignOp(that, "complement", true);
+    }
+    public void visit(Tree.UnionAssignOp that) {
+        assignOp(that, "union", true);
+    }
+    public void visit(Tree.IntersectAssignOp that) {
+        assignOp(that, "intersection", true);
+    }
+
+    public void visit(Tree.AndAssignOp that) {
+        assignOp(that, "&&", false);
+    }
+    public void visit(Tree.OrAssignOp that) {
+        assignOp(that, "||", false);
+    }
+
+    private void assignOp(final Tree.AssignmentOp that, final String functionName, final boolean includeTargs) {
         Term lhs = that.getLeftTerm();
+        final boolean isNative="||".equals(functionName)||"&&".equals(functionName);
         if (lhs instanceof BaseMemberExpression) {
             BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
             Declaration lhsDecl = lhsBME.getDeclaration();
@@ -3263,9 +3280,20 @@ public class GenerateJsVisitor extends Visitor
             out("(");
             generateMemberAccess(lhsBME, new GenerateCallback() {
                 @Override public void generateValue() {
-                    out(getLHS, ".", functionName, "(");
+                    if (isNative) {
+                        out(getLHS, functionName);
+                    } else {
+                        out(getLHS, ".", functionName, "(");
+                    }
                     that.getRightTerm().visit(GenerateJsVisitor.this);
-                    out(")");
+                    if (!isNative) {
+                        if (includeTargs) {
+                            out(",");
+                            TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
+                                    GenerateJsVisitor.this);
+                        }
+                        out(")");
+                    }
                 }
             }, null);
             if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
