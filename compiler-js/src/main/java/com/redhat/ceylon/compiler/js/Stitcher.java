@@ -73,7 +73,8 @@ public class Stitcher {
         //Typecheck the whole language module
         System.out.println("Compiling language module from Ceylon source");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().addSrcDirectory(clSrcDir.getParentFile().getParentFile())
-                .addSrcDirectory(new File(clSrcDir.getParentFile().getParentFile().getParentFile(), "runtime-js"));
+                .addSrcDirectory(new File(clSrcDir.getParentFile().getParentFile().getParentFile(), "runtime-js"))
+                .encoding("UTF-8");
         tcb.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                 .userRepos(opts.getRepos()).outRepo(opts.getOutDir()).buildManager());
         TypeChecker tc = tcb.getTypeChecker();
