@@ -1,10 +1,11 @@
-"Abstraction of types which support a unary additive inversion
- operation. For a numeric type, this should return the 
- negative of the argument value. Note that the type 
- parameter of this interface is not restricted to be a 
- self type, in order to accommodate the possibility of 
- types whose additive inverse can only be expressed in terms of 
- a wider type."
+"Abstraction of types which support a unary additive 
+ inversion operation `-x`. For a [[numeric type|Numeric]], 
+ this should return the negative of the argument value.
+ 
+ Implementations which also satisfy [[Summable]] should 
+ respect the following constraint:
+ 
+ - `x + -x == 0`"
 see (`class Integer`, `class Float`)
 by ("Gavin")
 shared interface Invertable<out Inverse> of Inverse

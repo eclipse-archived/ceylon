@@ -1,7 +1,7 @@
-"Abstraction of numeric types that may be raised to a
- power. Note that the type of the exponent may be
- different to the numeric type which can be 
- exponentiated."
+"Abstraction of [[numeric types|Numeric]] that may be 
+ raised to a power `x^p`. Note that the type of the 
+ exponent may be different to the numeric type which 
+ may be exponentiated."
 see (`class Integer`, `class Float`)
 shared interface Exponentiable<This,Other> of This
         satisfies Numeric<This> 

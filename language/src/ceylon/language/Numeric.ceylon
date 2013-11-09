@@ -1,10 +1,13 @@
-"Abstraction of numeric types supporting addition,
- subtraction, multiplication, and division, including
- `Integer` and `Float`. Additionally, a numeric type 
- is expected to define a total order via an 
- implementation of `Comparable`."
-see (`class Integer`, `class Float`, 
-     `interface Comparable`)
+"Abstraction of numeric types with addition, 
+ `x + y`, subtraction, `x - y`, multiplication, 
+ `x * y`, and division, `x / y`, along with 
+ additive inverse `-x`.
+ 
+ In general, a numeric type need not define a
+ [[total order|Comparable]]. For example, complex 
+ numbers do not have a total order. Numeric types 
+ with a total order also satisfy [[Scalar]]."
+see (`interface Scalar`)
 by ("Gavin")
 shared interface Numeric<Other> of Other
         satisfies Summable<Other> & Invertable<Other>

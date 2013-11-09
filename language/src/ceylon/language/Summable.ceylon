@@ -1,8 +1,10 @@
 "Abstraction of types which support a binary addition
- operator. For numeric types, this is just familiar 
- numeric addition. For strings, it is string 
- concatenation. In general, the addition operation 
- should be a binary associative operation."
+ operator `x + y`. For [[numeric types|Numeric]], this 
+ is just familiar numeric addition. For [[String]], it 
+ is string concatenation.
+ 
+ In general, the addition operation should be a 
+ binary associative operation."
 see (`class String`, `interface Numeric`)
 by ("Gavin")
 shared interface Summable<Other> of Other
