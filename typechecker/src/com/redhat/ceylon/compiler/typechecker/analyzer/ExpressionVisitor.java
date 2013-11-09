@@ -3106,7 +3106,7 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
             TypeDeclaration sd = unit.getScalableDeclaration();
             ProducedType st = checkSupertype(rhst, sd, that, 
-                    "operand must be of scalable type");
+                    "right operand must be of scalable type");
             if (st!=null) {
                 ProducedType ta = st.getTypeArgumentList().get(0);
                 ProducedType rt = st.getTypeArgumentList().get(1);
@@ -3298,7 +3298,7 @@ public class ExpressionVisitor extends Visitor {
                 rhst = fd.getType();
             }
             ProducedType nt = checkSupertype(lhst, type, that.getLeftTerm(), 
-                    "operand expression must be of numeric type");
+                    "left operand must be of numeric type");
             if (nt!=null) {
                 List<ProducedType> tal = nt.getTypeArgumentList();
                 if (tal.isEmpty()) return;
@@ -3313,7 +3313,7 @@ public class ExpressionVisitor extends Visitor {
                     ot = tt;
                 }
                 checkAssignable(rhst, ot, that, 
-                        "operands must be of compatible numeric type");
+                        "right operand must be of compatible numeric type");
             }
         }
     }
