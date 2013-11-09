@@ -369,13 +369,14 @@
             <title>Union types</title>
             
             <para>For any types <literal>X</literal> and <literal>Y</literal>, the 
-            <emphasis>union</emphasis>, or <emphasis>disjunction</emphasis>,
-            <literal>X|Y</literal>, of the types may be formed. A union type is a supertype of 
-            both of the given types <literal>X</literal> and <literal>Y</literal>, and an instance
-            of either type is an instance of the union type.</para>
+            <emphasis>union</emphasis>, or <emphasis>disjunction</emphasis>, <literal>X|Y</literal>, 
+            of the types may be formed. A union type is a supertype of both of the given types 
+            <literal>X</literal> and <literal>Y</literal>, and an instance of either type is an 
+            instance of the union type.</para>
             
             <para>The union type constructor <literal>|</literal> is associative, so the union 
-            of three types may be written <literal>X|Y|Z</literal>.</para>
+            of three types, <literal>X</literal>, <literal>Y</literal>, and <literal>Z</literal>, 
+            may be written <literal>X|Y|Z</literal>.</para>
                 
             <synopsis>UnionType: IntersectionType ("|" IntersectionType)*</synopsis>
             
@@ -464,12 +465,14 @@
             
             <para>For any types <literal>X</literal> and <literal>Y</literal>, the 
             <emphasis>intersection</emphasis>, or <emphasis>conjunction</emphasis>,
-            <literal>X&amp;Y</literal>, of the types may be formed. An intersection type is a subtype 
-            of both of the given types <literal>X</literal> and <literal>Y</literal>, and any object
-            which is an instance of both types is an instance of the intersection type.</para>
+            <literal>X&amp;Y</literal>, of the types may be formed. An intersection type is a 
+            subtype of both of the given types <literal>X</literal> and <literal>Y</literal>, 
+            and any object which is an instance of both types is an instance of the intersection 
+            type.</para>
             
-            <para>The union type constructor <literal>&amp;</literal> is associative, so the union 
-            of three types may be written <literal>X&amp;Y&amp;Z</literal>.</para>
+            <para>The intersection type constructor <literal>&amp;</literal> is associative, 
+            so the intersection of three types, <literal>X</literal>, <literal>Y</literal>, 
+            and <literal>Z</literal>, may be written <literal>X&amp;Y&amp;Z</literal>.</para>
                 
             <synopsis>IntersectionType: PrimaryType ("&amp;" PrimaryType)*</synopsis>
             
@@ -828,8 +831,8 @@ String->[Integer,Integer] onetwo = "onetwo"->[1, 2];
     
             <programlisting>function parse(String text) => text.split(" .!?,:;()\n\f\r\t".contains);</programlisting>
     
-            <para>Type inference is only allowed for declarations which are are referred to only 
-            by statements and declarations that occur within the lexical scope of the declaration, 
+            <para>Type inference is only allowed for declarations which are referred to only by 
+            statements and declarations that occur within the lexical scope of the declaration, 
             as specified by <xref linkend="typeinferenceandblockstructure"/>. A 
             <literal>value</literal> or <literal>function</literal> declaration may not:</para>
             
@@ -2353,7 +2356,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                 instantiation <literal>V</literal> of <literal>Y</literal>, that may 
                 involve the type parameters of <literal>X</literal>, then for any 
                 instantiation <literal>U</literal> of <literal>X</literal>, we can 
-                construct an instaniation <literal>W</literal> of <literal>Y</literal> 
+                construct an instantiation <literal>W</literal> of <literal>Y</literal> 
                 by, for every type parameter <literal>T</literal> of <literal>X</literal>, 
                 substituting the type argument of <literal>T</literal> given in 
                 <literal>U</literal> everywhere <literal>T</literal> occurs in 
@@ -2523,6 +2526,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                         </listitem>
                     </itemizedlist>
                 </listitem>
+                <listitem>
                     <para>The principal instantiation of the intersection <literal>U&amp;V</literal>
                     of two instantiations of <literal>X</literal>, <literal>U</literal> 
                     and <literal>V</literal>, is an instantiation <literal>P</literal> of
@@ -2549,6 +2553,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
                             the same type, then <literal>C</literal> is this type.</para>
                         </listitem>
                     </itemizedlist>
+                 </listitem>
                  <listitem>
                     <para>Finally, the principal instantiation of a generic type 
                     <literal>X</literal> for a type <literal>Y</literal> which
@@ -2630,7 +2635,7 @@ value consumer = Consumer(delegate1, delegate2);]]></programlisting>
         <section id="realizations">
             <title>Realizations</title>
             
-            <para>Given member declared by <literal>Y</literal>, and a declaration that 
+            <para>Given a member declared by <literal>Y</literal>, and a declaration that 
             refines it, we can construct a <emphasis>refined realization</emphasis> of 
             the member or nested type:</para>
             
