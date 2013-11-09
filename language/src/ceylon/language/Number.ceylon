@@ -1,7 +1,7 @@
-"Abstraction of numbers. Numeric operations are provided
- by the subtype [[Numeric]]. This type defines operations
- which can be expressed without reference to the self
- type `Other` of `Numeric`."
+"Abstraction of numbers. Binary numeric operations are 
+ defined the interface [[Numeric]]. This type defines 
+ operations which can be expressed without reference to 
+ the self type `Other` of `Numeric`."
 see (`interface Numeric`, `interface Scalar`)
 by ("Gavin")
 shared interface Number {

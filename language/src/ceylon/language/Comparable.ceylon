@@ -3,7 +3,7 @@
  instances of any type that satisfies the interface.
  If a type `T` satisfies `Comparable<T>`, then instances
  of `T` may be compared using the comparison operators
- `<`, `>`, `<=`, >=`, and `<=>`.
+ `<`, `>`, `<=`, `>=`, and `<=>`.
  
  The total order of a type must be consistent with the 
  definition of equality for the type. That is, there
