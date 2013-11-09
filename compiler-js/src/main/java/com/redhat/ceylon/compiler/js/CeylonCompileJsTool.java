@@ -350,7 +350,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         }
         //getting the type checker does process all types in the source directory
         tcb.verbose(opts.isVerbose()).setRepositoryManager(repoman);
-        tcb.usageWarnings(false);
+        tcb.usageWarnings(false).encoding(encoding);
 
         typeChecker = tcb.getTypeChecker();
         if (!onlyFiles.isEmpty()) {
