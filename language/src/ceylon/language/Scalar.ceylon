@@ -7,6 +7,7 @@ shared interface Scalar<Other> of Other
                   Number
 
         given Other satisfies Scalar<Other> {
+    
     "The magnitude of this number."
     shared actual formal Other magnitude;
         
