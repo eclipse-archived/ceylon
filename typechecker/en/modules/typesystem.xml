@@ -1297,6 +1297,48 @@ Item item = comp of Item;</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>For example, the following covariant enumerated type is legal:</para>
+            
+            <programlisting><![CDATA[interface List<out Element> 
+        of Cons<Element> | nil { ... }
+
+class Cons<out Element>(Element element) 
+        satisfies List<Element> { ... }
+
+object nil 
+        satisfies List<Nothing> { ... }]]></programlisting>
+
+            <para>As is the following contravariant enumerated type:</para>
+            
+            <programlisting><![CDATA[interface Consumer<in Event> 
+        of Logger | Handler<Event> 
+        given Event satisfies AbstractEvent { ... }
+
+interface Logger 
+        satisfies Consumer<AbstractEvent> { ... }
+
+interface Handler<in Event> 
+        satisfies Consumer<AbstractEvent> 
+        given Event satisfies AbstractEvent { ... }]]></programlisting>
+            
+            <para>But the following enumerated type is not legal, since it is possible 
+            to choose a legal argument <literal>T</literal> of the type parameter 
+            <literal>Type</literal> of <literal>Expression</literal>, such that the case 
+            types <literal>StringExpression</literal> and <literal>NumericExpression</literal> 
+            aren't subtypes of the instantiation <literal>Expression&lt;T&gt;</literal>:</para>
+            
+            <programlisting><![CDATA[interface Expression<out Type>
+        of Function<Type> | String | Number { ... }
+
+interface Function<out Type> 
+        satisfies Expression<Type> { ... }
+
+interface String 
+        satisfies Expression<String> { ... }
+
+interface Number 
+        satisfies Expression<Integer|Float> { ... }]]></programlisting>
+            
             <comment><para>Note: these rules could be relaxed to allow the definition of
             generic enumerated types where the list of cases of an instantiation of a 
             generic type depends upon the given type arguments (a "generalized" algebraic
