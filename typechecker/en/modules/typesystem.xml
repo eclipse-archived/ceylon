@@ -1177,39 +1177,20 @@ alias Y => List<X>;]]></programlisting>
             <title>Cases</title>
             
             <para>The <literal>of</literal> clause does triple duty. It's used to define
-            self types and type families, "algebraic" (sum) types, and enumerated type 
-            constraints.</para>
-            
-            <itemizedlist>
-            <listitem>
-                <para>An interface or <literal>abstract</literal> class may optionally 
-                specify an enumerated list of subtypes, in which case every subclass of 
-                the interface or <literal>abstract</literal> class must be a subtype of 
-                exactly one of the enumerated subtypes.</para>
-            </listitem>
-            <listitem>
-                <para>Likewise, a type parameter may specify an enumerated list of all
-                types it accepts as a type argument.</para>
-            </listitem>
-            <listitem>
-                <para>An interface or <literal>abstract</literal> class may specify a 
-                single self type parameter, which must be a type parameter declared by 
-                the interface or <literal>abstract</literal> class or by the immediately 
-                containing type, if any.</para>
-            </listitem>
-            </itemizedlist>
-            
-            <para>The <literal>of</literal> clause may specify multiple types, called
-            <emphasis>cases</emphasis>.</para>
+            self types and type families, enumerated types, and enumerated type 
+            constraints. The <literal>of</literal> clause may specify multiple types, 
+            called <emphasis>cases</emphasis>.</para>
             
             <synopsis>CaseTypes: "of" CaseType ("|" CaseType)*</synopsis>
             
             <synopsis>CaseType: MemberName | PrimaryType</synopsis>
                                
-            <para>If an interface or <literal>abstract</literal> class has exactly one 
-            case, and it is a type parameter of the interface or <literal>abstract</literal> 
-            class, or of the immediately containing type, if any, then that type parameter 
-            is a self type of the interface or <literal>abstract</literal> class, and:</para> 
+            <para>If an interface or <literal>abstract</literal> class with an 
+            <literal>of</literal> clause has exactly one case, and it is a type parameter 
+            of the interface or <literal>abstract</literal> class, or of the immediately 
+            containing type, if any, then that type parameter is a 
+            <emphasis>self type</emphasis> of the interface or <literal>abstract</literal> 
+            class, and:</para> 
             
             <itemizedlist>
                 <listitem>
@@ -1240,8 +1221,9 @@ alias Y => List<X>;]]></programlisting>
             <programlisting>Comparable&lt;Item&gt; comp = ... ;
 Item item = comp of Item;</programlisting>
         
-            <para>Otherwise, an interface or <literal>abstract</literal> class may have 
-            multiple cases, and each case must be either:</para>
+            <para>Otherwise, an interface or <literal>abstract</literal> class with an 
+            <literal>of</literal> clause may have multiple cases, but each case must be 
+            either:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1249,21 +1231,23 @@ Item item = comp of Item;</programlisting>
                     class, or</para>
                 </listitem>
                 <listitem>
-                    <para>the name specified in the <literal>object</literal> 
-                    declaration of a toplevel anonymous class that is a subtype of 
-                    the interface or <literal>abstract</literal> class.</para>
+                    <para>a value reference to a toplevel anonymous class that is a 
+                    subtype of the interface or <literal>abstract</literal> class.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>Then the interface or <literal>abstract</literal> class is an
+            <emphasis>enumerated type</emphasis>, and every subtype of the interface 
+            or <literal>abstract</literal> class must be a subtype of exactly one of 
+            the enumerated subtypes. A class or interface may not be a subtype of more 
+            than one case of an enumerated type.</para>
             
             <programlisting>of larger | smaller | equal</programlisting>
             
             <programlisting>of Root&lt;Element&gt; | Leaf&lt;Element&gt; | Branch&lt;Element&gt;</programlisting>
             
-            <para>A class or interface may not be a subtype of more than one case of an 
-            enumerated type.</para>
-            
-            <para>A type parameter may specify multiple cases, and each case must be a 
-            type.</para>
+            <para>A type parameter with an <literal>of</literal> clause may specify 
+            multiple cases, as defined in <xref linkend="generictypeconstraints"/>.</para>
             
         </section>
         
