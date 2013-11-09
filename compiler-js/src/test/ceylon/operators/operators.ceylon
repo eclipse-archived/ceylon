@@ -104,6 +104,9 @@ void testBooleanOperators() {
     check(b2, "or");
     b3 = false || false;
     check(!b3, "or");
+    b1=true;
+    check(b1&&=true, "&&=");
+    check(b1||=false, "||=");
 }
 
 void testComparisonOperators() {
@@ -437,6 +440,17 @@ void compareStringNumber() {
     check(s2 != n2, "String and Float should NOT be equal");
 }
 
+void testSetOperators() {
+  variable value s1 = LazySet{1,2,3,4};
+  value s2 = LazySet{4,5,6};
+  check((s1|s2).size == 6, "|");
+  check((s1~s2).size == 3, "~");
+  check((s1&s2).size == 1, "&");
+  check((s1|=s2).size == 6, "|=");
+  check((s1&=s2) == s2, "&=");
+  check((s1~=s2).size == 0, "~=");
+}
+
 shared void test() {
     testIntegerOperators();
     testFloatOperators();
@@ -448,6 +462,7 @@ shared void test() {
     testIncDecOperators();
     testArithmeticAssignOperators();
     testAssignmentOperator();
+    testSetOperators();
     testSegments();
     testEnumerations();
     compareStringNumber();
