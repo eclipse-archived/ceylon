@@ -193,13 +193,17 @@ var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 defineAttr(SequenceBuilder$proto, 'sequence', function() {
     return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : getEmpty();
 });
-SequenceBuilder$proto.append = function(e) { this.seq.push(e); }
+SequenceBuilder$proto.append=function(e){
+  this.seq.push(e);
+  return this;
+}
 SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     if (arr === undefined) return;
     var iter = arr.iterator();
     var e; while ((e = iter.next()) !== getFinished()) {
         this.seq.push(e);
     }
+    return this;
 }
 defineAttr(SequenceBuilder$proto, 'size', function(){ return this.seq.length; });
 
