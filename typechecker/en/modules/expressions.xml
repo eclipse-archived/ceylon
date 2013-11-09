@@ -2182,9 +2182,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row><entry namest="first" nameend="last"><emphasis>Spans and segments</emphasis></entry></row>
         
         <row>
-            <entry><literal>lhs[from:to]</literal></entry>
+            <entry><literal>lhs[from:length]</literal></entry>
             <entry>segment</entry>
-            <entry><literal>lhs.segment(from,to)</literal></entry>
+            <entry><literal>lhs.segment(from,length)</literal></entry>
             <entry><literal>Ranged&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal>, <literal>Integer</literal></entry>
             <entry><literal>Y</literal></entry>
