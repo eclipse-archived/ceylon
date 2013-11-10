@@ -3,7 +3,7 @@
  of items, the resulting stream contains an `Entry` 
  of form `key->item` where `key` is the index at which
  the item occurs in the stream of items."
-see (`function Iterable.indexed`)
+see (`value Iterable.indexed`)
 shared {<Integer->Element&Object>*} entries<Element>
             ({Element*} elements) 
                     => elements.indexed;
