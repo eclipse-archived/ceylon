@@ -882,12 +882,23 @@ public class ProducedType extends ProducedReference {
         if (dec.isMember()) {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = new ArrayList<ProducedType>(caseTypes.size());
-            for (ProducedType pt: caseTypes) {
-                if (pt==null) {
+            for (ProducedType ct: caseTypes) {
+                if (ct==null) {
                     return null;
                 }
-                ProducedType st = pt.getQualifyingType().getSupertypeInternal(outer);
-                list.add(st);
+                List<ProducedType> intersectedTypes;
+                if (ct.getDeclaration() instanceof IntersectionType) {
+                    intersectedTypes = ct.getSatisfiedTypes();
+                }
+                else {
+                    intersectedTypes = singletonList(ct);
+                }
+                for (ProducedType it: intersectedTypes) {
+                    if (it.getDeclaration().isMember()) {
+                        ProducedType st = it.getQualifyingType().getSupertypeInternal(outer);
+                        list.add(st);
+                    }
+                }
             }
             outerType = getCommonSupertype(list, outer);
         }
