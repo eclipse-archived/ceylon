@@ -177,3 +177,26 @@ interface IntersectionCanonicalization {
     Inv<C&D&Contra<C|D>> foo2(Inv<C&D> inv) => inv;
 
 }
+
+interface MyMutableList<Element> satisfies List<Element> {}
+class Wrapper() {
+    
+    interface Interface of SubInterface {}
+    interface SubInterface satisfies Interface {}
+    
+    class SubImpl() satisfies SubInterface {}
+    
+    class OtherClass() {}
+    
+    alias Element => SubImpl|OtherClass;
+    
+    MyMutableList<Element> elements = nothing;
+    
+    void recurse(SubInterface&Element element) {
+        for (elem in elements.takingWhile((Element e) => true)) {
+            if (is SubInterface elem) {
+                recurse(elem);
+            }
+        }
+    }
+}
