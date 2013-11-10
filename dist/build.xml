@@ -388,7 +388,10 @@ Used with another target such as 'package'">
             <arg value="--all-porcelain"/>
         </exec>
         <if>
-            <available file="/usr/bin/docbook2x-man" type="file" />
+            <or>
+                <available file="/usr/bin/docbook2x-man" type="file" />
+                <available file="/usr/bin/db2x_docbook2man" type="file" />
+            </or>
             <then>
                 <exec executable="${ceylon.dist.dir}/bin/ceylon" failonerror="yes">
                     <arg value="--stacktraces"/>
@@ -424,7 +427,18 @@ Used with another target such as 'package'">
         <dirname property="toolfile.dir" file="${toolfile}"/>
         <basename property="toolfile.file" file="${toolfile}"/>
         <echo message="chdir in ${toolfile.dir} and docbookx2-man ${toolfile.file}"/>
-        <exec executable="docbook2x-man" dir="${toolfile.dir}">
+        <if>
+            <or>
+                <available file="/usr/bin/docbook2x-man" type="file" />
+            </or>
+            <then>
+                <property name="exec" value="docbook2x-man" />
+            </then>
+            <else>
+                <property name="exec" value="db2x_docbook2man" />
+            </else>
+        </if>
+        <exec executable="${exec}" dir="${toolfile.dir}">
             <arg value="${toolfile.file}"/>
         </exec>
         <propertyregex property="toolfile.name"
