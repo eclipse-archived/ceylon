@@ -3068,8 +3068,10 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.PrefixOperatorExpression that) {
         super.visit(that);
         ProducedType type = type(that);
-        visitIncrementDecrement(that, type, that.getTerm());
-        checkAssignability(that.getTerm(), that);
+        if (that.getTerm()!=null) {
+            visitIncrementDecrement(that, type, that.getTerm());
+            checkAssignability(that.getTerm(), that);
+        }
     }
     
     private void visitIncrementDecrement(Tree.Term that,
