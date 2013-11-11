@@ -486,7 +486,7 @@ public class CeylonDocToolTest {
 
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
-        File artifact = repoManager.getArtifact(new ArtifactContext("org.jboss.xnio.api", "3.1.0.Beta9", ".jar"));
+        File artifact = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
