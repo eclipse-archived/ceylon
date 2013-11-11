@@ -605,6 +605,10 @@ You can now build the package by executing:
         <fail unless="project.item.name" />
         <fail unless="tag-internal" />
         <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+            <arg value="fetch"/>
+            <arg value="--tags"/>
+        </exec>
+        <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
             <arg value="checkout"/>
             <arg value="-q"/>
             <arg value="${tag-internal}"/>
