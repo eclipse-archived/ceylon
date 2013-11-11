@@ -2,12 +2,9 @@
 setlocal
 
 rem Find CEYLON_HOME
-if not "%CEYLON_HOME%" == "" goto :ceylon_home_set
-rem Get absolute value for CEYLON_HOME
 pushd "%~dp0.."
 set "CEYLON_HOME=%CD%"
 popd
-:ceylon_home_set
 
 rem Find Java
 call %CEYLON_HOME%\bin\java.bat
