@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpec
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
@@ -1620,11 +1621,26 @@ public class ClassTransformer extends AbstractTransformer {
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression)term;
             DeferredSpecification ds = statementGen().getDeferredSpecification(bme.getDeclaration());
-            if (ds != null) {
+            if (ds != null && needsInnerSubstitution(term.getScope(), bme.getDeclaration())){
                 result = result.append(ds.openInnerSubstitution());
             }
         }
         return result;
+    }
+
+    /**
+     * We only need an inner substitution if we're within that substitution's scope
+     */
+    private boolean needsInnerSubstitution(Scope scope, Declaration declaration) {
+        while(scope != null && scope instanceof Package == false){
+            if(scope instanceof ControlBlock){
+                Set<Value> specifiedValues = ((ControlBlock) scope).getSpecifiedValues();
+                if(specifiedValues != null && specifiedValues.contains(declaration))
+                    return true;
+            }
+            scope = scope.getScope();
+        }
+        return false;
     }
 
     private Tree.Identifier makeIdentifier(String name) {
