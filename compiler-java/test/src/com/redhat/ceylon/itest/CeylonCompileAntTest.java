@@ -69,7 +69,7 @@ public class CeylonCompileAntTest extends AntBasedTest {
         
         result = ant("foo-alone");
         Assert.assertEquals(0, result.getStatusCode());
-        assertContains(result.getStdout(), "[ceylon-compile] No need to compile com.example.foo, it's up to date");
+        assertContains(result.getStdout(), "[ceylon-compile] No need to compile com.example.foo/1.0, it's up to date");
         assertContains(result.getStdout(), "[ceylon-compile] Everything's up to date");
         Assert.assertEquals(lastModified, car.lastModified());
     }

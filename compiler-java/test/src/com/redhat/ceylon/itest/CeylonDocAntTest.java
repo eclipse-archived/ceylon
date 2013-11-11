@@ -91,14 +91,14 @@ public class CeylonDocAntTest extends AntBasedTest {
         File index = new File(result.getOut(), "com/example/foo/1.0/module-doc/a/index.html");
         Assert.assertTrue(index.exists());
         Assert.assertEquals(1, new File(result.getOut(), "com/example").list().length);
-        assertNotContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo, it's up to date");
+        assertNotContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo/1.0, it's up to date");
         assertNotContains(result.getStdout(), "[ceylon-doc] Everything's up to date");
         final long lastModified = index.lastModified();
         
         result = ant("foo-alone");
         Assert.assertEquals(0, result.getStatusCode());
         Assert.assertTrue(index.exists());
-        assertContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo, it's up to date");
+        assertContains(result.getStdout(), "[ceylon-doc] No need to compile com.example.foo/1.0, it's up to date");
         assertContains(result.getStdout(), "[ceylon-doc] Everything's up to date");
         Assert.assertEquals(lastModified, index.lastModified());
     }
