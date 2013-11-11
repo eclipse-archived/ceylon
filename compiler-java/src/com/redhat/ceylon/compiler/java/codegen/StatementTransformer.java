@@ -1307,6 +1307,15 @@ public class StatementTransformer extends AbstractTransformer {
             ListBuffer<JCStatement> outer = ListBuffer.<JCStatement> lb();
             Name tempForFailVariable = currentForFailVariable;
             try {
+                // Install the outer substitutions
+                Iterable<Value> deferredSpecifiedInFor = stmt.getForClause().getControlBlock().getSpecifiedValues();
+                if (deferredSpecifiedInFor != null) { 
+                    for (Value value : deferredSpecifiedInFor) {
+                        DeferredSpecification ds  = StatementTransformer.this.deferredSpecifications.get(value);
+                        ds.installOuterSubstitution();
+                    }
+                }
+
                 if (needsFailVar()) {
                     // boolean $doforelse$X = true;
                     JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), naming.aliasName("doforelse"), make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
@@ -1333,7 +1342,6 @@ public class StatementTransformer extends AbstractTransformer {
                 }
                 
                 // Close the outer substitutions
-                Iterable<Value> deferredSpecifiedInFor = stmt.getForClause().getControlBlock().getSpecifiedValues();
                 if (deferredSpecifiedInFor != null) { 
                     for (Value value : deferredSpecifiedInFor) {
                         DeferredSpecification ds  = StatementTransformer.this.deferredSpecifications.get(value);
@@ -1750,7 +1758,6 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new IllegalStateException("An Outer substitution (" + outerSubst + ") is already open");
             }
             this.outerAlias = naming.alias(value.getName());
-            this.outerSubst = naming.addVariableSubst(value, outerAlias.getName());
             // TODO Annots
             try (SavedPosition pos = noPosition()) {
                 return make().VarDef(
@@ -1759,6 +1766,15 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(type), 
                         makeDefaultExprForType(type));
             }
+        }
+
+        /**
+         * Installs an outer substitution in Naming, we can't do this in openOuterSubstitution since that
+         * would also make the substitution visible outside the "for" block. This is meant to be done when
+         * we enter the "for" block.
+         */
+        public void installOuterSubstitution(){
+            this.outerSubst = naming.addVariableSubst(value, outerAlias.getName());
         }
         
         /**
