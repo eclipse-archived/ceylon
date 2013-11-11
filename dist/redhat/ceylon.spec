@@ -7,19 +7,17 @@
 %define major_version 1
 %define minor_version 0
 %define micro_version 0
-%define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}
+%define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}.%{micro_version}
 
-# Use one of the following lines depending if the source zip file
-# is a micro version (like 0.3.1) or not (like 0.4)
-# ATTENTION Simply commenting out a define does not work, it seems
-# the parser will still see and use it! Just change the # for a %
-%define name_source %{name}-%{major_version}.%{minor_version}
-#define name_source %{name}-%{major_version}.%{minor_version}.%{micro_version}
+# The name of the source zip file (without .zip)
+%define name_source %{name}
+# The name of the root folder within the source zip
+%define folder_source %{name}
 
 # Make sure rpmbuild leaves JAR files alone!
 %define __jar_repack 0
 
-Name: ceylon
+Name: ceylon-%{version}
 Epoch: 0
 Version: %{major_version}.%{minor_version}.%{micro_version}
 Release: 0%{?dist}
@@ -32,6 +30,8 @@ Source0: http://downloads.ceylon-lang.org/cli/%{name_source}.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch:     noarch
 BuildRequires: zip
+Requires(post): %{_sbindir}/update-alternatives
+Requires(postun): %{_sbindir}/update-alternatives
 
 %description
 Ceylon is a programming language for writing large programs in a team
@@ -43,7 +43,7 @@ developers to take best advantage of the powerful static type system.
 Programs written in Ceylon execute on any JVM.
 
 %prep
-%setup -q -n %{name_source}
+%setup -q -n %{folder_source}
 
 
 %build
@@ -53,37 +53,45 @@ export LANG=en_US.UTF-8
 %install
 rm -rf $RPM_BUILD_ROOT%{ceylon_home}
 # CEYLON_HOME and subdirs
-mkdir -p $RPM_BUILD_ROOT/usr/bin
-mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,samples,templates}
+mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,doc/en,samples,templates}
+mkdir -p $RPM_BUILD_ROOT%{_mandir}
 
 rm -f bin/*.bat
-install -m 755 bin/ceylon                      $RPM_BUILD_ROOT%{ceylon_home}/bin
-install -m 755 bin/ceylon-completion.bash      $RPM_BUILD_ROOT%{ceylon_home}/bin
+cp -pr bin/* $RPM_BUILD_ROOT%{ceylon_home}/bin
 cp -pr repo/* $RPM_BUILD_ROOT%{ceylon_home}/repo
 cp -pr lib/* $RPM_BUILD_ROOT%{ceylon_home}/lib
-cp -pr doc/* $RPM_BUILD_ROOT%{ceylon_home}/doc
+cp -pr doc/en/* $RPM_BUILD_ROOT%{ceylon_home}/doc/en
+cp -pr doc/man/* $RPM_BUILD_ROOT%{_mandir}
 cp -pr samples/* $RPM_BUILD_ROOT%{ceylon_home}/samples
 cp -pr templates/* $RPM_BUILD_ROOT%{ceylon_home}/templates
-pushd $RPM_BUILD_ROOT/usr/bin
-ln -s ../..%{ceylon_home}/bin/ceylon ceylon
-popd
+cp -pr contrib/* $RPM_BUILD_ROOT%{ceylon_home}/contrib
+
+%post
+%{_sbindir}/update-alternatives --install %{_bindir}/ceylon ceylon %{ceylon_home}/bin/ceylon 10000
+
+%postun
+if [ $1 -eq 0 ] ; then
+    %{_sbindir}/update-alternatives --remove ceylon %{ceylon_home}/bin/ceylon
+fi
 
 %files
 %defattr(-,root,root)
 %attr(755,root,root) %{ceylon_home}/bin/ceylon
-%attr(644,root,root) %{ceylon_home}/bin/ceylon-completion.bash
-/usr/bin/ceylon*
-%{ceylon_home}/bin/*
+%{ceylon_home}/bin/ceylon-sh-setup
 %{ceylon_home}/repo/*
 %{ceylon_home}/lib/*
-%{ceylon_home}/doc/*
+%doc %{ceylon_home}/doc/*
+%doc %{_mandir}/*
 %{ceylon_home}/samples/*
 %{ceylon_home}/templates/*
+%{ceylon_home}/contrib/*
 
 
 %changelog
-* Mar Oct 8 2013 Tako Schotanus <tschotan@redhat.com> 1.0.0-0
+* Sun Nov 10 2013 Tako Schotanus <tschotan@redhat.com> 1.0.0-0
 - Update for 1.0.0
+- Added contrib folder
+- Using alternatives system now
 * Tue Sep 24 2013 Tako Schotanus <tschotan@redhat.com> 0.6.1-0
 - Update for 0.6.1
 * Fri Sep 20 2013 Stephane Epardaud <separdau@redhat.com> 0.6.0-0
@@ -104,5 +112,4 @@ popd
 - Update for 0.2
 * Tue Dec 20 2011 Mladen Turk <mturk@redhat.com> 0.1.0-0
 - Initial build
-
 
