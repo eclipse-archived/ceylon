@@ -26,6 +26,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -3025,7 +3026,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // Avoid backward branches when invoking superclass initializers
             Class subclass = (Class)extendedType.getScope();
 
-            java.util.List<Parameter> classParameters = subclass.getParameterList().getParameters();
+            java.util.List<Parameter> classParameters = subclass.getParameterList() != null ? subclass.getParameterList().getParameters() : Collections.<Parameter>emptyList();
             int argumentNum = 0;
             ListBuffer<JCExpression> argMethodCalls = ListBuffer.<JCExpression>lb();
             // TODO This ought to be on the companion class, and not simply static
