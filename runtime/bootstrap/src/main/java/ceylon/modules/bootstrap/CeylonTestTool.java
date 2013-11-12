@@ -64,7 +64,7 @@ public class CeylonTestTool extends RepoUsingTool {
 
     @Option
     @OptionArgument(argumentName = "flags")
-    @Description("Determines if and how compilation should be handled." +
+    @Description("Determines if and how compilation should be handled. " +
             "Allowed flags include: `never`, `once`, `force`, `check`.")
     public void setCompile(String compile) {
         this.compileFlags = compile;
