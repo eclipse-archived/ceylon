@@ -287,8 +287,12 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(ArithmeticOp that) {
         super.visit(that);
         // can't optimise the ** operator in Java
-        if(that instanceof PowerOp)
+        if(that instanceof PowerOp) {
+            if (Strategy.inlinePowerAsMultiplication((PowerOp)that)) {
+                CodegenUtil.markUnBoxed(that);
+            }
             return;
+        }
         // we are unboxed if both terms are
         if(that.getLeftTerm().getUnboxed()
                 && that.getRightTerm().getUnboxed())

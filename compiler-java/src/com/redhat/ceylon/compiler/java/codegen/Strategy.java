@@ -30,7 +30,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -295,6 +297,36 @@ class Strategy {
         return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) &&
             Strategy.defaultParameterMethodOnOuter(cls) &&
             Decl.withinInterface(cls.getRefinedDeclaration());
+    }
+
+    /**
+     * Determines whether we should inline {@code x^n} as a repeated multiplication
+     * ({@code x*x*...*x}) instead of calling {@code x.power(n)}.
+     */
+    public static boolean inlinePowerAsMultiplication(Tree.PowerOp op) {
+        java.lang.Long power;
+        try {
+            power = ExpressionTransformer.getIntegerLiteralPower(op);
+            if (power != null) {
+                Unit unit = op.getUnit();
+                ProducedType baseType = op.getLeftTerm().getTypeModel();
+                // Although the optimisation still works for powers > 64, it ends 
+                // up bloating the code (e.g. imagine x^1_000_000_000)
+                if (power > 0
+                        && power <= 64
+                        && baseType.isExactly(unit.getIntegerDeclaration().getType())) {
+                    return true;
+                }
+                else if (power > 0
+                        && power <= 64
+                        && baseType.isExactly(unit.getFloatDeclaration().getType())) {
+                    return true;
+                }
+            }
+        } catch (ErroneousException e) {
+            return false;
+        }
+        return false;
     }
     
 }

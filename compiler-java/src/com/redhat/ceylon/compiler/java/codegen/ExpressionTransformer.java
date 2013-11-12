@@ -1789,6 +1789,59 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(op, op.getUnit().getIntegralDeclaration());
     }
     
+    
+    
+    public JCExpression transform(Tree.PowerOp op) {
+        if (Strategy.inlinePowerAsMultiplication(op)) {
+            try {
+                long power = getIntegerLiteralPower(op);
+                return transformOptimizedIntegerPower(op.getLeftTerm(), power);
+            } catch (ErroneousException e) {
+                // fall through and let the default transformation handle this
+            }
+        }
+        return transform((Tree.ArithmeticOp)op);
+    }
+
+    /**
+     * Returns the literal value of the power in the given power expression, 
+     * or null if the power is not an integer literal (or negation of an 
+     * integer literal)
+     * @throws ErroneousException
+     */
+    static java.lang.Long getIntegerLiteralPower(Tree.PowerOp op)
+            throws ErroneousException {
+        java.lang.Long power;
+        Tree.Term term = Util.unwrapExpressionUntilTerm(op.getRightTerm());
+        if (term instanceof Tree.NaturalLiteral) {
+            power = literalValue((Tree.NaturalLiteral)term);
+        } else if (term instanceof Tree.NegativeOp &&
+                ((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral) {
+            power = literalValue((Tree.NegativeOp)term);
+        } else {
+            power = null;
+        }
+        return power;
+    }
+    
+    private JCExpression transformOptimizedIntegerPower(Tree.Term base,
+            Long power) {
+        JCExpression baseExpr = transformExpression(base, BoxingStrategy.UNBOXED, base.getTypeModel());
+        if (power == 1) {
+            return baseExpr;
+        }
+        SyntheticName baseAlias = naming.alias("base");
+        JCExpression multiplications = baseAlias.makeIdent(); 
+        while (power > 1) {
+            power--;
+            multiplications = make().Binary(JCTree.MUL, multiplications, baseAlias.makeIdent());
+        }
+        return make().LetExpr(makeVar(baseAlias, 
+                    makeJavaType(base.getTypeModel()), 
+                    baseExpr), 
+                multiplications);
+    }
+
     public JCExpression transform(Tree.BitwiseOp op) {
     	JCExpression result = transformOverridableBinaryOperator(op, null, null);
     	return result;
