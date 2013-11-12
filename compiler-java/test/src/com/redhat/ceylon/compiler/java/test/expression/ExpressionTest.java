@@ -378,6 +378,24 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("operator/ArithmeticOperators");
     }
     @Test
+    public void testOprIntPowerWithIntLiteralOptim(){
+        compareWithJavaSource("operator/IntPowerWithIntLiteralOptim");
+    }
+    @Test
+    public void testOprIntPowerWithIntLiteralOptimCorrect(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.expression.operator.intPowerWithIntLiteralOptimCorrect", 
+                "operator/IntPowerWithIntLiteralOptimCorrect.ceylon");
+    }
+    @Test
+    public void testOprFloatPowerWithIntLiteralOptim(){
+        compareWithJavaSource("operator/FloatPowerWithIntLiteralOptim");
+    }
+    @Test
+    public void testOprFloatPowerWithIntLiteralOptimCorrect(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.expression.operator.floatPowerWithIntLiteralOptimCorrect", 
+                "operator/FloatPowerWithIntLiteralOptimCorrect.ceylon");
+    }
+    @Test
     public void testOprBitwiseOperators(){
         compareWithJavaSource("operator/BitwiseOperators");
     }

@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class floatPowerWithIntLiteralOptim_ {
+    
+    private floatPowerWithIntLiteralOptim_() {
+    }
+    
+    static void floatPowerWithIntLiteralOptim() {
+        final double x = 20.0;
+        final double x1 = x;
+        final double xSquared = (
+            let
+            {
+                double base$0 = x;
+            }
+            returning base$0 * base$0;
+        );
+        final double xCubed = (
+            let
+            {
+                double base$1 = x;
+            }
+            returning base$1 * base$1 * base$1;
+        );
+        final double x0 = .ceylon.language.Float.instance(x).power(.ceylon.language.Integer.instance(0L)).doubleValue();
+        final double xm1 = .ceylon.language.Float.instance(x).power(.ceylon.language.Integer.instance(-1L)).doubleValue();
+        final double x1_ = .ceylon.language.Float.instance(x).power(.ceylon.language.Float.instance(1.0)).doubleValue();
+        final double xSquared_ = .ceylon.language.Float.instance(x).power(.ceylon.language.Float.instance(2.0)).doubleValue();
+        final double xCubed_ = .ceylon.language.Float.instance(x).power(.ceylon.language.Float.instance(3.0)).doubleValue();
+        final double x0_ = .ceylon.language.Float.instance(x).power(.ceylon.language.Float.instance(0.0)).doubleValue();
+        final double xm1_ = .ceylon.language.Float.instance(x).power(.ceylon.language.Float.instance(-1.0)).doubleValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.operator.floatPowerWithIntLiteralOptim_.floatPowerWithIntLiteralOptim();
+    }
+}
