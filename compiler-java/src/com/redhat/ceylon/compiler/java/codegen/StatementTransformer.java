@@ -1201,7 +1201,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     /**
-     * Returns a {@link RangeOpIterationOptimization} is that optimization applies
+     * Returns a {@link RangeOpIterationOptimization} if that optimization applies
      * to the given {@code for} statement, otherwise null.
      * @param stmt The for statement
      * @return a {@link RangeOpIterationOptimization} or null.
@@ -1216,7 +1216,7 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.ForIterator iterator = stmt.getForClause().getForIterator();
         if (!(iterator instanceof Tree.ValueIterator)) {
             return optimizationFailed(stmt, optName, 
-                    "optimization applies only to ValueIterators");            
+                    "optimization applies only to ValueIterators");
         }
         Tree.ValueIterator vi = (Tree.ValueIterator)iterator;
         Tree.SpecifierExpression specifier = vi.getSpecifierExpression();
