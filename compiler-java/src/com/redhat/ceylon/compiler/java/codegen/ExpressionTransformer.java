@@ -70,6 +70,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -4846,8 +4847,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = checkForCharacterAsInteger(expr);
         if(ret != null)
             return ret;
+        /*ret = checkForArrayOnJavaArray(expr);
+        if(ret != null)
+            return ret;*/
         return null;
     }
+
+    /*private JCExpression checkForArrayOnJavaArray(Tree.QualifiedMemberExpression expr) {
+        if ("array".equals(expr.getIdentifier().getText())) {
+            if (expr.getPrimary() instanceof Tree.BaseMemberExpression) {
+                if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {
+                    return transform((Tree.BaseMemberExpression)expr.getPrimary());
+                }
+            }
+        }
+        return null;
+    }*/
 
     private JCExpression checkForInvocationExpressionOptimisation(Tree.InvocationExpression ce) {
         // FIXME: temporary hack for bitwise operators literals

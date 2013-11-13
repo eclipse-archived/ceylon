@@ -1155,13 +1155,167 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     List<JCStatement> transform(Tree.ForStatement stmt) {
-        ForStatementTransformation transformation = rangeOpIteration(stmt);
+        ForStatementTransformation transformation = arrayIteration(stmt);
+        if (transformation == null) {
+            transformation = rangeOpIteration(stmt);
+        }
         if (transformation == null) {
             transformation = new ForStatementTransformation(stmt);
         }
         return transformation.transform();
     }
     
+    /**
+     * Optimized transformation for a {@code for} loop where the iterable is 
+     * statically known to be an {@code Array}, and therefore can be 
+     * iterated using a C-style {@code for}.
+     */
+    class ArrayIterationOptimization extends ForStatementTransformation {
+
+        public static final String OPT_NAME = "ArrayIterationStatic";
+        private ProducedType elementType;
+
+        ArrayIterationOptimization(Tree.ForStatement stmt, ProducedType elementType) {
+            super(stmt);
+            this.elementType = elementType;
+        }
+        
+        protected ListBuffer<JCStatement> transformForClause() {
+            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            
+            Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
+            Tree.Term iterable = forIterator.getSpecifierExpression().getExpression().getTerm();
+            JCExpression arrayExpr = null; 
+            if (iterable instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)iterable;
+                if ("array".equals(expr.getIdentifier().getText())) {
+                    if (expr.getPrimary() instanceof Tree.BaseMemberExpression) {
+                        if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {
+                            arrayExpr = expressionGen().transform((Tree.BaseMemberExpression)expr.getPrimary());
+                            
+                        }
+                    }
+                }
+            }
+            if (arrayExpr == null) {
+                JCExpression iterableExpr = expressionGen().transformExpression(iterable);
+                arrayExpr = make().Apply(null,
+                        naming.makeQualIdent(iterableExpr, "toArray"),
+                        List.<JCExpression>nil());
+            }
+            
+            // java.lang.Object array = ITERABLE.toArray();
+            SyntheticName arrayName = naming.alias("array");
+            result.add(makeVar(FINAL, arrayName,
+                    make().Type(syms().objectType),
+                    arrayExpr));
+            
+            // int length = java.lang.reflect.Array.getLength(array);
+            SyntheticName lengthName = naming.alias("length");
+            result.add(makeVar(FINAL, lengthName, 
+                    make().Type(syms().intType), 
+                    make().Apply(null, 
+                            naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.arrayLength"), 
+                            List.<JCExpression>of(arrayName.makeIdent()))));
+            
+            // int i = 0;
+            SyntheticName iName = naming.alias("i");
+            JCStatement iVar = makeVar(iName, 
+                    make().Type(syms().intType), 
+                    make().Literal(0));
+            // i < length;
+            JCExpression iCond = make().Binary(JCTree.LT, iName.makeIdent(), lengthName.makeIdent());
+            // i++
+            JCExpression iIncr = make().Unary(JCTree.POSTINC, iName.makeIdent());
+            
+            List<JCStatement> transformedBlock = transformBlock(getBlock());
+            // FOO element = java.lang.reflect.Array.get(array, i);
+            String methodName;
+            ProducedType gotType;
+            if (isCeylonBoolean(elementType)) {
+                methodName = "com.redhat.ceylon.compiler.java.Util.getBooleanArray";
+                gotType = elementType;
+            } else if (isCeylonFloat(elementType)) {
+                methodName = "com.redhat.ceylon.compiler.java.Util.getFloatArray";
+                gotType = elementType;
+            } else if (isCeylonInteger(elementType)) {
+                methodName = "com.redhat.ceylon.compiler.java.Util.getIntegerArray";
+                gotType = elementType;
+            } else if (isCeylonCharacter(elementType)) {
+                methodName = "com.redhat.ceylon.compiler.java.Util.getCharacterArray";
+                gotType = elementType;
+            } else {
+                methodName = "com.redhat.ceylon.compiler.java.Util.getObjectArray";
+                gotType = typeFact().getObjectDeclaration().getType();
+            }
+            JCExpression elementGet = make().Apply(null, 
+                    naming.makeQuotedFQIdent(methodName),
+                    List.<JCExpression>of(arrayName.makeIdent(), iName.makeIdent()));
+            elementGet = expressionGen().applyErasureAndBoxing(elementGet, gotType, false, true, BoxingStrategy.BOXED, elementType, 0);
+            if (forIterator instanceof Tree.ValueIterator) {
+                JCStatement variable = makeVar(FINAL, ((Tree.ValueIterator)forIterator).getVariable().getIdentifier().getText(), 
+                        makeJavaType(elementType), 
+                        elementGet);
+                // Prepend to the block
+                transformedBlock = transformedBlock.prepend(variable);
+            } else if (forIterator instanceof Tree.KeyValueIterator) {
+                SyntheticName entryName = naming.alias("entry");
+                JCStatement entryVariable = makeVar(FINAL, entryName, 
+                        makeJavaType(elementType),
+                        elementGet);ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
+                ProducedType keyType = entryType.getTypeArgumentList().get(0);
+                JCStatement keyVariable = makeVar(FINAL, ((Tree.KeyValueIterator)forIterator).getKeyVariable().getIdentifier().getText(), 
+                        makeJavaType(keyType), 
+                        expressionGen().applyErasureAndBoxing(
+                                make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
+                                keyType, true, BoxingStrategy.UNBOXED, keyType));
+                ProducedType valueType = entryType.getTypeArgumentList().get(1);
+                JCStatement valueVariable = makeVar(FINAL, ((Tree.KeyValueIterator)forIterator).getValueVariable().getIdentifier().getText(), 
+                        makeJavaType(valueType), 
+                        expressionGen().applyErasureAndBoxing(
+                                make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
+                                valueType, true, BoxingStrategy.UNBOXED, valueType));
+                // Prepend to the block
+                transformedBlock = transformedBlock.prepend(valueVariable);
+                transformedBlock = transformedBlock.prepend(keyVariable);
+                transformedBlock = transformedBlock.prepend(entryVariable);
+            }
+            
+            JCStatement block = make().Block(0, transformedBlock);
+            result.add(make().ForLoop(
+                    List.<JCStatement>of(iVar), 
+                    iCond,
+                    List.<JCExpressionStatement>of(make().Exec(iIncr)),
+                    block));
+            return result;
+        }
+        
+        /*
+        Array array = 
+        long length = array.getSize();
+        for (int i = 0; i < length; i++) {
+            
+        }
+        */
+    }
+    
+    private ForStatementTransformation arrayIteration(Tree.ForStatement stmt) {
+        final String optName = ArrayIterationOptimization.OPT_NAME;
+        if (optimizationDisabled(stmt, optName)) {
+            return optimizationFailed(stmt, optName, 
+                    "optimization explicitly disabled by @disableOptimization");
+        }
+        
+        Tree.Expression iterableExpr = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression();
+        ProducedType elementType = typeFact().getArrayElementType(iterableExpr.getTypeModel());
+        if (elementType == null) {
+            return optimizationFailed(stmt, optName, 
+                    "static type of iterable in for statement is not Array");
+        }
+        // it's an array
+        return new ArrayIterationOptimization(stmt, elementType);
+    }
+
     private boolean isRangeOf(Tree.RangeOp range, ProducedType ofType) {
         ProducedType rangeType = range.getTypeModel();
         return typeFact().getRangeType(ofType).isExactly(rangeType);
@@ -1437,6 +1591,10 @@ public class StatementTransformer extends AbstractTransformer {
                     itemDecls,
                     stmts));
         }
+        
+        protected final Tree.Block getBlock() {
+            return stmt.getForClause().getBlock();
+        }
     }
     
     /**
@@ -1583,9 +1741,6 @@ public class StatementTransformer extends AbstractTransformer {
         }
         private Tree.Variable getVariable() {
             return ((Tree.ValueIterator)stmt.getForClause().getForIterator()).getVariable();
-        }
-        private Tree.Block getBlock() {
-            return stmt.getForClause().getBlock();
         }
         private JCExpression makeType() {
             return make().Type(type);
