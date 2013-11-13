@@ -278,19 +278,19 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
     
     @Override
-    public Array<? extends Element> spanFrom(@Name("from") Integer from) {
+    public Array<Element> spanFrom(@Name("from") Integer from) {
         return span(from, Integer.instance(getSize()));
     }
     
     @Override
-    public Array<? extends Element> spanTo(@Name("to") Integer to) {
+    public Array<Element> spanTo(@Name("to") Integer to) {
         return span(Integer.instance(0), to);
     }
     
     private static final java.lang.Object[] EMPTY_ARRAY = new java.lang.Object[0];
     
     @Override
-    public Array<? extends Element> span(@Name("from") Integer from,
+    public Array<Element> span(@Name("from") Integer from,
             @Name("to") Integer to) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
@@ -341,7 +341,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Override
-    public Array<? extends Element> segment(@Name("from") Integer from,
+    public Array<Element> segment(@Name("from") Integer from,
             @Name("length") long length) {
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
@@ -665,7 +665,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 //    }
     
     @Override
-    public Array<? extends Element> getRest() {
+    public Array<Element> getRest() {
         long size = getSize();
         if (size < 2) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
@@ -721,7 +721,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     @Override
     @Annotations({@Annotation("actual"), @Annotation("formal")})
-    public Array<? extends Element> getReversed() {
+    public Array<Element> getReversed() {
         if (getSize() < 2) {
             return this;
         } else if (array instanceof char[]) {
