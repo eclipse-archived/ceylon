@@ -168,7 +168,6 @@ class CodegenUtil {
                 if (text == null) {
                     continue;
                 }
-                text = text.substring(1, text.length()-1);//remove "";
                 if (text.equals(argument)) {
                     return true;
                 }
