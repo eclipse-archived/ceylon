@@ -1,3 +1,8 @@
+
+
+// don't delete empty lines, see bug #1444
+
+
 import com.redhat.ceylon.ceylondoc.test.modules.single.a { A1, AliasA2 = A2 }
 
 /*

@@ -596,20 +596,16 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         BufferedReader sourceCodeReader = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
         try {
             while (true) {
-                String line = sourceCodeReader.readLine();
-                if (line != null && result.length() <= stopIndex) {
-                    if (result.length() != 0) {
-                        result.append("\n");
-                    }
-                    result.append(line);
-                } else {
+                int c = sourceCodeReader.read();
+                if (c == -1 || result.length() > stopIndex) {
                     break;
                 }
+                result.append((char) c);
             }
         } finally {
             sourceCodeReader.close();
         }
-    
+
         return result.substring(startIndex, stopIndex + 1);
     }
 
