@@ -12,7 +12,8 @@ final class spread_ {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$0$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$0$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator(); !((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
+                while (!((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$0$element$ = (.ceylon.language.String)spread$0$iteration$;
                     spread$0$sb$.append(.ceylon.language.Integer.instance(spread$0$element$.getSize()));
                 }
@@ -27,7 +28,8 @@ final class spread_ {
                 .java.lang.String spread$1$arg$0 = x;
                 .java.lang.String spread$1$arg$1 = x;
                 .java.lang.Object spread$1$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator(); !((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator();
+                while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$1$element$ = (.ceylon.language.String)spread$1$iteration$;
                     spread$1$sb$.append(.ceylon.language.String.instance(spread$1$element$.replace(spread$1$arg$0, spread$1$arg$1)));
                 }
@@ -41,7 +43,8 @@ final class spread_ {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$2$iterable$ = seq2;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$2$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator(); !((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator();
+                while (!((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$2$element$ = (.ceylon.language.String)spread$2$iteration$;
                     spread$2$sb$.append(.ceylon.language.Integer.instance(spread$2$element$.getSize()));
                 }
@@ -56,7 +59,8 @@ final class spread_ {
                 .java.lang.String spread$3$arg$0 = x;
                 .java.lang.String spread$3$arg$1 = x;
                 .java.lang.Object spread$3$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$3$iterator$ = spread$3$iterable$.iterator(); !((spread$3$iteration$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$3$iterator$ = spread$3$iterable$.iterator();
+                while (!((spread$3$iteration$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$3$element$ = (.ceylon.language.String)spread$3$iteration$;
                     spread$3$sb$.append(.ceylon.language.String.instance(spread$3$element$.replace(spread$3$arg$0, spread$3$arg$1)));
                 }
@@ -70,7 +74,8 @@ final class spread_ {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$4$iterable$ = seq3;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$4$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$4$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator(); !((spread$4$iteration$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator();
+                while (!((spread$4$iteration$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$4$element$ = (.ceylon.language.String)spread$4$iteration$;
                     spread$4$sb$.append(.ceylon.language.Integer.instance(spread$4$element$.getSize()));
                 }
@@ -85,7 +90,8 @@ final class spread_ {
                 .java.lang.String spread$5$arg$0 = x;
                 .java.lang.String spread$5$arg$1 = x;
                 .java.lang.Object spread$5$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator(); !((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
+                while (!((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$5$element$ = (.ceylon.language.String)spread$5$iteration$;
                     spread$5$sb$.append(.ceylon.language.String.instance(spread$5$element$.replace(spread$5$arg$0, spread$5$arg$1)));
                 }

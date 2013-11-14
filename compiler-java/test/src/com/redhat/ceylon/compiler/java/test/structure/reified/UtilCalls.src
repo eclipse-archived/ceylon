@@ -90,7 +90,8 @@ public final class utilCalls_ {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$2$iterable$ = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$2$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator$ = spread$2$iterable$.iterator(); !((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator$ = spread$2$iterable$.iterator();
+                while (!((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.Integer spread$2$element$ = (.ceylon.language.Integer)spread$2$iteration$;
                     spread$2$sb$.append(spread$2$element$.getWholePart());
                 }

@@ -18,7 +18,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private void f1$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$1 = ns.iterator(); !((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$1 = ns.iterator();
+        while (!((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long n = ((.ceylon.language.Integer)elem$0).longValue();
         }
     }
@@ -46,7 +47,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private void f2$canonical$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
         .java.lang.Object elem$3;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$4 = ns.iterator(); !((elem$3 = n$iterator$$4.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$4 = ns.iterator();
+        while (!((elem$3 = n$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
             final long n = ((.ceylon.language.Integer)elem$3).longValue();
         }
     }
@@ -74,7 +76,8 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private void f3$canonical$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
         .java.lang.Object elem$6;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$7 = os.iterator(); !((elem$6 = o$iterator$$7.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$7 = os.iterator();
+        while (!((elem$6 = o$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.Object o = (.java.lang.Object)elem$6;
         }
     }

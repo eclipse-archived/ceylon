@@ -7,7 +7,8 @@ class MethodForRange implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     public final void m() {
         .java.lang.Object elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$0).longValue();
         }
     }

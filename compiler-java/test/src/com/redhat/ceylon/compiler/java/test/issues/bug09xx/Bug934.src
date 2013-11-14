@@ -9,7 +9,8 @@ final class bug934_collectMatches_ {
         final .ceylon.language.SequenceBuilder<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>> ok = new .ceylon.language.SequenceBuilder<.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<Element, ? extends Element, ? extends .ceylon.language.Sequential<? extends Element>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element), .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$Element, .ceylon.language.Empty.$TypeDescriptor$)));
         final .ceylon.language.SequenceBuilder<Element> ko = new .ceylon.language.SequenceBuilder<Element>($reified$Element);
         .java.lang.Object elem$0;
-        for (.ceylon.language.Iterator<? extends Element> element$iterator$$1 = data.iterator(); !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends Element> element$iterator$$1 = data.iterator();
+        while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final Element element = (Element)elem$0;
             final long result = search.$call$(element).longValue();
             if (result > 0L) {

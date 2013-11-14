@@ -51,7 +51,8 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = sequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$0$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$0$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator(); !((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
+                while (!((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$0$element$ = (.ceylon.language.String)spread$0$iteration$;
                     spread$0$sb$.append(.ceylon.language.Integer.instance(spread$0$element$.getSize()));
                 }
@@ -65,7 +66,8 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$1$iterable$ = intSequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$1$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$1$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$1$iterator$ = spread$1$iterable$.iterator(); !((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$1$iterator$ = spread$1$iterable$.iterator();
+                while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.Integer spread$1$element$ = (.ceylon.language.Integer)spread$1$iteration$;
                     spread$1$sb$.append(spread$1$element$.getWholePart());
                 }
@@ -80,7 +82,8 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                 .ceylon.language.SequenceBuilder<.ceylon.language.Character> spread$2$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$));
                 .ceylon.language.Integer spread$2$arg$0 = .ceylon.language.Integer.instance(0L);
                 .java.lang.Object spread$2$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator(); !((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator();
+                while (!((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$2$element$ = (.ceylon.language.String)spread$2$iteration$;
                     spread$2$sb$.append(spread$2$element$.get(spread$2$arg$0));
                 }
@@ -93,7 +96,8 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$4$iterable$ = sequence;
                 .ceylon.language.SequenceBuilder<.ceylon.language.Character> spread$4$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$));
                 .java.lang.Object spread$4$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator(); !((spread$4$iteration$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator();
+                while (!((spread$4$iteration$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$4$element$ = (.ceylon.language.String)spread$4$iteration$;
                     spread$4$sb$.append((
                         let
@@ -114,7 +118,8 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$5$iterable$ = empty;
                 .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$5$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$5$iteration$;
-                for (.ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator(); !((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
+                while (!((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .ceylon.language.String spread$5$element$ = (.ceylon.language.String)spread$5$iteration$;
                     spread$5$sb$.append(.ceylon.language.String.instance(spread$5$element$.getUppercased()));
                 }

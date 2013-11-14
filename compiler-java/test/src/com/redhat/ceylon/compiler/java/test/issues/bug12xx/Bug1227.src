@@ -11,7 +11,8 @@ final class bug1227_ifBreak_returnElse_ {
         long from$0 = 0L;
         boolean doforelse$1 = true;
         .java.lang.Object elem$2;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$3 = l.iterator(); !((elem$2 = index$iterator$$3.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$3 = l.iterator();
+        while (!((elem$2 = index$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$2).longValue();
             if (someBoolean) {
                 from$0 = index;
@@ -84,7 +85,8 @@ final class bug1227_ifBreak_specifiedElse_ {
         long from$15 = 0L;
         boolean doforelse$16 = true;
         .java.lang.Object elem$17;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$18 = l.iterator(); !((elem$17 = index$iterator$$18.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$18 = l.iterator();
+        while (!((elem$17 = index$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$17).longValue();
             if (someBoolean) {
                 from$15 = index;
@@ -150,7 +152,8 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_ {
         long from$32 = 0L;
         boolean doforelse$33 = true;
         .java.lang.Object elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$35 = l.iterator(); !((elem$34 = index$iterator$$35.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$35 = l.iterator();
+        while (!((elem$34 = index$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$34).longValue();
             if (someBoolean) {
                 from$32 = index;
@@ -269,7 +272,8 @@ final class bug1227_ifReturn_specifiedElse_ {
         final long from;
         long from$51 = 0L;
         .java.lang.Object elem$52;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$53 = l.iterator(); !((elem$52 = index$iterator$$53.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$53 = l.iterator();
+        while (!((elem$52 = index$iterator$$53.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$52).longValue();
             if (someBoolean) {
                 from$51 = index;
@@ -347,7 +351,8 @@ final class bug1227_ifThrow_specifiedElse_ {
         final long from;
         long from$66 = 0L;
         .java.lang.Object elem$67;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$68 = l.iterator(); !((elem$67 = index$iterator$$68.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$68 = l.iterator();
+        while (!((elem$67 = index$iterator$$68.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$67).longValue();
             if (someBoolean) {
                 from$66 = index;
@@ -403,10 +408,12 @@ final class bug1227_for2_ifReturn_specifiedElse_ {
         final long from;
         long from$81 = 0L;
         .java.lang.Object elem$82;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$83 = l.iterator(); !((elem$82 = index$iterator$$83.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$83 = l.iterator();
+        while (!((elem$82 = index$iterator$$83.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$82).longValue();
             .java.lang.Object elem$84;
-            for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index2$iterator$$85 = l.iterator(); !((elem$84 = index2$iterator$$85.next()) instanceof .ceylon.language.Finished); ) {
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> index2$iterator$$85 = l.iterator();
+            while (!((elem$84 = index2$iterator$$85.next()) instanceof .ceylon.language.Finished)) {
                 final long index2 = ((.ceylon.language.Integer)elem$84).longValue();
                 if (someBoolean) {
                     from$81 = index + index2;
@@ -430,7 +437,8 @@ final class bug1227_declaredInside_ {
         final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
         boolean doforelse$89 = true;
         .java.lang.Object elem$90;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$91 = l.iterator(); !((elem$90 = index$iterator$$91.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$91 = l.iterator();
+        while (!((elem$90 = index$iterator$$91.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$90).longValue();
             final long from;
             if (someBoolean) {
@@ -465,7 +473,8 @@ final class bug1227_onlySpecifiedElse_ {
         final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         .java.lang.Object elem$93;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$94 = l.iterator(); !((elem$93 = index$iterator$$94.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$94 = l.iterator();
+        while (!((elem$93 = index$iterator$$94.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$93).longValue();
             throw new .ceylon.language.Exception(null, null);
         }
@@ -495,7 +504,8 @@ final class bug1227_function_ {
         final from_ from = new from_();
         boolean doforelse$95 = true;
         .java.lang.Object elem$96;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$97 = l.iterator(); !((elem$96 = index$iterator$$97.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$97 = l.iterator();
+        while (!((elem$96 = index$iterator$$97.next()) instanceof .ceylon.language.Finished)) {
             final long index = ((.ceylon.language.Integer)elem$96).longValue();
             if (someBoolean) {
                 from.from = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){

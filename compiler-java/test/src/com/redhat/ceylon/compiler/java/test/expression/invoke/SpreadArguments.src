@@ -172,7 +172,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$27$arg$0 = ((.ceylon.language.Integer)tuple$28.get(.ceylon.language.Integer.instance(0L))).longValue();
                 .ceylon.language.String spread$27$arg$1 = (.ceylon.language.String)tuple$28.get(.ceylon.language.Integer.instance(1L));
                 .java.lang.Object spread$27$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$27$iterator$ = spread$27$iterable$.iterator(); !((spread$27$iteration$ = spread$27$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$27$iterator$ = spread$27$iterable$.iterator();
+                while (!((spread$27$iteration$ = spread$27$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$27$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$27$iteration$;
                     spread$27$sb$.append((
                         let
@@ -194,7 +195,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$29$arg$0 = 0L;
                 .ceylon.language.String spread$29$arg$1 = (.ceylon.language.String)tuple$30.get(.ceylon.language.Integer.instance(0L));
                 .java.lang.Object spread$29$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$29$iterator$ = spread$29$iterable$.iterator(); !((spread$29$iteration$ = spread$29$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$29$iterator$ = spread$29$iterable$.iterator();
+                while (!((spread$29$iteration$ = spread$29$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$29$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$29$iteration$;
                     spread$29$sb$.append((
                         let
@@ -215,7 +217,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$31$arg$0 = 0L;
                 .ceylon.language.Sequential<? extends .ceylon.language.String> spread$31$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
                 .java.lang.Object spread$31$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$31$iterator$ = spread$31$iterable$.iterator(); !((spread$31$iteration$ = spread$31$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$31$iterator$ = spread$31$iterable$.iterator();
+                while (!((spread$31$iteration$ = spread$31$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$31$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$31$iteration$;
                     spread$31$sb$.append((
                         let
@@ -236,7 +239,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$32$arg$0 = 0L;
                 .ceylon.language.Sequence<? extends .ceylon.language.String> spread$32$arg$1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest();
                 .java.lang.Object spread$32$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$32$iterator$ = spread$32$iterable$.iterator(); !((spread$32$iteration$ = spread$32$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$32$iterator$ = spread$32$iterable$.iterator();
+                while (!((spread$32$iteration$ = spread$32$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$32$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$32$iteration$;
                     spread$32$sb$.append((
                         let
@@ -257,7 +261,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$33$arg$0 = 0L;
                 .ceylon.language.Sequential<? extends .ceylon.language.String> spread$33$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Tuple)((.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)(.ceylon.language.Tuple)args).getRest()).getRest();
                 .java.lang.Object spread$33$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$33$iterator$ = spread$33$iterable$.iterator(); !((spread$33$iteration$ = spread$33$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$33$iterator$ = spread$33$iterable$.iterator();
+                while (!((spread$33$iteration$ = spread$33$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$33$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$33$iteration$;
                     spread$33$sb$.append((
                         let
@@ -278,7 +283,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>> tuple$35 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(0L)});
                 long spread$34$arg$0 = ((.ceylon.language.Integer)tuple$35.get(.ceylon.language.Integer.instance(0L))).longValue();
                 .java.lang.Object spread$34$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$34$iterator$ = spread$34$iterable$.iterator(); !((spread$34$iteration$ = spread$34$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$34$iterator$ = spread$34$iterable$.iterator();
+                while (!((spread$34$iteration$ = spread$34$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$34$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$34$iteration$;
                     spread$34$sb$.append((
                         let
@@ -302,7 +308,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$36$arg$0 = ((.ceylon.language.Integer)tuple$37.get(.ceylon.language.Integer.instance(0L))).longValue();
                 .ceylon.language.Sequential<? extends .ceylon.language.String> spread$36$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tuple$37.spanFrom(.ceylon.language.Integer.instance(1L));
                 .java.lang.Object spread$36$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$36$iterator$ = spread$36$iterable$.iterator(); !((spread$36$iteration$ = spread$36$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$36$iterator$ = spread$36$iterable$.iterator();
+                while (!((spread$36$iteration$ = spread$36$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$36$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$36$iteration$;
                     spread$36$sb$.append((
                         let
@@ -326,7 +333,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$38$arg$0 = ((.ceylon.language.Integer)tuple$39.get(.ceylon.language.Integer.instance(0L))).longValue();
                 .ceylon.language.Sequence<? extends .ceylon.language.String> spread$38$arg$1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)tuple$39.spanFrom(.ceylon.language.Integer.instance(1L));
                 .java.lang.Object spread$38$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$38$iterator$ = spread$38$iterable$.iterator(); !((spread$38$iteration$ = spread$38$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$38$iterator$ = spread$38$iterable$.iterator();
+                while (!((spread$38$iteration$ = spread$38$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$38$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$38$iteration$;
                     spread$38$sb$.append((
                         let
@@ -351,7 +359,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$40$arg$0 = ((.ceylon.language.Integer)tuple$41.get(.ceylon.language.Integer.instance(0L))).longValue();
                 .ceylon.language.Sequential<? extends .ceylon.language.String> spread$40$arg$1 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tuple$41.spanFrom(.ceylon.language.Integer.instance(1L));
                 .java.lang.Object spread$40$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$40$iterator$ = spread$40$iterable$.iterator(); !((spread$40$iteration$ = spread$40$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$40$iterator$ = spread$40$iterable$.iterator();
+                while (!((spread$40$iteration$ = spread$40$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$40$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$40$iteration$;
                     spread$40$sb$.append((
                         let
@@ -376,7 +385,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 long spread$42$arg$0 = ((.ceylon.language.Integer)tuple$43.get(.ceylon.language.Integer.instance(0L))).longValue();
                 .ceylon.language.Sequence<? extends .ceylon.language.String> spread$42$arg$1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)tuple$43.spanFrom(.ceylon.language.Integer.instance(1L));
                 .java.lang.Object spread$42$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$42$iterator$ = spread$42$iterable$.iterator(); !((spread$42$iteration$ = spread$42$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$42$iterator$ = spread$42$iterable$.iterator();
+                while (!((spread$42$iteration$ = spread$42$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$42$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$42$iteration$;
                     spread$42$sb$.append((
                         let
@@ -429,7 +439,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 .ceylon.language.SequenceBuilder<.java.lang.Object> spread$45$sb$ = new .ceylon.language.SequenceBuilder<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$);
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> spread$45$arg$0 = iter.getSequence();
                 .java.lang.Object spread$45$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$45$iterator$ = spread$45$iterable$.iterator(); !((spread$45$iteration$ = spread$45$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$45$iterator$ = spread$45$iterable$.iterator();
+                while (!((spread$45$iteration$ = spread$45$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$45$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$45$iteration$;
                     spread$45$sb$.append((
                         let
@@ -449,7 +460,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 .ceylon.language.SequenceBuilder<.java.lang.Object> spread$46$sb$ = new .ceylon.language.SequenceBuilder<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$);
                 .ceylon.language.Sequential<? extends .ceylon.language.Integer> spread$46$arg$0 = nonEmptyIter.getSequence();
                 .java.lang.Object spread$46$iteration$;
-                for (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$46$iterator$ = spread$46$iterable$.iterator(); !((spread$46$iteration$ = spread$46$iterator$.next()) instanceof .ceylon.language.Finished); ) {
+                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>> spread$46$iterator$ = spread$46$iterable$.iterator();
+                while (!((spread$46$iteration$ = spread$46$iterator$.next()) instanceof .ceylon.language.Finished)) {
                     .com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String> spread$46$element$ = (.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments<.ceylon.language.String>)spread$46$iteration$;
                     spread$46$sb$.append((
                         let

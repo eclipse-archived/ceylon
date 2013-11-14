@@ -7,10 +7,11 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
     
     public final void m() {
         .java.lang.Object elem$0;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> i$iterator$$1 = .ceylon.language.ArraySequence.<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> i$iterator$$1 = .ceylon.language.ArraySequence.<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
                 new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a")),
                 new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b")),
-                new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"))}).iterator(); !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished); ) {
+                new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"))}).iterator();
+        while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getKey().longValue();
             final .java.lang.String s = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getItem().toString();
         }

@@ -41,7 +41,8 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         x1.contains(.ceylon.language.Integer.instance(1L));
         x1.contains(.ceylon.language.Float.instance(1.1));
         .java.lang.Object elem$3;
-        for (.ceylon.language.Iterator<? extends .java.lang.Object> i$iterator$$4 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)x1).iterator(); !((elem$3 = i$iterator$$4.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .java.lang.Object> i$iterator$$4 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)x1).iterator();
+        while (!((elem$3 = i$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.Object i = (.java.lang.Object)elem$3;
             .java.lang.Object i$6;
             if ((i$6 = i) instanceof .ceylon.language.Integer) {
@@ -77,7 +78,8 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         );
         x4.contains(.ceylon.language.Integer.instance(1L));
         .java.lang.Object elem$13;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$14 = x4.iterator(); !((elem$13 = i$iterator$$14.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$14 = x4.iterator();
+        while (!((elem$13 = i$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$13).longValue();
             final long s = i + 0L;
         }

@@ -15,7 +15,8 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
         .java.lang.Object elem$1;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$2 = fs.iterator(); !((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$2 = fs.iterator();
+        while (!((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String ff = ((.ceylon.language.String)elem$1).toString();
         }
     }
