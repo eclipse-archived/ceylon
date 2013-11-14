@@ -67,6 +67,7 @@ import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTry;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
+import com.sun.tools.javac.tree.JCTree.JCWhileLoop;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.DiagnosticSource;
 import com.sun.tools.javac.util.List;
@@ -1659,7 +1660,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected ListBuffer<JCStatement> transformForClause() {
-            Naming.SyntheticName elem_name = naming.alias("elem");    
+            Naming.SyntheticName elem_name = naming.alias("elem");
             
             Tree.ForIterator iterDecl = stmt.getForClause().getForIterator();
             Tree.Variable variable;
@@ -1746,7 +1747,8 @@ public class StatementTransformer extends AbstractTransformer {
      * 
      * <pre>
      *     java.lang.Object ITERATION_VAR_NAME;
-     *     for (Iterator<ITERATOR_ELEMENT_TYPE> ITERATOR_VAR_NAME = ITERABLE.getIterator();
+     *     Iterator<ITERATOR_ELEMENT_TYPE> ITERATOR_VAR_NAME = ITERABLE.getIterator();
+     *     while (
      *             !((ITERATION_VAR_NAME = ITERATOR_VAR_NAME.getNext()) instanceof ceylon.language.Finished;
      *         ) {
      *         ITEM_DECLS;
@@ -1801,15 +1803,13 @@ public class StatementTransformer extends AbstractTransformer {
         // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
         JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
         JCExpression loopCond = make().Unary(JCTree.NOT, instof);
-
-        // for (.ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator(); 
-        //         !(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
-        JCForLoop forLoop = at(node).ForLoop(
-            List.<JCStatement>of(iteratorDecl), 
-            loopCond, 
-            List.<JCExpressionStatement>nil(), // No step necessary
-            at(node).Block(0, loopBody));
-        return result.append(forLoop);
+        
+        // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
+        result = result.append(iteratorDecl);
+        
+        // while (!(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
+        JCWhileLoop whileLoop = at(node).WhileLoop(loopCond, at(node).Block(0, loopBody));
+        return result.append(whileLoop);
     }
     
     
