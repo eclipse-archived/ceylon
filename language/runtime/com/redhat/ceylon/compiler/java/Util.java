@@ -941,4 +941,85 @@ public class Util {
         }
         return (java.lang.Class<T>) Object.class;
     }
+    
+    public static int arrayLength(Object o) {
+        if (o instanceof Object[]) 
+            return ((Object[])o).length;
+        else if (o instanceof boolean[])
+            return ((boolean[])o).length;
+        else if (o instanceof float[])
+            return ((float[])o).length;
+        else if (o instanceof double[])
+            return ((double[])o).length;
+        else if (o instanceof char[])
+            return ((char[])o).length;
+        else if (o instanceof byte[])
+            return ((byte[])o).length;
+        else if (o instanceof short[])
+            return ((short[])o).length;
+        else if (o instanceof int[])
+            return ((int[])o).length;
+        else if (o instanceof long[])
+            return ((long[])o).length;
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    public static long getIntegerArray(Object o, int index) {
+        if (o instanceof byte[])
+            return ((byte[])o)[index];
+        else if (o instanceof short[])
+            return ((short[])o)[index];
+        else if (o instanceof int[])
+            return ((int[])o)[index];
+        else if (o instanceof long[])
+            return ((long[])o)[index];
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    public static double getDoubleArray(Object o, int index) {
+        if (o instanceof float[])
+            return ((float[])o)[index];
+        else if (o instanceof double[])
+            return ((double[])o)[index];
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    public static int getCharacterArray(Object o, int index) {
+        if (o instanceof char[])
+            return ((char[])o)[index];
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    public static boolean getBooleanArray(Object o, int index) {
+        if (o instanceof boolean[])
+            return ((boolean[])o)[index];
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    public static Object getObjectArray(Object o, int index) {
+        if (o instanceof Object[])
+            return ((Object[])o)[index];
+        else if (o instanceof boolean[])
+            return ceylon.language.Boolean.instance(((boolean[])o)[index]);
+        else if (o instanceof float[])
+            return ceylon.language.Float.instance(((float[])o)[index]);
+        else if (o instanceof double[])
+            return ceylon.language.Float.instance(((double[])o)[index]);
+        else if (o instanceof char[])
+            return ceylon.language.Character.instance(((char[])o)[index]);
+        else if (o instanceof byte[])
+            return ceylon.language.Integer.instance(((byte[])o)[index]);
+        else if (o instanceof short[])
+            return ceylon.language.Integer.instance(((short[])o)[index]);
+        else if (o instanceof int[])
+            return ceylon.language.Integer.instance(((int[])o)[index]);
+        else if (o instanceof long[])
+            return ceylon.language.Integer.instance(((long[])o)[index]);
+        throw new ClassCastException(notArrayType(o));
+    }
+    
+    private static String notArrayType(Object o) {
+        return (o == null ? "null" : o.getClass().getName()) + " is not an array type";
+    }
+    
 }
