@@ -662,10 +662,10 @@ Float? maxOfZeroOrMore = max(zeroOrMore); //might be null</programlisting>
             <para><emphasis>Tuples</emphasis> are a kind of sequence where the 
             type of each element is encoded into the static type of the tuple.
             <literal>Tuple</literal> is just an ordinary class in Ceylon, but 
-            syntactic abbreviations let us write down tuple types in using a 
-            streamlined syntax. For example, <literal>[Float,Float]</literal>
-            is a pair of <literal>Float</literal>s. There is also a convenient 
-            syntax for instantiating tuples and accessing their elements.</para>
+            the language lets us write down tuple types using a streamlined 
+            syntax. For example, <literal>[Float,Float]</literal> is a pair of 
+            <literal>Float</literal>s. There's also a convenient syntax for 
+            instantiating tuples and accessing their elements.</para>
             
             <programlisting>[Float,Float] origin = [0.0, 0.0];
 Float x = origin[0];
