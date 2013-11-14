@@ -1,16 +1,20 @@
 import java.lang{IntArray, LongArray, arrays}
-Integer arrayIterationStaticN = 1_000_000;
-IntArray arrayIterationStaticInts = arrays.toIntArray(0..100);
+Integer arraySequenceIterationStaticN = 1_000_000;
+ArraySequence<Integer> arraySequenceIterationStaticInts {
+    value s = {for (i in 0..100) i}.sequence;
+    assert(is ArraySequence<Integer> s);
+    return s;
+}
 "The optimized version"
-Integer arrayIterationStaticBench() {
+Integer arraySequenceIterationStaticBench() {
     // avoid getter overhead by declaring a local var
-    value array = arrayIterationStaticInts;
-    variable value i = arrayIterationStaticN;
+    value seq = arraySequenceIterationStaticInts;
+    variable value i = arraySequenceIterationStaticN;
     variable value sum = 0;
     value t0 = system.nanoseconds;
     while (i > 0) {
         sum = 0;
-        for (x in array.array) {
+        for (x in seq) {
             sum += x;
         }
         i--;
@@ -20,21 +24,21 @@ Integer arrayIterationStaticBench() {
     return t1-t0;
 }
 "The unoptimized version"
-Integer arrayIterationStaticBenchDis() {
+Integer arraySequenceIterationStaticBenchDis() {
     // avoid getter overhead by declaring a local var
-    value array = arrayIterationStaticInts;
-    variable value i = arrayIterationStaticN;
+    value seq = arraySequenceIterationStaticInts;
+    variable value i = arraySequenceIterationStaticN;
     variable value sum = 0;
     value t0 = system.nanoseconds;
     while (i > 0) {
         sum = 0;
         @disableOptimization
-        for (x in array.array) {
+        for (x in seq) {
             sum += x;
         }
         i--;
     }
     value t1 = system.nanoseconds;
-    print("Unoptimized result ``sum``");
+    print("Optimized result ``sum``");
     return t1-t0;
 }

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.statement.loop;
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
 class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -84,12 +84,14 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     private final void disabled$priv$() {
         long sum = 0L;
         .java.lang.Object elem$32;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$32 = i$iterator$$33.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$33 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        while (!((elem$32 = i$iterator$$33.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$32).longValue();
             sum += i;
         }
         .java.lang.Object elem$34;
-        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator(); !((elem$34 = i$iterator$$35.next()) instanceof .ceylon.language.Finished); ) {
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$35 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        while (!((elem$34 = i$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$34).longValue();
             sum += i;
         }
@@ -248,7 +250,7 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.statement.loop.OptimizedForWithRange.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.optim.OptimizedForWithRange.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.OptimizedForWithRange.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.OptimizedForWithRange.class);
 }

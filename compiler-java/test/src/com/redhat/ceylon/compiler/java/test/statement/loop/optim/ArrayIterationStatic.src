@@ -24,19 +24,17 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final void arrayOfInts$priv$(final int[] array) {
-        final .java.lang.Object array$6 = array;
-        final int length$7 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$6);
-        for (int i$8 = 0; i$8 < length$7; i$8++) {
-            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$6, i$8);
+        final int[] array$6 = array;
+        for (int i$8 = 0; i$8 < array$6.length; i$8++) {
+            final long element = array$6[i$8];
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
         }
     }
     
     private final void arrayOfChars$priv$(final char[] array) {
-        final .java.lang.Object array$9 = array;
-        final int length$10 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$9);
-        for (int i$11 = 0; i$11 < length$10; i$11++) {
-            final int element = .com.redhat.ceylon.compiler.java.Util.getCharacterArray(array$9, i$11);
+        final char[] array$9 = array;
+        for (int i$11 = 0; i$11 < array$9.length; i$11++) {
+            final int element = array$9[i$11];
             .ceylon.language.print_.print(.ceylon.language.Character.instance(element));
         }
     }
@@ -51,19 +49,17 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final <T>void arrayOfObjects2$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T[] array) {
-        final .java.lang.Object array$15 = array;
-        final int length$16 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$15);
-        for (int i$17 = 0; i$17 < length$16; i$17++) {
-            final T element = (T).com.redhat.ceylon.compiler.java.Util.getObjectArray(array$15, i$17);
+        final T[] array$15 = array;
+        for (int i$17 = 0; i$17 < array$15.length; i$17++) {
+            final T element = array$15[i$17];
             .ceylon.language.print_.print(element);
         }
     }
     
     private final void arrayOfObjects3$priv$(final .ceylon.language.Integer[] array) {
-        final .java.lang.Object array$18 = array;
-        final int length$19 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$18);
-        for (int i$20 = 0; i$20 < length$19; i$20++) {
-            final .ceylon.language.Integer element = (.ceylon.language.Integer).com.redhat.ceylon.compiler.java.Util.getObjectArray(array$18, i$20);
+        final .ceylon.language.Integer[] array$18 = array;
+        for (int i$20 = 0; i$20 < array$18.length; i$20++) {
+            final .ceylon.language.Integer element = array$18[i$20];
             .ceylon.language.print_.print((
                 let
                 {
@@ -75,11 +71,11 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final void arrayOfIntegersWithBreak$priv$(final .ceylon.language.Array<.ceylon.language.Integer> array) {
-        boolean doforelse$22 = true;
-        final .java.lang.Object array$23 = array.toArray();
-        final int length$24 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$23);
-        for (int i$25 = 0; i$25 < length$24; i$25++) {
-            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$23, i$25);
+        boolean doforelse$25 = true;
+        final .java.lang.Object array$22 = array.toArray();
+        final int length$23 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$22);
+        for (int i$24 = 0; i$24 < length$23; i$24++) {
+            final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$22, i$24);
             
             final class x_ {
                 
@@ -92,11 +88,11 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             final x_ x = new x_();
             if (element == 10L) {
-                doforelse$22 = false;
+                doforelse$25 = false;
                 break;
             }
         }
-        if (doforelse$22) {
+        if (doforelse$25) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("foo"));
         }
     }
