@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 
 /**
  * Manager modules and packages (build, retrieve, handle errors etc)
@@ -160,11 +161,12 @@ public class ModuleManager {
                 bindPackageToModule(currentPkg, currentModule);
             }
             else {
-                addErrorToModule(new ArrayList<String>(), "A module cannot be defined at the top level of the hierarchy");
+                addErrorToModule(new ArrayList<String>(), 
+                        "module may not be defined at the top level of the hierarchy");
             }
         }
         else {
-            StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
+            StringBuilder error = new StringBuilder("two modules within the same hierarchy: '");
             error.append( formatPath( currentModule.getName() ) )
                 .append( "' and '" )
                 .append( formatPath( packageStack.peekLast().getName() ) )
@@ -290,16 +292,16 @@ public class ModuleManager {
         errors.add(error);
     }
 
-    public void addLinkBetweenModuleAndNode(Module module, Node unit) {
+    public void addLinkBetweenModuleAndNode(Module module, ModuleDescriptor descriptor) {
         //keep link and display errors on modules where we don't know the version of
         Set<String> errors = topLevelErrorsPerModuleName.get(module.getName());
         if (errors != null) {
             for(String error : errors) {
-                unit.addError(error);
+                descriptor.addError(error);
             }
             errors.clear();
         }
-        moduleToNode.put(module,unit);
+        moduleToNode.put(module,descriptor);
     }
     
     public Set<Module> getCompiledModules(){

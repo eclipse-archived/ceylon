@@ -127,7 +127,7 @@ public class ModuleVisitor extends Visitor {
                         		nameString + " should be " + pkg.getNameAsString(), 
                         		8000);
                 }
-                moduleManager.addLinkBetweenModuleAndNode(mainModule, unit);
+                moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
                 mainModule.setAvailable(true);
                 buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
             }
