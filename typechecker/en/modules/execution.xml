@@ -1267,10 +1267,8 @@ String result = middleObject.string;</programlisting>
                     according to the IEEE 754 specification, <emphasis>IEEE Standard 
                     for Binary Floating-Point Arithmetic</emphasis>, and floating point
                     numeric operations conform to this specification. Where possible,
-                    a double-precision 64-bit representation is used. Note that even 
-                    though <literal>Float</literal> has a 64-bit representation on 
-                    both Java and JavaScript virtual machines, the actual range of 
-                    representable values differs.</para>
+                    a double-precision 64-bit representation is used. It is possible on 
+                    both Java and JavaScript virtual machines.</para>
                 </listitem>
                 <listitem>
                     <para>Where possible, values of type <literal>Integer</literal> are 
