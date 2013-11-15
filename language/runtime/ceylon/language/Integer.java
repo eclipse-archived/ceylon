@@ -444,13 +444,21 @@ public final class Integer
 
     @TypeInfo("ceylon.language::Character")
     public int getCharacter() {
-        return (int) value;
+        return getCharacter(value);
     }
 
     @Ignore
     @TypeInfo("ceylon.language::Character")
     public static int getCharacter(long value) {
-        return (int) value;
+        if (value>java.lang.Integer.MAX_VALUE ||
+            value<java.lang.Integer.MIN_VALUE) {
+            throw new OverflowException();
+        }
+        int result = (int) value;
+        if (!java.lang.Character.isDefined((int) value)) {
+            throw new OverflowException();
+        }
+        return result;
     }
 
     @Override
