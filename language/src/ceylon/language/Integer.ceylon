@@ -1,5 +1,7 @@
-"A 64-bit integer, or the closest approximation to a 
- 64-bit integer provided by the underlying platform.
+"An exact representation of a positive whole number, 
+ negative whole number, or zero. The largest and
+ smallest representable values are 
+ platform-dependent:
  
  - For the JVM runtime, integer values between
    -2<sup>63</sup> and 2<sup>63</sup>-1 may be 
@@ -10,6 +12,7 @@
  
  Overflow or loss of precision occurs silently (with
  no exception raised)."
+see (`value runtime`)
 shared native final class Integer(Integer integer)
         extends Object()
         satisfies Scalar<Integer> & 
@@ -18,5 +21,7 @@ shared native final class Integer(Integer integer)
                   Exponentiable<Integer,Integer> {
     
     "The UTF-32 character with this UCS code point."
+    throws (`class OverflowException`,
+            "if there is no such character")
     shared native Character character;
 }
