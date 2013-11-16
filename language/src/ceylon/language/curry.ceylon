@@ -7,7 +7,7 @@
  
  That is, if `fun` has type `W(X,Y,Z)` then 
  `curry(fun)` has type `W(Y,Z)(X)`."
-see(`function uncurry`, `function compose`)
+see (`function uncurry`, `function compose`)
 shared Callable<Return,Rest> curry<Return,Argument,First,Rest>
             (Callable<Return,Tuple<Argument,First,Rest>> f)
             (First first)
@@ -27,8 +27,9 @@ shared Callable<Return,Rest> curry<Return,Argument,First,Rest>
  
  That is, if `fun` has type `W(Y,Z)(X)` then 
  `uncurry(fun)` has type `W(X,Y,Z)`."
-see(`function curry`, `function compose`)
-shared Callable<Return,Tuple<Argument,First,Rest>> uncurry<Return,Argument,First,Rest>
+see (`function curry`, `function compose`)
+shared Callable<Return,Tuple<Argument,First,Rest>> 
+        uncurry<Return,Argument,First,Rest>
             (Callable<Return,Rest> f(First first))
         given First satisfies Argument 
         given Rest satisfies Argument[] 

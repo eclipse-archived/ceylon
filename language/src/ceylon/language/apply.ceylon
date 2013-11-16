@@ -4,7 +4,7 @@
  
  In practice, this behaves as if the `Callable` were called with the elements
  of the tuple used as its arguments."
-see(`function unflatten`)
+see (`function unflatten`)
 shared Return apply<Return,Args>(Callable<Return,Args> f, Args args)
         given Args satisfies Anything[]
-    => unflatten(f)(args);
+        => unflatten(f)(args);
