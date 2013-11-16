@@ -72,7 +72,7 @@
         </listitem>
         <listitem>
             <para>to execute on the JVM, and on JavaScript virtual machines, 
-            and to interoperate with Java and JavaScript code,</para>
+            and to interoperate with native Java and JavaScript code,</para>
         </listitem>
         <listitem>
             <para>to provide language-level modularity,</para>
