@@ -81,14 +81,15 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Determines if the iterable object is empty, that is
      to say, if the iterator returns no elements."
-    shared default Boolean empty =>
-            iterator().next() is Finished;
+    shared default Boolean empty 
+            => iterator().next() is Finished;
     
     "The number of elements returned by the iterator of
      this iterable object, if the iterator terminates.
      In the case of an iterable whose elements are not
      countable, this operation never terminates."
-    shared default Integer size => count((Element e) => true);
+    shared default Integer size 
+            => count((Element e) => true);
     
     "Determines if this iterable object has more elements
      than the given length. This is an efficient operation 
@@ -124,13 +125,13 @@ shared interface Iterable<out Element, out Absent=Null>
         return true;
     }
     
-    shared actual default Boolean contains(Object element) => 
-            any(ifExists(element.equals));
+    shared actual default Boolean contains(Object element) 
+            => any(ifExists(element.equals));
     
     "The first element returned by the iterator, if any,
      of `null` if the iterable object is empty."
-    shared default Absent|Element first =>
-            internalFirst(this);
+    shared default Absent|Element first 
+            => internalFirst(this);
     
     "The last element returned by the iterator, if any,
      of `null` if the iterable object is empty. Iterable
@@ -160,8 +161,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
-            Result collecting(Element elem)) =>
-                    { for (elem in this) collecting(elem) };
+            Result collecting(Element elem)) 
+            => { for (elem in this) collecting(elem) };
     
     /*shared default Callable<{Result*},Args> spread<Result,Args>(
             Callable<Result,Args> method(Element elem)) 
@@ -174,8 +175,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
-            Boolean selecting(Element elem)) =>
-                    { for (elem in this) if (selecting(elem)) elem };
+            Boolean selecting(Element elem)) 
+            => { for (elem in this) if (selecting(elem)) elem };
     
     "The result of applying the accumulating function to 
      each element of this container in turn." 
@@ -231,8 +232,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function byIncreasing`, `function byDecreasing`)
     shared default Element[] sort(
             "The function comparing pairs of elements."
-            Comparison comparing(Element x, Element y)) =>
-                    internalSort(comparing, this);
+            Comparison comparing(Element x, Element y)) 
+            => internalSort(comparing, this);
     
     "A sequence containing the results of applying the
      given mapping to the elements of this container. An 
@@ -240,8 +241,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
-            Result collecting(Element element)) =>
-                    map(collecting).sequence;
+            Result collecting(Element element)) 
+            => map(collecting).sequence;
     
     "A sequence containing the elements of this 
      container that satisfy the given predicate. An 
@@ -249,8 +250,8 @@ shared interface Iterable<out Element, out Absent=Null>
     see (`function filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
-            Boolean selecting(Element element)) =>
-                    filter(selecting).sequence;
+            Boolean selecting(Element element)) 
+             => filter(selecting).sequence;
     
     "Return `true` if at least one element satisfies the
      predicate function."
@@ -448,8 +449,8 @@ shared interface Iterable<out Element, out Absent=Null>
      original order. For null elements of the original 
      `Iterable`, there is no entry in the resulting 
      iterable object."
-    shared default {Element&Object*} coalesced =>
-            { for (e in this) if (exists e) e };
+    shared default {Element&Object*} coalesced 
+            => { for (e in this) if (exists e) e };
     
     "All entries of form `index->element` where `index` 
      is the position at which `element` occurs, for every
@@ -539,7 +540,7 @@ shared interface Iterable<out Element, out Absent=Null>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
             Default defaultValue)
-        => { for (elem in this) elem else defaultValue };
+            => { for (elem in this) elem else defaultValue };
     
     /*"Creates a Map that contains this `Iterable`'s
          elements, grouped in `Sequence`s under the
