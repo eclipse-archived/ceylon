@@ -60,4 +60,6 @@ shared void tuples() {
     check(comprehensionTuple == {"a", "b", "hello", "bye"}, "comprehensionTuple");
     check(!(["foo"] of Object) is ArraySequence<String>, "tuple not ArraySequence");
     check(([for (c in "foo") c.string] of Object) is ArraySequence<String>, "comprehension is ArraySequence");
+    check((["foo", "bar"] of Object) is [String+], "is [String+] 1");
+    check(!([1, 2] of Object) is [String+], "is [String+] 2");
 }
