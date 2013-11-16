@@ -365,10 +365,11 @@
             <para>
             A function belonging to a type is called a <emphasis>method</emphasis>. 
             A value belonging to a type is called an <emphasis>attribute</emphasis>.  
-            There are no <literal>static</literal> members. Instead, 
-            <emphasis>toplevel</emphasis> functions and values are declared as direct 
-            members of a package. This, along with certain other features, gives the 
-            language a more regular block structure.
+            There are no <literal>static</literal> members. Instead, a function or 
+            value may be declared as a direct <emphasis>toplevel</emphasis> member 
+            of a package, or as a member of a singleton anonymous class. This 
+            approach, along with certain other features, gives the language a more 
+            regular block structure.
             </para>
             
             <para>
@@ -402,7 +403,8 @@
             overloading.
             </para>
             
-            <programlisting>Number sum&lt;Number&gt;(Number* numbers) given Number of Integer | Float { ... }</programlisting>
+            <programlisting>Number sum&lt;Number&gt;(Number* numbers) 
+        given Number of Integer | Float { ... }</programlisting>
             
             <para>Therefore, a single method in Ceylon may emulate the signatures of 
             several overloaded methods in Java.</para>
@@ -413,10 +415,9 @@
             <title>First-class functions and higher-order programming</title>
             
             <para>
-            Ceylon supports first-class function types and higher-order functions, with 
-            minimal extensions to the traditional C syntax. A function declaration may 
-            specify a <emphasis>callable parameter</emphasis> that accepts references to 
-            other functions with a certain signature. 
+            Ceylon supports first-class function types and higher-order functions. A 
+            function declaration may specify a <emphasis>callable parameter</emphasis> 
+            that accepts references to other functions with a certain signature. 
             </para>
             
             <programlisting>String find(Boolean where(String string)) { ... }</programlisting>
@@ -424,8 +425,8 @@
             <para>
             The argument of such a callable parameter may be either a reference to a 
             named function declared elsewhere, or a new function defined inline as part 
-            of the method invocation. A function may even return an invocable reference 
-            to another function.
+            of the method invocation. <!--A function may even return an invocable 
+            reference to another function.-->
             </para>
             
             <programlisting>value result = { "C", "Java", "Ceylon" }.find((String s) =&gt; s.size>1);</programlisting>
@@ -493,16 +494,14 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             </para>
             
             <programlisting>Html page = Html {
-    Head { 
-        title="Hello"; 
+    doctype = html5;
+    Head { title = "Ceylon: home page"; };
+    Body {
+        H2 ( "Welcome to Ceylon ``language.version``!" ),
+        P ( "Now get your code on :)" )
     };
-    Body { 
-        P {
-            css = "greeting"; 
-            "Hello, World!" 
-        }; 
-    };
-}</programlisting>
+}
+</programlisting>
             
             <para>
             An especially important application of this facility is Ceylon's built-in 
@@ -564,7 +563,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             64 bit by default, and may be optimized for 32 bit architectures via use of 
             the <literal>small</literal> annotation.</para>
             
-            <para>The module <literal>ceylon.math</literal> provides two additonal
+            <para>The module <literal>ceylon.math</literal> provides two additional
             numeric types representing arbitrary precision integers and arbitrary 
             precision decimals.</para>
             
@@ -623,7 +622,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             
             <para>A <emphasis>nonempty iterable</emphasis> is an iterable object
             which always produces at least one value. A nonempty iterabe type is
-            written <literal>{String+}</literal>. Distingushing nonempty streams
+            written <literal>{String+}</literal>. Distinguishing nonempty streams
             of values lets us correctly express the type of functions like
             <literal>max()</literal>:</para>
             
