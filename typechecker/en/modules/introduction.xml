@@ -337,9 +337,10 @@
             </para>
             
             <para>
-            Ceylon provides a streamlined syntax for defining an anonymous class which 
-            is only instantiated in exactly the place it is defined. Among other uses,
-            the <literal>object</literal> declaration is useful for creating singleton 
+            Ceylon provides a streamlined syntax for defining <emphasis>anonymous 
+            classes</emphasis>. An anonymous class is a class which is instantiated 
+            only in exactly the place it is defined. Among other uses, the 
+            <literal>object</literal> declaration is useful for creating singleton 
             objects or method-local interface implementations. 
             </para>
             
