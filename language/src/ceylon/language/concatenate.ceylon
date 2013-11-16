@@ -5,8 +5,8 @@
 see (`class SequenceBuilder`, `function expand`)
 shared Element[] concatenate<Element>(
         "The iterable objects to concatenate."
-        {Element*}* iterables) =>
-                [ for (it in iterables) for (val in it) val ];
+        {Element*}* iterables) 
+        => [ for (it in iterables) for (val in it) val ];
 
 "Given an iterable object whose elements are also iterable,
  return a new stream with all the elements of the nested
