@@ -58,4 +58,6 @@ shared void tuples() {
     [String*] comprehensionTuple = ["a", "b", for (s in strings) s];
     check(threeTupleEllipsis == {"a", 1, "hello", "bye"}, "threeTupleEllipsis");
     check(comprehensionTuple == {"a", "b", "hello", "bye"}, "comprehensionTuple");
+    check(!(["foo"] of Object) is ArraySequence<String>, "tuple not ArraySequence");
+    check(([for (c in "foo") c.string] of Object) is ArraySequence<String>, "comprehension is ArraySequence");
 }
