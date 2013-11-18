@@ -3401,9 +3401,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         backwardBranch(expr);
         List<JCStatement> forStmt = statementGen().transformIterableIteration(expr, 
                 iterationVar, srcIteratorName, 
-                srcElementType, srcIterableName.makeIdent(), 
+                expr.getTarget().getType(), srcElementType, 
+                srcIterableName.makeIdent(), 
                 List.<JCStatement>of(elementVarDecl), 
-                List.<JCStatement>of(body));
+                List.<JCStatement>of(body), 
+                true, true);
         
         // build the whole spread operation
         List<JCStatement> stmts = List.<JCStatement>of(

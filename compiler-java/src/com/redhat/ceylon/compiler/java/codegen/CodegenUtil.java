@@ -146,6 +146,17 @@ class CodegenUtil {
         return false;
     }
     
+    static boolean hasCompilerAnnotationNoArgument(Tree.StatementOrArgument decl, String name){
+        for (CompilerAnnotation annotation : decl.getCompilerAnnotations()) {
+            if (annotation.getIdentifier().getText().equals(name)) {
+                if (annotation.getStringLiteral() == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * Determines if the given statement or argument has a compiler annotation 
      * with the given name and with the given argument.

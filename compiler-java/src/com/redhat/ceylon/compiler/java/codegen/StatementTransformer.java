@@ -1564,14 +1564,14 @@ public class StatementTransformer extends AbstractTransformer {
      * @param optName The name of the optimization
      * @return
      */
-    private <S extends Tree.StatementOrArgument> boolean isOptimizationDisabled(S stmt, String optName) {
-        return CodegenUtil.hasCompilerAnnotation(stmt, "disableOptimization")
+    private boolean isOptimizationDisabled(Tree.StatementOrArgument stmt, String optName) {
+        return CodegenUtil.hasCompilerAnnotationNoArgument(stmt, "disableOptimization")
                 || CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
                         "disableOptimization", optName);
     }
     
-    private <S extends Tree.StatementOrArgument> boolean isOptimizationRequired(S stmt, String optName) {
-        return optName == null ? CodegenUtil.hasCompilerAnnotation(stmt, "requireOptimization")
+    private boolean isOptimizationRequired(Tree.StatementOrArgument stmt, String optName) {
+        return optName == null ? CodegenUtil.hasCompilerAnnotationNoArgument(stmt, "requireOptimization")
                 : CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
                         "requireOptimization", optName);
     }
@@ -1808,10 +1808,13 @@ public class StatementTransformer extends AbstractTransformer {
             return ListBuffer.<JCStatement>lb().appendList(transformIterableIteration(stmt,
                     elem_name, 
                     iteratorVarName,
+                    iterDecl.getSpecifierExpression().getExpression().getTypeModel(),
                     sequenceElementType,
                     containment,
                     itemDecls,
-                    stmts));
+                    stmts, 
+                    !isOptimizationDisabled(stmt, "ArrayIterationDynamic"),
+                    !isOptimizationDisabled(stmt, "ArraySequenceIterationDynamic")));
         }
         
         protected final Tree.Block getBlock() {
@@ -1846,14 +1849,44 @@ public class StatementTransformer extends AbstractTransformer {
     List<JCStatement> transformIterableIteration(Node node,
             Naming.SyntheticName iterationVarName,
             Naming.SyntheticName iteratorVarName,
-            ProducedType iteratorElementType,
+            ProducedType iterableType, ProducedType iteratedType, 
             JCExpression iterableExpr,
             List<JCStatement> itemDecls,
-            List<JCStatement> bodyStmts) {
-        List<JCStatement> result = List.<JCStatement>nil();
+            List<JCStatement> bodyStmts,
+            boolean allowArrayOpt, boolean allowArraySeqOpt) {
+        ProducedType iteratorElementType = iteratedType;
+        ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+        
+        // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
+        // TODO Need to use naming.Infix for the hidden members of Array
+        boolean optForArray = allowArrayOpt && typeFact().getArrayType(iteratedType).isSubtypeOf(iterableType);
+        boolean optForArraySequence = allowArraySeqOpt && typeFact().getArraySequenceType(iteratedType).isSubtypeOf(iterableType);
+        
+        SyntheticName iterableName = optForArray || optForArraySequence ? naming.alias("iterable") : null;
+        SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
+        SyntheticName isArraySequenceName = optForArraySequence ? naming.alias("isArraySequence") : null;
+        SyntheticName arrayName = optForArray || optForArraySequence ? naming.alias("array") : null;
+        SyntheticName arrayIndex = optForArray || optForArraySequence ? naming.alias("i") : null;
+        SyntheticName arrayLength = optForArray || optForArraySequence ? naming.alias("length") : null;
+        if (optForArray || optForArraySequence) {
+            result.append(makeVar(FINAL, iterableName, makeJavaType(typeFact().getIterableType(iteratorElementType)), iterableExpr));
+        }
+        if (optForArray) {
+            result.append(makeVar(FINAL, isArrayName, 
+                    make().Type(syms().booleanType), 
+                    make().TypeTest(iterableName.makeIdent(), 
+                            makeJavaType(typeFact().getArrayType(iteratorElementType), JT_RAW))));
+        }
+        if (optForArraySequence) {
+            result.append(makeVar(FINAL, isArraySequenceName, 
+                    make().Type(syms().booleanType), 
+                    make().TypeTest(iterableName.makeIdent(), 
+                            makeJavaType(typeFact().getArraySequenceType(iteratorElementType), JT_RAW))));
+        }
+        
         // java.lang.Object ELEM_NAME;
-        JCVariableDecl elemDecl = make().VarDef(make().Modifiers(0), iterationVarName.asName(), make().Type(syms().objectType), null);
-        result = result.append(elemDecl);
+        JCVariableDecl elemDecl = makeVar(iterationVarName, make().Type(syms().objectType), optForArray || optForArraySequence ? makeNull() : null);
+        result.append(elemDecl);
         
         SyntheticName iterName = iteratorVarName;
         
@@ -1862,17 +1895,105 @@ public class StatementTransformer extends AbstractTransformer {
         
         // ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
         // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
-        JCExpression getIter = at(node).Apply(null, makeSelect(iterableExpr, "iterator"), List.<JCExpression> nil());
+        JCExpression getIter;
+        if (optForArray || optForArraySequence) {
+            at(node);
+            result.append(makeVar(FINAL, arrayName, make().Type(syms().objectType), null));
+            result.append(makeVar(arrayIndex, make().Type(syms().intType), make().Literal(0)));
+            result.append(makeVar(FINAL, arrayLength, make().Type(syms().intType), null));
+            ListBuffer<JCStatement> whenArraySequence = ListBuffer.<JCTree.JCStatement>lb();
+            whenArraySequence.append(make().Exec(make().Assign(
+                    arrayName.makeIdent(), 
+                    make().Apply(null, 
+                            naming.makeQualIdent(
+                                    make().TypeCast(makeJavaType(typeFact().getArraySequenceType(typeFact().getAnythingDeclaration().getType()), JT_RAW), iterableName.makeIdent()),
+                                    "$getArray$"),
+                            List.<JCExpression>nil()))));
+            whenArraySequence.append(make().Exec(make().Assign(
+                    arrayIndex.makeIdent(),
+                    make().Apply(null, 
+                            naming.makeQualIdent(
+                                    make().TypeCast(makeJavaType(typeFact().getArraySequenceType(typeFact().getAnythingDeclaration().getType()), JT_RAW), iterableName.makeIdent()),
+                                    "$getFirst$"),
+                            List.<JCExpression>nil()))));
+            whenArraySequence.append(make().Exec(make().Assign(
+                    arrayLength.makeIdent(),
+                    make().Binary(JCTree.PLUS, arrayIndex.makeIdent(), make().Apply(null, 
+                            naming.makeQualIdent(
+                                    make().TypeCast(makeJavaType(typeFact().getArraySequenceType(typeFact().getAnythingDeclaration().getType()), JT_RAW), iterableName.makeIdent()),
+                                    "$getLength$"),
+                            List.<JCExpression>nil())))));
+            
+            ListBuffer<JCStatement> whenArray = ListBuffer.<JCTree.JCStatement>lb();
+            whenArray.append(make().Exec(make().Assign(
+                    arrayName.makeIdent(), 
+                    make().Apply(null, 
+                            naming.makeQualIdent(
+                                    make().TypeCast(makeJavaType(typeFact().getArrayType(typeFact().getAnythingDeclaration().getType()), JT_RAW), iterableName.makeIdent()),
+                                    "toArray"),
+                            List.<JCExpression>nil()))));
+            whenArray.append(make().Exec(make().Assign(
+                    arrayLength.makeIdent(),
+                    make().Apply(null, 
+                            naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.arrayLength"),
+                            List.<JCExpression>of(arrayName.makeIdent())))));
+            ListBuffer<JCStatement> whenIterable = ListBuffer.<JCTree.JCStatement>lb();
+            whenIterable.append(make().Exec(make().Assign(
+                    arrayName.makeIdent(),
+                    makeNull())));
+            whenIterable.append(make().Exec(make().Assign(
+                    arrayLength.makeIdent(),
+                    make().Literal(0))));
+            if (optForArray && optForArraySequence) {
+                result.append(make().If(isArraySequenceName.makeIdent(),
+                        make().Block(0, whenArraySequence.toList()),
+                        make().If(isArrayName.makeIdent(),
+                            make().Block(0, whenArray.toList()),
+                            make().Block(0, whenIterable.toList()))));
+            } else {
+                result.append(make().If((optForArray ? isArrayName : isArraySequenceName).makeIdent(),
+                        make().Block(0, (optForArray ? whenArray : whenArraySequence).toList()),
+                        make().Block(0, whenIterable.toList())));
+            }
+            
+            getIter = make().Conditional(
+                    optForArray && optForArraySequence ? make().Binary(JCTree.OR, isArraySequenceName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isArraySequenceName.makeIdent(), 
+                    makeNull(), 
+                    make().Apply(null, makeSelect(iterableName.makeIdent(), "iterator"), List.<JCExpression> nil()));
+        } else {
+            getIter = at(node).Apply(null, makeSelect(iterableExpr, "iterator"), List.<JCExpression> nil());
+        }
         getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iteratorType, true, BoxingStrategy.BOXED, iteratorType);
         JCVariableDecl iteratorDecl = at(node).VarDef(make().Modifiers(0), iterName.asName(), iteratorTypeExpr, getIter);
+        // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
+        result.append(iteratorDecl);
         
-        List<JCStatement> loopBody = List.<JCStatement>nil();
+        ListBuffer<JCStatement> loopBody = ListBuffer.<JCStatement>lb();
+        
+        if(optForArray || optForArraySequence) {
+            JCExpression cond;
+            if (optForArray && optForArraySequence) {
+                cond = make().Binary(JCTree.OR, isArraySequenceName.makeIdent(), isArrayName.makeIdent());
+            } else if (optForArray) {
+                cond = isArrayName.makeIdent();
+            } else {
+                cond = isArraySequenceName.makeIdent();
+            }
+            loopBody.append(make().If(cond,
+                    make().Exec(make().Assign(iterationVarName.makeIdent(),
+                            make().Apply(null, 
+                                    naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.getObjectArray"), 
+                                    List.<JCExpression>of(arrayName.makeIdent(), 
+                                            make().Unary(JCTree.POSTINC, arrayIndex.makeIdent()))))),
+                    null));
+        }
+        
         if (itemDecls != null) {
-            loopBody = loopBody.appendList(itemDecls);
+            loopBody.appendList(itemDecls);
         }
 
         // The user-supplied contents of the loop
-        loopBody = loopBody.appendList(bodyStmts);
+        loopBody.appendList(bodyStmts);
         
         // ELEM_NAME = LOOP_VAR_NAME$iter$X.next()
         JCExpression iter_elem = make().Apply(null, makeSelect(iterName.makeIdent(), "next"), List.<JCExpression> nil());
@@ -1880,13 +2001,23 @@ public class StatementTransformer extends AbstractTransformer {
         // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
         JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
         JCExpression loopCond = make().Unary(JCTree.NOT, instof);
-        
-        // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
-        result = result.append(iteratorDecl);
+        if (optForArray || optForArraySequence) {
+            JCExpression cond;
+            if (optForArray && optForArraySequence) {
+                cond = make().Binary(JCTree.OR, isArraySequenceName.makeIdent(), isArrayName.makeIdent());
+            } else if (optForArray) {
+                cond = isArrayName.makeIdent();
+            } else {
+                cond = isArraySequenceName.makeIdent();
+            }
+            loopCond = make().Conditional(cond,
+                    make().Binary(JCTree.LT, arrayIndex.makeIdent(), arrayLength.makeIdent()), 
+                    make().Unary(JCTree.NOT, instof));
+        }
         
         // while (!(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
-        JCWhileLoop whileLoop = at(node).WhileLoop(loopCond, at(node).Block(0, loopBody));
-        return result.append(whileLoop);
+        JCWhileLoop whileLoop = at(node).WhileLoop(loopCond, at(node).Block(0, loopBody.toList()));
+        return result.append(whileLoop).toList();
     }
     
     
