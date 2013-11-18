@@ -48,7 +48,7 @@ public class GenerateJsVisitor extends Visitor
     private final EnclosingFunctionVisitor encloser = new EnclosingFunctionVisitor();
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess = new HashSet<>();
-    private final Set<String> generatedAttributes = new HashSet<>();
+    private final Set<Declaration> generatedAttributes = new HashSet<>();
     private final RetainedVars retainedVars = new RetainedVars();
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
@@ -1807,16 +1807,24 @@ public class GenerateJsVisitor extends Visitor
     /** Generate runtime metamodel info for an attribute declaration or definition. */
     private void generateAttributeMetamodel(Tree.TypedDeclaration that, final boolean addGetter, final boolean addSetter) {
         //No need to define all this for local values
-        if (that.getScope() instanceof Method)return;
+        Scope _scope = that.getScope();
+        while (_scope != null) {
+            if (_scope instanceof Declaration) {
+                if (_scope instanceof Method)return;
+                else break;
+            }
+            _scope = _scope.getContainer();
+        }
         Declaration d = that.getDeclarationModel();
         if (d instanceof Setter) d = ((Setter)d).getGetter();
         final String pname = names.getter(d);
-        if (!generatedAttributes.contains(pname)) {
+        if (!generatedAttributes.contains(d)) {
             if (d.isToplevel()) {
                 out("var ");
             } else if (outerSelf(d)) {
                 out(".");
             }
+            //issue 297 this is only needed in some cases
             out("$prop$", pname, "={$$metamodel$$:");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out("};"); endLine();
@@ -1824,7 +1832,7 @@ public class GenerateJsVisitor extends Visitor
                 out("exports.$prop$", pname, "=$prop$", pname);
                 endLine(true);
             }
-            generatedAttributes.add(pname);
+            generatedAttributes.add(d);
         }
         if (addGetter) {
             if (!d.isToplevel()) {
