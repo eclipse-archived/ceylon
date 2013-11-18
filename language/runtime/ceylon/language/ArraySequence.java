@@ -766,4 +766,22 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     protected TypeDescriptor $getReifiedElement$() {
         return $reifiedElement;
     }
+    
+    /** Gets the underlying array. Used for iteration using a C-style for */
+    @Ignore
+    public java.lang.Object[] $getArray$() {
+        return array;
+    }
+    
+    /** Gets the underlying first index. Used for iteration using a C-style for */
+    @Ignore
+    public int $getFirst$() {
+        return first;
+    }
+    
+    /** Gets the underlying length. Used for iteration using a C-style for */
+    @Ignore
+    public int $getLength$() {
+        return length;
+    }
 }
