@@ -286,6 +286,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     public abstract boolean loadPackage(Module module, String packageName, boolean loadDeclarations);
     
+    protected boolean searchAgain(Module module, String name) {
+        return false;
+    }
+    
     /**
      * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror
      * on cache misses.
@@ -314,8 +318,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             String cacheKey = cacheKeyByModule(module, name);
             // we use containsKey to be able to cache null results
-            if(classMirrorCache.containsKey(cacheKey))
-                return classMirrorCache.get(cacheKey);
+            if(classMirrorCache.containsKey(cacheKey)) {
+                ClassMirror cachedMirror = classMirrorCache.get(cacheKey);
+                if (cachedMirror != null || ! searchAgain(module, name)) {
+                    return cachedMirror;
+                }
+            }
             ClassMirror mirror = lookupNewClassMirror(module, name);
             // we even cache null results
             classMirrorCache.put(cacheKey, mirror);
@@ -324,6 +332,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
     }
+    /**
+     * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror
+     * on cache misses.
+     * 
+     * @param module the module in which we should find the class
+     * @param name the name of the Class to load
+     * @return a ClassMirror for the specified class, or null if not found.
+     */
 
     protected String cacheKeyByModule(Module module, String name) {
         // '/' is allowed in module version but not in module or class name, so we're good
@@ -3499,19 +3515,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(decl instanceof ClassOrInterface){
                 prefix = "C";
             }
+            String key;
             // ignore declarations which we do not cache, like member method/attributes
-            if(prefix != null){
-                declarationsByName.remove(cacheKeyByModule(module, prefix + fqn));
+            if(prefix != null) {
+                key = cacheKeyByModule(module, prefix + fqn);
+                if (declarationsByName.remove(key) == null) {
+                    declarationsByName.remove(key + "_");
+                }
                 if(otherPrefix != null)
-                    declarationsByName.remove(cacheKeyByModule(module, otherPrefix + fqn));
+                    key = cacheKeyByModule(module, otherPrefix + fqn);
+                    if (declarationsByName.remove(key) == null) {
+                        declarationsByName.remove(key + "_");
+                    }
+            }
+            
+            key = cacheKeyByModule(module, fqn);
+            if (classMirrorCache.remove(key) == null) {
+                classMirrorCache.remove(key + "_");
             }
         }
         
         for (Declaration decl : declarations) {
-            if (decl instanceof LazyClass || decl instanceof LazyInterface) {
-                Module module = Decl.getModuleContainer(decl.getContainer());
-                classMirrorCache.remove(cacheKeyByModule(module, decl.getQualifiedNameString().replace("::", ".")));
-            }
+            Module module = Decl.getModuleContainer(decl.getContainer());
         }
     }
     
