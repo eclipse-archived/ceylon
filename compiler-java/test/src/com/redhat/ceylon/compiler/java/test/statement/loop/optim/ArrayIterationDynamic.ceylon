@@ -24,7 +24,7 @@ class ArrayIterationDynamic() {
             print(element + 5);
         }
     }
-    /*void arrayOfCharacters(Iterable<Character> array) {
+    void arrayOfCharacters(Iterable<Character> array) {
         for (element in array) {
             print(element);
         }
@@ -51,5 +51,28 @@ class ArrayIterationDynamic() {
         for (i->f in array) {
             print(i+f);
         }
-    }*/
+    }
+    void arrayOfIntegersArraySequenceDisabled(Iterable<Integer> array) {
+        @disableOptimization:"ArraySequenceIterationDynamic"
+        for (element in array) {
+            print(element + 5);
+        }
+    }
+    void arrayOfIntegersArrayDisabled(Iterable<Integer> array) {
+        @disableOptimization:"ArrayIterationDynamic"
+        for (element in array) {
+            print(element + 5);
+        }
+    }
+    void arrayOfIntegersDisabled(Iterable<Integer> array) {
+        @disableOptimization:"ArraySequenceIterationDynamic"
+        @disableOptimization:"ArrayIterationDynamic"
+        for (element in array) {
+            print(element + 5);
+        }
+        @disableOptimization
+        for (element in array) {
+            print(element + 5);
+        }
+    }
 }

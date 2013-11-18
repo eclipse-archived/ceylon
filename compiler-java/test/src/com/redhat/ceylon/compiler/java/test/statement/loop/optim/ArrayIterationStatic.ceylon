@@ -35,12 +35,34 @@ class ArrayIterationStatic() {
             print(element + 5);
         }
     }
+    void arrayOfIntegersDisabled(Array<Integer> array) {
+        @disableOptimization:"ArrayIterationStatic"
+        @disableOptimization:"ArrayIterationDynamic"
+        for (element in array) {
+            print(element + 5);
+        }
+        @disableOptimization
+        for (element in array) {
+            print(element + 5);
+        }
+    }
     void arrayOfCharacters(Array<Character> array) {
         for (element in array) {
             print(element);
         }
     }
     void arrayOfInts(IntArray array) {
+        for (element in array.array) {
+            print(element + 5);
+        }
+    }
+    void arrayOfIntsDisabled(IntArray array) {
+        @disableOptimization:"JavaArrayIterationStatic"
+        @disableOptimization:"ArrayIterationDynamic"
+        for (element in array.array) {
+            print(element + 5);
+        }
+        @disableOptimization
         for (element in array.array) {
             print(element + 5);
         }

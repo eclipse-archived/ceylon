@@ -53,6 +53,10 @@ Integer arrayIterationDynamicBenchOptimizedRange() {
     Range<Integer> arg = 0..arrayIterationDynamicK;
     return arrayIterationDynamicBenchOptimized("Range", arg);
 }
+Integer arrayIterationDynamicBenchOptimizedComprehension() {
+    Iterable<Integer> arg = {for (i in 0..arrayIterationDynamicK) i};
+    return arrayIterationDynamicBenchOptimized("Comprehension", arg);
+}
 
 Integer arrayIterationDynamicBenchUnoptimizedArray() {
     Array<Integer> arg=Array(0..arrayIterationDynamicK);
