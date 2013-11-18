@@ -86,7 +86,7 @@ public class Package
     
     private List<Declaration> getMembersInternal() {
         List<Declaration> result = new ArrayList<Declaration>();
-        for (Unit unit: getUnits()) {
+        for (Unit unit: units) {
             for (Declaration d: unit.getDeclarations()) {
                 if (d.getContainer().equals(this)) {
                     result.add(d);
