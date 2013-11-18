@@ -10,7 +10,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -277,7 +276,8 @@ public class InvocationGenerator {
 
     /** Generate a list of PositionalArguments, optionally assigning a variable name to each one
      * and returning the variable names. */
-    List<String> generatePositionalArguments(Tree.Primary primary, Tree.ArgumentList that, List<Tree.PositionalArgument> args,
+    List<String> generatePositionalArguments(final Tree.Primary primary, final Tree.ArgumentList that,
+            final List<Tree.PositionalArgument> args,
             final boolean forceSequenced, final boolean generateVars) {
         if (!args.isEmpty()) {
             final List<String> argvars = new ArrayList<String>(args.size());
@@ -286,7 +286,7 @@ public class InvocationGenerator {
             ProducedType sequencedType=null;
             for (Tree.PositionalArgument arg : args) {
                 Tree.Expression expr;
-                Parameter pd = arg.getParameter();
+                final Parameter pd = arg.getParameter();
                 if (arg instanceof Tree.ListedArgument) {
                     if (!first) gen.out(",");
                     expr = ((Tree.ListedArgument) arg).getExpression();
@@ -390,21 +390,31 @@ public class InvocationGenerator {
                             arg.visit(gen);
                             gen.out(".$get(0)");
                             //Find out if there are more params
-                            final ParameterList moreParams;
-                            if (pd.getDeclaration() instanceof Method) {
-                                moreParams = ((Method)pd.getDeclaration()).getParameterLists().get(0);
-                            } else {
-                                moreParams = ((com.redhat.ceylon.compiler.typechecker.model.Class)pd.getDeclaration()).getParameterList();
-                            }
+                            final List<Parameter> moreParams;
+                            final Declaration pdd = pd.getDeclaration();
                             boolean found = false;
-                            int c = 1;
-                            for (Parameter restp : moreParams.getParameters()) {
-                                if (found) {
-                                    gen.out(",");
-                                    arg.visit(gen);
-                                    gen.out(".$get(", Integer.toString(c++), ")||undefined");
-                                } else {
-                                    found = restp.equals(pd);
+                            if (pdd instanceof Method) {
+                                moreParams = ((Method)pdd).getParameterLists().get(0).getParameters();
+                            } else if (pdd instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                                moreParams = ((com.redhat.ceylon.compiler.typechecker.model.Class)pdd).getParameterList().getParameters();
+                            } else {
+                                //Check the parameters of the primary (obviously a callable, so this is a Tuple)
+                                List<Parameter> cparms = gen.getTypeUtils().convertTupleToParameters(
+                                        primary.getTypeModel().getTypeArgumentList().get(1));
+                                cparms.remove(0);
+                                moreParams = cparms;
+                                found = true;
+                            }
+                            if (moreParams != null) {
+                                int c = 1;
+                                for (Parameter restp : moreParams) {
+                                    if (found) {
+                                        gen.out(",");
+                                        arg.visit(gen);
+                                        gen.out(".$get(", Integer.toString(c++), ")||undefined");
+                                    } else {
+                                        found = restp.equals(pd);
+                                    }
                                 }
                             }
                         }
