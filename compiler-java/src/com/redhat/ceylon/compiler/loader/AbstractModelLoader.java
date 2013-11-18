@@ -3499,19 +3499,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(decl instanceof ClassOrInterface){
                 prefix = "C";
             }
+            String key;
             // ignore declarations which we do not cache, like member method/attributes
-            if(prefix != null){
-                declarationsByName.remove(cacheKeyByModule(module, prefix + fqn));
+            if(prefix != null) {
+                key = cacheKeyByModule(module, prefix + fqn);
+                if (declarationsByName.remove(key) == null) {
+                    declarationsByName.remove(key + "_");
+                }
                 if(otherPrefix != null)
-                    declarationsByName.remove(cacheKeyByModule(module, otherPrefix + fqn));
+                    key = cacheKeyByModule(module, otherPrefix + fqn);
+                    if (declarationsByName.remove(key) == null) {
+                        declarationsByName.remove(key + "_");
+                    }
+            }
+            
+            key = cacheKeyByModule(module, fqn);
+            if (classMirrorCache.remove(key) == null) {
+                classMirrorCache.remove(key + "_");
             }
         }
         
         for (Declaration decl : declarations) {
-            if (decl instanceof LazyClass || decl instanceof LazyInterface) {
-                Module module = Decl.getModuleContainer(decl.getContainer());
-                classMirrorCache.remove(cacheKeyByModule(module, decl.getQualifiedNameString().replace("::", ".")));
-            }
+            Module module = Decl.getModuleContainer(decl.getContainer());
         }
     }
     
