@@ -58,7 +58,6 @@ import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCConditional;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
-import com.sun.tools.javac.tree.JCTree.JCForLoop;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
@@ -1200,12 +1199,15 @@ public class StatementTransformer extends AbstractTransformer {
             // java.lang.Object array = ITERABLE.toArray();
             result.add(makeVar(FINAL, indexableName,
                     makeIndexableType(),
-                    makeIndexable(getIterable())));
+                    makeIndexable()));
             
             // int length = java.lang.reflect.Array.getLength(array);
-            result.add(makeVar(FINAL, lengthName, 
-                    make().Type(syms().intType), 
-                    makeLengthExpr()));
+            JCExpression lengthExpr = makeLengthExpr();
+            if (lengthExpr != null) {
+                result.add(makeVar(FINAL, lengthName, 
+                        make().Type(syms().intType), 
+                        lengthExpr));
+            }
             
             // int i = 0;
             JCStatement iVar = makeVar(indexName, 
@@ -1268,7 +1270,7 @@ public class StatementTransformer extends AbstractTransformer {
             return getForIterator().getSpecifierExpression().getExpression().getTerm();
         }
 
-        protected JCBinary makeCondition() {
+        protected JCExpression makeCondition() {
             return make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent());
         }
 
@@ -1285,7 +1287,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected abstract JCExpression makeLengthExpr();
         
         /** Makes the expression for the thing to be iterated over */
-        protected abstract JCExpression makeIndexable(Tree.Term iterable);
+        protected abstract JCExpression makeIndexable();
     }
     
     /**
@@ -1294,9 +1296,9 @@ public class StatementTransformer extends AbstractTransformer {
      * iterated using a C-style {@code for}.
      */
     class ArrayIterationOptimization extends IndexedAccessIterationOptimization {
-
-        public static final String OPT_NAME = "ArrayIterationStatic";;
-
+        
+        public static final String OPT_NAME = "ArrayIterationStatic";
+        
         ArrayIterationOptimization(Tree.ForStatement stmt,
                 ProducedType elementType) {
             super(stmt, elementType, "array");
@@ -1308,25 +1310,16 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected JCExpression makeIndexable(Tree.Term iterable) {
-            JCExpression arrayExpr = null; 
-            if (iterable instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)iterable;
-                if ("array".equals(expr.getIdentifier().getText())) {
-                    if (expr.getPrimary() instanceof Tree.BaseMemberExpression) {
-                        if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {
-                            arrayExpr = expressionGen().transform((Tree.BaseMemberExpression)expr.getPrimary());
-                        }
-                    }
-                }
-            }
-            if (arrayExpr == null) {
-                JCExpression iterableExpr = expressionGen().transformExpression(iterable);
-                arrayExpr = make().Apply(null,
-                        naming.makeQualIdent(iterableExpr, "toArray"),
-                        List.<JCExpression>nil());
-            }
+        protected JCExpression makeIndexable() {
+            JCExpression iterableExpr = expressionGen().transformExpression(getIterable());
+            JCExpression arrayExpr = make().Apply(null,
+                    naming.makeQualIdent(iterableExpr, "toArray"),
+                    List.<JCExpression>nil());
             return arrayExpr;
+        }
+        
+        protected JCExpression makeCondition() {
+            return make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent());
         }
         
         @Override
@@ -1366,6 +1359,52 @@ public class StatementTransformer extends AbstractTransformer {
     
     /**
      * Optimized transformation for a {@code for} loop where the iterable is 
+     * statically known to be a Java array (int[], long[] Object[] etc)
+     * and therefore can be 
+     * iterated using a C-style {@code for}.
+     */
+    class JavaArrayIterationOptimization extends IndexedAccessIterationOptimization {
+        
+        public static final String OPT_NAME = "JavaArrayIterationStatic";
+        /** this is the IntArray, ObjectArray or whatever */
+        private final ProducedType javaArrayType;
+        
+        JavaArrayIterationOptimization(Tree.ForStatement stmt,
+                ProducedType elementType, ProducedType javaArrayType) {
+            super(stmt, elementType, "array");
+            this.javaArrayType = javaArrayType;
+            
+        }
+        
+        @Override
+        protected JCExpression makeIndexableType() {
+            return makeJavaType(javaArrayType);
+        }
+        
+        @Override
+        protected JCExpression makeIndexable() {
+            Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
+            return expressionGen().transform((Tree.BaseMemberExpression)expr.getPrimary());
+        }
+        
+        protected JCExpression makeCondition() {
+            JCExpression lengthExpr = naming.makeQualIdent(indexableName.makeIdent(), "length");
+            return make().Binary(JCTree.LT, indexName.makeIdent(), lengthExpr);
+        }
+        
+        @Override
+        protected JCExpression makeLengthExpr() {
+            return null;
+        }
+        
+        @Override
+        protected JCExpression makeIndexedAccess() {
+            return make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
+        }
+    }
+    
+    /**
+     * Optimized transformation for a {@code for} loop where the iterable is 
      * statically known to be an {@code ArraySequence}, and therefore can be 
      * iterated using a C-style {@code for}.
      * <pre>
@@ -1394,7 +1433,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected JCExpression makeIndexable(Tree.Term iterable) {
+        protected JCExpression makeIndexable() {
+            Tree.Term iterable = getIterable();
             return make().Apply(null,
                     naming.makeQualIdent(
                             seqName.makeIdent(), "$getArray$"),
@@ -1429,25 +1469,43 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     private ForStatementTransformation arrayIteration(Tree.ForStatement stmt) {
-        final String optName = ArrayIterationOptimization.OPT_NAME;
-        if (optimizationDisabled(stmt, optName)) {
-            return optimizationFailed(stmt, optName, 
-                    "optimization explicitly disabled by @disableOptimization");
-        }
         
         ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
         ProducedType elementType = typeFact().getArrayElementType(iterableType);
         if (elementType == null) {
-            return optimizationFailed(stmt, optName, 
+            return optimizationFailed(stmt, 
+                    new String[]{ArrayIterationOptimization.OPT_NAME, 
+                    JavaArrayIterationOptimization.OPT_NAME},
                     "static type of iterable in for statement is not Array");
         }
-        // it's an array
+        // Check for "for (x in javaArray.array)" where javaArray is e.g. IntArray
+        Tree.Term iterable = com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression());
+        if (iterable instanceof Tree.QualifiedMemberExpression) {
+            Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)iterable;
+            if ("array".equals(expr.getIdentifier().getText())) {
+                if (expr.getPrimary() instanceof Tree.BaseMemberExpression) {
+                    if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {
+                        if (isOptimizationDisabled(stmt, JavaArrayIterationOptimization.OPT_NAME)) {
+                            return optimizationDisabled(stmt, JavaArrayIterationOptimization.OPT_NAME);
+                        }
+                        return new JavaArrayIterationOptimization(stmt, elementType, expr.getPrimary().getTypeModel());
+                    }
+                }
+            }
+        }
+        if (isOptimizationRequired(stmt, JavaArrayIterationOptimization.OPT_NAME)) {
+            return optimizationFailed(stmt, JavaArrayIterationOptimization.OPT_NAME, "iterable expression wasn't of form javaArray.array");
+        }
+        if (isOptimizationDisabled(stmt, ArrayIterationOptimization.OPT_NAME)) {
+            return optimizationDisabled(stmt, ArrayIterationOptimization.OPT_NAME);
+        }
+        // it's an Ceylon Array
         return new ArrayIterationOptimization(stmt, elementType);
     }
     
     private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt) {
         final String optName = ArraySequenceIterationOptimization.OPT_NAME;
-        if (optimizationDisabled(stmt, optName)) {
+        if (isOptimizationDisabled(stmt, optName)) {
             return optimizationFailed(stmt, optName, 
                     "optimization explicitly disabled by @disableOptimization");
         }
@@ -1478,11 +1536,24 @@ public class StatementTransformer extends AbstractTransformer {
      * @return null
      */
     private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, String optName, String reason) {
-        if (CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
-                        "requireOptimization", optName)) {
-            log.error(getPosition(stmt), "ceylon.optim.failed", optName, reason);
+        return optimizationFailed(stmt, new String[]{optName}, reason);
+    }
+    private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, String[] optNames, String reason) {
+        for (String optName : optNames) {
+            if (CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
+                            "requireOptimization", optName)) {
+                log.error(getPosition(stmt), "ceylon.optim.failed", optName, reason);
+            }
         }
         return null;
+    }
+    
+    /**
+     * Returns null but logs an error the given optimization 
+     */
+    private <T,S extends Tree.StatementOrArgument> T optimizationDisabled(S stmt, String optName) {
+        return optimizationFailed(stmt, optName, 
+                "optimization explicitly disabled by @disableOptimization");
     }
     
     /**
@@ -1493,10 +1564,16 @@ public class StatementTransformer extends AbstractTransformer {
      * @param optName The name of the optimization
      * @return
      */
-    private <S extends Tree.StatementOrArgument> boolean optimizationDisabled(S stmt, String optName) {
+    private <S extends Tree.StatementOrArgument> boolean isOptimizationDisabled(S stmt, String optName) {
         return CodegenUtil.hasCompilerAnnotation(stmt, "disableOptimization")
                 || CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
                         "disableOptimization", optName);
+    }
+    
+    private <S extends Tree.StatementOrArgument> boolean isOptimizationRequired(S stmt, String optName) {
+        return optName == null ? CodegenUtil.hasCompilerAnnotation(stmt, "requireOptimization")
+                : CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
+                        "requireOptimization", optName);
     }
     
     /**
@@ -1507,7 +1584,7 @@ public class StatementTransformer extends AbstractTransformer {
      */
     private ForStatementTransformation rangeOpIteration(Tree.ForStatement stmt) {
         final String optName = RangeOpIterationOptimization.OPT_NAME;
-        if (optimizationDisabled(stmt, optName)) {
+        if (isOptimizationDisabled(stmt, optName)) {
             return optimizationFailed(stmt, optName, 
                     "optimization explicitly disabled by @disableOptimization");
         }
