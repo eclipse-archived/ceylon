@@ -30,6 +30,13 @@ Integer spread5(Integer a, Integer b, Integer c, Integer d=20) {
   return a+b+c-d;
 }
 
+String testIssue296(String a, String b="B") {
+  return a+" "+b;
+}
+
+T issue296<T>(T(String, String=) callable, [String, String=] tup)
+        => callable(*tup);
+
 void testSpread() {
   value ints = [8,9,10];
   check(spread1(1,2,3)==6, "spread [1]");
@@ -45,4 +52,7 @@ void testSpread() {
   check(spread3(1,*ints)==28, "spread [11]");
   check(spread4(*ints)==27, "spread [12]");
   check(spread5(*ints)==7, "spread [13]");
+  check(testIssue296("one") == "one B", "issue 296 [1]");
+  check(issue296(testIssue296,["two", "three"])=="two three", "issue 296 [2]");
+  check(issue296(testIssue296,["four"])=="four B", "issue 296 [3]");
 }
