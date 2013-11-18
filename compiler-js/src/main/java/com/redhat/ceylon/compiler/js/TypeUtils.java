@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -350,6 +351,55 @@ public class TypeUtils {
             gen.out("}");
         }
         gen.out("]");
+    }
+
+    /** Turns a Tuple type into a parameter list. */
+    List<Parameter> convertTupleToParameters(ProducedType _tuple) {
+        ArrayList<Parameter> rval = new ArrayList<>();
+        int pos = 0;
+        TypeDeclaration tdecl = _tuple.getDeclaration();
+        while (!(empty.equals(tdecl) || tdecl instanceof TypeParameter)) {
+            Parameter _p = null;
+            if (tuple.equals(tdecl) || (tdecl.getCaseTypeDeclarations() != null
+                    && tdecl.getCaseTypeDeclarations().size()==2
+                    && tdecl.getCaseTypeDeclarations().contains(tuple))) {
+                _p = new Parameter();
+                _p.setModel(new Value());
+                if (tuple.equals(tdecl)) {
+                    _p.getModel().setType(_tuple.getTypeArgumentList().get(1));
+                    _tuple = _tuple.getTypeArgumentList().get(2);
+                } else {
+                    //Handle union types for defaulted parameters
+                    for (ProducedType mt : _tuple.getCaseTypes()) {
+                        if (tuple.equals(mt.getDeclaration())) {
+                            _p.getModel().setType(mt.getTypeArgumentList().get(1));
+                            _tuple = mt.getTypeArgumentList().get(2);
+                            break;
+                        }
+                    }
+                    _p.setDefaulted(true);
+                }
+            } else if (tdecl.inherits(sequential)) {
+                //Handle Sequence, for nonempty variadic parameters
+                _p = new Parameter();
+                _p.setModel(new Value());
+                _p.getModel().setType(_tuple.getTypeArgumentList().get(0));
+                _p.setSequenced(true);
+                _tuple = empty.getType();
+            }
+            else {
+                if (pos > 100) {
+                    return rval;
+                }
+            }
+            if (_tuple != null) tdecl = _tuple.getDeclaration();
+            if (_p != null) {
+                _p.setName("arg" + pos);
+                rval.add(_p);
+            }
+            pos++;
+        }
+        return rval;
     }
 
     /** This method encodes the type parameters of a Tuple in the same way
