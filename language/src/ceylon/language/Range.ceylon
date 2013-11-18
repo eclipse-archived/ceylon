@@ -63,7 +63,7 @@ shared final class Range<Element>(first, last)
     shared actual Element[] rest {
         if (size==1) { return {}; }
         Element n = next(first);
-        return n==last then {} else Range<Element>(n,last);
+        return Range<Element>(n,last);
     }
     
     "The element of the range that occurs `n` values after
