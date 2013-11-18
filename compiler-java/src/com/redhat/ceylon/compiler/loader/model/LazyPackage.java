@@ -354,13 +354,14 @@ public class LazyPackage extends Package {
     @Override
     public void removeUnit(Unit unit) {
         synchronized(modelLoader){
-            if (lazyUnits.remove(unit)) {
+            if (unit.getFilename().endsWith(".class")) {
+                lazyUnits.remove(unit);
                 for (Declaration d : unit.getDeclarations()) {
                     compiledDeclarations.remove(d);
                     // TODO : remove the declaration from the declaration map in AbstractModelLoader
                 }
                 modelLoader.removeDeclarations(unit.getDeclarations());
-            } else {
+            } else {            
                 super.removeUnit(unit);
             }
         }
