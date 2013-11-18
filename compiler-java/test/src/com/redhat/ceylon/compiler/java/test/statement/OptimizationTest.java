@@ -105,31 +105,8 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
-    @Ignore
-    public void testLopOptimArrayIterationDynamicBench(){
-        compile("loop/optim/ArrayIterationDynamicBench.ceylon");
-        long optArray = (Long)runThrice("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationDynamicBenchOptimizedArray");
-        /*
-        long optArraySequence = (Long)runThrice("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationDynamicBenchOptimizedArraySequence");
-        
-        long optRange = (Long)runThrice("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationDynamicBenchOptimizedRange");
-        
-        long unoptArray = (Long)runThrice("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationDynamicBenchUnoptimizedArray");
-        
-        long unoptArraySequence = (Long)runThrice("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationDynamicBenchUnoptimizedArraySequence");
-        
-        long unoptRange = (Long)runThrice("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationDynamicBenchUnoptimizedRange");
-        
-        //long java = arrayIterationStaticJava();
-        //java = arrayIterationStaticJava();
-        */
-        System.out.println("Optimized with Array argument took " + optArray/1_000_000 + "ms");
-        //System.out.println("Optimized with ArraySequence argument took " + optArraySequence/1_000_000 + "ms");
-        //System.out.println("Optimized with Range argument took " + optRange/1_000_000 + "ms");
-        //System.out.println("Unoptimized with Array argument took " + unoptArray/1_000_000 + "ms");
-        //System.out.println("Unoptimized with ArraySequence argument took " + unoptArraySequence/1_000_000 + "ms");
-        //System.out.println("Unoptimized with Range argument took " + unoptRange/1_000_000 + "ms");
-        //System.out.println("Java took " + java/1_000_000 + "ms");
+    public void testLopOptimCorrect(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct", "loop/optim/Correct.ceylon");
     }
     
 }
