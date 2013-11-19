@@ -44,6 +44,7 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 import org.jboss.modules.ModuleSpec.Builder;
+import org.jboss.modules.NativeLibraryResourceLoader;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
@@ -87,7 +88,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 
-        BOOTSTRAP = new HashSet<ModuleIdentifier>();
+        BOOTSTRAP = new HashSet<>();
         BOOTSTRAP.add(LANGUAGE);
         BOOTSTRAP.add(COMMON);
         BOOTSTRAP.add(CMR);
@@ -99,8 +100,8 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
 
-        Set<String> jdkPaths = new HashSet<String>();
-        JDK_MODULE_NAMES = new HashSet<String>();
+        Set<String> jdkPaths = new HashSet<>();
+        JDK_MODULE_NAMES = new HashSet<>();
         // JDK
         for (String module : JDKUtils.getJDKModuleNames()) {
             Set<String> paths = JDKUtils.getJDKPathsByModule(module);
@@ -118,8 +119,8 @@ public class CeylonModuleLoader extends ModuleLoader {
     }
 
     private RepositoryManager repository;
-    private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<ModuleIdentifier, List<DependencySpec>>();
-    private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<ModuleIdentifier, ModuleIdentifier, Boolean>();
+    private Map<ModuleIdentifier, List<DependencySpec>> dependencies = new ConcurrentHashMap<>();
+    private Graph<ModuleIdentifier, ModuleIdentifier, Boolean> graph = new Graph<>();
 
     public CeylonModuleLoader(RepositoryManager repository) throws Exception {
         if (repository == null)
@@ -222,11 +223,16 @@ public class CeylonModuleLoader extends ModuleLoader {
             final File moduleFile = artifact.artifact();
             final boolean isDefault = RepositoryManager.DEFAULT_MODULE.equals(moduleIdentifier.getName());
 
-            final List<DependencySpec> deps = new ArrayList<DependencySpec>();
+            final List<DependencySpec> deps = new ArrayList<>();
+
             ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
+            // add module's jar
             ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile);
             ResourceLoaderSpec rls = ResourceLoaderSpec.createResourceLoaderSpec(resourceLoader, PathFilters.acceptAll());
             builder.addResourceRoot(rls);
+            // add potential native lib lookup
+            ResourceLoader nativeLoader = new NativeLibraryResourceLoader(new File(moduleFile.getParent(), "lib"));
+            builder.addResourceRoot(ResourceLoaderSpec.createResourceLoaderSpec(nativeLoader));
 
             Graph.Vertex<ModuleIdentifier, Boolean> vertex = graph.createVertex(moduleIdentifier, moduleIdentifier);
 
@@ -235,7 +241,7 @@ public class CeylonModuleLoader extends ModuleLoader {
             deps.add(lds);
 
             if (isDefault == false) {
-                Node<ArtifactResult> root = new Node<ArtifactResult>();
+                Node<ArtifactResult> root = new Node<>();
                 for (ArtifactResult i : artifact.dependencies()) {
                     final String name = i.name();
 

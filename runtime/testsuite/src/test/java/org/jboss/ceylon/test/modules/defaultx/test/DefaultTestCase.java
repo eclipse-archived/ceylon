@@ -51,6 +51,7 @@ public class DefaultTestCase extends ModulesTest {
     @Test
     public void testDefaultRun() throws Throwable {
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "default.car");
+        module.addClasses(org.jboss.acme.module_.class);
         module.addClasses(org.jboss.acme.run_.class);
 
         testArchive(module, "org.jboss.acme.run");

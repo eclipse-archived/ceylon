@@ -63,6 +63,16 @@
     </build>
 
     <dependencies>
+        <!-- dependency>
+            <groupId>org.jogamp.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all</artifactId>
+            <version>2.1.2</version>
+        </dependency -->
         <dependency>
             <groupId>ceylon.language</groupId>
             <artifactId>ceylon-language</artifactId>

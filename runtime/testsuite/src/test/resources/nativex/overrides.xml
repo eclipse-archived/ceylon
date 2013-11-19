@@ -1,0 +1,5 @@
+<maven-overrides>
+    <artifact groupId="org.jogamp.jogl" artifactId="jogl-all" version="2.1.2">
+        <add groupId="org.jogamp.gluegen" artifactId="gluegen-rt" version="2.1.2"/>
+    </artifact>
+</maven-overrides>
