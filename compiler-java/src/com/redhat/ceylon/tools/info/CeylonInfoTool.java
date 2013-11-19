@@ -110,15 +110,6 @@ public class CeylonInfoTool extends RepoUsingTool {
 
     @Override
     public void initialize() {
-    }
-    
-    @Override
-    public void run() throws Exception {
-        setSystemProperties();
-        if (!showIncompatible) {
-            binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
-            binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
-        }
         if (showType != null) {
             if ("jvm".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.JVM;
@@ -129,9 +120,17 @@ public class CeylonInfoTool extends RepoUsingTool {
             } else if ("all".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.ALL;
             } else {
-                errorMsg("illegal.type", showType);
-                return;
+                throw new IllegalArgumentException(CeylonInfoMessages.msg("illegal.type", showType));
             }
+        }
+    }
+    
+    @Override
+    public void run() throws Exception {
+        setSystemProperties();
+        if (!showIncompatible) {
+            binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
+            binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
         }
         for (ModuleSpec module : modules) {
             String name = module.getName();
