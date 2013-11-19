@@ -1165,6 +1165,9 @@ public class StatementTransformer extends AbstractTransformer {
             transformation = rangeOpIteration(stmt);
         }
         if (transformation == null) {
+            transformation = rangeIteration(stmt);
+        }
+        if (transformation == null) {
             transformation = new ForStatementTransformation(stmt);
         }
         return transformation.transform();
@@ -1233,7 +1236,8 @@ public class StatementTransformer extends AbstractTransformer {
                 SyntheticName entryName = naming.alias("entry");
                 JCStatement entryVariable = makeVar(FINAL, entryName, 
                         makeJavaType(elementType),
-                        elementGet);ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
+                        elementGet);
+                ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
                 JCStatement keyVariable = makeVar(FINAL, ((Tree.KeyValueIterator)forIterator).getKeyVariable().getIdentifier().getText(), 
                         makeJavaType(keyType), 
@@ -1260,22 +1264,13 @@ public class StatementTransformer extends AbstractTransformer {
                     block));
             return result;
         }
-
-        protected Tree.ForIterator getForIterator() {
-            Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
-            return forIterator;
-        }
         
-        protected Tree.Term getIterable() {
-            return getForIterator().getSpecifierExpression().getExpression().getTerm();
-        }
-
         protected JCExpression makeCondition() {
             return make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent());
         }
-
+        
         protected abstract JCExpression makeIndexableType();
-
+        
         protected JCLiteral makeIndexInit() {
             return make().Literal(0);
         }
@@ -1518,6 +1513,140 @@ public class StatementTransformer extends AbstractTransformer {
         // it's an array sequence
         return new ArraySequenceIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
     }
+    
+    /**
+     * Optimized transformation for a {@code for} loop where the iterable is 
+     * statically known to be a {@code Range}, and therefore can be 
+     * iterated using a C-style {@code for}.
+     * <pre>
+     * final Range<Element> range = RANGE_EXPR;
+     * final Element last = range.getLast();
+     * ELEMENT_TYPE element = first;
+     * for (Element current = first; 
+     *          current.compare(last) == (range.decreasing ? larger : smaller); 
+     *          current = range.decreasing ? current.predecessor ? current.successor) {
+     *     TRANSFORMED_BLOCK
+     * }
+     * </pre>
+     */
+    class RangeIterationOptimization extends ForStatementTransformation {
+        
+        final static String OPT_NAME = "RangeIterationStatic";
+        
+        final ProducedType iteratedType;
+        
+        private SyntheticName rangeName;
+        
+        private SyntheticName lastName;
+        
+        private SyntheticName decreasingName;
+        
+        private SyntheticName itemName;
+        
+        public RangeIterationOptimization(Tree.ForStatement stmt,
+                ProducedType iteratedType) {
+            super(stmt);
+            this.iteratedType = iteratedType;
+            this.rangeName = naming.alias("range");
+            this.lastName = naming.alias("last");
+            this.decreasingName = naming.alias("deceasing");
+            this.itemName = naming.alias("item");
+        }
+        
+        protected ListBuffer<JCStatement> transformForClause() {
+            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            
+            // final Range<Element> range = RANGE_EXPR;
+            result.add(makeVar(FINAL, rangeName, 
+                    makeJavaType(getIterable().getTypeModel()), 
+                    expressionGen().transformExpression(getIterable())));
+            
+            // final Element last = range.getLast();
+            result.add(makeVar(FINAL, lastName, 
+                    makeJavaType(iteratedType, JT_NO_PRIMITIVES), 
+                    make().Apply(null,
+                            naming.makeQualIdent(rangeName.makeIdent(), "getLast"),
+                            List.<JCExpression>nil())));
+            
+            // final boolean decreasing = range.getDecreasing();
+            result.add(makeVar(FINAL, decreasingName, 
+                    make().Type(syms().booleanType), 
+                    make().Apply(null,
+                            naming.makeQualIdent(rangeName.makeIdent(), "getDecreasing"),
+                            List.<JCExpression>nil())));
+            
+            List<JCStatement> transformedBlock = transformBlock(getBlock());
+            JCVariableDecl init = makeVar(itemName, 
+                    makeJavaType(iteratedType, JT_NO_PRIMITIVES),
+                    make().Apply(null, naming.makeQualIdent(rangeName.makeIdent(), "getFirst"),
+                            List.<JCExpression>nil()));
+            
+            Tree.ForIterator iterator = getForIterator();
+            if (iterator instanceof Tree.ValueIterator) {
+                ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
+                transformedBlock = transformedBlock.prepend(makeVar(FINAL, getElementOrKeyVariable(), 
+                        makeJavaType(iteratedType), 
+                        expressionGen().applyErasureAndBoxing(itemName.makeIdent(),
+                                iteratedType, true, BoxingStrategy.UNBOXED, iteratedType)));
+            } else {
+                // Note we don't need to handle KeyValueIterator because Entry is final
+                // and doesn't satisfy the constraints of Range
+                throw new RuntimeException();
+            }
+            
+            // TODO Generalize for Range.step();
+            
+            // next.compare(last) == (range.getDecreasing() ? larger_.get_() : smaller_.get_());
+            // Note we cheat slightly here: We do a "item != larger", rather than using .equals()
+            // but it amounts to the same thing.
+            JCExpression cond = make().Binary(JCTree.NE, 
+                    make().Apply(null, 
+                        naming.makeQualIdent(itemName.makeIdent(), "compare"), 
+                        List.<JCExpression>of(lastName.makeIdent())),
+                    make().Conditional(decreasingName.makeIdent(), 
+                            make().Apply(null, 
+                                    naming.makeLanguageValue("smaller"),
+                                    List.<JCExpression>nil()),
+                            make().Apply(null, 
+                                    naming.makeLanguageValue("larger"),
+                                    List.<JCExpression>nil())));
+            
+            // next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor()) {
+            JCExpressionStatement incr = make().Exec(make().Assign(itemName.makeIdent(), 
+                    make().Conditional(decreasingName.makeIdent(),
+                            make().Apply(null, 
+                                    naming.makeQualIdent(itemName.makeIdent(), "getPredecessor"), 
+                                    List.<JCExpression>nil()),
+                            make().Apply(null, 
+                                    naming.makeQualIdent(itemName.makeIdent(), "getSuccessor"), 
+                                    List.<JCExpression>nil()))));
+            
+            JCStatement block = make().Block(0, transformedBlock);
+            result.add(make().ForLoop(List.<JCStatement>of(init), 
+                    cond, 
+                    List.<JCExpressionStatement>of(incr), block));
+            
+            return result;
+        }
+
+        
+    }
+    
+    private ForStatementTransformation rangeIteration(Tree.ForStatement stmt) {
+        final String optName = RangeIterationOptimization.OPT_NAME;
+        if (isOptimizationDisabled(stmt, optName)) {
+            return optimizationFailed(stmt, optName, 
+                    "optimization explicitly disabled by @disableOptimization");
+        }
+        
+        ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
+        if (iterableType.getSupertype(typeFact().getRangeDeclaration()) == null) {
+            return optimizationFailed(stmt, optName, 
+                    "static type of iterable in for statement is not Range");
+        }
+        // it's a range
+        return new RangeIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
+    }
 
     private boolean isRangeOf(Tree.RangeOp range, ProducedType ofType) {
         ProducedType rangeType = range.getTypeModel();
@@ -1676,6 +1805,37 @@ public class StatementTransformer extends AbstractTransformer {
         
         ForStatementTransformation(Tree.ForStatement stmt) {
             this.stmt = stmt;
+        }
+        
+        protected final Tree.ForIterator getForIterator() {
+            Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
+            return forIterator;
+        }
+        
+        protected final Tree.Term getIterable() {
+            return getForIterator().getSpecifierExpression().getExpression().getTerm();
+        }
+        
+        protected final boolean isValueIterator() {
+            return getForIterator() instanceof Tree.ValueIterator;
+        }
+        
+        protected final String getElementOrKeyVariable() {
+            Tree.ForIterator iterator = getForIterator();
+            if (iterator instanceof Tree.ValueIterator) {
+                return ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
+            } else if (iterator instanceof Tree.KeyValueIterator) {
+                return ((Tree.KeyValueIterator)iterator).getKeyVariable().getIdentifier().getText();
+            }
+            return null;
+        }
+        
+        protected final String getValueVariable() {
+            Tree.ForIterator iterator = getForIterator();
+            if (iterator instanceof Tree.KeyValueIterator) {
+                return ((Tree.KeyValueIterator)iterator).getKeyVariable().getIdentifier().getText();
+            }
+            return null;
         }
         
         protected List<JCStatement> transform() {
