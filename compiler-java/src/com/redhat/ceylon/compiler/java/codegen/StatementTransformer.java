@@ -1542,11 +1542,17 @@ public class StatementTransformer extends AbstractTransformer {
         private SyntheticName decreasingName;
         
         private SyntheticName itemName;
+
+        private final Tree.Term step;
+
+        private final Tree.Primary steppedRange;
         
         public RangeIterationOptimization(Tree.ForStatement stmt,
-                ProducedType iteratedType) {
+                ProducedType iteratedType, Tree.Primary steppedRange, Tree.Term step) {
             super(stmt);
             this.iteratedType = iteratedType;
+            this.steppedRange = steppedRange;
+            this.step = step;
             this.rangeName = naming.alias("range");
             this.lastName = naming.alias("last");
             this.decreasingName = naming.alias("deceasing");
@@ -1556,11 +1562,16 @@ public class StatementTransformer extends AbstractTransformer {
         protected ListBuffer<JCStatement> transformForClause() {
             ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
             
-            // final Range<Element> range = RANGE_EXPR;
-            result.add(makeVar(FINAL, rangeName, 
-                    makeJavaType(getIterable().getTypeModel()), 
-                    expressionGen().transformExpression(getIterable())));
-            
+            if (steppedRange != null) {
+                result.add(makeVar(FINAL, rangeName,
+                        makeJavaType(steppedRange.getTypeModel()),
+                        expressionGen().transformExpression(steppedRange)));
+            } else {
+             // final Range<Element> range = RANGE_EXPR;
+                result.add(makeVar(FINAL, rangeName,
+                        makeJavaType(getIterable().getTypeModel()),
+                        expressionGen().transformExpression(getIterable())));
+            }
             // final Element last = range.getLast();
             result.add(makeVar(FINAL, lastName, 
                     makeJavaType(iteratedType, JT_NO_PRIMITIVES), 
@@ -1594,17 +1605,15 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new RuntimeException();
             }
             
-            // TODO Generalize for Range.step();
-            
             // next.compare(last) == (range.getDecreasing() ? larger_.get_() : smaller_.get_());
             // Note we cheat slightly here: We do a "item != larger", rather than using .equals()
             // but it amounts to the same thing.
-            JCExpression cond = make().Binary(JCTree.NE, 
-                    make().Apply(null, 
-                        naming.makeQualIdent(itemName.makeIdent(), "compare"), 
+            JCExpression cond = make().Binary(step == null ? JCTree.NE : JCTree.EQ,
+                    make().Apply(null,
+                        naming.makeQualIdent(itemName.makeIdent(), "compare"),
                         List.<JCExpression>of(lastName.makeIdent())),
-                    make().Conditional(decreasingName.makeIdent(), 
-                            make().Apply(null, 
+                    make().Conditional(decreasingName.makeIdent(),
+                            make().Apply(null,
                                     naming.makeLanguageValue("smaller"),
                                     List.<JCExpression>nil()),
                             make().Apply(null, 
@@ -1612,7 +1621,7 @@ public class StatementTransformer extends AbstractTransformer {
                                     List.<JCExpression>nil())));
             
             // next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor()) {
-            JCExpressionStatement incr = make().Exec(make().Assign(itemName.makeIdent(), 
+            JCExpressionStatement incr = make().Exec(make().Assign(itemName.makeIdent(),
                     make().Conditional(decreasingName.makeIdent(),
                             make().Apply(null, 
                                     naming.makeQualIdent(itemName.makeIdent(), "getPredecessor"), 
@@ -1621,10 +1630,46 @@ public class StatementTransformer extends AbstractTransformer {
                                     naming.makeQualIdent(itemName.makeIdent(), "getSuccessor"), 
                                     List.<JCExpression>nil()))));
             
-            JCStatement block = make().Block(0, transformedBlock);
-            result.add(make().ForLoop(List.<JCStatement>of(init), 
-                    cond, 
-                    List.<JCExpressionStatement>of(incr), block));
+            if (step == null) {
+                result.add(make().ForLoop(List.<JCStatement>of(init), 
+                        cond, 
+                        List.<JCExpressionStatement>of(incr), 
+                        make().Block(0, transformedBlock)));
+            } else {
+                /*for (long kk = 0; kk < step; kk++) {
+                    next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor();
+                    if (next.compare(last) == (range.getDecreasing() ? smaller_.get_() : larger_.get_())) {
+                        break outer;
+                    }
+                }*/
+                SyntheticName labelName = naming.alias("outer");
+                
+                if (!stmt.getExits() && !getBlock().getDefinitelyReturns()) {
+                    SyntheticName stepName = naming.alias("step");
+                    result.add(makeVar(FINAL, stepName,
+                            make().Type(syms().longType),
+                            expressionGen().transformExpression(step,
+                                    BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType())));
+                    SyntheticName stepCounterName = naming.alias("stepi");
+                    
+                    JCStatement stepBlock = make().Block(0, List.<JCStatement>of(
+                            incr,
+                            make().If(cond, make().Break(labelName.asName()), null)));
+                    
+                    JCStatement stepLoop = make().ForLoop(
+                            List.<JCStatement>of(makeVar(stepCounterName, make().Type(syms().longType), makeLong(0))),
+                            make().Binary(JCTree.LT, stepCounterName.makeIdent(), stepName.makeIdent()),
+                            List.<JCExpressionStatement>of(make().Exec(make().Unary(JCTree.POSTINC, stepCounterName.makeIdent()))),
+                            stepBlock);
+                    
+                    transformedBlock = transformedBlock.append(stepLoop);
+                }
+                
+                JCStatement block = make().Block(0, transformedBlock);
+                
+                result.add(make().Labelled(labelName.asName(), 
+                        make().ForLoop(List.<JCStatement>of(init), null, List.<JCExpressionStatement>nil(), block)));
+            }
             
             return result;
         }
@@ -1640,12 +1685,47 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
-        if (iterableType.getSupertype(typeFact().getRangeDeclaration()) == null) {
-            return optimizationFailed(stmt, optName, 
-                    "static type of iterable in for statement is not Range");
+        
+        if (iterableType.getSupertype(typeFact().getRangeDeclaration()) != null) {
+            // it's a range
+            return new RangeIterationOptimization(stmt, typeFact().getIteratedType(iterableType), null, null);
         }
-        // it's a range
-        return new RangeIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
+        
+        // Check for "for (item in range.by(step))" where range is not a
+        // Range<Integer> (in the Integer case there's an optimization in 
+        // Range.by() which performs better than this optimization)
+        Tree.Term iterableTerm = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTerm();
+        if (iterableTerm instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression invocation = (Tree.InvocationExpression)iterableTerm;
+            if (invocation.getPrimary() instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression)invocation.getPrimary();
+                ProducedType primaryType = qme.getPrimary().getTypeModel();
+                ProducedType rangeType = primaryType.getSupertype(typeFact().getRangeDeclaration());
+                if (rangeType != null
+                        && !rangeType.isSubtypeOf(typeFact().getRangeType(typeFact().getIntegerDeclaration().getType()))) {
+                    if ("by".equals(qme.getIdentifier().getText())) {
+                        Tree.Term step = null;
+                        if (invocation.getPositionalArgumentList() != null) {
+                            Tree.PositionalArgument positionalArgument = invocation.getPositionalArgumentList().getPositionalArguments().get(0);
+                            if (positionalArgument instanceof Tree.ListedArgument) {
+                                step = ((Tree.ListedArgument)positionalArgument).getExpression().getTerm();
+                            }
+                        } else if (invocation.getNamedArgumentList() != null) {
+                            Tree.NamedArgument positionalArgument = invocation.getNamedArgumentList().getNamedArguments().get(0);
+                            if (positionalArgument instanceof Tree.SpecifiedArgument) {
+                                step = ((Tree.SpecifiedArgument)positionalArgument).getSpecifierExpression().getExpression().getTerm();
+                            }
+                        }
+                        return new RangeIterationOptimization(stmt, 
+                                typeFact().getIteratedType(iterableType), 
+                                qme.getPrimary(), step);
+                    }
+                }
+            }
+        }
+        
+        return optimizationFailed(stmt, optName, 
+                "static type of iterable in for statement is not Range");
     }
 
     private boolean isRangeOf(Tree.RangeOp range, ProducedType ofType) {
