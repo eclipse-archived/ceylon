@@ -206,7 +206,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                         // There seems to be source code that has the proper version
                         // Let's see if we can compile it...
                         if (!runCompiler(repoMgr, name, type)) {
-                            return null;
+                            throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                         }
                         // All okay it seems, let's use this version
                         versions = srcVersions;
@@ -235,7 +235,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     String srcver = srcVersions.iterator().next().getVersion();
                     if (!checkCompilation || shouldRecompile(checkCompilation, repoMgr, name, srcver, type)) {
                         if (!runCompiler(repoMgr, name, type)) {
-                            return null;
+                            throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                         }
                         // All okay it seems, let's use this version
                         versions = srcVersions;
