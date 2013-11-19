@@ -45,9 +45,6 @@ public class RepositoryTestCase extends ModulesTest {
         // repo
         extra.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString());
         extra.add(getRepo().getPath());
-        // runnable
-        extra.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.RUN.toString());
-        extra.add("moduletest.helloworld");
 
         execute("moduletest/0.1", extra);
     }

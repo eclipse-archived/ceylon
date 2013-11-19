@@ -19,10 +19,7 @@ package ceylon.modules.api.runtime;
 
 import java.lang.reflect.Method;
 import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.security.PrivilegedExceptionAction;
-
-import org.jboss.modules.Module;
 
 /**
  * Security actions.
@@ -65,25 +62,6 @@ final class SecurityActions {
         }
     }
 
-    /**
-     * Get classloader from a module.
-     *
-     * @param module the current module
-     * @return module's classloader
-     */
-    static ClassLoader getClassLoader(final Module module) {
-        final SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                public ClassLoader run() {
-                    return module.getClassLoader();
-                }
-            });
-        } else {
-            return module.getClassLoader();
-        }
-    }
-    
     public static ClassLoader setContextClassLoader(final ClassLoader cl) throws Exception {
         final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {

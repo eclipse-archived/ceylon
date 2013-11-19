@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>5</version>
+        <version>10</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>ceylon</groupId>
@@ -30,12 +30,15 @@
     </organization>
 
     <properties>
-        <version.com.redhat.ceylon.language>0.6</version.com.redhat.ceylon.language>
-        <version.com.redhat.ceylon.common>0.6</version.com.redhat.ceylon.common>
+        <version.com.redhat.ceylon.language>1.0.0</version.com.redhat.ceylon.language>
+        <version.com.redhat.ceylon.common>1.0.0</version.com.redhat.ceylon.common>
         <version.com.redhat.ceylon.cmr>1.0.0-SNAPSHOT</version.com.redhat.ceylon.cmr>
         <version.org.jboss.modules>1.1.3.GA</version.org.jboss.modules>
         <version.org.jboss.shrinkwrap>1.1.0</version.org.jboss.shrinkwrap>
         <version.junit>4.10</version.junit>
+        <!-- Maven -->
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
     </properties>
 
     <modules>
@@ -56,11 +59,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0</version>
                 <configuration>
                     <debug>true</debug>
-                    <source>1.6</source>
-                    <target>1.6</target>
                 </configuration>
             </plugin>
             <!-- define that we wish to create src jars -->
@@ -89,7 +89,7 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>1.6</version>
+                                    <version>1.7</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -100,7 +100,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.3</version>
                 <configuration>
                     <systemProperties>
                         <property>
@@ -121,25 +120,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.0-beta-9</version>
                 <configuration>
                     <tagBase>https://svn.jboss.org/repos/ceylon/modules/tags</tagBase>
                 </configuration>
             </plugin>
         </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-idea-plugin</artifactId>
-                    <version>2.2</version>
-                    <configuration>
-                        <downloadSources>true</downloadSources>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
 
     </build>
 
@@ -148,7 +133,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.0.1</version>
                 <configuration>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <!-- Optional directory to put findbugs xml report -->
@@ -190,6 +174,11 @@
                 <groupId>com.redhat.ceylon</groupId>
                 <artifactId>ceylon-common</artifactId>
                 <version>${version.com.redhat.ceylon.common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-api</artifactId>
+                <version>${version.com.redhat.ceylon.cmr}</version>
             </dependency>
             <dependency>
                 <groupId>com.redhat.ceylon.cmr</groupId>

@@ -72,9 +72,13 @@ public abstract class ModulesTest {
         }
 
         File targetDir = new File(tmpdir, toPathString(name, version));
-        if (targetDir.exists() == false)
+        if (targetDir.exists() == false) {
             Assert.assertTrue(targetDir.mkdirs());
+        }
         File targetFile = new File(targetDir, fullName);
+        if (targetFile.exists()) {
+            Assert.assertTrue(targetFile.delete());
+        }
 
         ZipExporter exporter = module.as(ZipExporter.class);
         exporter.exportTo(targetFile, true);
@@ -96,8 +100,9 @@ public abstract class ModulesTest {
         List<File> files = new ArrayList<File>();
         try {
             files.add(createModuleFile(tmpdir, module));
-            for (Archive lib : libs)
+            for (Archive lib : libs) {
                 files.add(createModuleFile(tmpdir, lib));
+            }
 
             String name;
             String version;
@@ -121,7 +126,7 @@ public abstract class ModulesTest {
             if (run != null)
                 args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.RUN.toString(), run);
 
-            execute(name + "/" + version, args);
+            execute(version != null ? name + "/" + version : name, args);
         } finally {
             for (File file : files)
                 delete(file);

@@ -17,8 +17,6 @@
 
 package eu.cloud.clazz;
 
-import java.lang.reflect.Method;
-
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
@@ -28,6 +26,8 @@ public class run_ {
         try {
             cl.loadClass("org.jboss.filtered.spi.SomeSPI");
 
+            // Not relevant anymore
+            /*
             Class<?> pp = cl.loadClass("ceylon.file.parsePath_");
             Method parse = pp.getDeclaredMethod("parsePath", String.class);
             Object path = parse.invoke(null, "buuu");
@@ -38,6 +38,7 @@ public class run_ {
             Method newOpenFile = nof.getDeclaredMethod("newOpenFile", rc);
             Object ofi = newOpenFile.invoke(null, r.invoke(path));
             System.out.println("ofi = " + ofi);
+            */
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -6,7 +6,6 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ceylon</groupId>
     <artifactId>modules-bootstrap</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
@@ -15,12 +14,24 @@
 
     <dependencies>
         <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-spi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.modules</groupId>
             <artifactId>jboss-modules</artifactId>
         </dependency>
         <dependency>
             <groupId>com.redhat.ceylon</groupId>
             <artifactId>ceylon-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-utils</artifactId>
         </dependency>
     </dependencies>
 

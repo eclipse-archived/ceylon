@@ -17,20 +17,14 @@
 
 package ceylon.modules.jboss.runtime;
 
-import java.io.File;
 import java.util.NavigableMap;
 import java.util.Set;
-
-import org.jboss.modules.Module;
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
-import org.jboss.modules.ModuleNotFoundException;
 
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.Main;
 import ceylon.modules.api.runtime.AbstractRuntime;
-
+import ceylon.modules.spi.runtime.ClassLoaderHolder;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -43,6 +37,10 @@ import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
 import com.redhat.ceylon.common.Versions;
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+import org.jboss.modules.ModuleNotFoundException;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -51,7 +49,7 @@ import com.redhat.ceylon.common.Versions;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public abstract class AbstractJBossRuntime extends AbstractRuntime {
-    public Module loadModule(String name, String version, Configuration conf) throws Exception {
+    public ClassLoaderHolder createClassLoader(String name, String version, Configuration conf) throws Exception {
         if (RepositoryManager.DEFAULT_MODULE.equals(name)) {
             if (version != null) {
                 throw new CeylonRuntimeException("Invalid module identifier: default module should not have any version");
@@ -65,7 +63,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
                 throw new CeylonRuntimeException(sb.toString());
             }
         }
-        
+
         ModuleIdentifier moduleIdentifier;
         try {
             moduleIdentifier = ModuleIdentifier.fromString(name + ":" + version);
@@ -76,7 +74,8 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         }
         try {
             ModuleLoader moduleLoader = createModuleLoader(conf);
-            return moduleLoader.loadModule(moduleIdentifier);
+            Module module = moduleLoader.loadModule(moduleIdentifier);
+            return new ClassLoaderHolderImpl(module);
         } catch (ModuleNotFoundException e) {
             String spec = e.getMessage().replace(':', '/');
             final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + " (invalid version?)");
@@ -93,7 +92,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
         return versionMap.keySet();
     }
-    
+
     private void appendVersions(StringBuilder sb, String name, Set<String> versions) {
         for (String v : versions) {
             sb.append("\n    ");
@@ -102,19 +101,19 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             sb.append(v);
         }
     }
-    
+
     private RepositoryManager createRepository(Configuration conf, boolean offline) {
         Logger log = new JULLogger();
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
-                .cwd(conf.cwd)
-                .systemRepo(conf.systemRepository)
-                .cacheRepo(conf.cacheRepository)
-                .mavenOverrides(conf.mavenOverrides)
-                .noDefaultRepos(conf.noDefaultRepositories)
-                .userRepos(conf.repositories)
-                .offline(offline || conf.offline)
-                .logger(log)
-                .buildManagerBuilder();
+            .cwd(conf.cwd)
+            .systemRepo(conf.systemRepository)
+            .cacheRepo(conf.cacheRepository)
+            .mavenOverrides(conf.mavenOverrides)
+            .noDefaultRepos(conf.noDefaultRepositories)
+            .userRepos(conf.repositories)
+            .offline(offline || conf.offline)
+            .logger(log)
+            .buildManagerBuilder();
 
         final MergeStrategy ms = getService(MergeStrategy.class, conf);
         if (ms != null)
@@ -130,7 +129,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         return builder.buildRepository();
     }
 
-    
+
     /**
      * Get repository extension.
      *

@@ -24,7 +24,7 @@ import java.net.URLClassLoader;
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
-
+import ceylon.modules.spi.runtime.ClassLoaderHolder;
 import com.redhat.ceylon.compiler.java.metadata.Module;
 
 /**
@@ -64,10 +64,11 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         return loadModuleMetaData(cl, name);
     }
 
-    protected static void invokeRun(ClassLoader cl, String runClassName, final String[] args) throws Exception {
+    protected static void invokeRun(ClassLoaderHolder clh, final String runClassName, final String[] args) throws Exception {
         final Class<?> runClass;
+        ClassLoader cl = clh.getClassLoader();
         ClassLoader oldClassLoader = SecurityActions.setContextClassLoader(cl);
-        try{
+        try {
             try {
                 char firstChar = runClassName.charAt(0);
                 int lastDot = runClassName.lastIndexOf('.');
@@ -76,68 +77,71 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 }
                 // we add _ to run class
                 runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
-            } catch (ClassNotFoundException ignored) {
-                String type;
-                if (Character.isUpperCase(runClassName.charAt(0))) {
-                    type = "class";
-                } else {
-                    type = "method";
-                }
-                throw new CeylonRuntimeException("Could not find toplevel " + type + " '" + runClassName + "'");
+            } catch (ClassNotFoundException cnfe) {
+                String type = (Character.isUpperCase(runClassName.charAt(0)) ? "class" : "method");
+                throw new CeylonRuntimeException(String.format("Could not find toplevel %s '%s' [%s].", type, runClassName, clh));
             }
 
             SecurityActions.invokeRun(runClass, args);
-        }finally{
-        	SecurityActions.setContextClassLoader(oldClassLoader);
+        } finally {
+            SecurityActions.setContextClassLoader(oldClassLoader);
         }
     }
 
     public void execute(Configuration conf) throws Exception {
         String exe = conf.module;
         // FIXME: argument checks could be done earlier
-        if (exe == null)
+        if (exe == null) {
             throw new CeylonRuntimeException("No initial module defined");
+        }
 
         int p = exe.indexOf("/");
-        if (p == 0)
+        if (p == 0) {
             throw new CeylonRuntimeException("Missing runnable info: " + exe);
-        if (p == exe.length() - 1)
+        }
+        if (p == exe.length() - 1) {
             throw new CeylonRuntimeException("Missing version info: " + exe);
+        }
 
         String name = exe.substring(0, p > 0 ? p : exe.length());
         String mv = (p > 0 ? exe.substring(p + 1) : null);
 
-        org.jboss.modules.Module m = loadModule(name, mv, conf);
-        mv = m.getIdentifier().getSlot();
-        ClassLoader cl = SecurityActions.getClassLoader(m);
+        final ClassLoaderHolder clh = createClassLoader(name, mv, conf);
+
+        mv = clh.getVersion();
+        final ClassLoader cl = clh.getClassLoader();
+
         Module runtimeModule = loadModuleMetaData(cl, name);
         if (runtimeModule != null) {
             final String mn = runtimeModule.name();
-            if (name.equals(mn) == false)
+            if (name.equals(mn) == false) {
                 throw new CeylonRuntimeException("Input module name doesn't match module's name: " + name + " != " + mn);
+            }
 
             final String version = runtimeModule.version();
-            if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false)
+            if (mv.equals(version) == false && Constants.DEFAULT.toString().equals(name) == false) {
                 throw new CeylonRuntimeException("Input module version doesn't match module's version: " + mv + " != " + version);
+            }
         } else if (Constants.DEFAULT.toString().equals(name) == false) {
             throw new CeylonRuntimeException("Missing module.class info: " + name); // TODO -- dump some more useful msg
         }
 
-        execute(conf, name, cl);
+        execute(conf, name, clh);
     }
 
-    protected void execute(Configuration conf, String name, ClassLoader cl) throws Exception {
+    protected void execute(Configuration conf, String name, ClassLoaderHolder clh) throws Exception {
         String runClassName = conf.run;
         if (runClassName == null || runClassName.isEmpty()) {
             // "default" is not a package name
-            if (name.equals(Constants.DEFAULT.toString()))
+            if (name.equals(Constants.DEFAULT.toString())) {
                 runClassName = RUN_INFO_CLASS;
-            else
+            } else {
                 runClassName = name + "." + RUN_INFO_CLASS;
-        }else{
+            }
+        } else {
             // replace any :: with a dot to allow for both java and ceylon-style run methods
             runClassName = runClassName.replace("::", ".");
         }
-        invokeRun(cl, runClassName, conf.arguments);
+        invokeRun(clh, runClassName, conf.arguments);
     }
 }

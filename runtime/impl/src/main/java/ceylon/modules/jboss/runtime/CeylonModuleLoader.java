@@ -27,6 +27,16 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ceylon.modules.api.runtime.LogChecker;
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.Versions;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.ModuleIdentifier;
@@ -37,18 +47,6 @@ import org.jboss.modules.ModuleSpec.Builder;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilters;
-
-import ceylon.modules.api.runtime.LogChecker;
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.ImportType;
-import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.Versions;
 
 /**
  * Ceylon JBoss Module loader.
@@ -134,7 +132,7 @@ public class CeylonModuleLoader extends ModuleLoader {
     protected void init() throws Exception {
         // The runtime model needs knowledge of these modules existing at runtime, since the language module
         // implementation contains types from these modules
-        for(ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR)){
+        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR)) {
             org.jboss.modules.Module module = org.jboss.modules.Module.getBootModuleLoader().loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module));
@@ -211,8 +209,7 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     protected ArtifactResult findArtifact(ModuleIdentifier mi) {
         final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
-        ArtifactResult result = repository.getArtifactResult(context);
-        return result;
+        return repository.getArtifactResult(context);
     }
 
     @Override
@@ -297,11 +294,11 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             // add runtime utils
             final DependencySpec sds = DependencySpec.createModuleDependencySpec(
-                    PathFilters.match(CEYLON_RUNTIME_PATH),
-                    PathFilters.rejectAll(),
-                    this,
-                    RUNTIME,
-                    true
+                PathFilters.match(CEYLON_RUNTIME_PATH),
+                PathFilters.rejectAll(),
+                this,
+                RUNTIME,
+                true
             );
             builder.addDependency(sds);
             deps.add(sds);
@@ -320,11 +317,11 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     private void addLoggingModule(Builder builder, List<DependencySpec> deps) {
         final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
-                PathFilters.acceptAll(),
-                PathFilters.rejectAll(),
-                this,
-                LOGMANAGER,
-                false
+            PathFilters.acceptAll(),
+            PathFilters.rejectAll(),
+            this,
+            LOGMANAGER,
+            false
         );
         builder.addDependency(dependency);
         deps.add(dependency);
@@ -332,11 +329,11 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     protected void createModuleDependency(Graph.Vertex<ModuleIdentifier, Boolean> vertex, List<DependencySpec> deps, ModuleSpec.Builder builder, ModuleIdentifier mi, boolean optional) {
         final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
-                PathFilters.acceptAll(),
-                PathFilters.rejectAll(),
-                this,
-                mi,
-                optional
+            PathFilters.acceptAll(),
+            PathFilters.rejectAll(),
+            this,
+            mi,
+            optional
         );
         builder.addDependency(dependency);
         deps.add(dependency);
@@ -359,11 +356,11 @@ public class CeylonModuleLoader extends ModuleLoader {
         final ModuleIdentifier mi = createModuleIdentifier(i);
         final boolean export = (i.importType() == ImportType.EXPORT);
         return DependencySpec.createModuleDependencySpec(
-                PathFilters.getDefaultImportFilterWithServices(), // import everything?
-                (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
-                this,
-                mi,
-                i.importType() == ImportType.OPTIONAL
+            PathFilters.getDefaultImportFilterWithServices(), // import everything?
+            (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
+            this,
+            mi,
+            i.importType() == ImportType.OPTIONAL
         );
     }
 
