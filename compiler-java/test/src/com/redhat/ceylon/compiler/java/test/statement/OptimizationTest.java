@@ -3,8 +3,17 @@ package com.redhat.ceylon.compiler.java.test.statement;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import ceylon.language.Finished;
+import ceylon.language.Iterator;
+import ceylon.language.Range;
+import ceylon.language.larger_;
+import ceylon.language.smaller_;
+import ceylon.language.system_;
+
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+
+import ceylon.language.Integer;
 
 public class OptimizationTest extends CompilerTest {
     
@@ -100,13 +109,19 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
+    public void testLopOptimRangeIterationStatic(){
+        compareWithJavaSource("loop/optim/RangeIterationStatic");
+    }
+    
+    @Test
     public void testLopOptimArrayIterationDynamic(){
         compareWithJavaSource("loop/optim/ArrayIterationDynamic");
     }
     
     @Test
     public void testLopOptimCorrect(){
-        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct", "loop/optim/Correct.ceylon");
+        compareWithJavaSource("loop/optim/Correct");
+        //compile("loop/optim/Correct.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct");
     }
-    
 }
