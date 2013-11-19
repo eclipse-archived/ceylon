@@ -36,6 +36,7 @@ import com.redhat.ceylon.common.tool.Tool;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 
 public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
@@ -190,8 +191,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 return (result.version() != null) ? result.version() : "";
             }
             if ("default".equals(name)) {
-                errorMsg("module.not.found", name, repoMgr.getRepositoriesDisplayString());
-                return null;
+                throw new ToolUsageError(Messages.msg(bundle, "module.not.found", name, repoMgr.getRepositoriesDisplayString()));
             }
         }
         
@@ -244,29 +244,30 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             }
         }
         if (versions.isEmpty()) {
-            errorMsg("module.not.found", name, repoMgr.getRepositoriesDisplayString());
-            return null;
+            throw new ToolUsageError(Messages.msg(bundle, "module.not.found", name, repoMgr.getRepositoriesDisplayString()));
         }
         if (versions.size() > 1 || suggested) {
+            StringBuilder err = new StringBuilder();
             if (version == null) {
-                errorMsg("missing.version", name, repoMgr.getRepositoriesDisplayString());
+                err.append(Messages.msg(bundle, "missing.version", name, repoMgr.getRepositoriesDisplayString()));
             } else {
-                errorMsg("version.not.found", version, name);
+                err.append(Messages.msg(bundle, "version.not.found", version, name));
             }
-            msg(error, "try.versions");
+            err.append("\n");
+            err.append(Messages.msg(bundle, "try.versions"));
             boolean first = true;
             for (ModuleVersionDetails mvd : versions) {
                 if (!first) {
-                    append(error, ", ");
+                    err.append(", ");
                 }
-                append(error, mvd.getVersion());
+                err.append(mvd.getVersion());
                 if (mvd.isRemote()) {
-                    append(error, " (*)");
+                    err.append(" (*)");
                 }
                 first = false;
             }
-            newline(error);
-            return null;
+            err.append("\n");
+            throw new ToolUsageError(err.toString());
         }
         return versions.iterator().next().getVersion();
     }
