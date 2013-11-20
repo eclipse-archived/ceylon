@@ -55,7 +55,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
             } else if (newcapacity > MAX_CAPACITY) {
                 newcapacity = capacity;
                 if (newcapacity > MAX_CAPACITY) {
-                    throw new RuntimeException("Can't allocate array bigger than " + MAX_CAPACITY);
+                    throw new AssertionException("can't allocate array bigger than " + MAX_CAPACITY);
                 }
             }
             resize$priv$(newcapacity);

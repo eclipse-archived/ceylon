@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.language;
 
 import java.util.Arrays;
 
+import ceylon.language.AssertionException;
 import ceylon.language.Boolean;
 import ceylon.language.Array;
 import ceylon.language.Integer;
@@ -90,7 +91,7 @@ public final class arrays_ {
                     dst[i] = (byte) src[i].longValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toByteArray(values);
     }
@@ -101,7 +102,7 @@ public final class arrays_ {
             byte[] src = (byte[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public short[] toShortArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
@@ -145,7 +146,7 @@ public final class arrays_ {
                     dst[i] = (short) src[i].longValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toShortArray(values);
     }
@@ -156,7 +157,7 @@ public final class arrays_ {
             short[] src = (short[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public int[] toIntArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
@@ -200,7 +201,7 @@ public final class arrays_ {
                     dst[i] = (int) src[i].longValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toIntArray(values);
     }
@@ -211,7 +212,7 @@ public final class arrays_ {
             int[] src = (int[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public long[] toLongArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
@@ -255,7 +256,7 @@ public final class arrays_ {
                     dst[i] = (long) src[i].longValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toLongArray(values);
     }
@@ -266,7 +267,7 @@ public final class arrays_ {
             long[] src = (long[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public float[] toFloatArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
@@ -296,7 +297,7 @@ public final class arrays_ {
                     dst[i] = (float) src[i].doubleValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toFloatArray(values);
     }
@@ -307,7 +308,7 @@ public final class arrays_ {
             float[] src = (float[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public double[] toDoubleArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
@@ -337,7 +338,7 @@ public final class arrays_ {
                     dst[i] = (double) src[i].doubleValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toDoubleArray(values);
     }
@@ -348,7 +349,7 @@ public final class arrays_ {
             double[] src = (double[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public char[] toCharArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
@@ -378,7 +379,7 @@ public final class arrays_ {
                     dst[i] = (char) src[i].intValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toCharArray(values);
     }
@@ -389,7 +390,7 @@ public final class arrays_ {
             char[] src = (char[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public int[] toCodePointArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
@@ -419,7 +420,7 @@ public final class arrays_ {
                     dst[i] = (int) src[i].intValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toCodepointArray(values);
     }
@@ -430,7 +431,7 @@ public final class arrays_ {
             int[] src = (int[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public boolean[] toBooleanArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
@@ -452,7 +453,7 @@ public final class arrays_ {
                     dst[i] = src[i].booleanValue();
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toBooleanArray(values);
     }
@@ -463,7 +464,7 @@ public final class arrays_ {
             boolean[] src = (boolean[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public <T> T[] toObjectArray(@Ignore TypeDescriptor $reifiedT, 
@@ -479,7 +480,7 @@ public final class arrays_ {
                 T[] src = (T[]) array.toArray();
                 return Arrays.copyOf(src, src.length);
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.<T>toArray(values, Util.<T>getJavaClassForDescriptor($reifiedT));
     }
@@ -492,7 +493,7 @@ public final class arrays_ {
             T[] src = (T[]) array.toArray();
             return src;
         }
-        throw new RuntimeException("Invalid source array type: "+array.toArray());
+        throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
     public java.lang.String[] toJavaStringArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::String|ceylon.language::Null,ceylon.language::Null>")
@@ -509,7 +510,7 @@ public final class arrays_ {
                     dst[i] = src[i] != null ? src[i].toString() : null;
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         return Util.toJavaStringArray(values);
     }
@@ -528,14 +529,14 @@ public final class arrays_ {
                     dst[i] = String.instance(src[i]);
                 return dst;
             }
-            throw new RuntimeException("Invalid source array type: "+array.toArray());
+            throw new AssertionException("Invalid source array type: "+array.toArray());
         }
         String[] dst = new String[(int) values.getSize()];
         Iterator<? extends java.lang.String> iterator = values.iterator();
         for(int i=0;i<dst.length;i++){
             java.lang.Object o = iterator.next();
             if(o == finished_.get_())
-                throw new RuntimeException("Depleted values iterable before its size was reached. Size = " + dst.length + ", index = "+i);
+                throw new AssertionException("Depleted values iterable before its size was reached. Size = " + dst.length + ", index = "+i);
             dst[i] = String.instance((java.lang.String)o);
         }
         return dst;

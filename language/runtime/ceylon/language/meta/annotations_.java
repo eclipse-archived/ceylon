@@ -1,5 +1,6 @@
 package ceylon.language.meta;
 
+import ceylon.language.AssertionException;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.meta.model.Class;
@@ -51,7 +52,7 @@ public final class annotations_ {
         final java.lang.Class<?> refAnnotationClass = (java.lang.Class<?>)Metamodel.getReflectedAnnotationClass(annotationType);
         if (ceylon.language.OptionalAnnotation.class.isAssignableFrom(refAnnotationClass)) {
             if (annots.getSize() > 1L) {
-                throw new RuntimeException("Assertion error");
+                throw new AssertionException("optional annotation occurs more than once");
             }
             return (Values)(annots.getEmpty() ? null : ((Sequence)annots).get(ceylon.language.Integer.instance(0)));   
         } else {
