@@ -24,8 +24,11 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SubstitutedName;
@@ -47,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.TypeTags;
+import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCArrayAccess;
@@ -73,6 +77,7 @@ import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Options;
 
 /**
  * This transformer deals with statements only
@@ -89,6 +94,8 @@ public class StatementTransformer extends AbstractTransformer {
      * expressionless {@code return;}.
      */
     boolean noExpressionlessReturn = false;
+
+    private final Set<Optimization> disabledOptimizations;
     
     public static StatementTransformer getInstance(Context context) {
         StatementTransformer trans = context.get(StatementTransformer.class);
@@ -101,6 +108,18 @@ public class StatementTransformer extends AbstractTransformer {
 
     private StatementTransformer(Context context) {
         super(context);
+        Options options = context.get(Options.optionsKey);
+        if (options.isSet(OptionName.CEYLONDISABLEOPT)) {
+            disabledOptimizations = EnumSet.allOf(Optimization.class);
+        } else if (options.isSet(OptionName.CEYLONDISABLEOPT_CUSTOM)) {
+            disabledOptimizations = new HashSet<Optimization>();
+            for (String name : options.get(OptionName.CEYLONDISABLEOPT_CUSTOM).split(",")) {
+                disabledOptimizations.add(Optimization.valueOf(name));
+            }
+        } else {
+            disabledOptimizations = EnumSet.noneOf(Optimization.class);
+        }
+        
     }
 
     public JCBlock transform(Tree.Block block) {

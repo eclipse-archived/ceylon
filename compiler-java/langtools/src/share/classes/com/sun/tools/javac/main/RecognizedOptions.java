@@ -198,7 +198,9 @@ public class RecognizedOptions {
         AT,
         SOURCEFILE,
         SRC,
-        BOOTSTRAPCEYLON);
+        BOOTSTRAPCEYLON,
+        CEYLONDISABLEOPT,
+        CEYLONDISABLEOPT_CUSTOM);
 
     static Set<OptionName> javacFileManagerOptions = EnumSet.of(
         CLASSPATH,
@@ -271,7 +273,9 @@ public class RecognizedOptions {
         O,
         XJCOV,
         XD,
-        BOOTSTRAPCEYLON);
+        BOOTSTRAPCEYLON,
+        CEYLONDISABLEOPT,
+        CEYLONDISABLEOPT_CUSTOM);
 
     public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
@@ -373,6 +377,8 @@ public class RecognizedOptions {
         new COption(CEYLONNODEFREPOS,                            "opt.ceylonnodefrepos"),
         new COption(CEYLONUSER,             "opt.arg.value",     "opt.ceylonuser"),
         new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
+        new COption(CEYLONDISABLEOPT,                            "opt.ceylondisableopt"),
+        new COption(CEYLONDISABLEOPT_CUSTOM,                     "opt.ceylondisableopt.suboptlist"),
         new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {

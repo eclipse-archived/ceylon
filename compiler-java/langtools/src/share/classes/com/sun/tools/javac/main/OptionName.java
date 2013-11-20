@@ -57,6 +57,9 @@ public enum OptionName {
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
     CEYLONRESOURCEPATH("-res"),
+    CEYLONDISABLEOPT("-disableOptimization"),
+    // Keep the following list in sync with Optimization
+    CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{RangeOpIteration,RangeIterationStatic,ArrayIterationStatic,JavaArrayIterationStatic,ArraySequenceIterationStatic,IterationDynamic}"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),
