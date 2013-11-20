@@ -158,8 +158,10 @@ public class Util {
                     }
                     if (hasSeqParam) {
                         ProducedType pdt = params.get(size).getModel().getType();
-                        ProducedType ipdt = unit.getIteratedType(pdt);
-                        if (pdt==null) return false;
+                        if (pdt==null || pdt.getTypeArgumentList().isEmpty()) return false;
+                        //Note: don't use Unit.getIterableType() because this
+                        //      gets called from model loader out-of-phase
+                        ProducedType ipdt = pdt.getTypeArgumentList().get(0);  
                         for (int i=size; i<sigSize; i++) {
                             if (spread && i==sigSize-1) {
                                 ProducedType sdt = signature.get(i);
