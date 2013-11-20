@@ -354,7 +354,7 @@ public class LazyPackage extends Package {
     @Override
     public void removeUnit(Unit unit) {
         synchronized(modelLoader){
-            if (unit.getFilename().endsWith(".class")) {
+            if (unit.getFilename().endsWith(".class") || unit.getFilename().endsWith(".java")) {
                 lazyUnits.remove(unit);
                 for (Declaration d : unit.getDeclarations()) {
                     compiledDeclarations.remove(d);
