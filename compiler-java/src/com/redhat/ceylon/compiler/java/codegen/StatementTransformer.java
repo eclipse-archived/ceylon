@@ -1411,9 +1411,7 @@ public class StatementTransformer extends AbstractTransformer {
      * }
      * </pre>
      */
-    class ArraySequenceIterationOptimization extends IndexedAccessIterationOptimization {
-
-        final static String OPT_NAME = "ArraySequenceIterationStatic";
+    final class ArraySequenceIterationOptimization extends IndexedAccessIterationOptimization {
         
         private final Naming.SyntheticName seqName;
         
@@ -1469,8 +1467,8 @@ public class StatementTransformer extends AbstractTransformer {
         ProducedType elementType = typeFact().getArrayElementType(iterableType);
         if (elementType == null) {
             return optimizationFailed(stmt, 
-                    new String[]{ArrayIterationOptimization.OPT_NAME, 
-                    JavaArrayIterationOptimization.OPT_NAME},
+                    new Optimization[]{Optimization.ArrayIterationStatic,
+                    Optimization.JavaArrayIterationStatic},
                     "static type of iterable in for statement is not Array");
         }
         // Check for "for (x in javaArray.array)" where javaArray is e.g. IntArray
@@ -1480,35 +1478,34 @@ public class StatementTransformer extends AbstractTransformer {
             if ("array".equals(expr.getIdentifier().getText())) {
                 if (expr.getPrimary() instanceof Tree.BaseMemberExpression) {
                     if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {
-                        if (isOptimizationDisabled(stmt, JavaArrayIterationOptimization.OPT_NAME)) {
-                            return optimizationDisabled(stmt, JavaArrayIterationOptimization.OPT_NAME);
+                        if (isOptimizationDisabled(stmt, Optimization.JavaArrayIterationStatic)) {
+                            return optimizationDisabled(stmt, Optimization.JavaArrayIterationStatic);
                         }
                         return new JavaArrayIterationOptimization(stmt, elementType, expr.getPrimary().getTypeModel());
                     }
                 }
             }
         }
-        if (isOptimizationRequired(stmt, JavaArrayIterationOptimization.OPT_NAME)) {
-            return optimizationFailed(stmt, JavaArrayIterationOptimization.OPT_NAME, "iterable expression wasn't of form javaArray.array");
+        if (isOptimizationRequired(stmt, Optimization.JavaArrayIterationStatic)) {
+            return optimizationFailed(stmt, Optimization.JavaArrayIterationStatic, "iterable expression wasn't of form javaArray.array");
         }
-        if (isOptimizationDisabled(stmt, ArrayIterationOptimization.OPT_NAME)) {
-            return optimizationDisabled(stmt, ArrayIterationOptimization.OPT_NAME);
+        if (isOptimizationDisabled(stmt, Optimization.ArrayIterationStatic)) {
+            return optimizationDisabled(stmt, Optimization.ArrayIterationStatic);
         }
         // it's an Ceylon Array
         return new ArrayIterationOptimization(stmt, elementType);
     }
     
     private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt) {
-        final String optName = ArraySequenceIterationOptimization.OPT_NAME;
-        if (isOptimizationDisabled(stmt, optName)) {
-            return optimizationFailed(stmt, optName, 
+        if (isOptimizationDisabled(stmt, Optimization.ArraySequenceIterationStatic)) {
+            return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
                     "optimization explicitly disabled by @disableOptimization");
         }
         
         ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
         if (iterableType.getSupertype(typeFact().getArraySequenceDeclaration()) == null) {
-            return optimizationFailed(stmt, optName, 
-                    "static type of iterable in for statement is not Array");
+            return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
+                    "static type of iterable in for statement is not ArraySequence");
         }
         // it's an array sequence
         return new ArraySequenceIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
@@ -1678,7 +1675,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     private ForStatementTransformation rangeIteration(Tree.ForStatement stmt) {
-        final String optName = RangeIterationOptimization.OPT_NAME;
+        final Optimization optName = Optimization.RangeIterationStatic;
         if (isOptimizationDisabled(stmt, optName)) {
             return optimizationFailed(stmt, optName, 
                     "optimization explicitly disabled by @disableOptimization");
@@ -1744,13 +1741,13 @@ public class StatementTransformer extends AbstractTransformer {
      * @param reason The reason the optimization could not be used
      * @return null
      */
-    private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, String optName, String reason) {
-        return optimizationFailed(stmt, new String[]{optName}, reason);
+    private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, Optimization optName, String reason) {
+        return optimizationFailed(stmt, new Optimization[]{optName}, reason);
     }
-    private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, String[] optNames, String reason) {
-        for (String optName : optNames) {
+    private <T,S extends Tree.StatementOrArgument> T optimizationFailed(S stmt, Optimization[] optNames, String reason) {
+        for (Optimization optName : optNames) {
             if (CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
-                            "requireOptimization", optName)) {
+                            "requireOptimization", optName.toString())) {
                 log.error(getPosition(stmt), "ceylon.optim.failed", optName, reason);
             }
         }
@@ -1760,7 +1757,7 @@ public class StatementTransformer extends AbstractTransformer {
     /**
      * Returns null but logs an error the given optimization 
      */
-    private <T,S extends Tree.StatementOrArgument> T optimizationDisabled(S stmt, String optName) {
+    private <T,S extends Tree.StatementOrArgument> T optimizationDisabled(S stmt, Optimization optName) {
         return optimizationFailed(stmt, optName, 
                 "optimization explicitly disabled by @disableOptimization");
     }
@@ -1773,16 +1770,17 @@ public class StatementTransformer extends AbstractTransformer {
      * @param optName The name of the optimization
      * @return
      */
-    private boolean isOptimizationDisabled(Tree.StatementOrArgument stmt, String optName) {
-        return CodegenUtil.hasCompilerAnnotationNoArgument(stmt, "disableOptimization")
+    private boolean isOptimizationDisabled(Tree.StatementOrArgument stmt, Optimization optName) {
+        return this.disabledOptimizations.contains(optName)
+                || CodegenUtil.hasCompilerAnnotationNoArgument(stmt, "disableOptimization")
                 || CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
-                        "disableOptimization", optName);
+                        "disableOptimization", optName.toString());
     }
     
-    private boolean isOptimizationRequired(Tree.StatementOrArgument stmt, String optName) {
+    private boolean isOptimizationRequired(Tree.StatementOrArgument stmt, Optimization optName) {
         return optName == null ? CodegenUtil.hasCompilerAnnotationNoArgument(stmt, "requireOptimization")
                 : CodegenUtil.hasCompilerAnnotationWithArgument(stmt, 
-                        "requireOptimization", optName);
+                        "requireOptimization", optName.toString());
     }
     
     /**
@@ -1792,15 +1790,14 @@ public class StatementTransformer extends AbstractTransformer {
      * @return a {@link RangeOpIterationOptimization} or null.
      */
     private ForStatementTransformation rangeOpIteration(Tree.ForStatement stmt) {
-        final String optName = RangeOpIterationOptimization.OPT_NAME;
-        if (isOptimizationDisabled(stmt, optName)) {
-            return optimizationFailed(stmt, optName, 
+        if (isOptimizationDisabled(stmt, Optimization.RangeOpIteration)) {
+            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                     "optimization explicitly disabled by @disableOptimization");
         }
         
         Tree.ForIterator iterator = stmt.getForClause().getForIterator();
         if (!(iterator instanceof Tree.ValueIterator)) {
-            return optimizationFailed(stmt, optName, 
+            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                     "optimization applies only to ValueIterators");
         }
         Tree.ValueIterator vi = (Tree.ValueIterator)iterator;
@@ -1826,7 +1823,7 @@ public class StatementTransformer extends AbstractTransformer {
                         if(a instanceof Tree.ListedArgument)
                             increment = ((Tree.ListedArgument)a).getExpression().getTerm();
                         else
-                            return optimizationFailed(stmt, optName, 
+                            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                                     "Unable to determine expression for argument to by(): appears spread or comprehension");
                     } else if (inv.getNamedArgumentList() != null) {
                         Tree.SpecifiedArgument sarg = null;
@@ -1842,23 +1839,23 @@ public class StatementTransformer extends AbstractTransformer {
                         if (sarg != null) {
                             increment = sarg.getSpecifierExpression().getExpression().getTerm();
                         } else {
-                            return optimizationFailed(stmt, optName, 
+                            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                                     "Unable to determine expression for argument to by{}");
                         }
                     } else {
-                        return optimizationFailed(stmt, optName, 
+                        return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                                 "Unable to get arguments to by()");
                     }
                 } else {
-                    return optimizationFailed(stmt, optName, 
+                    return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                             "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
                 }
             } else {
-                return optimizationFailed(stmt, optName, 
+                return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                         "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
             }
         } else {
-            return optimizationFailed(stmt, optName, 
+            return optimizationFailed(stmt, Optimization.RangeOpIteration, 
                     "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
         }
         
@@ -1870,7 +1867,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (isRangeOf(range, characterType)) {
             type = syms().intType;
         } else {
-            return optimizationFailed(stmt, optName, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
+            return optimizationFailed(stmt, Optimization.RangeOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
         }
         return new RangeOpIterationOptimization(stmt, 
                 range.getLeftTerm(), range.getRightTerm(), 
@@ -2053,8 +2050,8 @@ public class StatementTransformer extends AbstractTransformer {
                     containment,
                     itemDecls,
                     stmts, 
-                    !isOptimizationDisabled(stmt, "ArrayIterationDynamic"),
-                    !isOptimizationDisabled(stmt, "ArraySequenceIterationDynamic")));
+                    !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic),
+                    !isOptimizationDisabled(stmt, Optimization.ArraySequenceIterationDynamic)));
         }
         
         protected final Tree.Block getBlock() {
