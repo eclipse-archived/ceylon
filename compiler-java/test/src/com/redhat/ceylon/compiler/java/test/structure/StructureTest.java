@@ -19,7 +19,6 @@
  */
 package com.redhat.ceylon.compiler.java.test.structure;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
@@ -533,6 +532,10 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testTwoParamListsVoid(){
         compareWithJavaSource("method/TwoParamListsVoid");
+    }
+    @Test
+    public void testTwoParamListsTPNoOpt(){
+        compareWithJavaSourceNoOpt("method/TwoParamListsTP");
     }
     @Test
     public void testTwoParamListsTP(){

@@ -248,6 +248,10 @@ public class StatementTest extends CompilerTest {
     // for
 
     @Test
+    public void testLopMethodForRangeNoOpt(){
+        compareWithJavaSourceNoOpt("loop/MethodForRange");
+    }
+    @Test
     public void testLopMethodForRange(){
         compareWithJavaSource("loop/MethodForRange");
     }

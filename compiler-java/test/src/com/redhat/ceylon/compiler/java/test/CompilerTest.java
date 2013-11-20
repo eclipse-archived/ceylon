@@ -137,6 +137,15 @@ public abstract class CompilerTest {
 	protected void compareWithJavaSource(String name) {
 		compareWithJavaSource(name+".src", name+".ceylon");
 	}
+	
+    protected void compareWithJavaSourceNoOpt(String name) {
+        List<String> options = new ArrayList<String>();
+        options.add("-disableOptimization");
+        for (String option : defaultOptions) {
+            options.add(option);
+        }
+        compareWithJavaSource(options, name+".noopt.src", name+".ceylon");
+    }
 
 	@Before
 	public void cleanCars() {
@@ -323,10 +332,14 @@ public abstract class CompilerTest {
     }
 
     protected void compareWithJavaSource(String java, String... ceylon) {
+        compareWithJavaSource(defaultOptions, java, ceylon);
+    }
+    
+    protected void compareWithJavaSource(List<String> options, String java, String... ceylon) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         ErrorCollector collector = new ErrorCollector();
-        CeyloncTaskImpl task = getCompilerTask(collector, ceylon);
+        CeyloncTaskImpl task = getCompilerTask(options, collector, ceylon);
 
         // grab the CU after we've completed it
         class Listener implements TaskListener{
