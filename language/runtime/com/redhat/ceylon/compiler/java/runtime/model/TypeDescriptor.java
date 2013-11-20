@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import ceylon.language.AssertionException;
+
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -255,13 +257,13 @@ public abstract class TypeDescriptor {
 
     public static TypeDescriptor union(TypeDescriptor... members){
         if(members == null || members.length == 0)
-            throw new IllegalArgumentException("members can't be null or empty");
+            throw new AssertionException("members can't be null or empty");
         return new Union(members);
     }
 
     public static TypeDescriptor intersection(TypeDescriptor... members){
         if(members == null || members.length == 0)
-            throw new IllegalArgumentException("members can't be null or empty");
+            throw new AssertionException("members can't be null or empty");
         return new Intersection(members);
     }
 }

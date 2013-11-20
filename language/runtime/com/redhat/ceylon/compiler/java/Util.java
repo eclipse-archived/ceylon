@@ -72,7 +72,7 @@ public class Util {
         if(o == null)
             return false;
         if(className == null)
-            throw new IllegalArgumentException("Type name cannot be null");
+            throw new AssertionException("Type name cannot be null");
         return classExtendsClass(o.getClass(), className);
     }
     
@@ -128,7 +128,7 @@ public class Util {
         if(o == null)
             return false;
         if(className == null)
-            throw new IllegalArgumentException("Type name cannot be null");
+            throw new AssertionException("Type name cannot be null");
         // we use a hash set to speed things up for interfaces, to avoid looking at them twice
         Set<java.lang.Class<?>> alreadyVisited = new HashSet<java.lang.Class<?>>();
         return classSatisfiesInterface(o.getClass(), className, alreadyVisited);
