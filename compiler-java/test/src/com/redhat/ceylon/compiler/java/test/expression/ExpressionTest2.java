@@ -542,4 +542,9 @@ public class ExpressionTest2 extends CompilerTest {
     public void testInvSpreadArguments(){
         compareWithJavaSource("invoke/SpreadArguments");
     }
+    
+    @Test
+    public void testInvSpreadArgumentsNoOpt(){
+        compareWithJavaSourceNoOpt("invoke/SpreadArguments");
+    }
 }

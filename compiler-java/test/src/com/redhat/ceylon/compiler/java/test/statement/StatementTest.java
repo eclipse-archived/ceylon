@@ -145,6 +145,11 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testConMethodIfIsVoidSeqNoOpt(){
+        compareWithJavaSourceNoOpt("conditional/MethodIfIsVoidSeq");
+    }
+    
+    @Test
     public void testConMethodIfIsNotNull(){
         compareWithJavaSource("conditional/MethodIfIsNotNull");
     }
@@ -262,13 +267,28 @@ public class StatementTest extends CompilerTest {
     }
     
     @Test
+    public void testLopMethodForIteratorNoOpt(){
+        compareWithJavaSourceNoOpt("loop/MethodForIterator");
+    }
+    
+    @Test
     public void testLopMethodForDoubleIterator(){
         compareWithJavaSource("loop/MethodForDoubleIterator");
     }
     
     @Test
+    public void testLopMethodForDoubleIteratorNoOpt(){
+        compareWithJavaSourceNoOpt("loop/MethodForDoubleIterator");
+    }
+    
+    @Test
     public void testLopMethodForElse(){
         compareWithJavaSource("loop/MethodForElse");
+    }
+    
+    @Test
+    public void testLopMethodForElseNoOpt(){
+        compareWithJavaSourceNoOpt("loop/MethodForElse");
     }
     
     @Test

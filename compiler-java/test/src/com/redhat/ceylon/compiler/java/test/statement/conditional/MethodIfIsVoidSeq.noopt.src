@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfIsAnythingSeq_ {
+    
+    private methodIfIsAnythingSeq_() {
+    }
+    
+    static void methodIfIsAnythingSeq() {
+        final .java.lang.Object args = .ceylon.language.process_.get_().getArguments();
+        .java.lang.Object args$1;
+        if ((args$1 = args) instanceof .ceylon.language.Sequential) {
+            final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential)args$1;
+            .java.lang.Object elem$3;
+            .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = args$2.iterator();
+            while (!((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+                final .java.lang.Object arg = (.java.lang.Object)elem$3;
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.methodIfIsAnythingSeq_.methodIfIsAnythingSeq();
+    }
+}

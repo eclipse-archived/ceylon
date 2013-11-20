@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug509_ {
+    
+    private bug509_() {
+    }
+    
+    static boolean bug509(final .ceylon.language.Sequential<? extends .java.lang.Object> objs) {
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .java.lang.Object> obj$iterator$$1 = objs.iterator();
+        while (!((elem$0 = obj$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object obj = (.java.lang.Object)elem$0;
+            if (obj.equals(.ceylon.language.Integer.instance(1L))) {
+                return true;
+            }
+        }
+        return false;
+    }
+}

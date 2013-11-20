@@ -36,6 +36,11 @@ public class InteropTest extends CompilerTest {
     public void testIopArrays(){
         compareWithJavaSource("Arrays");
     }
+    
+    @Test
+    public void testIopArraysNoOpt(){
+        compareWithJavaSourceNoOpt("Arrays");
+    }
 
     @Test
     public void testIopConstructors(){

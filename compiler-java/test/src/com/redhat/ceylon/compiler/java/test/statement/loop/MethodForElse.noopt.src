@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    MethodForElse() {
+    }
+    
+    public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
+        boolean doforelse$0 = true;
+        .java.lang.Object elem$1;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = seq.iterator();
+        while (!((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.String s = ((.ceylon.language.String)elem$1).toString();
+            while (true) {
+                if (true) {
+                    boolean doforelse$3 = true;
+                    .java.lang.Object elem$4;
+                    .ceylon.language.Iterator<? extends .ceylon.language.String> t$iterator$$5 = seq.iterator();
+                    while (!((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                        final .java.lang.String t = ((.ceylon.language.String)elem$4).toString();
+                        doforelse$3 = false;
+                        break;
+                    }
+                    if (doforelse$3) {
+                        return 1L;
+                    }
+                    break;
+                } else break;
+            }
+            doforelse$0 = false;
+            break;
+        }
+        if (doforelse$0) {
+            return 0L;
+        }
+        return 2L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForElse();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForElse.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodForElse.class);
+}

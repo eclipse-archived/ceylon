@@ -53,6 +53,10 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     public void testBug509(){
         compareWithJavaSource("bug05xx/Bug509");
     }
+    @Test
+    public void testBug509NoOpt(){
+        compareWithJavaSourceNoOpt("bug05xx/Bug509");
+    }
     
     @Test
     public void testBug510(){
@@ -104,7 +108,12 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     public void testBug568(){
         compareWithJavaSource("bug05xx/Bug568");
     }
-
+    
+    @Test
+    public void testBug568NoOpt(){
+        compareWithJavaSourceNoOpt("bug05xx/Bug568");
+    }
+    
     @Test
     public void testBug569(){
         compile("bug05xx/bug569/module.ceylon", "bug05xx/bug569/Foo.ceylon", "bug05xx/bug569/z/Bar.ceylon");
@@ -118,6 +127,11 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     @Test
     public void testBug588(){
         compareWithJavaSource("bug05xx/Bug588");
+    }
+    
+    @Test
+    public void testBug588NoOpt(){
+        compareWithJavaSourceNoOpt("bug05xx/Bug588");
     }
     
     @Test
@@ -191,12 +205,17 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     public void testBug615(){
         compareWithJavaSource("bug06xx/Bug615");
     }
-
+    
     @Test
     public void testBug616(){
         compareWithJavaSource("bug06xx/Bug616");
     }
-
+    
+    @Test
+    public void testBug616NoOpt(){
+        compareWithJavaSourceNoOpt("bug06xx/Bug616");
+    }
+    
     @Test
     public void testBug620(){
         compareWithJavaSource("bug06xx/Bug620");
@@ -309,6 +328,11 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     @Test
     public void testBug675(){
         compareWithJavaSource("bug06xx/Bug675");
+    }
+    
+    @Test
+    public void testBug675NoOpt(){
+        compareWithJavaSourceNoOpt("bug06xx/Bug675");
     }
     
     @Test
@@ -649,10 +673,20 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     public void testBug934() {
         compareWithJavaSource("bug09xx/Bug934");
     }
+    
+    @Test
+    public void testBug934NoOpt() {
+        compareWithJavaSourceNoOpt("bug09xx/Bug934");
+    }
 
     @Test
     public void testBug935() {
         compareWithJavaSource("bug09xx/Bug935");
+    }
+    
+    @Test
+    public void testBug935NoOpt() {
+        compareWithJavaSourceNoOpt("bug09xx/Bug935");
     }
 
     @Test

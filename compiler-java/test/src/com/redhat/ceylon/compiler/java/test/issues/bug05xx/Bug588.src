@@ -7,9 +7,23 @@ final class bug588_ {
     
     static void bug588() {
         final .ceylon.language.Sequential<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> comparables = new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
-        .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> c$iterator$$1 = comparables.iterator();
-        while (!((elem$0 = c$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Comparable<? super .ceylon.language.String>, ? extends .java.lang.Object> iterable$2 = comparables;
+        final boolean isArraySequence$3 = iterable$2 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$4;
+        int i$5 = 0;
+        final int length$6;
+        if (isArraySequence$3) {
+            array$4 = ((.ceylon.language.ArraySequence)iterable$2).$getArray$();
+            i$5 = ((.ceylon.language.ArraySequence)iterable$2).$getFirst$();
+            length$6 = i$5 + ((.ceylon.language.ArraySequence)iterable$2).$getLength$();
+        } else {
+            array$4 = null;
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> c$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
+        while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = c$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
             final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)elem$0;
             .ceylon.language.print_.print((.ceylon.language.String)c);
         }

@@ -144,6 +144,10 @@ public class ExpressionTest extends CompilerTest {
         compareWithJavaSource("erasure/Erasure");
     }
     @Test
+    public void testErsErasureNoOpt(){
+        compareWithJavaSourceNoOpt("erasure/Erasure");
+    }
+    @Test
     public void testErsTypeParameterErasure(){
         compareWithJavaSource("erasure/TypeParameterErasure");
     }

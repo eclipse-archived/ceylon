@@ -29,27 +29,9 @@ final class booleanArray_ {
     final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> values) {
         final boolean[] ret = new boolean[(int)values.getSize()];
         long idx = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> iterable$2 = values;
-        final boolean isArray$3 = iterable$2 instanceof .ceylon.language.Array;
-        final boolean isArraySequence$4 = iterable$2 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$5;
-        int i$6 = 0;
-        final int length$7;
-        if (isArraySequence$4) {
-            array$5 = ((.ceylon.language.ArraySequence)iterable$2).$getArray$();
-            i$6 = ((.ceylon.language.ArraySequence)iterable$2).$getFirst$();
-            length$7 = i$6 + ((.ceylon.language.ArraySequence)iterable$2).$getLength$();
-        } else if (isArray$3) {
-            array$5 = ((.ceylon.language.Array)iterable$2).toArray();
-            length$7 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$5);
-        } else {
-            array$5 = null;
-            length$7 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.Boolean> val$iterator$$1 = isArraySequence$4 || isArray$3 ? null : iterable$2.iterator();
-        while (isArraySequence$4 || isArray$3 ? i$6 < length$7 : !((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$4 || isArray$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.Boolean> val$iterator$$1 = values.iterator();
+        while (!((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final boolean val = ((.ceylon.language.Boolean)elem$0).booleanValue();
             ret[(int)idx++] = val;
         }
@@ -65,10 +47,10 @@ final class test_booleans_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final boolean[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_booleans());
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(items[(int)0L]);
-        .ceylon.language.Boolean b$9;
-        if ((b$9 = b) != null) {
-            final boolean b$10 = b$9.booleanValue();
-            items[(int)1L] = b$10;
+        .ceylon.language.Boolean b$3;
+        if ((b$3 = b) != null) {
+            final boolean b$4 = b$3.booleanValue();
+            items[(int)1L] = b$4;
         }
         final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> it = .ceylon.language.String.instance("foo");
         java.take_booleans(items);
@@ -79,27 +61,27 @@ final class test_booleans_ {
         java.take_booleans((
             let
             {
-                .ceylon.language.Iterable arg$11$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+                .ceylon.language.Iterable arg$5$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
             }
-            returning .com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray(arg$11$0);
+            returning .com.redhat.ceylon.compiler.java.test.interop.booleanArray_.booleanArray(arg$5$0);
         ));
         java.take_booleans((
             let
             {
-                .com.redhat.ceylon.compiler.java.language.arrays_ arg$12$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
-                .ceylon.language.Iterable arg$12$0 = .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
+                .com.redhat.ceylon.compiler.java.language.arrays_ arg$6$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
+                .ceylon.language.Iterable arg$6$0 = .ceylon.language.ArraySequence.<.ceylon.language.Boolean>instance(.ceylon.language.Boolean.$TypeDescriptor$, new .java.lang.Object[]{
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(true),
                         .ceylon.language.Boolean.instance(false)});
             }
-            returning arg$12$callable$.toBooleanArray(arg$12$0);
+            returning arg$6$callable$.toBooleanArray(arg$6$0);
         ));
         (
             let
             {
-                int arg$13$0 = (int)2L;
+                int arg$7$0 = (int)2L;
             }
-            returning new boolean[arg$13$0];
+            returning new boolean[arg$7$0];
         );
         final long i = items.length;
         final .ceylon.language.Array<.ceylon.language.Boolean> arr = .com.redhat.ceylon.compiler.java.language.BooleanArray.getArray(items);
@@ -110,63 +92,49 @@ final class test_booleans_ {
         (
             let
             {
-                boolean[] arg$15$callable$ = items;
-                boolean[] arg$15$argthis$ = arg$15$callable$;
-                boolean[] arg$15$0 = items;
-                int arg$15$1 = 0;
-                int arg$15$2 = 0;
-                int arg$15$3 = arg$15$argthis$.length;
-                .com.redhat.ceylon.compiler.java.language.BooleanArray.copyTo(arg$15$callable$, arg$15$0, arg$15$1, arg$15$2, arg$15$3);
+                boolean[] arg$9$callable$ = items;
+                boolean[] arg$9$argthis$ = arg$9$callable$;
+                boolean[] arg$9$0 = items;
+                int arg$9$1 = 0;
+                int arg$9$2 = 0;
+                int arg$9$3 = arg$9$argthis$.length;
+                .com.redhat.ceylon.compiler.java.language.BooleanArray.copyTo(arg$9$callable$, arg$9$0, arg$9$1, arg$9$2, arg$9$3);
             }
             returning null;
         );
         (
             let
             {
-                boolean[] arg$16$callable$ = items;
-                boolean[] arg$16$argthis$ = arg$16$callable$;
-                boolean[] arg$16$0 = items;
-                int arg$16$1 = (int)0L;
-                int arg$16$2 = (int)0L;
-                int arg$16$3 = arg$16$argthis$.length;
-                .com.redhat.ceylon.compiler.java.language.BooleanArray.copyTo(arg$16$callable$, arg$16$0, arg$16$1, arg$16$2, arg$16$3);
+                boolean[] arg$10$callable$ = items;
+                boolean[] arg$10$argthis$ = arg$10$callable$;
+                boolean[] arg$10$0 = items;
+                int arg$10$1 = (int)0L;
+                int arg$10$2 = (int)0L;
+                int arg$10$3 = arg$10$argthis$.length;
+                .com.redhat.ceylon.compiler.java.language.BooleanArray.copyTo(arg$10$callable$, arg$10$0, arg$10$1, arg$10$2, arg$10$3);
             }
             returning null;
         );
         final boolean[][] matrix = new boolean[(int)10L][];
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$19 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), matrix.length);
-        final boolean isArraySequence$20 = iterable$19 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$17 = null;
-        final .java.lang.Object array$21;
-        int i$22 = 0;
-        final int length$23;
-        if (isArraySequence$20) {
-            array$21 = ((.ceylon.language.ArraySequence)iterable$19).$getArray$();
-            i$22 = ((.ceylon.language.ArraySequence)iterable$19).$getFirst$();
-            length$23 = i$22 + ((.ceylon.language.ArraySequence)iterable$19).$getLength$();
-        } else {
-            array$21 = null;
-            length$23 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$18 = isArraySequence$20 ? null : iterable$19.iterator();
-        while (isArraySequence$20 ? i$22 < length$23 : !((elem$17 = x$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$20) elem$17 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$21, i$22++);
-            final long x = ((.ceylon.language.Integer)elem$17).longValue();
+        .java.lang.Object elem$11;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$12 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), matrix.length).iterator();
+        while (!((elem$11 = x$iterator$$12.next()) instanceof .ceylon.language.Finished)) {
+            final long x = ((.ceylon.language.Integer)elem$11).longValue();
             matrix[(int)x] = new boolean[(int)2L];
         }
         final .ceylon.language.Array<boolean[]> boolArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<boolean[]>.getArray(matrix);
         final .java.lang.Object o = items;
-        .java.lang.Object o$25;
-        if ((o$25 = o) instanceof boolean[]) {
-            final boolean[] o$26 = (boolean[])o$25;
+        .java.lang.Object o$14;
+        if ((o$14 = o) instanceof boolean[]) {
+            final boolean[] o$15 = (boolean[])o$14;
         }
-        .java.lang.Object o$28;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$28 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor$))) {
-            final boolean[][] o$29 = (boolean[][])o$28;
+        .java.lang.Object o$17;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$17 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor$))) {
+            final boolean[][] o$18 = (boolean[][])o$17;
         }
-        .java.lang.Object o$31;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$31 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Boolean.$TypeDescriptor$)))) {
-            final .ceylon.language.Boolean[][] o$32 = (.ceylon.language.Boolean[][])o$31;
+        .java.lang.Object o$20;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$20 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Boolean.$TypeDescriptor$)))) {
+            final .ceylon.language.Boolean[][] o$21 = (.ceylon.language.Boolean[][])o$20;
         }
     }
     
@@ -184,10 +152,10 @@ final class test_JBooleans_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Boolean[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Booleans());
         final .java.lang.Boolean b = items[(int)0L];
-        .java.lang.Boolean b$34;
-        if ((b$34 = b) != null) {
-            final .java.lang.Boolean b$35 = b$34;
-            items[(int)1L] = b$35;
+        .java.lang.Boolean b$23;
+        if ((b$23 = b) != null) {
+            final .java.lang.Boolean b$24 = b$23;
+            items[(int)1L] = b$24;
         }
         java.take_Booleans(items);
     }
@@ -206,10 +174,10 @@ final class test_bytes_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_bytes());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
-        .ceylon.language.Integer n$37;
-        if ((n$37 = n) != null) {
-            final long n$38 = n$37.longValue();
-            items[(int)1L] = (byte)n$38;
+        .ceylon.language.Integer n$26;
+        if ((n$26 = n) != null) {
+            final long n$27 = n$26.longValue();
+            items[(int)1L] = (byte)n$27;
         }
         java.take_bytes(items);
     }
@@ -228,10 +196,10 @@ final class test_JBytes_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Bytes());
         final .java.lang.Byte n = items[(int)0L];
-        .java.lang.Byte n$40;
-        if ((n$40 = n) != null) {
-            final .java.lang.Byte n$41 = n$40;
-            items[(int)1L] = n$41;
+        .java.lang.Byte n$29;
+        if ((n$29 = n) != null) {
+            final .java.lang.Byte n$30 = n$29;
+            items[(int)1L] = n$30;
         }
         java.take_Bytes(items);
     }
@@ -250,10 +218,10 @@ final class test_shorts_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final short[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_shorts());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
-        .ceylon.language.Integer n$43;
-        if ((n$43 = n) != null) {
-            final long n$44 = n$43.longValue();
-            items[(int)1L] = (short)n$44;
+        .ceylon.language.Integer n$32;
+        if ((n$32 = n) != null) {
+            final long n$33 = n$32.longValue();
+            items[(int)1L] = (short)n$33;
         }
         java.take_shorts(items);
     }
@@ -272,10 +240,10 @@ final class test_JShorts_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Short[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Shorts());
         final .java.lang.Short n = items[(int)0L];
-        .java.lang.Short n$46;
-        if ((n$46 = n) != null) {
-            final .java.lang.Short n$47 = n$46;
-            items[(int)1L] = n$47;
+        .java.lang.Short n$35;
+        if ((n$35 = n) != null) {
+            final .java.lang.Short n$36 = n$35;
+            items[(int)1L] = n$36;
         }
         java.take_Shorts(items);
     }
@@ -294,10 +262,10 @@ final class test_ints_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final int[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_ints());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
-        .ceylon.language.Integer n$49;
-        if ((n$49 = n) != null) {
-            final long n$50 = n$49.longValue();
-            items[(int)1L] = (int)n$50;
+        .ceylon.language.Integer n$38;
+        if ((n$38 = n) != null) {
+            final long n$39 = n$38.longValue();
+            items[(int)1L] = (int)n$39;
         }
         java.take_ints(items);
     }
@@ -316,10 +284,10 @@ final class test_JIntegers_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Integer[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Integers());
         final .java.lang.Integer n = items[(int)0L];
-        .java.lang.Integer n$52;
-        if ((n$52 = n) != null) {
-            final .java.lang.Integer n$53 = n$52;
-            items[(int)1L] = n$53;
+        .java.lang.Integer n$41;
+        if ((n$41 = n) != null) {
+            final .java.lang.Integer n$42 = n$41;
+            items[(int)1L] = n$42;
         }
         java.take_Integers(items);
     }
@@ -338,10 +306,10 @@ final class test_longs_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final long[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_longs());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[(int)0L]);
-        .ceylon.language.Integer n$55;
-        if ((n$55 = n) != null) {
-            final long n$56 = n$55.longValue();
-            items[(int)1L] = n$56;
+        .ceylon.language.Integer n$44;
+        if ((n$44 = n) != null) {
+            final long n$45 = n$44.longValue();
+            items[(int)1L] = n$45;
         }
         java.take_longs(items);
     }
@@ -360,10 +328,10 @@ final class test_JLongs_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Long[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Longs());
         final .java.lang.Long n = items[(int)0L];
-        .java.lang.Long n$58;
-        if ((n$58 = n) != null) {
-            final .java.lang.Long n$59 = n$58;
-            items[(int)1L] = n$59;
+        .java.lang.Long n$47;
+        if ((n$47 = n) != null) {
+            final .java.lang.Long n$48 = n$47;
+            items[(int)1L] = n$48;
         }
         java.take_Longs(items);
     }
@@ -382,10 +350,10 @@ final class test_floats_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final float[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_floats());
         final .ceylon.language.Float f = .ceylon.language.Float.instance(items[(int)0L]);
-        .ceylon.language.Float f$61;
-        if ((f$61 = f) != null) {
-            final double f$62 = f$61.doubleValue();
-            items[(int)1L] = (float)f$62;
+        .ceylon.language.Float f$50;
+        if ((f$50 = f) != null) {
+            final double f$51 = f$50.doubleValue();
+            items[(int)1L] = (float)f$51;
         }
         java.take_floats(items);
     }
@@ -404,10 +372,10 @@ final class test_JFloats_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Float[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Floats());
         final .java.lang.Float f = items[(int)0L];
-        .java.lang.Float f$64;
-        if ((f$64 = f) != null) {
-            final .java.lang.Float f$65 = f$64;
-            items[(int)1L] = f$65;
+        .java.lang.Float f$53;
+        if ((f$53 = f) != null) {
+            final .java.lang.Float f$54 = f$53;
+            items[(int)1L] = f$54;
         }
         java.take_Floats(items);
     }
@@ -426,10 +394,10 @@ final class test_doubles_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final double[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_doubles());
         final .ceylon.language.Float f = .ceylon.language.Float.instance(items[(int)0L]);
-        .ceylon.language.Float f$67;
-        if ((f$67 = f) != null) {
-            final double f$68 = f$67.doubleValue();
-            items[(int)1L] = f$68;
+        .ceylon.language.Float f$56;
+        if ((f$56 = f) != null) {
+            final double f$57 = f$56.doubleValue();
+            items[(int)1L] = f$57;
         }
         java.take_doubles(items);
     }
@@ -448,10 +416,10 @@ final class test_JDoubles_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Double[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Doubles());
         final .java.lang.Double f = items[(int)0L];
-        .java.lang.Double f$70;
-        if ((f$70 = f) != null) {
-            final .java.lang.Double f$71 = f$70;
-            items[(int)1L] = f$71;
+        .java.lang.Double f$59;
+        if ((f$59 = f) != null) {
+            final .java.lang.Double f$60 = f$59;
+            items[(int)1L] = f$60;
         }
         java.take_Doubles(items);
     }
@@ -470,10 +438,10 @@ final class test_chars_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final char[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_chars());
         final .ceylon.language.Character c = .ceylon.language.Character.instance(items[(int)0L]);
-        .ceylon.language.Character c$73;
-        if ((c$73 = c) != null) {
-            final int c$74 = c$73.intValue();
-            items[(int)1L] = (char)c$74;
+        .ceylon.language.Character c$62;
+        if ((c$62 = c) != null) {
+            final int c$63 = c$62.intValue();
+            items[(int)1L] = (char)c$63;
         }
         java.take_chars(items);
         final int[] ints = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_ints());
@@ -496,10 +464,10 @@ final class test_JCharacters_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.Character[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Characters());
         final .java.lang.Character c = items[(int)0L];
-        .java.lang.Character c$77;
-        if ((c$77 = c) != null) {
-            final .java.lang.Character c$78 = c$77;
-            items[(int)1L] = c$78;
+        .java.lang.Character c$66;
+        if ((c$66 = c) != null) {
+            final .java.lang.Character c$67 = c$66;
+            items[(int)1L] = c$67;
         }
         java.take_Characters(items);
     }
@@ -518,10 +486,10 @@ final class test_Strings_ {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .java.lang.String[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Strings());
         final .java.lang.String s = items[(int)0L];
-        .java.lang.String s$80;
-        if ((s$80 = s) != null) {
-            final .java.lang.String s$81 = s$80;
-            items[(int)1L] = s$81;
+        .java.lang.String s$69;
+        if ((s$69 = s) != null) {
+            final .java.lang.String s$70 = s$69;
+            items[(int)1L] = s$70;
         }
         java.take_Strings(items);
         final .ceylon.language.String[] ceylonStrings = .com.redhat.ceylon.compiler.java.language.arrays_.get_().javaStringArrayToCeylonStringArray(items);
@@ -547,10 +515,10 @@ final class test_Objects_ {
         final .java.lang.Object[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Objects());
         final .java.lang.Object o = items[(int)0L];
         final .java.lang.Object o2 = .com.redhat.ceylon.compiler.java.Util.checkNull(items[(int)0L]);
-        .java.lang.Object o$83;
-        if ((o$83 = o) != null) {
-            final .java.lang.Object o$84 = o$83;
-            items[(int)1L] = o$84;
+        .java.lang.Object o$72;
+        if ((o$72 = o) != null) {
+            final .java.lang.Object o$73 = o$72;
+            items[(int)1L] = o$73;
             items[(int)1L] = null;
         }
         java.take_Objects(items);

@@ -6,9 +6,23 @@ final class bug509_ {
     }
     
     static boolean bug509(final .ceylon.language.Sequential<? extends .java.lang.Object> objs) {
-        .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .java.lang.Object> obj$iterator$$1 = objs.iterator();
-        while (!((elem$0 = obj$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$3 = objs;
+        final boolean isArraySequence$4 = iterable$3 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$5;
+        int i$6 = 0;
+        final int length$7;
+        if (isArraySequence$4) {
+            array$5 = ((.ceylon.language.ArraySequence)iterable$3).$getArray$();
+            i$6 = ((.ceylon.language.ArraySequence)iterable$3).$getFirst$();
+            length$7 = i$6 + ((.ceylon.language.ArraySequence)iterable$3).$getLength$();
+        } else {
+            array$5 = null;
+            length$7 = 0;
+        }
+        .ceylon.language.Iterator<? extends .java.lang.Object> obj$iterator$$1 = isArraySequence$4 ? null : iterable$3.iterator();
+        while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = obj$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final .java.lang.Object obj = (.java.lang.Object)elem$0;
             if (obj.equals(.ceylon.language.Integer.instance(1L))) {
                 return true;

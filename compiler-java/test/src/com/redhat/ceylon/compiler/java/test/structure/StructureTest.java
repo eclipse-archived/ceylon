@@ -146,6 +146,10 @@ public class StructureTest extends CompilerTest {
         compareWithJavaSource("klass/InitializerVarargs");
     }
     @Test
+    public void testKlsInitializerVarargsNoOpt(){
+        compareWithJavaSourceNoOpt("klass/InitializerVarargs");
+    }
+    @Test
     public void testKlsWithVariableParameter(){
         compareWithJavaSource("klass/ClassWithVariableParameter");
     }
@@ -427,6 +431,10 @@ public class StructureTest extends CompilerTest {
     @Test
     public void testMthMethodWithVarargs(){
         compareWithJavaSource("method/MethodWithVarargs");
+    }
+    @Test
+    public void testMthMethodWithVarargsNoOpt(){
+        compareWithJavaSourceNoOpt("method/MethodWithVarargs");
     }
     @Test
     public void testMthMethodWithVariableParameter(){
