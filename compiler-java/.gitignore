@@ -15,3 +15,4 @@ samples/helloworld/modules
 /build
 test/trace/com/redhat/ceylon/compiler/java/test/trace/**/*.class
 test/trace/com/redhat/ceylon/compiler/java/test/trace/*.class
+.ceylon/config.old
