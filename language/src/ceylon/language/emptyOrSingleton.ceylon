@@ -1,11 +1,12 @@
-"A `Singleton` if the given element is non-null, otherwise `Empty`."
-see (`class Singleton`, `interface Empty`)
-shared Element[] emptyOrSingleton<Element>(Element? element) 
+"A singleton `Tuple` with the given element if the 
+ given element is non-null, or `Empty` otherwise ."
+see (`class Tuple`, `interface Empty`)
+shared []|[Element] emptyOrSingleton<Element>(Element? element) 
         given Element satisfies Object {
     if (exists element) {
-        return Singleton(element);
+        return [element];
     }
     else {
-        return {};
+        return [];
     }
 }
