@@ -46,8 +46,8 @@ shared interface Empty of e
     shared actual [] sequence => this;
     
     "Returns a string description of the empty sequence: 
-     `{}`."
-    shared actual String string => "{}";
+     `[]`."
+    shared actual String string => "[]";
     
     "Returns `null`."
     shared actual Null lastIndex => null; 
