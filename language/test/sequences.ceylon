@@ -323,7 +323,7 @@ shared void sequences() {
     check(!empty.spanFrom(1) nonempty, "empty.spanFrom(1)");
     check(!empty.spanTo(1) nonempty, "empty.spanTo(1)");
     check(!empty.segment(1, 2) nonempty, "empty sequence segment");
-    check(empty.string=="{}", "empty.string");
+    check(empty.string=="[]", "empty.string");
     check(empty.reversed==empty, "empty reversed");
     check(empty.sequence==empty, "empty.sequence");
 
@@ -354,7 +354,7 @@ shared void sequences() {
     check(result.string=="[hello, world]", "sequence.string 1");
 
     //span
-    check(result.span(-2,-1).string=="{}", "sequence.span(-2,-1).string");
+    check(result.span(-2,-1).string=="[]", "sequence.span(-2,-1).string");
     check(result.span(-2,0).string=="[hello]", "sequence.span(-2,0).string");
     check(result.span(1,1).string=="[world]", "sequence.span(1,1).string");
     check(result.span(1,2).string=="[world]", "sequence.span(1,2).string");
