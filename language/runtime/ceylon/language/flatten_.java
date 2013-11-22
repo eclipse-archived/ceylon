@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
@@ -28,9 +29,36 @@ public final class flatten_ {
         
         return new AbstractCallable<Return>($reifiedReturn, $reifiedArgs, null, (short)-1) {
 
-            private TypeDescriptor getElementType() {
-                return ((TypeDescriptor.Class) $reifiedArgs).getTypeArguments()[0];
+            private TypeDescriptor getElementType(java.lang.Object[] args) {
+            	if ($reifiedArgs instanceof TypeDescriptor.Class) {
+            		//optimization for common cases
+            		TypeDescriptor.Class reifiedClass = (TypeDescriptor.Class) $reifiedArgs;
+            		Class<?> clazz = reifiedClass.getClass();
+					if (clazz.equals(Tuple.class) ||
+            			clazz.equals(Sequence.class) ||
+            			clazz.equals(Sequential.class)) {
+						return reifiedClass.getTypeArguments()[0];
+            		}
+					else if (clazz.equals(Empty.class)) {
+						return TypeDescriptor.NothingType;
+					}
+            	}
+                TypeDescriptor[] types = new TypeDescriptor[args.length];
+                for (int i = 0; i <args.length; i++) {
+                    types[i] = getArgType(args[i]);
+                }
+                return TypeDescriptor.union(types);
             }
+            
+            private TypeDescriptor getArgType(java.lang.Object arg) {
+                ReifiedType element = (ReifiedType)arg;
+                return element != null ? element.$getType$() : Null.$TypeDescriptor$;
+            }
+
+			@SuppressWarnings("rawtypes")
+			private Tuple tuple(java.lang.Object[] args) {
+				return new Tuple(getElementType(args), args);
+			}
 
             @Override
             public Return $call$() {
@@ -39,22 +67,22 @@ public final class flatten_ {
 
             @Override
             public Return $call$(java.lang.Object arg0) {
-                return tupleFunction.$call$(new Tuple(getElementType(), new java.lang.Object[] { arg0 }));
+            	return tupleFunction.$call$(tuple(new java.lang.Object[] { arg0 }));
             }
 
             @Override
             public Return $call$(java.lang.Object arg0, java.lang.Object arg1) {
-                return tupleFunction.$call$(new Tuple(getElementType(), new java.lang.Object[] { arg0, arg1 }));
+            	return tupleFunction.$call$(tuple(new java.lang.Object[] { arg0, arg1 }));
             }
 
             @Override
             public Return $call$(java.lang.Object arg0, java.lang.Object arg1, java.lang.Object arg2) {
-                return tupleFunction.$call$(new Tuple(getElementType(), new java.lang.Object[] { arg0, arg1, arg2 }));
+            	return tupleFunction.$call$(tuple(new java.lang.Object[] { arg0, arg1, arg2 }));
             }
 
             @Override
             public Return $call$(java.lang.Object... args) {
-                return tupleFunction.$call$(new Tuple(getElementType(), args));
+                return tupleFunction.$call$(tuple(args));
             }
             
             @Override

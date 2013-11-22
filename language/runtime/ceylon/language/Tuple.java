@@ -284,6 +284,6 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     @com.redhat.ceylon.compiler.java.metadata.Ignore
     private TypeDescriptor $getElementType(int index) {
         ReifiedType element = (ReifiedType)array[first + index];
-        return (element != null) ? element.$getType$() : Null.$TypeDescriptor$;
+        return element != null ? element.$getType$() : Null.$TypeDescriptor$;
     }
 }
