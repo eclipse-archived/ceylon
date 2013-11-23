@@ -94,7 +94,7 @@ void testIndirectWithUnknownParamTypes() {
 shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun) 
     given Args satisfies Anything[] {
 
-    @error fun(*args); //TODO: note we should eventually support this!
+    fun(*args);
     @error fun();
     @error fun(args);
     @error fun(1, 2, 3);
@@ -102,6 +102,23 @@ shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun)
     Anything(String,Integer) fn = (String s, Integer i) => s[i];
     fn(*["a", 2]);
     parameterizedByArgs(["a", 2], fn);
+}
+
+shared void overload<T,V>(T t) 
+        given T satisfies Anything[] 
+        given V satisfies Anything[] {
+    function g([Float]|[String,Integer]|[]|[String,String,String,String]|Character[] args) => args[0];
+    Callable<Character|Float|Integer|String?,[Float]|[String,Integer]|[]|[String,String,String,String]|Character[]> f = flatten(g);
+    Character|Integer|Float|String? x = f(5.0);
+    @error Character|Integer|Float|String? y = f("hello");
+    Character|Integer|Float|String? z = f();
+    Character|Integer|Float|String? w = f("hello",1);
+    Character|Integer|Float|String? v = f('a','b','c','d');
+    @error Character|Integer|Float|String? u = f(5.0, 'x');
+    
+    function gg(T|V args) => nothing;
+    Callable<Nothing,T|V> ff = flatten(gg);
+    ff(*t);
 }
 
 void testSpreadTypeArg<Args>(Args args) 
