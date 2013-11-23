@@ -25,8 +25,8 @@ class LanguageModule() {
     @type:"Null|Integer" min(ints1);
     @type:"Null|Integer" min(ints2);
     
-    @type:"Sequential<Integer>" emptyOrSingleton(1);
-    @type:"Sequential<Nothing>" emptyOrSingleton(null);
-    @type:"Sequential<Integer>" emptyOrSingleton(1==1 then 1);
+    @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1);
+    @type:"Empty|Tuple<Nothing,Nothing,Empty>" emptyOrSingleton(null);
+    @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1==1 then 1);
 
 }
