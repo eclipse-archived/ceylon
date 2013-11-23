@@ -5,7 +5,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersectio
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.unionType;
-import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -756,11 +755,15 @@ public class Unit {
             }
             else if (isSequentialType(args)) {
             	if (!(args.getDeclaration() instanceof TypeParameter)) {
-            		return singletonList(args);
+            		LinkedList<ProducedType> sequenced = new LinkedList<ProducedType>();
+            		sequenced.add(args);
+            		return sequenced;
             	}
             }
         }
-        return singletonList(new UnknownType(this).getType());
+        LinkedList<ProducedType> unknown = new LinkedList<ProducedType>();
+        unknown.add(new UnknownType(this).getType());
+        return unknown;
     }
     
     public boolean isTupleLengthUnbounded(ProducedType args) {
