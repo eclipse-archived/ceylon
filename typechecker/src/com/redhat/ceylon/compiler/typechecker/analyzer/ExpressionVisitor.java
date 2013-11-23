@@ -2231,11 +2231,19 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitIndirectInvocation(Tree.InvocationExpression that) {
+        
+        if (that.getNamedArgumentList()!=null) {
+            that.addError("named arguments not supported for indirect invocations");
+        }
+        Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
+        if (pal==null) {
+            return;
+        }
+        
         Tree.Primary p = that.getPrimary();
         ProducedType pt = p.getTypeModel();
         if (!isTypeUnknown(pt)) {
-            if (checkCallable(pt, p, 
-                    "invoked expression must be callable")) {
+            if (checkCallable(pt, p, "invoked expression must be callable")) {
                 List<ProducedType> typeArgs = pt.getSupertype(unit.getCallableDeclaration())
                         .getTypeArgumentList();
                 if (!typeArgs.isEmpty()) {
@@ -2243,12 +2251,30 @@ public class ExpressionVisitor extends Visitor {
                 }
                 //typecheck arguments using the type args of Callable
                 if (typeArgs.size()>=2) {
-                    ProducedType tt = typeArgs.get(1);
-                    checkIndirectInvocationArguments(that, tt,
-                            unit.getTupleElementTypes(tt),
-                            unit.isTupleLengthUnbounded(tt),
-                            unit.isTupleVariantAtLeastOne(tt),
-                            unit.getTupleMinimumLength(tt));
+                    ProducedType paramTypesAsTuple = typeArgs.get(1);
+                    if (paramTypesAsTuple!=null) {
+                        TypeDeclaration pttd = paramTypesAsTuple.getDeclaration();
+                        if (pttd instanceof ClassOrInterface &&
+                                (pttd.equals(unit.getTupleDeclaration()) ||
+                                pttd.equals(unit.getSequenceDeclaration()) ||
+                                pttd.equals(unit.getSequentialDeclaration()) ||
+                                pttd.equals(unit.getEmptyDeclaration()))) {
+                            //we have a plain tuple type so we can check the
+                            //arguments individually
+                            checkIndirectInvocationArguments(that, paramTypesAsTuple,
+                                    unit.getTupleElementTypes(paramTypesAsTuple),
+                                    unit.isTupleLengthUnbounded(paramTypesAsTuple),
+                                    unit.isTupleVariantAtLeastOne(paramTypesAsTuple),
+                                    unit.getTupleMinimumLength(paramTypesAsTuple));
+                        }
+                        else {
+                            //we have something exotic, a union of tuple types
+                            //or whatever, so just check the whole argument tuple
+                            checkAssignable(getTupleType(pal.getPositionalArguments(), false), 
+                                    paramTypesAsTuple, pal,
+                                    "argument list type must be assignable to parameter list type");
+                        }
+                    }                
                 }
             }
         }
@@ -2578,88 +2604,73 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkIndirectInvocationArguments(Tree.InvocationExpression that, 
-            ProducedType tt, List<ProducedType> paramTypes, boolean sequenced, 
-            boolean atLeastOne, int firstDefaulted) {
-        
-        if (that.getNamedArgumentList()!=null) {
-            that.addError("named arguments not supported for indirect invocations");
-        }
+            ProducedType paramTypesAsTuple, List<ProducedType> paramTypes, 
+            boolean sequenced, boolean atLeastOne, int firstDefaulted) {
         
         Tree.PositionalArgumentList pal = that.getPositionalArgumentList();
-        if (pal!=null) {
-            List<Tree.PositionalArgument> args = pal.getPositionalArguments();
-            
-            /*if (tt.getDeclaration() instanceof TypeParameter) {
-                //TODO: really this should handle types like
-                //          [String,Integer,*Args]
-                //      by recursively walking the tuple type
-                checkAssignable(getTupleType(args, false), tt, that, 
-                        "argument list type not assignable to parameter list type");
+        List<Tree.PositionalArgument> args = pal.getPositionalArguments();
+        
+        for (int i=0; i<paramTypes.size(); i++) {
+            if (isTypeUnknown(paramTypes.get(i))) {
+                that.addError("parameter types cannot be determined from function reference");
                 return;
-            }*/
-            
-            for (int i=0; i<paramTypes.size(); i++) {
-                if (isTypeUnknown(paramTypes.get(i))) {
-                    that.addError("parameter types cannot be determined from function reference");
-                    return;
+            }
+        }
+        
+        for (int i=0; i<paramTypes.size(); i++) {
+            if (i>=args.size()) {
+                if (i<firstDefaulted && (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
+                    pal.addError("missing argument for required parameter " + i);
                 }
             }
-            
-            for (int i=0; i<paramTypes.size(); i++) {
-                if (i>=args.size()) {
-                    if (i<firstDefaulted && (!sequenced || atLeastOne || i!=paramTypes.size()-1)) {
-                        pal.addError("missing argument for required parameter " + i);
-                    }
+            else {
+                Tree.PositionalArgument arg = args.get(i);
+                ProducedType at = arg.getTypeModel();
+                if (arg instanceof Tree.SpreadArgument) {
+                    int fd = firstDefaulted<0?-1:firstDefaulted<i?0:firstDefaulted-i;
+                    checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
+                            paramTypes.subList(i, paramTypes.size()), 
+                            sequenced, atLeastOne, fd, at);
+                    break;
                 }
-                else {
-                    Tree.PositionalArgument arg = args.get(i);
-                    ProducedType at = arg.getTypeModel();
-                    if (arg instanceof Tree.SpreadArgument) {
-                        int fd = firstDefaulted<0?-1:firstDefaulted<i?0:firstDefaulted-i;
-                        checkSpreadIndirectArgument((Tree.SpreadArgument) arg, 
-                                paramTypes.subList(i, paramTypes.size()), 
-                                sequenced, atLeastOne, fd, at);
-                        break;
-                    }
-                    else if (arg instanceof Tree.Comprehension) {
-                        ProducedType paramType = paramTypes.get(i);
-                        if (sequenced && i==paramTypes.size()-1) {
-                            checkComprehensionIndirectArgument((Tree.Comprehension) arg, 
-                                paramType, atLeastOne);
-                        }
-                        else {
-                            arg.addError("not a variadic parameter: parameter " + i);
-                        }
-                        break;
+                else if (arg instanceof Tree.Comprehension) {
+                    ProducedType paramType = paramTypes.get(i);
+                    if (sequenced && i==paramTypes.size()-1) {
+                        checkComprehensionIndirectArgument((Tree.Comprehension) arg, 
+                            paramType, atLeastOne);
                     }
                     else {
-                        ProducedType paramType = paramTypes.get(i);
-                        if (sequenced && i==paramTypes.size()-1) {
-                            checkSequencedIndirectArgument(args.subList(i, args.size()), 
-                                    paramType);
-                            return; //Note: early return!
-                        }
-                        else if (at!=null && paramType!=null && 
-                                !isTypeUnknown(at) && !isTypeUnknown(paramType)) {
-                            checkAssignable(at, paramType, arg, 
-                                    "argument must be assignable to parameter type");
-                        }
+                        arg.addError("not a variadic parameter: parameter " + i);
+                    }
+                    break;
+                }
+                else {
+                    ProducedType paramType = paramTypes.get(i);
+                    if (sequenced && i==paramTypes.size()-1) {
+                        checkSequencedIndirectArgument(args.subList(i, args.size()), 
+                                paramType);
+                        return; //Note: early return!
+                    }
+                    else if (at!=null && paramType!=null && 
+                            !isTypeUnknown(at) && !isTypeUnknown(paramType)) {
+                        checkAssignable(at, paramType, arg, 
+                                "argument must be assignable to parameter type");
                     }
                 }
             }
-    
-            for (int i=paramTypes.size(); i<args.size(); i++) {
-                Tree.PositionalArgument arg = args.get(i);
-                if (arg instanceof Tree.SpreadArgument) {
-                    if (unit.isEmptyType(arg.getTypeModel())) {
-                        continue;
-                    }
-                }
-                arg.addError("no matching parameter: function reference has " + 
-                        paramTypes.size() + " parameters", 2000);
-            }
-    
         }
+        
+        for (int i=paramTypes.size(); i<args.size(); i++) {
+            Tree.PositionalArgument arg = args.get(i);
+            if (arg instanceof Tree.SpreadArgument) {
+                if (unit.isEmptyType(arg.getTypeModel())) {
+                    continue;
+                }
+            }
+            arg.addError("no matching parameter: function reference has " + 
+                    paramTypes.size() + " parameters", 2000);
+        }
+        
     }
 
     private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
