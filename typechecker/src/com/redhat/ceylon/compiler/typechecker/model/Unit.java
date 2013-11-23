@@ -881,6 +881,7 @@ public class Unit {
         put("shared");
         put("default");
         put("formal");
+        put("partial");
         put("native");
         put("actual");
         put("abstract");

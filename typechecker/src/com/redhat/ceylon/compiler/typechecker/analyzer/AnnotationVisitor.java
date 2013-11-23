@@ -296,17 +296,18 @@ public class AnnotationVisitor extends Visitor {
                                 .getUnit().getPackage().getQualifiedNameString();
                         String typeName = t.getDeclaration().getName();
                         if (packageName.equals(LANGUAGE_MODULE_NAME) && 
-                                (typeName.equals("Shared") ||
-                                typeName.equals("Abstract") || 
-                                typeName.equals("Default") ||
-                                typeName.equals("Formal") ||
-                                typeName.equals("Actual") ||
-                                typeName.equals("Final") ||
-                                typeName.equals("Variable") ||
-                                typeName.equals("Late") ||
-                                typeName.equals("Native") ||
-                                typeName.equals("Deprecated") ||
-                                typeName.equals("Annotation"))) {
+                                (typeName.equals("SharedAnnotation") ||
+                                typeName.equals("AbstractAnnotation") || 
+                                typeName.equals("DefaultAnnotation") ||
+                                typeName.equals("FormalAnnotation") ||
+                                typeName.equals("PartialAnnotation") ||
+                                typeName.equals("ActualAnnotation") ||
+                                typeName.equals("FinalAnnotation") ||
+                                typeName.equals("VariableAnnotation") ||
+                                typeName.equals("LateAnnotation") ||
+                                typeName.equals("NativeAnnotation") ||
+                                typeName.equals("DeprecatedAnnotation") ||
+                                typeName.equals("AnnotationAnnotation"))) {
                             type.addError("annotation constructor may not return modifier annotation type");
                         }
                     }

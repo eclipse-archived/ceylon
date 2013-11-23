@@ -8,6 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
@@ -36,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -107,6 +110,9 @@ public class DeclarationVisitor extends Visitor {
     
     private void visitDeclaration(Tree.Declaration that, Declaration model, boolean checkDupe) {
         visitElement(that, model);
+        
+        handleDeclarationAnnotations(that, model);        
+        
         if ( setModelName(that, model, that.getIdentifier()) ) {
             if (checkDupe) checkForDuplicateDeclaration(that, model);
         }
@@ -114,8 +120,6 @@ public class DeclarationVisitor extends Visitor {
         unit.addDeclaration(model);
         Scope sc = getContainer(that);
         sc.addMember(model);
-        
-        handleDeclarationAnnotations(that, model);        
         
         setVisibleScope(model);
         
@@ -193,8 +197,15 @@ public class DeclarationVisitor extends Visitor {
                 do {
                     Declaration member = s.getDirectMember(model.getName(), null, false);
                     if (member!=null) {
-                        that.addError("duplicate declaration name: " + model.getName());
-                        model.getUnit().getDuplicateDeclarations().add(member);
+                        boolean overload = 
+                        		member instanceof Functional && 
+                        		model instanceof Functional &&
+                        		((Functional) member).isOverloaded() && 
+                        		((Functional) model).isOverloaded();
+						if (!overload) {
+                        	that.addError("duplicate declaration name: " + model.getName());
+                        	model.getUnit().getDuplicateDeclarations().add(member);
+                        }
                     }
                     isControl = s instanceof ControlBlock;
                     s = s.getContainer();
@@ -297,7 +308,40 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         ((Generic) declaration).setTypeParameters(getTypeParameters(that));
     }    
-        
+
+    @Override
+    public void visit(Tree.ClassOrInterface that) {
+    	super.visit(that);
+    	Map<String,List<Method>> overloads = new HashMap<String,List<Method>>();
+    	for (Declaration dec: that.getDeclarationModel().getMembers()) {
+    		if (dec instanceof Method) {
+    			Method m = (Method) dec;
+    			if (m.isOverloaded()) {
+    				List<Method> list = overloads.get(dec.getName());
+    				if (list==null) {
+    					list = new ArrayList<Method>();
+    					overloads.put(dec.getName(), list);
+    				}
+    				list.add(m);
+    			}
+    		}
+    	}
+    	for (Map.Entry<String,List<Method>> overload: overloads.entrySet()) {
+    		Method abstraction = new Method();
+    		abstraction.setUnit(unit);
+    		abstraction.setAbstraction(true);
+    		abstraction.setName(overload.getKey());
+			abstraction.setContainer(that.getDeclarationModel());
+			abstraction.setOverloads(new ArrayList<Declaration>(overload.getValue()));
+    		for (Method m: overload.getValue()) {
+    			abstraction.setShared(abstraction.isShared()||m.isShared());
+    		}
+			abstraction.setType(new UnknownType(unit).getType());
+    		setVisibleScope(abstraction);
+    		that.getDeclarationModel().getMembers().add(abstraction);
+    	}
+    }
+    
     @Override
     public void visit(Tree.AnyClass that) {
         Class c = that instanceof Tree.ClassDefinition ?
@@ -992,11 +1036,25 @@ public class DeclarationVisitor extends Visitor {
                 model.setFormal(true);
             }
         }
+        if (model.isFormal() && model.isDefault()) {
+            that.addError("declaration may not be annotated both formal and default");
+        }
         if (hasAnnotation(al, "native", unit)) {
             model.setNative(true);
         }
-        if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both formal and default");
+        if (hasAnnotation(al, "partial", unit)) {
+            if (model instanceof Method) {
+                ((Method) model).setOverloaded(true);
+            }
+            else {
+                that.addError("declaration is not a function, and may not be annotated partial");
+            }
+            if (model.isFormal() || model.isDefault()) {
+                that.addError("partial declaration may not be annotated formal or default");
+            }
+            if (!(model.getContainer() instanceof ClassOrInterface)) {
+            	that.addError("partial declaration does not belong to a class or interface");
+            }
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
@@ -1042,7 +1100,7 @@ public class DeclarationVisitor extends Visitor {
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
-                that.addError("value may not be annotated both variable and transient: " + model.getName());
+                that.addError("value may not be annotated both variable and transient");
             }
         }
         if (hasAnnotation(al, "deprecated", unit)) {
@@ -1156,11 +1214,11 @@ public class DeclarationVisitor extends Visitor {
             visitDeclaration(that, p);
         }
         else {
-        	if (p.isConstrained()) {
-        		that.addError("duplicate constraint list for type parameter: " +
-        				name);
-        	}
-        	p.setConstrained(true);
+            if (p.isConstrained()) {
+                that.addError("duplicate constraint list for type parameter: " +
+                        name);
+            }
+            p.setConstrained(true);
         }
         
         Scope o = enterScope(p);
