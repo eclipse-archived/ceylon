@@ -822,7 +822,7 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.ClassDefinition that) {
         Class c = that.getDeclarationModel();
         Class vd = unit.getAnythingDeclaration();
-        if (c!=vd) {
+        if (!vd.equals(c)) {
             defaultSuperclass(that.getExtendedType(), c);
         }
         super.visit(that);
