@@ -175,7 +175,8 @@ public class LazyPackage extends Package {
                 makeInteropAnnotation((LazyInterface)d);
                 
             }
-            if (d instanceof LazyClass && d.getUnit().getFilename() != null) {
+            if ((d instanceof LazyClass ||
+                    d instanceof LazyInterface)  && d.getUnit().getFilename() != null) {
                 lazyUnits.add(d.getUnit());
             }
         }
