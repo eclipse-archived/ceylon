@@ -2092,31 +2092,38 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                 }*/
-                boolean commonElementOfUnions=false;
+                ProducedType pt = paramType;
+                ProducedType apt = argType;
                 if (argType.getDeclaration() instanceof UnionType) {
-                    ProducedType pt = paramType;
-                    ProducedType apt = argType;
                     for (ProducedType act: argType.getDeclaration().getCaseTypes()) {
                         //some element of the argument union is already a subtype
                         //of the parameter union, so throw it away from both unions
                         if (act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
                             pt = pt.minus(act);
                             apt = apt.minus(act);
-                            commonElementOfUnions=true;
                         }
                     }
-                    if (commonElementOfUnions) {
-                        addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
-                                pt, apt, visited));
+                }
+                if (pt.getDeclaration() instanceof UnionType)  {
+                    boolean found = false;
+                	for (TypeDeclaration td: ((UnionType) pt.getDeclaration()).getCaseTypeDeclarations()) {
+                		if (td instanceof TypeParameter) {
+                			if (found) return null;
+                			found = true;
+                		}
+                	}
+                	//just one type parameter left in the union
+                    for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
+                    	addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
+                    			ct.substitute(pt.getTypeArguments()), 
+                    			apt, visited));
                     }
                 }
-                else if (!commonElementOfUnions) {//if (typeParamType==null) {
-                    for (ProducedType ct: paramType.getDeclaration().getCaseTypes()) {
-                        addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
-                                ct.substitute(paramType.getTypeArguments()), 
-                                argType, visited));
-                    }
-                } 
+                else {
+                	addToUnionOrIntersection(tp, list, inferTypeArg(tp, 
+                			pt, apt, visited));
+                }
+                return unionOrIntersection(tp, list);
                 /*else {
                     //if the param type is of form T|A1 and the arg type is
                     //of form A2|B then constrain T by B and A1 by A2
@@ -2127,7 +2134,6 @@ public class ExpressionVisitor extends Visitor {
                             paramType.minus(typeParamType), pt, visited));
                     //return null;
                 }*/
-                return unionOrIntersection(tp, list);
             }
             else if (paramType.getDeclaration() instanceof IntersectionType) {
                 List<ProducedType> list = new ArrayList<ProducedType>();
