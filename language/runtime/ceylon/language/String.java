@@ -1371,13 +1371,14 @@ public final class String
 
     @Override
     public String getRest() {
-//        return spanFrom(Integer.instance(1));
-        return instance(value.isEmpty() ? value : value.substring(1));
+        return value.isEmpty() ? this :
+        	instance(value.substring(value.offsetByCodePoints(0, 1)));
     }
 
     @Ignore
     public static java.lang.String getRest(java.lang.String value) {
-        return value.isEmpty() ? "" : value.substring(1);
+        return value.isEmpty() ? "" :
+        	value.substring(value.offsetByCodePoints(0, 1));
     }
 
     @Override

@@ -396,4 +396,10 @@ shared void strings() {
     check(!"long".longerThan(4), "String.longerThan");
     check("short".shorterThan(6), "String.shorterThan");
     check(!"short".shorterThan(5), "String.shorterThan");
+    
+    check("\{#0001F638}\{#0001f63e}".size==2, "2 cats");
+    check("\{#0001F638}\{#0001f63e}".rest.size==1, "1 cats");
+    check(("\{#0001F638}\{#0001f63e}".first else ' ')=='\{#0001F638}', "first cats");
+    check(("\{#0001F638}\{#0001f63e}".rest.first else ' ')=='\{#0001f63e}', "second cats");
+    check("\{#0001F638}\{#0001f63e}".reversed=="\{#0001f63e}\{#0001F638}", "cats reversed");
 }
