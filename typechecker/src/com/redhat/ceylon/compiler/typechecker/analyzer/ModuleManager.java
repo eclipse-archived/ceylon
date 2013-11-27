@@ -50,7 +50,7 @@ public class ModuleManager {
     
     protected Package createPackage(String pkgName, Module module) {
         final Package pkg = new Package();
-        List<String> name = pkgName.isEmpty() ? Collections.<String>emptyList() : splitModuleName(pkgName); 
+        List<String> name = pkgName.isEmpty() ? Arrays.asList("") : splitModuleName(pkgName); 
         pkg.setName(name);
         if (module != null) {
             module.getPackages().add(pkg);
