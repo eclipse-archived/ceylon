@@ -76,8 +76,7 @@ public class JsCompiler {
         public void visit(Tree.ImportMemberOrType that) {
             if (hasErrors(that)) return;
             Unit u = that.getImportModel().getDeclaration().getUnit();
-            if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
-                    || u.getPackage().getModule().isJava()) {
+            if (nonCeylonUnit(u)) {
                 that.addUnexpectedError("cannot import Java declarations in Javascript");
             }
             super.visit(that);
@@ -95,8 +94,7 @@ public class JsCompiler {
             if (hasErrors(that)) return;
             if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
                 Unit u = that.getDeclaration().getUnit();
-                if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
-                        || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
+                if (nonCeylonUnit(u)) {
                     that.addUnexpectedError("cannot call Java declarations in Javascript");
                 }
             }
@@ -107,8 +105,7 @@ public class JsCompiler {
             if (hasErrors(that)) return;
             if (that.getDeclaration() != null && that.getDeclaration().getUnit() != null) {
                 Unit u = that.getDeclaration().getUnit();
-                if ((u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
-                        || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava())) {
+                if (nonCeylonUnit(u)) {
                     that.addUnexpectedError("cannot call Java declarations in Javascript");
                 }
             }
@@ -400,6 +397,11 @@ public class JsCompiler {
         writer.write("if (typeof exports!=='undefined') { factory(require, exports, module);\n");
         writer.write("} else { throw 'no module loader'; }\n");
         writer.write("}));\n");
+    }
+
+    protected boolean nonCeylonUnit(Unit u) {
+        return (u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
+                || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava());
     }
 
     /** Returns true if the compiler is currently compiling the language module. */
