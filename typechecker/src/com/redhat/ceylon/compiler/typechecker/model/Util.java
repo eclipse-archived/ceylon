@@ -650,15 +650,22 @@ public class Util {
         return false;
     }
     
-    public static String formatPath(List<String> path) {
+    public static String formatPath(List<String> path, char separator) {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
-            sb.append(path.get(i));
-            if (i<path.size()-1) sb.append('.');
+            String pathPart = path.get(i);
+            if (! pathPart.isEmpty()) {
+                sb.append(pathPart);
+                if (i<path.size()-1) sb.append(separator);
+            }
         }
         return sb.toString();
     }
 
+    public static String formatPath(List<String> path) {
+        return formatPath(path, '.');
+    }
+    
     static boolean addToSupertypes(List<ProducedType> list, ProducedType st) {
         for (ProducedType et: list) {
             if (st.getDeclaration().equals(et.getDeclaration()) && //return both a type and its self type
