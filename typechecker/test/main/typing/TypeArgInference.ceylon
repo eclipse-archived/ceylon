@@ -202,6 +202,12 @@ void folding() {
     LazyMap<String,Integer> m = LazyMap({"a"->1, "b"->2, "c"->3});
     m.fold(0, (Integer x, String->Integer e) => x+e.item);
     
+    Integer hashes0(String* objects) =>
+            objects.fold(0, (Integer result, String obj) => result+obj.size);
+    
+    Integer hashes1(Object* objects) =>
+            objects.fold(0, (Integer result, Object obj) => result+obj.hash);
+    
 }
 
 void inferenceAndAliases() {
