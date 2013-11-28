@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -331,6 +332,10 @@ public class Util {
      */
     static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
             ProducedType receivingType, List<ProducedType> typeArguments) {
+        if(receivingType == null 
+                && declaration instanceof Generic
+                && ((Generic)declaration).getTypeParameters().isEmpty())
+            return Collections.emptyMap();
         Map<TypeParameter, ProducedType> map = getArgumentsOfOuterType(receivingType);
         //now turn the type argument tuple into a
         //map from type parameter to argument

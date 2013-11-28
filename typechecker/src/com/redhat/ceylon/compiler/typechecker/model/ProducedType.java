@@ -9,6 +9,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -925,10 +926,15 @@ public class ProducedType extends ProducedReference {
     public List<ProducedType> getTypeArgumentList() {
         if (argList==null) {
             List<TypeParameter> tps = getDeclaration().getTypeParameters();
-            List<ProducedType> argList = new ArrayList<ProducedType>(tps.size());
-            Map<TypeParameter, ProducedType> args = getTypeArguments();
-            for (TypeParameter tp: tps) {
-                argList.add(args.get(tp));
+            List<ProducedType> argList;
+            if(tps.isEmpty()){
+                argList = Collections.emptyList();
+            }else{
+                argList = new ArrayList<ProducedType>(tps.size());
+                Map<TypeParameter, ProducedType> args = getTypeArguments();
+                for (TypeParameter tp: tps) {
+                    argList.add(args.get(tp));
+                }
             }
             return argList;
         }
@@ -1657,9 +1663,14 @@ public class ProducedType extends ProducedReference {
             return d.getSatisfiedTypes().get(0);
         }
         List<ProducedType> args = getTypeArgumentList();
-        List<ProducedType> simpleArgs = new ArrayList<ProducedType>(args.size());
-        for (ProducedType arg: args) {
-            simpleArgs.add(arg==null ? null : arg.simple());
+        List<ProducedType> simpleArgs;
+        if(args.isEmpty()){
+            simpleArgs = Collections.<ProducedType>emptyList();
+        }else{
+            simpleArgs = new ArrayList<ProducedType>(args.size());
+            for (ProducedType arg: args) {
+                simpleArgs.add(arg==null ? null : arg.simple());
+            }
         }
         ProducedType qt = getQualifyingType();
         ProducedType simpleQualifyingType = qt==null ? 
