@@ -7,45 +7,18 @@ shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
         given Key satisfies Object
         given Item satisfies Object {
     
-    shared actual <Key->Item>? first => entries.first;
-    shared actual <Key->Item>? last => entries.last;
+    first => entries.first;
+    last => entries.last;
     
-    shared actual LazyMap<Key, Item> clone => this;
+    clone => this;
     
-    shared actual Integer size => entries.size;
+    size => entries.size;
     
-    shared actual Item? get(Object key) =>
-            entries.find((Key->Item e) => e.key==key)?.item;
+    get(Object key) => entries.find(forKey(key.equals))?.item;
     
-    shared actual Iterator<Key->Item> iterator() =>
-            entries.iterator();
+    iterator() => entries.iterator();
     
-    shared actual default Boolean equals(Object that) {
-        if (is Map<Object,Object> that) {
-            if (that.size==size) {
-                for (entry in this) {
-                    if (exists item = that[entry.key]) {
-                        if (item==entry.item) {
-                            continue;
-                        }
-                    }
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    shared actual default Integer hash {
-        variable Integer hashCode = 1;
-        for(elem in entries) {
-            hashCode *= 31;
-            hashCode += elem.hash;
-        }
-        return hashCode;
-    }
+    equals(Object that) => (super of Map<Key,Item>).equals(that);
+    hash => (super of Map<Key,Item>).hash;
     
 }

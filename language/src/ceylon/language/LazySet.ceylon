@@ -6,11 +6,11 @@ shared class LazySet<out Element>({Element*} elems)
         satisfies Set<Element>
         given Element satisfies Object {
     
-    shared actual LazySet<Element> clone => this;
+    clone => this;
     
     shared actual Integer size {
         variable value c=0;
-        value sorted = elems.sort(byIncreasing((Element e) => e.hash));
+        value sorted = elems.sort(byIncreasing(Object.hash));
         if (exists l=sorted.first) {
             c=1;
             variable Element last = l;
@@ -26,7 +26,7 @@ shared class LazySet<out Element>({Element*} elems)
     
     shared actual Iterator<Element> iterator() {
         object iterator satisfies Iterator<Element> {
-            value sorted = elems.sort(byIncreasing((Element e) => e.hash)).iterator();
+            value sorted = elems.sort(byIncreasing(Object.hash)).iterator();
             variable Element|Finished ready = sorted.next();
             shared actual Element|Finished next() {
                 Element|Finished next = ready;
@@ -42,13 +42,12 @@ shared class LazySet<out Element>({Element*} elems)
     }
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
-            given Other satisfies Object =>
-        LazySet(elems.chain(set));
+            given Other satisfies Object 
+            => LazySet(elems.chain(set));
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
-            given Other satisfies Object =>
-        //requires support for reified generics!
-        LazySet ({ for (e in set) if (is Element e, e in this) e });
+            given Other satisfies Object 
+            => LazySet { for (e in set) if (is Element e, e in this) e };
     
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
             given Other satisfies Object {
@@ -58,32 +57,10 @@ shared class LazySet<out Element>({Element*} elems)
     }
     
     shared actual Set<Element> complement<Other>(Set<Other> set)
-            given Other satisfies Object =>
-        LazySet ({ for (e in this) if (!e in set) e });
+            given Other satisfies Object 
+            => LazySet { for (e in this) if (!e in set) e };
     
-    shared actual default Boolean equals(Object that) {
-        if (is Set<Object> that) {
-            if (that.size==size) {
-                for (element in elems) {
-                    if (!element in that) {
-                        return false;
-                    }
-                }
-                else {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    shared actual default Integer hash {
-        variable Integer hashCode = 1;
-        for(elem in elems){
-            hashCode *= 31;
-            hashCode += elem.hash;
-        }
-        return hashCode;
-    }
+    equals(Object that) => (super of Set<Element>).equals(that);
+    hash => (super of Set<Element>).hash;
     
 }

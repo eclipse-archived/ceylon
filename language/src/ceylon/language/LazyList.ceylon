@@ -19,20 +19,24 @@ shared class LazyList<out Element>({Element*} elems)
         }
     }
     
-    shared actual List<Element> rest => LazyList(elems.rest);
+    first => elems.first;    
+    last => elems.last;
+    rest => LazyList(elems.rest);
     
-    shared actual Iterator<Element> iterator() => 
-            elems.iterator();
+    iterator() => elems.iterator();
     
     "Returns a `List` with the elements of this `List` 
      in reverse order. This operation will create copy 
      the elements to a new `List`, so changes to the 
      original `Iterable` will no longer be reflected in 
      the new `List`."
-    shared actual List<Element> reversed =>
-            elems.sequence.reversed;
+    shared actual List<Element> reversed 
+            => elems.sequence.reversed;
     
-    shared actual List<Element> clone => this;
+    clone => this;
+    
+    findLast(Boolean selecting(Element elem)) 
+            => elems.findLast(selecting);
     
     shared actual List<Element> span
             (Integer from, Integer to) {
@@ -57,11 +61,11 @@ shared class LazyList<out Element>({Element*} elems)
         }
     }
     
-    shared actual List<Element> spanTo(Integer to) =>
-            to<0 then {} else LazyList(elems.taking(to+1));
+    shared actual List<Element> spanTo(Integer to) 
+            => to<0 then [] else LazyList(elems.taking(to+1));
     
-    shared actual List<Element> spanFrom(Integer from) =>
-            from > 0 then LazyList(elems.skipping(from))
+    shared actual List<Element> spanFrom(Integer from) 
+            => from > 0 then LazyList(elems.skipping(from))
                     else this;
     
     shared actual List<Element> segment
@@ -76,52 +80,7 @@ shared class LazyList<out Element>({Element*} elems)
         }
     }
     
-    shared actual default Boolean equals(Object that) {
-        if (is List<Anything> that) {
-            value size = elems.size;
-            if (that.size==size) {
-                for (i in 0..size-1) {
-                    value x = this[i];
-                    value y = that[i];
-                    if (exists x) {
-                        if (exists y) {
-                            if (x!=y) {
-                                return false;
-                            }
-                        }
-                        else {
-                            return false;
-                        }
-                    }
-                    else if (exists y) {
-                        return false;
-                    }
-                }
-                else {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    shared actual default Integer hash {
-        variable value hash = 1;
-        for (elem in elems) {
-            hash *= 31;
-            if (exists elem) {
-                hash += elem.hash;
-            }
-        }
-        return hash;
-    }
-    
-    shared default actual Element? findLast(
-            Boolean selecting(Element elem)) =>
-                    elems.findLast(selecting);
-    
-    shared actual default Element? first => elems.first;
-    
-    shared actual default Element? last => elems.last;
+    equals(Object that) => (super of List<Element>).equals(that);
+    hash => (super of List<Element>).hash;
     
 }
