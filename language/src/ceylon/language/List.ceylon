@@ -424,7 +424,7 @@ shared interface List<out Element>
     }
     
     shared default Map<Element&Object,Integer> frequencies
-            => LazyMap { for (element in LazySet(this.coalesced)) 
-                    element->this.coalesced.count(element.equals) };
+            => LazyMap { for (element in LazySet(coalesced)) 
+                    element->coalesced.count(element.equals) };
     
 }
