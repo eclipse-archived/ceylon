@@ -90,61 +90,75 @@ shared interface Set<out Element>
             given Other satisfies Object;
     
 }
+
 "A [[Set]] with no elements."
-shared object emptySet extends Object() satisfies Set<Nothing> {
+shared object emptySet 
+        extends Object() 
+        satisfies Set<Nothing> {
+    
     shared actual Set<Other> union<Other>(Set<Other> set)
             given Other satisfies Object
-        => set;
+            => set;
     shared actual Set<Nothing> intersection<Other>(Set<Other> set)
             given Other satisfies Object
-        => emptySet;
+            => emptySet;
     shared actual Set<Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object
-        => set;
+            => set;
     shared actual Set<Nothing> complement<Other>(Set<Other> set)
             given Other satisfies Object
-        => emptySet;
-    shared actual Set<Nothing> clone => emptySet;
-    shared actual Iterator<Nothing> iterator() => emptyIterator;
-    shared actual Boolean subset(Set<Object> set) => true;
-    shared actual Boolean superset(Set<Object> set) => set.empty;
-    shared actual Integer size = 0;
-    shared actual Boolean empty = true;
-    shared actual Boolean contains(Object element) => false;
-    shared actual Boolean containsAny({Object*} elements) => false;
-    shared actual Boolean containsEvery({Object*} elements) => false;
+            => emptySet;
     
-    shared actual Integer count(
-            Boolean selecting(Nothing element)) => 0;
+    subset(Set<Object> set) => true;
+    superset(Set<Object> set) => set.empty;
     
-    shared actual Set<Nothing> map<Result>(
-            Result collecting(Nothing element)) => emptySet;
+    clone => emptySet;
+    iterator() => emptyIterator;
+    size => 0;
+    empty => true;
+    
+    contains(Object element) => false;
+    containsAny({Object*} elements) => false;
+    containsEvery({Object*} elements) => false;
+    
+    shared actual Integer count
+            (Boolean selecting(Nothing element)) 
+            => 0;
+    
+    shared actual Set<Nothing> map<Result>
+            (Result collecting(Nothing element)) 
+            => emptySet;
     
     shared actual Set<Nothing> filter
-            (Boolean selecting(Nothing element)) => emptySet;
+            (Boolean selecting(Nothing element)) 
+            => emptySet;
     
     shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Nothing element)) => 
-            initial;
+            Result accumulating(Result partial, Nothing element)) 
+            => initial;
     
     shared actual Null find
-            (Boolean selecting(Nothing element)) => null;
+            (Boolean selecting(Nothing element)) 
+            => null;
     
     shared actual [] collect<Result>
-            (Result collecting(Nothing element)) => [];
+            (Result collecting(Nothing element)) 
+            => [];
     
     shared actual [] select
-            (Boolean selecting(Nothing element)) => [];
+            (Boolean selecting(Nothing element)) 
+            => [];
     
     shared actual Boolean any
-            (Boolean selecting(Nothing element)) => false;
+            (Boolean selecting(Nothing element)) 
+            => false;
     
     shared actual Boolean every
-            (Boolean selecting(Nothing element)) => false;
+            (Boolean selecting(Nothing element)) 
+            => false;
     
     shared actual Set<Nothing> skipping(Integer skip) => emptySet;
-    
     shared actual Set<Nothing> taking(Integer take) => emptySet;
-    
     shared actual Set<Nothing> by(Integer step) => emptySet;
+    
 }

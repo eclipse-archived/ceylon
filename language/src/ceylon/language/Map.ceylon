@@ -65,22 +65,22 @@ shared interface Map<out Key,out Item>
     }
     
     "Returns the set of keys contained in this `Map`."
-    actual shared default Set<Key> keys =>
-            LazySet ({ for (k->v in this) k });
+    actual shared default Set<Key> keys 
+            => LazySet { for (k->v in this) k };
     
     "Returns all the values stored in this `Map`. An 
      element can be stored under more than one key in 
      the map, and so it can be contained more than once 
      in the resulting collection."
-    shared default Collection<Item> values =>
-            LazyList ({ for (k->v in this) v });
+    shared default Collection<Item> values 
+            => LazyList { for (k->v in this) v };
     
     "Returns a `Map` in which every key is an `Item` in 
      this map, and every value is the set of keys that 
      stored the `Item` in this map."
-    shared default Map<Item,Set<Key>> inverse =>
-            LazyMap ({ for (key->item in this) item -> 
-                LazySet ({ for (k->i in this) if (i==item) k }) });
+    shared default Map<Item,Set<Key>> inverse 
+            => LazyMap { for (key->item in this) item -> 
+                LazySet { for (k->i in this) if (i==item) k } };
     
     "Returns a `Map` with the same keys as this map. For
      every key, the item is the result of applying the
@@ -90,63 +90,76 @@ shared interface Map<out Key,out Item>
              pair, producing the item of the resulting
              map."
             Result mapping(Key key, Item item)) 
-            given Result satisfies Object =>
-                LazyMap ({ for (key->item in this) 
-                            key->mapping(key,item) });
+            given Result satisfies Object 
+            => LazyMap { for (key->item in this) 
+                key->mapping(key,item) };
     
 }
 
 "A [[Map]] with no entries."
-shared object emptyMap extends Object() satisfies Map<Nothing, Nothing> {
-    shared actual Map<Nothing, Nothing> clone => emptyMap;
-    shared actual Iterator<Nothing> iterator() => emptyIterator;
+shared object emptyMap 
+        extends Object() 
+        satisfies Map<Nothing, Nothing> {
+    
     shared actual Null get(Object key) => null;
     shared actual Set<Nothing> keys => emptySet;
-    shared actual Map<Nothing, Nothing> mapItems<Result>(Result mapping(Nothing key, Nothing item))
-            given Result satisfies Object 
-        => emptyMap;
     shared actual Map<Nothing,Nothing> inverse => emptyMap;
     shared actual Collection<Nothing> values => [];
-    shared actual Integer size = 0;
-    shared actual Boolean empty = true;
     
-    shared actual Boolean contains(Object element) => false;
-    shared actual Boolean containsAny({Object*} elements) => false;
-    shared actual Boolean containsEvery({Object*} elements) => false;
+    clone => emptyMap;
+    iterator() => emptyIterator;
+    size => 0;
+    empty => true;
     
-    shared actual Integer count(
-            Boolean selecting(Nothing->Nothing element)) => 0;
+    defines(Object index) => false;
     
-    shared actual Boolean defines(Object index) => false;
+    contains(Object element) => false;
+    containsAny({Object*} elements) => false;
+    containsEvery({Object*} elements) => false;
     
-    shared actual [] map<Result>(
-            Result collecting(Nothing->Nothing element)) => [];
+    shared actual Map<Nothing, Nothing> mapItems<Result>
+            (Result mapping(Nothing key, Nothing item))
+            given Result satisfies Object 
+            => emptyMap;
+    
+    shared actual Integer count
+            (Boolean selecting(Nothing->Nothing element)) 
+            => 0;
+    
+    shared actual [] map<Result>
+            (Result collecting(Nothing->Nothing element)) 
+            => [];
     
     shared actual Map<Nothing,Nothing> filter
-            (Boolean selecting(Nothing->Nothing element)) => emptyMap;
+            (Boolean selecting(Nothing->Nothing element)) 
+            => emptyMap;
     
     shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Nothing->Nothing element)) => 
-            initial;
+            Result accumulating(Result partial, Nothing->Nothing element)) 
+            => initial;
     
     shared actual Null find
-            (Boolean selecting(Nothing->Nothing element)) => null;
+            (Boolean selecting(Nothing->Nothing element)) 
+            => null;
     
     shared actual [] collect<Result>
-            (Result collecting(Nothing->Nothing element)) => [];
+            (Result collecting(Nothing->Nothing element)) 
+            => [];
     
     shared actual [] select
-            (Boolean selecting(Nothing->Nothing element)) => [];
+            (Boolean selecting(Nothing->Nothing element)) 
+            => [];
     
     shared actual Boolean any
-            (Boolean selecting(Nothing->Nothing element)) => false;
+            (Boolean selecting(Nothing->Nothing element)) 
+            => false;
     
     shared actual Boolean every
-            (Boolean selecting(Nothing->Nothing element)) => false;
+            (Boolean selecting(Nothing->Nothing element)) 
+            => true;
     
     shared actual Map<Nothing,Nothing> skipping(Integer skip) => emptyMap;
-    
     shared actual Map<Nothing,Nothing> taking(Integer take) => emptyMap;
-    
     shared actual Map<Nothing,Nothing> by(Integer step) => emptyMap;
+    
 }
