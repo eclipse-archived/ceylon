@@ -423,23 +423,8 @@ shared interface List<out Element>
         }
     }
     
-    /*"Select the elements between the given indices. If 
-         the start index is the same as the end index,
-         return a list with a single element. If the start 
-         index is larger than the end index, return the
-         elements in the reverse order from the order in
-         which they appear in this list. If both the
-         start index and the end index are larger than the
-         last index in the list, return an empty list. 
-         Otherwise, if the last index is larger than the 
-         last index in the list, return all elements from 
-         the start index to last element of the list."
-    shared actual formal List<Element> span(Integer from,
-                                        Integer? to);
-	
-    "Returns a list containing the elements beginning 
-         from the given index, with the given length."
-    shared actual formal List<Element> segment(Integer from,
-                                           Integer length);*/
+    shared default Map<Element&Object,Integer> frequencies
+            => LazyMap { for (element in LazySet(this.coalesced)) 
+                    element->this.coalesced.count(element.equals) };
     
 }

@@ -758,6 +758,12 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Override
     @Ignore
+    public Map<? extends Element,? extends Integer> getFrequencies() {
+    	return $ceylon$language$List$this.getFrequencies();
+    }
+    
+    @Override
+    @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(ArraySequence.class, $reifiedElement);
     }

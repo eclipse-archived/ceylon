@@ -2339,6 +2339,17 @@ public final class String
     
     @Override
     @Ignore
+    public Map<? extends Character,? extends Integer> getFrequencies() {
+    	return $ceylon$language$List$this.getFrequencies();
+    }
+    
+    @Ignore
+    public static Map<? extends Character,? extends Integer> getFrequencies(java.lang.String value) {
+    	return instance(value).getFrequencies();
+    }
+    
+    @Override
+    @Ignore
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }

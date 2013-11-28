@@ -1289,6 +1289,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     
     @Override
     @Ignore
+    public Map<? extends Element,? extends Integer> getFrequencies() {
+    	return $ceylon$language$List$this.getFrequencies();
+    }
+    
+    @Override
+    @Ignore
     public Iterable<? extends Element,?> getCycled() {
         return $ceylon$language$Iterable$this.getCycled();
     }
