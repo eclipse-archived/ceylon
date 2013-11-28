@@ -1013,7 +1013,7 @@ public class ProducedType extends ProducedReference {
                     argList.add(args.get(tp));
                 }
             }
-            return argList;
+            this.argList = argList;
         }
         return argList;
     }
