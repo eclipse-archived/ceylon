@@ -279,9 +279,18 @@ public class GenerateJsVisitor extends Visitor
                 boolean first=true;
                 for (ImportModule im : md.getImportModuleList().getImportModules()) {
                     final StringBuilder path=new StringBuilder("'");
-                    for (Identifier id : im.getImportPath().getIdentifiers()) {
-                        if (path.length()>1)path.append('.');
-                        path.append(id.getText());
+                    if (im.getImportPath()==null) {
+                        if (im.getQuotedLiteral()==null) {
+                            throw new CompilerErrorException("Invalid imported module");
+                        } else {
+                            final String ql = im.getQuotedLiteral().getText();
+                            path.append(ql.substring(1, ql.length()-1));
+                        }
+                    } else {
+                        for (Identifier id : im.getImportPath().getIdentifiers()) {
+                            if (path.length()>1)path.append('.');
+                            path.append(id.getText());
+                        }
                     }
                     final String qv = im.getVersion().getText();
                     path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
