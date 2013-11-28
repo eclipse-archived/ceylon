@@ -583,7 +583,17 @@ public class ProducedType extends ProducedReference {
             if (pt!=null) return pt;*/
             return superTypesCache.get(dec);
         }
-        ProducedType superType = getSupertype(new SupertypeCriteria(dec));
+        SupertypeCheck check = checkSupertype(getDeclaration(), dec);
+        ProducedType superType;
+        if(check == SupertypeCheck.NO){
+            superType = null;
+        }else if(check == SupertypeCheck.YES 
+                && dec instanceof ClassOrInterface
+                && dec.getTypeParameters().isEmpty()){
+            superType = dec.getType();
+        }else{
+            superType = getSupertype(new SupertypeCriteria(dec));
+        }
         if (!complexType) {
             superTypesCache.put(dec, superType);
         }
@@ -591,6 +601,71 @@ public class ProducedType extends ProducedReference {
         return superType;
     }
     
+    enum SupertypeCheck {
+        YES, NO, MAYBE;
+    }
+    private static SupertypeCheck checkSupertype(TypeDeclaration declaration, TypeDeclaration supertype) {
+        // fail-fast: there are only two classes that can be supertypes of an interface
+        if(declaration instanceof Interface 
+                && supertype instanceof Class){
+            String supertypeName = supertype.getQualifiedNameString();
+            if(supertypeName.equals("ceylon.language::Object")
+               || supertypeName.equals("ceylon.language::Anything"))
+                return SupertypeCheck.YES;
+            return SupertypeCheck.NO;
+        }
+        // we don't know how to look for non-simple supertypes
+        if(supertype instanceof Class == false
+                && supertype instanceof Interface == false){
+            return SupertypeCheck.MAYBE;
+        }
+        if(declaration instanceof Class || declaration instanceof Interface){
+            if(declaration.equals(supertype))
+                return SupertypeCheck.YES;
+            if(declaration.getExtendedTypeDeclaration() != null){
+                SupertypeCheck extended = checkSupertype(declaration.getExtendedTypeDeclaration(), supertype);
+                if(extended == SupertypeCheck.YES)
+                    return extended;
+                // keep looking
+            }
+            for(ProducedType satisfiedType : declaration.getSatisfiedTypes()){
+                SupertypeCheck satisfied = checkSupertype(satisfiedType.getDeclaration(), supertype);
+                if(satisfied == SupertypeCheck.YES)
+                    return satisfied;
+                // keep looking
+            }
+            // not in the interfaces, not in the extended type
+            return SupertypeCheck.NO;
+        }
+        if(declaration instanceof UnionType){
+            if(declaration.getCaseTypes().isEmpty())
+                return SupertypeCheck.NO;
+            // every case must have that supertype
+            for(ProducedType caseType : declaration.getCaseTypes()){
+                SupertypeCheck satisfied = checkSupertype(caseType.getDeclaration(), supertype);
+                if(satisfied != SupertypeCheck.YES)
+                    return satisfied;
+                // keep looking
+            }
+            // in every case
+            return SupertypeCheck.YES;
+        }
+        if(declaration instanceof IntersectionType){
+            if(declaration.getSatisfiedTypes().isEmpty())
+                return SupertypeCheck.NO;
+            // any satisfied type will do
+            for(ProducedType satisfiedType : declaration.getSatisfiedTypes()){
+                SupertypeCheck satisfied = checkSupertype(satisfiedType.getDeclaration(), supertype);
+                if(satisfied == SupertypeCheck.YES)
+                    return satisfied;
+                // keep looking
+            }
+            // did not find it
+            return SupertypeCheck.NO;
+        }
+        return SupertypeCheck.MAYBE;
+    }
+
     private static final class SupertypeCriteria implements Criteria {
         private TypeDeclaration dec;
         private SupertypeCriteria(TypeDeclaration dec) {
