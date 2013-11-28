@@ -694,12 +694,116 @@ public class Util {
 
     public static ProducedType intersectionType(ProducedType lhst, ProducedType rhst, 
             Unit unit) {
+        ProducedType simpleIntersection = getSimpleIntersection(lhst, rhst);
+        if(simpleIntersection != null)
+            return simpleIntersection;
+//        System.err.println("Intersection "+lhst+" and "+rhst);
         List<ProducedType> list = new ArrayList<ProducedType>(2);
         addToIntersection(list, rhst, unit);
         addToIntersection(list, lhst, unit);
         IntersectionType it = new IntersectionType(unit);
         it.setSatisfiedTypes(list);
         return it.canonicalize().getType();
+    }
+
+    private static ProducedType getSimpleIntersection(ProducedType a, ProducedType b) {
+        if(a == null || b == null)
+            return null;
+        TypeDeclaration aDecl = a.getDeclaration();
+        TypeDeclaration bDecl = b.getDeclaration();
+        if(aDecl == null || bDecl == null)
+            return null;
+        if(aDecl instanceof ClassOrInterface == false){
+            if(aDecl instanceof UnionType && bDecl instanceof ClassOrInterface){
+                return getSimpleIntersection(b, (ClassOrInterface) bDecl, a, (UnionType)aDecl);
+            }
+            return null;
+        }
+        if(bDecl instanceof ClassOrInterface == false){
+            // here aDecl MUST BE a ClassOrInterface as per flow
+            if(bDecl instanceof UnionType){
+                return getSimpleIntersection(a, (ClassOrInterface) aDecl, b, (UnionType)bDecl);
+            }
+            return null;
+        }
+        String aName = aDecl.getQualifiedNameString();
+        String bName = bDecl.getQualifiedNameString();
+        if(aName.equals(bName)
+                && aDecl.getTypeParameters().isEmpty()
+                && bDecl.getTypeParameters().isEmpty())
+            return a;
+        if(aName.equals("ceylon.language::Anything")){
+            // everything is an Anything
+            return b;
+        }
+        if(bName.equals("ceylon.language::Anything")){
+            // everything is an Anything
+            return a;
+        }
+        if(aName.equals("ceylon.language::Object")){
+            // every ClassOrInterface is an object except Null
+            if(bName.equals("ceylon.language::Null")
+                    || bName.equals("ceylon.language::null"))
+                return new NothingType(aDecl.getUnit()).getType();
+            return b;
+        }
+        if(bName.equals("ceylon.language::Object")){
+            // every ClassOrInterface is an object except Null
+            if(aName.equals("ceylon.language::Null")
+                    || aName.equals("ceylon.language::null"))
+                return new NothingType(aDecl.getUnit()).getType();
+            return a;
+        }
+        if(aName.equals("ceylon.language::Null")){
+            // only null is null
+            if(bName.equals("ceylon.language::Null")
+                    || bName.equals("ceylon.language::null"))
+                return b;
+            return new NothingType(aDecl.getUnit()).getType();
+        }
+        if(bName.equals("ceylon.language::Null")){
+            // only null is null
+            if(aName.equals("ceylon.language::Null")
+                    || aName.equals("ceylon.language::null"))
+                return a;
+            return new NothingType(aDecl.getUnit()).getType();
+        }
+        // not simple
+        return null;
+    }
+
+    private static ProducedType getSimpleIntersection(ProducedType a, ClassOrInterface aDecl, ProducedType b, UnionType bDecl) {
+        // we only handle Foo|Null
+        if(bDecl.getCaseTypes().size() != 2)
+            return null;
+        
+        ProducedType caseA = bDecl.getCaseTypes().get(0);
+        TypeDeclaration caseADecl = caseA.getDeclaration();
+        String caseAName = caseADecl.getQualifiedNameString();
+
+        ProducedType caseB = bDecl.getCaseTypes().get(1);
+        TypeDeclaration caseBDecl = caseB.getDeclaration();
+        String caseBName = caseBDecl.getQualifiedNameString();
+        
+        String aName = aDecl.getQualifiedNameString();
+        if(aName.equals("ceylon.language::Object")){
+            // FIXME: perhaps we should check that the other type is a ClassOrInterface that is not Null?
+            if(caseAName.equals("ceylon.language::Null"))
+                return caseB;
+            if(caseBName.equals("ceylon.language::Null"))
+                return caseA;
+            // too complex
+            return null;
+        }
+        if(aName.equals("ceylon.language::Null")){
+            if(caseAName.equals("ceylon.language::Null")
+                    || caseBName.equals("ceylon.language::Null"))
+                return caseA;
+            // too complex
+            return null;
+        }
+        // too complex
+        return null;
     }
 
     public static boolean isElementOfUnion(UnionType ut, ClassOrInterface ci) {
