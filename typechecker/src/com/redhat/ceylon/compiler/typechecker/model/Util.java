@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Util {
-
+    
     /**
      * Is the second scope contained by the first scope?
      */
@@ -151,7 +151,9 @@ public class Util {
                         return false;
                     }
                     for (int i=0; i<size; i++) {
-                        ProducedType pdt = params.get(i).getModel().getType();
+                        MethodOrValue pm = params.get(i).getModel();
+                        if (pm==null) return false;
+                        ProducedType pdt = pm.getType();
                         if (pdt==null) return false;
                         ProducedType sdt = signature.get(i);
                         if (!matches(pdt, sdt, d)) return false;
@@ -471,9 +473,9 @@ public class Util {
                         //canonicalize T<InX,OutX>&T<InY,OutY> to T<InX|InY,OutX&OutY>
                         ProducedType pi = principalInstantiation(pt.getDeclaration(), pt, t, unit);
                         if (!pi.containsUnknowns()) {
-                        	iter.remove();
-                        	list.add(pi);
-                        	return;
+                            iter.remove();
+                            list.add(pi);
+                            return;
                         }
                     }
                 }
@@ -557,7 +559,7 @@ public class Util {
                     pd.equals(nd)) {
             if (q.getSupertype(pd)==null &&
                 p.getSupertype(qd)==null) {
-            	return true;
+                return true;
             }
         }
         if (pd.isFinal()) {
@@ -565,11 +567,11 @@ public class Util {
                     !q.containsTypeParameters() &&
                     !p.isSubtypeOf(q) &&
                     !(qd instanceof UnknownType)) {
-            	return true;
+                return true;
             }
             if (qd instanceof ClassOrInterface &&
                     p.getSupertype(qd)==null) {
-            	return true;
+                return true;
             }
         }
         if (qd.isFinal()) { 
@@ -577,11 +579,11 @@ public class Util {
                     !p.containsTypeParameters() &&
                     !q.isSubtypeOf(p) &&
                     !(pd instanceof UnknownType)) {
-            	return true;
+                return true;
             }
             if (pd instanceof ClassOrInterface &&
                     q.getSupertype(pd)==null) {
-            	return true;
+                return true;
             }
         }
         return false;
@@ -617,36 +619,36 @@ public class Util {
      */
     private static boolean haveUninhabitableIntersection
             (ProducedType p, ProducedType q, Unit unit) {
-    	return emptyMeet(p, q, unit) ||
-    	        hasEmptyIntersectionOfInvariantInstantiations(p, q);
+        return emptyMeet(p, q, unit) ||
+                hasEmptyIntersectionOfInvariantInstantiations(p, q);
     }
 
     private static boolean hasEmptyIntersectionOfInvariantInstantiations(
             ProducedType p, ProducedType q) {
 //        if (!p.containsTypeParameters() && !q.containsTypeParameters()) {
-    	    List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
-    	    stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
-    	    for (TypeDeclaration std: stds) {
-    	        ProducedType pst = null;
-    	        ProducedType qst = null;
-    	        for (TypeParameter tp: std.getTypeParameters()) {
-    	            if (tp.isInvariant()) {
-    	                if (pst==null) pst = p.getSupertype(std);
-    	                if (qst==null) qst = q.getSupertype(std);
-    	                ProducedType psta = pst.getTypeArguments().get(tp);
-    	                ProducedType qsta = qst.getTypeArguments().get(tp);
-    	                if (psta!=null && psta.isWellDefined() &&
-    	                        qsta!=null && psta.isWellDefined() &&
-    	                        //what about types with UnknownType as an arg?
-    	                        !pst.containsTypeParameters() && 
-    	                        !qst.containsTypeParameters() &&
-    	                        !pst.isExactly(qst)) {
-    	                    return true;
-    	                }
-    	            }
-    	        }
-    	    }
-//    	}
+            List<TypeDeclaration> stds = p.getDeclaration().getSuperTypeDeclarations();
+            stds.retainAll(q.getDeclaration().getSuperTypeDeclarations());
+            for (TypeDeclaration std: stds) {
+                ProducedType pst = null;
+                ProducedType qst = null;
+                for (TypeParameter tp: std.getTypeParameters()) {
+                    if (tp.isInvariant()) {
+                        if (pst==null) pst = p.getSupertype(std);
+                        if (qst==null) qst = q.getSupertype(std);
+                        ProducedType psta = pst.getTypeArguments().get(tp);
+                        ProducedType qsta = qst.getTypeArguments().get(tp);
+                        if (psta!=null && psta.isWellDefined() &&
+                                qsta!=null && psta.isWellDefined() &&
+                                //what about types with UnknownType as an arg?
+                                !pst.containsTypeParameters() && 
+                                !qst.containsTypeParameters() &&
+                                !pst.isExactly(qst)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+//        }
         return false;
     }
     
@@ -809,7 +811,9 @@ public class Util {
         int size = parameterList.getParameters().size();
         List<ProducedType> signature = new ArrayList<ProducedType>(size);
         for(Parameter param : parameterList.getParameters()){
-            signature.add(param.getModel().getType());
+            signature.add(param.getModel()==null ? 
+                    new UnknownType(dec.getUnit()).getType() : 
+                    param.getModel().getType());
         }
         return signature;
     }
@@ -872,27 +876,27 @@ public class Util {
             ProducedType rta = first.getTypeArguments().get(tp);
             ProducedType prta = second.getTypeArguments().get(tp);
             if (tp.isContravariant()) {
-            	arg = unionType(rta, prta, unit);
+                arg = unionType(rta, prta, unit);
             }
             else if (tp.isCovariant()) {
-            	arg = intersectionType(rta, prta, unit);
+                arg = intersectionType(rta, prta, unit);
             }
             else {
-            	//invariant type
+                //invariant type
                 if (rta.isExactly(prta)) {
                     arg = rta;
                 }
                 else if (rta.containsTypeParameters() ||
-                		 prta.containsTypeParameters()) {
+                         prta.containsTypeParameters()) {
                     //type parameters that might represent 
-            		//equivalent types at runtime. This is
-                	//a hole in our type system!
-                	arg = new UnknownType(unit).getType();
+                    //equivalent types at runtime. This is
+                    //a hole in our type system!
+                    arg = new UnknownType(unit).getType();
                 }
                 else {
-            		//the type arguments are distinct, and the
-            		//intersection is Nothing, so there is
-            		//no reasonable principal instantiation
+                    //the type arguments are distinct, and the
+                    //intersection is Nothing, so there is
+                    //no reasonable principal instantiation
                     return unit.getNothingDeclaration().getType();
                 }
             }
