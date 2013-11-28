@@ -427,4 +427,10 @@ shared interface List<out Element>
             => LazyMap { for (element in LazySet(coalesced)) 
                     element->coalesced.count(element.equals) };
     
+    shared default Map<GroupKey,Set<Element&Object>> group<GroupKey>
+            (GroupKey grouping(Element element))
+            given GroupKey satisfies Object
+            => LazyMap { for (element in LazySet(coalesced)) 
+                    element->grouping(element) }.inverse;
+    
 }

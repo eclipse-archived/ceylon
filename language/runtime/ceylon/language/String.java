@@ -2350,6 +2350,17 @@ public final class String
     
     @Override
     @Ignore
+    public <GroupKey> Map<? extends GroupKey,? extends Set<? extends Character>> group(TypeDescriptor $reifiedGroupKey, Callable<? extends GroupKey> grouping) {
+    	return $ceylon$language$List$this.group($reifiedGroupKey, grouping);
+    }
+    
+    @Ignore
+    public static <GroupKey> Map<? extends GroupKey,? extends Set<? extends Character>> group(TypeDescriptor $reifiedGroupKey, java.lang.String value, Callable<? extends GroupKey> grouping) {
+    	return instance(value).group($reifiedGroupKey, grouping);
+    }
+    
+    @Override
+    @Ignore
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }

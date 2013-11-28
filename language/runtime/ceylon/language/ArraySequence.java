@@ -764,6 +764,12 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Override
     @Ignore
+    public <GroupKey> Map<? extends GroupKey,? extends Set<? extends Element>> group(TypeDescriptor $reifiedGroupKey, Callable<? extends GroupKey> grouping) {
+    	return $ceylon$language$List$this.group($reifiedGroupKey, grouping);
+    }
+    
+    @Override
+    @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(ArraySequence.class, $reifiedElement);
     }
