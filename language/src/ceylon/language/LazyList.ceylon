@@ -2,28 +2,28 @@
  elements. All operations on this `List` are performed on 
  the `Iterable`."
 by ("Enrique Zamudio")
-shared class LazyList<out Element>({Element*} elems)
+shared class LazyList<out Element>({Element*} elements)
         satisfies List<Element> {
     
     shared actual Integer? lastIndex {
-        value size = elems.size;
-        return size > 0 then size-1 else null;
+        value size = elements.size;
+        return size > 0 then size-1;
     }
     
     shared actual Element? get(Integer index) {
-        if (index == 0) {
-            return elems.first;
-        } 
+        if (index >= 0) {
+            return elements.skipping(index).first;
+        }
         else {
-            return elems.skipping(index).first;
+            return null;
         }
     }
     
-    first => elems.first;    
-    last => elems.last;
-    rest => LazyList(elems.rest);
+    first => elements.first;    
+    last => elements.last;
+    rest => LazyList(elements.rest);
     
-    iterator() => elems.iterator();
+    iterator() => elements.iterator();
     
     "Returns a `List` with the elements of this `List` 
      in reverse order. This operation will create copy 
@@ -31,12 +31,12 @@ shared class LazyList<out Element>({Element*} elems)
      original `Iterable` will no longer be reflected in 
      the new `List`."
     shared actual List<Element> reversed 
-            => elems.sequence.reversed;
+            => elements.sequence.reversed;
     
     clone => this;
     
     findLast(Boolean selecting(Element elem)) 
-            => elems.findLast(selecting);
+            => elements.findLast(selecting);
     
     shared actual List<Element> span
             (Integer from, Integer to) {
@@ -47,32 +47,34 @@ shared class LazyList<out Element>({Element*} elems)
         Integer fromIndex = largest(from,0);
         if (toIndex >= fromIndex) {
             value els = fromIndex > 0 
-                    then elems.skipping(fromIndex)
-                    else elems;
+                    then elements.skipping(fromIndex)
+                    else elements;
             return LazyList(els.taking(toIndex-fromIndex+1));
         } 
         else {
             //reversed
-            value seq = toIndex>0 
-                    then elems.skipping(toIndex)
-                    else elems;
+            value seq = toIndex > 0 
+                    then elements.skipping(toIndex)
+                    else elements;
             return seq.taking(fromIndex-toIndex+1)
                     .sequence.reversed;
         }
     }
     
-    shared actual List<Element> spanTo(Integer to) 
-            => to<0 then [] else LazyList(elems.taking(to+1));
+    spanTo(Integer to) => to < 0
+            then []
+            else LazyList(elements.taking(to+1));
     
-    shared actual List<Element> spanFrom(Integer from) 
-            => from > 0 then LazyList(elems.skipping(from))
-                    else this;
+    spanFrom(Integer from) => from > 0
+            then LazyList(elements.skipping(from))
+            else this;
     
     shared actual List<Element> segment
             (Integer from, Integer length) {
         if (length > 0) {
-            value els = from > 0 then elems.skipping(from)
-                    else elems;
+            value els = from > 0 
+                    then elements.skipping(from)
+                    else elements;
             return LazyList(els.taking(length));
         } 
         else {
