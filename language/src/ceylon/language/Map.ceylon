@@ -68,7 +68,7 @@ shared interface Map<out Key,out Item>
     actual shared default Set<Key> keys 
             => LazySet { for (k->v in this) k };
     
-    "Returns all the values stored in this `Map`. An 
+    "Returns all the items stored in this `Map`. An 
      element can be stored under more than one key in 
      the map, and so it can be contained more than once 
      in the resulting collection."
@@ -78,9 +78,11 @@ shared interface Map<out Key,out Item>
     "Returns a `Map` in which every key is an `Item` in 
      this map, and every value is the set of keys that 
      stored the `Item` in this map."
-    shared default Map<Item,Set<Key>> inverse 
-            => LazyMap { for (key->item in this) item -> 
+    shared default Map<Item,Set<Key>> inverse {
+        value items = LazySet { for (key->item in this) item };
+        return LazyMap { for (item in items) item -> 
                 LazySet { for (k->i in this) if (i==item) k } };
+    }
     
     "Returns a `Map` with the same keys as this map. For
      every key, the item is the result of applying the
