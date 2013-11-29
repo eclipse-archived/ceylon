@@ -439,11 +439,13 @@ public class TypeUtils {
                 metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple.getTypeArgumentList().get(0), gen);
                 gen.out(",seq:1");
                 _tuple = gen.getTypeUtils().empty.getType();
-            }
-            else {
+            } else if (tdecl instanceof UnionType) {
+                metamodelTypeNameOrList(gen.getCurrentPackage(), _tuple, gen);
+                tdecl = gen.getTypeUtils().empty; _tuple=null;
+            } else {
                 gen.out("\n/*WARNING3! Tuple is actually ", _tuple.getProducedTypeQualifiedName(), ", ", tdecl.getName(),"*/");
                 if (pos > 100) {
-                    return;
+                    break;
                 }
             }
             gen.out("}");

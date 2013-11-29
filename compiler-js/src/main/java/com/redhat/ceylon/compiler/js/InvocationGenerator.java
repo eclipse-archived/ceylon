@@ -116,11 +116,17 @@ public class InvocationGenerator {
                     if (callable != null) {
                         //This is a tuple with the arguments to the callable
                         //(can be union with empty if first param is defaulted)
-                        ProducedType callableArgs = callable.getTypeArgumentList().get(1).minus(
-                                gen.getTypeUtils().empty.getType());
+                        ProducedType callableArgs = callable.getTypeArgumentList().get(1);
+                        boolean isUnion=false;
+                        if (callableArgs.getDeclaration() instanceof UnionType) {
+                            if (callableArgs.getCaseTypes().size() == 2) {
+                                callableArgs = callableArgs.minus(gen.getTypeUtils().empty.getType());
+                            }
+                            isUnion=callableArgs.getDeclaration() instanceof UnionType;
+                        }
                         //This is the type of the first argument
-                        boolean isSequenced = !gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration());
-                        ProducedType argtype = callableArgs.getTypeArgumentList().get(
+                        boolean isSequenced = !(isUnion || gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration()));
+                        ProducedType argtype = isUnion ? callableArgs : callableArgs.getTypeArgumentList().get(
                                 isSequenced ? 0 : 1);
                         Parameter p = null;
                         int c = 0;
@@ -136,8 +142,8 @@ public class InvocationGenerator {
                                 if (callableArgs == null || isSequenced) {
                                     p.setSequenced(true);
                                 } else if (!isSequenced) {
-                                    ProducedType next = callableArgs.getTypeArgumentList().get(2);
-                                    if (next.getSupertype(gen.getTypeUtils().tuple) == null) {
+                                    ProducedType next = isUnion ? null : callableArgs.getTypeArgumentList().get(2);
+                                    if (next != null && next.getSupertype(gen.getTypeUtils().tuple) == null) {
                                         //It's not a tuple, so no more regular parms. It can be:
                                         //empty|tuple if defaulted params
                                         //empty if no more params
@@ -155,7 +161,7 @@ public class InvocationGenerator {
                                     } else {
                                         //If it's a tuple then there are more params
                                         callableArgs = next;
-                                        argtype = callableArgs.getTypeArgumentList().get(1);
+                                        argtype = callableArgs == null ? null : callableArgs.getTypeArgumentList().get(1);
                                     }
                                 }
                             }
