@@ -111,10 +111,8 @@ public class Util {
     }
     
     public static boolean isOverloadedVersion(Declaration decl) {
-        if (decl instanceof Functional) {
-            return ((Functional)decl).isOverloaded();
-        }
-        return false;
+        return (decl instanceof Functional) &&
+                ((Functional)decl).isOverloaded();
     }
 
     static boolean hasMatchingSignature(List<ProducedType> signature, 

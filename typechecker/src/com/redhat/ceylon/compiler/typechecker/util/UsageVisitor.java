@@ -4,6 +4,8 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
+
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -38,11 +40,9 @@ public class UsageVisitor extends Visitor {
         boolean referenced=true;
         if (d!=null) {
         	referenced = rc.referenced(d);
-        	if (d instanceof Functional) {
-        		if (((Functional) d).isAbstraction()) {
-        			for (Declaration od: ((Functional) d).getOverloads()) {
-        				referenced=referenced||rc.referenced(od);
-        			}
+        	if (isAbstraction(d)) {
+        		for (Declaration od: ((Functional) d).getOverloads()) {
+        			referenced=referenced||rc.referenced(od);
         		}
         	}
         	ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();

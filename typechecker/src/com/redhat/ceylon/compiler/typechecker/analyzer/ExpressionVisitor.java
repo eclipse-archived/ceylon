@@ -4287,8 +4287,7 @@ public class ExpressionVisitor extends Visitor {
                     //patch the reference, which was already
                     //initialized to the abstraction
                     that.setDeclaration((TypeDeclaration) result);
-                    if (result instanceof Functional &&
-                            ((Functional) result).isOverloaded()) {  
+                    if (isOverloadedVersion(result)) {  
                         //it is a Java constructor
                         if (result.isPackageVisibility() && 
                                 !declaredInPackage(result, unit)) {
@@ -6003,12 +6002,10 @@ public class ExpressionVisitor extends Visitor {
                 isAbstraction(dec)) {
             //first handle the case where it's not _really_ overloaded,
             //it's just a constructor with a different visibility
-            if (dec instanceof Functional && ((Functional) dec).isAbstraction()) {
-                List<Declaration> overloads = ((Functional) dec).getOverloads();
-                if (overloads.size()==1) {
-                    return overloads.get(0);
-                }
-            }
+        	List<Declaration> overloads = ((Functional) dec).getOverloads();
+        	if (overloads.size()==1) {
+        		return overloads.get(0);
+        	}
         }
         return dec;
     }

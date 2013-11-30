@@ -382,13 +382,10 @@ public class RefinementVisitor extends Visitor {
         else {
             boolean found = false;
             for (Declaration refined: others) {
-                if (isAbstraction(refined)) {
+                if (isAbstraction(refined) || 
+                		isOverloadedVersion(refined) && 
+                		!refinesOverloaded(dec, refined)) {
                     continue;
-                }
-                if (dec instanceof Functional) {
-                    if (isOverloadedVersion(refined)) {
-                        if (!refinesOverloaded(dec, refined)) continue;
-                    }
                 }
                 found = true;
                 if (dec instanceof Method) {
