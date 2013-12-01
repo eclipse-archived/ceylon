@@ -5,7 +5,7 @@
  
  Thus:
  
-     unzip(tuples)[i]==[tuples[i].first,*tuples[i].rest]"
+     tuples[i]==[unzip(tuples)[0][i],*unzip(tuples)[1][i]]"
 shared [{Head*}, {Tail*}] unzip<Element,Head,Tail>
         ({Tuple<Element|Head,Head,Tail>*} tuples)
         given Tail satisfies Element[]
@@ -19,7 +19,7 @@ shared [{Head*}, {Tail*}] unzip<Element,Head,Tail>
  
  Thus:
  
-     unzipPairs(pairs)[i]==[pairs[i][0],pairs[i][1]]"
+     pairs[i]==[unzipPairs(pairs)[0][i],unzipPairs(pairs)[1][i]]"
 shared [{First*}, {Second*}] unzipPairs<First,Second>
         ({[First,Second]*} pairs)
         => [pairs.map(([First,Second] pair) => pair[0]),
@@ -32,7 +32,7 @@ shared [{First*}, {Second*}] unzipPairs<First,Second>
  
  Thus:
  
-     unzipEntries(entries)[i]==[entries[i].key,entries[i].item]"
+     entries[i]==unzipEntries(entries)[0][i]->unzipEntries(entries)[1][i]"
 shared [{Key*}, {Item*}] unzipEntries<Key,Item>
         ({<Key->Item>*} entries)
         given Key satisfies Object
