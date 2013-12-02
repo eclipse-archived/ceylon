@@ -257,7 +257,7 @@ public class LazyInterface extends Interface implements LazyContainer {
 
     @Override
     public String getQualifiedNameString() {
-        load();
+        // never need to complete since the container is set before completion
         return super.getQualifiedNameString();
     }
 
