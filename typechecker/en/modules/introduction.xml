@@ -102,9 +102,9 @@
         compiler are expressible within the language itself. Within the type system,
         <emphasis>non-denoteable</emphasis> types simply do not arise. The type system 
         is based upon computation of <emphasis>principal types</emphasis>. There is no 
-        way to construct an expression which does not have a unique principal type 
-        expressible within the language. The principal type of an expression is a 
-        subtype of all other types to which the expression could be soundly assigned.
+        legal expression which does not have a unique principal type expressible within 
+        the language. The principal type of an expression is a subtype of all other 
+        types to which the expression could be soundly assigned.
         </para>
         
         <section id="mixininheritance">
