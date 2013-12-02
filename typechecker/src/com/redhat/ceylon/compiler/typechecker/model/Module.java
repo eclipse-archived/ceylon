@@ -28,6 +28,7 @@ public class Module
     private boolean isDefault;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Unit unit;
+    private String memoisedName;
 
     /**
      * Whether or not the module is available in the
@@ -173,14 +174,17 @@ public class Module
     }
     
     public String getNameAsString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < name.size(); i++) {
-            sb.append(name.get(i));
-            if (i < name.size() - 1) {
-                sb.append('.');
+        if(memoisedName == null){
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < name.size(); i++) {
+                sb.append(name.get(i));
+                if (i < name.size() - 1) {
+                    sb.append('.');
+                }
             }
+            memoisedName = sb.toString();
         }
-        return sb.toString();
+        return memoisedName;
     }
 
     @Override
