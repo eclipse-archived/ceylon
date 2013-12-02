@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.loader;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +37,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 public class TypeParser {
     public class Part {
         String name;
-        List<ProducedType> parameters = new LinkedList<ProducedType>();
+        List<ProducedType> parameters;
+        List<ProducedType> getParameters(){
+            return parameters != null ? parameters : Collections.<ProducedType>emptyList();
+        }
     }
 
     private ModelLoader loader;
@@ -91,30 +95,40 @@ public class TypeParser {
      * unionType: intersectionType (| intersectionType)*
      */
     private ProducedType parseUnionType() {
-        UnionType type = new UnionType(unit);
-        List<ProducedType> caseTypes = new LinkedList<ProducedType>();
-        type.setCaseTypes(caseTypes);
-        caseTypes.add(parseIntersectionType());
-        while(lexer.lookingAt(TypeLexer.OR)){
-            lexer.eat();
-            caseTypes.add(parseIntersectionType());
+        ProducedType firstType = parseIntersectionType();
+        if(lexer.lookingAt(TypeLexer.OR)){
+            UnionType type = new UnionType(unit);
+            List<ProducedType> caseTypes = new LinkedList<ProducedType>();
+            type.setCaseTypes(caseTypes);
+            caseTypes.add(firstType);
+            while(lexer.lookingAt(TypeLexer.OR)){
+                lexer.eat();
+                caseTypes.add(parseIntersectionType());
+            }
+            return type.getType();
+        }else{
+            return firstType;
         }
-        return type.getType();
     }
 
     /*
      * intersectionType: qualifiedType (& qualifiedType)*
      */
     private ProducedType parseIntersectionType() {
-        IntersectionType type = new IntersectionType(unit);
-        List<ProducedType> satisfiedTypes = new LinkedList<ProducedType>();
-        type.setSatisfiedTypes(satisfiedTypes);
-        satisfiedTypes.add(parseQualifiedType());
-        while(lexer.lookingAt(TypeLexer.AND)){
-            lexer.eat();
-            satisfiedTypes.add(parseQualifiedType());
+        ProducedType firstType = parseQualifiedType();
+        if(lexer.lookingAt(TypeLexer.AND)){
+            IntersectionType type = new IntersectionType(unit);
+            List<ProducedType> satisfiedTypes = new LinkedList<ProducedType>();
+            type.setSatisfiedTypes(satisfiedTypes);
+            satisfiedTypes.add(firstType);
+            while(lexer.lookingAt(TypeLexer.AND)){
+                lexer.eat();
+                satisfiedTypes.add(parseQualifiedType());
+            }
+            return type.getType();
+        }else{
+            return firstType;
         }
-        return type.getType();
     }
 
     /*
@@ -187,14 +201,14 @@ public class TypeParser {
                     throw new ModelResolutionException("Failed to resolve inner type "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
                 newType = ((TypeDeclaration)member).getType();
             }
-            return newType == null ? null : newType.getDeclaration().getProducedType(qualifyingType, part.parameters);
+            return newType == null ? null : newType.getDeclaration().getProducedType(qualifyingType, part.getParameters());
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:
             // - if we have no qualifying type we may be adding package name parts
             // - if we have a qualifying type then the inner type must exist
             // - if we have type parameters we must have a type
             if(qualifyingType != null
-                    || !part.parameters.isEmpty())
+                    || (part.parameters != null && !part.parameters.isEmpty()))
                 throw x;
             return null;
         }
@@ -223,6 +237,7 @@ public class TypeParser {
         type.name = lexer.eatWord();
         if(lexer.lookingAt(TypeLexer.LT)){
             lexer.eat();
+            type.parameters = new LinkedList<ProducedType>();
             type.parameters.add(parseType());
             while(lexer.lookingAt(TypeLexer.COMMA)){
                 lexer.eat();
