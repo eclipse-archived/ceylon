@@ -59,7 +59,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 public class LazyPackage extends Package {
     
     private AbstractModelLoader modelLoader;
-    private List<Declaration> compiledDeclarations = new LinkedList<Declaration>();
+    private List<Declaration> compiledDeclarations = new ArrayList<Declaration>(3);
     private Set<Unit> lazyUnits = new HashSet<Unit>();
     
     public LazyPackage(AbstractModelLoader modelLoader){
@@ -85,7 +85,7 @@ public class LazyPackage extends Package {
 
             // make sure we iterate over a copy of compiledDeclarations, to avoid lazy loading to modify it and
             // cause a ConcurrentModificationException: https://github.com/ceylon/ceylon-compiler/issues/399
-            Declaration d = lookupMember(copy(compiledDeclarations), name, signature, ellipsis);
+            Declaration d = lookupMember(compiledDeclarations, name, signature, ellipsis);
             if (d != null) {
                 return d;
             }
@@ -120,17 +120,11 @@ public class LazyPackage extends Package {
                         && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
                     // addMember() will have added a Method if we found an annotation type
                     // so now we can look for the constructor again
-                    d = lookupMember(copy(compiledDeclarations), name, signature, ellipsis);
+                    d = lookupMember(compiledDeclarations, name, signature, ellipsis);
                 }
             }
             return d;
         }
-    }
-
-    private List<Declaration> copy(List<Declaration> list) {
-        List<Declaration> ret = new ArrayList<Declaration>(list.size());
-        ret.addAll(list);
-        return ret;
     }
 
     private Declaration getDirectMemberFromSource(String name) {
