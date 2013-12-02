@@ -227,17 +227,89 @@ public class Naming implements LocalId {
     }
 
     private static final HashSet<String> tokens;
+    private static final String[] tokensArray =         new String[]{
+        "abstract",
+        "assert",
+        "boolean",
+        "break",
+        "byte",
+        "case",
+        "catch",
+        "char",
+        "class",
+        "const",
+        "continue",
+        "default",
+        "do",
+        "double",
+        "else",
+        "enum",
+        "extends",
+        "final",
+        "finally",
+        "float",
+        "for",
+        "goto",
+        "if",
+        "implements",
+        "import",
+        "instanceof",
+        "int",
+        "interface",
+        "long",
+        "native",
+        "new",
+        "package",
+        "private",
+        "protected",
+        "public",
+        "return",
+        "short",
+        "static",
+        "strictfp",
+        "super",
+        "switch",
+        "synchronized",
+        "this",
+        "throw",
+        "throws",
+        "transient",
+        "try",
+        "void",
+        "volatile",
+        "while",
+        "true",
+        "false",
+        "null",
+    };
     static {
         tokens = new HashSet<String>();
-        for (Token t : Token.values()) {
-            tokens.add(t.name);
+        for (String token : tokensArray) {
+            tokens.add(token);
         }
     }
     /** Determines whether the given name is a Java keyword */
     public static boolean isJavaKeyword(String name) {
         return tokens.contains(name);
     }
-    
+
+    /** Determines whether the given name is a Java keyword */
+    public static boolean isJavaKeyword(String string, int start, int end) {
+        int length = end - start;
+        OUTER:
+        for(int i=0;i<tokensArray.length;i++){
+            String token = tokensArray[i];
+            if(token.length() != length)
+                continue;
+            for(int c=0;c<length;c++){
+                if(string.charAt(c + start) != token.charAt(c))
+                    continue OUTER;
+            }
+            return true;
+        }
+        return false;
+    }
+
     /** Prefixes the given name with a dollar ($) if it is a Java keyword */
     public static String quoteIfJavaKeyword(String name){
         if(isJavaKeyword(name))

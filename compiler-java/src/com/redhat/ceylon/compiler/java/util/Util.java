@@ -76,9 +76,24 @@ public class Util {
      * @return
      */
     public static String quoteJavaKeywords(String qualifiedName){
-        return join(".", quoteJavaKeywords(qualifiedName.split("\\.")));
+        // try not to work for nothing if we don't have to
+        if(needsJavaKeywordsQuoting(qualifiedName))
+            return join(".", quoteJavaKeywords(qualifiedName.split("\\.")));
+        else
+            return qualifiedName;
     }
     
+    private static boolean needsJavaKeywordsQuoting(String qualifiedName) {
+        int nextDot = qualifiedName.indexOf('.');
+        int start = 0;
+        while(nextDot != -1){
+            if(Naming.isJavaKeyword(qualifiedName, start, nextDot))
+                return true;
+            nextDot = qualifiedName.indexOf('.', nextDot+1);
+        }
+        return Naming.isJavaKeyword(qualifiedName, start, qualifiedName.length());
+    }
+
     /**
      * Joins the given parts using the given separator
      * @param sep The separator
