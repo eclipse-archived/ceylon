@@ -819,7 +819,8 @@ public class Util {
             List<ProducedType> signature, boolean ellipsis) {
         List<Declaration> results = new ArrayList<Declaration>(1);
         Declaration inexactMatch = null;
-        for (Declaration d: members) {
+        for (int i = members.size() - 1 ; i >= 0 ; i--) {
+            Declaration d = members.get(i);
             if (isResolvable(d) && isNamed(name, d)) {
                 if (signature==null) {
                     //no argument types: either a type 
