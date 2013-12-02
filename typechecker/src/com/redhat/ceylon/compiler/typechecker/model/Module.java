@@ -83,7 +83,6 @@ public class Module
     public List<Package> getAllPackages() {
         List<Package> list = new ArrayList<Package>();
         list.addAll(getPackages());
-        new HashSet<String>().add(getNameAsString());
         addSharedPackagesOfTransitiveDependencies(list, new HashSet<String>());
         return list;
     }
