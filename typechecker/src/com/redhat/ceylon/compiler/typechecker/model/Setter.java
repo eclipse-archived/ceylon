@@ -57,4 +57,8 @@ public class Setter extends MethodOrValue implements Scope {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public boolean isSetter() {
+        return true;
+    }
 }

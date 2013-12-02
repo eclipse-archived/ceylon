@@ -373,4 +373,8 @@ public abstract class Declaration
 	    return false;
 	}
 
+    public boolean isSetter() {
+        return false;
+    }
+
 }
