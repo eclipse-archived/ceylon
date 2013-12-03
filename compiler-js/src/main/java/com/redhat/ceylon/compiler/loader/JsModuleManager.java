@@ -82,7 +82,7 @@ public class JsModuleManager extends ModuleManager {
 
     @Override
     public Iterable<String> getSearchedArtifactExtensions() {
-        return Arrays.asList("js", "src");
+        return Arrays.asList("js");
     }
 
     @Override
@@ -206,4 +206,5 @@ public class JsModuleManager extends ModuleManager {
         }
     	return units;
     }
+
 }
