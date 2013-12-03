@@ -163,6 +163,9 @@ Object$proto.equals={$fml:1,$$metamodel$$:function(){return{mod:$$METAMODEL$$,$c
   $ps:[{$nm:'other',$mt:'prm',$t:{t:Object$}}]};}};
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
+function $init$$Object() { return Object$; }
+
+var $Object=Object$;
 
 var BasicID=1;
 function $identityHash(x) {
@@ -204,11 +207,11 @@ initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Excepti
 NativeException.$$metamodel$$=function(){return{$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Exception']};}
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
-exports.Object=Object$;
+exports.$Object=Object$;
 exports.Anything=Anything;
 exports.Null=Null;
 exports.Nothing=Nothing;
-exports.Boolean=Boolean$;
+exports.$Boolean=Boolean$;
 exports.Comparison=Comparison;
 exports.getNull=getNull;
 exports.getTrue=getTrue;

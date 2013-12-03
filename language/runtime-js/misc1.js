@@ -3,6 +3,7 @@ exports.$prop$getNull={get:getNull,$$metamodel$$:function(){return{mod:$$METAMOD
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
 Boolean$.$$metamodel$$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Boolean']};
+var $Boolean=Boolean$;
 function trueClass() {}
 initType(trueClass, "ceylon.language::true", Boolean$);
 function falseClass() {}
