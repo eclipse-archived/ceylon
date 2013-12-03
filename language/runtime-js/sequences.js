@@ -24,7 +24,7 @@ Array$proto.reifyCeylonType = function(typeParameters) {
     this.$$targs$$ = typeParameters;
     return this;
 }
-exports.Array=Array$;
+exports.$Array=Array$;
 
 function EmptyArray() {
     return [];
@@ -180,13 +180,14 @@ TypeCategory$proto.contains = function(k) {
     return isOfType(k, this.type) && this.seq.defines(k);
 }
 
-function SequenceBuilder($$targs$$) {
-    var that = new SequenceBuilder.$$;
+function SequenceBuilder($$targs$$,that) {
+    if(that===undefined)that=new SequenceBuilder.$$;
     that.seq = [];
     that.$$targs$$=$$targs$$;
     return that;
 }
-SequenceBuilder.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder']};
+SequenceBuilder.$$metamodel$$=function(){return{$ps:[],$an:function(){return[shared()];},
+  $tp:{Element:{}}, mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder']};}
 
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
@@ -207,14 +208,14 @@ SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
 }
 defineAttr(SequenceBuilder$proto, 'size', function(){ return this.seq.length; });
 
-function SequenceAppender(other, $$targs$$) {
-    var that = new SequenceAppender.$$;
-    that.seq = [];
-    that.$$targs$$=$$targs$$;
+function SequenceAppender(other, $$targs$$,that) {
+    if (that===undefined)that=new SequenceAppender.$$;
+    SequenceBuilder($$targs$$,that);
     that.appendAll(other);
     return that;
 }
-SequenceAppender.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','SequenceAppender']};
+SequenceAppender.$$metamodel$$=function(){return{$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element:'Element'}},$mt:'prm'}],$an:function(){return[shared()];},
+  'super':{t:SequenceBuilder,a:{Element:'Element'}},$tp:{Element:{}},mod:$$METAMODEL$$,d:['ceylon.language','SequenceAppender']};}
 
 initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
 
