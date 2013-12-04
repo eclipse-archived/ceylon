@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +41,9 @@ public abstract class ProducedReference {
         //of defaulted type arguments
         if (declaration instanceof Generic) {
             Map<TypeParameter, ProducedType> result = typeArguments;
-            for (TypeParameter pt: ((Generic) declaration).getTypeParameters()) {
+            List<TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
+            for (int i=0,l=typeParameters.size();i<l;i++) {
+                TypeParameter pt = typeParameters.get(i);
                 ProducedType dta = pt.getDefaultTypeArgument();
                 if (dta!=null) {
                     if (!typeArguments.containsKey(pt)) {

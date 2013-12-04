@@ -150,7 +150,9 @@ public abstract class Node {
                 //don't come with useful offset information
                 isMissingToken(this.token) ?
                 null : this.token;
-		for (Node child: getChildren()) {
+        List<Node> children = getChildren();
+		for (int i=0;i<children.size();i++) {
+		    Node child = children.get(i);
 			Token tok = child.getFirstChildToken();
 			if (tok!=null && (token==null || 
 					tok.getTokenIndex()<token.getTokenIndex())) {
