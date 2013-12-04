@@ -631,9 +631,46 @@ public class TypeVisitor extends Visitor {
 			}
 			args.add(arg);
         }
-        return unit.getTupleType(args, sequenced, atleastone, firstDefaulted);
+        return getTupleType(args, sequenced, atleastone, firstDefaulted);
 	}
 
+	//TODO: big copy/paste from Unit.getTupleType(), to eliminate
+	//      the canonicalization (since aliases are not yet 
+	//      resolvable in this phase)
+    public ProducedType getTupleType(List<ProducedType> elemTypes, 
+    		boolean variadic, boolean atLeastOne, int firstDefaulted) {
+    	ProducedType result = unit.getType(unit.getEmptyDeclaration());
+    	ProducedType union = unit.getType(unit.getNothingDeclaration());
+    	int last = elemTypes.size()-1;
+    	for (int i=last; i>=0; i--) {
+    		ProducedType elemType = elemTypes.get(i);
+    		List<ProducedType> pair = new ArrayList<ProducedType>();
+    		pair.add(elemType);
+    		pair.add(union);
+    		UnionType ut = new UnionType(unit);
+    		ut.setCaseTypes(pair);
+    		union = ut.getType();
+    		if (variadic && i==last) {
+    			result = atLeastOne ? 
+    					unit.getSequenceType(elemType) : 
+    					unit.getSequentialType(elemType);
+    		}
+    		else {
+    			result = producedType(unit.getTupleDeclaration(), 
+    					union, elemType, result);
+    			if (firstDefaulted>=0 && i>=firstDefaulted) {
+        			pair = new ArrayList<ProducedType>();
+            		pair.add(unit.getType(unit.getEmptyDeclaration()));
+            		pair.add(result);
+            		ut = new UnionType(unit);
+            		ut.setCaseTypes(pair);
+            		result = ut.getType();
+    			}
+    		}
+    	}
+    	return result;
+    }
+    
     @Override 
     public void visit(Tree.BaseType that) {
         super.visit(that);

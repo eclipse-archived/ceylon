@@ -1051,7 +1051,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     @Override public void visit(Tree.AttributeGetterDefinition that) {
         Tree.Type type = that.getType();
         Tree.Type rt = beginReturnScope(type);

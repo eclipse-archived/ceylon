@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TupleType;
 
 /**
  * Detects recursive type aliases and eliminates the
@@ -81,5 +82,17 @@ public class AliasVisitor extends Visitor {
             }
         }
     }
-
+    
+    @Override
+    public void visit(TupleType that) {
+        super.visit(that);
+        that.setTypeModel(that.getTypeModel().resolveAliases());
+    }
+    
+    @Override
+    public void visit(Tree.FunctionType that) {
+        super.visit(that);
+        that.setTypeModel(that.getTypeModel().resolveAliases());
+    }
+    
 }
