@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -59,6 +60,8 @@ public class JavacClass implements ClassMirror {
     private List<FieldMirror> fields;
 
     private LinkedList<ClassMirror> innerClasses;
+
+    private String cacheKey;
 
     public JavacClass(ClassSymbol classSymbol){
         this.classSymbol = classSymbol;
@@ -264,5 +267,14 @@ public class JavacClass implements ClassMirror {
     @Override
     public boolean isEnum() {
         return (classSymbol.flags() & Flags.ENUM) != 0;
+    }
+
+    @Override
+    public String getCacheKey(Module module) {
+        if(cacheKey == null){
+            String className = getQualifiedName();
+            cacheKey = AbstractModelLoader.getCacheKeyByModule(module, className);
+        }
+        return cacheKey;
     }
 }

@@ -21,6 +21,9 @@ package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.loader.ModelLoader;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
+
 /**
  * Represents a Java Class definition.
  *
@@ -146,4 +149,6 @@ public interface ClassMirror extends AnnotatedMirror, AccessibleMirror {
      * Returns true if this class is final
      */
     boolean isFinal();
+
+    String getCacheKey(Module module);
 }

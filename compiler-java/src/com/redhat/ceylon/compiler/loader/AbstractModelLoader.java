@@ -261,7 +261,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return new SimpleReflType(name, SimpleReflType.Module.CEYLON, TypeKind.DECLARED);
     }
 
-    protected Map<String, Declaration> declarationsByName = new HashMap<String, Declaration>();
+    protected Map<String, Declaration> valueDeclarationsByName = new HashMap<String, Declaration>();
+    protected Map<String, Declaration> typeDeclarationsByName = new HashMap<String, Declaration>();
     protected Map<Package, Unit> unitsByPackage = new HashMap<Package, Unit>();
     protected TypeParser typeParser;
     protected Unit typeFactory;
@@ -332,16 +333,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
     }
-    /**
-     * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror
-     * on cache misses.
-     * 
-     * @param module the module in which we should find the class
-     * @param name the name of the Class to load
-     * @return a ClassMirror for the specified class, or null if not found.
-     */
 
     protected String cacheKeyByModule(Module module, String name) {
+        return getCacheKeyByModule(module, name);
+    }
+
+    public static String getCacheKeyByModule(Module module, String name){
         String moduleSignature = module.getSignature();
         StringBuilder buf = new StringBuilder(moduleSignature.length()+1+name.length());
         // '/' is allowed in module version but not in module or class name, so we're good
@@ -628,33 +625,43 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
         alreadyExists[0] = false;
         Declaration decl = null;
-        String className = classMirror.getQualifiedName();
         ClassType type;
-        String prefix;
         if(classMirror.isCeylonToplevelAttribute()){
             type = ClassType.ATTRIBUTE;
-            prefix = "V";
         }else if(classMirror.isCeylonToplevelMethod()){
             type = ClassType.METHOD;
-            prefix = "V";
         }else if(classMirror.isCeylonToplevelObject()){
             type = ClassType.OBJECT;
-            // depends on which one we want
-            prefix = declarationType == DeclarationType.TYPE ? "C" : "V";
         }else if(classMirror.isInterface()){
             type = ClassType.INTERFACE;
-            prefix = "C";
         }else{
             type = ClassType.CLASS;
-            prefix = "C";
         }
-        String key = cacheKeyByModule(module, prefix + className);
+
+        String key = classMirror.getCacheKey(module);
         // see if we already have it
-        if(declarationsByName.containsKey(key)){
+        Map<String, Declaration> declarationCache = null;
+        switch(type){
+        case OBJECT:
+            if(declarationType == DeclarationType.TYPE){
+                declarationCache = typeDeclarationsByName;
+                break;
+            }
+            // else fall-through to value
+        case ATTRIBUTE:
+        case METHOD:
+            declarationCache = valueDeclarationsByName;
+            break;
+        case CLASS:
+        case INTERFACE:
+            declarationCache = typeDeclarationsByName;
+        }
+        if(declarationCache.containsKey(key)){
             alreadyExists[0] = true;
-            return declarationsByName.get(key);
+            return declarationCache.get(key);
         }
         
+
         checkBinaryCompatibility(classMirror);
         
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
@@ -672,11 +679,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case OBJECT:
             // we first make a class
             Declaration objectClassDecl = makeLazyClass(classMirror, null, null, true);
-            declarationsByName.put(cacheKeyByModule(module, "C"+className), objectClassDecl);
+            typeDeclarationsByName.put(key, objectClassDecl);
             decls.add(objectClassDecl);
             // then we make a value for it
             Declaration objectDecl = makeToplevelAttribute(classMirror);
-            declarationsByName.put(cacheKeyByModule(module, "V"+className), objectDecl);
+            valueDeclarationsByName.put(key, objectDecl);
             decls.add(objectDecl);
             // which one did we want?
             decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
@@ -740,7 +747,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // objects have special handling above
         if(type != ClassType.OBJECT){
-            declarationsByName.put(key, decl);
+            declarationCache.put(key, decl);
             decls.add(decl);
         }
         
@@ -3510,52 +3517,46 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<String> keysToRemove = new ArrayList<String>();
         // keep in sync with getOrCreateDeclaration
         for (Declaration decl : declarations) {
-            String prefix = null, otherPrefix = null;
             String fqn = decl.getQualifiedNameString().replace("::", ".");
             Module module = Decl.getModuleContainer(decl.getContainer());
+            Map<String, Declaration> firstCache = null;
+            Map<String, Declaration> secondCache = null;
             if(Decl.isToplevel(decl)){
                 if(Decl.isValue(decl)){
-                    prefix = "V";
+                    firstCache = valueDeclarationsByName;
                     if(((Value)decl).getTypeDeclaration().isAnonymous())
-                        otherPrefix = "C";
+                        secondCache = typeDeclarationsByName;
                 }else if(Decl.isMethod(decl))
-                    prefix = "V";
+                    firstCache = valueDeclarationsByName;
             }
             if(decl instanceof ClassOrInterface){
-                prefix = "C";
+                firstCache = typeDeclarationsByName;
             }
-            String key;
             // ignore declarations which we do not cache, like member method/attributes
-            if(prefix != null) {
-                key = cacheKeyByModule(module, prefix + fqn);
-                if (declarationsByName.remove(key) == null) {
-                    declarationsByName.remove(key + "_");
+            String key = cacheKeyByModule(module, fqn);
+            if(firstCache != null) {
+                if (firstCache.remove(key) == null) {
+                    firstCache.remove(key + "_");
                 }
-                if(otherPrefix != null)
-                    key = cacheKeyByModule(module, otherPrefix + fqn);
-                    if (declarationsByName.remove(key) == null) {
-                        declarationsByName.remove(key + "_");
+                if(secondCache != null)
+                    if (secondCache.remove(key) == null) {
+                        secondCache.remove(key + "_");
                     }
             }
             
-            key = cacheKeyByModule(module, fqn);
             if (classMirrorCache.remove(key) == null) {
                 classMirrorCache.remove(key + "_");
             }
         }
-        
-        for (Declaration decl : declarations) {
-            Module module = Decl.getModuleContainer(decl.getContainer());
-        }
     }
-    
-    public synchronized void printStats(){
+
+    private static class Stats{
+        int loaded, total;
+    }
+
+    private int inspectForStats(Map<String,Declaration> cache, Map<Package, Stats> loadedByPackage){
         int loaded = 0;
-        class Stats {
-            int loaded, total;
-        }
-        Map<Package, Stats> loadedByPackage = new HashMap<Package, Stats>();
-        for(Declaration decl : declarationsByName.values()){
+        for(Declaration decl : cache.values()){
             if(decl instanceof LazyElement){
                 Package pkg = getPackage(decl);
                 if(pkg == null){
@@ -3574,7 +3575,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
-        logVerbose("[Model loader: "+loaded+"(loaded)/"+declarationsByName.size()+"(total) declarations]");
+        return loaded;
+    }
+
+    public synchronized void printStats(){
+        Map<Package, Stats> loadedByPackage = new HashMap<Package, Stats>();
+        int loaded = inspectForStats(typeDeclarationsByName, loadedByPackage)
+                + inspectForStats(valueDeclarationsByName, loadedByPackage);
+        logVerbose("[Model loader: "+loaded+"(loaded)/"+(typeDeclarationsByName.size()+valueDeclarationsByName.size())+"(total) declarations]");
         for(Entry<Package, Stats> packageEntry : loadedByPackage.entrySet()){
             logVerbose("[ Package "+packageEntry.getKey().getNameAsString()+": "
                     +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
