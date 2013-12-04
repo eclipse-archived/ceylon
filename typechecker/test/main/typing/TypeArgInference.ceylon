@@ -163,7 +163,12 @@ class TypeArgInference() {
             given Z satisfies X {}
     @type:"TypeArgInference.Something<String|Integer,String,Integer>" Something("",1); 
     @type:"TypeArgInference.Something<String|Float|Integer,String,Float|Integer>" Something("",true then 1 else 1.0); 
-    @type:"TypeArgInference.Something<String|Null|Float|Integer,String,Null|Float|Integer>" Something("",false then (true then 1 else 1.0)); 
+    @type:"TypeArgInference.Something<String|Null|Float|Integer,String,Null|Float|Integer>" Something("",false then (true then 1 else 1.0));
+    
+    @type:"Null" max {};
+    @type:"Null" max({});
+    @type:"Integer" max {1};
+    @type:"Integer" max({1});
 
 }
 

@@ -1852,20 +1852,24 @@ public class ExpressionVisitor extends Visitor {
             inferTypeArgFromNamedArg(arg, tp, pr, parameters, inferredTypes, 
                     foundParameters);
         }
-        Tree.SequencedArgument sa = args.getSequencedArgument();
-        if (sa!=null) {
-            Parameter sp = getUnspecifiedParameter(null, parameters, 
-                    foundParameters);
-            if (sp!=null) {
-                inferTypeArgFromSequencedArg(sa, tp, sp, inferredTypes);
-            }
+        Parameter sp = getUnspecifiedParameter(null, parameters, 
+                foundParameters);
+        if (sp!=null) {
+        	Tree.SequencedArgument sa = args.getSequencedArgument();
+        	inferTypeArgFromSequencedArg(sa, tp, sp, inferredTypes);
         }    
     }
 
     private void inferTypeArgFromSequencedArg(Tree.SequencedArgument sa, TypeParameter tp,
             Parameter sp, List<ProducedType> inferredTypes) {
-        List<Tree.PositionalArgument> args = sa.getPositionalArguments();
-        ProducedType att = getTupleType(args, false);
+    	ProducedType att;
+    	if (sa==null) {
+    		att = unit.getEmptyDeclaration().getType();
+    	}
+    	else {
+    		List<Tree.PositionalArgument> args = sa.getPositionalArguments();
+    		att = getTupleType(args, false);
+    	}
         ProducedType spt = sp.getType();
         addToUnionOrIntersection(tp, inferredTypes, inferTypeArg(tp, spt, att,
                 new ArrayList<TypeParameter>()));
