@@ -126,4 +126,8 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public boolean isFunctional() {
+        return true;
+    }
 }

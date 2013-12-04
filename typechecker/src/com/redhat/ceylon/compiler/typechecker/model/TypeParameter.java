@@ -159,6 +159,11 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     }
     
     @Override
+    public boolean isFunctional() {
+        return true;
+    }
+
+    @Override
     protected int hashCodeForCache() {
         int ret = 17;
         ret = (37 * ret) + getDeclaration().hashCodeForCache();

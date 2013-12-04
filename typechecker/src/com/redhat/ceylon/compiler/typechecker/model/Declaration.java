@@ -377,6 +377,10 @@ public abstract class Declaration
         return false;
     }
 
+    public boolean isFunctional() {
+        return false;
+    }
+
     protected abstract int hashCodeForCache();
 
     protected abstract boolean equalsForCache(Object o);

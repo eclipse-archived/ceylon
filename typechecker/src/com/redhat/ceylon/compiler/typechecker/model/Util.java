@@ -106,9 +106,11 @@ public class Util {
     }
 
     public static boolean notOverloaded(Declaration d) {
-        return !(d instanceof Functional) || 
-                !((Functional) d).isOverloaded() ||
-                ((Functional) d).isAbstraction();
+        if(!d.isFunctional())
+            return true;
+        Functional f = (Functional) d;
+        return  !f.isOverloaded() ||
+                f.isAbstraction();
     }
     
     public static boolean isOverloadedVersion(Declaration decl) {

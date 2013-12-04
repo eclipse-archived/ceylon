@@ -111,5 +111,9 @@ public class Class extends ClassOrInterface implements Functional {
     public boolean isDeclaredVoid() {
         return false;
     }
-    
+
+    @Override
+    public boolean isFunctional() {
+        return true;
+    }
 }
