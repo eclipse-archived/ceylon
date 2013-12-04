@@ -3106,13 +3106,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     // class
     private void setTypeParameters(TypeDeclaration klass, ClassMirror classMirror) {
-        List<TypeParameter> params = new LinkedList<TypeParameter>();
-        klass.setTypeParameters(params);
         List<AnnotationMirror> typeParameters = getTypeParametersFromAnnotations(classMirror);
+        List<TypeParameterMirror> mirrorTypeParameters = classMirror.getTypeParameters();
         if(typeParameters != null) {
-            setTypeParametersFromAnnotations(klass, params, classMirror, typeParameters, classMirror.getTypeParameters());
+            if(typeParameters.isEmpty())
+                return;
+            List<TypeParameter> params = new ArrayList<TypeParameter>(typeParameters.size());
+            klass.setTypeParameters(params);
+            setTypeParametersFromAnnotations(klass, params, classMirror, typeParameters, mirrorTypeParameters);
         } else {
-            setTypeParameters(klass, params, classMirror.getTypeParameters());
+            if(mirrorTypeParameters.isEmpty())
+                return;
+            List<TypeParameter> params = new ArrayList<TypeParameter>(mirrorTypeParameters.size());
+            klass.setTypeParameters(params);
+            setTypeParameters(klass, params, mirrorTypeParameters);
         }
     }        
 
