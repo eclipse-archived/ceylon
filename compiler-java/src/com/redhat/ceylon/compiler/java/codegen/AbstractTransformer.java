@@ -1380,12 +1380,13 @@ public abstract class AbstractTransformer implements Transformation {
                 // this is only valid for interfaces, not for their companion which stay where they are
                 && (flags & JT_COMPANION) == 0;
         
-        java.util.List<ProducedType> qualifyingTypes = new java.util.ArrayList<ProducedType>();
+        java.util.List<ProducedType> qualifyingTypes = null;
         ProducedType qType = simpleType;
         boolean hasTypeParameters = false;
         while (qType != null) {
             hasTypeParameters |= !qType.getTypeArguments().isEmpty();
-            qualifyingTypes.add(qType);
+            if(qualifyingTypes != null)
+                qualifyingTypes.add(qType);
             TypeDeclaration typeDeclaration = qType.getDeclaration();
             // local interfaces that are pulled to the toplevel need to cross containing methods to find
             // all the containing type parameters that it captures
@@ -1397,24 +1398,32 @@ public abstract class AbstractTransformer implements Transformation {
             }else{
                 qType = qType.getQualifyingType();
             }
-        }
-        int firstQualifyingTypeWithTypeParameters = qualifyingTypes.size() - 1;
-        // find the first static one, from the right to the left
-        for(ProducedType pt : qualifyingTypes){
-            TypeDeclaration declaration = pt.getDeclaration();
-            if(Decl.isStatic(declaration)){
-                break;
+            // delayed allocation if we have a qualifying type
+            if(qualifyingTypes == null && qType != null){
+                qualifyingTypes = new java.util.ArrayList<ProducedType>();
+                qualifyingTypes.add(simpleType);
             }
-            firstQualifyingTypeWithTypeParameters--;
         }
-        if(firstQualifyingTypeWithTypeParameters < 0)
-            firstQualifyingTypeWithTypeParameters = 0;
-        // put them in outer->inner order
-        Collections.reverse(qualifyingTypes);
+        int firstQualifyingTypeWithTypeParameters = qualifyingTypes != null ? qualifyingTypes.size() - 1 : 0;
+        // find the first static one, from the right to the left
+        if(qualifyingTypes != null){
+            for(ProducedType pt : qualifyingTypes){
+                TypeDeclaration declaration = pt.getDeclaration();
+                if(Decl.isStatic(declaration)){
+                    break;
+                }
+                firstQualifyingTypeWithTypeParameters--;
+            }
+            if(firstQualifyingTypeWithTypeParameters < 0)
+                firstQualifyingTypeWithTypeParameters = 0;
+            // put them in outer->inner order
+            Collections.reverse(qualifyingTypes);
+        }
         
         if (((flags & JT_RAW) == 0) && hasTypeParameters) {
             // special case for interfaces because we pull them into toplevel types
             if(Decl.isCeylon(simpleType.getDeclaration())
+                    && qualifyingTypes != null
                     && qualifyingTypes.size() > 1
                     && simpleType.getDeclaration() instanceof Interface
                     // this is only valid for interfaces, not for their companion which stay where they are
@@ -1443,9 +1452,13 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }else if((flags & JT_NON_QUALIFIED) == 0){
                 int index = 0;
-                for (ProducedType qualifyingType : qualifyingTypes) {
-                    jt = makeParameterisedType(qualifyingType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
-                    index++;
+                if(qualifyingTypes != null){
+                    for (ProducedType qualifyingType : qualifyingTypes) {
+                        jt = makeParameterisedType(qualifyingType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
+                        index++;
+                    }
+                }else{
+                    jt = makeParameterisedType(simpleType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
                 }
             }else{
                 jt = makeParameterisedType(type, type, flags, jt, qualifyingTypes, 0, 0);
@@ -1620,6 +1633,7 @@ public abstract class AbstractTransformer implements Transformation {
             // but in Java we just don't have type params to the qualifying type if the
             // qualified type is static
             if (tdecl instanceof Interface
+                    && qualifyingTypes != null
                     && qualifyingTypes.size() > 1
                     && firstQualifyingTypeWithTypeParameters == 0) {
                 baseType = naming.makeCompanionClassName(tdecl);
