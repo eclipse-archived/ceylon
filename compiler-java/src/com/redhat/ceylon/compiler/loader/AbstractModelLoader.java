@@ -1277,6 +1277,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         modules.getListOfModules().add(module);
         Module languageModule = modules.getLanguageModule();
         module.setLanguageModule(languageModule);
+        module.setCache(moduleManager.getContext().getCache());
         if(module != languageModule){
             ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
             if (moduleImport == null) {
