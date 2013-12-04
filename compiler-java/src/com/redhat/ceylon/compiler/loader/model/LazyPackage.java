@@ -23,9 +23,11 @@ package com.redhat.ceylon.compiler.loader.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.lookupMember;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
@@ -61,6 +63,7 @@ public class LazyPackage extends Package {
     private AbstractModelLoader modelLoader;
     private List<Declaration> compiledDeclarations = new ArrayList<Declaration>(3);
     private Set<Unit> lazyUnits = new HashSet<Unit>();
+    private Map<String,Declaration> cache = new HashMap<String,Declaration>();
     
     public LazyPackage(AbstractModelLoader modelLoader){
         this.modelLoader = modelLoader;
@@ -75,6 +78,20 @@ public class LazyPackage extends Package {
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public Declaration getDirectMember(String name, List<ProducedType> signature, boolean ellipsis) {
+//        System.err.println("getMember "+name+" "+signature+" "+ellipsis);
+        boolean canCache = (signature == null && !ellipsis);
+        if(canCache){
+            if(cache.containsKey(name))
+                return cache.get(name);
+        }
+        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis);
+        if(canCache){
+            cache.put(name, ret);
+        }
+        return ret;
+    }
+    
+    private Declaration getDirectMemberMemoised(String name, List<ProducedType> signature, boolean ellipsis) {
         synchronized(modelLoader){
 
             String pkgName = getQualifiedNameString();
@@ -160,8 +177,19 @@ public class LazyPackage extends Package {
         }
     }
 
+    @Override
+    public void addMember(Declaration declaration) {
+        super.addMember(declaration);
+        flushCache(declaration);
+    }
+    
+    private void flushCache(Declaration declaration) {
+        cache.remove(declaration.getName());
+    }
+
     public void addCompiledMember(Declaration d) {
         synchronized(modelLoader){
+            flushCache(d);
             compiledDeclarations.add(d);
             if (d instanceof LazyInterface
                     && !((LazyInterface)d).isCeylon()
