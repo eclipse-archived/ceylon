@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.loader.model;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -182,8 +183,9 @@ public abstract class LazyModule extends Module {
     public boolean containsPackage(String pkgName){
         String moduleName = getNameAsString();
         if(!isJava){
-            for(Package pkg : super.getPackages()){
-                if(pkg.getNameAsString().equals(pkgName))
+            List<Package> superPackages = super.getPackages();
+            for(int i=0,l=superPackages.size();i<l;i++){
+                if(superPackages.get(i).getNameAsString().equals(pkgName))
                     return true;
             }
             // The language module is in the classpath and does not have its jarPackages loaded

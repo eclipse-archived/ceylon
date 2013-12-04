@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
+
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -58,7 +60,9 @@ public class ErrorVisitor extends Visitor implements NaturalVisitor {
 
     private boolean hasError(Node that) {
         // skip only usage warnings
-        for(Message message : that.getErrors()){
+        List<Message> errors = that.getErrors();
+        for(int i=0,l=errors.size();i<l;i++){
+            Message message = errors.get(i);
             if(!(message instanceof UsageWarning))
                 return true;
         }
