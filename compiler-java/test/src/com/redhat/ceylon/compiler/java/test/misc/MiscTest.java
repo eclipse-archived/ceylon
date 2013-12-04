@@ -253,7 +253,7 @@ public class MiscTest extends CompilerTest {
     }
 
     @Test
-    public void compileSDK(){
+    public void compileSDK() throws IOException{
         String[] modules = {
                 "collection", 
                 "dbc",
@@ -267,8 +267,15 @@ public class MiscTest extends CompilerTest {
                 "test",
                 "time"
         };
+//        System.out.println("Press enter to continue");
+//        System.in.read();
+//        System.out.println("Test started");
         compileSDKOnly(modules);
         compileSDKTests(modules);
+//        System.out.println("Done: Press enter to exit");
+//        System.in.read();
+//        System.out.println("Test finished");
+
     }
 
     private void compileSDKOnly(String[] modules){
