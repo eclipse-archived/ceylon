@@ -158,4 +158,20 @@ public class TypeParameter extends TypeDeclaration implements Functional {
         this.hasNonErasedBounds = hasNonErasedBounds;
     }
     
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        ret = (37 * ret) + getDeclaration().hashCodeForCache();
+        ret = (37 * ret) + getName().hashCode();
+        return ret;
+    }
+
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if(o == null || o instanceof TypeParameter == false)
+            return false;
+        TypeParameter b = (TypeParameter) o;
+        return getDeclaration().equalsForCache(b.getDeclaration())
+                && getName().equals(b.getName());
+    }
 }

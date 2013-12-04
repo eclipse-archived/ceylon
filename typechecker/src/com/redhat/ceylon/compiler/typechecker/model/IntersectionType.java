@@ -116,4 +116,29 @@ public class IntersectionType extends TypeDeclaration {
         throw new UnsupportedOperationException("intersection types don't have well-defined equality");
     }
 
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        List<ProducedType> satisfiedTypes = getSatisfiedTypes();
+        for(int i=0,l=satisfiedTypes.size();i<l;i++){
+            ret = (37 * ret) + satisfiedTypes.get(i).hashCode();
+        }
+        return ret;
+    }
+
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if(o == null || o instanceof IntersectionType == false)
+            return false;
+        IntersectionType b = (IntersectionType) o;
+        List<ProducedType> satisfiedTypesA = getSatisfiedTypes();
+        List<ProducedType> satisfiedTypesB = b.getSatisfiedTypes();
+        if(satisfiedTypesA.size() != satisfiedTypesB.size())
+            return false;
+        for(int i=0,l=satisfiedTypesA.size();i<l;i++){
+            if(!satisfiedTypesA.get(i).equals(satisfiedTypesB.get(i)))
+                return false;
+        }
+        return true;
+    }
 }

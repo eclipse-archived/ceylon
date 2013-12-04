@@ -377,4 +377,7 @@ public abstract class Declaration
         return false;
     }
 
+    protected abstract int hashCodeForCache();
+
+    protected abstract boolean equalsForCache(Object o);
 }

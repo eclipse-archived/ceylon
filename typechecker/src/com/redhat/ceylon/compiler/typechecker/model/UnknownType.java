@@ -65,5 +65,14 @@ public class UnknownType extends TypeDeclaration {
             errorReporter = null;
         }
     }
+
+    @Override
+    protected int hashCodeForCache() {
+        return hashCode();
+    }
     
+    @Override
+    protected boolean equalsForCache(Object o) {
+        return equals(o);
+    }
 }

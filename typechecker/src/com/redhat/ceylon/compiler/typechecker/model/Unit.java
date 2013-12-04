@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 
 public class Unit {
@@ -201,9 +202,7 @@ public class Unit {
     public Declaration getLanguageModuleDeclaration(String name) {
         //all elements in ceylon.language are auto-imported
         //traverse all default module packages provided they have not been traversed yet
-        if (languageModule==null) {
-            languageModule = getPackage().getModule().getLanguageModule();
-        }
+        Module languageModule = getLanguageModule();
         if (languageModule!=null && languageModule.isAvailable()) {
             if ("Nothing".equals(name)) {
                 return getNothingDeclaration();
@@ -221,6 +220,13 @@ public class Unit {
         return null;
     }
     
+    private Module getLanguageModule() {
+        if (languageModule==null) {
+            languageModule = getPackage().getModule().getLanguageModule();
+        }
+        return languageModule;
+    }
+
     /**
      * Search for a declaration in {@code ceylon.language.model} 
      */
@@ -1066,6 +1072,11 @@ public class Unit {
     
     public TypeDeclaration getDeclarationDeclaration() {
         return getLanguageModuleDeclarationTypeDeclaration("Declaration");
+    }
+
+    public ProducedTypeCache getCache() {
+        Module languageModule = getLanguageModule();
+        return languageModule != null ? languageModule.getCache() : null;
     }
     
 }

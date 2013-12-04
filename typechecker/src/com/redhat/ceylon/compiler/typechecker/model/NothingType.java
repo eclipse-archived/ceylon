@@ -46,5 +46,14 @@ public class NothingType extends TypeDeclaration {
     public boolean equals(Object object) {
     	return object instanceof NothingType;
     }
+
+    @Override
+    protected int hashCodeForCache() {
+        return 17987123;
+    }
     
+    @Override
+    protected boolean equalsForCache(Object o) {
+        return equals(o);
+    }
 }

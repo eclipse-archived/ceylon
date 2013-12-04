@@ -81,4 +81,29 @@ public class UnionType extends TypeDeclaration {
         throw new UnsupportedOperationException("union types don't have well-defined equality");
     }    
 
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        List<ProducedType> caseTypes = getCaseTypes();
+        for(int i=0,l=caseTypes.size();i<l;i++){
+            ret = (37 * ret) + caseTypes.get(i).hashCode();
+        }
+        return ret;
+    }
+    
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if(o == null || o instanceof UnionType == false)
+            return false;
+        UnionType b = (UnionType) o;
+        List<ProducedType> caseTypesA = getCaseTypes();
+        List<ProducedType> caseTypesB = b.getCaseTypes();
+        if(caseTypesA.size() != caseTypesB.size())
+            return false;
+        for(int i=0,l=caseTypesA.size();i<l;i++){
+            if(!caseTypesA.get(i).equals(caseTypesB.get(i)))
+                return false;
+        }
+        return true;
+    }
 }

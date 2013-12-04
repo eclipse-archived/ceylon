@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache;
 import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 
 
@@ -32,8 +34,33 @@ public class ProducedType extends ProducedReference {
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
-    private Map<TypeDeclaration, ProducedType> superTypesCache = 
-            new HashMap<TypeDeclaration, ProducedType>(5);
+//    private Map<TypeDeclaration, ProducedType> superTypesCache = 
+//            new HashMap<TypeDeclaration, ProducedType>(5);
+
+    private int hashCode;
+
+    public int getHashCode(){
+        if(hashCode == 0){
+            int ret = 17;
+            ProducedType qualifyingType = getQualifyingType();
+            ret = (37 * ret) + (qualifyingType != null ? qualifyingType.hashCode() : 0);
+            TypeDeclaration declaration = getDeclaration();
+            ret = (37 * ret) + declaration.hashCodeForCache();
+            
+            Map<TypeParameter, ProducedType> typeArguments = getTypeArguments();
+
+            if(!typeArguments.isEmpty()){
+                List<TypeParameter> typeParameters = declaration.getTypeParameters();
+                for(int i=0,l=typeParameters.size();i<l;i++){
+                    TypeParameter typeParameter = typeParameters.get(i);
+                    ProducedType typeArgument = typeArguments.get(typeParameter);
+                    ret = (37 * ret) + (typeArgument != null ? typeArgument.hashCode() : 0);
+                }
+            }
+            hashCode = ret;
+        }
+        return hashCode;
+    }
 
     ProducedType() {}
 
@@ -576,12 +603,17 @@ public class ProducedType extends ProducedReference {
     private ProducedType getSupertypeInternal(TypeDeclaration dec) {
         boolean complexType = dec instanceof UnionType 
         		|| dec instanceof IntersectionType;
-        if (!complexType && superTypesCache.containsKey(dec)) {
+        ProducedTypeCache cache = dec.getUnit().getCache();
+        if (!complexType 
+                && cache.containsKey(this, dec)
+//                && superTypesCache.containsKey(dec)
+                ) {
             /*SoftReference<ProducedType> ref = superTypesCache.get(dec);
             if (ref==null) return null;
             ProducedType pt = ref.get();
             if (pt!=null) return pt;*/
-            return superTypesCache.get(dec);
+            return cache.get(this, dec);
+//            return superTypesCache.get(dec);
         }
         SupertypeCheck check = checkSupertype(getDeclaration(), dec);
         ProducedType superType;
@@ -595,7 +627,8 @@ public class ProducedType extends ProducedReference {
             superType = getSupertype(new SupertypeCriteria(dec));
         }
         if (!complexType) {
-            superTypesCache.put(dec, superType);
+            cache.put(this, dec, superType);
+//            superTypesCache.put(dec, superType);
         }
         //if (!complexType) superTypesCache.put(dec, superType==null?null:new SoftReference<ProducedType>(superType));
         return superType;
@@ -1967,5 +2000,40 @@ public class ProducedType extends ProducedReference {
     public boolean isNothing() {
         return getDeclaration() instanceof NothingType;
     }
-    
+
+    @Override
+    public int hashCode() {
+        return getHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj instanceof ProducedType == false)
+            return false;
+        ProducedType other = (ProducedType) obj;
+        ProducedType qA = getQualifyingType();
+        ProducedType qB = other.getQualifyingType();
+        if(!Objects.equals(qA, qB))
+            return false;
+        TypeDeclaration aDecl = getDeclaration();
+        TypeDeclaration bDecl = other.getDeclaration();
+        if(!aDecl.equalsForCache(bDecl))
+            return false;
+        
+        Map<TypeParameter, ProducedType> typeArgumentsA = getTypeArguments();
+        Map<TypeParameter, ProducedType> typeArgumentsB = other.getTypeArguments();
+        if(typeArgumentsA.size() != typeArgumentsB.size())
+            return false;
+        if(!typeArgumentsA.isEmpty()){
+            List<TypeParameter> typeParametersA = aDecl.getTypeParameters();
+            for(int i=0,l=typeParametersA.size();i<l;i++){
+                TypeParameter typeParameter = typeParametersA.get(i);
+                ProducedType typeArgumentA = typeArgumentsA.get(typeParameter);
+                ProducedType typeArgumentB = typeArgumentsB.get(typeParameter);
+                if(!Objects.equals(typeArgumentA, typeArgumentB))
+                    return false;
+            }
+        }
+        return true;
+    }
 }

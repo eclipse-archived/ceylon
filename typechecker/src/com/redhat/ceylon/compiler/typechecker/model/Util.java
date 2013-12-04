@@ -1042,4 +1042,25 @@ public class Util {
         return type;
     }
 
+    public static int addHashForModule(int ret, Declaration decl) {
+        Module module = getModule(decl);
+        return (37 * ret) + (module != null ? module.hashCode() : 0);
+    }
+
+    private static Module getModule(Declaration decl) {
+        Scope scope = decl.getContainer();
+        while(scope instanceof Package == false)
+            scope = scope.getContainer();
+        Module module = null;
+        if(scope instanceof Package){
+            module = ((Package) scope).getModule();
+        }
+        return module;
+    }
+
+    public static boolean sameModule(Declaration a, Declaration b) {
+        Module aMod = getModule(a);
+        Module bMod = getModule(b);
+        return aMod.equals(bMod);
+    }
 }

@@ -55,4 +55,21 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         return DeclarationKind.TYPE;
     }
     
+    @Override
+    protected int hashCodeForCache() {
+        int ret = 17;
+        ret = Util.addHashForModule(ret, this);
+        ret = (37 * ret) + getQualifiedNameString().hashCode();
+        return ret;
+    }
+    
+    @Override
+    protected boolean equalsForCache(Object o) {
+        if(o == null || o instanceof ClassOrInterface == false)
+            return false;
+        ClassOrInterface b = (ClassOrInterface) o;
+        if(!Util.sameModule(this, b))
+            return false;
+        return getQualifiedNameString().equals(b.getQualifiedNameString());
+    }
 }

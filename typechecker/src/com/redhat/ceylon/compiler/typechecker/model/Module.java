@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache;
+
 public class Module 
         implements Referenceable, Annotated, Comparable<Module> {
 
@@ -29,6 +31,7 @@ public class Module
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Unit unit;
     private String memoisedName;
+    private ProducedTypeCache cache;
 
     /**
      * Whether or not the module is available in the
@@ -249,5 +252,25 @@ public class Module
         // we don't care about how versions are compared, we just care that the order is consistent
         return this.getVersion().compareTo(other.getVersion());
     }
+
+    public void setCache(ProducedTypeCache cache) {
+        this.cache = cache;
+    }
     
+    public ProducedTypeCache getCache(){
+        return cache;
+    }
+
+    @Override
+    public int hashCode() {
+        return getSignature().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj instanceof Module == false)
+            return false;
+        Module b = (Module) obj;
+        return getSignature().equals(b.getSignature());
+    }
 }
