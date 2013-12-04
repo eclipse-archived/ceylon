@@ -467,7 +467,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private List<JCAnnotation> transformAnnotationConstraints(Class klass) {
-        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleModelDeclaration("ConstrainedAnnotation");
+        TypeDeclaration meta = (TypeDeclaration)typeFact().getLanguageModuleDeclaration("ConstrainedAnnotation");
         ProducedType constrainedType = klass.getType().getSupertype(meta);
         if (constrainedType != null) {
             ProducedType programElement = constrainedType.getTypeArgumentList().get(2);
