@@ -342,10 +342,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
 
     protected String cacheKeyByModule(Module module, String name) {
+        String moduleSignature = module.getSignature();
+        StringBuilder buf = new StringBuilder(moduleSignature.length()+1+name.length());
         // '/' is allowed in module version but not in module or class name, so we're good
-        if(module.isDefault())
-            return module.getNameAsString() + '/' + name; // no version
-        return module.getNameAsString() + '/' + module.getVersion() + '/' + name;
+        return buf.append(moduleSignature).append('/').append(name).toString();
     }
 
     protected boolean lastPartHasLowerInitial(String name) {
