@@ -32,6 +32,7 @@ public class Module
     private Unit unit;
     private String memoisedName;
     private ProducedTypeCache cache;
+    private String signature;
 
     /**
      * Whether or not the module is available in the
@@ -259,6 +260,16 @@ public class Module
     
     public ProducedTypeCache getCache(){
         return cache;
+    }
+
+    public String getSignature() {
+        if(signature == null){
+            if(isDefault())
+                signature = getNameAsString();
+            else
+                signature = getNameAsString() + "/" + getVersion();
+        }
+        return signature;
     }
 
     @Override
