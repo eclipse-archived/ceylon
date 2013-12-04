@@ -426,14 +426,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
          */
         loadPackage(jdkModule, "java.lang", false);
         loadPackage(languageModule, "com.redhat.ceylon.compiler.java.metadata", false);
+        loadPackage(languageModule, "com.redhat.ceylon.compiler.java.language", false);
 
         /*
          * We do not load the ceylon.language module from class files if we're bootstrapping it
          */
         if(!isBootstrap){
-            loadPackage(languageModule, CEYLON_LANGUAGE, true);
-            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL, true);
-            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL_DECLARATION, true);
+//            loadPackage(languageModule, CEYLON_LANGUAGE, true);
+//            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL, true);
+//            loadPackage(languageModule, CEYLON_LANGUAGE_MODEL_DECLARATION, true);
         }
     }
 
