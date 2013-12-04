@@ -1027,8 +1027,6 @@ public class ProducedType extends ProducedReference {
     }
     
     List<ProducedType> argList;
-    public boolean isOptionalType;
-    public boolean isOptionalTypeSet;
     
     /**
      * Get the type arguments as a tuple. 

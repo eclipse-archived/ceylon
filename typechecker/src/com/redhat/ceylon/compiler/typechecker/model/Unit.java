@@ -696,18 +696,10 @@ public class Unit {
     public boolean isOptionalType(ProducedType pt) {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
-//        return !intersectionType(getType(getNullDeclaration()), pt, this)
-//                .isNothing() &&
-//       !intersectionType(getType(getObjectDeclaration()), pt, this)
-//                .isNothing();
-        if(!pt.isOptionalTypeSet){
-            pt.isOptionalType = !intersectionType(getType(getNullDeclaration()), pt, this)
-                        .isNothing() &&
-               !intersectionType(getType(getObjectDeclaration()), pt, this)
-                        .isNothing();
-            pt.isOptionalTypeSet = true;
-        }
-        return pt.isOptionalType;
+        return !intersectionType(getType(getNullDeclaration()), pt, this)
+                    .isNothing() &&
+                !intersectionType(getType(getObjectDeclaration()), pt, this)
+                    .isNothing();
     }
     
     public boolean isPossiblyEmptyType(ProducedType pt) {
