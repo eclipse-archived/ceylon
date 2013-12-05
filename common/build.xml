@@ -20,8 +20,6 @@
     <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}" />
     <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}" />
 
-    <property name="test.reports" location="${build}/test-reports" />
-
     <!-- Classpath for the build tools. -->
     <path id="classpath">
         <pathelement path="${markdownpapers.lib}" />
