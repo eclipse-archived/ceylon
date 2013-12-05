@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -421,7 +422,7 @@ public class TypeHierarchyVisitor extends Visitor {
                         !((ClassOrInterface) td).isAbstract() &&
                         !((ClassOrInterface) td).isAlias()) {
                     for (Declaration d: st.getDeclaration().getMembers()) {
-                        if (d.isShared() && isResolvable(d) && 
+                        if (d.isShared() && !isOverloadedVersion(d) && isResolvable(d) && 
                                 !errors.contains(d.getName())) {
                             Declaration r = td.getMember(d.getName(), null, false);
                             if (r==null || !r.refines(d) && 
