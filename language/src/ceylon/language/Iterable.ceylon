@@ -129,16 +129,16 @@ shared interface Iterable<out Element, out Absent=Null>
             => any(ifExists(element.equals));
     
     "The first element returned by the iterator, if any,
-     of `null` if the iterable object is empty."
+     or `null` if the iterable object is empty."
     shared default Absent|Element first 
             => internalFirst(this);
     
     "The last element returned by the iterator, if any,
-     of `null` if the iterable object is empty. Iterable
-     objects are potentially infinite, so calling this
-     might never return; also, this implementation will
-     iterate through all the elements, which might be
-     very time-consuming."
+     or `null` if the iterable object is empty. Iterable
+     objects are potentially infinite, so this operation
+     might never return; furthermore, this default 
+     implementation iterates all elements, which might be
+     very expensive."
     shared default Absent|Element last {
         variable Absent|Element e = first;
         for (x in this) {
