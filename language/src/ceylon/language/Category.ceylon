@@ -10,7 +10,7 @@
    
        if ("hello" in "hello world") { ... }
        if (69 in 0..100) { ... }
-       if (key->value in { for (n in 0..100) n.string->n**2 }) { ... }
+       if (key->item in { for (n in 0..100) n.string->n**2 }) { ... }
    
    Ordinarily, `x==y` implies that `x in cat == y in cat`.
    But this contract is not required since it is possible
