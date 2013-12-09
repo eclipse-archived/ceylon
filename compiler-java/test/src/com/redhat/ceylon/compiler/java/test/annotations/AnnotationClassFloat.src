@@ -7,6 +7,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract double f();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassFloat$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation$[] value();
@@ -61,6 +62,7 @@ final class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.run
     public abstract double f() default 3.141;
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassFloatDefaulted$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted$annotation$[] value();

@@ -9,6 +9,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract long j() default 1L;
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassInteger$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$[] value();

@@ -9,6 +9,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_String$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$[] value();
@@ -232,6 +233,7 @@ final class sequenceArguments_String_Empty_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_Boolean$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$[] value();
@@ -451,6 +453,7 @@ final class sequenceArguments_Boolean_Empty_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_Character$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$[] value();
@@ -674,6 +677,7 @@ final class sequenceArguments_Character_Empty_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_Float$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$[] value();
@@ -897,6 +901,7 @@ final class sequenceArguments_Float_Empty_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_Integer$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$[] value();
@@ -1121,6 +1126,7 @@ final class sequenceArguments_Integer_Empty_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_Object$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$[] value();
@@ -1343,6 +1349,7 @@ final class sequenceArguments_Object_Empty_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface SequenceDefaults_Declaration$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$[] value();

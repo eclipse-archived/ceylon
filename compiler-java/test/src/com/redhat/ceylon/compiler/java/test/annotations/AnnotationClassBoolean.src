@@ -7,6 +7,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract boolean b();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassBoolean$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBoolean$annotation$[] value();
@@ -88,6 +89,7 @@ final class annotationClassBoolean_ {
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassBooleanDefaulted$annotation$ {
     
     public abstract boolean b() default true;
@@ -162,6 +164,7 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
     public abstract boolean[] b();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassBooleanVariadic$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanVariadic$annotation$[] value();
@@ -276,6 +279,7 @@ final class annotationClassVariadicIterable_ {
     public abstract boolean[] b();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassBooleanSequence$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequence$annotation$[] value();
@@ -366,6 +370,7 @@ final class annotationClassSequenceSequence_ {
     public abstract boolean[] b();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassBooleanIterable$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterable$annotation$[] value();

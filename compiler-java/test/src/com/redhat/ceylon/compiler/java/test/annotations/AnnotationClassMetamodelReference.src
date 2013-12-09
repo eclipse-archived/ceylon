@@ -8,6 +8,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract .java.lang.String mmr();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassMetamodelReference$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference$annotation$[] value();
@@ -63,6 +64,7 @@ final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.comp
     public abstract .java.lang.String mmr() default "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CAnnotationClassMetamodelReference";
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassMetamodelReferenceDefaulted$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted$annotation$[] value();
@@ -138,6 +140,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
     public abstract .java.lang.String[] mmrs();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassMetamodelReferenceVariadic$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation$[] value();

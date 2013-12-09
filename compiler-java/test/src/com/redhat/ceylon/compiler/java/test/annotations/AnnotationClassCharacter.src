@@ -7,6 +7,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract int c();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassCharacter$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$[] value();
@@ -62,6 +63,7 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.class);
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface AnnotationClassCharacterDefaulted$annotation$ {
     
     public abstract int c() default 97;

@@ -7,6 +7,7 @@ public @interface EnumeratedReference_X$annotation$ {
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$ y();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
 public @interface EnumeratedReference_X$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$[] value();
@@ -70,6 +71,7 @@ public @interface EnumeratedReference_Y$annotation$ {
     public abstract .java.lang.Class<? extends .ceylon.language.Comparison> c();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
 public @interface EnumeratedReference_Y$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$[] value();

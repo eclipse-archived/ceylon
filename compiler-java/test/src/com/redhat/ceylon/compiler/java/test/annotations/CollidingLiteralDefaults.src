@@ -9,6 +9,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     public abstract long i2();
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
 @interface CollidingLiteralDefaults$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation$[] value();
