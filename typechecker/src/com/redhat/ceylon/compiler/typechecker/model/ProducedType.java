@@ -687,15 +687,18 @@ public class ProducedType extends ProducedReference {
         if(declaration instanceof IntersectionType){
             if(declaration.getSatisfiedTypes().isEmpty())
                 return SupertypeCheck.NO;
+            boolean perhaps = false;
             // any satisfied type will do
             for(ProducedType satisfiedType : declaration.getSatisfiedTypes()){
                 SupertypeCheck satisfied = checkSupertype(satisfiedType.getDeclaration(), supertype);
                 if(satisfied == SupertypeCheck.YES)
                     return satisfied;
+                else if(satisfied == SupertypeCheck.MAYBE)
+                    perhaps = true;
                 // keep looking
             }
-            // did not find it
-            return SupertypeCheck.NO;
+            // did not find it, but perhaps it's in there?
+            return perhaps ? SupertypeCheck.MAYBE : SupertypeCheck.NO;
         }
         return SupertypeCheck.MAYBE;
     }
