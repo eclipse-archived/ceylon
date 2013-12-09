@@ -2326,6 +2326,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
                 parameter.setDefaulted(true);
             if (parameter.isSequenced() &&
+                    // FIXME: store info in Sequenced
                     typeFactory.isNonemptyIterableType(parameter.getType())) {
                 parameter.setAtLeastOne(true);
             }
@@ -2725,6 +2726,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      *  
      */
     private LiteralAnnotationTerm loadLiteralAnnotationTerm(LazyMethod method, Parameter parameter, AnnotatedMirror mm) {
+        // FIXME: store iterable info somewhere else
         boolean singleValue = !typeFactory.isIterableType(parameter.getType())
             || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
         AnnotationMirror valueAnnotation = mm.getAnnotation(CEYLON_STRING_VALUE_ANNOTATION);
@@ -2763,6 +2765,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * match, or null.
      */
     private LiteralAnnotationTerm findLiteralAnnotationTerm(Module moduleScope, List<AnnotationFieldName> namePath, Parameter parameter, AnnotatedMirror mm) {
+        // FIXME: store info somewhere else
         boolean singeValue = !typeFactory.isIterableType(parameter.getType())
             || typeFactory.getStringDeclaration().equals(parameter.getType().getDeclaration());
         final String name = Naming.getAnnotationFieldName(namePath);
