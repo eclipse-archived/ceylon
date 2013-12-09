@@ -778,29 +778,64 @@ public class Util {
         // we only handle Foo|Null
         if(bDecl.getCaseTypes().size() != 2)
             return null;
+
+        String aName = aDecl.getQualifiedNameString();
+        // we only handle Object and Null intersections
+        if(!aName.equals("ceylon.language::Object")
+                && !aName.equals("ceylon.language::Null"))
+            return null;
         
         ProducedType caseA = bDecl.getCaseTypes().get(0);
         TypeDeclaration caseADecl = caseA.getDeclaration();
-        String caseAName = caseADecl.getQualifiedNameString();
 
         ProducedType caseB = bDecl.getCaseTypes().get(1);
         TypeDeclaration caseBDecl = caseB.getDeclaration();
-        String caseBName = caseBDecl.getQualifiedNameString();
+
+        boolean isANull = caseADecl instanceof ClassOrInterface
+                && "ceylon.language::Null".equals(caseADecl.getQualifiedNameString());
+        boolean isBNull = caseBDecl instanceof ClassOrInterface
+                && "ceylon.language::Null".equals(caseBDecl.getQualifiedNameString());
         
-        String aName = aDecl.getQualifiedNameString();
         if(aName.equals("ceylon.language::Object")){
-            // FIXME: perhaps we should check that the other type is a ClassOrInterface that is not Null?
-            if(caseAName.equals("ceylon.language::Null"))
-                return caseB;
-            if(caseBName.equals("ceylon.language::Null"))
-                return caseA;
+            if(isANull)
+                return simpleObjectIntersection(aDecl, caseB);
+            if(isBNull)
+                return simpleObjectIntersection(aDecl, caseA);
             // too complex
             return null;
         }
         if(aName.equals("ceylon.language::Null")){
-            if(caseAName.equals("ceylon.language::Null")
-                    || caseBName.equals("ceylon.language::Null"))
+            if(isANull)
                 return caseA;
+            if(isBNull)
+                return caseB;
+            // too complex
+            return null;
+        }
+        // too complex
+        return null;
+    }
+
+    private static ProducedType simpleObjectIntersection(ClassOrInterface objectDecl, ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof ClassOrInterface)
+            return type;
+        if(declaration instanceof TypeParameter){
+            List<ProducedType> satisfiedTypes = declaration.getSatisfiedTypes();
+            if(satisfiedTypes.isEmpty()){
+                // trivial intersection TP&Object
+                IntersectionType it = new IntersectionType(objectDecl.getUnit());
+                it.getSatisfiedTypes().add(type);
+                it.getSatisfiedTypes().add(objectDecl.getType());
+                return it.getType();
+            }
+            for(ProducedType sat : satisfiedTypes){
+                if(sat.getDeclaration() instanceof ClassOrInterface
+                        && sat.getDeclaration().getQualifiedNameString().equals("ceylon.language::Object")){
+                    // it is already an Object
+                    return type;
+                }
+            }
             // too complex
             return null;
         }
