@@ -281,7 +281,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
     @Override
     public Scope getVisibleScope() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.getVisibleScope();
     }
 
@@ -335,7 +335,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
     @Override
     public boolean isVisible(Scope scope) {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isVisible(scope);
     }
 
