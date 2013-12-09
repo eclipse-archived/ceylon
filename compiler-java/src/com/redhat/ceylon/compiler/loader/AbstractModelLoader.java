@@ -183,6 +183,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation$";
 
+    // important that these are with ::
+    private static final String CEYLON_LANGUAGE_CALLABLE_TYPE_NAME = "ceylon.language::Callable";
+    private static final String CEYLON_LANGUAGE_TUPLE_TYPE_NAME = "ceylon.language::Tuple";
+    private static final String CEYLON_LANGUAGE_SEQUENTIAL_TYPE_NAME = "ceylon.language::Sequential";
+    private static final String CEYLON_LANGUAGE_EMPTY_TYPE_NAME = "ceylon.language::Empty";
+
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
@@ -253,7 +259,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleJDKObjectType("java.lang.CharArray");
     private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
     private static final TypeMirror JAVA_OBJECT_ARRAY_TYPE = simpleJDKObjectType("java.lang.ObjectArray");
-
+    
     private static TypeMirror simpleJDKObjectType(String name) {
         return new SimpleReflType(name, SimpleReflType.Module.JDK, TypeKind.DECLARED);
     }
@@ -2246,6 +2252,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setName(paramName);
             
             TypeMirror typeMirror = paramMirror.getType();
+            Module module = Decl.getModuleContainer((Scope) decl);
 
             ProducedType type;
             if(isVariadic){
@@ -2262,7 +2269,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // turn it into a Sequential<T>
                 type = typeFactory.getSequentialType(type);
             }else{
-                type = obtainType(typeMirror, paramMirror, (Scope) decl, Decl.getModuleContainer((Scope) decl), VarianceLocation.CONTRAVARIANT,
+                type = obtainType(typeMirror, paramMirror, (Scope) decl, module, VarianceLocation.CONTRAVARIANT,
                         "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
                 // variadic params may technically be null in Java, but it Ceylon sequenced params may not
                 // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
@@ -2283,13 +2290,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (value == null) {
                 // So either decl is not a Class, 
                 // or the method or value member of decl is not shared
-                if (paramMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION) != null) {
+                AnnotationMirror functionalParameterAnnotation = paramMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION);
+                if (functionalParameterAnnotation != null) {
                     // A functional parameter to a method
                     Method method = new Method();
-                    method.setType(typeFactory.getCallableReturnType(type));
+                    method.setType(getSimpleCallableReturnType(type));
                     // We need to set enough of a parameter list so that the method's full type is correct 
                     ParameterList pl = new ParameterList();
-                    for (ProducedType pt : typeFactory.getCallableArgumentTypes(type)) {
+                    for (ProducedType pt : getSimpleCallableArgumentTypes(type)) {
                         Parameter p = new Parameter();
                         Value v = new Value();
                         v.setType(pt);
@@ -2333,6 +2341,46 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private List<ProducedType> getSimpleCallableArgumentTypes(ProducedType type) {
+        if(type != null
+                && type.getDeclaration() instanceof ClassOrInterface
+                && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
+                && type.getTypeArgumentList().size() >= 2)
+            return flattenCallableTupleType(type.getTypeArgumentList().get(1));
+        return Collections.emptyList();
+    }
+
+    private List<ProducedType> flattenCallableTupleType(ProducedType tupleType) {
+        if(tupleType != null
+                && tupleType.getDeclaration() instanceof ClassOrInterface){
+            String declName = tupleType.getDeclaration().getQualifiedNameString();
+            if(declName.equals(CEYLON_LANGUAGE_TUPLE_TYPE_NAME)){
+                List<ProducedType> tal = tupleType.getTypeArgumentList();
+                if(tal.size() >= 3){
+                    List<ProducedType> ret = flattenCallableTupleType(tal.get(2));
+                    ret.add(0, tal.get(1));
+                    return ret;
+                }
+            }else if(declName.equals(CEYLON_LANGUAGE_EMPTY_TYPE_NAME)){
+                return new LinkedList<ProducedType>();
+            }else if(declName.equals(CEYLON_LANGUAGE_SEQUENTIAL_TYPE_NAME)){
+                LinkedList<ProducedType> ret = new LinkedList<ProducedType>();
+                ret.add(tupleType);
+                return ret;
+            }
+        }
+        return Collections.emptyList();
+    }
+    
+    private ProducedType getSimpleCallableReturnType(ProducedType type) {
+        if(type != null
+                && type.getDeclaration() instanceof ClassOrInterface
+                && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
+                && !type.getTypeArgumentList().isEmpty())
+            return type.getTypeArgumentList().get(0);
+        return new UnknownType(typeFactory).getType();
+    }
+    
     private ProducedType getOptionalType(ProducedType type) {
         // we do not use Unit.getOptionalType because it causes lots of lazy loading that ultimately triggers the typechecker's
         // infinite recursion loop
