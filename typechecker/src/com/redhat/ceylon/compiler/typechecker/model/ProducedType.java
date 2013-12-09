@@ -621,6 +621,7 @@ public class ProducedType extends ProducedReference {
             superType = null;
         }else if(check == SupertypeCheck.YES 
                 && dec instanceof ClassOrInterface
+                && dec.isToplevel()
                 && dec.getTypeParameters().isEmpty()){
             superType = dec.getType();
         }else{
