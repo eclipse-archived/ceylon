@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
@@ -36,6 +37,7 @@ import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.PackageMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class ReflectionClass implements ClassMirror {
 
@@ -50,6 +52,7 @@ public class ReflectionClass implements ClassMirror {
     private boolean enclosingClassSet;
     private ClassMirror enclosingClass;
     private LinkedList<ClassMirror> innerClasses;
+    private String cacheKey;
 
     public ReflectionClass(Class<?> klass) {
         this.klass = klass;
@@ -250,5 +253,14 @@ public class ReflectionClass implements ClassMirror {
     @Override
     public boolean isEnum() {
         return klass.isEnum();
+    }
+
+    @Override
+    public String getCacheKey(Module module) {
+        if(cacheKey == null){
+            String className = getQualifiedName();
+            cacheKey = AbstractModelLoader.getCacheKeyByModule(module, className);
+        }
+        return cacheKey;
     }
 }
