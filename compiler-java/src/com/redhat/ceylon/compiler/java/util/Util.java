@@ -89,7 +89,8 @@ public class Util {
         while(nextDot != -1){
             if(Naming.isJavaKeyword(qualifiedName, start, nextDot))
                 return true;
-            nextDot = qualifiedName.indexOf('.', nextDot+1);
+            start = nextDot+1;
+            nextDot = qualifiedName.indexOf('.', start);
         }
         return Naming.isJavaKeyword(qualifiedName, start, qualifiedName.length());
     }
