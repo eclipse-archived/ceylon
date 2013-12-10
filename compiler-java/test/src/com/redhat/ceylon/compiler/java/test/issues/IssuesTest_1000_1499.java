@@ -339,7 +339,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
     
     @Test
-    public void testBug1203_fail() {
+    public void testBug1203() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1203", "bug12xx/Bug1203.ceylon");
     }
     
