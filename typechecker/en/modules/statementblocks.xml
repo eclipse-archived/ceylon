@@ -1923,7 +1923,7 @@ else {
             <synopsis>DefaultCaseItem: "else" Block</synopsis>
             
             <para>Every <literal>switch</literal> conditional construct has a
-            <literal>switch</literal> clause. The construct may optionally include:</para>
+            <literal>switch</literal> clause. The construct must include:</para>
             
             <itemizedlist>
                 <listitem>
