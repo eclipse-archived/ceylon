@@ -49,7 +49,7 @@ public class SupertypeVisitor extends Visitor {
                         stn.addError("inheritance is circular: definition of " + 
                                 d.getName() + " is recursive, involving " + typeList(l));
                         d.getSatisfiedTypes().remove(t);
-                        d.getBrokenSupertypes().add(t);
+                        d.addBrokenSupertype(t);
                         errors = true;
                     }
                 }
@@ -66,7 +66,7 @@ public class SupertypeVisitor extends Visitor {
             			etn.addError("inheritance is circular: definition of " + 
             					d.getName() + " is recursive, involving " + typeList(l));
             			d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
-            			d.getBrokenSupertypes().add(t);
+            			d.addBrokenSupertype(t);
             			errors = true;
             		}
             	}

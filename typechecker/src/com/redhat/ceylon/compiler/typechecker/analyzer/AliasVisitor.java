@@ -30,7 +30,7 @@ public class AliasVisitor extends Visitor {
                 //to avoid stack overflows, throw 
                 //away the recursive definition:
                 d.setExtendedType(new UnknownType(that.getUnit()).getType());
-                d.getBrokenSupertypes().add(t);
+                d.addBrokenSupertype(t);
             }
         }
     }

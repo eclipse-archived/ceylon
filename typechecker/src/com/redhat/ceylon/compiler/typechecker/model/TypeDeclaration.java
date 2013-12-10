@@ -23,7 +23,8 @@ public abstract class TypeDeclaration extends Declaration
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;
-    private List<ProducedType> brokenSupertypes = new ArrayList<ProducedType>(1);
+    // delayed allocation
+    private List<ProducedType> brokenSupertypes = null;
     private boolean inconsistentType;
     
     public boolean isInconsistentType() {
@@ -124,7 +125,13 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     public List<ProducedType> getBrokenSupertypes() {
-        return brokenSupertypes;
+        return brokenSupertypes == null ? Collections.<ProducedType>emptyList() : brokenSupertypes;
+    }
+    
+    public void addBrokenSupertype(ProducedType type){
+        if(brokenSupertypes == null)
+            brokenSupertypes = new ArrayList<ProducedType>(1);
+        brokenSupertypes.add(type);
     }
     
     @Override
