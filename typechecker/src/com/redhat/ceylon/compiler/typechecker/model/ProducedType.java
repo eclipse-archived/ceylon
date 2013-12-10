@@ -37,30 +37,11 @@ public class ProducedType extends ProducedReference {
 //    private Map<TypeDeclaration, ProducedType> superTypesCache = 
 //            new HashMap<TypeDeclaration, ProducedType>(5);
 
+    // cache
     private int hashCode;
-
-    public int getHashCode(){
-        if(hashCode == 0){
-            int ret = 17;
-            ProducedType qualifyingType = getQualifyingType();
-            ret = (37 * ret) + (qualifyingType != null ? qualifyingType.hashCode() : 0);
-            TypeDeclaration declaration = getDeclaration();
-            ret = (37 * ret) + declaration.hashCodeForCache();
-            
-            Map<TypeParameter, ProducedType> typeArguments = getTypeArguments();
-
-            if(!typeArguments.isEmpty()){
-                List<TypeParameter> typeParameters = declaration.getTypeParameters();
-                for(int i=0,l=typeParameters.size();i<l;i++){
-                    TypeParameter typeParameter = typeParameters.get(i);
-                    ProducedType typeArgument = typeArguments.get(typeParameter);
-                    ret = (37 * ret) + (typeArgument != null ? typeArgument.hashCode() : 0);
-                }
-            }
-            hashCode = ret;
-        }
-        return hashCode;
-    }
+    
+    // cache
+    private List<ProducedType> argList;
 
     ProducedType() {}
 
@@ -1044,7 +1025,6 @@ public class ProducedType extends ProducedReference {
         return candidateResult;
     }
     
-    List<ProducedType> argList;
     
     /**
      * Get the type arguments as a tuple. 
@@ -2017,9 +1997,32 @@ public class ProducedType extends ProducedReference {
         return getDeclaration() instanceof NothingType;
     }
 
+    public int getMemoisedHashCode(){
+        if(hashCode == 0){
+            int ret = 17;
+            ProducedType qualifyingType = getQualifyingType();
+            ret = (37 * ret) + (qualifyingType != null ? qualifyingType.hashCode() : 0);
+            TypeDeclaration declaration = getDeclaration();
+            ret = (37 * ret) + declaration.hashCodeForCache();
+            
+            Map<TypeParameter, ProducedType> typeArguments = getTypeArguments();
+
+            if(!typeArguments.isEmpty()){
+                List<TypeParameter> typeParameters = declaration.getTypeParameters();
+                for(int i=0,l=typeParameters.size();i<l;i++){
+                    TypeParameter typeParameter = typeParameters.get(i);
+                    ProducedType typeArgument = typeArguments.get(typeParameter);
+                    ret = (37 * ret) + (typeArgument != null ? typeArgument.hashCode() : 0);
+                }
+            }
+            hashCode = ret;
+        }
+        return hashCode;
+    }
+
     @Override
     public int hashCode() {
-        return getHashCode();
+        return getMemoisedHashCode();
     }
 
     @Override
