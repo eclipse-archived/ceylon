@@ -1443,6 +1443,9 @@ else {
         of view of a testing framework, but it's not "normal" in the sense intended above.
         </para></comment>
         
+        <!--comment><para>Note: the detailed semantics of control structures and assertions are 
+        defined in <xref linkend="executionofcontrolstructures"/>.</para></comment-->
+        
         <section id="controlstructurevariables">
             <title>Control structure variables</title>
        
@@ -1866,9 +1869,19 @@ if (is Usable tx) { ... }</programlisting>
             
             <synopsis>Else: "else" (Block | IfElse)</synopsis>
             
-            <para>The construct may include a chain of an arbitrary number of child 
-            <literal>else if</literal> clauses.</para>
-                        
+            <para>Every <literal>if/else</literal> conditional construct has an 
+            <literal>if</literal> clause. The construct may optionally include:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a chain of an arbitrary number of child 
+                    <literal>else if</literal> clauses, and/or</para>
+                </listitem>
+                <listitem>
+                    <para>an <literal>else</literal> clause.</para>
+                </listitem>
+            </itemizedlist>
+            
             <programlisting>if (payment.amount &lt;= account.balance) {
     account.balance -= payment.amount;
     payment.paid = true;
@@ -1890,7 +1903,7 @@ else {
         !p.paid) {
     p.card.charge(total);
 }</programlisting>
-            
+        
         </section>
         
         <section id="switchcaseelse">
@@ -1904,11 +1917,24 @@ else {
             <synopsis>Switch: "switch" "(" Expression ")"</synopsis>
             
             <synopsis>Cases: CaseItem+ DefaultCaseItem?</synopsis>
-
+            
             <synopsis>CaseItem: "case" "(" Case ")" Block</synopsis>
             
             <synopsis>DefaultCaseItem: "else" Block</synopsis>
-
+            
+            <para>Every <literal>switch</literal> conditional construct has a
+            <literal>switch</literal> clause. The construct may optionally include:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a chain of an arbitrary number of child 
+                    <literal>case</literal> clauses, and/or</para>
+                </listitem>
+                <listitem>
+                    <para>an <literal>else</literal> clause.</para>
+                </listitem>
+            </itemizedlist>
+            
             <para>Each <literal>case</literal> is either:</para> 
             
             <itemizedlist>
@@ -2045,19 +2071,24 @@ case (is Float) {
             <title><literal>for/else</literal></title>
             
             <para>The <literal>for/else</literal> loop has the following form:</para>
-             
+            
             <synopsis>ForFail: For Fail?</synopsis>
-
+            
             <synopsis>For: "for" ForIterator Block</synopsis>
             
             <synopsis>Fail: "else" Block</synopsis>
-
+            
+            <para>Every <literal>for/else</literal> conditional construct has an 
+            <literal>for</literal> clause. The construct may optionally include
+            an <literal>else</literal> clause, as specified in 
+            <xref linkend="executionofloops"/>.</para>
+            
             <para>The <literal>for</literal> iterator consists of an iteration variable 
             declaration and an iterated expression that contains the range of values to 
             be iterated.</para>
             
             <synopsis>ForIterator: "(" IteratorVariable "in" Expression ")"</synopsis>
-
+            
             <para>The type of the iterated expression depends upon the iteration variable 
             declarations:</para>
             
@@ -2136,13 +2167,27 @@ while (n&lt;=max) {
             form:</para>
             
             <synopsis>TryCatchFinally: Try Catch* Finally?</synopsis>
-
+            
             <synopsis>Try: "try" ("(" Resource ("," Resource) ")")? Block</synopsis>
             
             <synopsis>Catch: "catch" "(" Variable ")" Block</synopsis>
             
             <synopsis>Finally: "finally" Block</synopsis>
-
+            
+            <para>Every <literal>try</literal> conditional construct has a
+            <literal>try</literal> clause. The construct may optionally include:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a chain of an arbitrary number of child 
+                    <literal>catch</literal> clauses, and/or</para>
+                </listitem>
+                <listitem>
+                    <para>a <literal>finally</literal> clause, as 
+                    specified in <xref linkend="exceptionhandling"/>.</para>
+                </listitem>
+            </itemizedlist>
+            
             <para>Each <literal>catch</literal> block defines a variable. The type 
             of the variable must be assignable to <literal>Exception</literal> in
             <literal>ceylon.language</literal>. If no type is explicitly specified, 
@@ -2190,7 +2235,7 @@ while (n&lt;=max) {
             
             <para>If no type is explicitly specified for a resource variable, the type of 
             the variable is inferred to be the type of the instantiation expression.</para>
-                        
+            
             <programlisting>try (file = File(path)) {
     file.open(readOnly);
     ...
