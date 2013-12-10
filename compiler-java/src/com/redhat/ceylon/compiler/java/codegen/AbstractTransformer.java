@@ -94,6 +94,7 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
 import com.sun.tools.javac.util.Log;
+import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 import com.sun.tools.javac.util.Position;
 import com.sun.tools.javac.util.Position.LineMap;
@@ -266,6 +267,15 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The ident
      */
     JCExpression makeUnquotedIdent(String ident) {
+        return naming.makeUnquotedIdent(ident);
+    }
+
+    /** 
+     * Makes an <strong>unquoted</strong> simple identifier
+     * @param ident The identifier
+     * @return The ident
+     */
+    JCExpression makeUnquotedIdent(Name ident) {
         return naming.makeUnquotedIdent(ident);
     }
 
@@ -3581,8 +3591,8 @@ public abstract class AbstractTransformer implements Transformation {
     public JCExpression convertToIntForHashAttribute(JCExpression value) {
         SyntheticName tempName = naming.temp("hash");
         JCExpression type = make().Type(syms().longType);
-        JCBinary combine = make().Binary(JCTree.BITXOR, makeUnquotedIdent(tempName.getName()), 
-                make().Binary(JCTree.USR, makeUnquotedIdent(tempName.getName()), makeInteger(32)));
+        JCBinary combine = make().Binary(JCTree.BITXOR, makeUnquotedIdent(tempName.asName()), 
+                make().Binary(JCTree.USR, makeUnquotedIdent(tempName.asName()), makeInteger(32)));
         return make().TypeCast(syms().intType, makeLetExpr(tempName, null, type, value, combine));
     }
 }

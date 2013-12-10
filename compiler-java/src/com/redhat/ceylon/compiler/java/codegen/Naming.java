@@ -915,7 +915,11 @@ public class Naming implements LocalId {
     JCIdent makeUnquotedIdent(String ident) {
         return make().Ident(makeUnquotedName(ident));
     }
-    
+
+    JCIdent makeUnquotedIdent(Name ident) {
+        return make().Ident(ident);
+    }
+
     JCIdent makeUnquotedIdent(Unfix ident) {
         return make().Ident(makeUnquotedName(name(ident)));
     }
@@ -1032,10 +1036,30 @@ public class Naming implements LocalId {
      * @param s2 The field to access
      * @return The field access
      */
+    JCFieldAccess makeSelect(JCExpression s1, Name s2) {
+        return make().Select(s1, s2);
+    }
+
+    /**
+     * Makes a <strong>unquoted</strong> field access
+     * @param s1 The base expression
+     * @param s2 The field to access
+     * @return The field access
+     */
     JCFieldAccess makeSelect(String s1, String s2) {
         return makeSelect(makeUnquotedIdent(s1), s2);
     }
-    
+
+    /**
+     * Makes a <strong>unquoted</strong> field access
+     * @param s1 The base expression
+     * @param s2 The field to access
+     * @return The field access
+     */
+    JCFieldAccess makeSelect(String s1, Name s2) {
+        return makeSelect(makeUnquotedIdent(s1), s2);
+    }
+
     JCExpression makeDefaultedParamMethod(JCExpression qualifier, Parameter param) {
         // TODO Can we merge this into makeName(..., NA_DPM) ?
         Assert.that(Strategy.hasDefaultParameterValueMethod(param));
@@ -1611,7 +1635,7 @@ public class Naming implements LocalId {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((name.toString() == null) ? 0 : name.toString().hashCode());
+            result = prime * result + ((name == null) ? 0 : name.hashCode());
             return result;
         }
 
@@ -1624,10 +1648,10 @@ public class Naming implements LocalId {
             if (getClass() != obj.getClass())
                 return false;
             SyntheticName other = (SyntheticName) obj;
-            if (name.toString() == null) {
-                if (other.name.toString() != null)
+            if (name == null) {
+                if (other.name != null)
                     return false;
-            } else if (!name.toString().equals(other.name.toString()))
+            } else if (!name.equals(other.name))
                 return false;
             return true;
         }
@@ -1658,7 +1682,7 @@ public class Naming implements LocalId {
         }
         
         public JCExpression makeIdentWithThis() {
-            return makeSelect("this", getName());
+            return makeSelect("this", asName());
         }
         
         /**
@@ -1701,7 +1725,8 @@ public class Naming implements LocalId {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((getName().toString() == null) ? 0 : getName().toString().hashCode());
+            String name = getName();
+            result = prime * result + ((name == null) ? 0 : name.hashCode());
             return result;
         }
 
@@ -1714,10 +1739,12 @@ public class Naming implements LocalId {
             if (getClass() != obj.getClass())
                 return false;
             SyntheticName other = (SyntheticName) obj;
-            if (getName().toString() == null) {
-                if (other.getName().toString() != null)
+            String aName = getName();
+            String bName = other.getName();
+            if (aName == null) {
+                if (bName != null)
                     return false;
-            } else if (!getName().toString().equals(other.getName().toString()))
+            } else if (!aName.equals(bName))
                 return false;
             return true;
         }
@@ -1748,7 +1775,7 @@ public class Naming implements LocalId {
         }
         
         public JCExpression makeIdentWithThis() {
-            return makeSelect("this", getName());
+            return makeSelect("this", asName());
         }
         
         public SyntheticName capture() {
