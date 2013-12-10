@@ -56,4 +56,9 @@ public class NothingType extends TypeDeclaration {
     protected boolean equalsForCache(Object o) {
         return equals(o);
     }
+    
+    @Override
+    protected boolean needsSatisfiedTypes() {
+        return false;
+    }
 }

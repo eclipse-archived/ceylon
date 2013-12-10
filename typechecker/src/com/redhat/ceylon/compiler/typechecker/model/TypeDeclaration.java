@@ -19,7 +19,8 @@ public abstract class TypeDeclaration extends Declaration
         implements ImportableScope, Generic, Cloneable {
 
     private ProducedType extendedType;
-    private List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(3);
+    private List<ProducedType> satisfiedTypes = needsSatisfiedTypes() 
+            ? new ArrayList<ProducedType>(3) : Collections.<ProducedType>emptyList();
     private List<ProducedType> caseTypes = null;
     private List<TypeParameter> typeParameters = emptyList();
     private ProducedType selfType;
@@ -31,6 +32,11 @@ public abstract class TypeDeclaration extends Declaration
         return inconsistentType;
     }
     
+    protected boolean needsSatisfiedTypes() {
+        // NothingType doesn't need any so we save allocation
+        return true;
+    }
+
     public void setInconsistentType(boolean inconsistentType) {
         this.inconsistentType = inconsistentType;
     }
