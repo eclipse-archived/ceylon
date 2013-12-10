@@ -1067,8 +1067,8 @@ public class Unit {
     }
 
     public ProducedTypeCache getCache() {
-        Module languageModule = getLanguageModule();
-        return languageModule != null ? languageModule.getCache() : null;
+        Module module = getPackage().getModule();
+        return module != null ? module.getCache() : null;
     }
     
 }

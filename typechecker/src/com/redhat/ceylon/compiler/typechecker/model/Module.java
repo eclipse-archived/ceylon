@@ -31,7 +31,7 @@ public class Module
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private Unit unit;
     private String memoisedName;
-    private ProducedTypeCache cache;
+    private ProducedTypeCache cache = new ProducedTypeCache();
     private String signature;
 
     /**
@@ -254,10 +254,6 @@ public class Module
         return this.getVersion().compareTo(other.getVersion());
     }
 
-    public void setCache(ProducedTypeCache cache) {
-        this.cache = cache;
-    }
-    
     public ProducedTypeCache getCache(){
         return cache;
     }

@@ -14,7 +14,6 @@ public class Context {
     private Modules modules;
     private VFS vfs;
     private RepositoryManager repositoryManager;
-    private ProducedTypeCache cache = new ProducedTypeCache();
 
     public Context(RepositoryManager repositoryManager, VFS vfs) {
         this.vfs = vfs;
@@ -35,9 +34,5 @@ public class Context {
 
     public VFS getVfs() {
         return vfs;
-    }
-
-    public ProducedTypeCache getCache() {
-        return cache;
     }
 }

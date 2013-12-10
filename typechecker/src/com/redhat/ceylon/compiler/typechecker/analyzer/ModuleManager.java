@@ -85,13 +85,11 @@ public class ModuleManager {
             final List<String> languageName = Arrays.asList("ceylon", "language");
             Module languageModule = createModule(languageName, TypeChecker.LANGUAGE_MODULE_VERSION);
             languageModule.setLanguageModule(languageModule);
-            languageModule.setCache(context.getCache());
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
             defaultModule.getImports().add(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
-            defaultModule.setCache(context.getCache());
         }
         else {
             modules = context.getModules();
@@ -140,7 +138,6 @@ public class ModuleManager {
         if (module == null) {
             module = createModule(moduleName, version);
             module.setLanguageModule(modules.getLanguageModule());
-            module.setCache(context.getCache());
             moduleList.add(module);
         }
         return module;
