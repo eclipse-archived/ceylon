@@ -36,7 +36,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -465,9 +467,13 @@ public class CeylonDocToolTest {
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.makeDoc();
+        Map<String,String> nameToVersion = new HashMap<String,String>();
+        for(Module module : tool.getDocumentedModules()){
+            nameToVersion.put(module.getNameAsString(), module.getVersion());
+        }
         
         for(String moduleName : fullModuleNames){
-            Module module = makeModule(moduleName, Versions.CEYLON_VERSION_NUMBER);
+            Module module = makeModule(moduleName, nameToVersion.get(moduleName));
             File destDir = getOutputDir(tool, module);
 
             assertFileExists(destDir, "index.html");

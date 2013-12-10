@@ -1217,5 +1217,8 @@ public class CeylonDocTool extends RepoUsingTool {
     protected void warningSetterDoc(String name) {
         log.warning(CeylondMessages.msg("warn.setterDoc", name));
     }
-    
+ 
+    public List<Module> getDocumentedModules(){
+        return modules;
+    }
 }
