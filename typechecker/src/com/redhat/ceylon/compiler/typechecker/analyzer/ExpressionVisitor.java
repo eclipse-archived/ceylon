@@ -339,16 +339,9 @@ public class ExpressionVisitor extends Visitor {
             if (knownType==null) {
                 knownType = unit.getType(unit.getAnythingDeclaration()); //or should we use unknown?
             }
-            ProducedType it;
-            if (that.getNot()) {
-                //a !is condition, narrow to complement
-                it = knownType.minus(type);
-            }
-            else {
-                //narrow to the intersection of the outer type 
-                //and the type specified in the condition
-                it = intersectionType(type, knownType, that.getUnit());
-            }
+            
+            ProducedType it = narrow(that, type, knownType);
+            //check for disjointness
             if (it.getDeclaration() instanceof NothingType) {
                 if (that.getNot()) {
                     /*that.addError("tests assignability to Nothing type: " +
@@ -361,9 +354,29 @@ public class ExpressionVisitor extends Visitor {
                             type.getProducedTypeName(unit) + " is empty");
                 }
             }
+            //do this *after* checking for disjointness!
+            knownType=unit.denotableType(knownType);
+            //now recompute the narrowed type!
+            it = narrow(that, type, knownType);
+            
             v.getType().setTypeModel(it);
             v.getDeclarationModel().setType(it);
         }
+    }
+    
+	private ProducedType narrow(Tree.IsCondition that, ProducedType type,
+            ProducedType knownType) {
+	    ProducedType it;
+	    if (that.getNot()) {
+	        //a !is condition, narrow to complement
+	        it = knownType.minus(type);
+	    }
+	    else {
+	        //narrow to the intersection of the outer type 
+	        //and the type specified in the condition
+	        it = intersectionType(type, knownType, that.getUnit());
+	    }
+	    return it;
     }
     
     @Override public void visit(Tree.SatisfiesCondition that) {
@@ -3224,7 +3237,8 @@ public class ExpressionVisitor extends Visitor {
                     "operand expression must not be an optional type");
             checkAssignable(rhst, ot, that.getRightTerm(), 
                     "operand expression must not be an optional type");
-            that.setTypeModel( unit.getEntryType(lhst, rhst) );
+            that.setTypeModel( unit.getEntryType(unit.denotableType(lhst), 
+            		unit.denotableType(rhst)) );
         }
     }
     

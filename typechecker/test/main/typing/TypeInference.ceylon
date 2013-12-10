@@ -150,3 +150,14 @@ interface TypeInference {
     }
 
 }
+
+void testObjectNarrowing<T>() {
+    object foo {}
+    if (is T foo) {
+        @type:"Basic&T" value f = foo;
+    }
+    @type:"Entry<Basic,Basic>" value entry = foo->foo;
+    @type:"Iterable<Basic,Nothing>" value iterable = {foo};
+    @type:"Tuple<Basic,Basic,Empty>" value tuple = [foo];
+    @error if (is Category foo) {}
+}
