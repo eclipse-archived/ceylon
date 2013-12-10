@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -23,7 +24,7 @@ public abstract class Node {
     private Token endToken;
     private Scope scope;
     private Unit unit;
-    private List<Message> errors = new ArrayList<Message>(2);
+    private List<Message> errors = null;
     private List<Node> children = new ArrayList<Node>(4);
     
     protected Node(Token token) {
@@ -194,35 +195,41 @@ public abstract class Node {
      * The compilation errors belonging to this node.
      */
     public List<Message> getErrors() {
-        return errors;
+        return errors != null ? errors : Collections.<Message>emptyList();
+    }
+    
+    private void addError(Message error){
+        if(errors == null)
+            errors = new ArrayList<Message>(2);
+        errors.add(error);
     }
     
     public void addError(String message) {
-        errors.add( new AnalysisError(this, message) );
+        addError( new AnalysisError(this, message) );
     }
     
     public void addError(String message, int code) {
-        errors.add( new AnalysisError(this, message, code) );
+        addError( new AnalysisError(this, message, code) );
     }
     
     public void addUnexpectedError(String message) {
-        errors.add( new UnexpectedError(this, message) );
+        addError( new UnexpectedError(this, message) );
     }
     
     public void addUnsupportedError(String message) {
-        errors.add( new UnsupportedError(this, message) );
+        addError( new UnsupportedError(this, message) );
     }
 
     public void addUsageWarning(String message) {
-        errors.add( new UsageWarning(this, message) );
+        addError( new UsageWarning(this, message) );
     }
     
     public void addParseError(ParseError error) {
-        errors.add(error);
+        addError(error);
     }
     
     public void addLexError(LexError error) {
-        errors.add(error);
+        addError(error);
     }
     
     public abstract void visit(Visitor visitor);
