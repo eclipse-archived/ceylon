@@ -307,7 +307,7 @@ final class erasureCasting_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$1 = .ceylon.language.Null.$TypeDescriptor$;
                 .ceylon.language.Iterable arg$18$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
             }
             returning .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(arg$18$reified$0, arg$18$reified$1, arg$18$0);
