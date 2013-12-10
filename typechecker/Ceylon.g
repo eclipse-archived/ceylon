@@ -63,7 +63,10 @@ compilationUnit returns [CompilationUnit compilationUnit]
         { if ($declaration.declaration!=null)
               $compilationUnit.addDeclaration($declaration.declaration); 
           if ($declaration.declaration!=null)
-              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); } 
+              $declaration.declaration.getCompilerAnnotations().addAll($ca2.annotations); }
+      | RBRACE
+        { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(EOF, input)); }
       )*
       EOF
     ;
