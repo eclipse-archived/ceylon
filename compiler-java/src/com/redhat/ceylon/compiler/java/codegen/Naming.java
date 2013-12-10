@@ -1442,7 +1442,7 @@ public class Naming implements LocalId {
      * in situations where a Name and JCIdents are required.
      */
     SyntheticName temp() {
-        return new SyntheticName(tempName());
+        return new SyntheticName(newTemp());
     }
     
     /** 
@@ -1454,7 +1454,7 @@ public class Naming implements LocalId {
      * in situations where a Name and JCIdents are required.
      */
     SyntheticName temp(String prefix) { 
-        return new SyntheticName(tempName(prefix));
+        return new SyntheticName(newTemp(prefix));
     }
     
     /** 
@@ -1466,7 +1466,7 @@ public class Naming implements LocalId {
      * in situations where a Name and JCIdents are required.
      */
     SyntheticName alias(String name) {
-        return new SyntheticName(aliasName(name));
+        return new SyntheticName(newAlias(name));
     }
     
     /**
@@ -1474,7 +1474,7 @@ public class Naming implements LocalId {
      * @see #temp() 
      */
     JCIdent makeTemp() {
-        return new SyntheticName(tempName()).makeIdent();
+        return new SyntheticName(newTemp()).makeIdent();
     }
     
     /**
@@ -1483,7 +1483,7 @@ public class Naming implements LocalId {
      * @see #temp(String)
      */
     JCIdent makeTemp(String prefix) { 
-        return new SyntheticName(tempName(prefix)).makeIdent();
+        return new SyntheticName(newTemp(prefix)).makeIdent();
     }
     
     /** 
@@ -1492,7 +1492,7 @@ public class Naming implements LocalId {
      * @see #alias(String)
      */
     JCIdent makeAlias(String name) {
-        return new SyntheticName(aliasName(name)).makeIdent();
+        return new SyntheticName(newAlias(name)).makeIdent();
     }
     
     interface CName {
@@ -1522,9 +1522,9 @@ public class Naming implements LocalId {
      */
     class SyntheticName implements CName {
         
-        private final Name name;
+        private final String name;
         
-        private SyntheticName(Name name) {
+        private SyntheticName(String name) {
             this.name = name;
         }
         
@@ -1532,14 +1532,14 @@ public class Naming implements LocalId {
          * Returns the name
          */
         public String toString() {
-            return name.toString();
+            return name;
         }
         
         @Override
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((name.toString() == null) ? 0 : name.toString().hashCode());
+            result = prime * result + ((name == null) ? 0 : name.hashCode());
             return result;
         }
 
@@ -1552,10 +1552,10 @@ public class Naming implements LocalId {
             if (getClass() != obj.getClass())
                 return false;
             SyntheticName other = (SyntheticName) obj;
-            if (name.toString() == null) {
-                if (other.name.toString() != null)
+            if (name == null) {
+                if (other.name != null)
                     return false;
-            } else if (!name.toString().equals(other.name.toString()))
+            } else if (!name.equals(other.name))
                 return false;
             return true;
         }
@@ -1575,7 +1575,7 @@ public class Naming implements LocalId {
          * This name as a Name
          */
         public Name asName() {
-            return name;
+            return names.fromString(name);
         }
         
         /**
@@ -1594,15 +1594,15 @@ public class Naming implements LocalId {
          * this SyntheticName's name.
          */
         SyntheticName suffixedBy(Suffix suffix) {
-            return new SyntheticName(names.fromString(suffixName(suffix, getName())));
+            return new SyntheticName(suffixName(suffix, getName()));
         }
         
         SyntheticName suffixedBy(Suffix suffix, int i) {
-            return new SyntheticName(names.fromString(getName() + suffix + Integer.toString(i)));
+            return new SyntheticName(getName() + suffix + Integer.toString(i));
         }
         
         SyntheticName suffixedBy(int i) {
-            return new SyntheticName(names.fromString(getName() + "$" + Integer.toString(i)));
+            return new SyntheticName(getName() + "$" + Integer.toString(i));
         }
         
         SyntheticName alias() {
@@ -1680,7 +1680,7 @@ public class Naming implements LocalId {
         }
         
         public SyntheticName capture() {
-            return new SyntheticName(asName());
+            return new SyntheticName(getName());
         }
     }
     public SubstitutedName substituted(TypedDeclaration decl) {
@@ -1918,23 +1918,23 @@ public class Naming implements LocalId {
     
     @Deprecated
     SyntheticName synthetic(String name) {
-        return new SyntheticName(names.fromString(name));
+        return new SyntheticName(name);
     }
     
     SyntheticName synthetic(Prefix prefix, String... name) {
-        return new SyntheticName(names.fromString(prefixName(prefix, name)));
+        return new SyntheticName(prefixName(prefix, name));
     }
     
     SyntheticName synthetic(Unfix name) {
-        return new SyntheticName(names.fromString(name(name)));
+        return new SyntheticName(name(name));
     }
     
     SyntheticName synthetic(Prefix name, int i) {
-        return new SyntheticName(names.fromString(prefixName(name, Integer.toString(i))));
+        return new SyntheticName(prefixName(name, Integer.toString(i)));
     }
     
     SyntheticName synthetic(Value value) {
-        return new SyntheticName(names.fromString(value.getName()));
+        return new SyntheticName(value.getName());
     }
     
     void clearSubstitutions(Declaration decl) {
