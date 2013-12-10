@@ -49,26 +49,27 @@ public class TypeParser {
     private Scope scope;
     private Module moduleScope;
 
-    public TypeParser(ModelLoader loader, Unit unit){
+    public TypeParser(ModelLoader loader){
         this.loader = loader;
-        this.unit = unit;
     }
     
     /*
      * type: unionType EOT
      */
-    public ProducedType decodeType(String type, Scope scope, Module moduleScope){
+    public ProducedType decodeType(String type, Scope scope, Module moduleScope, Unit unit){
         // save the previous state (this method is reentrant)
         char[] oldType = lexer.type;
         int oldIndex = lexer.index;
         int oldMark = lexer.mark;
         Scope oldScope = this.scope;
         Module oldModuleScope = this.moduleScope;
+        Unit oldUnit = this.unit;
         try{
             // setup the new state
             lexer.setup(type);
             this.scope = scope;
             this.moduleScope = moduleScope;
+            this.unit = unit;
             // do the parsing
             ProducedType ret = parseType();
             if(!lexer.lookingAt(TypeLexer.EOT))
@@ -81,6 +82,7 @@ public class TypeParser {
             lexer.mark = oldMark;
             this.scope = oldScope;
             this.moduleScope = oldModuleScope;
+            this.unit = oldUnit;
         }
     }
 

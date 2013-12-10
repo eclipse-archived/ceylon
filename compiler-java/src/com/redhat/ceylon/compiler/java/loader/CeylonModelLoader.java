@@ -107,7 +107,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         log = CeylonLog.instance(context);
         types = Types.instance(context);
         typeFactory = TypeFactory.instance(context);
-        typeParser = new TypeParser(this, typeFactory);
+        typeParser = new TypeParser(this);
         options = Options.instance(context);
         timer = Timer.instance(context);
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;

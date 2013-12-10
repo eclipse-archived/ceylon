@@ -48,7 +48,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
         this.moduleManager = moduleManager;
         this.modules = modules;
         this.typeFactory = new Unit();
-        this.typeParser = new TypeParser(this, typeFactory);
+        this.typeParser = new TypeParser(this);
         this.timer = new Timer(false);
         this.log = log;
     }

@@ -950,7 +950,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             if ("ceylon.language.Nothing".equals(typeName)) {
-                return new NothingType(typeFactory);
+                return typeFactory.getNothingDeclaration();
             } else if ("java.lang.Throwable".equals(typeName)) {
                 // FIXME: this being here is highly dubious
                 return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
@@ -974,6 +974,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
+    }
+
+    private ProducedType newNothingType() {
+        return typeFactory.getNothingDeclaration().getType();
+    }
+
+    private ProducedType newUnknownType() {
+        return new UnknownType(typeFactory).getType();
     }
 
     protected TypeParameter safeLookupTypeParameter(Scope scope, String name) {
@@ -1601,7 +1609,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 Method abstractionMethod = addMethod(klass, methodMirrors.get(0), false, false);
                 abstractionMethod.setAbstraction(true);
                 abstractionMethod.setOverloads(overloads);
-                abstractionMethod.setType(new UnknownType(typeFactory).getType());
+                abstractionMethod.setType(newUnknownType());
             }
         }
 
@@ -2262,7 +2270,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = obtainType(Decl.getModuleContainer((Scope)decl), variadicType, (Scope)decl, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
                 if(!isCeylon && !variadicType.isPrimitive()){
                     // Java parameters are all optional unless primitives
-                    ProducedType optionalType = getOptionalType(type);
+                    ProducedType optionalType = getOptionalType(type, module);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
                     type = optionalType;
                 }
@@ -2276,7 +2284,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // in the java side so let's not allow this
                 if(!isCeylon && !typeMirror.isPrimitive()){
                     // Java parameters are all optional unless primitives
-                    ProducedType optionalType = getOptionalType(type);
+                    ProducedType optionalType = getOptionalType(type, module);
                     optionalType.setUnderlyingType(type.getUnderlyingType());
                     type = optionalType;
                 }
@@ -2379,16 +2387,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
                 && !type.getTypeArgumentList().isEmpty())
             return type.getTypeArgumentList().get(0);
-        return new UnknownType(typeFactory).getType();
+        return newUnknownType();
     }
     
-    private ProducedType getOptionalType(ProducedType type) {
+    private ProducedType getOptionalType(ProducedType type, Module moduleScope) {
         // we do not use Unit.getOptionalType because it causes lots of lazy loading that ultimately triggers the typechecker's
         // infinite recursion loop
         List<ProducedType> list = new ArrayList<ProducedType>(2);
         list.add(typeFactory.getNullDeclaration().getType());
         list.add(type);
-        UnionType ut = new UnionType(typeFactory);
+        UnionType ut = new UnionType(getUnitForModule(moduleScope));
         ut.setCaseTypes(list);
         return ut.getType();
     }
@@ -3190,7 +3198,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private ProducedType decodeType(String value, Scope scope, Module moduleScope, String targetType, Declaration target) {
         try{
-            return typeParser.decodeType(value, scope, moduleScope);
+            return typeParser.decodeType(value, scope, moduleScope, getUnitForModule(moduleScope));
         }catch(TypeParserException x){
             String text = formatTypeErrorMessage("Error while parsing type of", targetType, target, scope);
             return logModelResolutionException(x.getMessage(), scope, text);
@@ -3198,6 +3206,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             String text = formatTypeErrorMessage("Error while resolving type of", targetType, target, scope);
             return logModelResolutionException(x, scope, text);
         }
+    }
+    
+    private Unit getUnitForModule(Module module) {
+        List<Package> packages = module.getPackages();
+        if(packages.isEmpty()){
+            System.err.println("No package for module "+module.getNameAsString());
+            return null;
+        }
+        Package pkg = packages.get(0);
+        if(pkg instanceof LazyPackage == false){
+            System.err.println("No lazy package for module "+module.getNameAsString());
+            return null;
+        }
+        Unit unit = getCompiledUnit((LazyPackage) pkg, null);
+        if(unit == null){
+            System.err.println("No unit for module "+module.getNameAsString());
+            return null;
+        }
+        return unit;
     }
     
     private String formatTypeErrorMessage(String prefix, String targetType, Declaration target, Scope scope) {
@@ -3454,7 +3481,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(type.getKind() == TypeKind.TYPEVAR){
             TypeParameterMirror typeParameter = type.getTypeParameter();
             if(!typeParameter.getBounds().isEmpty()){
-                IntersectionType it = new IntersectionType(typeFactory);
+                IntersectionType it = new IntersectionType(getUnitForModule(moduleScope));
                 for(TypeMirror bound : typeParameter.getBounds()){
                     ProducedType boundModel = obtainTypeParameterBound(moduleScope, bound, scope, rawDeclarationsSeen);
                     it.getSatisfiedTypes().add(boundModel);
@@ -3547,7 +3574,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String simpleName = name.substring(lastDot+1);
         // Nothing is a special case with no real decl
         if(name.equals("ceylon.language.Nothing"))
-            return typeFactory.getNothingDeclaration().getType();
+            return newNothingType();
 
         // find the right package
         Package pkg = languageModule.getDirectPackage(pkgName);
