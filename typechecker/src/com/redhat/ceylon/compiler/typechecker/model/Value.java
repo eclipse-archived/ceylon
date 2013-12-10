@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
  *
  * @author Gavin King
  */
-public class Value extends MethodOrValue {
+public class Value extends MethodOrValue implements Scope {
 
     private boolean variable;
     private boolean trans;

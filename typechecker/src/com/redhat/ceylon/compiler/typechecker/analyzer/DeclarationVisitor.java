@@ -580,7 +580,8 @@ public class DeclarationVisitor extends Visitor {
             
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        Getter g = new Getter();
+        Value g = new Value();
+        g.setTransient(true);
         that.setDeclarationModel(g);
         visitDeclaration(that, g);
         Scope o = enterScope(g);
@@ -598,7 +599,8 @@ public class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeArgument that) {
-        Getter g = new Getter();
+        Value g = new Value();
+        g.setTransient(true);
         that.setDeclarationModel(g);
         visitArgument(that, g);
         Scope o = enterScope(g);
