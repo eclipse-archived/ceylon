@@ -1740,7 +1740,8 @@ public class ProducedType extends ProducedReference {
     		return ut.canonicalize().getType();
     	}
     	List<ProducedType> args = getTypeArgumentList();
-    	List<ProducedType> aliasedArgs = new ArrayList<ProducedType>(args.size());
+    	List<ProducedType> aliasedArgs = args.isEmpty() ? 
+    	        Collections.<ProducedType>emptyList() : new ArrayList<ProducedType>(args.size());
     	for (ProducedType arg: args) {
     		aliasedArgs.add(arg==null ? null : arg.resolveAliases());
     	}
