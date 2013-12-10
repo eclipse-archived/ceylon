@@ -198,7 +198,7 @@ public abstract class Node {
         return errors != null ? errors : Collections.<Message>emptyList();
     }
     
-    private void addError(Message error){
+    public void addError(Message error){
         if(errors == null)
             errors = new ArrayList<Message>(2);
         errors.add(error);
