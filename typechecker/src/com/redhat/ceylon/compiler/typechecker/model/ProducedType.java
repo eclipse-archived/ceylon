@@ -603,8 +603,9 @@ public class ProducedType extends ProducedReference {
     private ProducedType getSupertypeInternal(TypeDeclaration dec) {
         boolean complexType = dec instanceof UnionType 
         		|| dec instanceof IntersectionType;
+        boolean canCache = !complexType && !hasUnderlyingType(); 
         ProducedTypeCache cache = dec.getUnit().getCache();
-        if (!complexType 
+        if (canCache
                 && cache.containsKey(this, dec)
 //                && superTypesCache.containsKey(dec)
                 ) {
@@ -627,7 +628,7 @@ public class ProducedType extends ProducedReference {
         }else{
             superType = getSupertype(new SupertypeCriteria(dec));
         }
-        if (!complexType) {
+        if (canCache) {
             cache.put(this, dec, superType);
 //            superTypesCache.put(dec, superType);
         }
@@ -635,6 +636,19 @@ public class ProducedType extends ProducedReference {
         return superType;
     }
     
+    private boolean hasUnderlyingType() {
+        if(getUnderlyingType() != null)
+            return true;
+        List<ProducedType> tal = getTypeArgumentList();
+        for(int i=0,l=tal.size();i<l;i++){
+            ProducedType ta = tal.get(i);
+            if(ta != null && ta.hasUnderlyingType()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     enum SupertypeCheck {
         YES, NO, MAYBE;
     }
