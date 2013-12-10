@@ -854,7 +854,8 @@ public class Util {
     
     public static Declaration lookupMember(List<Declaration> members, String name,
             List<ProducedType> signature, boolean ellipsis) {
-        List<Declaration> results = new ArrayList<Declaration>(1);
+        List<Declaration> results = null;
+        Declaration result = null;
         Declaration inexactMatch = null;
         for (int i = 0,l = members.size() ; i < l ; i++) {
             Declaration d = members.get(i);
@@ -886,10 +887,27 @@ public class Util {
                     if (hasMatchingSignature(signature, ellipsis, d)) {
                         //we have found an exactly matching 
                         //overloaded declaration
-                        addIfBetterMatch(results, d);
+                        if(result == null)
+                            result = d; // first match
+                        else{
+                            // more than one match, move to array
+                            if(results == null){
+                                results = new ArrayList<Declaration>(2);
+                                results.add(result);
+                            }
+                            addIfBetterMatch(results, d);
+                        }
                     }
                 }
             }
+        }
+        // if we never needed a results array
+        if(results == null){
+            // single result
+            if(result != null)
+                return result;
+            // no exact match
+            return inexactMatch;
         }
         switch (results.size()) {
         case 0:
