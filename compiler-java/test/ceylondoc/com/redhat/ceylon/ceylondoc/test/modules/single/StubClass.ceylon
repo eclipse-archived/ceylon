@@ -284,3 +284,7 @@ shared class StubClass(
     "Documented setter"
     assign getter => print(getter);
 }
+
+shared abstract class StubAbstractClass() {}
+
+shared final class StubFinalClass() {}

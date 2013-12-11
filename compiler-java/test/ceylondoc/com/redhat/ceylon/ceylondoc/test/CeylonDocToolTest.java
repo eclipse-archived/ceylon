@@ -236,6 +236,8 @@ public class CeylonDocToolTest {
         assertSubpackages(destDir);
         assertSubtypesHierarchy(destDir);
         assertAnnotations(destDir);
+        assertAbstractClassModifier(destDir);
+        assertFinalClassModifier(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -1068,6 +1070,20 @@ public class CeylonDocToolTest {
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("<li><a class='link' href='index.html#stubAnnotationBar' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBar'>stubAnnotationBar</a>" +
                 		"{baz=<a class='link' href='index.html#stubAnnotationBaz' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubAnnotationBaz'>stubAnnotationBaz</a>{s=<span class='literal'>&quot;baz&quot;</span>;};}</li>")));
+    }
+    
+    private void assertAbstractClassModifier(File destDir) throws Exception {
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile(Pattern.quote("<tr><td id='StubAbstractClass' nowrap><i class='icon-class'><i class='icon-decoration-abstract'></i></i>")));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile(Pattern.quote("<span class='modifiers'>shared abstract</span> <a class='link' href='StubAbstractClass.type.html'")));         
+    }
+    
+    private void assertFinalClassModifier(File destDir) throws Exception {
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile(Pattern.quote("<tr><td id='StubFinalClass' nowrap><i class='icon-class'><i class='icon-decoration-final'></i></i>")));
+        assertMatchInFile(destDir, "index.html",
+                Pattern.compile(Pattern.quote("<span class='modifiers'>shared final</span> <a class='link' href='StubFinalClass.type.html'")));         
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {

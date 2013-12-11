@@ -241,6 +241,9 @@ public class Util {
             if (c.isAbstract()) {
                 modifiers.append("abstract ");
             }
+            if (c.isFinal() && !c.isAnonymous()) {
+                modifiers.append("final ");
+            }
         }
         return modifiers.toString().trim();
     }

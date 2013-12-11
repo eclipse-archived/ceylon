@@ -368,6 +368,9 @@ public abstract class CeylonDoc extends Markup {
                     if (klass.isAbstract()) {
                         icons.add("icon-decoration-abstract");
                     }
+                    if (klass.isFinal() && !klass.isAnonymous() && !klass.isAnnotation()) {
+                        icons.add("icon-decoration-final");
+                    }
                 }
                 if (!decl.isShared() ) {
                     icons.add("icon-decoration-local");
