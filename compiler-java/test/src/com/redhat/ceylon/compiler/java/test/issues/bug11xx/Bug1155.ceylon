@@ -144,31 +144,31 @@ void bug1155_unaryOptStar(Bug1155 b) {
     
     // A String(String=, String*) is a String()
     String() unaryOptStarRef0 = b.unaryOptStar;
-    eq("unaryOptStar(d1; {})", unaryOptStarRef0());
+    eq("unaryOptStar(d1; [])", unaryOptStarRef0());
     
     
     // A String(String=, String*) is a String(String)
     String(String) unaryOptStarRef1 = b.unaryOptStar;
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1("s1"));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1("s1"));
     // spread
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1(*["s1"]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1(*["s1"]));
     
     // A String(String=, String*) is a String(String=)
     String(String=) unaryOptStarRef1Opt = b.unaryOptStar;
-    eq("unaryOptStar(d1; {})", unaryOptStarRef1Opt());
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1Opt("s1"));
+    eq("unaryOptStar(d1; [])", unaryOptStarRef1Opt());
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1Opt("s1"));
     // spread
-    eq("unaryOptStar(d1; {})", unaryOptStarRef1Opt(*[]));
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1Opt(*["s1"]));
+    eq("unaryOptStar(d1; [])", unaryOptStarRef1Opt(*[]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1Opt(*["s1"]));
     
     // A String(String=, String*) is a String(String, String*)
     String(String, String*) unaryOptStarRef1Star = b.unaryOptStar;
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1Star("s1"));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1Star("s1"));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1Star("s1", "s2"));
     eq("unaryOptStar(s1; [s2, s3])", unaryOptStarRef1Star("s1", "s2", "s3"));
     // spread
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1Star(*["s1"]));
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1Star("s1", *[]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1Star(*["s1"]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1Star("s1", *[]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1Star(*["s1", "s2"]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1Star("s1", *["s2"]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1Star("s1", "s2", *[]));
@@ -179,14 +179,14 @@ void bug1155_unaryOptStar(Bug1155 b) {
     
     // A String(String=, String*) is a String(String=, String*)
     String(String=, String*) unaryOptStarRef1OptStar = b.unaryOptStar;
-    eq("unaryOptStar(d1; {})", unaryOptStarRef1OptStar());
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1OptStar("s1"));
+    eq("unaryOptStar(d1; [])", unaryOptStarRef1OptStar());
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1OptStar("s1"));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1OptStar("s1", "s2"));
     eq("unaryOptStar(s1; [s2, s3])", unaryOptStarRef1OptStar("s1", "s2", "s3"));
     // spread
-    eq("unaryOptStar(d1; {})", unaryOptStarRef1OptStar(*[]));
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1OptStar(*["s1"]));
-    eq("unaryOptStar(s1; {})", unaryOptStarRef1OptStar("s1", *[]));
+    eq("unaryOptStar(d1; [])", unaryOptStarRef1OptStar(*[]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1OptStar(*["s1"]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef1OptStar("s1", *[]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1OptStar(*["s1", "s2"]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1OptStar("s1", *["s2"]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef1OptStar("s1", "s2", *[]));
@@ -197,11 +197,11 @@ void bug1155_unaryOptStar(Bug1155 b) {
     
     // A String(String=, String*) is a String(String, String=)
     String(String, String=) unaryOptStarRef2Opt = b.unaryOptStar;
-    eq("unaryOptStar(s1; {})", unaryOptStarRef2Opt("s1"));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef2Opt("s1"));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef2Opt("s1", "s2"));
     // spread
-    eq("unaryOptStar(s1; {})", unaryOptStarRef2Opt(*["s1"]));
-    eq("unaryOptStar(s1; {})", unaryOptStarRef2Opt("s1", *[]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef2Opt(*["s1"]));
+    eq("unaryOptStar(s1; [])", unaryOptStarRef2Opt("s1", *[]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef2Opt(*["s1", "s2"]));
     eq("unaryOptStar(s1; [s2])", unaryOptStarRef2Opt("s1", *["s2"]));
     
@@ -244,15 +244,15 @@ void bug1155_star(Bug1155 b) {
     }
     // A String(String*) is a String()
     String() starRef0 = b.star;
-    eq("star(; {})", starRef0());
+    eq("star(; [])", starRef0());
     
     // A String(String*) is a String(String*)
     String(String*) starRef0Star = b.star;
-    eq("star(; {})", starRef0Star());
+    eq("star(; [])", starRef0Star());
     eq("star(; [s1])", starRef0Star("s1"));
     eq("star(; [s1, s2])", starRef0Star("s1", "s2"));
     // spread
-    eq("star(; {})", starRef0Star(*[]));
+    eq("star(; [])", starRef0Star(*[]));
     eq("star(; [s1])", starRef0Star(*["s1"]));
     eq("star(; [s1, s2])", starRef0Star(*["s1", "s2"]));
     
@@ -272,10 +272,10 @@ void bug1155_star(Bug1155 b) {
     
     // A String(String*) is a String(String=)
     String(String=) starRef1Opt = b.star;
-    eq("star(; {})", starRef1Opt());
+    eq("star(; [])", starRef1Opt());
     eq("star(; [s1])", starRef1Opt("s1"));
     // spread
-    eq("star(; {})", starRef1Opt(*[]));
+    eq("star(; [])", starRef1Opt(*[]));
     eq("star(; [s1])", starRef1Opt(*["s1"]));
     
     // A String(String*) is a String(String, String*)
@@ -293,12 +293,12 @@ void bug1155_star(Bug1155 b) {
     // A String(String*) is a String(String=, String*)
     String(String=, String*) starRef1OptStar = b.star;
     eq("star(; [s1])", starRef1OptStar("s1"));
-    eq("star(; {})", starRef1OptStar());
+    eq("star(; [])", starRef1OptStar());
     eq("star(; [s1, s2])", starRef1OptStar("s1", "s2"));
     eq("star(; [s1, s2, s3])", starRef1OptStar("s1", "s2", "s3"));
     // spread
     eq("star(; [s1])", starRef1OptStar(*["s1"]));
-    eq("star(; {})", starRef1OptStar(*[]));
+    eq("star(; [])", starRef1OptStar(*[]));
     eq("star(; [s1, s2])", starRef1OptStar(*["s1", "s2"]));
     eq("star(; [s1, s2])", starRef1OptStar("s1", *["s2"]));
     eq("star(; [s1, s2, s3])", starRef1OptStar(*["s1", "s2", "s3"]));
@@ -336,11 +336,11 @@ void bug1155_star(Bug1155 b) {
     String(String=, String=) starRef2OptOpt = b.star;
     eq("star(; [s1, s2])", starRef2OptOpt("s1", "s2"));
     eq("star(; [s1])", starRef2OptOpt("s1"));
-    eq("star(; {})", starRef2OptOpt());
+    eq("star(; [])", starRef2OptOpt());
     // spread
     eq("star(; [s1, s2])", starRef2OptOpt(*["s1", "s2"]));
     eq("star(; [s1])", starRef2OptOpt(*["s1"]));
-    eq("star(; {})", starRef2OptOpt(*[]));
+    eq("star(; [])", starRef2OptOpt(*[]));
     eq("star(; [s1, s2])", starRef2OptOpt("s1", *["s2"]));
     eq("star(; [s1])", starRef2OptOpt("s1", *[]));
     
@@ -389,13 +389,13 @@ void bug1155_star(Bug1155 b) {
     
     // A String(String*) is a String(String=, String=, String*)
     String(String=, String=, String*) starRef2OptOptStar = b.star;
-    eq("star(; {})", starRef2OptOptStar());
+    eq("star(; [])", starRef2OptOptStar());
     eq("star(; [s1])", starRef2OptOptStar("s1"));
     eq("star(; [s1, s2])", starRef2OptOptStar("s1", "s2"));
     eq("star(; [s1, s2, s3])", starRef2OptOptStar("s1", "s2", "s3"));
     eq("star(; [s1, s2, s3, s4])", starRef2OptOptStar("s1", "s2", "s3", "s4"));
     // spread
-    eq("star(; {})", starRef2OptOptStar(*[]));
+    eq("star(; [])", starRef2OptOptStar(*[]));
     eq("star(; [s1])", starRef2OptOptStar(*["s1"]));
     eq("star(; [s1, s2])", starRef2OptOptStar(*["s1", "s2"]));
     eq("star(; [s1])", starRef2OptOptStar("s1", *[]));
@@ -468,12 +468,12 @@ void bug1155_star(Bug1155 b) {
     eq("star(; [s1, s2, s3])", starRef3OptOptOpt("s1", "s2", "s3"));
     eq("star(; [s1, s2])", starRef3OptOptOpt("s1", "s2"));
     eq("star(; [s1])", starRef3OptOptOpt("s1"));
-    eq("star(; {})", starRef3OptOptOpt());
+    eq("star(; [])", starRef3OptOptOpt());
     // spread
     eq("star(; [s1, s2, s3])", starRef3OptOptOpt(*["s1", "s2", "s3"]));
     eq("star(; [s1, s2])", starRef3OptOptOpt(*["s1", "s2"]));
     eq("star(; [s1])", starRef3OptOptOpt(*["s1"]));
-    eq("star(; {})", starRef3OptOptOpt(*[]));
+    eq("star(; [])", starRef3OptOptOpt(*[]));
     eq("star(; [s1, s2, s3])", starRef3OptOptOpt("s1", *["s2", "s3"]));
     eq("star(; [s1, s2])", starRef3OptOptOpt("s1", *["s2"]));
     eq("star(; [s1])", starRef3OptOptOpt("s1", *[]));
@@ -560,14 +560,14 @@ void bug1155_star(Bug1155 b) {
     
     // A String(String*) is a String(String=, String=, String=, String*)
     String(String=, String=, String=, String*) starRef3OptOptOptStar = b.star;
-    eq("star(; {})", starRef3OptOptOptStar());
+    eq("star(; [])", starRef3OptOptOptStar());
     eq("star(; [s1])", starRef3OptOptOptStar("s1"));
     eq("star(; [s1, s2])", starRef3OptOptOptStar("s1", "s2"));
     eq("star(; [s1, s2, s3])", starRef3OptOptOptStar("s1", "s2", "s3"));
     eq("star(; [s1, s2, s3, s4])", starRef3OptOptOptStar("s1", "s2", "s3", "s4"));
     eq("star(; [s1, s2, s3, s4, s5])", starRef3OptOptOptStar("s1", "s2", "s3", "s4", "s5"));
     //spread
-    eq("star(; {})", starRef3OptOptOptStar(*[]));
+    eq("star(; [])", starRef3OptOptOptStar(*[]));
     eq("star(; [s1])", starRef3OptOptOptStar(*["s1"]));
     eq("star(; [s1])", starRef3OptOptOptStar("s1", *[]));
     eq("star(; [s1, s2])", starRef3OptOptOptStar(*["s1", "s2"]));
@@ -664,13 +664,13 @@ void bug1155_star(Bug1155 b) {
     
     // A String(String*) is a String(String=, String=, String=, String=)
     String(String=, String=, String=, String=) starRef4OptOptOptOpt = b.star;
-    eq("star(; {})", starRef4OptOptOptOpt());
+    eq("star(; [])", starRef4OptOptOptOpt());
     eq("star(; [s1])", starRef4OptOptOptOpt("s1"));
     eq("star(; [s1, s2])", starRef4OptOptOptOpt("s1", "s2"));
     eq("star(; [s1, s2, s3])", starRef4OptOptOptOpt("s1", "s2", "s3"));
     eq("star(; [s1, s2, s3, s4])", starRef4OptOptOptOpt("s1", "s2", "s3", "s4"));
     // spread
-    eq("star(; {})", starRef4OptOptOptOpt(*[]));
+    eq("star(; [])", starRef4OptOptOptOpt(*[]));
     eq("star(; [s1])", starRef4OptOptOptOpt(*["s1"]));
     eq("star(; [s1])", starRef4OptOptOptOpt("s1", *[]));
     eq("star(; [s1, s2])", starRef4OptOptOptOpt(*["s1", "s2"]));
@@ -1010,17 +1010,17 @@ void bug1155_unaryStar(Bug1155 b) {
     */
     // A String(String, String*) is a String(String)
     String(String) starRef1 = b.unaryStar;
-    eq("unaryStar(s1; {})", starRef1("s1"));
+    eq("unaryStar(s1; [])", starRef1("s1"));
     // spread
-    eq("unaryStar(s1; {})", starRef1(*["s1"]));
+    eq("unaryStar(s1; [])", starRef1(*["s1"]));
     
     // A String(String, String*) is a String(String, String*)
     String(String, String*) starRef1Star = b.unaryStar;
-    eq("unaryStar(s1; {})", starRef1Star("s1"));
+    eq("unaryStar(s1; [])", starRef1Star("s1"));
     eq("unaryStar(s1; [s2])", starRef1Star("s1", "s2"));
     eq("unaryStar(s1; [s2, s3])", starRef1Star("s1", "s2", "s3"));
     // spread
-    eq("unaryStar(s1; {})", starRef1Star(*["s1"]));
+    eq("unaryStar(s1; [])", starRef1Star(*["s1"]));
     eq("unaryStar(s1; [s2])", starRef1Star(*["s1", "s2"]));
     eq("unaryStar(s1; [s2])", starRef1Star("s1", *["s2"]));
     eq("unaryStar(s1; [s2, s3])", starRef1Star(*["s1", "s2", "s3"]));
@@ -1047,12 +1047,12 @@ void bug1155_unaryStar(Bug1155 b) {
     // A String(String, String*) is a String(String, String=)
     String(String, String=) starRef2Opt = b.unaryStar;
     eq("unaryStar(s1; [s2])", starRef2Opt("s1", "s2"));
-    eq("unaryStar(s1; {})", starRef2Opt("s1"));
+    eq("unaryStar(s1; [])", starRef2Opt("s1"));
     // spread
     eq("unaryStar(s1; [s2])", starRef2Opt(*["s1", "s2"]));
-    eq("unaryStar(s1; {})", starRef2Opt(*["s1"]));
+    eq("unaryStar(s1; [])", starRef2Opt(*["s1"]));
     eq("unaryStar(s1; [s2])", starRef2Opt("s1", *["s2"]));
-    eq("unaryStar(s1; {})", starRef2Opt("s1", *[]));
+    eq("unaryStar(s1; [])", starRef2Opt("s1", *[]));
     
     // A String(String, String*) is a String(String , String, String*) 
     String(String, String, String*) starRef2Star = b.unaryStar;
@@ -1076,14 +1076,14 @@ void bug1155_unaryStar(Bug1155 b) {
     
     // A String(String, String*) is a String(String, String=, String*)
     String(String, String=, String*) starRef2OptStar = b.unaryStar;
-    eq("unaryStar(s1; {})", starRef2OptStar("s1"));
+    eq("unaryStar(s1; [])", starRef2OptStar("s1"));
     eq("unaryStar(s1; [s2])", starRef2OptStar("s1", "s2"));
     eq("unaryStar(s1; [s2, s3])", starRef2OptStar("s1", "s2", "s3"));
     eq("unaryStar(s1; [s2, s3, s4])", starRef2OptStar("s1", "s2", "s3", "s4"));
     // spread
-    eq("unaryStar(s1; {})", starRef2OptStar(*["s1"]));
+    eq("unaryStar(s1; [])", starRef2OptStar(*["s1"]));
     eq("unaryStar(s1; [s2])", starRef2OptStar(*["s1", "s2"]));
-    eq("unaryStar(s1; {})", starRef2OptStar("s1", *[]));
+    eq("unaryStar(s1; [])", starRef2OptStar("s1", *[]));
     eq("unaryStar(s1; [s2])", starRef2OptStar("s1", *["s2"]));
     eq("unaryStar(s1; [s2])", starRef2OptStar("s1", "s2", *[]));
     eq("unaryStar(s1; [s2, s3])", starRef2OptStar("s1", "s2", "s3"));
@@ -1136,17 +1136,17 @@ void bug1155_unaryStar(Bug1155 b) {
     String(String, String=, String=) starRef3OptOpt = b.unaryStar;
     eq("unaryStar(s1; [s2, s3])", starRef3OptOpt("s1", "s2", "s3"));
     eq("unaryStar(s1; [s2])", starRef3OptOpt("s1", "s2"));
-    eq("unaryStar(s1; {})", starRef3OptOpt("s1"));
+    eq("unaryStar(s1; [])", starRef3OptOpt("s1"));
     // spread
     eq("unaryStar(s1; [s2, s3])", starRef3OptOpt(*["s1", "s2", "s3"]));
     eq("unaryStar(s1; [s2])", starRef3OptOpt(*["s1", "s2"]));
-    eq("unaryStar(s1; {})", starRef3OptOpt(*["s1"]));
+    eq("unaryStar(s1; [])", starRef3OptOpt(*["s1"]));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOpt("s1", *["s2", "s3"]));
     eq("unaryStar(s1; [s2])", starRef3OptOpt("s1", *["s2"]));
-    eq("unaryStar(s1; {})", starRef3OptOpt("s1", *[]));
+    eq("unaryStar(s1; [])", starRef3OptOpt("s1", *[]));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOpt("s1", "s2", *["s3"]));
     eq("unaryStar(s1; [s2])", starRef3OptOpt("s1", "s2", *[]));
-    eq("unaryStar(s1; {})", starRef3OptOpt("s1", *[]));
+    eq("unaryStar(s1; [])", starRef3OptOpt("s1", *[]));
     
     // A String(String, String*) is a String(String, String, String, String*)
     String(String, String, String, String*) starRef3Star = b.unaryStar;
@@ -1198,14 +1198,14 @@ void bug1155_unaryStar(Bug1155 b) {
     
     // A String(String, String*) is a String(String, String=, String=, String*)
     String(String, String=, String=, String*) starRef3OptOptStar = b.unaryStar;
-    eq("unaryStar(s1; {})", starRef3OptOptStar("s1"));
+    eq("unaryStar(s1; [])", starRef3OptOptStar("s1"));
     eq("unaryStar(s1; [s2])", starRef3OptOptStar("s1", "s2"));
     eq("unaryStar(s1; [s2, s3])", starRef3OptOptStar("s1", "s2", "s3"));
     eq("unaryStar(s1; [s2, s3, s4])", starRef3OptOptStar("s1", "s2", "s3", "s4"));
     eq("unaryStar(s1; [s2, s3, s4, s5])", starRef3OptOptStar("s1", "s2", "s3", "s4", "s5"));
     //spread
-    eq("unaryStar(s1; {})", starRef3OptOptStar(*["s1"]));
-    eq("unaryStar(s1; {})", starRef3OptOptStar("s1", *[]));
+    eq("unaryStar(s1; [])", starRef3OptOptStar(*["s1"]));
+    eq("unaryStar(s1; [])", starRef3OptOptStar("s1", *[]));
     eq("unaryStar(s1; [s2])", starRef3OptOptStar(*["s1", "s2"]));
     eq("unaryStar(s1; [s2])", starRef3OptOptStar("s1", *["s2"]));
     eq("unaryStar(s1; [s2])", starRef3OptOptStar("s1", "s2", *[]));
@@ -1279,13 +1279,13 @@ void bug1155_unaryStar(Bug1155 b) {
     
     // A String(String, String*) is a String(String, String=, String=, String=)
     String(String, String=, String=, String=) starRef4OptOptOpt = b.unaryStar;
-    eq("unaryStar(s1; {})", starRef4OptOptOpt("s1"));
+    eq("unaryStar(s1; [])", starRef4OptOptOpt("s1"));
     eq("unaryStar(s1; [s2])", starRef4OptOptOpt("s1", "s2"));
     eq("unaryStar(s1; [s2, s3])", starRef4OptOptOpt("s1", "s2", "s3"));
     eq("unaryStar(s1; [s2, s3, s4])", starRef4OptOptOpt("s1", "s2", "s3", "s4"));
     // spread
-    eq("unaryStar(s1; {})", starRef4OptOptOpt(*["s1"]));
-    eq("unaryStar(s1; {})", starRef4OptOptOpt("s1", *[]));
+    eq("unaryStar(s1; [])", starRef4OptOptOpt(*["s1"]));
+    eq("unaryStar(s1; [])", starRef4OptOptOpt("s1", *[]));
     eq("unaryStar(s1; [s2])", starRef4OptOptOpt(*["s1", "s2"]));
     eq("unaryStar(s1; [s2])", starRef4OptOptOpt("s1", *["s2"]));
     eq("unaryStar(s1; [s2])", starRef4OptOptOpt("s1", "s2", *[]));
@@ -1494,31 +1494,31 @@ void bug1155_binaryStar(Bug1155 b) {
     // A String(String, String, String*) is a String(String, String+)
     /* TODO This should be true! #765
     String(String, String+) starRef1Plus = b.binaryStar;
-    eq("binaryStar(s1, s2; {})", starRef1Plus("s1", "s2"));
+    eq("binaryStar(s1, s2; [])", starRef1Plus("s1", "s2"));
     eq("binaryStar(s1, s2; [s3])", starRef1Plus("s1", "s2", "s3"));
     // spread
-    eq("binaryStar(s1, s2; {})", starRef1Plus(*["s1", "s2"]));
-    eq("binaryStar(s1, s2; {})", starRef1Plus("s1", *["s2"]));
+    eq("binaryStar(s1, s2; [])", starRef1Plus(*["s1", "s2"]));
+    eq("binaryStar(s1, s2; [])", starRef1Plus("s1", *["s2"]));
     eq("binaryStar(s1, s2; [s3])", starRef1Plus(*["s1", "s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef1Plus("s1", *["s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef1Plus("s1", "s2", *["s3"]));
     */
     // A String(String, String, String*) is a String(String, String)
     String(String, String) starRef2 = b.binaryStar;
-    eq("binaryStar(s1, s2; {})", starRef2("s1", "s2"));
+    eq("binaryStar(s1, s2; [])", starRef2("s1", "s2"));
     // spread
-    eq("binaryStar(s1, s2; {})", starRef2(*["s1", "s2"]));
-    eq("binaryStar(s1, s2; {})", starRef2("s1", *["s2"]));
+    eq("binaryStar(s1, s2; [])", starRef2(*["s1", "s2"]));
+    eq("binaryStar(s1, s2; [])", starRef2("s1", *["s2"]));
     
     // A String(String, String, String*) is a String(String , String, String*) 
     String(String, String, String*) starRef2Star = b.binaryStar;
-    eq("binaryStar(s1, s2; {})", starRef2Star("s1", "s2"));
+    eq("binaryStar(s1, s2; [])", starRef2Star("s1", "s2"));
     eq("binaryStar(s1, s2; [s3])", starRef2Star("s1", "s2", "s3"));
     eq("binaryStar(s1, s2; [s3, s4])", starRef2Star("s1", "s2", "s3", "s4"));
     // spread
-    eq("binaryStar(s1, s2; {})", starRef2Star(*["s1", "s2"]));
-    eq("binaryStar(s1, s2; {})", starRef2Star("s1", *["s2"]));
-    eq("binaryStar(s1, s2; {})", starRef2Star("s1", "s2", *[]));
+    eq("binaryStar(s1, s2; [])", starRef2Star(*["s1", "s2"]));
+    eq("binaryStar(s1, s2; [])", starRef2Star("s1", *["s2"]));
+    eq("binaryStar(s1, s2; [])", starRef2Star("s1", "s2", *[]));
     eq("binaryStar(s1, s2; [s3])", starRef2Star("s1", "s2", "s3"));
     eq("binaryStar(s1, s2; [s3])", starRef2Star(*["s1", "s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef2Star("s1", *["s2", "s3"]));
@@ -1556,14 +1556,14 @@ void bug1155_binaryStar(Bug1155 b) {
     // A String(String, String, String*) is a String(String, String, String=)
     String(String, String, String=) starRef3Opt = b.binaryStar;
     eq("binaryStar(s1, s2; [s3])", starRef3Opt("s1", "s2", "s3"));
-    eq("binaryStar(s1, s2; {})", starRef3Opt("s1", "s2"));
+    eq("binaryStar(s1, s2; [])", starRef3Opt("s1", "s2"));
     // spread
     eq("binaryStar(s1, s2; [s3])", starRef3Opt(*["s1", "s2", "s3"]));
-    eq("binaryStar(s1, s2; {})", starRef3Opt(*["s1", "s2"]));
+    eq("binaryStar(s1, s2; [])", starRef3Opt(*["s1", "s2"]));
     eq("binaryStar(s1, s2; [s3])", starRef3Opt("s1", *["s2", "s3"]));
-    eq("binaryStar(s1, s2; {})", starRef3Opt("s1", *["s2"]));
+    eq("binaryStar(s1, s2; [])", starRef3Opt("s1", *["s2"]));
     eq("binaryStar(s1, s2; [s3])", starRef3Opt("s1", "s2", *["s3"]));
-    eq("binaryStar(s1, s2; {})", starRef3Opt("s1", "s2", *[]));
+    eq("binaryStar(s1, s2; [])", starRef3Opt("s1", "s2", *[]));
     
     // A String(String, String, String*) is a String(String, String, String, String*)
     String(String, String, String, String*) starRef3Star = b.binaryStar;
@@ -1589,14 +1589,14 @@ void bug1155_binaryStar(Bug1155 b) {
     
     // A String(String, String, String*) is a String(String, String, String=, String*)
     String(String, String, String=, String*) starRef3OptStar = b.binaryStar;
-    eq("binaryStar(s1, s2; {})", starRef3OptStar("s1", "s2"));
+    eq("binaryStar(s1, s2; [])", starRef3OptStar("s1", "s2"));
     eq("binaryStar(s1, s2; [s3])", starRef3OptStar("s1", "s2", "s3"));
     eq("binaryStar(s1, s2; [s3, s4])", starRef3OptStar("s1", "s2", "s3", "s4"));
     eq("binaryStar(s1, s2; [s3, s4, s5])", starRef3OptStar("s1", "s2", "s3", "s4", "s5"));
     //spread
-    eq("binaryStar(s1, s2; {})", starRef3OptStar(*["s1", "s2"]));
-    eq("binaryStar(s1, s2; {})", starRef3OptStar("s1", *["s2"]));
-    eq("binaryStar(s1, s2; {})", starRef3OptStar("s1", "s2", *[]));
+    eq("binaryStar(s1, s2; [])", starRef3OptStar(*["s1", "s2"]));
+    eq("binaryStar(s1, s2; [])", starRef3OptStar("s1", *["s2"]));
+    eq("binaryStar(s1, s2; [])", starRef3OptStar("s1", "s2", *[]));
     eq("binaryStar(s1, s2; [s3])", starRef3OptStar(*["s1", "s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef3OptStar("s1", *["s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef3OptStar("s1", "s2", *["s3"]));
@@ -1649,13 +1649,13 @@ void bug1155_binaryStar(Bug1155 b) {
     
     // A String(String, String, String*) is a String(String, String, String=, String=)
     String(String, String, String=, String=) starRef4OptOpt = b.binaryStar;
-    eq("binaryStar(s1, s2; {})", starRef4OptOpt("s1", "s2"));
+    eq("binaryStar(s1, s2; [])", starRef4OptOpt("s1", "s2"));
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", "s2", "s3"));
     eq("binaryStar(s1, s2; [s3, s4])", starRef4OptOpt("s1", "s2", "s3", "s4"));
     // spread
-    eq("binaryStar(s1, s2; {})", starRef4OptOpt(*["s1", "s2"]));
-    eq("binaryStar(s1, s2; {})", starRef4OptOpt("s1", *["s2"]));
-    eq("binaryStar(s1, s2; {})", starRef4OptOpt("s1", "s2", *[]));
+    eq("binaryStar(s1, s2; [])", starRef4OptOpt(*["s1", "s2"]));
+    eq("binaryStar(s1, s2; [])", starRef4OptOpt("s1", *["s2"]));
+    eq("binaryStar(s1, s2; [])", starRef4OptOpt("s1", "s2", *[]));
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt(*["s1", "s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", *["s2", "s3"]));
     eq("binaryStar(s1, s2; [s3])", starRef4OptOpt("s1", "s2", *["s3"]));

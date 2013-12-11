@@ -96,27 +96,27 @@ class MethodRef() {
     
     shared void sequenced() {
         String(String*)(MethodRef) nullaryRef = MethodRef.nullarySequenced;
-        assert("nullarySequenced({})" == nullaryRef(this)());
+        assert("nullarySequenced([])" == nullaryRef(this)());
         assert("nullarySequenced([r1])" == nullaryRef(this)("r1"));
         assert("nullarySequenced([r1, r2])" == nullaryRef(this)("r1", "r2"));
         
         String(String, String*)(MethodRef) unaryRef = MethodRef.unarySequenced;
-        assert("unarySequenced(s; {})" == unaryRef(this)("s"));
+        assert("unarySequenced(s; [])" == unaryRef(this)("s"));
         assert("unarySequenced(s; [r1])" == unaryRef(this)("s", "r1"));
         assert("unarySequenced(s; [r1, r2])" == unaryRef(this)("s", "r1", "r2"));
         
         String(String, String, String*)(MethodRef) binaryRef = MethodRef.binarySequenced;
-        assert("binarySequenced(s1, s2; {})" == binaryRef(this)("s1", "s2"));
+        assert("binarySequenced(s1, s2; [])" == binaryRef(this)("s1", "s2"));
         assert("binarySequenced(s1, s2; [r1])" == binaryRef(this)("s1", "s2", "r1"));
         assert("binarySequenced(s1, s2; [r1, r2])" == binaryRef(this)("s1", "s2", "r1", "r2"));
         
         String(String, String, String, String*)(MethodRef) ternaryRef = MethodRef.ternarySequenced;
-        assert("ternarySequenced(s1, s2, s3; {})" == ternaryRef(this)("s1", "s2", "s3"));
+        assert("ternarySequenced(s1, s2, s3; [])" == ternaryRef(this)("s1", "s2", "s3"));
         assert("ternarySequenced(s1, s2, s3; [r1])" == ternaryRef(this)("s1", "s2", "s3", "r1"));
         assert("ternarySequenced(s1, s2, s3; [r1, r2])" == ternaryRef(this)("s1", "s2", "s3", "r1", "r2"));
         
         String(String, String, String, String, String*)(MethodRef) naryRef = MethodRef.narySequenced;
-        assert("narySequenced(s1, s2, s3, s4; {})" == naryRef(this)("s1", "s2", "s3", "s4"));
+        assert("narySequenced(s1, s2, s3, s4; [])" == naryRef(this)("s1", "s2", "s3", "s4"));
         assert("narySequenced(s1, s2, s3, s4; [r1])" == naryRef(this)("s1", "s2", "s3", "s4", "r1"));
         assert("narySequenced(s1, s2, s3, s4; [r1, r2])" == naryRef(this)("s1", "s2", "s3", "s4", "r1", "r2"));
         

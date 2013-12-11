@@ -110,27 +110,27 @@ class MemberClassRef() {
     
     shared void sequenced() {
         NullarySequenced(String*)(MemberClassRef) nullaryRef = MemberClassRef.NullarySequenced;
-        assert("nullarySequenced({})" == nullaryRef(this)().string);
+        assert("nullarySequenced([])" == nullaryRef(this)().string);
         assert("nullarySequenced([r1])" == nullaryRef(this)("r1").string);
         assert("nullarySequenced([r1, r2])" == nullaryRef(this)("r1", "r2").string);
         
         UnarySequenced(String, String*)(MemberClassRef) unaryRef = MemberClassRef.UnarySequenced;
-        assert("unarySequenced(s; {})" == unaryRef(this)("s").string);
+        assert("unarySequenced(s; [])" == unaryRef(this)("s").string);
         assert("unarySequenced(s; [r1])" == unaryRef(this)("s", "r1").string);
         assert("unarySequenced(s; [r1, r2])" == unaryRef(this)("s", "r1", "r2").string);
         
         BinarySequenced(String, String, String*)(MemberClassRef) binaryRef = MemberClassRef.BinarySequenced;
-        assert("binarySequenced(s1, s2; {})" == binaryRef(this)("s1", "s2").string);
+        assert("binarySequenced(s1, s2; [])" == binaryRef(this)("s1", "s2").string);
         assert("binarySequenced(s1, s2; [r1])" == binaryRef(this)("s1", "s2", "r1").string);
         assert("binarySequenced(s1, s2; [r1, r2])" == binaryRef(this)("s1", "s2", "r1", "r2").string);
         
         TernarySequenced(String, String, String, String*)(MemberClassRef) ternaryRef = MemberClassRef.TernarySequenced;
-        assert("ternarySequenced(s1, s2, s3; {})" == ternaryRef(this)("s1", "s2", "s3").string);
+        assert("ternarySequenced(s1, s2, s3; [])" == ternaryRef(this)("s1", "s2", "s3").string);
         assert("ternarySequenced(s1, s2, s3; [r1])" == ternaryRef(this)("s1", "s2", "s3", "r1").string);
         assert("ternarySequenced(s1, s2, s3; [r1, r2])" == ternaryRef(this)("s1", "s2", "s3", "r1", "r2").string);
         
         NarySequenced(String, String, String, String, String*)(MemberClassRef) naryRef = MemberClassRef.NarySequenced;
-        assert("narySequenced(s1, s2, s3, s4; {})" == naryRef(this)("s1", "s2", "s3", "s4").string);
+        assert("narySequenced(s1, s2, s3, s4; [])" == naryRef(this)("s1", "s2", "s3", "s4").string);
         assert("narySequenced(s1, s2, s3, s4; [r1])" == naryRef(this)("s1", "s2", "s3", "s4", "r1").string);
         assert("narySequenced(s1, s2, s3, s4; [r1, r2])" == naryRef(this)("s1", "s2", "s3", "s4", "r1", "r2").string);
         
