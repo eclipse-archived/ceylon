@@ -190,18 +190,18 @@ public abstract class TypeDeclaration extends Declaration
         }
         type.setDeclaration(this);
         //each type parameter is its own argument
-        if(noTP){
+        List<TypeParameter> typeParameters = getTypeParameters();
+        if(typeParameters.isEmpty()){
             type.setTypeArguments(Collections.<TypeParameter, ProducedType>emptyMap());
         }else{
             Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-            for (TypeParameter p: tp) {
+            for (TypeParameter p: typeParameters) {
                 ProducedType pta = new ProducedType();
                 pta.setDeclaration(p);
                 map.put(p, pta);
             }
             type.setTypeArguments(map);
         }
-        type.setTypeArguments(map);
         return type;
     }
 
