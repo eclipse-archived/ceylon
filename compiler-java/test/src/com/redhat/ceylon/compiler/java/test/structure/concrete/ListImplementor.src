@@ -159,6 +159,16 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public .ceylon.language.List<? extends X> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Map<? extends X, ? extends .ceylon.language.Integer> getFrequencies() {
+        return $ceylon$language$List$this$.getFrequencies();
+    }
+    
+    @.java.lang.Override
+    public <GroupKey>.ceylon.language.Map<? extends GroupKey, ? extends .ceylon.language.Set<? extends X>> group(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$GroupKey, final .ceylon.language.Callable<? extends GroupKey> grouping) {
+        return $ceylon$language$List$this$.group($reified$GroupKey, grouping);
+    }
     protected final .ceylon.language.Collection$impl<? extends X> $ceylon$language$Collection$this$;
     
     @.java.lang.Override

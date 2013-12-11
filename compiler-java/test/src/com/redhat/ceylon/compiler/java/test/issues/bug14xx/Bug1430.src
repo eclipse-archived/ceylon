@@ -181,6 +181,16 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexes(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this$.indexes(selecting);
     }
+    
+    @.java.lang.Override
+    public .ceylon.language.Map<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> getFrequencies() {
+        return $ceylon$language$List$this$.getFrequencies();
+    }
+    
+    @.java.lang.Override
+    public <GroupKey>.ceylon.language.Map<? extends GroupKey, ? extends .ceylon.language.Set<? extends .ceylon.language.Integer>> group(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$GroupKey, final .ceylon.language.Callable<? extends GroupKey> grouping) {
+        return $ceylon$language$List$this$.group($reified$GroupKey, grouping);
+    }
     protected final .ceylon.language.Collection$impl<? extends .ceylon.language.Integer> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
