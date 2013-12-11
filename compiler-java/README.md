@@ -23,7 +23,7 @@ Directory structure
 * `lib`       - compile/runtime dependencies
 * `src`       - the Ceylon compiler backend sources
 * `langtools` - the OpenJDK Javac compiler sources
-* `test-src`  - the Ceylon compiler backend unit tests
+* `test`      - the Ceylon compiler backend unit tests
 
 Build the compiler and tools
 ----------------------------
