@@ -174,7 +174,7 @@
 "A value getter declaration."
 ^(ATTRIBUTE_GETTER_DEFINITION:ANY_ATTRIBUTE
     BLOCK
-    Getter declarationModel;)
+    Value declarationModel;)
 
 "An value setter declaration."
 ^(ATTRIBUTE_SETTER_DEFINITION:TYPED_DECLARATION
@@ -746,7 +746,7 @@
 ^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
     BLOCK? 
     SPECIFIER_EXPRESSION?
-    Getter declarationModel;)
+    Value declarationModel;)
 "An object declaration that occurs as a named argument."
 ^(OBJECT_ARGUMENT:TYPED_ARGUMENT
     EXTENDED_TYPE?
