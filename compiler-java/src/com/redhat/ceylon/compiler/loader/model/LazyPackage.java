@@ -381,6 +381,7 @@ public class LazyPackage extends Package {
                 lazyUnits.remove(unit);
                 for (Declaration d : unit.getDeclarations()) {
                     compiledDeclarations.remove(d);
+                    flushCache(d);
                     // TODO : remove the declaration from the declaration map in AbstractModelLoader
                 }
                 modelLoader.removeDeclarations(unit.getDeclarations());
