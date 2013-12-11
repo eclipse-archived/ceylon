@@ -98,7 +98,6 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
-import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
@@ -171,7 +170,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_OBJECT_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ObjectExprs";
     private static final String CEYLON_DECLARATION_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DeclarationValue";
     private static final String CEYLON_DECLARATION_EXPRS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.DeclarationExprs";
-    private static final String CEYLON_PARAMETER_VALUE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.ParameterValue";
     private static final String CEYLON_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Transient";
     private static final String JAVA_DEPRECATED_ANNOTATION = "java.lang.Deprecated";
     
@@ -181,7 +179,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_DEFAULT_ANNOTATION = "ceylon.language.DefaultAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_FORMAL_ANNOTATION = "ceylon.language.FormalAnnotation$annotation$";
     private static final String CEYLON_LANGUAGE_LATE_ANNOTATION = "ceylon.language.LateAnnotation$annotation$";
-    private static final String CEYLON_LANGUAGE_SHARED_ANNOTATION = "ceylon.language.SharedAnnotation$annotation$";
 
     // important that these are with ::
     private static final String CEYLON_LANGUAGE_CALLABLE_TYPE_NAME = "ceylon.language::Callable";
@@ -192,7 +189,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
-    private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
     private static final TypeMirror CEYLON_TYPE_DESCRIPTOR_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
     
@@ -200,32 +196,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_STRING_TYPE = simpleCeylonObjectType("ceylon.language.String");
     
     private static final TypeMirror PRIM_BOOLEAN_TYPE = simpleJDKObjectType("boolean");
-    private static final TypeMirror BOOLEAN_TYPE = simpleJDKObjectType("java.lang.Boolean");
     private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleCeylonObjectType("ceylon.language.Boolean");
     
     private static final TypeMirror PRIM_BYTE_TYPE = simpleJDKObjectType("byte");
-    private static final TypeMirror BYTE_TYPE = simpleJDKObjectType("java.lang.Byte");
     private static final TypeMirror PRIM_SHORT_TYPE = simpleJDKObjectType("short");
-    private static final TypeMirror SHORT_TYPE = simpleJDKObjectType("java.lang.Short");
 
     private static final TypeMirror PRIM_INT_TYPE = simpleJDKObjectType("int");
-    private static final TypeMirror INTEGER_TYPE = simpleJDKObjectType("java.lang.Integer");
     private static final TypeMirror PRIM_LONG_TYPE = simpleJDKObjectType("long");
-    private static final TypeMirror LONG_TYPE = simpleJDKObjectType("java.lang.Long");
     private static final TypeMirror CEYLON_INTEGER_TYPE = simpleCeylonObjectType("ceylon.language.Integer");
     
     private static final TypeMirror PRIM_FLOAT_TYPE = simpleJDKObjectType("float");
-    private static final TypeMirror FLOAT_TYPE = simpleJDKObjectType("java.lang.Float");
     private static final TypeMirror PRIM_DOUBLE_TYPE = simpleJDKObjectType("double");
-    private static final TypeMirror DOUBLE_TYPE = simpleJDKObjectType("java.lang.Double");
     private static final TypeMirror CEYLON_FLOAT_TYPE = simpleCeylonObjectType("ceylon.language.Float");
 
     private static final TypeMirror PRIM_CHAR_TYPE = simpleJDKObjectType("char");
-    private static final TypeMirror CHARACTER_TYPE = simpleJDKObjectType("java.lang.Character");
     private static final TypeMirror CEYLON_CHARACTER_TYPE = simpleCeylonObjectType("ceylon.language.Character");
     
-    private static final TypeMirror CEYLON_ARRAY_TYPE = simpleCeylonObjectType("ceylon.language.Array");
-
     // this one has no "_" postfix because that's how we look it up
     protected static final String JAVA_LANG_ARRAYS = "java.lang.arrays";
     protected static final String JAVA_LANG_BYTE_ARRAY = "java.lang.ByteArray";
@@ -258,7 +244,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror JAVA_DOUBLE_ARRAY_TYPE = simpleJDKObjectType("java.lang.DoubleArray");
     private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleJDKObjectType("java.lang.CharArray");
     private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
-    private static final TypeMirror JAVA_OBJECT_ARRAY_TYPE = simpleJDKObjectType("java.lang.ObjectArray");
     
     private static TypeMirror simpleJDKObjectType(String name) {
         return new SimpleReflType(name, SimpleReflType.Module.JDK, TypeKind.DECLARED);
@@ -1330,14 +1315,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return (String) getAnnotationValue(mirror, type, field);
     }
     
-    private TypeMirror getAnnotationClassValue(AnnotatedMirror mirror, String type, String field) {
-        return (TypeMirror) getAnnotationValue(mirror, type, field);
-    }
-    
-    private List<Short> getAnnotationShortArrayValue(AnnotatedMirror mirror, String type, String field) {
-        return getAnnotationArrayValue(mirror, type, field);
-    }
-
     private Boolean getAnnotationBooleanValue(AnnotatedMirror mirror, String type, String field) {
         return (Boolean) getAnnotationValue(mirror, type, field);
     }
@@ -1347,29 +1324,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return val != null ? val : defaultValue;
     }
     
+    @SuppressWarnings("unchecked")
     private List<TypeMirror> getAnnotationClassValues(AnnotationMirror annotation, String field) {
         return (List<TypeMirror>)annotation.getValue(field);
     }
     
+    @SuppressWarnings("unchecked")
     private List<String> getAnnotationStringValues(AnnotationMirror annotation, String field) {
         return (List<String>)annotation.getValue(field);
     }
     
+    @SuppressWarnings("unchecked")
     private List<Integer> getAnnotationIntegerValues(AnnotationMirror annotation, String field) {
         return (List<Integer>)annotation.getValue(field);
     }
     
+    @SuppressWarnings("unchecked")
     private List<Boolean> getAnnotationBooleanValues(AnnotationMirror annotation, String field) {
         return (List<Boolean>)annotation.getValue(field);
     }
     
+    @SuppressWarnings("unchecked")
     private List<Long> getAnnotationLongValues(AnnotationMirror annotation, String field) {
         return (List<Long>)annotation.getValue(field);
     }
     
+    @SuppressWarnings("unchecked")
     private List<Double> getAnnotationDoubleValues(AnnotationMirror annotation, String field) {
         return (List<Double>)annotation.getValue(field);
     }
+    @SuppressWarnings("unchecked")
     private List<AnnotationMirror> getAnnotationAnnoValues(AnnotationMirror annotation, String field) {
         return (List<AnnotationMirror>)annotation.getValue(field);
     }
@@ -1449,8 +1433,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public synchronized void complete(LazyClassAlias alias) {
         timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
-        // must be a class
-        Class declaration = (Class) alias.getExtendedType().getDeclaration();
         
         // Find the instantiator method
         MethodMirror instantiator = null;
@@ -1468,38 +1450,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setParameters(alias, instantiator, true, alias);
         }
         timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-    }
-
-    private ParameterList copyParameterList(LazyClassAlias alias, Class declaration) {
-        ParameterList newList = new ParameterList();
-        // FIXME: multiple param lists?
-        newList.setNamedParametersSupported(declaration.getParameterList().isNamedParametersSupported());
-        for(Parameter p : declaration.getParameterList().getParameters()){
-            // FIXME: functionalparams?
-            Parameter newParam = new Parameter();
-            MethodOrValue mov;
-            if (p.getModel() instanceof Value) {
-                Value value = new Value();
-                mov = value;
-            } else {
-                Method method = new Method();
-                mov = method;
-            }
-            mov.setContainer(alias);
-            mov.setUnboxed(p.getModel().getUnboxed());
-            mov.setUncheckedNullType(p.getModel().hasUncheckedNullType());
-            mov.setUnit(p.getModel().getUnit());
-            mov.setType(p.getModel().getProducedTypedReference(alias.getExtendedType(), Collections.<ProducedType>emptyList()).getType());
-
-            newParam.setModel(mov);
-            newParam.setName(p.getName());
-            DeclarationVisitor.setVisibleScope(mov);
-            newParam.setDeclaration(alias);
-            newParam.setSequenced(p.isSequenced());
-            alias.addMember(mov);
-            newList.getParameters().add(newParam);
-        }
-        return newList;
     }
 
     @Override
@@ -1771,6 +1721,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void addInnerClassesFromAnnotation(ClassOrInterface klass, AnnotationMirror membersAnnotation) {
+        @SuppressWarnings("unchecked")
         List<AnnotationMirror> members = (List<AnnotationMirror>) membersAnnotation.getValue();
         for(AnnotationMirror member : members){
             TypeMirror javaClassMirror = (TypeMirror)member.getValue("klass");
@@ -1801,7 +1752,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip private classes, otherwise the JDK has a ton of unresolved things
             if(isJDK && !innerClass.isPublic())
                 continue;
-            Declaration innerDecl = convertToDeclaration(innerClass, DeclarationType.TYPE);
+            // convert it
+            convertToDeclaration(innerClass, DeclarationType.TYPE);
             // no need to set its container as that's now handled by convertToDeclaration
         }
     }
@@ -2606,7 +2558,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (annotationInvocationAnnotation != null) {
             ai = new AnnotationInvocation();
             setPrimaryFromAnnotationInvocationAnnotation(annotationInvocationAnnotation, ai);
-            loadAnnotationInvocationArguments(new ArrayList(2), method, ai, annotationInvocationAnnotation, annotationTree, annoInstMirror);
+            loadAnnotationInvocationArguments(new ArrayList<AnnotationFieldName>(2), method, ai, annotationInvocationAnnotation, annotationTree, annoInstMirror);
         }
         return ai;
     }
@@ -2617,6 +2569,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             AnnotationInvocation ai, AnnotationMirror annotationInvocationAnnotation,
             List<AnnotationMirror> annotationTree, 
             AnnotatedMirror dpm) {
+        @SuppressWarnings("unchecked")
         List<Short> argumentCodes = (List<Short>)annotationInvocationAnnotation.getValue(CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER);
         if(argumentCodes != null){
             for (int ii = 0; ii < argumentCodes.size(); ii++) {
@@ -3089,7 +3042,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setListOfTypes(param.getCaseTypes(), caseTypesAttribute, scope, moduleScope,
                     "type parameter '"+param.getName()+"' case types");
 
-            @SuppressWarnings("unchecked")
             String defaultValueAttribute = (String)typeParamAnnotation.getValue("defaultValue");
             if(defaultValueAttribute != null && !defaultValueAttribute.isEmpty()){
                 ProducedType decodedType = decodeType(defaultValueAttribute, scope, moduleScope, 
@@ -3591,7 +3543,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public synchronized void removeDeclarations(List<Declaration> declarations) {
-        List<String> keysToRemove = new ArrayList<String>();
         // keep in sync with getOrCreateDeclaration
         for (Declaration decl : declarations) {
             String fqn = decl.getQualifiedNameString().replace("::", ".");
@@ -3815,7 +3766,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private boolean isImportedSpecialRules(Module moduleScope, Module importedModule) {
-        String moduleScopeName = moduleScope.getNameAsString();
         String importedModuleName = importedModule.getNameAsString();
         // every Java module imports the JDK
         // ceylon.language imports the JDK
