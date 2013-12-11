@@ -534,6 +534,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             close("ul");
             close("div");
         }
+        tool.warningMissingThrows(decl);
     }
     
     private void writeDeprecated(Declaration decl) throws IOException {

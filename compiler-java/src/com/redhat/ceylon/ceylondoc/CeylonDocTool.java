@@ -47,6 +47,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -57,7 +58,6 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleSpec;
-import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -71,11 +71,13 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
@@ -86,6 +88,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
@@ -134,6 +137,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
+    private boolean ignoreMissingThrows;
     private boolean ignoreBrokenLink;
     private Map<Referenceable, PhasedUnit> modelUnitMap = new HashMap<Referenceable, PhasedUnit>();
     private Map<Referenceable, Node> modelNodeMap = new HashMap<Referenceable, Node>();
@@ -428,6 +432,16 @@ public class CeylonDocTool extends RepoUsingTool {
     
     public boolean isIgnoreMissingDoc() {
         return ignoreMissingDoc;
+    }
+    
+    @Option(longName = "ignore-missing-throws")
+    @Description("Do not print warnings about missing throws annotation.")
+    public void setIgnoreMissingThrows(boolean ignoreMissingThrows) {
+        this.ignoreMissingThrows = ignoreMissingThrows;
+    }
+    
+    public boolean isIgnoreMissingThrows() {
+        return ignoreMissingThrows;
     }
     
     @Option(longName = "ignore-broken-link")
@@ -1175,50 +1189,107 @@ public class CeylonDocTool extends RepoUsingTool {
     
     protected void warningBrokenLink(String link, Referenceable scope) {
         if (!ignoreBrokenLink) {
-            
-            String where = "";
-            if (scope instanceof Module) {
-                where += "module ";
-            } else if (scope instanceof Package) {
-                where += "package ";
-            } else if (scope instanceof Class) {
-                where += "class ";
-            } else if (scope instanceof Interface) {
-                where += "interface ";
-            } else if (scope instanceof TypeAlias) {
-                where += "type alias ";
-            } else if (scope instanceof TypeParameter) {
-                where += "type parameter ";
-            } else if (scope instanceof Method) {
-                if (((Method) scope).isToplevel()) {
-                    where += "function ";
-                } else {
-                    where += "method ";
-                }
-            } else if (scope instanceof Value) {
-                if (((Value) scope).isToplevel()) {
-                    where += "value ";
-                } else if (((Value) scope).isParameter()) {
-                    where += "parameter ";
-                } else {
-                    where += "attribute ";
-                }
-            }
-            if( scope instanceof Declaration ) {
-                where += ((Declaration) scope).getQualifiedNameString();
-            } else {
-                where += scope.getNameAsString();            
-            }
-            
-            log.warning(CeylondMessages.msg("warn.brokenLink", link, where));
+            log.warning(CeylondMessages.msg("warn.brokenLink", link, getWhere(scope)));
         }
     }
     
     protected void warningSetterDoc(String name) {
         log.warning(CeylondMessages.msg("warn.setterDoc", name));
     }
- 
+
+    protected void warningMissingThrows(Declaration d) {
+        if (ignoreMissingThrows) {
+            return;
+        }
+        
+        final Scope scope = d.getScope();
+        final PhasedUnit unit = getUnit(d);
+        final Node node = getNode(d);
+        if (scope == null || unit == null || unit.getUnit() == null || node == null || !(d instanceof MethodOrValue)) {
+            return;
+        }
+        
+        List<ProducedType> documentedExceptions = new ArrayList<ProducedType>();
+        for (Annotation annotation : d.getAnnotations()) {
+            if (annotation.getName().equals("throws")) {
+                String exceptionName = annotation.getPositionalArguments().get(0);
+                Declaration exceptionDecl = scope.getMemberOrParameter(unit.getUnit(), exceptionName, null, false);
+                if (exceptionDecl instanceof TypeDeclaration) {
+                    documentedExceptions.add(((TypeDeclaration) exceptionDecl).getType());
+                }
+            }
+        }
+        
+        final List<ProducedType> thrownExceptions = new ArrayList<ProducedType>();
+        node.visitChildren(new Visitor() {
+            @Override
+            public void visit(Tree.Throw that) {
+                Expression expression = that.getExpression();
+                if (expression != null) {
+                    thrownExceptions.add(expression.getTypeModel());
+                } else {
+                    thrownExceptions.add(unit.getUnit().getExceptionDeclaration().getType());
+                }
+            }
+            @Override
+            public void visit(Tree.Declaration that) {
+                // the end of searching
+            }
+        });
+
+        for (ProducedType thrownException : thrownExceptions) {
+            boolean isDocumented = false;
+            for (ProducedType documentedException : documentedExceptions) {
+                if (thrownException.isSubtypeOf(documentedException)) {
+                    isDocumented = true;
+                    break;
+                }
+            }
+            if (!isDocumented) {
+                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.getProducedTypeName(), getWhere(d)));
+            }
+        }
+    }
+    
+    private String getWhere(Referenceable scope) {
+        String where = "";
+        if (scope instanceof Module) {
+            where += "module ";
+        } else if (scope instanceof Package) {
+            where += "package ";
+        } else if (scope instanceof Class) {
+            where += "class ";
+        } else if (scope instanceof Interface) {
+            where += "interface ";
+        } else if (scope instanceof TypeAlias) {
+            where += "type alias ";
+        } else if (scope instanceof TypeParameter) {
+            where += "type parameter ";
+        } else if (scope instanceof Method) {
+            if (((Method) scope).isToplevel()) {
+                where += "function ";
+            } else {
+                where += "method ";
+            }
+        } else if (scope instanceof Value) {
+            if (((Value) scope).isToplevel()) {
+                where += "value ";
+            } else if (((Value) scope).isParameter()) {
+                where += "parameter ";
+            } else {
+                where += "attribute ";
+            }
+        }
+        if( scope instanceof Declaration ) {
+            where += ((Declaration) scope).getQualifiedNameString();
+        } else {
+            where += scope.getNameAsString();            
+        }
+        return where;
+    }
+    
     public List<Module> getDocumentedModules(){
         return modules;
     }
+    
 }

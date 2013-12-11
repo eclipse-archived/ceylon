@@ -55,6 +55,18 @@ shared class StubClass(
     throws(`class StubException`, "`when` with __WIKI__ syntax")
     shared void methodWithThrows() {}
     
+    "The stub method with undocumented throw, ceylondoc should print warning about it."
+    shared void methodWithUndocumentedException1() {
+        void f() {
+            throw OverflowException();
+        }
+        throw AssertionException(""); 
+    }
+    
+    "The stub method with undocumented throw, ceylondoc should print warning about it."
+    shared void methodWithUndocumentedException2() { throw createException(); }
+    OverflowException|InitializationException createException() => OverflowException();
+    
     "The stub method with `see`."
     see(`value attributeWithSee`, `class StubException`, `class A1`, `class AliasA2`)
     shared void methodWithSee() {}
