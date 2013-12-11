@@ -44,4 +44,7 @@ public class ProducedTypeCache {
         cache.put(dec, superType);
     }
 
+    public void clear(){
+        superTypes.clear();
+    }
 }
