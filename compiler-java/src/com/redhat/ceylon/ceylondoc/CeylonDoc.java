@@ -85,6 +85,10 @@ public abstract class CeylonDoc extends Markup {
 
         close("head");
         open("body");
+        
+        if (!Util.isEmpty(tool.getHeader())) {
+            around("header", tool.getHeader());
+        }
     }
 
     protected final void writeFooter(String... additionalJs) throws IOException {
@@ -108,6 +112,10 @@ public abstract class CeylonDoc extends Markup {
         }
         
         writeKeyboardShortcuts();
+        
+        if (!Util.isEmpty(tool.getFooter())) {
+            around("footer", tool.getFooter());
+        }
         
         close("body");
         close("html");

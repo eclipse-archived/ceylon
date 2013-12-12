@@ -130,6 +130,8 @@ public class CeylonDocTool extends RepoUsingTool {
     private String encoding;
     private String user;
     private String pass;
+    private String header;
+    private String footer;
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
@@ -187,6 +189,26 @@ public class CeylonDocTool extends RepoUsingTool {
     @Description("Sets the password for use with an authenticated output repository.")
     public void setPass(String pass) {
         this.pass = pass;
+    }
+    
+    @OptionArgument(argumentName="header")
+    @Description("Sets the header text to be placed at the top of each page.")
+    public void setHeader(String header) {
+        this.header = header;
+    }
+    
+    public String getHeader() {
+        return header;
+    }
+    
+    @OptionArgument(argumentName="footer")
+    @Description("Sets the footer text to be placed at the bottom of each page.")
+    public void setFooter(String footer) {
+        this.footer = footer;
+    }
+    
+    public String getFooter() {
+        return footer;
     }
 
     @Option(longName="non-shared")

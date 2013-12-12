@@ -199,6 +199,14 @@ public class CeylonDocToolTest {
         CeylonDocTool tool = tool(pathname, docname, moduleName, true);
         tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
+        tool.setHeader("<div class='navbar-inverse navbar-static-top'>" +
+        		           "<div class='navbar-inner' style='color:white; font-style: italic; text-align: center'>" +
+        		               "documentation under construction" +
+        		           "</div>" +
+        		       "</div>");
+        tool.setFooter("<p style='text-align: right;'>" +
+        		       "Copyright © 2010-2013, Red Hat, Inc. or third-party contributors" +
+        		       "</p>");
         tool.run();
         
         Module module = new Module();
@@ -238,6 +246,7 @@ public class CeylonDocToolTest {
         assertAnnotations(destDir);
         assertAbstractClassModifier(destDir);
         assertFinalClassModifier(destDir);
+        assertHeaderAndFooter(destDir);
         assertBug659ShowInheritedMembers(destDir);
         assertBug691AbbreviatedOptionalType(destDir);
         assertBug839(destDir);
@@ -1084,6 +1093,18 @@ public class CeylonDocToolTest {
                 Pattern.compile(Pattern.quote("<tr><td id='StubFinalClass' nowrap><i class='icon-class'><i class='icon-decoration-final'></i></i>")));
         assertMatchInFile(destDir, "index.html",
                 Pattern.compile(Pattern.quote("<span class='modifiers'>shared final</span> <a class='link' href='StubFinalClass.type.html'")));         
+    }
+    
+    private void assertHeaderAndFooter(File destDir) throws Exception {
+        Pattern headerPattern = Pattern.compile(Pattern.quote("<header><div class='navbar-inverse navbar-static-top'><div class='navbar-inner' style='color:white; font-style: italic; text-align: center'>documentation under construction</div></div></header>"));
+        assertMatchInFile(destDir, "index.html", headerPattern);
+        assertMatchInFile(destDir, "search.html", headerPattern);
+        assertMatchInFile(destDir, "StubClass.type.html", headerPattern);
+        
+        Pattern footerPattern = Pattern.compile(Pattern.quote("<footer><p style='text-align: right;'>Copyright © 2010-2013, Red Hat, Inc. or third-party contributors</p></footer>"));
+        assertMatchInFile(destDir, "index.html", footerPattern);
+        assertMatchInFile(destDir, "search.html", footerPattern);
+        assertMatchInFile(destDir, "StubClass.type.html", footerPattern);
     }
     
     private void assertModuleDependencies(File destDir) throws Exception {
