@@ -34,8 +34,6 @@ public class ProducedType extends ProducedReference {
     private String underlyingType;
     private boolean isRaw;
     private ProducedType resolvedAliases;
-//    private Map<TypeDeclaration, ProducedType> superTypesCache = 
-//            new HashMap<TypeDeclaration, ProducedType>(5);
 
     // cache
     private int hashCode;
@@ -587,15 +585,8 @@ public class ProducedType extends ProducedReference {
         boolean canCache = !complexType && !hasUnderlyingType(); 
         ProducedTypeCache cache = dec.getUnit().getCache();
         if (canCache
-                && cache.containsKey(this, dec)
-//                && superTypesCache.containsKey(dec)
-                ) {
-            /*SoftReference<ProducedType> ref = superTypesCache.get(dec);
-            if (ref==null) return null;
-            ProducedType pt = ref.get();
-            if (pt!=null) return pt;*/
+                && cache.containsKey(this, dec)) {
             return cache.get(this, dec);
-//            return superTypesCache.get(dec);
         }
         SupertypeCheck check = checkSupertype(getDeclaration(), dec);
         ProducedType superType;
@@ -611,9 +602,7 @@ public class ProducedType extends ProducedReference {
         }
         if (canCache) {
             cache.put(this, dec, superType);
-//            superTypesCache.put(dec, superType);
         }
-        //if (!complexType) superTypesCache.put(dec, superType==null?null:new SoftReference<ProducedType>(superType));
         return superType;
     }
     
