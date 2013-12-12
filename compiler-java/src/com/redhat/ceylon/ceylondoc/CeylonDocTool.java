@@ -73,7 +73,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
@@ -127,51 +126,45 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 "        --out ~/projects/hibernate/build")
 public class CeylonDocTool extends RepoUsingTool {
 
-    private List<PhasedUnit> phasedUnits;
-    private List<Module> modules;
     private String outputRepository;
-    private String user,pass;
-    private Map<TypeDeclaration, List<Class>> subclasses = new HashMap<TypeDeclaration, List<Class>>();
-    private Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
-    private Map<TypeDeclaration, List<Method>> annotationConstructors = new HashMap<TypeDeclaration, List<Method>>();
+    private String encoding;
+    private String user;
+    private String pass;
     private boolean includeNonShared;
     private boolean includeSourceCode;
     private boolean ignoreMissingDoc;
     private boolean ignoreMissingThrows;
     private boolean ignoreBrokenLink;
-    private Map<Referenceable, PhasedUnit> modelUnitMap = new HashMap<Referenceable, PhasedUnit>();
-    private Map<Referenceable, Node> modelNodeMap = new HashMap<Referenceable, Node>();
-    private Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
-    private Map<Parameter, Node> parameterNodeMap = new HashMap<Parameter, Node>();
-    private File tempDestDir;
-    private CeylondLogger log;
-    private List<String> compiledClasses = new LinkedList<String>();
-    private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private boolean haltOnError;
-    private List<String> moduleSpecs = new LinkedList<String>();
-    private Module currentModule;
-    private List<String> links = new LinkedList<String>();
-    private TypeChecker typeChecker;
-    private String encoding;
-    private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
+    private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
+    private List<String> moduleSpecs = new LinkedList<String>();
+    private List<String> links = new LinkedList<String>();
+    
+    private TypeChecker typeChecker;
+    private Module currentModule;
+    private File tempDestDir;
+    private final CeylondLogger log = new CeylondLogger();
+    private final List<PhasedUnit> phasedUnits = new LinkedList<PhasedUnit>();
+    private final List<Module> modules = new LinkedList<Module>();
+    private final List<String> compiledClasses = new LinkedList<String>();
+    private final Map<TypeDeclaration, List<Class>> subclasses = new HashMap<TypeDeclaration, List<Class>>();
+    private final Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new HashMap<TypeDeclaration, List<ClassOrInterface>>();
+    private final Map<TypeDeclaration, List<Method>> annotationConstructors = new HashMap<TypeDeclaration, List<Method>>();
+    private final Map<Referenceable, PhasedUnit> modelUnitMap = new HashMap<Referenceable, PhasedUnit>();
+    private final Map<Referenceable, Node> modelNodeMap = new HashMap<Referenceable, Node>();
+    private final Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
+    private final Map<Parameter, Node> parameterNodeMap = new HashMap<Parameter, Node>();
+    private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
 
     public CeylonDocTool() {
         super(CeylondMessages.RESOURCE_BUNDLE);
     }
     
-    public CeylonDocTool(List<File> sourceFolders, List<String> repositories, List<String> moduleSpecs,
-            boolean haltOnError) throws Exception {
-        this();
-        setSourceFolders(sourceFolders);
-        setRepositoryAsStrings(repositories);
-        setModuleSpecs(moduleSpecs);
-        setHaltOnError(haltOnError);
-        initialize();
-    }
-    
-    public List<File> getSourceFolders() {
-        return sourceFolders;
+    @OptionArgument(longName="out", argumentName="dir-or-url")
+    @Description("The URL of the module repository where output should be published (default: `./out`)")
+    public void setOutputRepository(String outputRepository) {
+        this.outputRepository = outputRepository;
     }
 
     @OptionArgument(argumentName="encoding")
@@ -184,6 +177,67 @@ public class CeylonDocTool extends RepoUsingTool {
         return encoding;
     }
     
+    @OptionArgument(argumentName="name")
+    @Description("Sets the user name for use with an authenticated output repository.")
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    @OptionArgument(argumentName="secret")
+    @Description("Sets the password for use with an authenticated output repository.")
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    @Option(longName="non-shared")
+    @Description("Includes documentation for package-private declarations.")
+    public void setIncludeNonShared(boolean includeNonShared) {
+        this.includeNonShared = includeNonShared;
+    }
+
+    public boolean isIncludeNonShared() {
+        return includeNonShared;
+    }
+
+    @Option(longName="source-code")
+    @Description("Includes source code in the generated documentation.")
+    public void setIncludeSourceCode(boolean includeSourceCode) {
+        this.includeSourceCode = includeSourceCode;
+    }
+
+    public boolean isIncludeSourceCode() {
+        return includeSourceCode;
+    }
+
+    @Option(longName = "ignore-missing-doc")
+    @Description("Do not print warnings about missing documentation.")
+    public void setIgnoreMissingDoc(boolean ignoreMissingDoc) {
+        this.ignoreMissingDoc = ignoreMissingDoc;
+    }
+
+    @Option(longName = "ignore-missing-throws")
+    @Description("Do not print warnings about missing throws annotation.")
+    public void setIgnoreMissingThrows(boolean ignoreMissingThrows) {
+        this.ignoreMissingThrows = ignoreMissingThrows;
+    }
+
+    @Option(longName = "ignore-broken-link")
+    @Description("Do not print warnings about broken links.")
+    public void setIgnoreBrokenLink(boolean ignoreBrokenLink) {
+        this.ignoreBrokenLink = ignoreBrokenLink;
+    }
+
+    public void setHaltOnError(boolean haltOnError) {
+        this.haltOnError = haltOnError;
+    }
+
+    @OptionArgument(longName="source", argumentName="dirs")
+    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
+    @Description("An alias for `--src` (default: `./source`)")
+    public void setSource(List<File> source) {
+        setSourceFolders(source);
+    }
+
     @OptionArgument(longName="src", argumentName="dir")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("A directory containing Ceylon and/or Java source code (default: `./source`)")
@@ -191,31 +245,11 @@ public class CeylonDocTool extends RepoUsingTool {
         this.sourceFolders = sourceFolders;
     }
     
-    @OptionArgument(longName="source", argumentName="dirs")
-    @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
-    @Description("An alias for `--src`" +
-            " (default: `./source`)")
-    public void setSource(List<File> source) {
-        setSourceFolders(source);
-    }
-
     @OptionArgument(longName="doc", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("A directory containing your module documentation (default: `./doc`)")
     public void setDocFolders(List<File> docFolders) {
         this.docFolders = docFolders;
-    }
-
-    public boolean isHaltOnError() {
-        return haltOnError;
-    }
-
-    public void setHaltOnError(boolean haltOnError) {
-        this.haltOnError = haltOnError;
-    }
-
-    public List<String> getModuleSpecs() {
-        return moduleSpecs;
     }
 
     @Argument(argumentName="modules", multiplicity="+")
@@ -275,6 +309,14 @@ public class CeylonDocTool extends RepoUsingTool {
     public void setOffline(boolean offline) {
         this.offline = offline;
     }
+    
+    public List<String> getCompiledClasses() {
+        return compiledClasses;
+    }
+
+    public String getOutputRepository() {
+        return outputRepository;
+    }
 
     @Override
     public void initialize() {
@@ -283,7 +325,6 @@ public class CeylonDocTool extends RepoUsingTool {
         for(File src : sourceFolders){
             builder.addSrcDirectory(src);
         }
-        this.log = new CeylondLogger();
         
         // set up the artifact repository
         RepositoryManager repository = createRepositoryManagerBuilder()
@@ -310,14 +351,13 @@ public class CeylonDocTool extends RepoUsingTool {
         
         typeChecker = builder.getTypeChecker();
         // collect all units we are typechecking
-        collectTypeCheckedUnits(typeChecker);
+        initTypeCheckedUnits(typeChecker);
         typeChecker.process();
         if(haltOnError && typeChecker.getErrors() > 0)
             throw new RuntimeException(CeylondMessages.msg("error.failedParsing", typeChecker.getErrors()));
         
-        this.modules = getModules(modules, typeChecker.getContext().getModules());
-        // only for source code mapping
-        this.phasedUnits = getPhasedUnits(typeChecker.getPhasedUnits().getPhasedUnits());
+        initModules(modules);
+        initPhasedUnits();
 
         // make a temp dest folder
         try {
@@ -329,7 +369,7 @@ public class CeylonDocTool extends RepoUsingTool {
         tempDestDir.mkdirs();
     }
 
-    private void collectTypeCheckedUnits(TypeChecker typeChecker) {
+    private void initTypeCheckedUnits(TypeChecker typeChecker) {
         for(PhasedUnit unit : typeChecker.getPhasedUnits().getPhasedUnits()){
             // obtain the unit container path
             final String pkgName = Util.getUnitPackageName(unit); 
@@ -342,116 +382,34 @@ public class CeylonDocTool extends RepoUsingTool {
         }
     }
 
-    private List<Module> getModules(List<ModuleSpec> moduleSpecs, Modules modules){
-        // find the required modules
-        List<Module> documentedModules = new LinkedList<Module>();
-        for(ModuleSpec moduleSpec : moduleSpecs){
+    private void initModules(List<ModuleSpec> moduleSpecs) {
+        for (ModuleSpec moduleSpec : moduleSpecs) {
             Module foundModule = null;
-            for(Module module : modules.getListOfModules()){
-                if(module.getNameAsString().equals(moduleSpec.getName())){
-                    if(!moduleSpec.isVersioned() || moduleSpec.getVersion().equals(module.getVersion()))
+            for (Module module : typeChecker.getContext().getModules().getListOfModules()) {
+                if (module.getNameAsString().equals(moduleSpec.getName())) {
+                    if (!moduleSpec.isVersioned() || moduleSpec.getVersion().equals(module.getVersion()))
                         foundModule = module;
                 }
             }
-            if(foundModule != null)
-                documentedModules.add(foundModule);
-            else if(moduleSpec.isVersioned())
-                throw new RuntimeException(CeylondMessages.msg("error.cantFindModule", moduleSpec.getName(), moduleSpec.getVersion()));
-            else
+            if (foundModule != null) {
+                modules.add(foundModule);
+            }
+            else if (moduleSpec.isVersioned()) {
+                throw new RuntimeException(CeylondMessages.msg("error.cantFindModule", moduleSpec.getName(),
+                        moduleSpec.getVersion()));
+            }
+            else {
                 throw new RuntimeException(CeylondMessages.msg("error.cantFindModuleNoVersion", moduleSpec.getName()));
+            }
         }
-        return documentedModules;
     }
     
-    private List<PhasedUnit> getPhasedUnits(List<PhasedUnit> phasedUnits) {
-        List<PhasedUnit> documentedPhasedUnit = new LinkedList<PhasedUnit>();
-        for(PhasedUnit pu : phasedUnits){
-            if(modules.contains(pu.getUnit().getPackage().getModule()))
-                documentedPhasedUnit.add(pu);
+    private void initPhasedUnits() {
+        for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
+            if (modules.contains(pu.getUnit().getPackage().getModule())) {
+                phasedUnits.add(pu);
+            }
         }
-        return documentedPhasedUnit;
-    }
-
-    public void setOutputRepository(String outputRepository, String user, String pass) {
-        this.outputRepository = outputRepository;
-        this.user = user;
-        this.pass = pass;
-    }
-    
-    @OptionArgument(longName="out", argumentName="dir-or-url")
-    @Description("The URL of the module repository where output should be published (default: `./out`)")
-    public void setOutputRepository(String outputRepository) {
-        this.outputRepository = outputRepository;
-    }
-    
-    @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository.")
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-    
-    @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository.")
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public List<String> getCompiledClasses(){
-        return compiledClasses;
-    }
-    
-    public String getOutputRepository() {
-        return outputRepository;
-    }
-
-    @Option(longName="non-shared")
-    @Description("Includes documentation for package-private declarations.")
-    public void setIncludeNonShared(boolean includeNonShared) {
-        this.includeNonShared = includeNonShared;
-    }
-
-    public boolean isIncludeNonShared() {
-        return includeNonShared;
-    }
-
-    @Option(longName="source-code")
-    @Description("Includes source code in the generated documentation.")
-    public void setIncludeSourceCode(boolean includeSourceCode) {
-        this.includeSourceCode = includeSourceCode;
-    }
-    
-    public boolean isIncludeSourceCode() {
-        return includeSourceCode;
-    }
-
-    @Option(longName = "ignore-missing-doc")
-    @Description("Do not print warnings about missing documentation.")
-    public void setIgnoreMissingDoc(boolean ignoreMissingDoc) {
-        this.ignoreMissingDoc = ignoreMissingDoc;
-    }
-    
-    public boolean isIgnoreMissingDoc() {
-        return ignoreMissingDoc;
-    }
-    
-    @Option(longName = "ignore-missing-throws")
-    @Description("Do not print warnings about missing throws annotation.")
-    public void setIgnoreMissingThrows(boolean ignoreMissingThrows) {
-        this.ignoreMissingThrows = ignoreMissingThrows;
-    }
-    
-    public boolean isIgnoreMissingThrows() {
-        return ignoreMissingThrows;
-    }
-    
-    @Option(longName = "ignore-broken-link")
-    @Description("Do not print warnings about broken links.")
-    public void setIgnoreBrokenLink(boolean ignoreBrokenLink) {
-        this.ignoreBrokenLink = ignoreBrokenLink;
-    }
-
-    public boolean isIgnoreBrokenLink() {
-        return ignoreBrokenLink;
     }
     
     public String getFileName(TypeDeclaration type) {
@@ -488,11 +446,11 @@ public class CeylonDocTool extends RepoUsingTool {
         return dir;
     }
 
-    public File getOutputFolder(Module module) {
-        File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(tempDestDir, module),
-                "module-doc");
-        if(shouldInclude(module))
+    private File getOutputFolder(Module module) {
+        File folder = new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(tempDestDir, module), "module-doc");
+        if (shouldInclude(module)) {
             folder.mkdirs();
+        }
         return folder;
     }
 
@@ -500,7 +458,7 @@ public class CeylonDocTool extends RepoUsingTool {
         return getFolder(getPackage(type));
     }
 
-    File getObjectFile(Object modPgkOrDecl) throws IOException {
+    private File getObjectFile(Object modPgkOrDecl) throws IOException {
         final File file;
         if (modPgkOrDecl instanceof TypeDeclaration) {
             TypeDeclaration type = (TypeDeclaration)modPgkOrDecl;
@@ -523,8 +481,7 @@ public class CeylonDocTool extends RepoUsingTool {
         makeDoc();    
     }
     
-    public void makeDoc() throws IOException {
-        
+    private void makeDoc() throws IOException {
         buildNodesMaps();
         if (includeSourceCode) {
             copySourceFiles();
@@ -914,7 +871,7 @@ public class CeylonDocTool extends RepoUsingTool {
      * @param pkg
      * @return
      */
-    boolean isRootPackage(Module module, Package pkg) {
+    protected boolean isRootPackage(Module module, Package pkg) {
         if(module.isDefault())
             return pkg.getNameAsString().isEmpty();
         return pkg.getNameAsString().equals(module.getNameAsString());
@@ -955,7 +912,7 @@ public class CeylonDocTool extends RepoUsingTool {
         }
     }
 
-    Package getPackage(Declaration decl) {
+    protected Package getPackage(Declaration decl) {
         Scope scope = decl.getContainer();
         while (!(scope instanceof Package)) {
             scope = scope.getContainer();
@@ -963,7 +920,7 @@ public class CeylonDocTool extends RepoUsingTool {
         return (Package)scope;
     }
 
-    Module getModule(Object modPkgOrDecl) {
+    protected Module getModule(Object modPkgOrDecl) {
         if (modPkgOrDecl instanceof Module) {
             return (Module)modPkgOrDecl;
         } else if (modPkgOrDecl instanceof Package) {
@@ -1151,6 +1108,10 @@ public class CeylonDocTool extends RepoUsingTool {
         return subclasses.get(klass);
     }
     
+    protected Map<String, Boolean> getModuleUrlAvailabilityCache() {
+        return moduleUrlAvailabilityCache;
+    }
+    
     /**
      * Returns the starting and ending line number of the given declaration
      * @param decl The declaration
@@ -1169,16 +1130,16 @@ public class CeylonDocTool extends RepoUsingTool {
         return currentModule;
     }
     
+    public List<Module> getDocumentedModules(){
+        return modules;
+    }
+
     protected TypeChecker getTypeChecker() {
         return typeChecker;
     }
     
     protected Logger getLogger() {
         return log;
-    }
-    
-    protected Map<String, Boolean> getModuleUrlAvailabilityCache() {
-        return moduleUrlAvailabilityCache;
     }
 
     protected void warningMissingDoc(String name) {
@@ -1286,10 +1247,6 @@ public class CeylonDocTool extends RepoUsingTool {
             where += scope.getNameAsString();            
         }
         return where;
-    }
-    
-    public List<Module> getDocumentedModules(){
-        return modules;
     }
     
 }

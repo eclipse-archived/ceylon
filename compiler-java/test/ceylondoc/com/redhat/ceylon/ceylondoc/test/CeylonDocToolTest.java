@@ -61,7 +61,6 @@ import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.net.httpserver.HttpExchange;
@@ -75,21 +74,22 @@ public class CeylonDocToolTest {
     @Rule 
     public TestName name = new TestName();
     
-    private CeylonDocTool tool(List<File> pathname, List<File> docFolders, List<String> moduleName, 
-            boolean throwOnError, String... repositories)
+    private CeylonDocTool tool(List<File> sourceFolders, List<File> docFolders, List<String> moduleName, 
+            boolean haltOnError, String... repositories)
             throws Exception {
+        
         CeylonDocTool tool = new CeylonDocTool();
-        tool.setDocFolders(docFolders);
-        tool.setSourceFolders(pathname); 
+        tool.setSourceFolders(sourceFolders);
         tool.setRepositoryAsStrings(Arrays.asList(repositories));
         tool.setModuleSpecs(moduleName);
-        tool.setHaltOnError(throwOnError);
+        tool.setDocFolders(docFolders);
+        tool.setHaltOnError(haltOnError);
         tool.initialize();
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
             Util.delete(dir);
         }
-        tool.setOutputRepository(dir.getAbsolutePath(), null, null);
+        tool.setOutputRepository(dir.getAbsolutePath());
         return tool;
     }
 
@@ -199,7 +199,7 @@ public class CeylonDocToolTest {
         CeylonDocTool tool = tool(pathname, docname, moduleName, true);
         tool.setIncludeNonShared(includeNonShared);
         tool.setIncludeSourceCode(true);
-        tool.makeDoc();
+        tool.run();
         
         Module module = new Module();
         module.setName(Arrays.asList(moduleName));
@@ -304,7 +304,7 @@ public class CeylonDocToolTest {
 
         CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), Collections.<File>emptyList(), modules, true, "build/ceylon-cars");
         tool.setLinks(Arrays.asList(linkArgs));
-        tool.makeDoc();
+        tool.run();
 
         Module module = new Module();
         module.setName(Arrays.asList("com.redhat.ceylon.ceylondoc.test.modules.externallinks"));
@@ -330,7 +330,7 @@ public class CeylonDocToolTest {
         compile(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.b");
         
         CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.dependency.c", true, "build/ceylon-cars");
-        tool.makeDoc();
+        tool.run();
     }
 
     @Test
@@ -343,7 +343,7 @@ public class CeylonDocToolTest {
         
         // now run docs on c, which uses b, which uses a
         CeylonDocTool tool = tool(pathname, "com.redhat.ceylon.ceylondoc.test.modules.classloading.c", true, "build/ceylon-cars");
-        tool.makeDoc();
+        tool.run();
     }
 
     @Test
@@ -355,7 +355,7 @@ public class CeylonDocToolTest {
         compileJavaModule(pathname, "com/redhat/ceylon/ceylondoc/test/modules/mixed/Java.java");
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
-        tool.makeDoc();
+        tool.run();
     }
 
     @Test
@@ -364,7 +364,7 @@ public class CeylonDocToolTest {
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.multi.a";
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
-        tool.makeDoc();
+        tool.run();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
         File destDirA = getOutputDir(tool, a);
@@ -385,7 +385,7 @@ public class CeylonDocToolTest {
         
         try{
             CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
-            tool.makeDoc();
+            tool.run();
         }catch(RuntimeException x){
             Assert.assertEquals("Can't find module: com.redhat.ceylon.ceylondoc.test.modules.multi.a.sub", x.getMessage());
             return;
@@ -400,7 +400,7 @@ public class CeylonDocToolTest {
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.setIncludeNonShared(true);
-        tool.makeDoc();
+        tool.run();
 
         Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
         File destDirA = getOutputDir(tool, a);
@@ -426,7 +426,7 @@ public class CeylonDocToolTest {
         CeylonDocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
-        tool.makeDoc();
+        tool.run();
         
         Module module = makeModule("ceylon.language", LANGUAGE_MODULE_VERSION);
         File destDir = getOutputDir(tool, module);
@@ -468,7 +468,7 @@ public class CeylonDocToolTest {
                 "build/CeylonDocToolTest/" + name.getMethodName() + "-native");
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
-        tool.makeDoc();
+        tool.run();
         Map<String,String> nameToVersion = new HashMap<String,String>();
         for(Module module : tool.getDocumentedModules()){
             nameToVersion.put(module.getNameAsString(), module.getVersion());
