@@ -572,7 +572,10 @@ public class CallableBuilder {
                 int a = 0;
                 for(Parameter param : paramLists.getParameters()){
                     // don't read default parameter values for forwarded calls
-                    if(forwardCallTo != null && arity == a)
+                    // if we are in a call method below the variadic one,
+                    // otherwise consume every parameter
+                    if(arity <= CALLABLE_MAX_FIZED_ARITY 
+                            && forwardCallTo != null && arity == a)
                         break;
                     makeDowncastOrDefaultVar(stmts, getCallableTempVarName(param, forwardCallTo), param, a, arity, forwardCallTo);
                     a++;
@@ -597,7 +600,10 @@ public class CallableBuilder {
                     gen.getReturnTypeOfCallable(forwardCallTo.getTypeModel()),
                     forwardCallTo, 
                     paramLists,
-                    arity, isCallMethod);
+                    // if we are in a call method below the variadic one, respect arity, otherwise use the parameter list
+                    // size to forward all the arguments
+                    arity <= CALLABLE_MAX_FIZED_ARITY ? arity : paramLists.getParameters().size(), 
+                    isCallMethod);
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
             JCExpression invocation;
             try {
