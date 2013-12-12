@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language.meta.declaration { Package, ClassDeclaration }
+import ceylon.language.meta.declaration { ... }
 
 shared annotation StubAnnotationFoo stubAnnotationFoo(String s, Character c, Integer i, Float f, Boolean b, ClassDeclaration d, Package p, Integer[] seq1, Integer[] seq2, {Float*} it1, {Float*} it2) => StubAnnotationFoo(s, c, i, f, b, d, p, seq1, seq2, it1, it2);
 
