@@ -603,6 +603,10 @@ public class ProducedType extends ProducedReference {
                 && dec.isToplevel()
                 && dec.getTypeParameters().isEmpty()){
             superType = dec.getType();
+        }else if(check == SupertypeCheck.YES
+                && dec == getDeclaration()
+                && dec.isToplevel()){
+            superType = this;
         }else{
             superType = getSupertype(new SupertypeCriteria(dec));
         }
