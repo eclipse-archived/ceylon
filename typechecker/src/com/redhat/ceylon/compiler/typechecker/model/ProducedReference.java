@@ -18,6 +18,7 @@ public abstract class ProducedReference {
     private Map<TypeParameter, ProducedType> typeArguments = Collections.emptyMap();
     private Declaration declaration;
     private ProducedType qualifyingType;
+    private Map<TypeParameter, ProducedType> typeArgumentsWithDefaults;
 
     public ProducedType getQualifyingType() {
         return qualifyingType;
@@ -36,23 +37,28 @@ public abstract class ProducedReference {
     }
     
     public Map<TypeParameter, ProducedType> getTypeArguments() {
-        //convoluted implementation here is because we
-        //can't cache the result due to the lifecyle
-        //of defaulted type arguments
         if (declaration instanceof Generic) {
-            Map<TypeParameter, ProducedType> result = typeArguments;
-            List<TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
-            for (int i=0,l=typeParameters.size();i<l;i++) {
-                TypeParameter pt = typeParameters.get(i);
-                ProducedType dta = pt.getDefaultTypeArgument();
-                if (dta!=null) {
-                    if (!typeArguments.containsKey(pt)) {
-                        result = new HashMap<TypeParameter,ProducedType>(result);
-                        result.put(pt, dta.substitute(result));
+            if(typeArgumentsWithDefaults == null){
+                Map<TypeParameter, ProducedType> result = typeArguments;
+                List<TypeParameter> typeParameters = ((Generic) declaration).getTypeParameters();
+                for (int i=0,l=typeParameters.size();i<l;i++) {
+                    TypeParameter pt = typeParameters.get(i);
+                    ProducedType dta = pt.getDefaultTypeArgument();
+                    if (dta!=null) {
+                        if (!typeArguments.containsKey(pt)) {
+                            // only make a copy of typeArguments if required
+                            if(typeArguments == result){
+                                // make a copy big enough to fit every type parameter
+                                result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
+                                result.putAll(typeArguments);
+                            }
+                            result.put(pt, dta.substitute(result));
+                        }
                     }
                 }
+                typeArgumentsWithDefaults = result;
             }
-            return result;
+            return typeArgumentsWithDefaults;
         }
         else {
             return typeArguments;
