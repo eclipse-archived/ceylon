@@ -508,7 +508,7 @@ public class ProducedType extends ProducedReference {
      * type hierarchy. Avoid using this!
      */
     public List<ProducedType> getSupertypes() {
-        return getSupertypes(new ArrayList<ProducedType>());
+        return getSupertypes(new ArrayList<ProducedType>(5));
     }
     
     private List<ProducedType> getSupertypes(List<ProducedType> list) {
@@ -519,7 +519,9 @@ public class ProducedType extends ProducedReference {
             if (extendedType!=null) {
                 extendedType.getSupertypes(list);
             }
-            for (ProducedType dst: getSatisfiedTypes()) {
+            List<ProducedType> satisfiedTypes = getSatisfiedTypes();
+            for (int i=0,l=satisfiedTypes.size();i<l;i++) {
+                ProducedType dst = satisfiedTypes.get(i);
                 dst.getSupertypes(list);
             }
             if (getDeclaration() instanceof UnionType) {
@@ -529,12 +531,16 @@ public class ProducedType extends ProducedReference {
                 //required by the spec
                 List<ProducedType> caseTypes = getCaseTypes();
                 if (caseTypes!=null) {
-                    for (ProducedType t: caseTypes) {
+                    for (int caseTypeIndex=0,caseTypeCount = caseTypes.size();caseTypeIndex<caseTypeCount;caseTypeIndex++) {
+                        ProducedType t = caseTypes.get(caseTypeIndex);
                     	if (!alreadyInList(list, t)) {
                     		List<ProducedType> candidates = t.getSupertypes();
-                    		for (ProducedType st: candidates) {
+                    		for (int candidateIndex=0,candidateCount=candidates.size();candidateIndex<candidateCount;candidateIndex++) {
+                    		    ProducedType st = candidates.get(candidateIndex);
                     			boolean include = true;
-                    			for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                    			List<ProducedType> caseTypes2 = getDeclaration().getCaseTypes();
+                                for (int caseTypeIndex2=0,caseTypeCount2 = caseTypes2.size();caseTypeIndex2<caseTypeCount2;caseTypeIndex2++) {
+                                    ProducedType ct = caseTypes2.get(caseTypeIndex2);
                     				if (!ct.isSubtypeOf(st)) {
                     					include = false;
                     					break;
@@ -1264,7 +1270,8 @@ public class ProducedType extends ProducedReference {
         List<ProducedType> sts = getDeclaration().getSatisfiedTypes();
         if (args.isEmpty()) return sts; 
         List<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(sts.size());
-        for (ProducedType st: sts) {
+        for (int i=0,l=sts.size();i<l;i++) {
+            ProducedType st = sts.get(i);
             satisfiedTypes.add(st.substitute(args));
         }
         return satisfiedTypes;
@@ -1362,8 +1369,11 @@ public class ProducedType extends ProducedReference {
 
         private Map<TypeParameter, ProducedType> substitutedTypeArguments(ProducedType pt, 
                 Map<TypeParameter, ProducedType> substitutions) {
-            Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
-            for (Map.Entry<TypeParameter, ProducedType> e: pt.getTypeArguments().entrySet()) {
+            Map<TypeParameter, ProducedType> typeArguments = pt.getTypeArguments();
+            if(substitutions.isEmpty() && typeArguments.isEmpty())
+                return Collections.emptyMap();
+            Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>(typeArguments.size());
+            for (Map.Entry<TypeParameter, ProducedType> e: typeArguments.entrySet()) {
                 if (e.getValue()!=null) {
                     map.put(e.getKey(), substitute(e.getValue(), substitutions));
                 }

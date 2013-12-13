@@ -340,12 +340,16 @@ public class Util {
                 && declaration instanceof Generic
                 && ((Generic)declaration).getTypeParameters().isEmpty())
             return Collections.emptyMap();
-        Map<TypeParameter, ProducedType> map = getArgumentsOfOuterType(receivingType);
-        //now turn the type argument tuple into a
-        //map from type parameter to argument
+        
+        List<TypeParameter> params = null;
         if (declaration instanceof Generic) {
             Generic g = (Generic) declaration;
-            List<TypeParameter> params = g.getTypeParameters();
+            params = g.getTypeParameters();
+        }
+        Map<TypeParameter, ProducedType> map = getArgumentsOfOuterType(receivingType, params == null ? 0 : params.size());
+        //now turn the type argument tuple into a
+        //map from type parameter to argument
+        if (params != null) {
             for (int i=0; i<params.size(); i++) {
                 if (typeArguments.size()>i) {
                     map.put(params.get(i), typeArguments.get(i));
@@ -356,11 +360,20 @@ public class Util {
     }
 
     public static Map<TypeParameter, ProducedType> getArgumentsOfOuterType(
-            ProducedType receivingType) {
-        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+            ProducedType receivingType, int additionalTypeArgumentCount) {
         //make sure we collect all type arguments
         //from the whole qualified type!
         ProducedType dt = receivingType;
+        int count = additionalTypeArgumentCount;
+        while (dt!=null) {
+            count += dt.getTypeArguments().size();
+            dt = dt.getQualifyingType();
+        }
+        if(count == 0)
+            return Collections.<TypeParameter,ProducedType>emptyMap();
+        
+        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>(count);
+        dt = receivingType;
         while (dt!=null) {
             map.putAll(dt.getTypeArguments());
             dt = dt.getQualifyingType();
