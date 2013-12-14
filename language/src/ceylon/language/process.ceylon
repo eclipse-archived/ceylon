@@ -54,8 +54,10 @@ shared native object process {
     shared native void flushError();
     
     "Read a line of input text from the standard input 
-     of the virtual machine process."
-    shared native String readLine();
+     of the virtual machine process. Returns a line of
+     text after removal of line-termination characters,
+     or `null` to indicate the EOT character."
+    shared native String? readLine();
     
     "Force the virtual machine to terminate with 
      the given exit code."
