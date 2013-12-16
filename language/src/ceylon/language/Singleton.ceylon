@@ -124,6 +124,10 @@ shared class Singleton<out Element>(Element element)
             Result accumulating(Result partial, Element e)) =>
                     accumulating(initial, element);
     
+    shared actual Element reduce<Result>(
+            Result accumulating(Result|Element partial, Element e)) =>
+                    element;
+    
     shared actual Element? find
             (Boolean selecting(Element e)) {
         if (selecting(element)) {

@@ -94,6 +94,10 @@ shared interface Empty of e
             Result accumulating(Result partial, Nothing element)) => 
                     initial;
     
+    shared actual Null reduce<Result>(
+            Result accumulating(Result partial, Nothing element)) => 
+                    null;
+    
     shared actual Null find
             (Boolean selecting(Nothing element)) => null;
     
