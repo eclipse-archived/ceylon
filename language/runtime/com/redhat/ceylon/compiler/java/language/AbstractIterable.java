@@ -141,6 +141,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
     }
 
+    @Override
+    @Ignore
+    public <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
+    }
+    
     @Override @Ignore
     public Element find(Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);

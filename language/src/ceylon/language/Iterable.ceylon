@@ -184,11 +184,30 @@ shared interface Iterable<out Element, out Absent=Null>
             "The accumulating function that accepts an
              intermediate result, and the next element."
             Result accumulating(Result partial, Element elem)) {
-        variable value r = initial;
-        for (e in this) {
-            r = accumulating(r, e);
+        variable value partial = initial;
+        for (elem in this) {
+            partial = accumulating(partial, elem);
         }
-        return r;
+        return partial;
+    }
+    
+    "The result of applying the accumulating function to 
+     each element of this container in turn." 
+    shared default Result|Element|Absent reduce<Result>(
+    "The accumulating function that accepts an
+     intermediate result, and the next element."
+    Result accumulating(Result|Element partial, Element elem)) {
+        if (is Element initial = first) {
+            variable Result|Element partial = initial;
+            for (elem in this.rest) {
+                partial = accumulating(partial, elem);
+            }
+            return partial;
+        }
+        else {
+            assert (is Absent null);
+            return null;
+        }
     }
     
     "The first element which satisfies the given 

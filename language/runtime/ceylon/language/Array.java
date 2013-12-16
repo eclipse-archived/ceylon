@@ -831,6 +831,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     public <Result> Result fold(@Ignore TypeDescriptor $reifiedResult, Result ini, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.fold($reifiedResult, ini, f);
     }
+    @Override
+    @Ignore
+    public <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
+    }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.any(f);

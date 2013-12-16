@@ -269,6 +269,13 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     @Override
     @Annotations(@Annotation("default"))
+    @TypeParameters(@TypeParameter("Result"))
+    public <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
+    }
+    
+    @Override
+    @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Entry<Key,Item>|ceylon.language::Nothing")
     public Entry<? extends Key, ? extends Item> find(
             Callable<? extends Boolean> selecting) {

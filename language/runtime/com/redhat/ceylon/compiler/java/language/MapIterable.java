@@ -175,6 +175,11 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     public <R2> R2 fold(@Ignore TypeDescriptor $reifiedR2, R2 ini, Callable<? extends R2> f) {
         return (R2) $ceylon$language$Iterable$this.fold($reifiedR2, ini, f);
     }
+    @Override
+    @Ignore
+    public <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
+    }
     @Override @Ignore
     public boolean any(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.any(f);
