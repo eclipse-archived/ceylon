@@ -112,9 +112,9 @@ shared class Singleton<out Element>(Element element)
             (Boolean selecting(Element element)) =>
                     selecting(element) then 1 else 0;
     
-    shared actual [Result+] map<Result>
+    shared actual Singleton<Result> map<Result>
             (Result selecting(Element e)) =>
-                    [ selecting(element) ];
+                    Singleton(selecting(element));
     
     shared actual Singleton<Element>|Empty filter
             (Boolean selecting(Element e)) => 
@@ -153,12 +153,13 @@ shared class Singleton<out Element>(Element element)
     shared actual Singleton<Element>|Empty taking(Integer take) =>
             take>0 then this else {};
     
-    "Returns the Singleton itself, or empty"
-    shared actual {<Element&Object>*} coalesced {
-        if (is Singleton<Object> self=this) {
-            return self;
+    shared actual Singleton<Element&Object>|Empty coalesced {
+        if (exists element) {
+            return Singleton(element);
         }
-        return {};
+        else {
+            return [];
+        }
     }
     
 }
