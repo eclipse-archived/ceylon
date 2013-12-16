@@ -25,6 +25,14 @@ shared void testIterables() {
     //Fold
     check(s1.fold(0, (Integer a, Integer b) => a+b) == 15, "Iterable.fold 1");
     check(s2.fold(1, (Integer a, String b) => a+b.size) == 11, "Iterable.fold 2");
+    //Reduce
+    check(s1.reduce((Integer a, Integer b) => a+b) == 15, "Iterable.reduce 1");
+    check(s2.reduce<Integer>((Integer|String a, String b) {
+      switch(a)
+      case(is Integer) { return a+b.size; }
+      case(is String) { return a.size+b.size; }
+    }) == 10, "Iterable.reduce 2");
+
     //Find
     if (exists four = s1.find((Integer i) => i>3)) {
         check(four == 4, "Iterable.find 1");
@@ -56,13 +64,15 @@ shared void testIterables() {
     check((1..10).filter((Integer i) => i>5).sequence == {6, 7, 8, 9, 10}, "filter 1");
     check(((1..10).find((Integer i) => i>5) else -1)==6, "find 1");
     check(((1..10).findLast((Integer i) => i>5) else -1)==10, "findLast 1");
-    check((1..10).fold(0, (Integer i, Integer j) => i+j)==55, "fold 1");
+    check((1..10).fold(0, (Integer i, Integer j) => i+j)==55, "fold 3");
+    check((1..10).reduce((Integer i, Integer j) => i+j)==55, "reduce 3");
 
     check({ 1, 3, 7, 10 }.map((Integer i) => i.float).sequence=={1.0, 3.0, 7.0, 10.0}, "map 2");
     check({ 1, 3, 7, 10 }.filter((Integer i) => i>5).sequence=={7.0, 10.0}, "filter 2");
     check(({ 1, 3, 7, 10 }.find((Integer i) => i>5) else -1)==7, "find 2");
     check(({ 1, 3, 7, 10 }.findLast((Integer i) => i>5) else -1)==10, "findLast 2");
-    check({ 1, 3, 7, 10 }.fold(1, (Integer i, Integer j) => i*j)==210, "fold 3");
+    check({ 1, 3, 7, 10 }.fold(1, (Integer i, Integer j) => i*j)==210, "fold 4");
+    check({ 1, 3, 7, 10 }.reduce((Integer i, Integer j) => i*j)==210, "reduce 4");
  
     //Empty optimized implementations
     Integer[] vacio = {};
@@ -71,6 +81,7 @@ shared void testIterables() {
     check(!vacio.find((Integer i) => i>5) exists, "find 3");
     check(!vacio.findLast((Integer i) => i>5) exists, "findLast 3");
     check(vacio.fold(0, (Integer i, Integer j) => i)==0, "empty.fold");
+    check(!vacio.reduce((Integer i, Integer j) => i) exists, "empty.reduce");
     check(vacio.sort((Integer a, Integer b) => larger).sequence=={}, "empty.sort");
     check(!vacio.every((Integer x) => true), "empty.every");
     check(!vacio.any((Integer x) => true), "empty.any");
@@ -83,6 +94,7 @@ shared void testIterables() {
     check(!Singleton(5).find((Integer i) => i>5) exists, "Singleton.find");
     check(!Singleton(5).findLast((Integer i) => i>5) exists, "Singleton.findLast");
     check(Singleton(5).fold(0, (Integer i, Integer j) => i+j)==5, "Singleton.fold");
+    check(Singleton(5).reduce((Integer i, Integer j) => i+j)==5, "Singleton.reduce");
     check(Singleton(5).sort((Integer x, Integer y) => x<=>y) == Singleton(5), "Singleton.sort");
     check(Singleton(1).any((Integer x) => x == 1), "Singleton.any");
     check(Singleton(1).every((Integer x) => x>0), "Singleton.every");
@@ -251,9 +263,24 @@ shared void testIterables() {
     
     check((1..4).fold(0, plus<Integer>)==10, "fold with plus");
     check((1..4).fold(1, times<Integer>)==24, "fold with times");
+    check((1..4).reduce(plus<Integer>)==10, "reduce with plus");
+    check((1..4).reduce(times<Integer>)==24, "reduce with times");
     
     check({null, "foo", "bar", null}.defaultNullElements(0).sequence=={0, "foo", "bar", 0}, "defaultNullElements [1]");
     check({"foo", null, "bar"}.defaultNullElements("-").sequence=={"foo", "-", "bar"}, "defaultNullElements [2]");
     
     check((0..2).cycle(3).fold(0,plus<Integer>)==9, "cycle");
+
+    //more tests for fold/reduce
+    check("1234".fold(5,(Integer a, Character b)=>a+b.integer-48)==15, "String.fold");
+    value reducedStringTest = "12345".reduce((Integer|Character a, Character b) {
+      switch(a)
+      case (is Integer) { return a+b.integer-48; }
+      case (is Character) { return a.integer-48+b.integer-48; }
+    });
+    if (exists reducedStringTest) {
+      check(reducedStringTest==15, "String.reduce");
+    } else {
+      fail("String.reduce returned null");
+    }
 }
