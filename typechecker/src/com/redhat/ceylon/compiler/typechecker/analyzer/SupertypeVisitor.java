@@ -50,6 +50,7 @@ public class SupertypeVisitor extends Visitor {
                                 d.getName() + " is recursive, involving " + typeList(l));
                         d.getSatisfiedTypes().remove(t);
                         d.addBrokenSupertype(t);
+                        d.clearProducedTypeCache();
                         errors = true;
                     }
                 }
@@ -67,6 +68,7 @@ public class SupertypeVisitor extends Visitor {
             					d.getName() + " is recursive, involving " + typeList(l));
             			d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
             			d.addBrokenSupertype(t);
+                        d.clearProducedTypeCache();
             			errors = true;
             		}
             	}
@@ -86,6 +88,7 @@ public class SupertypeVisitor extends Visitor {
                         d.getName());
                 d.getSatisfiedTypes().clear();
                 d.setExtendedType(unit.getType(unit.getBasicDeclaration()));
+                d.clearProducedTypeCache();
                 return;
             }
             if (stn!=null) {
@@ -94,6 +97,7 @@ public class SupertypeVisitor extends Visitor {
                     if (t!=null) {
                         if (checkSupertypeVariance(t, d, st)) {
                             d.getSatisfiedTypes().remove(t);
+                            d.clearProducedTypeCache();
                         }
                     }
                 }
@@ -105,6 +109,7 @@ public class SupertypeVisitor extends Visitor {
                 	if (t!=null) {
                 		if (checkSupertypeVariance(t, d, et)) {
                 			d.getSatisfiedTypes().remove(t);
+                            d.clearProducedTypeCache();
                 		}
                 	}
                 }

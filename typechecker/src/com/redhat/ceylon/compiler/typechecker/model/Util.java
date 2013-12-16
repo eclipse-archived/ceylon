@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.typechecker.context.ProducedTypeCache;
+
 public class Util {
     
     /**
@@ -1117,5 +1119,16 @@ public class Util {
         Module aMod = getModule(a);
         Module bMod = getModule(b);
         return aMod.equals(bMod);
+    }
+
+    public static void clearProducedTypeCache(TypeDeclaration decl) {
+        Module module = getModule(decl);
+        if(module != null){
+            ProducedTypeCache cache = module.getCache();
+            if(cache != null){
+                cache.clearForDeclaration(decl);
+            }
+            // FIXME: propagate to modules that import this module transitively
+        }
     }
 }

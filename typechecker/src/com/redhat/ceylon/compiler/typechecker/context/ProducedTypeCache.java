@@ -47,4 +47,10 @@ public class ProducedTypeCache {
     public void clear(){
         superTypes.clear();
     }
+
+    public void clearForDeclaration(TypeDeclaration decl) {
+        // clear the whole cache for now, unless I can figure out exactly what to
+        // clear
+        clear();
+    }
 }

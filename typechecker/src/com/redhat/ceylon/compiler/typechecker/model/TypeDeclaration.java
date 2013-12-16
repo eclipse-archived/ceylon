@@ -741,5 +741,14 @@ public abstract class TypeDeclaration extends Declaration
     	}
     	return result;
     }
+
+    /**
+     * Clears the ProducedType supertype caches for that declaration. Does nothing
+     * for Union/Intersection types since they are not cached. Only does something
+     * for ClassOrInterface, TypeAlias, TypeParameter.
+     */
+    public void clearProducedTypeCache() {
+        // do nothing, work in subclasses
+    }
     
 }

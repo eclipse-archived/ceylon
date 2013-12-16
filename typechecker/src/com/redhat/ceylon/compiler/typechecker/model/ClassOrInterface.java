@@ -72,4 +72,9 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             return false;
         return getQualifiedNameString().equals(b.getQualifiedNameString());
     }
+    
+    @Override
+    public void clearProducedTypeCache() {
+        Util.clearProducedTypeCache(this);
+    }
 }

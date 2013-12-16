@@ -179,4 +179,9 @@ public class TypeParameter extends TypeDeclaration implements Functional {
         return getDeclaration().equalsForCache(b.getDeclaration())
                 && getName().equals(b.getName());
     }
+
+    @Override
+    public void clearProducedTypeCache() {
+        Util.clearProducedTypeCache(this);
+    }
 }
