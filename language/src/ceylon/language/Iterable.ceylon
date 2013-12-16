@@ -200,7 +200,7 @@ shared interface Iterable<out Element, out Absent=Null>
         value initial = first;
         if (is Element initial) {
             variable Result|Element partial = initial;
-            for (elem in this.rest) {
+            for (elem in rest) {
                 partial = accumulating(partial, elem);
             }
             return partial;
