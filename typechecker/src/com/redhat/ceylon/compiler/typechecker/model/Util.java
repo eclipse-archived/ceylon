@@ -701,7 +701,6 @@ public class Util {
         ProducedType simpleIntersection = getSimpleIntersection(lhst, rhst);
         if(simpleIntersection != null)
             return simpleIntersection;
-//        System.err.println("Intersection "+lhst+" and "+rhst);
         List<ProducedType> list = new ArrayList<ProducedType>(2);
         addToIntersection(list, rhst, unit);
         addToIntersection(list, lhst, unit);
