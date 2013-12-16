@@ -42,7 +42,12 @@ public class TypeAlias extends TypeDeclaration {
     protected int hashCodeForCache() {
         int ret = 17;
         ret = Util.addHashForModule(ret, this);
-        ret = (37 * ret) + getQualifiedNameString().hashCode();
+        if(isToplevel())
+            ret = (37 * ret) + getQualifiedNameString().hashCode();
+        else{
+            ret = (37 * ret) + getContainer().hashCode();
+            ret = (37 * ret) + getName().hashCode();
+        }
         return ret;
     }
 
@@ -53,7 +58,16 @@ public class TypeAlias extends TypeDeclaration {
         ClassOrInterface b = (ClassOrInterface) o;
         if(!Util.sameModule(this, b))
             return false;
-        return getQualifiedNameString().equals(b.getQualifiedNameString());
+        if(isToplevel()){
+            if(!b.isToplevel())
+                return false;
+            return getQualifiedNameString().equals(b.getQualifiedNameString());
+        }else{
+            if(b.isToplevel())
+                return false;
+            return getContainer().equals(b.getContainer())
+                    && getName().equals(b.getName());
+        }
     }
 
     @Override

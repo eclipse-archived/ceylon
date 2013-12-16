@@ -148,7 +148,7 @@ public abstract class TypedDeclaration extends Declaration {
         Scope container = getContainer();
         if(container instanceof Declaration){
             ret = (37 * ret) + ((Declaration) container).hashCodeForCache();
-        }else if(container instanceof Package){
+        }else if(container instanceof Package || container instanceof Scope){
             ret = (37 * ret) + container.hashCode();
         }
         ret = (37 * ret) + getName().hashCode();
@@ -164,7 +164,7 @@ public abstract class TypedDeclaration extends Declaration {
         if(container instanceof Declaration){
             if(!((Declaration) container).equalsForCache(b.getContainer()))
                 return false;
-        }else if(container instanceof Package){
+        }else if(container instanceof Package || container instanceof Scope){
             if(!container.equals(b.getContainer()))
                 return false;
         }

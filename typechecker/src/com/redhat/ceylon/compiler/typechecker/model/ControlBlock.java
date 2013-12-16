@@ -28,7 +28,17 @@ public class ControlBlock extends Element implements Scope {
     }
     
     @Override
+    public int hashCode() {
+        int ret = 17;
+        ret = (31 * ret) + getContainer().hashCode();
+        ret = (31 * ret) + id;
+        return ret;
+    }
+    
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this)
+            return true;
         if (obj instanceof ControlBlock) {
             ControlBlock that = (ControlBlock) obj;
             return id==that.id && 
