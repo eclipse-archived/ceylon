@@ -80,6 +80,7 @@ public class SupertypeVisitor extends Visitor {
                 for (ProducedType st: d.getType().getSupertypes()) {
                     addToIntersection(list, st, unit);
                 }
+                // FIXME: that line does nothing
                 new IntersectionType(unit).canonicalize().getType();
             }
             catch (RuntimeException re) {
