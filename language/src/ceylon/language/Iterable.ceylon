@@ -194,9 +194,9 @@ shared interface Iterable<out Element, out Absent=Null>
     "The result of applying the accumulating function to 
      each element of this container in turn." 
     shared default Result|Element|Absent reduce<Result>(
-    "The accumulating function that accepts an
-     intermediate result, and the next element."
-    Result accumulating(Result|Element partial, Element elem)) {
+            "The accumulating function that accepts an
+             intermediate result, and the next element."
+            Result accumulating(Result|Element partial, Element elem)) {
         value initial = first;
         if (is Element initial) {
             variable Result|Element partial = initial;
