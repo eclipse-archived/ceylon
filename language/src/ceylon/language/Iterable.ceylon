@@ -197,7 +197,8 @@ shared interface Iterable<out Element, out Absent=Null>
     "The accumulating function that accepts an
      intermediate result, and the next element."
     Result accumulating(Result|Element partial, Element elem)) {
-        if (is Element initial = first) {
+        value initial = first;
+        if (is Element initial) {
             variable Result|Element partial = initial;
             for (elem in this.rest) {
                 partial = accumulating(partial, elem);
@@ -205,8 +206,7 @@ shared interface Iterable<out Element, out Absent=Null>
             return partial;
         }
         else {
-            assert (is Absent null);
-            return null;
+            return initial;
         }
     }
     
