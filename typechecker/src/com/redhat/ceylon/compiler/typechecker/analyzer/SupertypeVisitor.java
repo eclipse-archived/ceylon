@@ -80,8 +80,9 @@ public class SupertypeVisitor extends Visitor {
                 for (ProducedType st: d.getType().getSupertypes()) {
                     addToIntersection(list, st, unit);
                 }
-                // FIXME: that line does nothing
-                new IntersectionType(unit).canonicalize().getType();
+                IntersectionType it = new IntersectionType(unit);
+                it.setSatisfiedTypes(list);
+				it.canonicalize().getType();
             }
             catch (RuntimeException re) {
                 that.addError("inheritance hierarchy is undecidable: " + 
