@@ -1,0 +1,83 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1507_ {
+    
+    private bug1507_() {
+    }
+    
+    static void bug1507() {
+        try {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper i;
+            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper i$0 = null;
+            if (new .java.util.Random().nextBoolean()) {
+                i = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper(2L);
+            } else {
+                boolean doforelse$2 = true;
+                final long $ceylontmp$start$3 = 0L;
+                final long $ceylontmp$end$4 = new .java.util.Random().nextInt((int)10L);
+                final boolean $ceylontmp$increasing$5 = $ceylontmp$start$3 <= $ceylontmp$end$4;
+                final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
+                for (long j$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? j$7 - $ceylontmp$end$4 <= 0L : j$7 - $ceylontmp$end$4 >= 0L; j$7 += $ceylontmp$incr$6) {
+                    final long j = j$7;
+                    .java.lang.Object k$9;
+                    if ((k$9 = .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507generateInt_.bug1507generateInt(j == 0L)) != null) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper k$10 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper)k$9;
+                        i$0 = k$10;
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper i$11 = i$0;
+                        .ceylon.language.process_.get_().write(new .java.lang.StringBuilder().append("J is ").append(j).toString());
+                        doforelse$2 = false;
+                        break;
+                    } else {
+                        .ceylon.language.process_.get_().write("Nope");
+                    }
+                }
+                if (doforelse$2) {
+                    throw new .ceylon.language.Exception(null, null);
+                }
+                i = i$0;
+            }
+            .ceylon.language.process_.get_().write(.ceylon.language.Integer.toString(.ceylon.language.Integer.minus(i.getWrappedInt(), 1L)));
+        } catch (final .java.lang.Exception e) {
+            .ceylon.language.process_.get_().write(e.toString());
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507_.bug1507();
+    }
+}
+class Bug1507IntWrapper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1507IntWrapper(final long wrappedInt) {
+        this.wrappedInt = wrappedInt;
+    }
+    private final long wrappedInt;
+    
+    public final long getWrappedInt() {
+        return wrappedInt;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return .ceylon.language.Integer.toString(getWrappedInt());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper.class);
+}
+final class bug1507generateInt_ {
+    
+    private bug1507generateInt_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper bug1507generateInt(final boolean b) {
+        if (b) {
+            return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper(5L);
+        }
+        return null;
+    }
+}
