@@ -141,7 +141,9 @@ public class CompilerToolTest {
                     Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.ceylon/1.0"));
             Assert.fail();
         } catch (OptionArgumentException e) {
-            Assert.assertEquals("Invalid module name or source file: com.redhat.ceylon.tools.test.ceylon/1.0", e.getMessage());   
+            Assert.assertEquals("Invalid module name or source file: com.redhat.ceylon.tools.test.ceylon/1.0\n"
+                                +"Module names should not contain any version part.\n"
+                                +"Source file names should be given relative to the current directory.", e.getMessage());   
         }
         
     }
@@ -251,7 +253,9 @@ public class CompilerToolTest {
                     Arrays.asList("--src=test/src", "3"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
-            Assert.assertEquals("Invalid module name or source file: 3", x.getMessage());
+            Assert.assertEquals("Invalid module name or source file: 3\n"
+                                +"Module names should not contain any version part.\n"
+                                +"Source file names should be given relative to the current directory.", x.getMessage());
         }
     }
     
