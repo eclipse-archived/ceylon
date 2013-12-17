@@ -4735,6 +4735,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 methodBody = List.of(
                         make().WhileLoop(make().Apply(null, iterVar.makeIdentWithThis(), List.<JCExpression>nil()),
                                          make().Block(0, contextBody.toList())),
+                        // It can happen that we never get into the body because the outer iterator is exhausted, if so, mark
+                        // this one exhausted too
+                        make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(), 
+                                make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))), 
+                                null),
                         make().Return(makeBoolean(false)));
             }else
                 methodBody = contextBody.toList();
