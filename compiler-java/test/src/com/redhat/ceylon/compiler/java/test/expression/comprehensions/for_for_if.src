@@ -50,6 +50,7 @@ final class forForIf_ {
                                 return true;
                             }
                         }
+                        if (y$exhausted$) x$exhausted$ = true;
                         return false;
                     }
                     

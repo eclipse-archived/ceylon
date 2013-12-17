@@ -50,6 +50,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                                 return true;
                             }
                         }
+                        if (x$exhausted$) y$exhausted$ = true;
                         return false;
                     }
                     private long y1$5;
@@ -128,6 +129,7 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                                 return true;
                             }
                         }
+                        if (x$exhausted$) y$exhausted$ = true;
                         return false;
                     }
                     private long y$11;

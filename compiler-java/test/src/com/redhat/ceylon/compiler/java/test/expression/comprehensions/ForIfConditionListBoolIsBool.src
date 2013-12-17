@@ -50,6 +50,7 @@ class ForIfConditionListBoolIsBool implements .com.redhat.ceylon.compiler.java.r
                                 return true;
                             }
                         }
+                        if (x$exhausted$) z$exhausted$ = true;
                         return false;
                     }
                     private long x$3;
@@ -127,6 +128,7 @@ class ForIfConditionListBoolIsBool implements .com.redhat.ceylon.compiler.java.r
                                 return true;
                             }
                         }
+                        if (x$exhausted$) z$exhausted$ = true;
                         return false;
                     }
                     private long y$7;

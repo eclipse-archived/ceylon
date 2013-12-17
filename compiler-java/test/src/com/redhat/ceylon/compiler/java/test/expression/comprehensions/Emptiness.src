@@ -312,6 +312,7 @@ final class emptinessParameterised_ {
                                 return true;
                             }
                         }
+                        if (e$exhausted$) f$exhausted$ = true;
                         return false;
                     }
                     

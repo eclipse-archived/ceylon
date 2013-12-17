@@ -134,6 +134,7 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
                                 return true;
                             }
                         }
+                        if (i$exhausted$) ii$exhausted$ = true;
                         return false;
                     }
                     
@@ -231,6 +232,7 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
                                 return true;
                             }
                         }
+                        if (i$exhausted$) ii$exhausted$ = true;
                         return false;
                     }
                     
@@ -337,6 +339,7 @@ final class Bug993BottomInterface$impl {
                                 return true;
                             }
                         }
+                        if (i$exhausted$) ii$exhausted$ = true;
                         return false;
                     }
                     

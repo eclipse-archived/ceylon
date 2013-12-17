@@ -50,6 +50,7 @@ final class comp2_ {
                                 return true;
                             }
                         }
+                        if (i$exhausted$) j$exhausted$ = true;
                         return false;
                     }
                     
