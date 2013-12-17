@@ -1098,10 +1098,10 @@ public abstract class AbstractTransformer implements Transformation {
         do{
             // special case for Callable where we stop after the first type param
             boolean isCallable = isCeylonCallable(singleType);
-            
-            for(Entry<TypeParameter, ProducedType> typeParam : singleType.getTypeArguments().entrySet()){
-                TypeParameter tp = typeParam.getKey();
-                ProducedType ta = typeParam.getValue();
+            TypeDeclaration declaration = singleType.getDeclaration();
+            Map<TypeParameter, ProducedType> typeArguments = singleType.getTypeArguments();
+            for(TypeParameter tp : declaration.getTypeParameters()){
+                ProducedType ta = typeArguments.get(tp);
                 // skip invalid input
                 if(tp == null || ta == null)
                     return false;
