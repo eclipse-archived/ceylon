@@ -265,10 +265,15 @@ public class CallableBuilder {
         JCExpression innerInvocation = callBuilder.build();
         // Need to worry about boxing for Method and FunctionalParameter 
         if (methodOrClass instanceof TypedDeclaration) {
+            // use the method return type since the function is actually applied
+            ProducedType returnType = gen.getReturnTypeOfCallable(type);
             innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, 
-                    methodOrClass.getType(),
+                    returnType,
+                    // make sure we use the type erased info as it has not been passed to the expression since the
+                    // expression is a Callable
+                    CodegenUtil.hasTypeErased((TypedDeclaration)methodOrClass),
                     !CodegenUtil.isUnBoxed((TypedDeclaration)methodOrClass), 
-                    BoxingStrategy.BOXED, methodOrClass.getType());
+                    BoxingStrategy.BOXED, returnType, 0);
         } else if (Strategy.isInstantiatorUntyped((Class)methodOrClass)) {
             // $new method declared to return Object, so needs typecast
             innerInvocation = gen.make().TypeCast(gen.makeJavaType(
@@ -365,7 +370,13 @@ public class CallableBuilder {
             callBuilder.invoke(memberName);
         }
         JCExpression innerInvocation = callBuilder.build();
-        innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, value.getType(), !value.getUnboxed(), BoxingStrategy.BOXED, value.getType());
+        // use the return type since the value is actually applied
+        ProducedType returnType = gen.getReturnTypeOfCallable(typeModel);
+        innerInvocation = gen.expressionGen().applyErasureAndBoxing(innerInvocation, returnType, 
+                // make sure we use the type erased info as it has not been passed to the expression since the
+                // expression is a Callable
+                CodegenUtil.hasTypeErased(value), !CodegenUtil.isUnBoxed(value), 
+                BoxingStrategy.BOXED, returnType, 0);
         
         ParameterList outerPl = new ParameterList();
         Parameter instanceParameter = new Parameter();
