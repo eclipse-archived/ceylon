@@ -17,37 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.issues;
+@noanno
+interface Bug1508It<A,B> {
+    shared A&B attr => nothing;
+    shared A&B method() => nothing;
+}
 
-import org.junit.Test;
-
-import com.redhat.ceylon.compiler.java.test.CompilerTest;
-
-
-public class IssuesTest_1500_1999 extends CompilerTest {
-
-    @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
-        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
-    }
-    
-    @Override
-    protected String transformDestDir(String name) {
-        return name + "-1500-1999";
-    }
-
-    @Test
-    public void testBug1508() {
-        compareWithJavaSource("bug15xx/Bug1508");
-    }
-
-    @Test
-    public void testBug1510() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1510", "bug15xx/Bug1510.ceylon");
-    }
-
-    @Test
-    public void testBug1511() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1511", "bug15xx/Bug1511.ceylon");
-    }
+@noanno
+Y?(X?) bug1508<X,Y>(Y(X) fun)
+  given X satisfies Object{
+    // more general test
+    Bug1508It<Y,Y> it = nothing;
+    value f3 = Bug1508It<Y,Y>.attr;
+    value f4 = it.attr;
+    value f5 = Bug1508It<Y,Y>.method;
+    value f6 = it.method();
+    // original test
+    return compose(Iterable<Y>.first, 
+                   compose(shuffle(Iterable<X>.map<Y>)(fun), 
+                           emptyOrSingleton<X>));
 }

@@ -1,0 +1,96 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+interface Bug1508It<A, B> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It$impl<A, B> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1508It$impl();
+    
+    public .java.lang.Object getAttr();
+    
+    public .java.lang.Object method();
+}
+final class Bug1508It$impl<A, B> {
+    
+    Bug1508It$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<A, B> $this) {
+        this.$reified$A = $reified$A;
+        this.$reified$B = $reified$B;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<A, B> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$B = $reified$B;
+        this.$reified$A = $reified$A;
+    }
+    
+    public final .java.lang.Object getAttr() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    public .java.lang.Object method() {
+        return .ceylon.language.nothing_.get_();
+    }
+}
+final class bug1508_ {
+    
+    private bug1508_() {
+    }
+    
+    static <X, Y>.ceylon.language.Callable<? extends Y> bug1508(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .ceylon.language.Callable<? extends Y> fun) {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y> it = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends Y> f3 = (.ceylon.language.Callable<? extends Y>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>($reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It.class, $reified$Y, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It.class, $reified$Y, $reified$Y), .ceylon.language.Empty.$TypeDescriptor$), "Y(Bug1508It<Y,Y>)", (short)-1){
+            
+            @.java.lang.Override
+            public Y $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y> $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y>)(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It)$param$0;
+                return (Y)$instance$.getAttr();
+            }
+        };
+        final Y f4 = (Y)it.getAttr();
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Y>> f5 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Y>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends Y>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It.class, $reified$Y, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It.class, $reified$Y, $reified$Y), .ceylon.language.Empty.$TypeDescriptor$), "Y()(Bug1508It<Y,Y>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends Y> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y> $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It<Y, Y>)(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1508It)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>($reified$Y, .ceylon.language.Empty.$TypeDescriptor$, "Y()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public Y $call$() {
+                        return (Y)$instance$.method();
+                    }
+                };
+            }
+        };
+        final Y f6 = (Y)it.method();
+        return .ceylon.language.compose_.<Y, .ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>, .ceylon.language.Tuple<X, ? extends X, ? extends .ceylon.language.Sequential<? extends X>>>compose(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .ceylon.language.Empty.$TypeDescriptor$), (.ceylon.language.Callable<? extends Y>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Y>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "Y?({Y*})", (short)-1){
+            
+            @.java.lang.Override
+            public Y $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object> $instance$ = (.ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
+                return (Y)$instance$.getFirst();
+            }
+        }, .ceylon.language.compose_.<.ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>, .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>, .ceylon.language.Tuple<X, ? extends X, ? extends .ceylon.language.Sequential<? extends X>>>compose(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.shuffle_.<.ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>, .ceylon.language.Tuple<.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>, ? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>>, .ceylon.language.Tuple<.ceylon.language.Callable<? extends Y>, ? extends .ceylon.language.Callable<? extends Y>, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends Y>>>>shuffle(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "{Y*}(Y(X))({X*})", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object> $instance$ = (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$Y, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Y, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$), "{Y*}(Y(X))", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Iterable<? extends Y, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Callable<? extends Y> collecting = (.ceylon.language.Callable<? extends Y>)(.ceylon.language.Callable)$param$0;
+                        return $instance$.map($reified$Y, collecting);
+                    }
+                };
+            }
+        }).$call$(fun), (.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .ceylon.language.Empty.$TypeDescriptor$), "<[]|[X]>(X?)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential<? extends X> $call$(final .java.lang.Object $param$0) {
+                final X $ceylontmp$element = (X)$param$0;
+                return (.ceylon.language.Sequential<? extends X>)(.ceylon.language.Sequential).ceylon.language.emptyOrSingleton_.<X>emptyOrSingleton($reified$X, $ceylontmp$element);
+            }
+        }));
+    }
+}
