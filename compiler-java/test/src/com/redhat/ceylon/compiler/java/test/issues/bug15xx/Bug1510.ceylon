@@ -17,32 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.java.test.issues;
+@noanno
+abstract shared class Bug1510A() of bug1510a {}
+@noanno
+object bug1510a extends Bug1510A(){}
 
-import org.junit.Test;
+@noanno
+abstract shared class Bug1510B() of bug1510b {}
+@noanno
+object bug1510b extends Bug1510B(){}
 
-import com.redhat.ceylon.compiler.java.test.CompilerTest;
+@noanno
+class Bug1510Pair(Bug1510A a, Bug1510B b){}
 
-
-public class IssuesTest_1500_1999 extends CompilerTest {
-
-    @Override
-    protected ModuleWithArtifact getDestModuleWithArtifact(){
-        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
-    }
-    
-    @Override
-    protected String transformDestDir(String name) {
-        return name + "-1500-1999";
-    }
-
-    @Test
-    public void testBug1510() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1510", "bug15xx/Bug1510.ceylon");
-    }
-
-    @Test
-    public void testBug1511() {
-        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1511", "bug15xx/Bug1511.ceylon");
-    }
+@noanno
+void bug1510(){
+    value data = {
+        for(v1 in `class Bug1510A`.caseTypes)
+            if(is Bug1510A v1) // Notice this is interleaved between for-loops
+                for(v2 in `class Bug1510B`.caseTypes)
+                    if(is Bug1510B v2)
+                        Bug1510Pair(v1, v2)
+    };
+    assert(data.empty);
+    assert(data.string == "{}");
 }
