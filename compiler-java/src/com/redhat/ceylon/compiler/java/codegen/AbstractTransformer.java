@@ -1928,6 +1928,9 @@ public abstract class AbstractTransformer implements Transformation {
     
     int getNumParametersOfCallable(ProducedType callableType) {
         ProducedType tuple = typeFact().getCallableTuple(callableType);
+        int simpleNumParametersOfCallable = getSimpleNumParametersOfCallable(tuple);
+        if(simpleNumParametersOfCallable != -1)
+            return simpleNumParametersOfCallable;
         int count = 0;
         while (tuple != null) {
             ProducedType tst = typeFact().nonemptyArgs(tuple).getSupertype(typeFact().getTupleDeclaration());
@@ -1950,6 +1953,49 @@ public abstract class AbstractTransformer implements Transformation {
         return count;
     }
     
+    private int getSimpleNumParametersOfCallable(ProducedType args) {
+        // can be a defaulted tuple of Empty|Tuple
+        TypeDeclaration declaration = args.getDeclaration();
+        if(declaration instanceof UnionType){
+            java.util.List<ProducedType> caseTypes = declaration.getCaseTypes();
+            if(caseTypes == null || caseTypes.size() != 2)
+                return -1;
+            ProducedType caseA = caseTypes.get(0);
+            TypeDeclaration caseADecl = caseA.getDeclaration();
+            ProducedType caseB = caseTypes.get(1);
+            TypeDeclaration caseBDecl = caseB.getDeclaration();
+            if(caseADecl instanceof ClassOrInterface == false
+                    || caseBDecl instanceof ClassOrInterface == false)
+                return -1;
+            if(caseADecl.getQualifiedNameString().equals("ceylon.language::Empty")
+                    && caseBDecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
+                return getSimpleNumParametersOfCallable(caseB);
+            if(caseBDecl.getQualifiedNameString().equals("ceylon.language::Empty")
+                    && caseADecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
+                return getSimpleNumParametersOfCallable(caseA);
+            return -1;
+        }
+        // can be Tuple, Empty, Sequence or Sequential
+        if(declaration instanceof ClassOrInterface == false)
+            return -1;
+        String name = declaration.getQualifiedNameString();
+        if(name.equals("ceylon.language::Tuple")){
+            ProducedType rest = args.getTypeArgumentList().get(2);
+            int ret = getSimpleNumParametersOfCallable(rest);
+            if(ret == -1)
+                return -1;
+            return ret + 1;
+        }
+        if(name.equals("ceylon.language::Empty")){
+            return 0;
+        }
+        if(name.equals("ceylon.language::Sequential")
+           || name.equals("ceylon.language::Sequence")){
+            return 1;
+        }
+        return -1;
+    }
+
     boolean isVariadicCallable(ProducedType callableType) {
         ProducedType tuple = typeFact().getCallableTuple(callableType);
         return typeFact().isTupleLengthUnbounded(tuple);
