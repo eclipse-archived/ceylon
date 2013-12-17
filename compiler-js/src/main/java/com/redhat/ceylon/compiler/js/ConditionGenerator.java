@@ -98,6 +98,9 @@ public class ConditionGenerator {
             } else { //exists
                 specialConditionRHS(variableRHS, varName);
                 gen.out("!==null");
+                if (gen.isInDynamicBlock()) {
+                    gen.out("&&", varName, "!==undefined");
+                }
             }
 
         } else {
