@@ -1,0 +1,139 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+public class Bug1481Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1481Foo() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.H3.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.H2.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.HEntry2.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.HEntry.class)})
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Item",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {})})
+public interface Bug1481Heap<Key, Item> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl<Key, Item> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1481Heap$impl();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class Bug1481Heap$impl<Key, Item> {
+    
+    public Bug1481Heap$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        this.$reified$Item = $reified$Item;
+        this.$reified$Key = $reified$Key;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Entry<Key,Item>")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class HEntry {
+        
+        private HEntry() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Entry<Key,Item>")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    final class HEntry2 {
+        
+        private HEntry2() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$() {
+        return new Bug1481Foo();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Key",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Item",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {})})
+    public <Key, Item>.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    public final class H2 {
+        
+        private H2() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Key",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Item",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Object"},
+                    caseTypes = {})})
+    <Key, Item>.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H3$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    final class H3 {
+        
+        private H3() {
+        }
+    }
+}
