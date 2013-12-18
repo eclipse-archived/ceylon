@@ -70,7 +70,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -138,6 +137,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean withinInvocation = false;
     private boolean withinSyntheticClassBody = false;
     private Tree.ClassOrInterface withinSuperInvocation = null;
+    private ClassOrInterface withinDefaultParameterExpression = null;
     
     /** 
      * Whether there is an uninitialized object reference on the operand stack. 
@@ -4842,6 +4842,14 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     void withinSuperInvocation(Tree.ClassOrInterface forDefinition) {
         this.withinSuperInvocation = forDefinition;
+    }
+
+    boolean isWithinDefaultParameterExpression(Scope container) {
+        return withinDefaultParameterExpression == container;
+    }
+
+    void withinDefaultParameterExpression(ClassOrInterface forDefinition) {
+        this.withinDefaultParameterExpression = forDefinition;
     }
 
     //
