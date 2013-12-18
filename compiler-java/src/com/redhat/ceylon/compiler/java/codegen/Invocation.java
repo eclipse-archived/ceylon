@@ -240,7 +240,10 @@ abstract class Invocation {
                 }
             } else if ((getPrimaryDeclaration() instanceof Method
                     && ((Method)getPrimaryDeclaration()).isParameter()
-                        && !Strategy.createMethod((Method)getPrimaryDeclaration()))
+                        && (!Strategy.createMethod((Method)getPrimaryDeclaration())
+                            // we may create a method, but if we're accessing it from a default parameter expression
+                            // we need to access the Callable parameter, no the member method
+                            || gen.expressionGen().isWithinDefaultParameterExpression(getPrimaryDeclaration().getContainer())))
                     || isIndirect()) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);

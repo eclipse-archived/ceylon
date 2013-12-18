@@ -2292,6 +2292,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (Strategy.hasDefaultParameterValueMethod(param.getParameterModel())) {
             Tree.SpecifierOrInitializerExpression spec = Decl.getDefaultArgument(param);
+            Scope container = param.getParameterModel().getModel().getContainer();
+            boolean classParameter = container instanceof ClassOrInterface;
+            ClassOrInterface oldWithinDefaultParameterExpression = withinDefaultParameterExpression;
+            if(classParameter)
+                withinDefaultParameterExpression((ClassOrInterface) container);
             if (param instanceof Tree.FunctionalParameterDeclaration) {
                 Tree.FunctionalParameterDeclaration fpTree = (Tree.FunctionalParameterDeclaration) param;
                 Tree.SpecifierExpression lazy = (Tree.SpecifierExpression)spec;
@@ -2303,10 +2308,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                         getTypeForFunctionalParameter(fp),
                         true).build();
             } else {
-                expr = expressionGen().transformExpression(spec.getExpression(), 
+                expr = transformExpression(spec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(param.getParameterModel().getModel()), 
                         param.getParameterModel().getType());
             }
+            if(classParameter)
+                withinDefaultParameterExpression(oldWithinDefaultParameterExpression);
         } else {
             expr = makeErroneous(param, "compiler bug: no default parameter value method");
         }
@@ -3163,7 +3170,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if (Util.isIndirectInvocation(ce)
+            if ((Util.isIndirectInvocation(ce)
+                    || isWithinDefaultParameterExpression(primaryDeclaration.getContainer()))
                     && !Decl.isJavaStaticPrimary(ce.getPrimary())){
                 // indirect invocation
                 invocation = new IndirectInvocation(this, 
@@ -3706,6 +3714,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // true for Java interop using fields, and for super constructor parameters, which must use
         // parameters rather than getter methods
         boolean mustUseField = false;
+        // true for default parameter methods
+        boolean mustUseParameter = false;
         if (decl instanceof Functional
                 && (!(decl instanceof Method) || !decl.isParameter() 
                         || functionalParameterRequiresCallable((Method)decl, expr)) 
@@ -3746,7 +3756,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         || (isWithinSuperInvocation() 
                                 && primaryExpr == null
                                 && withinSuperInvocation.getDeclarationModel() == decl.getContainer());
-                if (mustUseField){
+                mustUseParameter = (primaryExpr == null && isWithinDefaultParameterExpression(decl.getContainer()));
+                if (mustUseField || mustUseParameter){
                     if(decl instanceof FieldValue) {
                         selector = ((FieldValue)decl).getRealName();
                     } else if (isWithinSuperInvocation()
@@ -3775,6 +3786,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         } else if (Decl.isMethodOrSharedOrCapturedParam(decl)) {
+            mustUseParameter = (primaryExpr == null
+                    && decl.isParameter()
+                    && isWithinDefaultParameterExpression(decl.getContainer()));
             if (!decl.isParameter()
                     && (Decl.isLocalNotInitializer(decl) || (Decl.isLocalToInitializer(decl) && ((Method)decl).isDeferred()))) {
                 primaryExpr = null;
@@ -3801,7 +3815,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if (result == null) {
-            boolean useGetter = !(decl instanceof Method) && !mustUseField;
+            boolean useGetter = !(decl instanceof Method) && !mustUseField && !mustUseParameter;
             if (qualExpr == null && selector == null) {
                 useGetter = Decl.isClassAttribute(decl) && CodegenUtil.isErasedAttribute(decl.getName());
                 if (useGetter) {
@@ -3818,16 +3832,18 @@ public class ExpressionTransformer extends AbstractTransformer {
             // FIXME: Stef has a strong suspicion that the four next methods
             // should be merged since they all add a this qualifier in different
             // cases
-            qualExpr = addQualifierForObjectMembersOfInterface(expr, decl,
-                    qualExpr);
-            
-            qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
+            if(!mustUseParameter){
+                qualExpr = addQualifierForObjectMembersOfInterface(expr, decl, qualExpr);
 
-            qualExpr = addThisQualifierIfRequired(qualExpr, expr, decl);
+                qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
 
-            if (qualExpr == null && needDollarThis(expr)) {
-                qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
+                qualExpr = addThisQualifierIfRequired(qualExpr, expr, decl);
+
+                if (qualExpr == null && needDollarThis(expr)) {
+                    qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
+                }
             }
+            
             if (qualExpr == null && decl.isStaticallyImportable()) {
                 qualExpr = naming.makeDeclName(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
             }
