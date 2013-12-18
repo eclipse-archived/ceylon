@@ -1136,11 +1136,7 @@ public class Util {
     public static void clearProducedTypeCache(TypeDeclaration decl) {
         Module module = getModule(decl);
         if(module != null){
-            ProducedTypeCache cache = module.getCache();
-            if(cache != null){
-                cache.clearForDeclaration(decl);
-            }
-            // FIXME: propagate to modules that import this module transitively
+            module.clearCache(decl);
         }
     }
 }

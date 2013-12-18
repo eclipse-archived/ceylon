@@ -258,6 +258,15 @@ public class Module
         return cache;
     }
 
+    public void clearCache(TypeDeclaration declaration) {
+        ProducedTypeCache cache = getCache();
+        if(cache != null){
+            cache.clearForDeclaration(declaration);
+        }
+        // FIXME: propagate to modules that import this module transitively
+        // Done in the IDE JDTModule
+    }
+    
     public String getSignature() {
         if(signature == null){
             if(isDefault())
