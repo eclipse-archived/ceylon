@@ -1,0 +1,88 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+public interface Bug1478Bla {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla.class);
+}
+public final class Bug1478Bla$impl {
+    
+    public Bug1478Bla$impl(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla $this;
+}
+public abstract class Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1478AbstractFoo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.Inner Inner$new$();
+    
+    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner() {
+        }
+        
+        public abstract long execute(final T t);
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.class, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.class, $reified$T);
+    }
+}
+public class Bug1478Foo<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla {
+    
+    public Bug1478Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl(this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo<T>.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.Inner {
+        
+        protected Inner() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public final long execute(final T t) {
+            return 77L;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.class, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.class, $reified$T);
+    }
+}
