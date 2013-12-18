@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+class Bug1477Node<TItem> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1477Node(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem, final TItem item) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>> $ceylontmp$children$0 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node.<TItem>$default$children($reified$TItem, item);
+                this($reified$TItem, item, $ceylontmp$children$0);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1477Node(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem, final TItem item, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>> children) {
+        this.$reified$TItem = $reified$TItem;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem;
+    
+    public static <TItem>.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>> $default$children(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem, final TItem item) {
+        return (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node.class, $reified$TItem);
+    }
+}
+final class Bug1477StringNode {
+    
+    private Bug1477StringNode() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String> Bug1477StringNode$aliased$(final .ceylon.language.String name, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>> children) {
+        throw new .ceylon.language.Exception();
+    }
+}
+final class bug1477test_ {
+    
+    private bug1477test_() {
+    }
+    
+    static void bug1477test() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String> tree = (
+            let
+            {
+                .ceylon.language.String arg$1$0 = .ceylon.language.String.instance("aaa");
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>> arg$1$1 = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node.class, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("bbb"))});
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<.ceylon.language.String>(arg$1$reified$0, arg$1$0, arg$1$1);
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1477test_.bug1477test();
+    }
+}
