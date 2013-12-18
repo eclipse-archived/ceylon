@@ -5549,14 +5549,14 @@ public class ExpressionVisitor extends Visitor {
     private void checkExtensionOfMemberType(Node that, TypeDeclaration td,
             ProducedType type) {
         ProducedType qt = type.getQualifyingType();
-        if (qt!=null && td instanceof ClassOrInterface) {
+        if (qt!=null && td instanceof ClassOrInterface &&
+        		!type.getDeclaration().isStaticallyImportable()) {
             Scope s = td;
-            TypeDeclaration d = td;
-            while (s!=null && !d.isStaticallyImportable()) {
+            while (s!=null) {
                 s = s.getContainer();
                 if (s instanceof TypeDeclaration) {
-                    d = (TypeDeclaration) s;
-                    if (d.getType().isSubtypeOf(qt)) {
+                	TypeDeclaration otd = (TypeDeclaration) s;
+                    if (otd.getType().isSubtypeOf(qt)) {
                         return;
                     }
                 }
