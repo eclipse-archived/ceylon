@@ -1407,6 +1407,13 @@ public abstract class AbstractTransformer implements Transformation {
                 qType = container == null ? null : container.getType();
             }else{
                 qType = qType.getQualifyingType();
+                if(qType != null && qType.getDeclaration() instanceof ClassOrInterface == false){
+                    // sometimes the typechecker throws qualifying intersections at us and
+                    // we can't make anything of them, since some members may be unrelated to
+                    // the qualified declaration. This happens with "extends super.Foo()"
+                    // for example. See https://github.com/ceylon/ceylon-compiler/issues/1478
+                    qType = qType.getSupertype((TypeDeclaration) typeDeclaration.getContainer());
+                }
             }
             // delayed allocation if we have a qualifying type
             if(qualifyingTypes == null && qType != null){
