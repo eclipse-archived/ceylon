@@ -50,6 +50,7 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
 
     public Set<String> copySourceFiles(Set<String> sources) throws IOException {
         final Set<String> copiedFiles = new HashSet<String>();
+        final Set<String> folders = new HashSet<String>();
         for (String prefixedSourceFile : sources) {
             // must remove the prefix first
             String sourceFile = JarUtils.toPlatformIndependentPath(sourcePaths, prefixedSourceFile);
@@ -66,6 +67,9 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
                     srcOutputStream.closeEntry();
                 }
                 copiedFiles.add(sourceFile);
+                String folder = JarUtils.getFolder(sourceFile);
+                if(folder != null)
+                    folders.add(folder);
             }
         }
         JarUtils.finishUpdatingJar(originalSrcFile, outputSrcFile, srcContext, srcOutputStream, new JarUtils.JarEntryFilter() {
@@ -73,7 +77,7 @@ public class SourceArchiveCreatorImpl implements SourceArchiveCreator {
             public boolean avoid(String entryFullName) {
                 return copiedFiles.contains(entryFullName);
             }
-        }, repoManager, verbose, log);
+        }, repoManager, verbose, log, folders);
         return copiedFiles;
     }
 

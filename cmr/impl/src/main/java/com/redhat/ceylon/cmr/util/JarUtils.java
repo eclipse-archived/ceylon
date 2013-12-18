@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -24,7 +25,8 @@ public final class JarUtils {
 
     public static void finishUpdatingJar(File originalFile, File outputFile, ArtifactContext context, 
             JarOutputStream jarOutputStream, JarEntryFilter filter,
-            RepositoryManager repoManager, boolean verbose, Logger log) throws IOException {
+            RepositoryManager repoManager, boolean verbose, Logger log,
+            Set<String> folders) throws IOException {
         // now copy all previous jar entries
         if (originalFile != null) {
             JarFile jarFile = new JarFile(originalFile);
@@ -34,17 +36,28 @@ public final class JarUtils {
                 // skip the old entry if we overwrote it
                 if(filter.avoid(entry.getName()))
                     continue;
+                // only preserve directories if we did not write to them
+                if(entry.isDirectory() && folders.contains(entry.getName()))
+                    continue;
                 ZipEntry copiedEntry = new ZipEntry(entry.getName());
                 // Preserve the modification time and comment
                 copiedEntry.setTime(entry.getTime());
                 copiedEntry.setComment(entry.getComment());
                 jarOutputStream.putNextEntry(copiedEntry);
-                InputStream inputStream = jarFile.getInputStream(entry);
-                copy(inputStream, jarOutputStream);
-                inputStream.close();
+                if(!entry.isDirectory()){
+                    InputStream inputStream = jarFile.getInputStream(entry);
+                    copy(inputStream, jarOutputStream);
+                    inputStream.close();
+                }
                 jarOutputStream.closeEntry();
             }
             jarFile.close();
+        }
+        // now write all the required directories
+        for(String folder : folders){
+            ZipEntry dir = new ZipEntry(folder);
+            jarOutputStream.putNextEntry(dir);
+            jarOutputStream.closeEntry();
         }
         jarOutputStream.flush();
         jarOutputStream.close();
@@ -132,4 +145,12 @@ public final class JarUtils {
         return mtime;
     }
 
+    public static String getFolder(String fileName) {
+        int lastSep = fileName.lastIndexOf('/');
+        // toplevel does not need a folder
+        if(lastSep == -1)
+            return null;
+        // include the last slash to create a folder
+        return fileName.substring(0, lastSep+1);
+    }
 }
