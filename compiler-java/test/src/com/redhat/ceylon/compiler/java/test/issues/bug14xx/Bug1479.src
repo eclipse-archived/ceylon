@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+public class Bug1479<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1479(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T data) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T>[] parent;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> getParent() {
+        try {
+            return parent[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException("Accessing uninitialized \'late\' attribute");
+        }
+    }
+    
+    public final void setParent(final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> parent) {
+        if (this.parent != null) throw new .ceylon.language.InitializationException("Re-initialization of \'late\' attribute");
+        this.parent = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479[1];
+        this.parent[0] = parent;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479.class, $reified$T);
+    }
+}
