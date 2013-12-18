@@ -354,7 +354,7 @@ public class AttributeDefinitionBuilder {
         if (late) {
             JCStatement init = owner.make().Exec(
                     owner.make().Assign(fld(), 
-                            owner.make().NewArray(attrType(), 
+                            owner.make().NewArray(attrTypeRaw(), 
                                     List.<JCExpression>of(owner.make().Literal(1)), 
                                     null)));
             if (variable) {  
