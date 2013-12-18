@@ -85,7 +85,7 @@ public class LazyPackage extends Package {
                 return cache.get(name);
         }
         Declaration ret = getDirectMemberMemoised(name, signature, ellipsis);
-        if(canCache){
+        if(canCache && ret != null){
             cache.put(name, ret);
         }
         return ret;
@@ -377,11 +377,16 @@ public class LazyPackage extends Package {
     @Override
     public void removeUnit(Unit unit) {
         synchronized(modelLoader){
+            for (Declaration d : unit.getDeclarations()) {
+                flushCache(d);
+                if (d instanceof TypeDeclaration) {
+                    ((TypeDeclaration)d).clearProducedTypeCache();
+                }
+            }
             if (unit.getFilename().endsWith(".class") || unit.getFilename().endsWith(".java")) {
                 lazyUnits.remove(unit);
                 for (Declaration d : unit.getDeclarations()) {
                     compiledDeclarations.remove(d);
-                    flushCache(d);
                     // TODO : remove the declaration from the declaration map in AbstractModelLoader
                 }
                 modelLoader.removeDeclarations(unit.getDeclarations());
