@@ -5551,11 +5551,12 @@ public class ExpressionVisitor extends Visitor {
         ProducedType qt = type.getQualifyingType();
         if (qt!=null && td instanceof ClassOrInterface) {
             Scope s = td;
-            while (s!=null) {
+            TypeDeclaration d = td;
+            while (s!=null && !d.isStaticallyImportable()) {
                 s = s.getContainer();
                 if (s instanceof TypeDeclaration) {
-                    TypeDeclaration otd = (TypeDeclaration) s;
-                    if ( otd.getType().isSubtypeOf(qt) ) {
+                    d = (TypeDeclaration) s;
+                    if (d.getType().isSubtypeOf(qt)) {
                         return;
                     }
                 }
