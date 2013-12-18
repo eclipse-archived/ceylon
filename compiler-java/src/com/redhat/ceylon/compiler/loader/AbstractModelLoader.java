@@ -924,6 +924,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
         LazyInterface iface = new LazyInterface(classMirror, this);
+        iface.setStaticallyImportable(!iface.isCeylon());
         return iface;
     }
 
