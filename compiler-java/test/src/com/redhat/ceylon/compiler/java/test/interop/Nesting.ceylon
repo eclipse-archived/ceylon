@@ -25,7 +25,8 @@ import com.redhat.ceylon.compiler.java.test.interop {
         { 
             JNI_II_I2 = Inner2
             { JNI_II_I2_InnerStatic3 = InnerStatic3 }
-        }
+        },
+        InnerInterface2
     },
     JavaNesting {
         JN_InnerStatic = InnerStatic

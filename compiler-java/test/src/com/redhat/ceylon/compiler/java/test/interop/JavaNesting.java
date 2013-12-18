@@ -41,6 +41,8 @@ interface JavaNestingInterface<C> {
             }        
         }        
     }
+    
+    public interface InnerInterface2 {}
 }
 
 public class JavaNesting<C> {
