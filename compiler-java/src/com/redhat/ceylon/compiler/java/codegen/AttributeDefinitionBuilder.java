@@ -44,10 +44,10 @@ public class AttributeDefinitionBuilder {
     private final String fieldName;
 
     private final TypedDeclaration attrTypedDecl;
-    private final JCTree.JCExpression attrType;
-    private final JCTree.JCExpression attrTypeRaw;
     private final String attrName;
     private final String javaClassName;
+    private final int typeFlags;
+    private final ProducedType attrType;
     private final ClassDefinitionBuilder classBuilder;
     private final boolean toplevel;
     private final boolean late;
@@ -86,13 +86,6 @@ public class AttributeDefinitionBuilder {
         }
         this.isHash = CodegenUtil.isHashAttribute((MethodOrValue) attrType);
         this.attrTypedDecl = attrType;
-        // make sure we generate int getters for hash
-        if(this.isHash){
-            this.attrType = this.attrTypeRaw = owner.make().Type(owner.syms().intType);
-        }else{
-            this.attrType = owner.makeJavaType(nonWideningType, typeFlags);
-            this.attrTypeRaw = owner.makeJavaType(nonWideningType, AbstractTransformer.JT_RAW);
-        }
         this.owner = owner;
         this.javaClassName = javaClassName;
         if (javaClassName != null) {
@@ -102,6 +95,8 @@ public class AttributeDefinitionBuilder {
         } else {
             classBuilder = null;
         }
+        this.attrType = nonWideningType;
+        this.typeFlags = typeFlags;
         this.attrName = attrName;
         this.fieldName = fieldName;
         this.toplevel = toplevel;
@@ -116,7 +111,7 @@ public class AttributeDefinitionBuilder {
             .isOverride(attrType.isActual())
             .isTransient(Decl.isTransient(attrType))
             .modelAnnotations(attrType.getAnnotations())
-            .resultType(this.attrType, attrType);
+            .resultType(attrType(), attrType);
         
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
         pdb.modifiers(Flags.FINAL);
@@ -257,9 +252,27 @@ public class AttributeDefinitionBuilder {
     }
     
     private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
-        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(attrType, null);
+        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(attrType(), null);
         JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.naming.makeThis(), fieldName), owner.makeUnquotedIdent(fieldName));
         methodDefinitionBuilder.parameter(paramBuilder).body(owner.make().Exec(init));
+    }
+
+    private JCExpression attrType(){
+        // make sure we generate int getters for hash
+        if(this.isHash){
+            return owner.make().Type(owner.syms().intType);
+        }else{
+            return owner.makeJavaType(attrType, typeFlags);
+        }
+    }
+
+    private JCExpression attrTypeRaw(){
+        // make sure we generate int getters for hash
+        if(this.isHash){
+            return owner.make().Type(owner.syms().intType);
+        }else{
+            return owner.makeJavaType(attrType, AbstractTransformer.JT_RAW);
+        }
     }
 
     private long getGetSetModifiers() {
@@ -280,7 +293,7 @@ public class AttributeDefinitionBuilder {
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
                 owner.names().fromString(Naming.quoteIfJavaKeyword(fieldName)),
-                (toplevel || late) ? owner.make().TypeArray(attrType) : attrType,
+                (toplevel || late) ? owner.make().TypeArray(attrType()) : attrType(),
                 null
         );
     }
@@ -291,7 +304,7 @@ public class AttributeDefinitionBuilder {
         JCTree.JCExpression varInit = variableInit;
         if (toplevel || late) {
             varInit = owner.make().NewArray(
-                    attrTypeRaw,
+                    attrTypeRaw(),
                     List.<JCTree.JCExpression>nil(),
                     List.<JCTree.JCExpression>of(varInit)
             );
@@ -341,7 +354,7 @@ public class AttributeDefinitionBuilder {
         if (late) {
             JCStatement init = owner.make().Exec(
                     owner.make().Assign(fld(), 
-                            owner.make().NewArray(this.attrType, 
+                            owner.make().NewArray(attrType(), 
                                     List.<JCExpression>of(owner.make().Literal(1)), 
                                     null)));
             if (variable) {  
