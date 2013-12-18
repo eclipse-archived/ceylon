@@ -91,6 +91,10 @@ public class CMRTest extends CompilerTest {
 
         ZipEntry moduleClass = car.getEntry("def/Foo.class");
         assertNotNull(moduleClass);
+        ZipEntry moduleClassDir = car.getEntry("def/");
+        assertNotNull(moduleClassDir);
+        assertTrue(moduleClassDir.isDirectory());
+        
         car.close();
 
         carFile = getModuleArchive("mod", "1");
@@ -100,6 +104,10 @@ public class CMRTest extends CompilerTest {
 
         moduleClass = car.getEntry("mod/module_.class");
         assertNotNull(moduleClass);
+        moduleClassDir = car.getEntry("mod/");
+        assertNotNull(moduleClassDir);
+        assertTrue(moduleClassDir.isDirectory());
+        
         car.close();
     }
 
@@ -719,10 +727,13 @@ public class CMRTest extends CompilerTest {
         assertTrue(sourceArchiveFile.exists());
 
         JarFile sourceArchive = new JarFile(sourceArchiveFile);
-        assertEquals(1, countEntries(sourceArchive));
+        assertEquals(2, countEntries(sourceArchive));
 
         ZipEntry moduleClass = sourceArchive.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/module.ceylon");
         assertNotNull(moduleClass);
+
+        ZipEntry moduleClassDir = sourceArchive.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/");
+        assertNotNull(moduleClassDir);
         sourceArchive.close();
 
         // now compile another file
@@ -730,10 +741,13 @@ public class CMRTest extends CompilerTest {
 
         // MUST reopen it
         sourceArchive = new JarFile(sourceArchiveFile);
-        assertEquals(2, countEntries(sourceArchive));
+        assertEquals(4, countEntries(sourceArchive));
 
         ZipEntry subpackageClass = sourceArchive.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/subpackage/Subpackage.ceylon");
         assertNotNull(subpackageClass);
+        ZipEntry subpackageClassDir = sourceArchive.getEntry("com/redhat/ceylon/compiler/java/test/cmr/modules/single/subpackage/");
+        assertNotNull(subpackageClassDir);
+
         sourceArchive.close();
     }
 
