@@ -992,9 +992,10 @@ class NamedArgumentInvocation extends Invocation {
     
     @Override
     protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
-        if(!gen.supportsReified(producedReference.getDeclaration()))
+        ProducedReference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
+        if(!gen.supportsReified(ref.getDeclaration()))
             return;
-        int tpCount = gen.getTypeParameters(producedReference).size();
+        int tpCount = gen.getTypeParameters(ref).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
             result.append(new ExpressionAndType(reifiedTypeArgName(tpIndex).makeIdent(), gen.makeTypeDescriptorType()));
         }
@@ -1101,7 +1102,8 @@ class NamedArgumentInvocation extends Invocation {
             names.append(varBaseName.suffixedBy(Suffix.$argthis$).makeIdent());
         }
         // put all the required reified type args too
-        int tpCount = gen.getTypeParameters(producedReference).size();
+        ProducedReference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
+        int tpCount = gen.getTypeParameters(ref).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
             names.append(reifiedTypeArgName(tpIndex).makeIdent());
         }
