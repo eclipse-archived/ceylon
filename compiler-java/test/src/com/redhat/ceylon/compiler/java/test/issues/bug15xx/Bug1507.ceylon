@@ -57,3 +57,110 @@ Bug1507IntWrapper? bug1507generateInt(Boolean b) {
     }
     return null;
 }
+
+@noanno
+void bug1507test() {
+    Boolean found;
+    value array = arrayOfSize(2, 0);
+    @disableOptimization
+    for (i in array) {
+        if (i == 0) {
+            found = true;
+            break;
+        } else {
+            process.write("");
+            //found = false;
+        }
+    } else {
+        found = false;
+    }
+    process.write("``found``");
+}
+
+@noanno
+void bug1507test2() {
+    Boolean found;
+    value array = arrayOfSize(2, 0);
+    for (i in array) {
+        if (i == 0) {
+            found = true;
+            break;
+        } else {
+            process.write("");
+            //found = false;
+        }
+    } else {
+        found = false;
+    }
+    process.write("``found``");
+}
+
+@noanno
+void bug1507test3() {
+    Boolean found;
+    for (i in 1:2) {
+        if (i == 0) {
+            found = true;
+            break;
+        } else {
+            process.write("");
+            //found = false;
+        }
+    } else {
+        found = false;
+    }
+    process.write("``found``");
+}
+
+@noanno
+void bug1507test4() {
+    Boolean found;
+    value span = 1:2;
+    for (i in span) {
+        if (i == 0) {
+            found = true;
+            break;
+        } else {
+            process.write("");
+            //found = false;
+        }
+    } else {
+        found = false;
+    }
+    process.write("``found``");
+}
+
+@noanno
+void bug1507test5() {
+    Boolean found;
+    value range = 1..2;
+    for (i in range) {
+        if (i == 0) {
+            found = true;
+            break;
+        } else {
+            process.write("");
+            //found = false;
+        }
+    } else {
+        found = false;
+    }
+    process.write("``found``");
+}
+
+@noanno
+void bug1507test6() {
+    Boolean found;
+    for (i in 1..2) {
+        if (i == 0) {
+            found = true;
+            break;
+        } else {
+            process.write("");
+            //found = false;
+        }
+    } else {
+        found = false;
+    }
+    process.write("``found``");
+}
