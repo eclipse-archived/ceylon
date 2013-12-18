@@ -3455,6 +3455,13 @@ public class GenerateJsVisitor extends Visitor
         leftCompareRight(that);
     }
 
+    private boolean canUseNativeComparator(Term left, Term right) {
+        final ProducedType lt = left.getTypeModel();
+        final ProducedType rt = right.getTypeModel();
+        return (types._integer.equals(lt.getDeclaration()) && types._integer.equals(rt.getDeclaration()))
+                || (types._boolean.equals(lt.getDeclaration()) && types._boolean.equals(rt.getDeclaration()));
+    }
+
     @Override public void visit(SmallerOp that) {
         if (dynblock > 0 && TypeUtils.isUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use compare() if it exists
@@ -3467,8 +3474,17 @@ public class GenerateJsVisitor extends Visitor
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
                     clAlias, "getSmaller()))||", ltmp, "<", rtmp, ")");
         } else {
-            leftCompareRight(that);
-            out(".equals(", clAlias, "getSmaller())");
+            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                out("(");
+                box(that.getLeftTerm());
+                out("<");
+                box(that.getRightTerm());
+                out(")");
+            } else {
+                leftCompareRight(that);
+                out(".equals(", clAlias, "getSmaller())");
+            }
         }
     }
 
@@ -3484,8 +3500,17 @@ public class GenerateJsVisitor extends Visitor
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ").equals(",
                     clAlias, "getLarger()))||", ltmp, ">", rtmp, ")");
         } else {
-            leftCompareRight(that);
-            out(".equals(", clAlias, "getLarger())");
+            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                out("(");
+                box(that.getLeftTerm());
+                out(">");
+                box(that.getRightTerm());
+                out(")");
+            } else {
+                leftCompareRight(that);
+                out(".equals(", clAlias, "getLarger())");
+            }
         }
     }
 
@@ -3501,10 +3526,19 @@ public class GenerateJsVisitor extends Visitor
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
                     clAlias, "getLarger())||", ltmp, "<=", rtmp, ")");
         } else {
-            out("(");
-            leftCompareRight(that);
-            out("!==", clAlias, "getLarger()");
-            out(")");
+            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                out("(");
+                box(that.getLeftTerm());
+                out("<=");
+                box(that.getRightTerm());
+                out(")");
+            } else {
+                out("(");
+                leftCompareRight(that);
+                out("!==", clAlias, "getLarger()");
+                out(")");
+            }
         }
     }
 
@@ -3520,10 +3554,19 @@ public class GenerateJsVisitor extends Visitor
             out(",(", ltmp, ".compare&&", ltmp, ".compare(", rtmp, ")!==",
                     clAlias, "getSmaller())||", ltmp, ">=", rtmp, ")");
         } else {
-            out("(");
-            leftCompareRight(that);
-            out("!==", clAlias, "getSmaller()");
-            out(")");
+            final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+            if (usenat) {
+                out("(");
+                box(that.getLeftTerm());
+                out(">=");
+                box(that.getRightTerm());
+                out(")");
+            } else {
+                out("(");
+                leftCompareRight(that);
+                out("!==", clAlias, "getSmaller()");
+                out(")");
+            }
         }
     }
     public void visit(final Tree.WithinOp that) {
@@ -3571,13 +3614,21 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Outputs the CL equivalent of 'a==b' in JS. */
-    private void leftEqualsRight(BinaryOperatorExpression that) {
+    private void leftEqualsRight(final BinaryOperatorExpression that) {
         binaryOp(that, new BinaryOpGenerator() {
             @Override
             public void generate(BinaryOpTermGenerator termgen) {
-                termgen.left();
-                out(".equals(");
-                termgen.right();
+                final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
+                if (usenat) {
+                    out("(");
+                    box(that.getLeftTerm());
+                    out("==");
+                    box(that.getRightTerm());
+                } else {
+                    termgen.left();
+                    out(".equals(");
+                    termgen.right();
+                }
                 out(")");
             }
         });

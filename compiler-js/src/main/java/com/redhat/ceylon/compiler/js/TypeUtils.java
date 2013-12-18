@@ -35,6 +35,7 @@ public class TypeUtils {
     final TypeDeclaration sequential;
     final TypeDeclaration numeric;
     final TypeDeclaration _integer;
+    final TypeDeclaration _boolean;
     final TypeDeclaration _float;
     final TypeDeclaration _null;
     final TypeDeclaration anything;
@@ -49,6 +50,7 @@ public class TypeUtils {
         sequential = (TypeDeclaration)pkg.getMember("Sequential", null, false);
         numeric = (TypeDeclaration)pkg.getMember("Numeric", null, false);
         _integer = (TypeDeclaration)pkg.getMember("Integer", null, false);
+        _boolean = (TypeDeclaration)pkg.getMember("Boolean", null, false);
         _float = (TypeDeclaration)pkg.getMember("Float", null, false);
         _null = (TypeDeclaration)pkg.getMember("Null", null, false);
         anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
