@@ -1043,6 +1043,10 @@ public class ClassTransformer extends AbstractTransformer {
                         iface, klass, model.getType());
             } 
             
+            // type aliases are on the $impl class
+            if(member instanceof TypeAlias)
+                continue;
+            
             if (Strategy.onlyOnCompanion(member)) {
                 // non-shared interface methods don't need implementing
                 // (they're just private methods on the $impl)
