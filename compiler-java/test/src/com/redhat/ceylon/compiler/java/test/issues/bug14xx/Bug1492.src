@@ -1,0 +1,204 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+class Bug1492_1a implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1492_1a(final .java.lang.Object a) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$b$0 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1a.$default$b(a);
+                this(a, $ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1492_1a(final .java.lang.Object a, final .java.lang.Object b) {
+        this.a = a;
+        this.b = b;
+    }
+    
+    public static .java.lang.Object $default$b(final .java.lang.Object a) {
+        return a;
+    }
+    private final .java.lang.Object a;
+    
+    public final .java.lang.Object getA() {
+        return a;
+    }
+    private final .java.lang.Object b;
+    
+    public final .java.lang.Object getB() {
+        return b;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1a.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1a.class);
+}
+class Bug1492_1b implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1492_1b(final .java.lang.Object a) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1b.$default$b(a);
+                this(a, $ceylontmp$b$1);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1492_1b(final .java.lang.Object a, final .java.lang.Object b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .java.lang.Object a;
+    
+    public final .java.lang.Object getA() {
+        return a;
+    }
+    private final .java.lang.Object b;
+    
+    public final .java.lang.Object getB() {
+        return b;
+    }
+    
+    public static .java.lang.Object $default$b(final .java.lang.Object a) {
+        return a;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1b.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_1b.class);
+}
+class Bug1492_2a implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1492_2a(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2a.$default$b(a);
+                this(a, $ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1492_2a(final .ceylon.language.Callable<? extends .java.lang.Object> a, final .ceylon.language.Callable<? extends .java.lang.Object> b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return a.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> b;
+    
+    public final .java.lang.Object b() {
+        return b.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Object()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return a.$call$();
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2a.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2a.class);
+}
+class Bug1492_2b implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1492_2b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$b$3 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2b.$default$b(a);
+                this(a, $ceylontmp$b$3);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1492_2b(final .ceylon.language.Callable<? extends .java.lang.Object> a, final .ceylon.language.Callable<? extends .java.lang.Object> b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return a.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> b;
+    
+    public final .java.lang.Object b() {
+        return b.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        return a;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2b.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_2b.class);
+}
+class Bug1492_3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1492_3(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$b$5 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_3.$default$b(a);
+                this(a, $ceylontmp$b$5);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1492_3(final .ceylon.language.Callable<? extends .java.lang.Object> a, final .ceylon.language.Callable<? extends .java.lang.Object> b) {
+        this.a = a;
+        this.b = b;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return a.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> b;
+    
+    public final .java.lang.Object b() {
+        return b.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$b(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Object()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return a.$call$();
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1492_3.class);
+}
