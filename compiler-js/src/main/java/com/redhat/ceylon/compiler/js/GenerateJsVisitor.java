@@ -167,7 +167,7 @@ public class GenerateJsVisitor extends Visitor
      * @param codez Optional additional strings to print after the main code. */
     void out(String code, String... codez) {
         try {
-            if (opts.isIndent() && needIndent) {
+            if (!opts.isMinify() && opts.isIndent() && needIndent) {
                 for (int i=0;i<indentLevel;i++) {
                     out.write("    ");
                 }
@@ -200,14 +200,17 @@ public class GenerateJsVisitor extends Visitor
      * @param semicolon  if <code>true</code> then a semicolon is printed at the end
      *                  of the previous line*/
     void endLine(boolean semicolon) {
-        if (semicolon) { out(";"); }
+        if (semicolon) {
+            out(";");
+            if (opts.isMinify())return;
+        }
         out("\n");
-        needIndent = true;
+        needIndent = opts.isIndent() && !opts.isMinify();
     }
     /** Calls {@link #endLine()} if the current position is not already the beginning
      * of a line. */
     void beginNewLine() {
-        if (!needIndent) { endLine(); }
+        if (!needIndent) { endLine(false); }
     }
 
     /** Increases indentation level, prints opening brace and newline. Indentation will
@@ -215,7 +218,7 @@ public class GenerateJsVisitor extends Visitor
     void beginBlock() {
         indentLevel++;
         out("{");
-        endLine();
+        if (!opts.isMinify())endLine(false);
     }
 
     /** Decreases indentation level, prints a closing brace in new line (using
@@ -240,9 +243,10 @@ public class GenerateJsVisitor extends Visitor
      * @param newline  if <code>true</code> then additionally calls {@link #endLine()} */
     void endBlock(boolean semicolon, boolean newline) {
         indentLevel--;
-        beginNewLine();
+        if (!opts.isMinify())beginNewLine();
         out(semicolon ? "};" : "}");
-        if (newline) { endLine(); }
+        if (semicolon&&opts.isMinify())return;
+        if (newline) { endLine(false); }
     }
 
     /** Prints source code location in the form "at [filename] ([location])" */
@@ -275,7 +279,7 @@ public class GenerateJsVisitor extends Visitor
             endLine(true);
             if (md.getImportModuleList() != null && !md.getImportModuleList().getImportModules().isEmpty()) {
                 out("exports.$mod$imps=function(){return{");
-                endLine();
+                if (!opts.isMinify())endLine();
                 boolean first=true;
                 for (ImportModule im : md.getImportModuleList().getImportModules()) {
                     final StringBuilder path=new StringBuilder("'");
@@ -298,9 +302,9 @@ public class GenerateJsVisitor extends Visitor
                     out(path.toString(), ":");
                     TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), this);
                 }
-                endLine();
+                if (!opts.isMinify())endLine();
                 out("};};");
-                endLine();
+                if (!opts.isMinify())endLine();
             }
         }
         if (!that.getPackageDescriptors().isEmpty()) {
@@ -331,11 +335,11 @@ public class GenerateJsVisitor extends Visitor
         final String path = scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
         if (jsout.requires.put(path, modAlias) == null) {
-            out("var ", modAlias, "=require('", path, "');");
-            endLine();
+            out("var ", modAlias, "=require('", path, "')");
+            endLine(true);
             if (modAlias != null && !modAlias.isEmpty()) {
-                out(clAlias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');");
-                endLine();
+                out(clAlias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "')");
+                endLine(true);
             }
         }
     }
@@ -387,7 +391,7 @@ public class GenerateJsVisitor extends Visitor
         for (int i=0; i<statements.size(); i++) {
             Statement s = statements.get(i);
             s.visit(this);
-            beginNewLine();
+            if (!opts.isMinify())beginNewLine();
             retainedVars.emitRetainedVars(this);
         }
         retainedVars.reset(oldRetainedVars);
@@ -424,13 +428,13 @@ public class GenerateJsVisitor extends Visitor
                      || (scope instanceof Specification))) {
             out("var ");
             self(prototypeOwner);
-            out("=this;");
-            endLine();
+            out("=this");
+            endLine(true);
         }
     }
 
     private void comment(Tree.Declaration that) {
-        if (!opts.isComment()) return;
+        if (!opts.isComment() || opts.isMinify()) return;
         endLine();
         String dname = that.getNodeType();
         if (dname.endsWith("Declaration") || dname.endsWith("Definition")) {
@@ -455,8 +459,8 @@ public class GenerateJsVisitor extends Visitor
             if (dname.endsWith("()")){
                 dname = dname.substring(0, dname.length()-2);
             }
-            out(".", dname, "=", dname, ";");
-            endLine();
+            out(".", dname, "=", dname);
+            endLine(true);
             shared = true;
         }
         return shared;
@@ -471,8 +475,8 @@ public class GenerateJsVisitor extends Visitor
     private void addClassDeclarationToPrototype(TypeDeclaration outer, ClassDeclaration that) {
         classDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
-        out(names.self(outer), ".", tname, "=", tname, ";");
-        endLine();
+        out(names.self(outer), ".", tname, "=", tname);
+        endLine(true);
     }
 
     private void addAliasDeclarationToPrototype(TypeDeclaration outer, Tree.TypeAliasDeclaration that) {
@@ -503,15 +507,15 @@ public class GenerateJsVisitor extends Visitor
     private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, InterfaceDeclaration that) {
         interfaceDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
-        out(names.self(outer), ".", tname, "=", tname, ";");
-        endLine();
+        out(names.self(outer), ".", tname, "=", tname);
+        endLine(true);
     }
 
     private void addInterfaceToPrototype(ClassOrInterface type, InterfaceDefinition interfaceDef) {
         interfaceDefinition(interfaceDef);
         Interface d = interfaceDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.name(d), ";");
-        endLine();
+        out(names.self(type), ".", names.name(d), "=", names.name(d));
+        endLine(true);
     }
 
     @Override
@@ -564,8 +568,8 @@ public class GenerateJsVisitor extends Visitor
     private void addClassToPrototype(ClassOrInterface type, ClassDefinition classDef) {
         classDefinition(classDef);
         final String tname = names.name(classDef.getDeclarationModel());
-        out(names.self(type), ".", tname, "=", tname, ";");
-        endLine();
+        out(names.self(type), ".", tname, "=", tname);
+        endLine(true);
     }
 
     @Override
@@ -644,8 +648,8 @@ public class GenerateJsVisitor extends Visitor
         endLine();
         out(aname, ".$$=");
         qualify(that, aliased);
-        out(names.name(aliased), ".$$;");
-        endLine();
+        out(names.name(aliased), ".$$");
+        endLine(true);
         out(aname,".$$metamodel$$=");
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
@@ -671,12 +675,12 @@ public class GenerateJsVisitor extends Visitor
         out(")");
         beginBlock();
         //This takes care of top-level attributes defined before the class definition
-        out("$init$", names.name(d), "();");
-        endLine();
+        out("$init$", names.name(d), "()");
+        endLine(true);
         declareSelf(d);
         if (withTargs) {
             out(clAlias, "set_type_args(");
-            self(d); out(",$$targs$$);"); endLine();
+            self(d); out(",$$targs$$)"); endLine(true);
         } else {
             //Check if any of the satisfied types have type arguments
             if (that.getSatisfiedTypes() != null) {
@@ -715,21 +719,21 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         if (d.isNative()) {
-            out("if (typeof($init$native$", names.name(d), "$before)==='function')$init$native$",
+            out("if(typeof($init$native$", names.name(d), "$before)==='function')$init$native$",
                     names.name(d), "$before(");
             self(d);
             if (withTargs)out(",$$targs$$");
-            out(");");
-            endLine();
+            out(")");
+            endLine(true);
         }
         that.getClassBody().visit(this);
         if (d.isNative()) {
-            out("if (typeof($init$native$", names.name(d), "$after)==='function')$init$native$",
+            out("if(typeof($init$native$", names.name(d), "$after)==='function')$init$native$",
                     names.name(d), "$after(");
             self(d);
             if (withTargs)out(",$$targs$$");
-            out(");");
-            endLine();
+            out(")");
+            endLine(true);
             System.out.printf("%s is annotated native.", d.getQualifiedNameString());
             System.out.printf("You can implement two functions named $init$native$%s$before and $init$native$%<s$after",
                     names.name(d));
@@ -774,8 +778,8 @@ public class GenerateJsVisitor extends Visitor
             out(".");
             out("$$outer");
             //outerSelf(d);
-            out("=this;");
-            endLine();
+            out("=this");
+            endLine(true);
         }
     }
 
@@ -832,8 +836,8 @@ public class GenerateJsVisitor extends Visitor
                 out(",");
             }
             self(d);
-            out(");");
-            endLine();
+            out(")");
+            endLine(true);
            
             copySuperMembers(typeDecl, superDecs, d);
         }
@@ -855,8 +859,8 @@ public class GenerateJsVisitor extends Visitor
                     out(",");
                 }
                 self(d);
-                out(");");
-                endLine();
+                out(")");
+                endLine(true);
                 //Set the reified types from interfaces
                 Map<TypeParameter, ProducedType> reifs = st.getTypeModel().getTypeArguments();
                 if (reifs != null && !reifs.isEmpty()) {
@@ -866,8 +870,8 @@ public class GenerateJsVisitor extends Visitor
                             self(d);
                             out(",'", e.getKey().getName(), "',");
                             TypeUtils.typeNameOrList(that, e.getValue(), this);
-                            out(");");
-                            endLine();
+                            out(")");
+                            endLine(true);
                         }
                     }
                 }
@@ -928,7 +932,7 @@ public class GenerateJsVisitor extends Visitor
 
         out("function $init$", names.name(d), "()");
         beginBlock();
-        out("if (", names.name(d), ".$$===undefined)");
+        out("if(", names.name(d), ".$$===undefined)");
         beginBlock();
         String qns = d.getQualifiedNameString();
         if (JsCompiler.compilingLanguageModule && qns.indexOf("::") < 0) {
@@ -978,11 +982,11 @@ public class GenerateJsVisitor extends Visitor
         endBlockNewLine();
         //If it's nested, share the init function
         if (outerSelf(d)) {
-            out(".$init$", names.name(d), "=$init$", names.name(d), ";");
-            endLine();
+            out(".$init$", names.name(d), "=$init$", names.name(d));
+            endLine(true);
         }
-        out("$init$", names.name(d), "();");
-        endLine();
+        out("$init$", names.name(d), "()");
+        endLine(true);
     }
 
     /** Returns the name of the type or its $init$ function if it's local. */
@@ -1036,8 +1040,8 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
             endBlock();
-            out(")(", names.name(d), ".$$.prototype);");
-            endLine();
+            out(")(", names.name(d), ".$$.prototype)");
+            endLine(true);
             
             currentStatements = prevStatements;
         }
@@ -1065,8 +1069,8 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
         TypeUtils.encodeForRuntime(node, p.getModel(), this);
-        out(");");
-        endLine();
+        out(")");
+        endLine(true);
     }
 
     private ClassOrInterface prototypeOwner;
@@ -1114,7 +1118,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void declareSelf(ClassOrInterface d) {
-        out("if (");
+        out("if(");
         self(d);
         out("===undefined)");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
@@ -1182,8 +1186,8 @@ public class GenerateJsVisitor extends Visitor
             outerSelf(d);
             out(".", names.privateName(d), "=");
             outerSelf(d);
-            out(".", names.name(c), "();");
-            endLine();
+            out(".", names.name(c), "()");
+            endLine(true);
         }
     }
 
@@ -1215,7 +1219,7 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         if (!targs.isEmpty()) {
-            self(c); out(".$$targs$$=$$targs$$;"); endLine();
+            self(c); out(".$$targs$$=$$targs$$"); endLine(true);
         }
         callSuperclass(that.getExtendedType(), c, that, superDecs);
         callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
@@ -1248,7 +1252,7 @@ public class GenerateJsVisitor extends Visitor
             out(function, names.getter(d), "()");
             beginBlock();
             //Create the object lazily
-            out("if (", objvar, "===undefined){", objvar, "=$init$", names.name(c), "()(");
+            out("if(", objvar, "===undefined){", objvar, "=$init$", names.name(c), "()(");
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, this);
             }
@@ -1259,8 +1263,8 @@ public class GenerateJsVisitor extends Visitor
             
             if (addToPrototype || d.isShared()) {
                 outerSelf(d);
-                out(".", names.getter(d), "=", names.getter(d), ";");
-                endLine();
+                out(".", names.getter(d), "=", names.getter(d));
+                endLine(true);
             }
             if (!d.isToplevel()) {
                 if(outerSelf(d))out(".");
@@ -1279,8 +1283,8 @@ public class GenerateJsVisitor extends Visitor
             if (!d.isToplevel()) {
                 if (outerSelf(d))out(".");
             }
-            out(names.getter(d), ".$$metamodel$$};");
-            endLine();
+            out(names.getter(d), ".$$metamodel$$}");
+            endLine(true);
             if (d.isToplevel()) {
                 out("exports.$prop$", names.getter(d), "=$prop$", names.getter(d));
                 endLine(true);
@@ -1297,8 +1301,8 @@ public class GenerateJsVisitor extends Visitor
             }
             out(";},undefined,");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-            out(");");
-            endLine();
+            out(")");
+            endLine(true);
         }
     }
 
@@ -1307,23 +1311,23 @@ public class GenerateJsVisitor extends Visitor
             self(sub);
             out(".", names.name(d), parentSuffix, "=");
             self(sub);
-            out(".", names.name(d), ";");
-            endLine();
+            out(".", names.name(d));
+            endLine(true);
         //}
     }
 
     private void superGetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         if (defineAsProperty(d)) {
             out(clAlias, "copySuperAttr(", names.self(sub), ",'", names.name(d), "','",
-                    parentSuffix, "');");
+                    parentSuffix, "')");
         }
         else {
             self(sub);
             out(".", names.getter(d), parentSuffix, "=");
             self(sub);
-            out(".", names.getter(d), ";");
+            out(".", names.getter(d));
         }
-        endLine();
+        endLine(true);
     }
 
     private void superSetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
@@ -1331,8 +1335,8 @@ public class GenerateJsVisitor extends Visitor
             self(sub);
             out(".", names.setter(d), parentSuffix, "=");
             self(sub);
-            out(".", names.setter(d), ";");
-            endLine();
+            out(".", names.setter(d));
+            endLine(true);
         }
     }
 
@@ -1381,8 +1385,8 @@ public class GenerateJsVisitor extends Visitor
                 final String name = names.name(((Class)m.getContainer()).getParameter(m.getName()));
                 if (name != null) {
                     self((Class)m.getContainer());
-                    out(".", names.name(m), "=", name, ";");
-                    endLine();
+                    out(".", names.name(m), "=", name);
+                    endLine(true);
                 }
             } else if (m.getContainer() instanceof Method) {
                 //Declare the function just by forcing the name we used in the param list
@@ -1550,12 +1554,13 @@ public class GenerateJsVisitor extends Visitor
             }
             if ((typeDecl != null) && pd.getModel().isCaptured()) {
                 self(typeDecl);
-                out(".", paramName, "_=", paramName, ";");
+                out(".", paramName, "_=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
+                    out(";");
                     self(typeDecl);
-                    out(".", paramName, "=", paramName, ";");
+                    out(".", paramName, "=", paramName);
                 }
-                endLine();
+                endLine(true);
             }
         }
     }
@@ -1663,8 +1668,8 @@ public class GenerateJsVisitor extends Visitor
         if (isCaptured(d)) {
             beginNewLine();
             outerSelf(d);
-            out(".", names.getter(d), "=", names.getter(d), ";");
-            endLine();
+            out(".", names.getter(d), "=", names.getter(d));
+            endLine(true);
             shared = true;
         }
         return shared;
@@ -1712,8 +1717,8 @@ public class GenerateJsVisitor extends Visitor
         if (isCaptured(d)) {
             beginNewLine();
             outerSelf(d);
-            out(".", names.setter(d), "=", names.setter(d), ";");
-            endLine();
+            out(".", names.setter(d), "=", names.setter(d));
+            endLine(true);
             shared = true;
         }
         return shared;
@@ -1786,8 +1791,8 @@ public class GenerateJsVisitor extends Visitor
                     }
                     out(",");
                     TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-                    out(");");
-                    endLine();
+                    out(")");
+                    endLine(true);
                 } else {
                     endLine(true);
                     shareGetter(d);
@@ -1804,8 +1809,8 @@ public class GenerateJsVisitor extends Visitor
                     if (isLate) {
                         generateImmutableAttributeReassignmentCheck(varName, names.name(d));
                     }
-                    out("return ", varName, "=", paramVarName, ";};");
-                    endLine();
+                    out("return ", varName, "=", paramVarName, ";}");
+                    endLine(true);
                     shareSetter(d);
                 }
             }
@@ -1836,7 +1841,7 @@ public class GenerateJsVisitor extends Visitor
             //issue 297 this is only needed in some cases
             out("$prop$", pname, "={$$metamodel$$:");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-            out("};"); endLine();
+            out("}"); endLine(true);
             if (d.isToplevel()) {
                 out("exports.$prop$", pname, "=$prop$", pname);
                 endLine(true);
@@ -1864,7 +1869,7 @@ public class GenerateJsVisitor extends Visitor
             }
             out("$prop$", pname, ".set=", pset);
             endLine(true);
-            out("if (", pset, ".$$metamodel$$===undefined)", pset, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
+            out("if(", pset, ".$$metamodel$$===undefined)", pset, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
             endLine(true);
         }
     }
@@ -1876,7 +1881,7 @@ public class GenerateJsVisitor extends Visitor
         out("var ", varName);
         if (expr != null) {
             if (initVal) {
-                out(";function $valinit$", varName, "(){if (", varName, "===undefined)", varName, "=");
+                out(";function $valinit$", varName, "(){if(", varName, "===undefined)", varName, "=");
             } else {
                 out("=");
             }
@@ -1913,8 +1918,8 @@ public class GenerateJsVisitor extends Visitor
             if (decl.isClassOrInterfaceMember() && isCaptured(decl)) {
                 beginNewLine();
                 outerSelf(decl);
-                out(".", names.name(decl), "=", names.name(decl), ";");
-                endLine();
+                out(".", names.name(decl), "=", names.name(decl));
+                endLine(true);
             }
         } else {
             if (isCaptured(decl) || decl.isToplevel()) {
@@ -1947,8 +1952,8 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), this);
                     }
-                    out(");");
-                    endLine();
+                    out(")");
+                    endLine(true);
                 }
                 else {
                     out(function, names.getter(decl),"(){return ");
@@ -1969,7 +1974,7 @@ public class GenerateJsVisitor extends Visitor
     void generateUnitializedAttributeReadCheck(String privname, String pubname) {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
-        out("if (", privname, "===undefined)throw ", clAlias, "InitializationException(");
+        out("if(", privname, "===undefined)throw ", clAlias, "InitializationException(");
         if (JsCompiler.compilingLanguageModule) {
             out("String$('");
         } else {
@@ -2064,8 +2069,8 @@ public class GenerateJsVisitor extends Visitor
                     }
                     out(",");
                     TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-                    out(");");
-                    endLine();
+                    out(")");
+                    endLine(true);
                 }
             }
         }
@@ -2309,22 +2314,22 @@ public class GenerateJsVisitor extends Visitor
         //Define a function
         out("(function()");
         beginBlock();
-        if (opts.isComment()) {
+        if (opts.isComment() && !opts.isMinify()) {
             out("//SpreadOp at ", that.getLocation());
             endLine();
         }
         //Declare an array to store the values/references
         String tmplist = names.createTempVariable("lst");
-        out("var ", tmplist, "=[];"); endLine();
+        out("var ", tmplist, "=[]"); endLine(true);
         //Get an iterator
         String iter = names.createTempVariable("it");
         out("var ", iter, "=");
         super.visit(that);
-        out(".iterator();"); endLine();
+        out(".iterator()"); endLine(true);
         //Iterate
         String elem = names.createTempVariable("elem");
-        out("var ", elem, ";"); endLine();
-        out("while ((", elem, "=", iter, ".next())!==", clAlias, "getFinished())");
+        out("var ", elem); endLine(true);
+        out("while((", elem, "=", iter, ".next())!==", clAlias, "getFinished())");
         beginBlock();
         //Add value or reference to the array
         out(tmplist, ".push(");
@@ -2882,7 +2887,7 @@ public class GenerateJsVisitor extends Visitor
                         initSelf(moval.getContainer(), false);
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : ((Method) moval).getParameterLists().get(0).getParameters()) {
                             if (p.isDefaulted()) {
-                                out("if (", names.name(p), "===undefined)", names.name(p),"=");
+                                out("if(", names.name(p), "===undefined)", names.name(p),"=");
                                 qualify(specStmt, moval);
                                 out(names.name(moval), "$defs$", p.getName(), "(", paramNames.toString(), ")");
                                 endLine(true);
@@ -4021,7 +4026,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
     @Override public void visit(ForStatement that) {
-        if (opts.isComment()) {
+        if (opts.isComment() && !opts.isMinify()) {
             out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
             if (that.getExits()) out("//EXITS!");
             endLine();
@@ -4035,7 +4040,7 @@ public class GenerateJsVisitor extends Visitor
         endBlock();
         if (hasElse) {
             endLine();
-            out("if (", clAlias, "getFinished() === ", itemVar, ")");
+            out("if(", clAlias, "getFinished() === ", itemVar, ")");
             encloseBlockInFunction(that.getElseClause().getBlock());
         }
     }
@@ -4052,21 +4057,21 @@ public class GenerateJsVisitor extends Visitor
         }
         out("var ", iterVar, " = ");
         iterable.visit(this);
-        out(".iterator();");
-        endLine();
-        out("var ", itemVar, ";while ((", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished())");
+        out(".iterator()");
+        endLine(true);
+        out("var ", itemVar, ";while((", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished())");
         beginBlock();
         if (that instanceof ValueIterator) {
             directAccess.add(((ValueIterator)that).getVariable().getDeclarationModel());
         } else if (that instanceof KeyValueIterator) {
             String keyvar = names.name(((KeyValueIterator)that).getKeyVariable().getDeclarationModel());
             String valvar = names.name(((KeyValueIterator)that).getValueVariable().getDeclarationModel());
-            out("var ", keyvar, "=", itemVar, ".key;");
-            endLine();
-            out("var ", valvar, "=", itemVar, ".item;");
+            out("var ", keyvar, "=", itemVar, ".key");
+            endLine(true);
+            out("var ", valvar, "=", itemVar, ".item");
+            endLine(true);
             directAccess.add(((KeyValueIterator)that).getKeyVariable().getDeclarationModel());
             directAccess.add(((KeyValueIterator)that).getValueVariable().getDeclarationModel());
-            endLine();
         }
         return itemVar;
     }
@@ -4136,7 +4141,7 @@ public class GenerateJsVisitor extends Visitor
             out("catch(", catchVarName, ")");
             beginBlock();
             //Check if it's native and if so, wrap it
-            out("if (", catchVarName, ".getT$name === undefined) ", catchVarName, "=",
+            out("if(", catchVarName, ".getT$name===undefined)", catchVarName, "=",
                     clAlias, "NativeException(", catchVarName, ")");
             endLine(true);
             if (excVar != null) {
@@ -4169,7 +4174,7 @@ public class GenerateJsVisitor extends Visitor
                     names.forceName(variable.getDeclarationModel(), catchVarName);
 
                     visitStatements(catchClause.getBlock().getStatements());
-                    endBlockNewLine();
+                    endBlock();
                 }
             }
             if (!that.getCatchClauses().isEmpty()) {
@@ -4244,7 +4249,7 @@ public class GenerateJsVisitor extends Visitor
     /** Generates code for a case clause, as part of a switch statement. Each case
      * is rendered as an if. */
     private void caseClause(CaseClause cc, String expvar, Term switchTerm) {
-        out("if (");
+        out("if(");
         final CaseItem item = cc.getCaseItem();
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
@@ -4288,8 +4293,10 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SwitchStatement that) {
-        if (opts.isComment()) out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
-        endLine();
+        if (opts.isComment() && !opts.isMinify()) {
+            out("//Switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
+            endLine();
+        }
         //Put the expression in a tmp var
         final String expvar = names.createTempVariable("case");
         out("var ", expvar, "=");
@@ -4311,7 +4318,7 @@ public class GenerateJsVisitor extends Visitor
             out("else ");
             that.getSwitchCaseList().getElseClause().visit(this);
         }
-        if (opts.isComment()) {
+        if (opts.isComment() && !opts.isMinify()) {
             out("//End switch statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
             endLine();
         }
@@ -4387,8 +4394,8 @@ public class GenerateJsVisitor extends Visitor
         out("(function(){var ", rhs, "=");
         that.getRightTerm().visit(this);
         endLine(true);
-        out("if (", rhs, ">0){");
-        endLine();
+        out("if(", rhs, ">0){");
+        if (!opts.isMinify())endLine();
         String lhs = names.createTempVariable();
         String end = names.createTempVariable();
         out("var ", lhs, "=");
@@ -4396,7 +4403,7 @@ public class GenerateJsVisitor extends Visitor
         endLine(true);
         out("var ", end, "=", lhs);
         endLine(true);
-        out("for (var i=1; i<", rhs, "; i++){", end, "=", end, ".successor;}");
+        out("for(var i=1; i<", rhs, "; i++){", end, "=", end, ".successor;}");
         endLine();
         out("return ", clAlias, "Range(");
         out(lhs, ",", end, ",");
@@ -4452,8 +4459,8 @@ public class GenerateJsVisitor extends Visitor
             beginBlock();
             Continuation c = new Continuation(block.getScope(), names);
             continues.push(c);
-            out("var ", c.getContinueName(), "=false;"); endLine();
-            out("var ", c.getBreakName(), "=false;"); endLine();
+            out("var ", c.getContinueName(), "=false"); endLine(true);
+            out("var ", c.getBreakName(), "=false"); endLine(true);
             out("var ", c.getReturnName(), "=(function()");
         }
         block.visit(this);
@@ -4464,7 +4471,7 @@ public class GenerateJsVisitor extends Visitor
                 out("else if(", c.getContinueName(),"===true){continue;}");
             }
             if (c.isBreaked()) {
-                out("else if (", c.getBreakName(),"===true){break;}");
+                out("else if(", c.getBreakName(),"===true){break;}");
             }
             endBlockNewLine();
         }
@@ -4584,7 +4591,7 @@ public class GenerateJsVisitor extends Visitor
         }
         sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
                 that.getConditionList().getLocation()).append(")");
-        conds.specialConditionsAndBlock(that.getConditionList(), null, "if (!");
+        conds.specialConditionsAndBlock(that.getConditionList(), null, "if(!");
         //escape
         out(") {throw ", clAlias, "wrapexc(", clAlias, "AssertionException(\"",
                 escapeStringLiteral(sb.toString()), "\"),'",that.getLocation(), "','",
@@ -4595,14 +4602,14 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(Tree.DynamicStatement that) {
         dynblock++;
-        if (dynblock == 1) {
+        if (dynblock == 1 && !opts.isMinify()) {
             out("/*Begin dynamic block*/");
             endLine();
         }
         for (Tree.Statement stmt : that.getDynamicClause().getBlock().getStatements()) {
             stmt.visit(this);
         }
-        if (dynblock == 1) {
+        if (dynblock == 1 && !opts.isMinify()) {
             out("/*End dynamic block*/");
             endLine();
         }

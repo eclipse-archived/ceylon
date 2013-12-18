@@ -489,7 +489,7 @@ public class InvocationGenerator {
                     arg.visit(gen);
                     gen.endLine(true);
                 }
-                gen.out("return ", arr, ";");
+                gen.out("return ", arr,";");
                 gen.endBlock();
                 gen.out("()");
             }

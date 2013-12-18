@@ -45,8 +45,8 @@ public class ConditionGenerator {
             if (variable != null) {
                 Tree.Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
                 String varName = names.name(variable.getDeclarationModel());
-                gen.out("var ", varName, ";");
-                gen.endLine();
+                gen.out("var ", varName);
+                gen.endLine(true);
                 vars.add(new VarHolder(variable, variableRHS, varName));
             }
         }

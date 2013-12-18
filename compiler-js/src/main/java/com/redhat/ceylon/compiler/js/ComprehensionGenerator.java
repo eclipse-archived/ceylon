@@ -82,21 +82,21 @@ class ComprehensionGenerator {
                 loop.forIterator.getSpecifierExpression().visit(gen);
                 gen.out(".iterator()");
             }
-            gen.out(";"); gen.endLine();
+            gen.endLine(true);
 
             // value or key/value variables
             if (loop.keyVarName == null) {
-                gen.out("var ", loop.valueVarName, "=", finished, ";");
-                gen.endLine();
+                gen.out("var ", loop.valueVarName, "=", finished);
+                gen.endLine(true);
             } else {
-                gen.out("var ", loop.keyVarName, ",", loop.valueVarName, ";");
-                gen.endLine();
+                gen.out("var ", loop.keyVarName, ",", loop.valueVarName);
+                gen.endLine(true);
             }
 
             // variables for is/exists/nonempty conditions
             for (List<ConditionGenerator.VarHolder> condVarList : loop.conditionVars) {
                 for (ConditionGenerator.VarHolder condVar : condVarList) {
-                    gen.out("var ", condVar.name, ";"); gen.endLine();
+                    gen.out("var ", condVar.name); gen.endLine(true);
                     directAccess.add(condVar.var.getDeclarationModel());
                 }
             }
@@ -117,7 +117,7 @@ class ComprehensionGenerator {
                 String elemVarName = loop.valueVarName;
                 if (loop.keyVarName != null) {
                     elemVarName = names.createTempVariable("entry");
-                    gen.out("var ", elemVarName, ";"); gen.endLine();
+                    gen.out("var ", elemVarName); gen.endLine(true);
                 }
 
                 // if/while ((elemVar=it.next()!==$finished)
@@ -127,8 +127,8 @@ class ComprehensionGenerator {
 
                 // get key/value if necessary
                 if (loop.keyVarName != null) {
-                    gen.out(loop.keyVarName, "=", elemVarName, ".key;"); gen.endLine();
-                    gen.out(loop.valueVarName, "=", elemVarName, ".item;"); gen.endLine();
+                    gen.out(loop.keyVarName, "=", elemVarName, ".key"); gen.endLine(true);
+                    gen.out(loop.valueVarName, "=", elemVarName, ".item"); gen.endLine(true);
                 }
 
                 // generate conditions as nested ifs
@@ -142,17 +142,17 @@ class ComprehensionGenerator {
                     ComprehensionLoopInfo nextLoop = loops.get(loopIndex+1);
                     gen.out(nextLoop.itVarName, "=");
                     nextLoop.forIterator.getSpecifierExpression().visit(gen);
-                    gen.out(".iterator();"); gen.endLine();
-                    gen.out("next$", nextLoop.valueVarName, "();"); gen.endLine();
+                    gen.out(".iterator()"); gen.endLine(true);
+                    gen.out("next$", nextLoop.valueVarName, "()"); gen.endLine(true);
                 }
 
-                gen.out("return ", elemVarName, ";"); gen.endLine();
+                gen.out("return ", elemVarName); gen.endLine(true);
                 for (int i=0; i<=loop.conditions.size(); i++) { gen.endBlockNewLine(); }
                 retainedVars.emitRetainedVars(gen);
 
                 // for key/value iterators, value==undefined indicates that the iterator is finished
                 if (loop.keyVarName != null) {
-                    gen.out(loop.valueVarName, "=undefined;"); gen.endLine();
+                    gen.out(loop.valueVarName, "=undefined"); gen.endLine(true);
                 }
 
                 gen.out("return ", finished, ";");
@@ -161,7 +161,7 @@ class ComprehensionGenerator {
         }
 
         // get the first element
-        gen.out("next$", loops.get(0).valueVarName, "();"); gen.endLine();
+        gen.out("next$", loops.get(0).valueVarName, "()"); gen.endLine(true);
 
         // generate the "next" function for the comprehension
         gen.out("return function()");
@@ -184,15 +184,15 @@ class ComprehensionGenerator {
         expression.visit(gen);
         gen.endLine(true);
         retainedVars.emitRetainedVars(gen);
-        gen.out("next$", lastLoop.valueVarName, "();"); gen.endLine();
+        gen.out("next$", lastLoop.valueVarName, "()"); gen.endLine(true);
         gen.out("return ", tempVarName, ";");
         gen.endBlockNewLine();
 
         // "while" part of the do-while loops
         for (int i=loops.size()-2; i>=0; i--) {
             gen.endBlock();
-            gen.out("while(next$", loops.get(i).valueVarName, "()!==", finished, ");");
-            gen.endLine();
+            gen.out("while(next$", loops.get(i).valueVarName, "()!==", finished, ")");
+            gen.endLine(true);
         }
 
         gen.out("return ", finished, ";");
@@ -205,11 +205,11 @@ class ComprehensionGenerator {
     private void declareExternalLoopVars(ComprehensionLoopInfo loop) {
         if (loop.keyVarName != null) {
             String tk = names.createTempVariable(loop.keyVarName);
-            gen.out("var ", tk, "=", loop.keyVarName, ";"); gen.endLine();
+            gen.out("var ", tk, "=", loop.keyVarName); gen.endLine(true);
             names.forceName(loop.keyDecl, tk);
         }
         String tv = names.createTempVariable(loop.valueVarName);
-        gen.out("var ", tv, "=", loop.valueVarName, ";"); gen.endLine();
+        gen.out("var ", tv, "=", loop.valueVarName); gen.endLine(true);
         names.forceName(loop.valDecl, tv);
     }
 

@@ -32,6 +32,8 @@ public class Options {
     private boolean stdin;
     private boolean gensrc = true;
     private boolean offline;
+    private boolean srcmap;
+    private boolean minify;
     private String encoding = System.getProperty("file.encoding");
 
     /** Find all the repos specified in the argument list (pairs of "-rep x").
@@ -192,6 +194,22 @@ public class Options {
     
     public Options modulify(boolean modulify) {
         this.modulify = modulify;
+        return this;
+    }
+
+    public boolean isMinify() {
+        return minify;
+    }
+    public Options minify(boolean flag) {
+        minify=flag;
+        return this;
+    }
+
+    public boolean isSourceMaps() {
+        return srcmap;
+    }
+    public Options sourceMaps(boolean flag) {
+        srcmap=flag;
         return this;
     }
 
