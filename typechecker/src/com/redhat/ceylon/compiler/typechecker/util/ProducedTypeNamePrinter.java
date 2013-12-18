@@ -182,8 +182,7 @@ public class ProducedTypeNamePrinter {
                         name.append("=");
                     }
                     else {
-                        name.append(" = ");
-                        name.append(getProducedTypeName(dta, unit));
+                        name.append(" = ").append(getProducedTypeName(dta, unit));
                     }
                 }
 
@@ -379,7 +378,17 @@ public class ProducedTypeNamePrinter {
         if (printQualifyingType()) {
             ProducedType qt = pt.getQualifyingType();
             if (qt != null) {
-                ptn.append(getProducedTypeName(qt, unit)).append(".");
+	            TypeDeclaration qtd = qt.getDeclaration();
+				if (qtd instanceof IntersectionType ||
+					qtd instanceof UnionType) {
+					ptn.append("<");
+	            }
+                ptn.append(getProducedTypeName(qt, unit));
+    			if (qtd instanceof IntersectionType ||
+					qtd instanceof UnionType) {
+					ptn.append(">");
+	            }
+    			ptn.append(".");
             }
         }
 
