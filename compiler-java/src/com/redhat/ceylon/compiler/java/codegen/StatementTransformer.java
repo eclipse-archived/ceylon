@@ -1240,7 +1240,11 @@ public class StatementTransformer extends AbstractTransformer {
             // i++
             JCExpression iIncr = make().Unary(JCTree.POSTINC, indexName.makeIdent());
             
+            Tree.ControlClause prevControlClause = currentForClause;
+            currentForClause = stmt.getForClause();
             List<JCStatement> transformedBlock = transformBlock(getBlock());
+            currentForClause = prevControlClause;
+            
             // FOO element = java.lang.reflect.Array.get(array, i);
             JCExpression elementGet = makeIndexedAccess();
             
@@ -1602,7 +1606,11 @@ public class StatementTransformer extends AbstractTransformer {
                             naming.makeQualIdent(rangeName.makeIdent(), "getDecreasing"),
                             List.<JCExpression>nil())));
             
+            Tree.ControlClause prevForclause = currentForClause;
+            currentForClause = stmt.getForClause();
             List<JCStatement> transformedBlock = transformBlock(getBlock());
+            currentForClause = prevForclause;
+            
             JCVariableDecl init = makeVar(itemName, 
                     makeJavaType(iteratedType, JT_NO_PRIMITIVES),
                     make().Apply(null, naming.makeQualIdent(rangeName.makeIdent(), "getFirst"),
