@@ -87,7 +87,8 @@ public class JarOutputRepositoryManager {
     }
     
     static class ProgressiveJar {
-        private static final String MAPPING_FILE = "META-INF/mapping.txt";
+        private static final String META_INF = "META-INF";
+        private static final String MAPPING_FILE = META_INF+"/mapping.txt";
         private File originalJarFile;
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
@@ -100,6 +101,7 @@ public class JarOutputRepositoryManager {
         private ArtifactContext carContext;
         private SourceArchiveCreator creator;
         private Module module;
+        private Set<String> folders = new HashSet<String>();
         
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.options = options;
@@ -151,7 +153,7 @@ public class JarOutputRepositoryManager {
             JarUtils.finishUpdatingJar(
                     originalJarFile, outputJarFile, carContext, jarOutputStream,
                     getJarFilter(previousMapping, copiedSourceFiles),
-                    repoManager, options.get(OptionName.VERBOSE) != null, cmrLog);
+                    repoManager, options.get(OptionName.VERBOSE) != null, cmrLog, folders);
             
             String info;
             if(module.isDefault())
@@ -192,6 +194,7 @@ public class JarOutputRepositoryManager {
             }
             // Write the mapping file to the Jar
             try {
+                folders.add(META_INF+"/");
                 jarOutputStream.putNextEntry(new ZipEntry(MAPPING_FILE));
                 newMapping.store(jarOutputStream, "");
             }
@@ -215,6 +218,9 @@ public class JarOutputRepositoryManager {
             } else {
                 modifiedResourceFiles.add(fileName);
             }
+            String folder = JarUtils.getFolder(fileName);
+            if(folder != null)
+                folders.add(folder);
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
         }
 
