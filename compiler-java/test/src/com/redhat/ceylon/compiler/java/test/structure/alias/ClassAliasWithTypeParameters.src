@@ -39,6 +39,7 @@ public final class ClassAliasWithTypeParameters<T> {
     private ClassAliasWithTypeParameters() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -59,6 +60,7 @@ public final class ClassAliasWithTypeParameters2 {
     private ClassAliasWithTypeParameters2() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> ClassAliasWithTypeParameters2$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final .ceylon.language.Integer t) {

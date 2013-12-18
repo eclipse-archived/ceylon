@@ -69,6 +69,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<S>($reified$S, s);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                     value = "C",
@@ -107,6 +108,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, s);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "C",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -134,6 +136,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
         return new Member<C>($reified$C, s);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "C",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,

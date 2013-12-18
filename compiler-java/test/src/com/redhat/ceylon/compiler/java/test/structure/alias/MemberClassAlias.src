@@ -37,6 +37,7 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
         return new Member();
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member MemberClassAlias$aliased$() {
         throw new .ceylon.language.Exception();
     }

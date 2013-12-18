@@ -31,6 +31,7 @@ public final class ClassAlias {
     private ClassAlias() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo ClassAlias$aliased$() {
         throw new .ceylon.language.Exception();
     }
