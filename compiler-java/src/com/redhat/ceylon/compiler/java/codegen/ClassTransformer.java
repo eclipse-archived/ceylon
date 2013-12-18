@@ -267,7 +267,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         instantiator.resultType(null, makeJavaType(aliasedClass));
-        instantiator.annotationFlags(Annotations.MODEL_AND_USER);
+        instantiator.annotationFlags(Annotations.MODEL_AND_USER | Annotations.IGNORE);
         // We need to reify the parameters, at least so they have reified annotations
         
         
