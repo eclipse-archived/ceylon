@@ -481,8 +481,17 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     public void set(@Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
-        int idx = (int) index;
-        if (idx >= 0 && idx < getSize()) {
+    	long size = getSize();
+		if (index<0) {
+    		throw new AssertionException("array index " + index + 
+    				" may not be negative");
+    	}
+    	else if (index>=size) {
+    		throw new AssertionException("array index " + index + 
+    				" must be less than size of array " + size);
+    	}
+    	else {
+    		int idx = (int) index;
             java.lang.Class<?> typeClass = array.getClass().getComponentType();
             if (typeClass == char.class) {
                 // FIXME This is really unsafe! Should we try to do something more intelligent here??

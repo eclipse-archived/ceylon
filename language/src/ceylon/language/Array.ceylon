@@ -15,6 +15,9 @@ shared final native class Array<Element>({Element*} elements)
      with the given element. Does nothing if the specified 
      index is negative or larger than the index of the 
      last element in the array."
+    throws (`class AssertionException`, 
+            "if the given index is out of bounds, that is, 
+             if `index<0` or if `index>lastIndex`")
     shared native void set(
             "The index of the element to replace."
             Integer index, 
