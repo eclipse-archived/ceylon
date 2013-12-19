@@ -81,11 +81,16 @@ public class LazyPackage extends Package {
 //        System.err.println("getMember "+name+" "+signature+" "+ellipsis);
         boolean canCache = (signature == null && !ellipsis);
         if(canCache){
-            if(cache.containsKey(name))
-                return cache.get(name);
+            if(cache.containsKey(name)) {
+                Declaration cachedDeclaration = cache.get(name);
+                if (cachedDeclaration != null || ! modelLoader.searchAgain(getModule(), getQualifiedName(getQualifiedNameString(), name))) {
+                    return cachedDeclaration;
+                }
+
+            }
         }
         Declaration ret = getDirectMemberMemoised(name, signature, ellipsis);
-        if(canCache && ret != null){
+        if(canCache){
             cache.put(name, ret);
         }
         return ret;

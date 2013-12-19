@@ -278,7 +278,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     public abstract boolean loadPackage(Module module, String packageName, boolean loadDeclarations);
     
-    protected boolean searchAgain(Module module, String name) {
+    public boolean searchAgain(Module module, String name) {
         return false;
     }
     
