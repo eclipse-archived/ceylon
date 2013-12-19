@@ -2373,7 +2373,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (invocation instanceof CallableSpecifierInvocation) {
             result.addAll(transformArgumentsForCallableSpecifier((CallableSpecifierInvocation)invocation));
         } else if (invocation instanceof SimpleInvocation) {
-            result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
+            if(invocation.isUnknownArguments())
+                result.add(transformUnknownArguments((SimpleInvocation) invocation, callBuilder));
+            else
+                result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
         } else {
             throw Assert.fail();
         }
@@ -2400,6 +2403,17 @@ public class ExpressionTransformer extends AbstractTransformer {
             result.add(new ExpressionAndType(transformedPrimary.expr,
                     makeJavaType(primary.getTypeModel())));   
         }
+    }
+    
+    private ExpressionAndType transformUnknownArguments(SimpleInvocation invocation, CallBuilder callBuilder){
+
+        // doesn't really matter, assume Object, it's not used
+        ProducedType iteratedType = typeFact().getObjectDeclaration().getType();
+        // the single spread argument which is allowed
+        JCExpression expr = invocation.getTransformedArgumentExpression(0);
+        
+        JCExpression type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
+        return new ExpressionAndType(expr, type);
     }
     
     private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation, CallBuilder callBuilder) {
@@ -2771,6 +2785,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 callBuilder.arrayWrite(transformedPrimary.expr);
             else
                 return makeErroneous(invocation.getNode(), "compiler bug: extraneous array selector: "+transformedPrimary.selector);
+        } else if (invocation.isUnknownArguments()) {
+            // if we have an unknown parameter list, like Callble<Ret,Args>, need to prepend the callable
+            // to the argument list, and invoke Util.apply
+            // note that ATM the typechecker only allows a single argument to be passed in spread form in this
+            // case so we don't need to look at parameter types
+            JCExpression callableTypeExpr = makeJavaType(invocation.getPrimary().getTypeModel());
+            ExpressionAndType callableArg = new ExpressionAndType(transformedPrimary.expr, callableTypeExpr);
+            ProducedType returnType = invocation.getReturnType();
+            JCExpression returnTypeExpr = makeJavaType(returnType, JT_NO_PRIMITIVES);
+            callBuilder.prependArgumentAndType(callableArg);
+            callBuilder.typeArgument(returnTypeExpr);
+            callBuilder.invoke(make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
+                                             names().fromString("apply")));
         } else if (invocation.isOnValueType()) {
             JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));

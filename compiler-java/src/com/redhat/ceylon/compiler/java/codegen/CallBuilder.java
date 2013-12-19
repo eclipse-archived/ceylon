@@ -135,7 +135,12 @@ public class CallBuilder {
         this.argumentsAndTypes.append(argumentAndType);
         return this;
     }
-    
+
+    public CallBuilder prependArgumentAndType(ExpressionAndType argumentAndType) {
+        this.argumentsAndTypes = this.argumentsAndTypes.prepend(argumentAndType);
+        return this;
+    }
+
     public CallBuilder arguments(List<JCExpression> args) {
         for (JCExpression arg : args) {
             this.argument(arg);

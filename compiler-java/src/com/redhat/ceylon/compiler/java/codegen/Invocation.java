@@ -286,6 +286,10 @@ abstract class Invocation {
         callBuilder.location(getNode());
     }
 
+    public boolean isUnknownArguments() {
+        return false;
+    }
+
 }
 
 abstract class SimpleInvocation extends Invocation {
@@ -372,6 +376,7 @@ class IndirectInvocation extends SimpleInvocation {
     private final Comprehension comprehension;
     private final boolean variadic;
     private final boolean spread;
+    private final boolean unknownArguments;
 
     public IndirectInvocation(
             AbstractTransformer gen, 
@@ -380,19 +385,31 @@ class IndirectInvocation extends SimpleInvocation {
             Tree.InvocationExpression invocation) {
         super(gen, primary, primaryDeclaration, invocation.getTypeModel(), invocation);
 
-        // find the parameter types
-        final java.util.List<ProducedType> tas = new ArrayList<>();
         ProducedType callableType = primary.getTypeModel();
-        tas.add(gen.getReturnTypeOfCallable(callableType));
-        for (int ii = 0, l = gen.getNumParametersOfCallable(callableType); ii < l; ii++) {
-            tas.add(gen.getParameterTypeOfCallable(callableType, ii));
+
+        this.unknownArguments = gen.isUnknownArgumentsCallable(callableType);
+        
+        final java.util.List<ProducedType> parameterTypes;
+        // if we have an unknown parameter list, like Callble<Ret,Args>, we can't look at parameter types
+        // note that ATM the typechecker only allows a single argument to be passed in spread form in this
+        // case so we don't need to look at parameter types
+        if(!this.unknownArguments){
+            // find the parameter types
+            final java.util.List<ProducedType> tas = new ArrayList<>();
+            tas.add(gen.getReturnTypeOfCallable(callableType));
+            for (int ii = 0, l = gen.getNumParametersOfCallable(callableType); ii < l; ii++) {
+                tas.add(gen.getParameterTypeOfCallable(callableType, ii));
+            }
+            this.variadic = gen.isVariadicCallable(callableType);
+            //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
+            parameterTypes = tas.subList(1, tas.size());
+        }else{
+            this.variadic = false; // we don't know
+            parameterTypes = Collections.emptyList();
         }
-        this.variadic = gen.isVariadicCallable(callableType);
-        //final java.util.List<ProducedType> tas = primary.getTypeModel().getTypeArgumentList();
-        final java.util.List<ProducedType> parameterTypes = tas.subList(1, tas.size());
         
         PositionalArgumentList positionalArgumentList = invocation.getPositionalArgumentList();
-        final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(tas.size());
+        final java.util.List<Tree.Expression> argumentExpressions = new ArrayList<Tree.Expression>(positionalArgumentList.getPositionalArguments().size());
         boolean spread = false;
         Comprehension comprehension = null;
         for (Tree.PositionalArgument argument : positionalArgumentList.getPositionalArguments()) {
@@ -493,6 +510,11 @@ class IndirectInvocation extends SimpleInvocation {
         return comprehension != null || spread;
     }
 
+    @Override
+    public boolean isUnknownArguments(){
+        return unknownArguments;
+    }
+    
     @Override
     protected boolean isArgumentSpread(int argIndex) {
         if(spread) // spread args must be last argument

@@ -1933,6 +1933,54 @@ public abstract class AbstractTransformer implements Transformation {
         return typeFact().getUnknownType();
     }
     
+    /**
+     * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
+     */
+    boolean isUnknownArgumentsCallable(ProducedType callableType) {
+        ProducedType args = typeFact().getCallableTuple(callableType);
+        return isUnknownTuple(args);
+    }
+    
+    private boolean isUnknownTuple(ProducedType args) {
+        // can be a defaulted tuple of Empty|Tuple
+        TypeDeclaration declaration = args.getDeclaration();
+        if(declaration instanceof UnionType){
+            java.util.List<ProducedType> caseTypes = declaration.getCaseTypes();
+            if(caseTypes == null || caseTypes.size() != 2)
+                return true;
+            ProducedType caseA = caseTypes.get(0);
+            TypeDeclaration caseADecl = caseA.getDeclaration();
+            ProducedType caseB = caseTypes.get(1);
+            TypeDeclaration caseBDecl = caseB.getDeclaration();
+            if(caseADecl instanceof ClassOrInterface == false
+                    || caseBDecl instanceof ClassOrInterface == false)
+                return true;
+            if(caseADecl.getQualifiedNameString().equals("ceylon.language::Empty")
+                    && caseBDecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
+                return isUnknownTuple(caseB);
+            if(caseBDecl.getQualifiedNameString().equals("ceylon.language::Empty")
+                    && caseADecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
+                return isUnknownTuple(caseA);
+            return true;
+        }
+        // can be Tuple, Empty, Sequence or Sequential
+        if(declaration instanceof ClassOrInterface == false)
+            return true;
+        String name = declaration.getQualifiedNameString();
+        if(name.equals("ceylon.language::Tuple")){
+            ProducedType rest = args.getTypeArgumentList().get(2);
+            return isUnknownTuple(rest);
+        }
+        if(name.equals("ceylon.language::Empty")){
+            return false;
+        }
+        if(name.equals("ceylon.language::Sequential")
+           || name.equals("ceylon.language::Sequence")){
+            return false;
+        }
+        return true;
+    }
+
     int getNumParametersOfCallable(ProducedType callableType) {
         ProducedType tuple = typeFact().getCallableTuple(callableType);
         int simpleNumParametersOfCallable = getSimpleNumParametersOfCallable(tuple);
