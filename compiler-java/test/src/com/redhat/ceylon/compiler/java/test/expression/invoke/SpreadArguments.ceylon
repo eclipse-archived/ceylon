@@ -110,4 +110,13 @@ class SpreadArguments<T>(Integer i,  T s) {
         f(1, 2, 3, *two);
         f2(1, 2, 3, *two);
     }
+    
+    void spreadParameterised<Arg,Args>(Arg arg, Args args, Callable<Integer, Args> f, Callable<Integer, Tuple<Anything, String, Args>> f2)
+        given Args satisfies Arg[] {
+        
+        Integer i1 = f(*args);
+        // those two not accepted by the typechecker and not supported by the backend
+        //Integer i1b = f(arg, *args);
+        //Integer i2 = f2("hello", *args);
+    }
 }
