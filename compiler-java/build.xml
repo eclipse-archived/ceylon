@@ -64,7 +64,6 @@
         <path refid="compiler.classpath" />
         <pathelement path="${build.classes}" />
         <pathelement path="${junit.lib}" />
-        <pathelement path="${cmr-maven.lib}" />
         <pathelement path="${markdownpapers.lib}" />
     </path>
 
