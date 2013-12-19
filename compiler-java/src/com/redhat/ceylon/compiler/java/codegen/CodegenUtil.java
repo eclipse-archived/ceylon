@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
@@ -26,13 +27,17 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Specification;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -411,4 +416,41 @@ class CodegenUtil {
         }
         return false;
     }
+
+
+    /**
+     * Returns true if the given produced type is a type parameter or has type arguments which
+     * are type parameters.
+     */
+    public static boolean containsTypeParameter(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof TypeParameter)
+            return true;
+        for(ProducedType pt : type.getTypeArgumentList()){
+            if(containsTypeParameter(pt)){
+                return true;
+            }
+        }
+        if(declaration instanceof IntersectionType){
+            List<ProducedType> types = declaration.getSatisfiedTypes();
+            for(int i=0,l=types.size();i<l;i++){
+                if(containsTypeParameter(types.get(i)))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof UnionType){
+            List<ProducedType> types = declaration.getCaseTypes();
+            for(int i=0,l=types.size();i<l;i++){
+                if(containsTypeParameter(types.get(i)))
+                    return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    
+    
 }

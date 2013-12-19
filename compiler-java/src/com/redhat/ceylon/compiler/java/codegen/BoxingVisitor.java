@@ -23,7 +23,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.Util;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
@@ -138,22 +137,11 @@ public abstract class BoxingVisitor extends Visitor {
         if(that.getPrimary().getTypeModel() != null
                 && isRaw(that.getPrimary().getTypeModel())
                 && that.getTarget().getDeclaration() instanceof TypedDeclaration
-                && hasTypeParameters(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
+                && CodegenUtil.containsTypeParameter(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
             CodegenUtil.markTypeErased(that);
         }
     }
 
-    private boolean hasTypeParameters(ProducedType type) {
-        if(isTypeParameter(type))
-            return true;
-        for(ProducedType pt : type.getTypeArgumentList()){
-            if(hasTypeParameters(pt)){
-                return true;
-            }
-        }
-        return false;
-    }
-    
     @Override
     public void visit(Expression that) {
         super.visit(that);
