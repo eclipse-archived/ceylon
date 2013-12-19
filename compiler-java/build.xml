@@ -284,7 +284,6 @@
     <!-- Runs the JUnit tests -->
     <target name="-test.prepare" depends="publish,test.classes,-test.cond">
         <mkdir dir="${test.reports}" />
-        <property name="bootclasspath" refid="test.run.classpath" />
     </target>
 
     <target name="test" depends="test.all" description="Runs the tests and generates a test report.">
@@ -300,7 +299,6 @@
     <target name="test.all" depends="-test.prepare">
         <junit printsummary="yes" haltonfailure="no">
             <classpath refid="test.run.classpath" />
-            <jvmarg value="-Xbootclasspath/p:${bootclasspath}" />
 
             <formatter type="xml" />
 
