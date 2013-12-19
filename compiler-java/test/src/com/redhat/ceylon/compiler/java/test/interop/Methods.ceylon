@@ -220,6 +220,9 @@ void variadicMethods() {
 
     @error
     java.variadicT<String>("a", box("b"), "c");
+    
+    java.variadicObject(for (i in 1..2) i);
+    java.variadicInt(for (i in 1..2) i);
 }
 
 @noanno
