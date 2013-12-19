@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+public final class run_ {
+    
+    private run_() {
+    }
+    
+    public static void run(final .ceylon.language.meta.model.Value nameValue) {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> getName = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return (.ceylon.language.String)nameValue.get();
+            }
+        };
+        final .java.lang.String name = ((.ceylon.language.String)nameValue.get()).toString();
+    }
+}
+class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Person(final .java.lang.String name) {
+        this.name = name;
+    }
+    private final .java.lang.String name;
+    
+    public final .java.lang.String getName() {
+        return name;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Person.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Person.class);
+}
