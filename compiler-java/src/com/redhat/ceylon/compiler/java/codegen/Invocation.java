@@ -807,7 +807,8 @@ class CallableInvocation extends DirectInvocation {
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
         handleBoxing(true);
         if (producedReference.getDeclaration() instanceof TypedDeclaration) {
-            setErased(((TypedDeclaration)producedReference.getDeclaration()).getTypeErased());
+            TypedDeclaration tdecl = (TypedDeclaration) producedReference.getDeclaration();
+            setErased(CodegenUtil.hasTypeErased(tdecl)|| CodegenUtil.hasTypeErased(primary));
         }
         this.tempVars = tempVars;
     }
