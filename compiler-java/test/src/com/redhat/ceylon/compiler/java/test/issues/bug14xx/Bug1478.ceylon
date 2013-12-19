@@ -27,15 +27,23 @@ shared abstract class Bug1478AbstractFoo<T>() {
     shared formal class Inner()  {
         shared formal Integer execute(T t);
     }
+    
+    shared interface InnerInterface{
+        shared formal Integer execute2(T t);
+    }
 }
 
 
 @noanno
 shared class Bug1478Foo<T>() extends Bug1478AbstractFoo<T>() satisfies Bug1478Bla {
 
-    shared actual class Inner() extends super.Inner() {
+    shared actual class Inner() extends super.Inner() satisfies InnerInterface {
 
         shared actual Integer execute(T t) {
+            return 77;
+        }
+
+        shared actual Integer execute2(T t) {
             return 77;
         }
     }
