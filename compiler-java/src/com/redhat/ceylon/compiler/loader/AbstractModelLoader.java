@@ -282,6 +282,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return false;
     }
     
+    public boolean searchAgain(LazyPackage lazyPackage, String name) {
+        return false;
+    }
+    
     /**
      * Looks up a ClassMirror by name. Uses cached results, and caches the result of calling lookupNewClassMirror
      * on cache misses.

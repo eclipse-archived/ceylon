@@ -83,7 +83,7 @@ public class LazyPackage extends Package {
         if(canCache){
             if(cache.containsKey(name)) {
                 Declaration cachedDeclaration = cache.get(name);
-                if (cachedDeclaration != null || ! modelLoader.searchAgain(getModule(), getQualifiedName(getQualifiedNameString(), name))) {
+                if (cachedDeclaration != null || ! modelLoader.searchAgain(this, name)) {
                     return cachedDeclaration;
                 }
 
@@ -159,7 +159,7 @@ public class LazyPackage extends Package {
         return null;
     }
 
-    private String getQualifiedName(final String pkgName, String name) {
+    public String getQualifiedName(final String pkgName, String name) {
         // FIXME: some refactoring needed
         name = Naming.quoteIfModuleOrPackageName(name);
         String className = pkgName.isEmpty() ? name : Util.quoteJavaKeywords(pkgName) + "." + name;
