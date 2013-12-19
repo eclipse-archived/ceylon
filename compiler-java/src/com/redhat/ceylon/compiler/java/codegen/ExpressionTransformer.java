@@ -2557,7 +2557,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // remove it from x
             x = x.tail;
             
-            ProducedType lastType = invocation.getArgumentExpression(numArguments-1).getTypeModel();
+            ProducedType lastType = invocation.getArgumentType(numArguments-1);
 
             // must translate it into a Util call
             expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
