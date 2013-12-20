@@ -63,6 +63,7 @@ public class PhasedUnit {
     private boolean fullyTyped = false;
     private boolean usageAnalyzed = false;
     private boolean literalsProcessed = false;
+    private boolean moduleVisited = false;
 
     public VirtualFile getSrcDir() {
         return srcDir;
@@ -118,11 +119,14 @@ public class PhasedUnit {
     public Module visitSrcModulePhase() {
         if ( ModuleManager.MODULE_FILE.equals(fileName) ||
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
-            processLiterals();
-            moduleVisitor = new ModuleVisitor(moduleManager, pkg);
-            moduleManager = null;
-            compilationUnit.visit(moduleVisitor);
-            return moduleVisitor.getMainModule();
+            if (! moduleVisited) {
+                moduleVisited = true;
+                processLiterals();
+                moduleVisitor = new ModuleVisitor(moduleManager, pkg);
+                moduleManager = null;
+                compilationUnit.visit(moduleVisitor);
+                return moduleVisitor.getMainModule();
+            }
         }
         return null;
     }
