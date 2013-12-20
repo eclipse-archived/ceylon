@@ -29,9 +29,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.CommonToken;
@@ -48,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -57,6 +62,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 public abstract class ClassOrPackageDoc extends CeylonDoc {
     
@@ -428,14 +434,16 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     private String getParameterDefaultValue(Parameter param) throws IOException {
         String defaultValue = null;
         
-        PhasedUnit pu = tool.getParameterUnit(param);
-        Node paramNode = tool.getParameterNode(param);
-        if (pu != null && paramNode instanceof Tree.Parameter) {
-            Tree.SpecifierOrInitializerExpression defArg = getDefaultArgument((Tree.Parameter) paramNode);
-            if (defArg != null) {
-                defaultValue = getSourceCode(pu, defArg.getExpression());
-                if (defaultValue != null) {
-                    defaultValue = defaultValue.trim();
+        if( param.isDefaulted() ) {
+            PhasedUnit pu = tool.getParameterUnit(param);
+            Node paramNode = tool.getParameterNode(param);
+            if (pu != null && paramNode instanceof Tree.Parameter) {
+                Tree.SpecifierOrInitializerExpression defArg = getDefaultArgument((Tree.Parameter) paramNode);
+                if (defArg != null) {
+                    defaultValue = getSourceCode(pu, defArg.getExpression());
+                    if (defaultValue != null) {
+                        defaultValue = defaultValue.trim();
+                    }
                 }
             }
         }
@@ -467,18 +475,17 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
 
     protected final void writeParameters(Declaration decl) throws IOException {
         if( decl instanceof Functional ) {
+            Map<Parameter, Map<Tree.Assertion, List<Tree.Condition>>> parametersAssertions = getParametersAssertions(decl);
             boolean first = true;
             List<ParameterList> parameterLists = ((Functional)decl).getParameterLists();
             for (ParameterList parameterList : parameterLists) {
                 for (Parameter parameter : parameterList.getParameters()) {
+
                     String doc = getDoc(parameter.getModel(), linkRenderer());
+                    String defaultValue = getParameterDefaultValue(parameter);
+                    Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions = parametersAssertions.get(parameter);
                     
-                    String defaultValue = null;
-                    if (parameter.isDefaulted()) {
-                        defaultValue = getParameterDefaultValue(parameter);
-                    }
-                    
-                    if( !doc.isEmpty() || defaultValue != null ) {
+                    if( !doc.isEmpty() || defaultValue != null || parameterAssertions != null) {
                         if( first ) {
                             first = false;
                             open("div class='parameters section'");
@@ -488,11 +495,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                         open("li");
                         around("span class='parameter' id='" + decl.getName() + "-" + parameter.getName() + "'", parameter.getName());
                         
-                        if (parameter.isDefaulted()) {
+                        if (!isEmpty(defaultValue)) {
                             around("span class='parameter-default-value' title='Parameter default value'", " = " + defaultValue);
                         }
+                        if (!isEmpty(doc)) {
+                            around("div class='doc section'", doc);
+                        }
+                        writeParameterAssertions(decl, parameterAssertions);
                         
-                        write(doc);
                         close("li");
                     }
                 }
@@ -502,6 +512,42 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 close("div");
             }
         }
+    }
+
+    private void writeParameterAssertions(Declaration decl, Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions) throws IOException {
+        if (parameterAssertions == null || parameterAssertions.isEmpty()) {
+            return;
+        }
+        
+        PhasedUnit pu = tool.getUnit(decl);
+        
+        open("div class='assertions' title='Parameter assertions'");
+        open("ul");
+
+        for (Tree.Assertion assertion : parameterAssertions.keySet()) {
+
+            List<Annotation> annotations = new ArrayList<Annotation>();
+            com.redhat.ceylon.compiler.typechecker.analyzer.Util.buildAnnotations(assertion.getAnnotationList(), annotations);
+
+            String doc = Util.getRawDoc(annotations);
+            if (!Util.isEmpty(doc)) {
+                open("li");
+                write("<i class='icon-assertion'></i>");
+                write(Util.wikiToHTML(doc, linkRenderer()));
+                close("li");
+            } else {
+                for (Tree.Condition c : parameterAssertions.get(assertion)) {
+                    String sourceCode = getSourceCode(pu, c);
+                    open("li");
+                    write("<i class='icon-assertion'></i>");
+                    around("code", sourceCode);
+                    close("li");
+                }
+            }
+        }
+
+        close("ul");
+        close("div");
     }
 
 	protected final void writeThrows(Declaration decl) throws IOException {
@@ -593,21 +639,124 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         int startIndex = ((CommonToken) node.getToken()).getStartIndex();
         int stopIndex = ((CommonToken) node.getEndToken()).getStopIndex();
     
-        StringBuilder result = new StringBuilder();
+        StringBuilder sourceCodeBuilder = new StringBuilder();
         BufferedReader sourceCodeReader = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
         try {
             while (true) {
                 int c = sourceCodeReader.read();
-                if (c == -1 || result.length() > stopIndex) {
+                if (c == -1 || sourceCodeBuilder.length() > stopIndex) {
                     break;
                 }
-                result.append((char) c);
+                sourceCodeBuilder.append((char) c);
             }
         } finally {
             sourceCodeReader.close();
         }
 
-        return result.substring(startIndex, stopIndex + 1);
+        String sourceCode = sourceCodeBuilder.substring(startIndex, stopIndex + 1);
+        sourceCode = sourceCode.replaceAll("&", "&amp;");
+        sourceCode = sourceCode.replaceAll("<", "&lt;");
+        sourceCode = sourceCode.replaceAll(">", "&gt;");
+        return sourceCode;
+    }
+    
+    private Map<Parameter, Map<Tree.Assertion, List<Tree.Condition>>> getParametersAssertions(final Declaration decl) {
+        final Map<Parameter, Map<Tree.Assertion, List<Tree.Condition>>> parametersAssertions = new LinkedHashMap<Parameter, Map<Tree.Assertion, List<Tree.Condition>>>();
+        
+        if (((Functional) decl).getParameterLists().isEmpty()) {
+            return parametersAssertions;
+        }
+
+        Node node = tool.getNode(decl);
+        PhasedUnit pu = tool.getUnit(decl);
+        if (node == null || pu == null) {
+            return parametersAssertions;
+        }
+
+        Tree.Body body = null;
+        if (node instanceof Tree.MethodDefinition) {
+            body = ((Tree.MethodDefinition) node).getBlock();
+        } else if (node instanceof Tree.ClassDefinition) {
+            body = ((Tree.ClassDefinition) node).getClassBody();
+        }
+
+        if (body == null) {
+            return parametersAssertions;
+        }
+
+        final Map<String, Parameter> parametersNames = new HashMap<String, Parameter>();
+        for (ParameterList parameterList : ((Functional) decl).getParameterLists()) {
+            for (Parameter parameter : parameterList.getParameters()) {
+                parametersNames.put(parameter.getName(), parameter);
+            }
+        }
+
+        body.visitChildren(new Visitor() {
+
+            private boolean stop = false;
+            private Tree.Assertion assertion = null;
+            private Set<Parameter> referencedParameters = new HashSet<Parameter>();
+
+            @Override
+            public void visit(Tree.Assertion that) {
+                assertion = that;
+                super.visit(that);
+                assertion = null;
+            }
+
+            @Override
+            public void visit(Tree.Condition that) {
+                referencedParameters.clear();
+                super.visit(that);
+                if (assertion != null && !referencedParameters.isEmpty()) {
+                    for (Parameter referencedParameter : referencedParameters) {
+                        Map<Tree.Assertion, List<Tree.Condition>> parameterAssertions = parametersAssertions.get(referencedParameter);
+                        if (parameterAssertions == null) {
+                            parameterAssertions = new LinkedHashMap<Tree.Assertion, List<Tree.Condition>>();
+                            parametersAssertions.put(referencedParameter, parameterAssertions);
+                        }
+
+                        List<Tree.Condition> parameterConditions = parameterAssertions.get(assertion);
+                        if (parameterConditions == null) {
+                            parameterConditions = new ArrayList<Tree.Condition>();
+                            parameterAssertions.put(assertion, parameterConditions);
+                        }
+
+                        parameterConditions.add(that);
+                    }
+                }
+            }
+
+            @Override
+            public void visit(Tree.BaseMemberExpression that) {
+                if (assertion != null) {
+                    Declaration d = that.getDeclaration();
+                    Scope realScope = com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope(d.getScope());
+                    if (parametersNames.containsKey(d.getName()) && realScope == decl) {
+                        referencedParameters.add(parametersNames.get(d.getName()));
+                    }
+                }
+                super.visit(that);
+            }
+
+            @Override
+            public void visit(Tree.Statement that) {
+                if (assertion == null) {
+                    stop = true;
+                }
+                super.visit(that);
+            }
+
+            @Override
+            public void visitAny(Node that) {
+                if (!stop) {
+                    super.visitAny(that);
+                }
+            }
+
+        });
+
+        return parametersAssertions;
     }
 
 }

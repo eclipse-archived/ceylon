@@ -166,7 +166,7 @@ public class Util {
         return "";
     }
     
-    private static String getRawDoc(List<Annotation> anns) {
+    public static String getRawDoc(List<Annotation> anns) {
         for (Annotation a : anns) {
             if (a.getName().equals("doc") && a.getPositionalArguments() != null && !a.getPositionalArguments().isEmpty()) {
                 return a.getPositionalArguments().get(0);

@@ -346,6 +346,26 @@ td .import-description {
     background-color: #356635;
 }
 
+.assertions ul {
+	margin-left: 20px;
+}
+
+.assertions li {
+	list-style-type: none;
+}
+
+.assertions p {
+	display: inline;
+}
+
+.assertions code {
+	font-size: 13px;
+	background-color: inherit;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
 #info-dropdown-panel {
 	min-width: 600px;
 	padding: 16px;
@@ -599,6 +619,10 @@ td [class^='icon-'] {
 
 .icon-decoration-variable {
     background-position: -592px 0px;
+}
+
+.icon-assertion {
+    background-position: -608px 0px;
 }
 
 a:HOVER .icon-expand-all,

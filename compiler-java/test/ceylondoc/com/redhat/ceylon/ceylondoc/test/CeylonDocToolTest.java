@@ -226,6 +226,7 @@ public class CeylonDocToolTest {
         assertBy(destDir);
         assertLicense(destDir);
         assertParametersDocumentation(destDir);
+        assertParametersAssertions(destDir);
         assertThrows(destDir);
         assertSee(destDir);
         assertIcons(destDir);
@@ -670,18 +671,45 @@ public class CeylonDocToolTest {
 
     private void assertParametersDocumentation(File destDir) throws Exception {
     	assertMatchInFile(destDir, "index.html", 
-    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><span class='parameter' id='stubTopLevelMethod-numbers'>numbers</span><p>Sequenced parameters <code>numbers</code></p>"));
+    			Pattern.compile("<div class='parameters section'><span class='title'>Parameters: </span><ul><li><span class='parameter' id='stubTopLevelMethod-numbers'>numbers</span><div class='doc section'><p>Sequenced parameters <code>numbers</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='parameters section'><span class='title'>Parameters:"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter' id='StubClass-a'>a</span><p>Initializer parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter' id='StubClass-a'>a</span><div class='doc section'><p>Initializer parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter' id='StubClass-b'>b</span><p>Initializer parameter <code>b</code></p>"));        
+                Pattern.compile("<li><span class='parameter' id='StubClass-b'>b</span><div class='doc section'><p>Initializer parameter <code>b</code></p>"));        
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter' id='methodWithParametersDocumentation-a'>a</span><p>Method parameter <code>a</code></p>"));
+                Pattern.compile("<li><span class='parameter' id='methodWithParametersDocumentation-a'>a</span><div class='doc section'><p>Method parameter <code>a</code></p>"));
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<li><span class='parameter' id='methodWithParametersDocumentation-b'>b</span><p>Method parameter <code>b</code></p>"));
+                Pattern.compile("<li><span class='parameter' id='methodWithParametersDocumentation-b'>b</span><div class='doc section'><p>Method parameter <code>b</code></p>"));
 	}
+    
+    private void assertParametersAssertions(File destDir) throws Exception {
+        assertMatchInFile(destDir, "index.html", 
+                Pattern.compile("<li><span class='parameter' id='stubFunctionWithAssertion2-n'>n</span><div class='assertions' title='Parameter assertions'>" +
+                		"<ul>" +
+                		"<li><i class='icon-assertion'></i><code>exists n</code></li><li><i class='icon-assertion'></i><code>n \\&gt;= 0 \\&amp;\\&amp; n \\&lt;=255</code></li>" +
+                		"<li><i class='icon-assertion'></i><code>s.size \\&lt; n</code></li>" +
+                		"</ul>" +
+                		"</div></li><li><span class='parameter' id='stubFunctionWithAssertion2-s'>s</span><div class='assertions' title='Parameter assertions'>" +
+                		"<ul>" +
+                		"<li><i class='icon-assertion'></i><code>exists s</code></li><li><i class='icon-assertion'></i><code>s.size != 0</code></li>" +
+                		"<li><i class='icon-assertion'></i><code>s.size \\&lt; n</code></li>" +
+                		"</ul></div></li></ul>"));
+        
+        assertMatchInFile(destDir, "StubClassWithAssertions.type.html",
+                Pattern.compile("<li><span class='parameter' id='StubClassWithAssertions-n'>n</span><div class='assertions' title='Parameter assertions'>" +
+                		"<ul>" +
+                		"<li><i class='icon-assertion'></i><code>exists n</code></li>" +
+                		"<li><i class='icon-assertion'></i><code>0 \\&lt; n \\&lt; 123k</code></li>" +
+                		"</ul>"));
+        
+        assertMatchInFile(destDir, "StubClassWithAssertions.type.html",
+                Pattern.compile("<span class='parameter' id='StubClassWithAssertions-s'>s</span><div class='assertions' title='Parameter assertions'>" +
+                        "<ul>" +
+                        "<li><i class='icon-assertion'></i><code>exists s</code></li>" +
+                        "<li><i class='icon-assertion'></i><code>s.any\\(\\(Character c\\) =\\&gt; c.digit\\)</code></li></ul>"));
+    }
 
 	private void assertThrows(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
@@ -832,7 +860,7 @@ public class CeylonDocToolTest {
                         "<span title='ceylon.language::String'>String</span> b<span class='parameter-default-value'> = </span><a class='parameter-default-value' href='#methodWithDefaultedParameter2-b' title='Go to parameter default value'>...</a>\\)"));
 
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<li><span class='parameter' id='methodWithDefaultedParameter4-separator'>separator</span><span class='parameter-default-value' title='Parameter default value'> = \\(Character ch\\) => ch.whitespace</span></li>"));
+                Pattern.compile("<li><span class='parameter' id='methodWithDefaultedParameter4-separator'>separator</span><span class='parameter-default-value' title='Parameter default value'> = \\(Character ch\\) =\\&gt; ch.whitespace</span></li>"));
     }
     
     private void assertAnythingReturnType(File destDir) throws Exception {
