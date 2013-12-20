@@ -1942,6 +1942,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean isUnknownTuple(ProducedType args) {
+        // ATM we only allow a single type parameter
+        return args.getDeclaration() instanceof TypeParameter;
+        /*
+         * The following code does not correctly detect weirdo cases such as Callable<Ret,Args|[Integer]> that are
+         * valid and tested in https://github.com/ceylon/ceylon-compiler/issues/1113
+         * 
         // can be a defaulted tuple of Empty|Tuple
         TypeDeclaration declaration = args.getDeclaration();
         if(declaration instanceof UnionType){
@@ -1979,6 +1985,7 @@ public abstract class AbstractTransformer implements Transformation {
             return false;
         }
         return true;
+        */
     }
 
     int getNumParametersOfCallable(ProducedType callableType) {
