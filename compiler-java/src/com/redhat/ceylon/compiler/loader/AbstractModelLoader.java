@@ -2261,9 +2261,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     method.setType(getSimpleCallableReturnType(type));
                     // We need to set enough of a parameter list so that the method's full type is correct 
                     ParameterList pl = new ParameterList();
+                    int count = 0;
                     for (ProducedType pt : getSimpleCallableArgumentTypes(type)) {
                         Parameter p = new Parameter();
                         Value v = new Value();
+                        String name = "arg" + count++;
+                        p.setName(name);
+                        v.setName(name);
                         v.setType(pt);
                         p.setModel(v);
                         pl.getParameters().add(p);
