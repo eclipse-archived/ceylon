@@ -938,6 +938,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         f2.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialInstance(.ceylon.language.Integer.$TypeDescriptor$, two, .ceylon.language.Integer.instance(3L)));
     }
     
+    private final <Arg, Args extends .ceylon.language.Sequential<? extends Arg>>void spreadParameterised$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arg, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Arg arg, final Args args, final .ceylon.language.Callable<? extends .ceylon.language.Integer> f, final .ceylon.language.Callable<? extends .ceylon.language.Integer> f2) {
+        final long i1 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>apply(f, args).longValue();
+    }
+    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SpreadArguments.class, $reified$T);
