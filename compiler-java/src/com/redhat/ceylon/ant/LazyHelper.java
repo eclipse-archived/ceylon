@@ -92,8 +92,8 @@ abstract class LazyHelper {
         while (iterator.hasNext()) {
             Module m = iterator.next();
             Module module = findModule(m.getName());
-            if (module.getVersion() == null) {
-                task.log("Unable to determine version (and hence timestamp) of " + module, Project.MSG_VERBOSE);
+            if (module == null || module.getVersion() == null) {
+                task.log("Module " + m.getName() + " could not be found (or unable to determine version and hence timestamp)", Project.MSG_VERBOSE);
                 continue;
             }
             long newest = Math.max(newestFile(task.getSrc(), module.toDir()), newestFile(task.getResource(), module.toDir()));
