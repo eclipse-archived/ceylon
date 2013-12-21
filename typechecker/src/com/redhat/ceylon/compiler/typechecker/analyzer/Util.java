@@ -382,7 +382,7 @@ public class Util {
         }
     }
 
-    static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
+    public static void buildAnnotations(Tree.AnnotationList al, List<Annotation> annotations) {
         if (al!=null) {
             Tree.AnonymousAnnotation aa = al.getAnonymousAnnotation();
             if (aa!=null) {
