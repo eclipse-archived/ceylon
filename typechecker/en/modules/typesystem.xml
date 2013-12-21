@@ -1308,19 +1308,19 @@ interface Handler<in Event>
             <para>But the following enumerated type is not legal, since it is possible 
             to choose a legal argument <literal>T</literal> of the type parameter 
             <literal>Type</literal> of <literal>Expression</literal>, such that the case 
-            types <literal>StringExpression</literal> and <literal>NumericExpression</literal> 
+            types <literal>StringLiteral</literal> and <literal>NumberLiteral</literal> 
             aren't subtypes of the instantiation <literal>Expression&lt;T&gt;</literal>:</para>
             
             <programlisting><![CDATA[interface Expression<out Type>
-        of Function<Type> | String | Number { ... }
+        of Function<Type> | StringLiteral | NumberLiteral { ... }
 
 interface Function<out Type> 
         satisfies Expression<Type> { ... }
 
-interface String 
+interface StringLiteral
         satisfies Expression<String> { ... }
 
-interface Number 
+interface NumberLiteral
         satisfies Expression<Integer|Float> { ... }]]></programlisting>
             
             <comment><para>Note: these rules could be relaxed to allow the definition of
