@@ -13,7 +13,7 @@ import ceylon.language.meta.declaration {
     Declaration,
     NestableDeclaration,
     AliasDeclaration,
-    covariant, contravariant, invariant
+    covariant, contravariant, invariant, FunctionOrValueDeclaration
 }
 
 @test
@@ -487,6 +487,7 @@ shared void checkPackageAndModule(){
     assert(pkg.qualifiedName == "metamodel");
 
     assert(pkg.members<NestableDeclaration>().size > 0);
+    assert(pkg.members<FunctionOrValueDeclaration>().size > 0);
 
     //
     // Module
