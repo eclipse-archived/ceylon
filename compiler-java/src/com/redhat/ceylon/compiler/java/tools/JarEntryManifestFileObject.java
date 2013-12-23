@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.*;
 import java.net.URI;
+import java.util.LinkedHashSet;
 import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -33,6 +34,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class JarEntryManifestFileObject implements JavaFileObject {
 
@@ -161,6 +163,15 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
     public static class OsgiManifest {
         public static final String MANIFEST_FILE_NAME = "META-INF/MANIFEST.MF";
+        
+        public static final Attributes.Name Bundle_SymbolicName = new Attributes.Name("Bundle-SymbolicName"); 
+        public static final Attributes.Name Bundle_Version = new Attributes.Name("Bundle-Version"); 
+        public static final Attributes.Name Bundle_ManifestVersion = new Attributes.Name("Bundle-ManifestVersion"); 
+        public static final Attributes.Name Export_Package = new Attributes.Name("Export-Package"); 
+        public static final Attributes.Name Require_Bundle = new Attributes.Name("Require-Bundle");
+        public static final Attributes.Name Bundle_RequiredExecutionEnvironment = new Attributes.Name("Bundle-RequiredExecutionEnvironment");
+        public static final Attributes.Name Require_Capability = new Attributes.Name("Require-Capability");
+
         public static boolean isManifestFileName(String fileName) {
             return MANIFEST_FILE_NAME.equalsIgnoreCase(fileName);
         }
@@ -182,21 +193,21 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             Attributes main = manifest.getMainAttributes();
 
             main.put(Attributes.Name.MANIFEST_VERSION, "1.0");
-            main.putValue("Bundle-ManifestVersion", "2");
+            main.put(Bundle_ManifestVersion, "2");
 
-            main.putValue("Bundle-SymbolicName", module.getNameAsString());
-            main.putValue("Bundle-Version", module.getVersion());
+            main.put(Bundle_SymbolicName, module.getNameAsString());
+            main.put(Bundle_Version, module.getVersion());
 
             String exportPackageValue = getExportPackage();
             if (exportPackageValue.length() > 0) {
-                main.putValue("Export-Package", exportPackageValue);
+                main.put(Export_Package, exportPackageValue);
             }
 
             // We use Require-Bundle for declaring dependencies as this
             // maps more closely to Ceylon module dependency model
             String requireBundleValue = getRequireBundle();
             if (requireBundleValue.length() > 0) {
-                main.putValue("Require-Bundle", requireBundleValue);
+                main.put(Require_Bundle, requireBundleValue);
             }
 
             // Get all the attributes and entries from original manifest
@@ -215,12 +226,12 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         }
 
         private boolean isJavaCapabilityRequired(Attributes main) {
-            return main.containsKey("Bundle-RequiredExecutionEnvironment") || main.containsKey("Require-Capability");
+            return main.containsKey(Bundle_RequiredExecutionEnvironment) || main.containsKey(Require_Capability);
         }
 
         private void applyRequireJavaCapability(Attributes main) {
             if (isLanguageModule()) {
-                main.putValue("Require-Capability", getRequireCapabilityJavaSE("1.7"));
+                main.put(Require_Capability, getRequireCapabilityJavaSE("1.7"));
                 return;
             }
 
@@ -228,7 +239,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                 Module importedModule = moduleImport.getModule();
                 if (importedModule.isJava()) {
                     String version = importedModule.getVersion();
-                    main.putValue("Require-Capability", getRequireCapabilityJavaSE(version));
+                    main.put(Require_Capability, getRequireCapabilityJavaSE(version));
                     break;
                 }
             }
@@ -298,7 +309,11 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         private String getExportPackage() {
             boolean hasSharedPackages = false;
             StringBuilder exportPackage = new StringBuilder();
-            for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : module.getPackages()) {
+            // XXX: Because of issue #1517, root package is returned more than once
+            // I wrap packages in the LinkedHashSet, that elliminates duplicates 
+            // while retaining the insertion order.  
+            // (see https://github.com/ceylon/ceylon-compiler/issues/1517)
+            for (Package pkg : new LinkedHashSet<>(module.getPackages())) {
                 if (pkg.isShared()) {
                     if (hasSharedPackages) {
                         exportPackage.append(";");
@@ -310,7 +325,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             }
             if (hasSharedPackages) {
                 // Ceylon has no separate versioning of packages, so all
-                // packages implicitly inherit their respective module versions
+                // packages implicitly inherit their respective module version
                 exportPackage.append(";version=").append(module.getVersion());
             }
             return exportPackage.toString();
