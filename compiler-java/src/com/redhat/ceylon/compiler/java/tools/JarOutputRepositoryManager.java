@@ -53,7 +53,7 @@ import com.sun.tools.javac.util.Options;
 
 public class JarOutputRepositoryManager {
     
-    private Map<Module,ProgressiveJar> openJars = new HashMap<>();
+    private Map<Module,ProgressiveJar> openJars = new HashMap<Module, ProgressiveJar>();
     private Log log;
     private Options options;
     private CeyloncFileManager ceyloncFileManager;
@@ -95,8 +95,8 @@ public class JarOutputRepositoryManager {
         private File originalJarFile;
         private File outputJarFile;
         private JarOutputStream jarOutputStream;
-        final private Set<String> modifiedSourceFiles = new HashSet<>();
-        final private Set<String> modifiedResourceFiles = new HashSet<>();
+        final private Set<String> modifiedSourceFiles = new HashSet<String>();
+        final private Set<String> modifiedResourceFiles = new HashSet<String>();
         final private Properties writtenClassesMapping = new Properties(); 
         private Logger cmrLog;
         private Options options;
@@ -127,15 +127,22 @@ public class JarOutputRepositoryManager {
 
         private Properties getPreviousMapping() throws IOException {
             if (originalJarFile != null) {
-                try (JarFile jarFile = new JarFile(originalJarFile)) {
+                JarFile jarFile = null;
+                jarFile = new JarFile(originalJarFile);
+                try {
                     JarEntry entry = jarFile.getJarEntry(MAPPING_FILE);
                     if (entry != null) {
-                        try (InputStream inputStream = jarFile.getInputStream(entry)) {
+                        InputStream inputStream = jarFile.getInputStream(entry);
+                        try {
                             Properties previousMapping = new Properties();
                             previousMapping.load(inputStream);
                             return previousMapping;
+                        } finally {
+                            inputStream.close();
                         }
                     }
+                } finally {
+                    jarFile.close();
                 }
             }
             return null;
@@ -226,7 +233,7 @@ public class JarOutputRepositoryManager {
             finally {
                 try {
                     jarOutputStream.closeEntry();
-                } catch (IOException ignore) {
+                } catch (IOException e) {
                 }
             }
         }
