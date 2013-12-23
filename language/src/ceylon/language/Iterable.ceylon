@@ -198,7 +198,7 @@ shared interface Iterable<out Element, out Absent=Null>
              intermediate result, and the next element."
             Result accumulating(Result|Element partial, Element elem)) {
         value initial = first;
-        if (is Element initial) {
+        if (!empty, is Element initial) {
             variable Result|Element partial = initial;
             for (elem in rest) {
                 partial = accumulating(partial, elem);
