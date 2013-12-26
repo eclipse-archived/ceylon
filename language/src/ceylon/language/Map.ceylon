@@ -17,7 +17,11 @@
    The item for a key may be obtained using the item
    operator:
    
-       String lang = settings["lang"] else "en_US";"""
+       String lang = settings["lang"] else "en_US";
+   
+   Keys are compared for equality using [[Object.equals]] or
+   [[Comparable.compare]]. There may be at most one entry 
+   per key."""
 see (`class Entry`, 
      `function forKey`, `function forItem`, 
      `function byItem`, `function byKey`)

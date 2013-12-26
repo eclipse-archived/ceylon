@@ -3,7 +3,13 @@
  A `Set` is a [[Collection]] of its elements.
  
  Sets may be the subject of the binary union, intersection, 
- and complement operators `|`, `&`, and `~`."
+ and complement operators `|`, `&`, and `~`.
+ 
+     value kids = girls|boys; 
+ 
+ Elements are compared for equality using [[Object.equals]] 
+ or [[Comparable.compare]]. An element may occur at most 
+ once in a set."
 shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
