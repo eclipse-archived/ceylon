@@ -227,7 +227,9 @@ public class TypeVisitor extends Visitor {
                 }
             }
             path.addError("package not found in imported modules: " + 
-            		nameToImport, 7000);
+            		nameToImport + 
+            		" (add module import to module descriptor of " +
+            		module.getNameAsString() + ")", 7000);
         }
         return null;
     }
