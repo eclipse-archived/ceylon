@@ -1,13 +1,13 @@
 """Represents a collection in which every element has a 
    unique non-negative integer index.
    
-   A `List` is a `Collection` of its elements, and a 
-   `Correspondence` from indices to elements.
+   A `List` is a [[Collection]] of its elements, and a 
+   [[Correspondence]] from indices to elements.
    
    Direct access to a list element by index produces a
-   value of optional type. The following idiom may be
-   used instead of upfront bounds-checking, as long as 
-   the list element type is a non-`null` type:
+   value of optional type. The following idiom may be used 
+   instead of upfront bounds-checking, as long as the list 
+   element type is a non-`null` type:
    
        value char = "hello world"[index];
        if (exists char) { /*do something*/ }
@@ -26,15 +26,16 @@ shared interface List<out Element>
                   Ranged<Integer,List<Element>> &
                   Cloneable<List<Element>> {
     
-    "The index of the last element of the list, or
-     null if the list is empty."
+    "The index of the last element of the list, or `null` if 
+     the list is empty."
     see (`value List.size`)
     shared formal Integer? lastIndex;
     
     "The number of elements in this sequence, always
-     `sequence.lastIndex+1`."
+     `list.lastIndex+1`."
     see (`value List.lastIndex`)
-    shared actual default Integer size => (lastIndex else -1) + 1;
+    shared actual default Integer size 
+            => (lastIndex else -1) + 1;
     
     shared actual default Boolean shorterThan(Integer length) 
             => size<length;
@@ -45,17 +46,16 @@ shared interface List<out Element>
     "The rest of the list, without the first element."
     shared actual formal List<Element> rest;
     
-    "Determines if the given index refers to an element
-         of this sequence, that is, if
-         `index<=sequence.lastIndex`."
+    "Determines if the given index refers to an element of 
+     this list, that is, if `0<=index<=list.lastIndex`."
     shared actual default Boolean defines(Integer index) 
-            => index <= (lastIndex else -1);
+            => 0 <= index <= (lastIndex else -1);
 	
     "Returns the element of this sequence with the given
-         index, or `null` if the given index is past the end
-         of the sequence, that is, if
-         `index>sequence.lastIndex`. The first element of
-         the sequence has index `0`."
+     index if the index refers to an element of the list,
+     that is, if `0<=index<=list.lastIndex`, or `null` 
+     otherwise. The first element of the list has index 
+     `0`."
     shared actual formal Element? get(Integer index);
     
     shared actual default Iterator<Element> iterator() {
@@ -79,11 +79,11 @@ shared interface List<out Element>
     shared formal List<Element> reversed;
     
     "Two `List`s are considered equal iff they have the 
-     same `size` and _entry sets_. The entry set of a 
-     list `l` is the set of elements of `l.indexed`. 
-     This definition is equivalent to the more intuitive 
-     notion that two lists are equal iff they have the 
-     same `size` and for every index either:
+     same `size` and _entry sets_. The entry set of a list 
+     `l` is the set of elements of `l.indexed`. This 
+     definition is equivalent to the more intuitive notion 
+     that two lists are equal iff they have the same `size` 
+     and for every index either:
      
      - the lists both have the element `null`, or
      - the lists both have a non-null element, and the
@@ -156,7 +156,7 @@ shared interface List<out Element>
     }
     
     "Returns a new `List` that starts with the specified
-     element, followed by the elements of this `List`."
+     element, followed by the elements of this list."
     see (`function following`)
     shared default [Element|Other+] withLeading<Other>(
             "The first element of the resulting sequence."
@@ -172,7 +172,7 @@ shared interface List<out Element>
     
     "Returns a new `List` that contains the specified
      element appended to the end of the elements of this 
-     `List`."
+     list."
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
             Other element) {
@@ -190,7 +190,7 @@ shared interface List<out Element>
     shared default Boolean startsWith(List<Anything> sublist)
             => includesAt(0, sublist);
     
-    "Determine if the given list occurs at the end of this
+    "Determine if the given list occurs at the end of this 
      list."
     shared default Boolean endsWith(List<Anything> sublist)
             => includesAt(size-sublist.size, sublist);
@@ -266,8 +266,8 @@ shared interface List<out Element>
         }
     }
     
-    "Determines if the given value occurs at the 
-     given index in this list."
+    "Determines if the given value occurs at the given index 
+     in this list."
     shared default Boolean occursAt(Integer index, Anything element) {
          value elem = this[index];
          if (exists element) {
@@ -283,8 +283,8 @@ shared interface List<out Element>
          }
     }
     
-    "Determines if the given value occurs as an 
-     element in this list."
+    "Determines if the given value occurs as an element of 
+     this list."
     shared default Boolean occurs(Anything element) {
          for (index in 0:size) {
              if (occursAt(index,element)) {
@@ -294,8 +294,8 @@ shared interface List<out Element>
          return false;
     }
     
-    "Determines if this list contains the given 
-     value. Equivalent to `occurs()`."
+    "Determines if this list contains the given value. 
+     Equivalent to `occurs()`."
     see (`function occurs`)
     shared actual default Boolean contains(Object element) 
             => occurs(element);
@@ -335,15 +335,16 @@ shared interface List<out Element>
     "The indexes in this list for which the element 
      satisfies the given predicate."
     shared default {Integer*} indexes(
-            "The predicate the indexed elements must satisfy"
+            "The predicate the indexed elements must 
+             satisfy"
             Boolean selecting(Element element)) 
             => { for (index in 0:size) 
                     //TODO: fix this awful hack
                     if (selecting(this[index] else nothing)) index };
     
     "Trim the elements satisfying the given predicate
-     function from the start and end of this list, 
-     returning a list no longer than this list."
+     function from the start and end of this list, returning 
+     a list no longer than this list."
     shared default List<Element> trim(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             variable Integer from=-1;
@@ -374,8 +375,8 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given predicate
-     function from the start of this list, returning 
-     a list no longer than this list."
+     function from the start of this list, returning a list 
+     no longer than this list."
     shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in 0..l) {
@@ -388,8 +389,8 @@ shared interface List<out Element>
     }
     
     "Trim the elements satisfying the given predicate
-     function from the end of this list, returning a 
-     list no longer than this list."
+     function from the end of this list, returning a list no 
+     longer than this list."
     shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in l..0) {
@@ -423,12 +424,21 @@ shared interface List<out Element>
         }
     }
     
+    "Return a `Map` whose entries are the non-`null` 
+     elements of this list, together with the number of 
+     occurrences of these elements in this list."
     shared default Map<Element&Object,Integer> frequencies
             => LazyMap { for (element in LazySet(coalesced)) 
                     element->coalesced.count(element.equals) };
     
-    shared default Map<GroupKey,Set<Element&Object>> group<GroupKey>
-            (GroupKey? grouping(Element&Object element))
+    "Return a `Map` whose entries are the group keys 
+     returned by the given grouping function, together with
+     the sets of non-`null` elements of this list producing 
+     a certain group key."
+    shared default Map<GroupKey,Set<Element&Object>> group<GroupKey>(
+            "A grouping function returning the group key for
+             a given element of this list."
+            GroupKey? grouping(Element&Object element))
             given GroupKey satisfies Object
             => LazyMap { for (element in LazySet(coalesced))
                     if (exists groupKey = grouping(element))
