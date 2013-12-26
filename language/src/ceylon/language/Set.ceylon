@@ -1,18 +1,17 @@
 "A collection of unique elements.
  
- A `Set` is a `Collection` of its elements.
+ A `Set` is a [[Collection]] of its elements.
  
- Sets may be the subject of the binary union, 
- intersection, and complement operators `|`, `&`, and 
- `~`."
+ Sets may be the subject of the binary union, intersection, 
+ and complement operators `|`, `&`, and `~`."
 shared interface Set<out Element>
         satisfies Collection<Element> &
                   Cloneable<Set<Element>>
         given Element satisfies Object {
     
-    "Determines if this `Set` is a superset of the 
-     specified Set, that is, if this `Set` contains all 
-     of the elements in the specified `Set`."
+    "Determines if this set is a superset of the given 
+     `Set`, that is, if this set contains all of the 
+     elements in the given set."
     shared default Boolean superset(Set<Object> set) {
         for (element in set) {
             if (!element in this) {
@@ -24,9 +23,9 @@ shared interface Set<out Element>
         }
     }
     
-    "Determines if this `Set` is a subset of the given 
-     `Set`, that is, if the given set contains all of 
-     the elements in this set."
+    "Determines if this set is a subset of the given `Set`, 
+     that is, if the given set contains all of the elements 
+     in this set."
     shared default Boolean subset(Set<Object> set) {
         for (element in this) {
             if (!element in set) {
@@ -38,10 +37,12 @@ shared interface Set<out Element>
         }
     }
     
-    "Two `Set`s are considered equal if they have the 
-     same size and if every element of the first set is
-     also an element of the second set, as determined
-     by `contains()`."
+    "Two `Set`s are considered equal if they have the same 
+     size and if every element of the first set is also an 
+     element of the second set, as determined by 
+     `contains()`. Equivalently, a set is equal to a second 
+     set if it is both a subset and a superset of the second
+     set."
     shared actual default Boolean equals(Object that) {
         if (is Set<Object> that,
                 that.size==size) {
@@ -66,32 +67,30 @@ shared interface Set<out Element>
         return hashCode;
     }
     
-    "Returns a new `Set` containing all the elements of 
-     this `Set` and all the elements of the given `Set`."
+    "Returns a new `Set` containing all the elements of this 
+     set and all the elements of the given `Set`."
     shared formal Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object;
     
-    "Returns a new `Set` containing only the elements 
-     that are present in both this `Set` and the given 
-     `Set`."
+    "Returns a new `Set` containing only the elements that 
+     are present in both this set and the given `Set`."
     shared formal Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object;
     
     "Returns a new `Set` containing only the elements 
-     contained in either this `Set` or the given `Set`, 
-     but no element contained in both sets."
+     contained in either this set or the given `Set`, but no 
+     element contained in both sets."
     shared formal Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object;
     
-    "Returns a new `Set` containing all the elements in 
-     this `Set` that are not contained in the given
-     `Set`."
+    "Returns a new `Set` containing all the elements in this 
+     set that are not contained in the given `Set`."
     shared formal Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object;
     
 }
 
-"A [[Set]] with no elements."
+"An immutable [[Set]] with no elements."
 shared object emptySet 
         extends Object() 
         satisfies Set<Nothing> {
@@ -157,8 +156,8 @@ shared object emptySet
             (Boolean selecting(Nothing element)) 
             => false;
     
-    shared actual Set<Nothing> skipping(Integer skip) => emptySet;
-    shared actual Set<Nothing> taking(Integer take) => emptySet;
-    shared actual Set<Nothing> by(Integer step) => emptySet;
+    skipping(Integer skip) => emptySet;
+    taking(Integer take) => emptySet;
+    by(Integer step) => emptySet;
     
 }

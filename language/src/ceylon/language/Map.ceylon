@@ -1,12 +1,12 @@
 """Represents a collection which maps _keys_ to _items_,
    where a key can map to at most one item. Each such 
-   mapping may be represented by an `Entry`.
+   mapping may be represented by an [[Entry]].
    
-   A `Map` is a `Collection` of its `Entry`s, and a 
-   `Correspondence` from keys to items.
+   A `Map` is a [[Collection]] of its `Entry`s, and a 
+   [[Correspondence]] from keys to items.
    
-   The presence of an entry in a map may be tested
-   using the `in` operator:
+   The presence of an entry in a map may be tested using the 
+   `in` operator:
    
        if ("lang"->"en_AU" in settings) { ... }
  
@@ -28,12 +28,11 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
     
-    "Two `Map`s are considered equal iff they have the 
-     same _entry sets_. The entry set of a `Map` is the
-     set of `Entry`s belonging to the map. Therefore, the
-     maps are equal iff they have same set of `keys`, and 
-     for every key in the key set, the maps have equal
-     items."
+    "Two `Map`s are considered equal iff they have the same 
+     _entry sets_. The entry set of a `Map` is the set of 
+     `Entry`s belonging to the map. Therefore, the maps are 
+     equal iff they have same set of `keys`, and for every 
+     key in the key set, the maps have equal items."
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Object> that,
                 that.size==size) {
@@ -68,16 +67,16 @@ shared interface Map<out Key,out Item>
     actual shared default Set<Key> keys 
             => LazySet { for (k->v in this) k };
     
-    "Returns all the items stored in this `Map`. An 
-     element can be stored under more than one key in 
-     the map, and so it can be contained more than once 
-     in the resulting collection."
+    "Returns all the items stored in this `Map`. An element 
+     can be stored under more than one key in the map, and 
+     so it can be contained more than once in the resulting 
+     collection."
     shared default Collection<Item> values 
             => LazyList { for (k->v in this) v };
     
-    "Returns a `Map` in which every key is an `Item` in 
-     this map, and every value is the set of keys that 
-     stored the `Item` in this map."
+    "Returns a `Map` in which every key is an `Item` in this 
+     map, and every value is the set of keys that stored the 
+     `Item` in this map."
     shared default Map<Item,Set<Key>> inverse {
         value items = LazySet { for (key->item in this) item };
         return LazyMap { for (item in items) item -> 
@@ -85,8 +84,8 @@ shared interface Map<out Key,out Item>
     }
     
     "Returns a `Map` with the same keys as this map. For
-     every key, the item is the result of applying the
-     given transformation function."
+     every key, the item is the result of applying the given 
+     transformation function."
     shared default Map<Key,Result> mapItems<Result>(
             "The function that transforms a key/item
              pair, producing the item of the resulting
@@ -98,7 +97,7 @@ shared interface Map<out Key,out Item>
     
 }
 
-"A [[Map]] with no entries."
+"An immutable [[Map]] with no entries."
 shared object emptyMap 
         extends Object() 
         satisfies Map<Nothing, Nothing> {
@@ -160,8 +159,8 @@ shared object emptyMap
             (Boolean selecting(Nothing->Nothing element)) 
             => true;
     
-    shared actual Map<Nothing,Nothing> skipping(Integer skip) => emptyMap;
-    shared actual Map<Nothing,Nothing> taking(Integer take) => emptyMap;
-    shared actual Map<Nothing,Nothing> by(Integer step) => emptyMap;
+    skipping(Integer skip) => emptyMap;
+    taking(Integer take) => emptyMap;
+    by(Integer step) => emptyMap;
     
 }

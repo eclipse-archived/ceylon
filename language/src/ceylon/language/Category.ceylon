@@ -1,10 +1,10 @@
 """Abstract supertype of objects that contain other 
    values, called *elements*, where it is possible to 
-   efficiently determine if a given value is an element. 
-   `Category` does not satisfy `Container`, because it is 
-   conceptually possible to have a `Category` whose 
-   emptiness cannot be computed.
+   efficiently determine if a given value is an element.
    
+   `Category` models a mathematical set, but is distinct 
+   from the [[Set]] collection type.
+      
    The `in` operator may be used to determine if a value
    belongs to a `Category`:
    
