@@ -2,9 +2,11 @@
  size. `Collection` is the abstract supertype of [[List]],
  [[Map]], and [[Set]].
  
- A `Collection` forms a [[Category]] of its elements.
+ A `Collection` forms a [[Category]] of its elements, and 
+ is [[Iterable]]. The elements of a collection are not
+ necessarily distinct when compared using [[Object.equals]].
  
- All `Collection`s are [[Cloneable]]. If a collection is
+ Every `Collection` is [[Cloneable]]. If a collection is
  immutable, it is acceptable that `clone` produce a
  reference to the collection itself. If a collection is
  mutable, `clone` should produce an immutable collection
