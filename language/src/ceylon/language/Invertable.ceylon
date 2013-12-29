@@ -7,7 +7,7 @@
  _group_. That is, it should have an additive identity, 
  denoted `0`, and satisfy:
  
- - `0+x == x+0 == 0`
+ - `0+x == x+0 == x`
  - `x + -x == 0`
  
  Concrete implementations of `Invertable` which are not also
