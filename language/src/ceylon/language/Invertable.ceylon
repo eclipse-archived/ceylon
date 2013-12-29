@@ -2,10 +2,16 @@
  inversion operation `-x`. For a [[numeric type|Numeric]], 
  this should return the negative of the argument value.
  
- Implementations which also satisfy [[Summable]] should 
- respect the following constraint:
+ A concrete class that implements this interface and which 
+ also satisfies [[Summable]] should be a mathematical 
+ _group_. That is, it should have an additive identity, 
+ denoted `0`, and satisfy:
  
- - `x + -x == 0`"
+ - `0+x == x+0 == 0`
+ - `x + -x == 0`
+ 
+ Concrete implementations of `Invertable` which are not also
+ `Summable` are discouraged."
 see (`class Integer`, `class Float`)
 by ("Gavin")
 shared interface Invertable<out Inverse> of Inverse
