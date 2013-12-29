@@ -1,9 +1,21 @@
 function $init$native$Exception$before(exc) {
   var _caller=arguments.callee.caller.caller;
   exc.stack_trace=[];
+  var ilc=0;
+  var ilf=null;
   while(_caller) {
     exc.stack_trace.push(_caller);
     _caller = _caller.caller;
+    if (_caller===ilf) {
+      ilc++;
+      if (ilc>2) {
+        exc.stack_trace.push("CIRCULAR");
+        _caller = null;
+      }
+    } else if (ilc===0 && _caller && exc.stack_trace.contains(_caller)) {
+      ilc=1;
+      ilf=_caller;
+    }
   }
 }
 function printStackTrace(exc, _write) {
@@ -15,6 +27,11 @@ function printStackTrace(exc, _write) {
   _write(_c);_write(getOperatingSystem().newline);
   for (var i=0; i<exc.stack_trace.length; i++) {
     var f = exc.stack_trace[i];
+    if (f == "CIRCULAR") {
+      _write("    (Infinite loop detected)");
+      _write(getOperatingSystem().newline);
+      return;
+    }
     var mm = f.$$metamodel$$;
     if (typeof(mm)==='function') {
       mm = mm();
