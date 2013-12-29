@@ -53,7 +53,10 @@ function type$meta(x,$$targs$$) {
   if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
   return c;
 }
-type$meta.$$metamodel$$={$ps:[{t:Anything}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};
+type$meta.$$metamodel$$=function(){return{
+  $ps:[{$nm:'instance',$t:'Type'}],$an:function(){return[shared(),native()];},
+  $t:{t:ClassModel$meta$model,a:{Type:'Type', Arguments:{t:Nothing}}}, $tp:{Type:{satisfies:{t:Anything}}},
+  mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};}
 exports.type$meta=type$meta;
 
 function typeLiteral$meta($$targs$$) {
