@@ -92,7 +92,11 @@ public class InvocationGenerator {
                 //TODO we lose type args for now
                 return;
             } else {
-                that.getPrimary().visit(gen);
+                if (that.getPrimary() instanceof Tree.BaseMemberExpression) {
+                    BmeGenerator.generateBme((Tree.BaseMemberExpression)that.getPrimary(), gen, true);
+                } else {
+                    that.getPrimary().visit(gen);
+                }
                 if (gen.opts.isOptimize() && (gen.getSuperMemberScope(that.getPrimary()) != null)) {
                     gen.out(".call(this");
                     if (!argList.getPositionalArguments().isEmpty()) {

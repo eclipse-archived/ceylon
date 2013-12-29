@@ -2190,27 +2190,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Tree.BaseMemberExpression that) {
-        Declaration decl = that.getDeclaration();
-        if (decl != null) {
-            String name = decl.getName();
-            String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
-
-            // map Ceylon true/false/null directly to JS true/false/null
-            if ("ceylon.language".equals(pkgName)) {
-                if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
-                    out(name);
-                    return;
-                }
-            }
-        }
-        String exp = memberAccess(that, null);
-        if (decl == null && isInDynamicBlock()) {
-            out("(typeof ", exp, "==='undefined'||", exp, "===null?");
-            generateThrow("Undefined or null reference: " + exp, that);
-            out(":", exp, ")");
-        } else {
-            out(exp);
-        }
+        BmeGenerator.generateBme(that, this, false);
     }
 
     private boolean accessDirectly(Declaration d) {
@@ -2391,14 +2371,12 @@ public class GenerateJsVisitor extends Visitor
         }
         return scope;
     }
-    
-    private String memberAccessBase(Node node, Declaration decl, boolean setter,
-                String lhs) {
+
+    String getMember(Node node, Declaration decl, String lhs) {
         final StringBuilder sb = new StringBuilder();
-        
         if (lhs != null) {
             if (lhs.length() > 0) {
-                sb.append(lhs).append(".");
+                sb.append(lhs);
             }
         }
         else if (node instanceof BaseMemberOrTypeExpression) {
@@ -2410,10 +2388,24 @@ public class GenerateJsVisitor extends Visitor
             String path = qualifiedPath(node, bmd);
             if (path.length() > 0) {
                 sb.append(path);
-                sb.append(".");
             }
         }
-        
+        return sb.toString();
+    }
+
+    private String memberAccessBase(Node node, Declaration decl, boolean setter,
+                String lhs) {
+        final StringBuilder sb = new StringBuilder(getMember(node, decl, lhs));
+
+        if (sb.length() > 0) {
+            if (node instanceof BaseMemberOrTypeExpression) {
+                Declaration bmd = ((BaseMemberOrTypeExpression)node).getDeclaration();
+                if (bmd.isParameter() && bmd.getContainer() instanceof ClassAlias) {
+                    return sb.toString();
+                }
+            }
+            sb.append('.');
+        }
         Scope scope = getSuperMemberScope(node);
         if (opts.isOptimize() && (scope != null)) {
             sb.append("getT$all()['");
@@ -2444,7 +2436,7 @@ public class GenerateJsVisitor extends Visitor
      * the given expression. If lhs==null and the expression is a BaseMemberExpression
      * then the qualified path is prepended.
      */
-    private String memberAccess(StaticMemberOrTypeExpression expr, String lhs) {
+    String memberAccess(StaticMemberOrTypeExpression expr, String lhs) {
         Declaration decl = expr.getDeclaration();
         String plainName = null;
         if (decl == null && dynblock > 0) {
