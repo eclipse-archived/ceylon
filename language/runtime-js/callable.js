@@ -37,13 +37,13 @@ function noop() { return null; }
 
 //This is used for plain method references
 function JsCallable(o,f) {
-    Callable(o);
     if (o === null) return noop;
     var f2 = function() { return f.apply(o, arguments); };
     f2.$$metamodel$$=f.$$metamodel$$===undefined?Callable.$$metamodel$$:f.$$metamodel$$;
     return f2;
 }
-JsCallable.$$metamodel$$={$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Callable']};
+JsCallable.$$metamodel$$=function(){return{ 'satisfies':[{t:Callable,a:{Return:'Return',Arguments:'Arguments'}}],
+  $tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Callable']};}
 
 //This is used for spread method references
 function JsCallableList(value) {
