@@ -1,6 +1,6 @@
-"""Abstract supertype of objects that contain other 
-   values, called *elements*, where it is possible to 
-   efficiently determine if a given value is an element.
+"""Abstract supertype of objects that contain other values, 
+   called *elements*, where it is possible to efficiently 
+   determine if a given value is an element.
    
    `Category` models a mathematical set, but is distinct 
    from the [[Set]] collection type.
@@ -13,10 +13,10 @@
        if (key->item in { for (n in 0..100) n.string->n**2 }) { ... }
    
    Ordinarily, `x==y` implies that `x in cat == y in cat`.
-   But this contract is not required since it is possible
-   to form a meaningful `Category` using a different
-   equivalence relation. For example, an `IdentitySet` is
-   a meaningful `Category`."""
+   But this contract is not required since it is possible to 
+   form a meaningful `Category` using a different 
+   equivalence relation. For example, an `IdentitySet` is a 
+   meaningful `Category`."""
 by ("Gavin")
 shared interface Category {
     

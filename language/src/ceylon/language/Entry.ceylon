@@ -1,11 +1,10 @@
 "A pair containing a _key_ and an associated value called 
- the _item_. Used primarily to represent the elements of 
- a `Map`. The type `Entry<Key,Item>` may be abbreviated 
+ the _item_. Used primarily to represent the elements of a 
+ [[Map]]. The type `Entry<Key,Item>` may be abbreviated 
  `Key->Item`. An instance of `Entry` may be constructed 
  using the `->` operator:
  
-     String->Person entry = person.name->person;
- "
+     String->Person entry = person.name->person;"
 by ("Gavin")
 shared final class Entry<out Key, out Item>(key, item)
         extends Object()

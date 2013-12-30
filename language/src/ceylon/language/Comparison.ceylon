@@ -1,6 +1,6 @@
 import ceylon.language { lt=larger, st=smaller, eq=equal }
 
-"The result of a comparison between two `Comparable` 
+"The result of a comparison between two [[Comparable]] 
  objects."
 see (`interface Comparable`)
 by ("Gavin")

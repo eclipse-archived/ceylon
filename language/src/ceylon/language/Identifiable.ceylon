@@ -1,11 +1,12 @@
 "The abstract supertype of all types with a well-defined
- notion of identity. Values of type `Identifiable` may 
- be compared using the `===` operator to determine if 
- they are references to the same object instance. For
- the sake of convenience, this interface defines a
- default implementation of value equality equivalent
- to identity. Of course, subtypes are encouraged to
- refine this implementation."
+ notion of identity. Values of type `Identifiable` may be 
+ compared using the `===` operator to determine if they are 
+ references to the same object instance.
+ 
+ For the sake of convenience, this interface defines a 
+ default implementation of value equality equivalent to 
+ identity. Of course, subtypes are encouraged to refine this 
+ implementation."
 by ("Gavin")
 shared interface Identifiable {
     
@@ -23,10 +24,10 @@ shared interface Identifiable {
         }
     }
     
-    "The system-defined identity hash value of the 
-     instance. Subtypes which refine `equals()` must 
-     also refine `hash`, according to the general 
-     contract defined by `Object`."
+    "The system-defined identity hash value of the instance. 
+     Subtypes which refine `equals()` must also refine 
+     `hash`, according to the general contract defined by 
+     [[Object]]."
     see (`function identityHash`)
     shared default actual Integer hash => identityHash(this);
     

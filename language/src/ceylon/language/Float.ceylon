@@ -2,8 +2,8 @@
  \{#221E}."
 shared Float infinity = 1.0/0.0;
 
-"An IEEE 754 64-bit [floating point number][]. A `Float` 
- is capable of approximately representing numeric values 
+"An IEEE 754 64-bit [floating point number][]. A `Float` is 
+ capable of approximately representing numeric values 
  between:
  
  - 2<sup>-1022</sup>, approximately 
@@ -11,16 +11,16 @@ shared Float infinity = 1.0/0.0;
  - (2-2<sup>-52</sup>)\{#00D7}2<sup>1023</sup>, 
    approximately 5\{#00D7}10<sup>-324</sup>.
  
- Zero is represented by distinct instances `+0`, `-0`, 
- but these instances are equal. 
+ Zero is represented by distinct instances `+0`, `-0`, but 
+ these instances are equal. 
  
  In addition, the following special values exist:
  
  - [[infinity]] and `-infinity`, and 
  - undefined values (Not a Number).
  
- An undefined value is not equal to any other value, 
- not even to itself.
+ An undefined value is not equal to any other value, not 
+ even to itself.
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf"
 shared native final class Float(Float float)

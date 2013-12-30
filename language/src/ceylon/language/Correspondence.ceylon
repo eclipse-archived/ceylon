@@ -1,18 +1,20 @@
-"Abstract supertype of objects which associate values 
- with keys. `Correspondence` does not satisfy `Category`,
- since in some cases&mdash;`List`, for example&mdash;it is 
- convenient to consider the subtype a `Category` of its
- values, and in other cases&mdash;`Map`, for example&mdash;it 
- is convenient to treat the subtype as a `Category` of its
- entries.
+"Abstract supertype of objects which associate values with 
+ keys.
  
- The item corresponding to a given key may be obtained 
- from a `Correspondence` using the item operator:
+ `Correspondence` does not satisfy [[Category]], since in 
+ some cases&mdash;`List`, for example&mdash;it is convenient 
+ to consider the subtype a `Category` of its values, and in 
+ other cases&mdash;`Map`, for example&mdash;it is convenient 
+ to treat the subtype as a `Category` of its 
+ [[entries|Entry]].
+ 
+ The item corresponding to a given key may be obtained from 
+ a `Correspondence` using the item operator:
  
      value bg = settings[\"backgroundColor\"] else white;
  
  The `get()` operation and item operator result in an
- optional type, to reflect the possibility that there is
+ optional type, to reflect the possibility that there may be
  no item for the given key."
 see (`interface Map`, `interface List`, `interface Category`)
 by ("Gavin")

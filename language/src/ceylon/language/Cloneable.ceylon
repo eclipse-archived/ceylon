@@ -1,5 +1,4 @@
-"Abstract supertype of objects whose value can be 
- cloned."
+"Abstract supertype of objects whose value can be cloned."
 shared interface Cloneable<out Clone> of Clone
         given Clone satisfies Cloneable<Clone> {
     
