@@ -27,7 +27,7 @@
    
        for (i->char in "hello world".indexed) { ... }
    
-   [Strings|String]], [[sequences|Sequential]], 
+   [[Strings|String]], [[sequences|Sequential]], 
    [[tuples|Tuple]], and [[arrays|Array]] are all `List`s,
    and are all of fixed length. Variable-length mutable
    `List`s are also possible."""
