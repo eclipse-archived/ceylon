@@ -401,9 +401,9 @@ shared void sequences() {
     check(!result.definesEvery {1,2}, "sequence definesEvery 1,2");
     check(result.definesAny {1,2}, "sequence definesAny 1,2");
     check(!result.definesAny {2,3}, "sequence definesAny 2,3");
-    check(result.items {0,1,2,3}.string=="[hello, world, null, null]", "sequence.items 1");
+    check(result.items {0,1,2,3}.string=="[hello, world, <null>, <null>]", "sequence.items 1");
     check(result.items {1,0}.string=="[world, hello]", "sequence.items 2");
-    check(result.items {5,6,7}.string=="[null, null, null]", "sequence.items 3");
+    check(result.items {5,6,7}.string=="[<null>, <null>, <null>]", "sequence.items 3");
 
     if (nonempty result) {
         value rest = result.rest;
@@ -490,7 +490,7 @@ shared void sequences() {
     Sequential<String?> nulls = [ null, "hello", null, "world" ];
     if (exists n0 = nulls[0]) { fail("sequence with nulls"); }
     if (exists n1 = nulls[1]) {} else { fail("sequence with nulls"); }
-    check(nulls.string=="[null, hello, null, world]", "sequence with nulls.string " + nulls.string);
+    check(nulls.string=="[<null>, hello, <null>, world]", "sequence with nulls.string " + nulls.string);
     variable value nonnull=0;
     for (o in nulls) {
         if (exists o) { nonnull++; }
