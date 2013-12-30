@@ -158,32 +158,18 @@ shared interface List<out Element>
     "Returns a new `List` that starts with the specified
      element, followed by the elements of this list."
     see (`function following`)
-    shared default [Element|Other+] withLeading<Other>(
+    shared default [Other|Element+] withLeading<Other>(
             "The first element of the resulting sequence."
-            Other element) {
-        value sb = SequenceBuilder<Element|Other>();
-        sb.append(element);
-        if (!empty) {
-            sb.appendAll(this);
-        }
-        assert (nonempty seq=sb.sequence);
-        return seq;
-    }
+            Other element)
+            => [*(Singleton(element) chain this)];
     
     "Returns a new `List` that contains the specified
      element appended to the end of the elements of this 
      list."
     shared default [Element|Other+] withTrailing<Other>(
             "The last element of the resulting sequence."
-            Other element) {
-        value sb = SequenceBuilder<Element|Other>();
-        if (!empty) {
-            sb.appendAll(this);
-        }
-        sb.append(element);
-        assert (nonempty seq=sb.sequence);
-        return seq;
-    }
+            Other element)
+            => [*(this chain Singleton(element))];
     
     "Determine if the given list occurs at the start of this 
      list."
