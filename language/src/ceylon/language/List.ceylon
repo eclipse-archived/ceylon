@@ -4,19 +4,33 @@
    A `List` is a [[Collection]] of its elements, and a 
    [[Correspondence]] from indices to elements.
    
-   Direct access to a list element by index produces a
-   value of optional type. The following idiom may be used 
-   instead of upfront bounds-checking, as long as the list 
-   element type is a non-`null` type:
+   Direct access to a list element by index produces a value 
+   of optional type. The following idiom may be used instead 
+   of upfront bounds-checking, as long as the list element 
+   type is a non-`null` type:
    
-       value char = "hello world"[index];
-       if (exists char) { /*do something*/ }
-       else { /*out of bounds*/ }
+       if (exists char = "hello world"[index]) { 
+           //do something with char
+       }
+       else {
+           //out of bounds
+       }
    
-   To iterate the indexes of a `List`, use the following
+   When an algorithm guarantees that a list contains a given 
+   index, the following idiom may be used:
+   
+       assert (exists char = "hello world"[index]);
+       //do something with char
+   
+   To iterate the indices of a `List`, use the following
    idiom:
    
-       for (i->char in "hello world".indexed) { ... }"""
+       for (i->char in "hello world".indexed) { ... }
+   
+   [Strings|String]], [[sequences|Sequential]], 
+   [[tuples|Tuple]], and [[arrays|Array]] are all `List`s,
+   and are all of fixed length. Variable-length mutable
+   `List`s are also possible."""
 see (`interface Sequence`, 
      `interface Empty`, 
      `class Array`)

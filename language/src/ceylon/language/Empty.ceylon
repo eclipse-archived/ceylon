@@ -3,12 +3,12 @@ import ceylon.language { e=empty }
 "A sequence with no elements. The type `Empty` may be
  abbreviated `[]`, and an instance is produced by the 
  expression `[]`. That is, in the following expression,
- `e` has type `[]` and refers to the value `[]`:
+ `none` has type `[]` and refers to the value `[]`:
  
      [] none = [];
  
- (Whether the syntax `[]` refers to the type or the 
- value depends upon how it occurs grammatically.)"
+ (Whether the syntax `[]` refers to the type or the value 
+ depends upon how it occurs grammatically.)"
 see (`interface Sequence`)
 shared interface Empty of e
            satisfies Nothing[] &
@@ -132,8 +132,8 @@ shared interface Empty of e
             Singleton(head);
 }
 
-"A sequence with no elements, abbreviated `[]`. The 
- unique instance of the type `[]`."
+"A sequence with no elements, abbreviated `[]`. The unique 
+ instance of the type `[]`."
 //by ("Tako Schotanus")
 shared object empty extends Object() satisfies [] {}
 

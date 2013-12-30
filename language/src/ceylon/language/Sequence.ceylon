@@ -1,10 +1,10 @@
 "A nonempty, immutable sequence of values. The type 
- `Sequence<Element>`, may be abbreviated `[Element+]`.
+ `Sequence<Element>` may be abbreviated `[Element+]`.
  
- Given a possibly-empty sequence of type `[Element*]`, 
- the `if (nonempty ...)` construct, or, alternatively,
- the `assert (nonempty ...)` construct, may be used to 
- narrow to a nonempty sequence type:
+ Given a possibly-empty sequence of type `[Element*]`, the 
+ `if (nonempty ...)` construct, or, alternatively, 
+ `assert (nonempty ...)`, may be used to narrow to a 
+ sequence type to a nonempty sequence type:
  
      [Integer*] nums = ... ;
      if (nonempty nums) {
@@ -14,9 +14,9 @@
          [Integer+] sorted = nums.sort(byIncreasing((Integer i) => i));
      }
  
- Operations like `first`, `max()`, `collect()`, and 
- `sort()`, which polymorphically produce a nonempty or 
- non-null output when given a nonempty input are called 
+ Operations like `first`, `max()`, `collect()`, and `sort()`, 
+ which polymorphically produce a nonempty or non-null output 
+ when given a nonempty input are called 
  _emptiness-preserving_."
 see (`interface Empty`)
 by ("Gavin")
@@ -29,12 +29,12 @@ shared interface Sequence<out Element>
     see (`value Sequence.size`)
     shared actual formal Integer lastIndex;
     
-    "The first element of the sequence, that is, the
-     element with index `0`."
+    "The first element of the sequence, that is, the element
+     with index `0`."
     shared actual formal Element first;
 
-    "The last element of the sequence, that is, the
-     element with index `sequence.lastIndex`."
+    "The last element of the sequence, that is, the element
+     with index `sequence.lastIndex`."
     shared actual formal Element last;
     
     "Returns `false`, since every `Sequence` contains at
@@ -48,13 +48,12 @@ shared interface Sequence<out Element>
     "This nonempty sequence."
     shared default actual [Element+] sequence => this;
     
-    "The rest of the sequence, without the first 
-     element."
+    "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
     
     "A nonempty sequence containing the elements of this
-     container, sorted according to a function 
-     imposing a partial order upon the elements."
+     container, sorted according to a function imposing a 
+     partial order upon the elements."
     shared default actual [Element+] sort(
             "The function comparing pairs of elements."
             Comparison comparing(Element x, Element y)) {
@@ -64,9 +63,8 @@ shared interface Sequence<out Element>
         return s;
     }
 
-    "A nonempty sequence containing the results of 
-     applying the given mapping to the elements of this
-     sequence."
+    "A nonempty sequence containing the results of applying 
+     the given mapping to the elements of this sequence."
     shared default actual [Result+] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) {

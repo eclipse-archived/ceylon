@@ -2,15 +2,15 @@ import ceylon.language { internalFirst = first }
 
 """Abstract supertype of categories whose elements may be 
    iterated. An iterable category need not be finite, but
-   its elements must at least be countable. There may not
+   its elements must at least be countable. There may not 
    be a well-defined iteration order, and so the order of
    iterated elements may not be stable.
    
    The type `Iterable<Element,Null>`, usually abbreviated
    `{Element*}` represents a possibly-empty iterable 
-   container. The type `Iterable<Element,Nothing>`, 
-   usually abbreviated `{Element+}` represents a nonempty 
-   iterable container.
+   container. The type `Iterable<Element,Nothing>`, usually 
+   abbreviated `{Element+}` represents a nonempty iterable 
+   container.
    
    An instance of `Iterable` may be constructed by 
    surrounding a value list in braces:
@@ -23,21 +23,21 @@ import ceylon.language { internalFirst = first }
        for (c in "hello world") { ... }
    
    `Iterable` and its subtypes define various operations
-   that return other iterable objects. Such operations 
-   come in two flavors:
+   that return other iterable objects. Such operations come 
+   in two flavors:
    
    - _Lazy_ operations return a *view* of the receiving
      iterable object. If the underlying iterable object is
-     mutable, then changes to the underlying object will
-     be reflected in the resulting view. Lazy operations
-     are usually efficient, avoiding memory allocation or
+     mutable, then changes to the underlying object will be 
+     reflected in the resulting view. Lazy operations are 
+     usually efficient, avoiding memory allocation or
      iteration of the receiving iterable object.
    - _Eager_ operations return an immutable object. If the
      receiving iterable object is mutable, changes to this
-     object will not be reflected in the resulting 
-     immutable object. Eager operations are often 
-     expensive, involving memory allocation and iteration
-     of the receiving iterable object.
+     object will not be reflected in the resulting immutable
+     object. Eager operations are often expensive, involving
+     memory allocation and iteration of the receiving 
+     iterable object.
    
    Lazy operations are preferred, because they can be 
    efficiently chained. For example:
@@ -57,8 +57,8 @@ import ceylon.language { internalFirst = first }
        [ *string.filter((Character c) => c.letter)
              .map((Character c) => c.uppercased) ]
    
-   Lazy operations normally return an instance of 
-   `Iterable` or `Map`.
+   Lazy operations normally return an instance of `Iterable`, 
+   or even a [[List]], [[Map]], or [[Set]].
    
    However, there are certain scenarios where an eager 
    operation is more useful, more convenient, or no more 
@@ -68,7 +68,8 @@ import ceylon.language { internalFirst = first }
    - operations which preserve emptiness/nonemptiness of
      the receiving iterable object.
    
-   Eager operations normally return a sequence."""
+   Eager operations normally return a 
+   [[sequence|Sequential]]."""
 see (`interface Collection`)
 by ("Gavin")
 shared interface Iterable<out Element, out Absent=Null>
@@ -79,15 +80,15 @@ shared interface Iterable<out Element, out Absent=Null>
      container."
     shared formal Iterator<Element> iterator();
     
-    "Determines if the iterable object is empty, that is
-     to say, if the iterator returns no elements."
+    "Determines if the iterable object is empty, that is to 
+     say, if the iterator returns no elements."
     shared default Boolean empty 
             => iterator().next() is Finished;
     
-    "The number of elements returned by the iterator of
-     this iterable object, if the iterator terminates.
-     In the case of an iterable whose elements are not
-     countable, this operation never terminates."
+    "The number of elements returned by the iterator of this 
+     iterable object, if the iterator terminates. In the 
+     case of an iterable whose elements are not countable, 
+     this operation never terminates."
     shared default Integer size 
             => count((Element e) => true);
     
@@ -128,13 +129,13 @@ shared interface Iterable<out Element, out Absent=Null>
     shared actual default Boolean contains(Object element) 
             => any(ifExists(element.equals));
     
-    "The first element returned by the iterator, if any,
-     or `null` if the iterable object is empty."
+    "The first element returned by the iterator, if any, or 
+     `null` if the iterable object is empty."
     shared default Absent|Element first 
             => internalFirst(this);
     
-    "The last element returned by the iterator, if any,
-     or `null` if the iterable object is empty. Iterable
+    "The last element returned by the iterator, if any, or 
+     `null` if the iterable object is empty. Iterable
      objects are potentially infinite, so this operation
      might never return; furthermore, this default 
      implementation iterates all elements, which might be
@@ -147,17 +148,16 @@ shared interface Iterable<out Element, out Absent=Null>
         return e;
     }
     
-    "Returns an iterable object containing all but the 
-     first element of this container."
+    "Returns an iterable object containing all but the first 
+     element of this container."
     shared default {Element*} rest => skipping(1);
     
     "A sequence containing the elements returned by the
      iterator."
     shared default Element[] sequence => [ for (x in this) x ];
     
-    "An `Iterable` containing the results of applying
-     the given mapping to the elements of to this 
-     container."
+    "An `Iterable` containing the results of applying the 
+     given mapping to the elements of to this container."
     see (`function collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
@@ -170,8 +170,8 @@ shared interface Iterable<out Element, out Absent=Null>
                 flatten((Args args) => 
                     { for (elem in this) unflatten(method(elem))(args) });*/
     
-    "An `Iterable` containing the elements of this 
-     container that satisfy the given predicate."
+    "An `Iterable` containing the elements of this container 
+     that satisfy the given predicate."
     see (`function select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
@@ -210,8 +210,8 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "The first element which satisfies the given 
-     predicate, if any, or `null` otherwise."
+    "The first element which satisfies the given predicate, 
+     if any, or `null` otherwise."
     shared default Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -223,8 +223,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return null;
     }
     
-    "The last element which satisfies the given
-     predicate, if any, or `null` otherwise."
+    "The last element which satisfies the given predicate, 
+     if any, or `null` otherwise."
     shared default Element? findLast(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -237,13 +237,13 @@ shared interface Iterable<out Element, out Absent=Null>
         return last;
     }
     
-    "A sequence containing the elements of this
-     container, sorted according to a function 
-     imposing a partial order upon the elements.
+    "A sequence containing the elements of this container, 
+     sorted according to a function imposing a partial order 
+     upon the elements.
      
-     For convenience, the functions `byIncreasing()` 
-     and `byDecreasing()` produce a suitable 
-     comparison function:
+     For convenience, the functions `byIncreasing()` and 
+     `byDecreasing()` produce a suitable comparison 
+     function:
      
          \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
      
@@ -263,9 +263,9 @@ shared interface Iterable<out Element, out Absent=Null>
             Result collecting(Element element)) 
             => map(collecting).sequence;
     
-    "A sequence containing the elements of this 
-     container that satisfy the given predicate. An 
-     eager counterpart to `filter()`."
+    "A sequence containing the elements of this container 
+     that satisfy the given predicate. An eager counterpart 
+     to `filter()`."
     see (`function filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
@@ -300,11 +300,11 @@ shared interface Iterable<out Element, out Absent=Null>
         return true;
     }
     
-    "Produce an `Iterable` containing the elements of
-     this iterable object, after skipping the first 
-     `skip` elements. If this iterable object does not 
-     contain more elements than the specified number of 
-     elements, the `Iterable` contains no elements."
+    "Produce an `Iterable` containing the elements of this 
+     iterable object, after skipping the first `skip` 
+     elements. If this iterable object does not contain more
+     elements than the specified number of elements, the 
+     `Iterable` contains no elements."
     shared default {Element*} skipping(Integer skip) {
         if (skip <= 0) { 
             return this;
@@ -351,10 +351,9 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produce an `Iterable` containing the elements of
-     this iterable object, after skipping the leading 
-     elements until the given predicate function returns
-     `false`."
+    "Produce an `Iterable` containing the elements of this 
+     iterable object, after skipping the leading elements 
+     until the given predicate function returns `false`."
     shared default {Element*} skippingWhile(Boolean skip(Element elem)) {
         object iterable satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
@@ -409,11 +408,11 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produce an `Iterable` containing every `step`th 
-     element of this iterable object. If the step size 
-     is `1`, the `Iterable` contains the same elements 
-     as this iterable object. The step size must be 
-     greater than zero. The expression
+    "Produce an `Iterable` containing every `step`th element 
+     of this iterable object. If the step size is `1`, the 
+     `Iterable` contains the same elements as this iterable 
+     object. The step size must be greater than zero. The 
+     expression
      
          (0..10).by(3)
      
@@ -448,8 +447,8 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Return the number of elements in this `Iterable` 
-     that satisfy the predicate function."
+    "Return the number of elements in this `Iterable` that 
+     satisfy the predicate function."
     shared default Integer count(
             "The predicate satisfied by the elements to
              be counted."
@@ -471,8 +470,8 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default {Element&Object*} coalesced 
             => { for (e in this) if (exists e) e };
     
-    "All entries of form `index->element` where `index` 
-     is the position at which `element` occurs, for every
+    "All entries of form `index->element` where `index` is 
+     the position at which `element` occurs, for every
      non-null element of this `Iterable`, ordered by
      increasing `index`. For a null element at a given
      position in the original `Iterable`, there is no 
@@ -512,8 +511,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    "An `Iterable` with the given inital element followed 
-     by the elements of this iterable object."
+    "An `Iterable` with the given inital element followed by
+     the elements of this iterable object."
     shared default {Element|Other+} following<Other>(Other head) {
         //TODO: should be {leading,*outer} when that is efficient
         object cons satisfies {Element|Other+} {
@@ -537,9 +536,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return cons;
     }
     
-    "The elements of this iterable object, in their
-     original order, followed by the elements of the 
-     given iterable object also in their original order."
+    "The elements of this iterable object, in their original 
+     order, followed by the elements of the given iterable 
+     object also in their original order."
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
@@ -552,9 +551,9 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "An `Iterable` that produces the elements of this 
-     iterable object, replacing every `null` element 
-     with the given default value. The resulting iterable
-     object does not produce the value `null`."
+     iterable object, replacing every `null` element with 
+     the given default value. The resulting iterable object 
+     does not produce the value `null`."
     shared default Iterable<Element&Object|Default,Absent>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
@@ -570,13 +569,13 @@ shared interface Iterable<out Element, out Absent=Null>
                 Grouping grouping(Element elem))
             given Grouping satisfies Object;*/
         
-    "A string of form `\"{ x, y, z }\"` where `x`, `y`, 
-     and `z` are the `string` representations of the 
-     elements of this collection, as produced by the
-     iterator of the collection, or the string `\"{}\"` 
-     if this iterable is empty. If the number of items
-     is very large only a certain amount of them might
-     be shown followed by \"...\"."
+    "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
+     `z` are the `string` representations of the elements of 
+     this collection, as produced by the iterator of the 
+     collection, or the string `\"{}\"` if this iterable is 
+     empty. If the number of items is very large only a 
+     certain amount of them might be shown followed by 
+     \"...\"."
     shared actual default String string {
         if (empty) {
             return "{}";

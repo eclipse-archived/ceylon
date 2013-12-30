@@ -1,14 +1,14 @@
-"A possibly-empty, immutable sequence of values. The 
- type `Sequential<Element>` may be abbreviated 
- `[Element*]` or `Element[]`. 
+"A possibly-empty, immutable sequence of values. The type 
+ `Sequential<Element>` may be abbreviated `[Element*]` or 
+ `Element[]`. 
  
  `Sequential` has two enumerated subtypes:
  
- - `Empty`, abbreviated `[]`, represents an empty 
-    sequence, and
- - `Sequence<Element>`, abbreviated `[Element+]` 
-    represents a non-empty sequence, and has the very
-    important subclass `Tuple`."
+ - `Empty`, abbreviated `[]`, represents an empty sequence, 
+    and
+ - `Sequence<Element>`, abbreviated `[Element+]` represents 
+    a non-empty sequence, and has the very important 
+    subclass [[Tuple]]."
 see (`class Tuple`)
 shared interface Sequential<out Element>
         of []|[Element+]
@@ -30,7 +30,7 @@ shared interface Sequential<out Element>
      this sequence the given number of times, or an empty 
      sequence if `times<=0`."
     shared actual default Element[] repeat(Integer times)
-            => cycle(times).sequence;
+            => [*cycle(times)];
     
     "Select the first elements of this sequence, returning 
      a sequence no longer than the given length. If this 
@@ -58,30 +58,30 @@ shared interface Sequential<out Element>
      function from the start and end of this sequence, 
      returning a sequence no longer than this sequence."
     shared actual default Element[] trim(Boolean trimming(Element elem))
-            => super.trim(trimming).sequence; //TODO: inefficient?
+            => [*super.trim(trimming)]; //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
      function from the start of this sequence, returning 
      a sequence no longer than this sequence."
     shared actual default Element[] trimLeading(Boolean trimming(Element elem))
-            => super.trimLeading(trimming).sequence; //TODO: inefficient?
+            => [*super.trimLeading(trimming)]; //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
      function from the end of this sequence, returning 
      a sequence no longer than this sequence."
     shared actual default Element[] trimTrailing(Boolean trimming(Element elem))
-            => super.trimTrailing(trimming).sequence; //TODO: inefficient?
+            => [*super.trimTrailing(trimming)]; //TODO: inefficient?
     
     "This sequence."
     shared actual default Element[] clone => this;
     
-    "A string of form `\"[ x, y, z ]\"` where `x`, `y`, 
-     and `z` are the `string` representations of the 
-     elements of this collection, as produced by the
-     iterator of the collection, or the string `\"{}\"` 
-     if this collection is empty. If the collection 
-     iterator produces the value `null`, the string
-     representation contains the string `\"null\"`."
+    "A string of form `\"[ x, y, z ]\"` where `x`, `y`, and 
+     `z` are the `string` representations of the elements of 
+     this collection, as produced by the iterator of the 
+     collection, or the string `\"{}\"` if this collection 
+     is empty. If the collection iterator produces the value 
+     `null`, the string representation contains the string 
+     `\"null\"`."
     shared actual default String string => 
             empty then "[]" else "[``commaList(this)``]";
     
