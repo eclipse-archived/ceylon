@@ -136,7 +136,7 @@ shared interface Map<out Key,out Item>
     
     "Returns a `Map` with the same keys as this map. For
      every key, the item is the result of applying the given 
-     transformation function."
+     transformation function. This is a lazy operation."
     shared default Map<Key,Result> mapItems<Result>(
             "The function that transforms a key/item pair, 
              producing the item of the resulting map."
@@ -163,7 +163,7 @@ shared interface Map<out Key,out Item>
         }
         return map;
     }
-            
+    
 }
 
 "An immutable [[Map]] with no entries."
