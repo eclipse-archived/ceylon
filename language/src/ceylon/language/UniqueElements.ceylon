@@ -2,6 +2,7 @@
  given iterable object. This iterable object never produces 
  two elements that are equal, as determined by
  [[Object.equals]]."
+deprecated
 class UniqueElements<Element>(elements) 
         satisfies {Element*} 
         given Element satisfies Object {
