@@ -17,16 +17,16 @@ shared class LazySet<out Element>(elements)
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object 
-            => LazySet(elements.chain { for (e in set) if (!e in this) e });
+            => LazySet({ for (e in this) if (!e in set) e }.chain(set));
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object 
-            => LazySet { for (e in set) if (is Element e, e in this) e };
+            => LazySet { for (e in this) if (is Other e, e in set) e };
     
-    shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> other)
+    shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object {
-        value hereNotThere = { for (e in elements) if (!e in other) e };
-        value thereNotHere = { for (e in other) if (!e in this) e };
+        value hereNotThere = { for (e in elements) if (!e in set) e };
+        value thereNotHere = { for (e in set) if (!e in this) e };
         return LazySet(hereNotThere.chain(thereNotHere));
     }
     
