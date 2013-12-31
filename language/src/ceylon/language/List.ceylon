@@ -428,7 +428,7 @@ shared interface List<out Element>
      elements of this list, together with the number of 
      occurrences of these elements in this list."
     shared default Map<Element&Object,Integer> frequencies
-            => LazyMap { for (element in LazySet(coalesced)) 
+            => LazyMap { for (element in UniqueElements(coalesced)) 
                     element->coalesced.count(element.equals) };
     
     "Return a `Map` whose entries are the group keys 
@@ -440,7 +440,7 @@ shared interface List<out Element>
              a given element of this list."
             GroupKey? grouping(Element&Object element))
             given GroupKey satisfies Object
-            => LazyMap { for (element in LazySet(coalesced))
+            => LazyMap { for (element in UniqueElements(coalesced))
                     if (exists groupKey = grouping(element))
                             element->groupKey }.inverse;
     

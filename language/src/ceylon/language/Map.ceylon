@@ -115,7 +115,7 @@ class InverseMap<out Key,out Item>(Map<Key,Item> map)
     Set<Key> getKeys(Object item) 
             => LazySet { for (k->i in map) if (item==i) k };
     
-    iterator() => LazySet { for (k->i in map) i }
+    iterator() => UniqueElements { for (k->i in map) i }
             .map((Item i)=>i->getKeys(i)).iterator();
     
     equals(Object that) => (super of Map<Item,Set<Key>>).equals(that);

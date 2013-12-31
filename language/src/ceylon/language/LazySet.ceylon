@@ -8,42 +8,13 @@ shared class LazySet<out Element>({Element*} elements)
     
     clone => this;
     
-    shared actual Integer size {
-        variable value c=0;
-        value sorted = elements.sort(byIncreasing(Object.hash));
-        if (exists l=sorted.first) {
-            c=1;
-            variable Element last = l;
-            for (e in sorted.rest) {
-                if (e!=last) {
-                    c++;
-                    last=e;
-                }
-            }
-        }
-        return c;
-    }
+    size => elements.size;
     
-    shared actual Iterator<Element> iterator() {
-        object iterator satisfies Iterator<Element> {
-            value sorted = elements.sort(byIncreasing(Object.hash)).iterator();
-            variable Element|Finished ready = sorted.next();
-            shared actual Element|Finished next() {
-                Element|Finished next = ready;
-                if (!is Finished next) {
-                    while (next==ready) {
-                        ready = sorted.next();
-                    }
-                }
-                return next; 
-            }
-        }
-        return iterator;
-    }
+    iterator() => elements.iterator();
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object 
-            => LazySet(elements.chain(set));
+            => LazySet(elements.chain { for (e in set) if (!e in this) e });
     
     shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object 
@@ -64,3 +35,4 @@ shared class LazySet<out Element>({Element*} elements)
     hash => (super of Set<Element>).hash;
     
 }
+
