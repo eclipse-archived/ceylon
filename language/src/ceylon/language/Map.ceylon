@@ -102,20 +102,15 @@ shared interface Map<out Key,out Item>
     shared default Map<Item,Set<Key>> inverse {
         object inverse
                 satisfies Map<Item,Set<Key>> {
-            
-            clone => this;
-            
             shared actual Set<Key>? get(Object item) {
                 value keys = getKeys(item);
                 return !keys.empty then keys;
             }
-            
             Set<Key> getKeys(Object item) 
                     => LazySet { for (k->i in outer) if (item==i) k };
-            
             iterator() => UniqueElements { for (k->i in outer) i }
                     .map((Item i)=>i->getKeys(i)).iterator();
-            
+            clone => this;
             equals(Object that) => (super of Map<Item,Set<Key>>).equals(that);
             hash => (super of Map<Item,Set<Key>>).hash;
             
@@ -132,9 +127,8 @@ shared interface Map<out Key,out Item>
              map."
             Result mapping(Key key, Item item)) 
             given Result satisfies Object {
-        value entries = { for (key->item in this) key->mapping(key,item) };
         object map
-                extends LazyMap<Key,Result>(entries) {
+                satisfies Map<Key,Result> {
             shared actual Result? get(Object key) {
                 if (is Key key, exists item=outer[key]) {
                     return mapping(key, item);
@@ -144,7 +138,13 @@ shared interface Map<out Key,out Item>
                 }
             }
             defines(Object key) => outer.defines(key);
+            iterator() => outer.map((Key->Item entry) 
+                    => entry.key->mapping(entry.key, entry.item))
+                            .iterator();
             size => outer.size;
+            clone => this;
+            equals(Object that) => (super of Map<Key,Result>).equals(that);
+            hash => (super of Map<Key,Result>).hash;
         }
         return map;
     }
