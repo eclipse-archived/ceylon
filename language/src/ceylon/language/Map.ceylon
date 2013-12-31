@@ -105,8 +105,6 @@ shared interface Map<out Key,out Item>
             
             clone => this;
             
-            size => outer.size;
-            
             shared actual Set<Key>? get(Object item) {
                 value keys = getKeys(item);
                 return !keys.empty then keys;
