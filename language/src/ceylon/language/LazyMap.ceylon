@@ -17,8 +17,23 @@ shared class LazyMap<out Key,out Item>(entries)
     
     shared actual default Integer size => entries.size;
     
-    shared actual default Item? get(Object key) 
-            => entries.find(forKey(key.equals))?.item;
+    shared actual default Item? get(Object key) {
+        for (k->i in entries) {
+            if (key==k) {
+                return i;
+            }
+        }
+        return null;
+    }
+    
+    shared actual default Boolean defines(Object key) {
+        for (k->i in entries) {
+            if (key==k) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     iterator() => entries.iterator();
     

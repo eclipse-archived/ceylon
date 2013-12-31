@@ -13,6 +13,15 @@ shared class LazySet<out Element>(elements)
     
     shared actual default Integer size => elements.size;
     
+    shared actual default Boolean contains(Object element) {
+        for (e in elements) {
+            if (element==e) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     iterator() => elements.iterator();
     
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
@@ -20,7 +29,8 @@ shared class LazySet<out Element>(elements)
         value elements = { for (e in this) if (!e in set) e }.chain(set);
         object union 
                 extends LazySet<Element|Other>(elements) {
-            contains(Object key) => key in set || key in this;
+            shared actual Boolean contains(Object key) 
+                    => key in set || key in this;
         }
         return union;
     }
@@ -30,7 +40,8 @@ shared class LazySet<out Element>(elements)
         value elements = { for (e in this) if (is Other e, e in set) e };
         object intersection 
                 extends LazySet<Element&Other>(elements) {
-            contains(Object key) => key in set && key in this;
+            shared actual Boolean contains(Object key) 
+                    => key in set && key in this;
         }
         return intersection;
     }
@@ -55,7 +66,8 @@ shared class LazySet<out Element>(elements)
         value elements = { for (e in this) if (!e in set) e };
         object complement 
                 extends LazySet<Element>(elements) {
-            contains(Object key) => !key in set && key in this;
+            shared actual Boolean contains(Object key) 
+                    => !key in set && key in this;
         }
         return complement;
     }
