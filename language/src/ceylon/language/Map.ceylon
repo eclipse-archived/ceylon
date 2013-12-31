@@ -81,6 +81,7 @@ shared interface Map<out Key,out Item>
     "Returns a `Map` in which every key is an `Item` in this 
      map, and every value is the set of keys that stored the 
      `Item` in this map."
+    deprecated
     shared default Map<Item,Set<Key>> inverse
             => InverseMap(this);
     

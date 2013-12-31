@@ -423,25 +423,5 @@ shared interface List<out Element>
             return [];
         }
     }
-    
-    "Return a `Map` whose entries are the non-`null` 
-     elements of this list, together with the number of 
-     occurrences of these elements in this list."
-    shared default Map<Element&Object,Integer> frequencies
-            => LazyMap { for (element in UniqueElements(coalesced)) 
-                    element->coalesced.count(element.equals) };
-    
-    "Return a `Map` whose entries are the group keys 
-     returned by the given grouping function, together with
-     the sets of non-`null` elements of this list producing 
-     a certain group key."
-    shared default Map<GroupKey,Set<Element&Object>> group<GroupKey>(
-            "A grouping function returning the group key for
-             a given element of this list."
-            GroupKey? grouping(Element&Object element))
-            given GroupKey satisfies Object
-            => LazyMap { for (element in UniqueElements(coalesced))
-                    if (exists groupKey = grouping(element))
-                            element->groupKey }.inverse;
-    
+        
 }
