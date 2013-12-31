@@ -77,23 +77,39 @@ shared interface Map<out Key,out Item>
         return hashCode;
     }
     
-    "Returns the set of keys contained in this `Map`."
-    actual shared default Set<Key> keys {
-        value entries = { for (k->v in this) k };
+    "A [[Collection]] containing the keys of this map."
+    actual shared default Collection<Key> keys {
         object keys
-                extends LazySet<Key>(entries) {
+                satisfies Collection<Key> {
             contains(Object key) => outer.defines(key);
+            iterator() => { for (k->v in outer) k }.iterator();
+            clone => this;
             size => outer.size;
         }
         return keys;
     }
     
-    "Returns all the items stored in this `Map`. An element 
-     can be stored under more than one key in the map, and 
-     so it can be contained more than once in the resulting 
-     collection."
-    shared default Collection<Item> values 
-            => LazyList { for (k->v in this) v };
+    "A [[Collection]] containing the items stored in this 
+     map. An element can be stored under more than one key 
+     in the map, and so it can occur more than once in the 
+     resulting collection."
+    shared default Collection<Item> values {
+        object values
+                satisfies Collection<Item> {
+            shared actual Boolean contains(Object item) {
+                for (k->v in outer) {
+                    if (v==item) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            iterator() => { for (k->v in outer) v }.iterator();
+            clone => this;
+            size => outer.size;
+        }
+        return values;
+    }
     
     "Returns a `Map` in which every key is an `Item` in this 
      map, and every value is the set of keys that stored the 

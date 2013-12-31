@@ -474,8 +474,8 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     @Override
     @Annotations({ @Annotation("actual"), @Annotation("default") })
-    @TypeInfo("ceylon.language::Set<Key>")
-    public Set<? extends Key> getKeys() {
+    @TypeInfo("ceylon.language::Collection<Key>")
+    public Collection<? extends Key> getKeys() {
         return $ceylon$language$Map$this.getKeys();
     }
 
