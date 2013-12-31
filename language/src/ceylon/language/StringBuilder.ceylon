@@ -1,7 +1,6 @@
 "Since strings are immutable, this class is used for
  constructing a string by incrementally appending 
- characters to the empty string. This class is mutable 
- but threadsafe."
+ characters to the empty string."
 shared native class StringBuilder() {
     
     "The resulting string. If no characters have been
