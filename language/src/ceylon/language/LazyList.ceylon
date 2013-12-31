@@ -2,8 +2,11 @@
  elements. All operations on this `List` are performed on 
  the `Iterable`."
 by ("Enrique Zamudio")
-shared class LazyList<out Element>({Element*} elements)
+shared class LazyList<out Element>(elements)
         satisfies List<Element> {
+    
+    "The elements of the list, which may have duplicates."
+    {Element*} elements;
     
     shared actual Integer? lastIndex {
         value size = elements.size;

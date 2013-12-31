@@ -2,10 +2,13 @@
  entries. All operations, such as lookups, size, etc. 
  are performed on the `Iterable`."
 by ("Enrique Zamudio")
-shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
+shared class LazyMap<out Key,out Item>(entries)
     satisfies Map<Key,Item>
         given Key satisfies Object
         given Item satisfies Object {
+    
+    "The entries in the map, which must have distinct keys."
+    {<Key->Item>*} entries;
     
     first => entries.first;
     last => entries.last;

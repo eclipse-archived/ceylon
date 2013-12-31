@@ -2,9 +2,12 @@
  elements. All operations on this `Set` are performed
  on the `Iterable`."
 by ("Enrique Zamudio")
-shared class LazySet<out Element>({Element*} elements)
+shared class LazySet<out Element>(elements)
         satisfies Set<Element>
         given Element satisfies Object {
+    
+    "The elements of the set, which must be distinct."
+    {Element*} elements;
     
     clone => this;
     
