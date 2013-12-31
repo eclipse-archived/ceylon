@@ -81,11 +81,8 @@ shared interface Map<out Key,out Item>
     "Returns a `Map` in which every key is an `Item` in this 
      map, and every value is the set of keys that stored the 
      `Item` in this map."
-    shared default Map<Item,Set<Key>> inverse {
-        value items = LazySet { for (key->item in this) item };
-        return LazyMap { for (item in items) item -> 
-                LazySet { for (k->i in this) if (i==item) k } };
-    }
+    shared default Map<Item,Set<Key>> inverse
+            => InverseMap(this);
     
     "Returns a `Map` with the same keys as this map. For
      every key, the item is the result of applying the given 
@@ -98,6 +95,31 @@ shared interface Map<out Key,out Item>
             given Result satisfies Object 
             => LazyMap { for (key->item in this) 
                 key->mapping(key,item) };
+    
+}
+
+class InverseMap<out Key,out Item>(Map<Key,Item> map)
+    satisfies Map<Item,Set<Key>>
+        given Key satisfies Object
+        given Item satisfies Object {
+        
+    clone => this;
+    
+    size => map.size;
+    
+    shared actual Set<Key>? get(Object item) {
+         value keys = getKeys(item);
+         return !keys.empty then keys;
+    }
+    
+    Set<Key> getKeys(Object item) 
+            => LazySet { for (k->i in map) if (item==i) k };
+    
+    iterator() => LazySet { for (k->i in map) i }
+            .map((Item i)=>i->getKeys(i)).iterator();
+    
+    equals(Object that) => (super of Map<Item,Set<Key>>).equals(that);
+    hash => (super of Map<Item,Set<Key>>).hash;
     
 }
 
