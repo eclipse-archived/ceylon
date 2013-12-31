@@ -15,9 +15,10 @@ shared class LazyMap<out Key,out Item>(entries)
     
     clone => this;
     
-    size => entries.size;
+    shared actual default Integer size => entries.size;
     
-    get(Object key) => entries.find(forKey(key.equals))?.item;
+    shared actual default Item? get(Object key) 
+            => entries.find(forKey(key.equals))?.item;
     
     iterator() => entries.iterator();
     

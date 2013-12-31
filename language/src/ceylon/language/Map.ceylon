@@ -32,6 +32,16 @@ shared interface Map<out Key,out Item>
         given Key satisfies Object
         given Item satisfies Object {
     
+    shared actual default Boolean contains(Object entry) {
+        if (is Key->Object entry, 
+            exists item = get(entry.key)) {
+            return item==entry.item;
+        }
+        else {
+            return false;
+        }
+    }
+    
     "Two `Map`s are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
      `Entry`s belonging to the map. Therefore, the maps are 
@@ -68,8 +78,15 @@ shared interface Map<out Key,out Item>
     }
     
     "Returns the set of keys contained in this `Map`."
-    actual shared default Set<Key> keys 
-            => LazySet { for (k->v in this) k };
+    actual shared default Set<Key> keys {
+        value entries = {for (k->v in this) k};
+        object keys
+                extends LazySet<Key>(entries) {
+            contains(Object key) => outer.defines(key);
+            size => outer.size;
+        }
+        return keys;
+    }
     
     "Returns all the items stored in this `Map`. An element 
      can be stored under more than one key in the map, and 
@@ -82,8 +99,31 @@ shared interface Map<out Key,out Item>
      map, and every value is the set of keys that stored the 
      `Item` in this map."
     deprecated
-    shared default Map<Item,Set<Key>> inverse
-            => InverseMap(this);
+    shared default Map<Item,Set<Key>> inverse {
+        object inverse
+                satisfies Map<Item,Set<Key>> {
+            
+            clone => this;
+            
+            size => outer.size;
+            
+            shared actual Set<Key>? get(Object item) {
+                value keys = getKeys(item);
+                return !keys.empty then keys;
+            }
+            
+            Set<Key> getKeys(Object item) 
+                    => LazySet { for (k->i in outer) if (item==i) k };
+            
+            iterator() => UniqueElements { for (k->i in outer) i }
+                    .map((Item i)=>i->getKeys(i)).iterator();
+            
+            equals(Object that) => (super of Map<Item,Set<Key>>).equals(that);
+            hash => (super of Map<Item,Set<Key>>).hash;
+            
+        }
+        return inverse;
+    }
     
     "Returns a `Map` with the same keys as this map. For
      every key, the item is the result of applying the given 
@@ -93,35 +133,24 @@ shared interface Map<out Key,out Item>
              pair, producing the item of the resulting
              map."
             Result mapping(Key key, Item item)) 
-            given Result satisfies Object 
-            => LazyMap { for (key->item in this) 
-                key->mapping(key,item) };
-    
-}
-
-class InverseMap<out Key,out Item>(Map<Key,Item> map)
-    satisfies Map<Item,Set<Key>>
-        given Key satisfies Object
-        given Item satisfies Object {
-        
-    clone => this;
-    
-    size => map.size;
-    
-    shared actual Set<Key>? get(Object item) {
-         value keys = getKeys(item);
-         return !keys.empty then keys;
+            given Result satisfies Object {
+        value entries = { for (key->item in this) key->mapping(key,item) };
+        object map
+                extends LazyMap<Key,Result>(entries) {
+            shared actual Result? get(Object key) {
+                if (is Key key, exists item=outer[key]) {
+                    return mapping(key, item);
+                }
+                else {
+                    return null;
+                }
+            }
+            defines(Object key) => outer.defines(key);
+            size => outer.size;
+        }
+        return map;
     }
-    
-    Set<Key> getKeys(Object item) 
-            => LazySet { for (k->i in map) if (item==i) k };
-    
-    iterator() => UniqueElements { for (k->i in map) i }
-            .map((Item i)=>i->getKeys(i)).iterator();
-    
-    equals(Object that) => (super of Map<Item,Set<Key>>).equals(that);
-    hash => (super of Map<Item,Set<Key>>).hash;
-    
+            
 }
 
 "An immutable [[Map]] with no entries."

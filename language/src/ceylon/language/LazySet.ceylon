@@ -11,7 +11,7 @@ shared class LazySet<out Element>(elements)
     
     clone => this;
     
-    size => elements.size;
+    shared actual default Integer size => elements.size;
     
     iterator() => elements.iterator();
     
