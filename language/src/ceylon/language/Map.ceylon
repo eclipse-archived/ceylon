@@ -79,7 +79,7 @@ shared interface Map<out Key,out Item>
     
     "Returns the set of keys contained in this `Map`."
     actual shared default Set<Key> keys {
-        value entries = {for (k->v in this) k};
+        value entries = { for (k->v in this) k };
         object keys
                 extends LazySet<Key>(entries) {
             contains(Object key) => outer.defines(key);
