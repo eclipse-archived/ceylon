@@ -2,6 +2,7 @@
  entries. All operations, such as lookups, size, etc. 
  are performed on the `Iterable`."
 by ("Enrique Zamudio")
+deprecated
 shared class LazyMap<out Key,out Item>(entries)
     satisfies Map<Key,Item>
         given Key satisfies Object

@@ -2,6 +2,7 @@
  elements. All operations on this `List` are performed on 
  the `Iterable`."
 by ("Enrique Zamudio")
+deprecated
 shared class LazyList<out Element>(elements)
         satisfies List<Element> {
     

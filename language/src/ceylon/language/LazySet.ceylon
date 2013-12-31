@@ -2,6 +2,7 @@
  elements. All operations on this `Set` are performed
  on the `Iterable`."
 by ("Enrique Zamudio")
+deprecated
 shared class LazySet<out Element>(elements)
         satisfies Set<Element>
         given Element satisfies Object {
