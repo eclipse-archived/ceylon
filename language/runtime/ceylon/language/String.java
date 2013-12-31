@@ -2363,28 +2363,6 @@ public final class String
     
     @Override
     @Ignore
-    public Map<? extends Character,? extends Integer> getFrequencies() {
-    	return $ceylon$language$List$this.getFrequencies();
-    }
-    
-    @Ignore
-    public static Map<? extends Character,? extends Integer> getFrequencies(java.lang.String value) {
-    	return instance(value).getFrequencies();
-    }
-    
-    @Override
-    @Ignore
-    public <GroupKey> Map<? extends GroupKey,? extends Set<? extends Character>> group(TypeDescriptor $reifiedGroupKey, Callable<? extends GroupKey> grouping) {
-    	return $ceylon$language$List$this.group($reifiedGroupKey, grouping);
-    }
-    
-    @Ignore
-    public static <GroupKey> Map<? extends GroupKey,? extends Set<? extends Character>> group(TypeDescriptor $reifiedGroupKey, java.lang.String value, Callable<? extends GroupKey> grouping) {
-    	return instance(value).group($reifiedGroupKey, grouping);
-    }
-    
-    @Override
-    @Ignore
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
