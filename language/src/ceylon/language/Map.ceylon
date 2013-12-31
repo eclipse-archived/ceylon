@@ -138,9 +138,8 @@ shared interface Map<out Key,out Item>
      every key, the item is the result of applying the given 
      transformation function."
     shared default Map<Key,Result> mapItems<Result>(
-            "The function that transforms a key/item
-             pair, producing the item of the resulting
-             map."
+            "The function that transforms a key/item pair, 
+             producing the item of the resulting map."
             Result mapping(Key key, Item item)) 
             given Result satisfies Object {
         object map
