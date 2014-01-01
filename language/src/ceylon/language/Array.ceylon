@@ -44,10 +44,16 @@ shared final native class Array<Element>({Element*} elements)
         "The number of elements to copy."
         Integer length = size-sourcePosition);
     
+    shared actual native Element? get(Integer index);
+    
+    shared actual native Integer lastIndex;
+    
     shared actual native Array<Element> span(Integer from, Integer to);
     shared actual native Array<Element> spanFrom(Integer from);
     shared actual native Array<Element> spanTo(Integer to);
     shared actual native Array<Element> segment(Integer from, Integer length);
+    
+    shared actual native Array<Element> clone;
 }
 
 "Create an array of the specified size, populating every 

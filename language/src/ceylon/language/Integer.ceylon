@@ -12,7 +12,7 @@
  Overflow or loss of precision occurs silently (with no 
  exception raised)."
 see (`value runtime`)
-shared native final class Integer(Integer integer)
+shared native final class Integer(integer)
         extends Object()
         satisfies Scalar<Integer> & 
                   Integral<Integer> &
@@ -23,4 +23,51 @@ shared native final class Integer(Integer integer)
     throws (`class OverflowException`,
             "if there is no such character")
     shared native Character character;
+    
+    shared actual native Integer not;
+    shared actual native Integer or(Integer other);
+    shared actual native Integer xor(Integer other);
+    shared actual native Integer and(Integer other);
+    
+    shared actual native Integer rightArithmeticShift(Integer shift);    
+    shared actual native Integer rightLogicalShift(Integer shift);
+    shared actual native Integer leftLogicalShift(Integer shift);
+    
+    shared actual native Integer plus(Integer other);
+    shared actual native Integer minus(Integer other);
+    shared actual native Integer times(Integer other);
+    shared actual native Integer divided(Integer other);
+    shared actual native Integer remainder(Integer other);
+    shared actual native Integer power(Integer other);
+    
+    shared actual native Boolean equals(Object that);
+    shared actual native Integer hash;
+    shared actual native Comparison compare(Integer other);
+    
+    shared actual native Integer size;
+    shared actual native Boolean get(Integer index);
+    shared actual native Integer flip(Integer index);
+    shared actual native Integer set(Integer index, Boolean bit);
+    
+    shared actual native Float float;
+    shared actual Integer integer;
+    
+    shared actual native Integer predecessor;
+    shared actual native Integer successor;
+    shared actual native Integer integerValue;
+    
+    shared actual native Boolean unit;
+    shared actual native Boolean zero;
+    
+    shared actual native Integer magnitude;    
+    shared actual native Integer sign;
+    shared actual native Boolean negative;
+    shared actual native Boolean positive;
+    
+    shared actual native Integer wholePart;
+    shared actual native Integer fractionalPart;
+    
+    shared actual native Integer positiveValue;
+    shared actual native Integer negativeValue;
+    
 }

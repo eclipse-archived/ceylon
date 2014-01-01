@@ -23,7 +23,7 @@ shared Float infinity = 1.0/0.0;
  even to itself.
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf"
-shared native final class Float(Float float)
+shared native final class Float(float)
         extends Object()
         satisfies Scalar<Float> & 
                   Exponentiable<Float,Float> {
@@ -75,6 +75,27 @@ shared native final class Float(Float float)
      or `-infinity`. Produces `false` for a positive 
      number, `+0`, or undefined."
     shared native Boolean strictlyNegative;
+    
+    shared actual native Boolean equals(Object that);
+    shared actual native Integer hash;
+    shared actual native Comparison compare(Float other);
+    
+    shared actual native Float plus(Float other);
+    shared actual native Float minus(Float other);
+    shared actual native Float times(Float other);
+    shared actual native Float divided(Float other);
+    shared actual native Float power(Float other);
+    
+    shared actual native Float wholePart;
+    shared actual native Float fractionalPart;
+    
+    shared actual native Float magnitude;
+    
+    shared actual native Float negativeValue;
+    shared actual native Float positiveValue;
+    
+    shared actual Float float;
+    shared actual native Integer integer;
     
 }
 

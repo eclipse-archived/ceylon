@@ -71,5 +71,13 @@ shared final native class Character(Character character)
     
     "The code point of the character."
     shared native Integer integer;
-
+    
+    shared actual native Boolean equals(Object that);
+    shared actual native Integer hash;
+    shared actual native Comparison compare(Character other);
+    
+    shared actual native Character predecessor;
+    shared actual native Character successor;
+    shared actual native Integer integerValue;
+    
 }

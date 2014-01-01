@@ -254,7 +254,7 @@ shared native final class String(characters)
     
     shared actual native Integer hash;
     
-    "Returns the string itself."
+    "This string."
     shared actual String string => this;
     
     "Determines if this string has no characters, that is, 
@@ -263,7 +263,10 @@ shared native final class String(characters)
     see (`value size`)
     shared actual native Boolean empty;
     
-    "Returns this string."
+    "This string."
     shared actual String coalesced => this;
+    
+    "This string."
+    shared actual native String clone;
     
 }
