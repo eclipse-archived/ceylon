@@ -1,5 +1,5 @@
-"Thrown when a value reference could not be initialized, 
- including when:
+"Assertion failure that occurs when a value reference could 
+ not be initialized, including when:
  
  - a toplevel value could not be initialized due to 
    recursive dependencies upon other toplevel values, 
@@ -8,4 +8,4 @@
    reassigned."
 see (`function late`)
 shared class InitializationException(String description)
-        extends Exception(description, null) {}
+        extends AssertionException(description) {}
