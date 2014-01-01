@@ -7,8 +7,7 @@ shared interface Exponentiable<This,Other> of This
         given This satisfies Exponentiable<This,Other> 
         given Other satisfies Numeric<Other> {
 
-    "The result of raising this number to the given
-     power."
+    "The result of raising this number to the given power."
     shared formal This power(Other other);
     
 } 

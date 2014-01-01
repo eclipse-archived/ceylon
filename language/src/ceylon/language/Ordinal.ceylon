@@ -1,11 +1,15 @@
 "Abstraction of ordinal types, that is, types with 
- successor and predecessor operations, including
- `Integer` and other `Integral` numeric types.
- `Character` is also considered an ordinal type. 
- `Ordinal` types may be used to generate a `Range`."
+ [[successor]] and [[predecessor]] operations, including 
+ [[Integer]] and other [[Integral]] numeric types.
+ [[Character]] is also considered an ordinal type.
+ 
+ `Ordinal` types may be used to generate a [[Range]].
+ 
+ Most `Ordinal` types are also [[Enumerable]]."
 see (`class Character`, 
      `class Integer`, 
      `interface Integral`, 
+     `interface Enumerable`,
      `class Range`)
 by ("Gavin")
 shared interface Ordinal<out Other> of Other
@@ -19,8 +23,9 @@ shared interface Ordinal<out Other> of Other
     
 }
 
-"Abstraction of ordinal types whose instances can be 
- mapped to the integers or to a range of integers."
+"Abstraction of [[ordinal types|Ordinal]] whose instances 
+ can be mapped to the [[integers|Integer]] or to a range of 
+ integers."
 shared interface Enumerable<out Other> of Other
         satisfies Ordinal<Other> 
         given Other satisfies Enumerable<Other> {
