@@ -25,14 +25,14 @@
  [[Integer]], there is still a division operation, which is
  understood to produce a [[remainder|Integral.remainder]]. 
  
- In general, a numeric type need not define a
- [[total order|Comparable]]. For example, complex numbers do 
- not have a total order. Numeric types with a total order 
- also satisfy [[Scalar]]."
+ Some numeric types, for example complex numbers, do not 
+ have a [[total order|Comparable]]. Numeric types with a 
+ total order also satisfy [[Scalar]]."
 see (`interface Scalar`)
 by ("Gavin")
 shared interface Numeric<Other> of Other
-        satisfies Summable<Other> & Invertable<Other>
+        satisfies Summable<Other> & 
+                  Invertable<Other>
         given Other satisfies Numeric<Other> {
     
     "The difference between this number and the given 

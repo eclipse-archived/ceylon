@@ -14,8 +14,7 @@
 see (`value runtime`)
 shared native final class Integer(integer)
         extends Object()
-        satisfies Scalar<Integer> & 
-                  Integral<Integer> &
+        satisfies Integral<Integer> &
                   Binary<Integer> & 
                   Exponentiable<Integer,Integer> {
     

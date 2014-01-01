@@ -5,7 +5,8 @@
 see (`class Integer`, `class Float`)
 by ("Gavin")
 shared interface Scalar<Other> of Other
-        satisfies Numeric<Other> & Comparable<Other> &
+        satisfies Numeric<Other> & 
+                  Comparable<Other> &
                   Number
         given Other satisfies Scalar<Other> {
     
