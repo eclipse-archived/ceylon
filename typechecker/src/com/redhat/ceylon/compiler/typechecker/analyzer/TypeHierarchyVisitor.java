@@ -86,7 +86,7 @@ public class TypeHierarchyVisitor extends Visitor {
         validateMemberRefinement(that, classOrInterface);
         super.visit(that);
         if (!classOrInterface.isAlias()) {
-            boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal() && !classOrInterface.isNative();
+            boolean concrete = !classOrInterface.isAbstract() && !classOrInterface.isFormal();
             List<Type> orderedTypes = sortDAGAndBuildMetadata(classOrInterface, that);
             if (concrete) {
                 checkForFormalsNotImplemented(that, orderedTypes);
