@@ -436,4 +436,41 @@ public final class Float
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+
+    @Override
+    public boolean largerThan(Float other) {
+    	return value>other.value;
+    }
+
+    public static boolean largerThan(double value, Float other) {
+    	return value>other.value;
+    }
+    
+    public static boolean notSmallerThan(double value, Float other) {
+    	return value>=other.value;
+    }
+
+    @Override
+    public boolean notSmallerThan(Float other) {
+    	return value>=other.value;
+    }
+
+    public static boolean smallerThan(double value, Float other) {
+    	return value<other.value;
+    }
+
+    @Override
+    public boolean smallerThan(Float other) {
+    	return value<other.value;
+    }
+
+    public static boolean notLargerThan(double value, Float other) {
+    	return value<=other.value;
+    }
+
+    @Override
+    public boolean notLargerThan(Float other) {
+    	return value<=other.value;
+    }
+
 }

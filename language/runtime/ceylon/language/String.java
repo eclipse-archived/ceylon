@@ -2366,4 +2366,41 @@ public final class String
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+
+    @Override
+    public boolean largerThan(String other) {
+    	return value.compareTo(other.value)>0;
+    }
+
+    public static boolean largerThan(java.lang.String value, String other) {
+    	return value.compareTo(other.value)>0;
+    }
+    
+    public static boolean notSmallerThan(java.lang.String value, String other) {
+    	return value.compareTo(other.value)>=0;
+    }
+
+    @Override
+    public boolean notSmallerThan(String other) {
+    	return value.compareTo(other.value)>=0;
+    }
+
+    public static boolean smallerThan(java.lang.String value, String other) {
+    	return value.compareTo(other.value)<0;
+    }
+
+    @Override
+    public boolean smallerThan(String other) {
+    	return value.compareTo(other.value)<0;
+    }
+
+    public static boolean notLargerThan(java.lang.String value, String other) {
+    	return value.compareTo(other.value)<=0;
+    }
+
+    @Override
+    public boolean notLargerThan(String other) {
+    	return value.compareTo(other.value)<=0;
+    }
+
 }

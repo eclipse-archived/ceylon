@@ -26,28 +26,24 @@ shared interface Comparable<in Other> of Other
     see (`function equals`)
     shared formal Comparison compare(Other other);
     
-    /*"Determines if this value is strictly larger than 
-     the given value."
-    shared Boolean largerThan(Other other) {
-        return compare(other)==larger;
-    }
+    "Determines if this value is strictly larger than the 
+     given value."
+    shared default Boolean largerThan(Other other)
+            => compare(other)===larger; 
     
-    "Determines if this value is strictly smaller than 
-     the given value."
-    shared Boolean smallerThan(Other other) {
-        return compare(other)==smaller;
-    }
+    "Determines if this value is strictly smaller than the 
+     given value."
+    shared default Boolean smallerThan(Other other)
+            => compare(other)===smaller; 
     
-    "Determines if this value is larger than or equal to
-     the given value."
-    shared Boolean asLargeAs(Other other) {
-        return compare(other)!=smaller;
-    }
+    "Determines if this value is larger than or equal to the 
+     given value."
+    shared default Boolean notSmallerThan(Other other)
+            => !compare(other)===smaller; 
     
-    "Determines if this value is smaller than or equal 
-     to the given value."
-    shared Boolean asSmallAs(Other other) {
-        return compare(other)!=larger;
-    }*/
+    "Determines if this value is smaller than or equal to 
+     the given value."
+    shared default Boolean notLargerThan(Other other)
+            => !compare(other)===larger; 
     
 }

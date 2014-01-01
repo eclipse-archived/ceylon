@@ -268,4 +268,41 @@ public final class Character
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+
+    @Override
+    public boolean largerThan(Character other) {
+    	return codePoint>other.codePoint;
+    }
+
+    public static boolean largerThan(int codePoint, Character other) {
+    	return codePoint>other.codePoint;
+    }
+    
+    public static boolean notSmallerThan(int codePoint, Character other) {
+    	return codePoint>=other.codePoint;
+    }
+
+    @Override
+    public boolean notSmallerThan(Character other) {
+    	return codePoint>=other.codePoint;
+    }
+
+    public static boolean smallerThan(int codePoint, Character other) {
+    	return codePoint<other.codePoint;
+    }
+
+    @Override
+    public boolean smallerThan(Character other) {
+    	return codePoint<other.codePoint;
+    }
+
+    public static boolean notLargerThan(int codePoint, Character other) {
+    	return codePoint<=other.codePoint;
+    }
+
+    @Override
+    public boolean notLargerThan(Character other) {
+    	return codePoint<=other.codePoint;
+    }
+    
 }

@@ -719,4 +719,41 @@ public final class Integer
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+    
+    @Override
+    public boolean largerThan(Integer other) {
+    	return value>other.value;
+    }
+
+    public static boolean largerThan(long value, Integer other) {
+    	return value>other.value;
+    }
+    
+    public static boolean notSmallerThan(long value, Integer other) {
+    	return value>=other.value;
+    }
+
+    @Override
+    public boolean notSmallerThan(Integer other) {
+    	return value>=other.value;
+    }
+
+    public static boolean smallerThan(long value, Integer other) {
+    	return value<other.value;
+    }
+
+    @Override
+    public boolean smallerThan(Integer other) {
+    	return value<other.value;
+    }
+
+    public static boolean notLargerThan(long value, Integer other) {
+    	return value<=other.value;
+    }
+
+    @Override
+    public boolean notLargerThan(Integer other) {
+    	return value<=other.value;
+    }
+
 }
