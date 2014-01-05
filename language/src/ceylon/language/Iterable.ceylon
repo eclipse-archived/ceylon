@@ -1,10 +1,16 @@
 import ceylon.language { internalFirst = first }
 
-"""Abstract supertype of categories whose elements may be 
-   iterated. An iterable category need not be finite, but
-   its elements must at least be countable. There may not 
-   be a well-defined iteration order, and so the order of
-   iterated elements may not be stable.
+"""Abstract supertype of [[categories|Category] whose 
+   elements may be iterated. Iterable categories are often 
+   called _streams_. A stream need not be finite, but its 
+   elements must be countable. That is, for any given 
+   element of the stream, every iterator of the stream must 
+   eventually return the element, even if the iterator 
+   itself is not exhaustable. A stream may not have a 
+   well-defined order, and so the order in which elements 
+   are returned by the stream's iterator may not be 
+   _stable_. That is, the order may be different for two
+   different iterators.
    
    The type `Iterable<Element,Null>`, usually abbreviated
    `{Element*}` represents a possibly-empty iterable 
@@ -12,8 +18,8 @@ import ceylon.language { internalFirst = first }
    abbreviated `{Element+}` represents a nonempty iterable 
    container.
    
-   An instance of `Iterable` may be constructed by 
-   surrounding a value list in braces:
+   A value list in braces produces a new instance of 
+   `Iterable`:
    
        {String+} words = { "hello", "world" };
    
@@ -21,6 +27,11 @@ import ceylon.language { internalFirst = first }
    loop:
    
        for (c in "hello world") { ... }
+   
+   Comprehensions provide a convenient syntax for 
+   transforming streams:
+   
+       {Integer+} lengths = { for (w in words) w.size };
    
    `Iterable` and its subtypes define various operations
    that return other iterable objects. Such operations come 
@@ -76,25 +87,23 @@ shared interface Iterable<out Element, out Absent=Null>
         satisfies Category
         given Absent satisfies Null {
     
-    "An iterator for the elements belonging to this 
-     container."
+    "An iterator for the elements belonging to this stream."
     shared formal Iterator<Element> iterator();
     
-    "Determines if the iterable object is empty, that is to 
-     say, if the iterator returns no elements."
+    "Determines if the stream is empty, that is to say, if 
+     the iterator returns no elements."
     shared default Boolean empty 
             => iterator().next() is Finished;
     
     "The number of elements returned by the iterator of this 
-     iterable object, if the iterator terminates. In the 
-     case of an iterable whose elements are not countable, 
-     this operation never terminates."
+     stream, if the iterator terminates. In the case of an 
+     infinite stream, this operation never terminates."
     shared default Integer size 
             => count((Element e) => true);
     
-    "Determines if this iterable object has more elements
-     than the given length. This is an efficient operation 
-     for iterable objects with many elements."
+    "Determines if this stream has more elements than the 
+     given [[length]]. This is an efficient operation for
+     streams with many elements."
     see (`value size`)
     shared default Boolean longerThan(Integer length) {
         if (length<0) {
@@ -109,9 +118,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return false;
     }
     
-    "Determines if this iterable object has fewer elements
-     than the given length. This is an efficient operation 
-     for iterable objects with many elements."
+    "Determines if this stream has fewer elements than the 
+     given [[length]]. This is an efficient operation for 
+     streams with many elements."
     see (`value size`)
     shared default Boolean shorterThan(Integer length) {
         if (length<=0) {
@@ -130,16 +139,17 @@ shared interface Iterable<out Element, out Absent=Null>
             => any(ifExists(element.equals));
     
     "The first element returned by the iterator, if any, or 
-     `null` if the iterable object is empty."
+     `null` if this stream is empty. For a stream with an
+     unstable iteration order, a different value might be
+     produced each time `first` is evaluated."
     shared default Absent|Element first 
             => internalFirst(this);
     
     "The last element returned by the iterator, if any, or 
-     `null` if the iterable object is empty. Iterable
-     objects are potentially infinite, so this operation
-     might not return; furthermore, this default 
-     implementation iterates all elements, which might be
-     very expensive."
+     `null` if this stream is empty. In the case of an 
+     infinite stream, this operation never terminates;
+     furthermore, this default implementation iterates all 
+     elements, which might be very expensive."
     shared default Absent|Element last {
         variable Absent|Element e = first;
         for (x in this) {
@@ -148,17 +158,22 @@ shared interface Iterable<out Element, out Absent=Null>
         return e;
     }
     
-    "Returns an iterable object containing all but the first 
-     element of this container."
+    "A stream containing all but the first element of this 
+     stream."
     shared default {Element*} rest => skipping(1);
     
-    "A sequence containing the elements produced by an
-     iterator belonging to this iterable object."
+    "A sequence containing all the elements of this stream."
     shared default Element[] sequence => [ for (x in this) x ];
     
-    "An iterable object containing the results of applying 
+    "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
-     this iterable object."
+     this stream.
+     
+     For example, the expression
+     
+         (0..4).map(10.power)
+     
+     results in the stream `{ 1, 10, 100, 1000, 10000 }`."
     see (`function collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
@@ -171,9 +186,15 @@ shared interface Iterable<out Element, out Absent=Null>
                 flatten((Args args) => 
                     { for (elem in this) unflatten(method(elem))(args) });*/
     
-    "An iterable object containing the elements of this 
-     container that satisfy the [[given predicate 
-     function|selecting]]."
+    "Produces a stream containing the elements of this 
+     stream that satisfy the [[given predicate 
+     function|selecting]].
+     
+     For example, the expression
+     
+         (1..100).filter(13.divides)
+     
+     results in the stream `{ 13, 26, 39, 52, 65, 78, 91 }`."
     see (`function select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
@@ -181,8 +202,14 @@ shared interface Iterable<out Element, out Absent=Null>
             => { for (elem in this) if (selecting(elem)) elem };
     
     "The result of applying the [[given accumulating 
-     function|accumulating]] to each element of this 
-     iterable object in turn." 
+     function|accumulating]] to each element of this stream 
+     in turn.
+     
+     For example, the expression
+     
+         (1..100).fold(0, plus<Integer>)
+     
+     results in the integer `5050`."
     shared default Result fold<Result>(Result initial,
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -195,8 +222,14 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "The result of applying the [[given accumulating 
-     function|accumulating]] to each element of this 
-     iterable object in turn." 
+     function|accumulating]] to each element of this stream 
+     in turn.
+     
+     For example, the expression
+     
+         (1..100).reduce(plus<Integer>)
+     
+     results in the integer `5050`." 
     shared default Result|Element|Absent reduce<Result>(
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -214,8 +247,9 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "The first element which satisfies the [[given predicate 
-     function|selecting]], if any, or `null` otherwise."
+    "The first element of this stream which satisfies the 
+     [[given predicate function|selecting]], if any, or 
+     `null` otherwise."
     shared default Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -227,8 +261,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return null;
     }
     
-    "The last element which satisfies the [[given predicate 
-     function|selecting]], if any, or `null` otherwise."
+    "The last element of this stream which satisfies the 
+     [[given predicate function|selecting]], if any, or 
+     `null` otherwise."
     shared default Element? findLast(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -241,15 +276,14 @@ shared interface Iterable<out Element, out Absent=Null>
         return last;
     }
     
-    "A sequence containing the elements of this container, 
-     sorted according to a function imposing a partial order 
-     upon the elements.
+    "A sequence containing the elements of this stream, 
+     sorted according to a [[comparator function|comparing]] 
+     imposing a partial order upon the elements.
      
      For convenience, the functions [[byIncreasing]] and 
-     [[byDecreasing]] produce a suitable comparison 
-     function:
+     [[byDecreasing]] produce suitable comparator functions:
      
-         \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
+         \"Hello World!\".sort(byIncreasing(Character.lowercased))
      
      This operation is eager by nature."
     see (`function byIncreasing`, `function byDecreasing`)
@@ -258,17 +292,17 @@ shared interface Iterable<out Element, out Absent=Null>
             Comparison comparing(Element x, Element y)) 
             => internalSort(comparing, this);
     
-    "A sequence containing the results of applying the
-     [[given mapping|collecting]] to the elements of this 
-     iterable object. An eager counterpart to [[map]]."
+    "Produces a sequence containing the results of applying 
+     the [[given mapping|collecting]] to the elements of 
+     this stream. An eager counterpart to [[map]]."
     see (`function map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
             Result collecting(Element element)) 
             => map(collecting).sequence;
     
-    "A sequence containing the elements of this container 
-     that satisfy the [[given predicate function|selecting]]. 
+    "Produces a sequence containing all elements of this 
+     stream that satisfy the [[given predicate|selecting]].
      An eager counterpart to [[filter]]."
     see (`function filter`)
     shared default Element[] select(
@@ -276,9 +310,9 @@ shared interface Iterable<out Element, out Absent=Null>
             Boolean selecting(Element element)) 
              => filter(selecting).sequence;
     
-    "Return `true` if at least one element of this iterable 
-     object satisfies the [[given predicate 
-     function|selecting]], or `false` otherwise."
+    "Determines if there is at least one element of this 
+     stream that satisfies the [[given predicate 
+     function|selecting]]."
     shared default Boolean any(
             "The predicate that at least one element 
              must satisfy."
@@ -291,9 +325,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return false;
     }
     
-    "Return `true` if all elements of this iterable object 
-     satisfy the [[given predicate function|selecting]], or 
-     `false` otherwise."
+    "Determines if all elements of this stream satisfy the 
+     [[given predicate function|selecting]]."
     shared default Boolean every(
             "The predicate that all elements must 
              satisfy."
@@ -306,11 +339,15 @@ shared interface Iterable<out Element, out Absent=Null>
         return true;
     }
     
-    "An iterable object containing the elements of this 
-     iterable object, after skipping the first [[skip]] 
-     elements. If this iterable object does not contain more
-     elements than the specified number of elements, the 
-     `Iterable` contains no elements."
+    "Produces a stream containing the elements of this 
+     stream, after skipping the first [[skip]] elements
+     produced by its iterator.
+     
+     If this stream does not contain more elements than the 
+     specified number of elements to skip, the resulting 
+     stream has no elements. If the specified number of 
+     elements to skip is zero or fewer, the resulting stream 
+     contains the same elements as this stream."
     shared default {Element*} skipping(Integer skip) {
         if (skip <= 0) { 
             return this;
@@ -330,11 +367,14 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "An iterable object containing the first [[take]]
-     elements of this iterable object. If the specified 
-     number of elements is larger than the number of 
-     elements of this iterable object, the `Iterable` 
-     contains the same elements as this iterable object."
+    "Produces a stream containing the first [[take]]
+     elements of this stream.
+     
+     If the specified number of elements to take is larger 
+     than the number of elements of this stream, the 
+     resulting stream contains the same elements as this 
+     stream. If the specified number of elements to take is
+     fewer than one, the resulting stream has no elements."
     shared default {Element*} taking(Integer take) {
         if (take <= 0) { 
             return {}; 
@@ -360,10 +400,9 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produce an iterable object containing the elements of 
-     this iterable object, after skipping the leading 
-     elements until the [[given predicate function|skip]] 
-     returns `false`."
+    "Produces a stream containing the elements of this 
+     stream, after skipping the leading elements until the 
+     [[given predicate function|skip]] returns `false`."
     shared default {Element*} skippingWhile(Boolean skip(Element elem)) {
         object iterable 
                 satisfies {Element*} {
@@ -393,9 +432,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produce an iterable object containing the leading 
-     elements of this iterable object until the [[given 
-     predicate function|take]] returns `false`."
+    "Produces a stream containing the leading elements of 
+     this stream until the [[given predicate function|take]] 
+     returns `false`."
     shared default {Element*} takingWhile(Boolean take(Element elem)) {
         object iterable 
                 satisfies {Element*} {
@@ -422,16 +461,17 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produce an iterable object containing every [[step]]th 
-     element of this iterable object. If the step size is 
-     `1`, the `Iterable` contains the same elements as this 
-     iterable object. The step size must be greater than 
-     zero. The expression
+    "Produces a stream containing every [[step]]th element 
+     of this stream. If the step size is `1`, the resulting
+     stream contains the same elements as this stream.
+     
+     For example, the expression
      
          (0..10).by(3)
      
-     results in an iterable object with the elements
-     `0`, `3`, `6`, and `9` in that order."
+     results in the stream `{ `0`, `3`, `6`, `9`}`.
+     
+     The step size must be greater than zero."
     throws (`class AssertionException`, 
             "if the given step size is nonpositive, 
              i.e. `step<1`")
@@ -463,8 +503,10 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Return the number of elements in this iterable object
-     that satisfy the [[given predicate function|selecting]]."
+    "Produces the number of elements in this stream that 
+     satisfy the [[given predicate function|selecting]].
+     For an infinite stream, this operation never 
+     terminates."
     shared default Integer count(
             "The predicate satisfied by the elements to
              be counted."
@@ -479,25 +521,25 @@ shared interface Iterable<out Element, out Absent=Null>
         return count;
     }
     
-    "The non-null elements of this `Iterable`, in their
-     original order. For null elements of the original 
-     `Iterable`, there is no entry in the resulting 
-     iterable object."
+    "The non-null elements of this stream, in the order in
+     which they occur in this stream. For null elements of 
+     the original stream, there is no entry in the resulting 
+     stream."
     shared default {Element&Object*} coalesced 
             => { for (e in this) if (exists e) e };
     
     "All entries of form `index->element` where `index` is 
      the position at which `element` occurs, for every
-     non-null element of this `Iterable`, ordered by
-     increasing `index`. For a null element at a given
-     position in the original `Iterable`, there is no 
-     entry with the corresponding index in the resulting 
-     iterable object. The expression 
+     non-null element of this stream, ordered by increasing 
+     `index`. For a null element at a given position in this 
+     stream, there is no entry with the corresponding index 
+     in the resulting stream.
+     
+     For example, the expression 
      
          { \"hello\", null, \"world\" }.indexed
-         
-     results in an iterable object with the entries
-     `0->\"hello\"` and `2->\"world\"`."
+     
+     results in the stream `{ 0->\"hello\", 2->\"world\" }`."
     shared default {<Integer->Element&Object>*} indexed {
         object indexes
                 satisfies {<Integer->Element&Object>*} {
@@ -527,8 +569,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    "An iterable object with the given inital element 
-     followed by the elements of this iterable object."
+    "Produces a stream with a [[given initial element|head]], 
+     followed by the elements of this stream."
     shared default {Element|Other+} following<Other>(Other head) {
         //TODO: should be {leading,*outer} when that is efficient
         object cons satisfies {Element|Other+} {
@@ -552,9 +594,10 @@ shared interface Iterable<out Element, out Absent=Null>
         return cons;
     }
     
-    "The elements of this iterable object, in their original 
-     order, followed by the elements of the given iterable 
-     object also in their original order."
+    "The elements of this stream, in the order in which they 
+     occur in this stream, followed by the elements of the 
+     given stream in the order in which they occur in the
+     given stream."
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
@@ -566,10 +609,10 @@ shared interface Iterable<out Element, out Absent=Null>
         return chained;
     }
     
-    "An `Iterable` that produces the elements of this 
-     iterable object, replacing every `null` element with 
-     the given default value. The resulting iterable object 
-     does not produce the value `null`."
+    "Produces a stream containing the elements of this 
+     stream, replacing every `null` element with the [[given 
+     default value|defaultValue]]. The resulting stream does 
+     not have the value `null`."
     shared default Iterable<Element&Object|Default,Absent>
     defaultNullElements<Default>(
             "A default value that replaces `null` elements."
@@ -588,10 +631,9 @@ shared interface Iterable<out Element, out Absent=Null>
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
      this collection, as produced by the iterator of the 
-     collection, or the string `\"{}\"` if this iterable is 
-     empty. If the number of items is very large only a 
-     certain amount of them might be shown followed by 
-     \"...\"."
+     stream, or the string `\"{}\"` if this stream is empty. 
+     If the stream is very long, the list of elements might 
+     be truncated, as indicated by an ellipse."
     shared actual default String string {
         if (empty) {
             return "{}";
@@ -604,8 +646,14 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "A non-finite iterable object that produces the elements 
-     of this iterable object, repeatedly."
+    "An infinite stream that produces the elements of this 
+     stream, repeatedly.
+     
+     For example, the expression
+     
+         {6, 9}.taking(5)
+     
+     evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
     see (`function cycle`)
     shared default Iterable<Element,Absent> cycled {
         object iterable satisfies Iterable<Element,Absent> {
@@ -630,9 +678,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "A finite iterable object that produces the elements of 
-     this iterable object, repeatedly, the given number of
-     times."
+    "Produces a stream formed by repeating the elements of 
+     this stream the [[given number of times|times]], or an 
+     empty stream if `times<=0`."
     see (`value cycled`, `function repeat`)
     shared default Iterable<Element,Absent> cycle(Integer times) {
         object iterable satisfies Iterable<Element,Absent> {
@@ -664,9 +712,10 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Returns a list formed by repeating the elements of this
-     iterable object the given number of times, or an empty 
-     list if `times<=0`. An eager counterpart to [[cycle]]."
+    "Produces a list formed by repeating the elements of 
+     this stream the [[given number of times|times]], or an 
+     empty list if `times<=0`. An eager counterpart to 
+     [[cycle]]."
     see (`function cycle`)
     shared default List<Element> repeat(Integer times) {
         value sb = SequenceBuilder<Element>();
