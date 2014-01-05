@@ -469,7 +469,7 @@ shared interface Iterable<out Element, out Absent=Null>
      
          (0..10).by(3)
      
-     results in the stream `{ `0`, `3`, `6`, `9`}`.
+     results in the stream `{ 0, 3, 6, 9 }`.
      
      The step size must be greater than zero."
     throws (`class AssertionException`, 
