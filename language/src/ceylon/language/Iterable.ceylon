@@ -596,8 +596,8 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "The elements of this stream, in the order in which they 
      occur in this stream, followed by the elements of the 
-     given stream in the order in which they occur in the
-     given stream."
+     [[given stream|other]] in the order in which they occur 
+     in the given stream."
     shared default Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
              given OtherAbsent satisfies Null {
