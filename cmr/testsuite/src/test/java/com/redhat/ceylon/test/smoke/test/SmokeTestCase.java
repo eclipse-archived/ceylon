@@ -19,6 +19,7 @@ package com.redhat.ceylon.test.smoke.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URL;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -43,6 +44,7 @@ import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -276,6 +278,50 @@ public class SmokeTestCase extends AbstractTest {
         }
     }
 
+    @Test
+    public void testBuilderImpl() throws Exception {
+        // property not set
+        RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
+        Assert.assertNotNull(builder);
+        Field f = builder.getClass().getDeclaredField("delegate");
+        f.setAccessible(true);
+        Assert.assertTrue(f.get(builder) instanceof com.redhat.ceylon.cmr.impl.RepositoryManagerBuilderImpl);
+        
+        // blank
+        System.setProperty("ceylon.module.resolver.builder", "");
+        builder = getRepositoryManagerBuilder(false);
+        Assert.assertNotNull(builder);
+        f = builder.getClass().getDeclaredField("delegate");
+        f.setAccessible(true);
+        Assert.assertTrue(f.get(builder) instanceof com.redhat.ceylon.cmr.impl.RepositoryManagerBuilderImpl);
+        
+        // invalid name
+        System.setProperty("ceylon.module.resolver.builder", "some.fake.name");
+        builder = getRepositoryManagerBuilder(false);
+        Assert.assertNotNull(builder);
+        f = builder.getClass().getDeclaredField("delegate");
+        f.setAccessible(true);
+        Assert.assertTrue(f.get(builder) instanceof com.redhat.ceylon.cmr.impl.RepositoryManagerBuilderImpl);
+ 
+        // real class but wrong type
+        System.setProperty("ceylon.module.resolver.builder", "com.redhat.ceylon.test.smoke.test.SmokeTestCase");
+        builder = getRepositoryManagerBuilder(false);
+        Assert.assertNotNull(builder);
+        f = builder.getClass().getDeclaredField("delegate");
+        f.setAccessible(true);
+        Assert.assertTrue(f.get(builder) instanceof com.redhat.ceylon.cmr.impl.RepositoryManagerBuilderImpl);
+ 
+        System.setProperty("ceylon.module.resolver.builder", 
+            "com.redhat.ceylon.test.smoke.support.RepositoryManagerBuilderTest");
+        builder = getRepositoryManagerBuilder(false);
+        Assert.assertNotNull(builder);
+        f = builder.getClass().getDeclaredField("delegate");
+        f.setAccessible(true);        
+        Assert.assertTrue(f.get(builder) instanceof com.redhat.ceylon.test.smoke.support.RepositoryManagerBuilderTest);
+
+        System.setProperty("ceylon.module.resolver.builder", "");
+    }
+    
     @Test
     public void testPropertiesGet() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false);
