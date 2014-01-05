@@ -29,6 +29,7 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RepositoryManagerBuilder {
+    private final static String PROP_CEYLON_MODULE_RESOLVER_DELEGATE = "ceylon.module.resolver.delegate";
     private final static String DEFAULT_DELEGATE = "com.redhat.ceylon.cmr.impl.RepositoryManagerBuilderImpl";
     private RepositoryManagerBuilder delegate;
 
@@ -41,7 +42,8 @@ public class RepositoryManagerBuilder {
             classLoader = ClassLoader.getSystemClassLoader();
 
         //noinspection unchecked
-        return (Class<? extends RepositoryManagerBuilder>) classLoader.loadClass(DEFAULT_DELEGATE);
+        return (Class<? extends RepositoryManagerBuilder>) classLoader.loadClass(
+            System.getProperty(PROP_CEYLON_MODULE_RESOLVER_DELEGATE, DEFAULT_DELEGATE) );
     }
 
     public RepositoryManagerBuilder(Logger log) {
