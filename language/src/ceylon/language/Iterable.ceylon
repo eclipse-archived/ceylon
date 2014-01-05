@@ -137,7 +137,7 @@ shared interface Iterable<out Element, out Absent=Null>
     "The last element returned by the iterator, if any, or 
      `null` if the iterable object is empty. Iterable
      objects are potentially infinite, so this operation
-     might never return; furthermore, this default 
+     might not return; furthermore, this default 
      implementation iterates all elements, which might be
      very expensive."
     shared default Absent|Element last {
@@ -152,12 +152,13 @@ shared interface Iterable<out Element, out Absent=Null>
      element of this container."
     shared default {Element*} rest => skipping(1);
     
-    "A sequence containing the elements returned by the
-     iterator."
+    "A sequence containing the elements produced by an
+     iterator belonging to this iterable object."
     shared default Element[] sequence => [ for (x in this) x ];
     
-    "An `Iterable` containing the results of applying the 
-     given mapping to the elements of to this container."
+    "An iterable object containing the results of applying 
+     the [[given mapping|collecting]] to the elements of to 
+     this iterable object."
     see (`function collect`)
     shared default Iterable<Result,Absent> map<Result>(
             "The mapping to apply to the elements."
@@ -170,16 +171,18 @@ shared interface Iterable<out Element, out Absent=Null>
                 flatten((Args args) => 
                     { for (elem in this) unflatten(method(elem))(args) });*/
     
-    "An `Iterable` containing the elements of this container 
-     that satisfy the given predicate."
+    "An iterable object containing the elements of this 
+     container that satisfy the [[given predicate 
+     function|selecting]]."
     see (`function select`)
     shared default {Element*} filter(
             "The predicate the elements must satisfy."
             Boolean selecting(Element elem)) 
             => { for (elem in this) if (selecting(elem)) elem };
     
-    "The result of applying the accumulating function to 
-     each element of this container in turn." 
+    "The result of applying the [[given accumulating 
+     function|accumulating]] to each element of this 
+     iterable object in turn." 
     shared default Result fold<Result>(Result initial,
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -191,8 +194,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return partial;
     }
     
-    "The result of applying the accumulating function to 
-     each element of this container in turn." 
+    "The result of applying the [[given accumulating 
+     function|accumulating]] to each element of this 
+     iterable object in turn." 
     shared default Result|Element|Absent reduce<Result>(
             "The accumulating function that accepts an
              intermediate result, and the next element."
@@ -210,8 +214,8 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "The first element which satisfies the given predicate, 
-     if any, or `null` otherwise."
+    "The first element which satisfies the [[given predicate 
+     function|selecting]], if any, or `null` otherwise."
     shared default Element? find(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -223,8 +227,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return null;
     }
     
-    "The last element which satisfies the given predicate, 
-     if any, or `null` otherwise."
+    "The last element which satisfies the [[given predicate 
+     function|selecting]], if any, or `null` otherwise."
     shared default Element? findLast(
             "The predicate the element must satisfy."
             Boolean selecting(Element elem)) {
@@ -241,8 +245,8 @@ shared interface Iterable<out Element, out Absent=Null>
      sorted according to a function imposing a partial order 
      upon the elements.
      
-     For convenience, the functions `byIncreasing()` and 
-     `byDecreasing()` produce a suitable comparison 
+     For convenience, the functions [[byIncreasing]] and 
+     [[byDecreasing]] produce a suitable comparison 
      function:
      
          \"Hello World!\".sort(byIncreasing((Character c) => c.lowercased))
@@ -255,8 +259,8 @@ shared interface Iterable<out Element, out Absent=Null>
             => internalSort(comparing, this);
     
     "A sequence containing the results of applying the
-     given mapping to the elements of this container. An 
-     eager counterpart to `map()`."
+     [[given mapping|collecting]] to the elements of this 
+     iterable object. An eager counterpart to [[map]]."
     see (`function map`)
     shared default Result[] collect<Result>(
             "The transformation applied to the elements."
@@ -264,16 +268,17 @@ shared interface Iterable<out Element, out Absent=Null>
             => map(collecting).sequence;
     
     "A sequence containing the elements of this container 
-     that satisfy the given predicate. An eager counterpart 
-     to `filter()`."
+     that satisfy the [[given predicate function|selecting]]. 
+     An eager counterpart to [[filter]]."
     see (`function filter`)
     shared default Element[] select(
             "The predicate the elements must satisfy."
             Boolean selecting(Element element)) 
              => filter(selecting).sequence;
     
-    "Return `true` if at least one element satisfies the
-     predicate function."
+    "Return `true` if at least one element of this iterable 
+     object satisfies the [[given predicate 
+     function|selecting]], or `false` otherwise."
     shared default Boolean any(
             "The predicate that at least one element 
              must satisfy."
@@ -286,8 +291,9 @@ shared interface Iterable<out Element, out Absent=Null>
         return false;
     }
     
-    "Return `true` if all elements satisfy the predicate
-     function."
+    "Return `true` if all elements of this iterable object 
+     satisfy the [[given predicate function|selecting]], or 
+     `false` otherwise."
     shared default Boolean every(
             "The predicate that all elements must 
              satisfy."
@@ -300,8 +306,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return true;
     }
     
-    "Produce an `Iterable` containing the elements of this 
-     iterable object, after skipping the first `skip` 
+    "An iterable object containing the elements of this 
+     iterable object, after skipping the first [[skip]] 
      elements. If this iterable object does not contain more
      elements than the specified number of elements, the 
      `Iterable` contains no elements."
@@ -310,7 +316,8 @@ shared interface Iterable<out Element, out Absent=Null>
             return this;
         }
         else {
-            object iterable satisfies {Element*} {
+            object iterable 
+                    satisfies {Element*} {
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
                     variable value i=0;
@@ -323,7 +330,7 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produce an `Iterable` containing the first `take`
+    "An iterable object containing the first [[take]]
      elements of this iterable object. If the specified 
      number of elements is larger than the number of 
      elements of this iterable object, the `Iterable` 
@@ -333,10 +340,12 @@ shared interface Iterable<out Element, out Absent=Null>
             return {}; 
         }
         else {
-            object iterable satisfies {Element*} {
+            object iterable 
+                    satisfies {Element*} {
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
-                    object iterator satisfies Iterator<Element> {
+                    object iterator 
+                            satisfies Iterator<Element> {
                         variable value i=0;
                         actual shared Element|Finished next() {
                             return ++i>take then finished 
@@ -351,16 +360,19 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produce an `Iterable` containing the elements of this 
-     iterable object, after skipping the leading elements 
-     until the given predicate function returns `false`."
+    "Produce an iterable object containing the elements of 
+     this iterable object, after skipping the leading 
+     elements until the [[given predicate function|skip]] 
+     returns `false`."
     shared default {Element*} skippingWhile(Boolean skip(Element elem)) {
-        object iterable satisfies {Element*} {
+        object iterable 
+                satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
                 value iter = outer.iterator();
                 while (!is Finished elem=iter.next()) {
                     if (!skip(elem)) {
-                        object iterator satisfies Iterator<Element> {
+                        object iterator 
+                                satisfies Iterator<Element> {
                             variable Boolean first=true;
                             actual shared Element|Finished next() {
                                 if (first) {
@@ -381,14 +393,16 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produce an `Iterable` containing the leading elements 
-     of this iterable object until the given predicate 
-     function returns `false`."
+    "Produce an iterable object containing the leading 
+     elements of this iterable object until the [[given 
+     predicate function|take]] returns `false`."
     shared default {Element*} takingWhile(Boolean take(Element elem)) {
-        object iterable satisfies {Element*} {
+        object iterable 
+                satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
                 value iter = outer.iterator();
-                object iterator satisfies Iterator<Element> {
+                object iterator 
+                        satisfies Iterator<Element> {
                     variable Boolean alive = true;
                     actual shared Element|Finished next() {
                         if (alive, !is Finished next = iter.next()) {
@@ -408,11 +422,11 @@ shared interface Iterable<out Element, out Absent=Null>
         return iterable;
     }
     
-    "Produce an `Iterable` containing every `step`th element 
-     of this iterable object. If the step size is `1`, the 
-     `Iterable` contains the same elements as this iterable 
-     object. The step size must be greater than zero. The 
-     expression
+    "Produce an iterable object containing every [[step]]th 
+     element of this iterable object. If the step size is 
+     `1`, the `Iterable` contains the same elements as this 
+     iterable object. The step size must be greater than 
+     zero. The expression
      
          (0..10).by(3)
      
@@ -428,10 +442,12 @@ shared interface Iterable<out Element, out Absent=Null>
             return this;
         } 
         else {
-            object iterable satisfies Iterable<Element,Absent> {
+            object iterable 
+                    satisfies Iterable<Element,Absent> {
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
-                    object iterator satisfies Iterator<Element> {
+                    object iterator 
+                            satisfies Iterator<Element> {
                         shared actual Element|Finished next() {
                             value next = iter.next();
                             variable value i=0;
@@ -447,8 +463,8 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Return the number of elements in this `Iterable` that 
-     satisfy the predicate function."
+    "Return the number of elements in this iterable object
+     that satisfy the [[given predicate function|selecting]]."
     shared default Integer count(
             "The predicate satisfied by the elements to
              be counted."
@@ -511,8 +527,8 @@ shared interface Iterable<out Element, out Absent=Null>
         return indexes;
     }
     
-    "An `Iterable` with the given inital element followed by
-     the elements of this iterable object."
+    "An iterable object with the given inital element 
+     followed by the elements of this iterable object."
     shared default {Element|Other+} following<Other>(Other head) {
         //TODO: should be {leading,*outer} when that is efficient
         object cons satisfies {Element|Other+} {
@@ -650,7 +666,7 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Returns a list formed by repeating the elements of this
      iterable object the given number of times, or an empty 
-     list if `times<=0`. An eager counterpart to `cycle()`."
+     list if `times<=0`. An eager counterpart to [[cycle]]."
     see (`function cycle`)
     shared default List<Element> repeat(Integer times) {
         value sb = SequenceBuilder<Element>();
