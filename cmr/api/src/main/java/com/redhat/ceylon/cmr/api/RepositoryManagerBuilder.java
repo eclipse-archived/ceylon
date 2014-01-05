@@ -29,21 +29,39 @@ import java.util.List;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RepositoryManagerBuilder {
-    private final static String PROP_CEYLON_MODULE_RESOLVER_DELEGATE = "ceylon.module.resolver.delegate";
+    private final static String PROP_CEYLON_MODULE_RESOLVER_BUILDER = "ceylon.module.resolver.builder";
     private final static String DEFAULT_DELEGATE = "com.redhat.ceylon.cmr.impl.RepositoryManagerBuilderImpl";
     private RepositoryManagerBuilder delegate;
 
     protected RepositoryManagerBuilder() {
     }
 
-    protected Class<? extends RepositoryManagerBuilder> getDelegateClass() throws Exception {
+    protected Class<? extends RepositoryManagerBuilder> getDelegateClass(Logger log) throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         if (classLoader == null)
             classLoader = ClassLoader.getSystemClassLoader();
 
-        //noinspection unchecked
-        return (Class<? extends RepositoryManagerBuilder>) classLoader.loadClass(
-            System.getProperty(PROP_CEYLON_MODULE_RESOLVER_DELEGATE, DEFAULT_DELEGATE) );
+        String builderClassName = System.getProperty(PROP_CEYLON_MODULE_RESOLVER_BUILDER);
+        Class<?> klazz = null;
+        
+        if (builderClassName != null && !"".equals(builderClassName)) {
+            try {
+                klazz =  classLoader.loadClass(builderClassName);
+                if (!RepositoryManagerBuilder.class.isInstance(klazz.newInstance())) {
+                    klazz = null;
+                    log.warning("RepositoryManagerBuilder class " + builderClassName + " is not valid. Using default delegate");
+                }
+            } catch (Exception e) {
+                log.warning("RepositoryManagerBuilder class " + builderClassName + " not found. Using default delegate");
+            }
+        }
+        
+        if (klazz == null) {
+            klazz =  classLoader.loadClass(DEFAULT_DELEGATE) ;
+        }
+        
+        //noinspection unchecked       
+        return (Class<? extends RepositoryManagerBuilder>) klazz;
     }
 
     public RepositoryManagerBuilder(Logger log) {
@@ -56,7 +74,7 @@ public class RepositoryManagerBuilder {
     
     public RepositoryManagerBuilder(Logger log, boolean offline, String mavenOverrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, String.class);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass(log).getConstructor(Logger.class, boolean.class, String.class);
             delegate = ctor.newInstance(log, offline, mavenOverrides);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
@@ -69,7 +87,7 @@ public class RepositoryManagerBuilder {
     
     public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, String mavenOverrides) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, String.class);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass(log).getConstructor(File.class, Logger.class, boolean.class, String.class);
             delegate = ctor.newInstance(mainRepository, log, offline, mavenOverrides);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
