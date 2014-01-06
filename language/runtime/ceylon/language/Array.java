@@ -581,7 +581,7 @@ public final class Array<Element> implements List<Element>, ReifiedType {
 
     @Override
     public Array<Element> getClone() {
-        return this;
+        return new Array<Element>($reifiedElement, this);
     }
 
     @Override

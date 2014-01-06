@@ -1,6 +1,9 @@
-"A fixed-size array of elements. An array may have zero
- size (an empty array). Arrays are mutable. Any element
- of an array may be set to a new value.
+"A fixed-sized array of mutable elements. An _empty_ array 
+ is an array of [[size]] `0`. Any element of an array may be
+ set to a new value.
+ 
+     value array = Array { \"hello\", \"world\" };
+     array.set(0, \"goodbye\");
  
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
@@ -12,9 +15,7 @@ shared final native class Array<Element>({Element*} elements)
                   Ranged<Integer, Array<Element>> {
 
     "Replace the existing element at the specified index 
-     with the given element. Does nothing if the specified 
-     index is negative or larger than the index of the 
-     last element in the array."
+     with the given element."
     throws (`class AssertionException`, 
             "if the given index is out of bounds, that is, 
              if `index<0` or if `index>lastIndex`")
@@ -30,9 +31,10 @@ shared final native class Array<Element>({Element*} elements)
     "The rest of the array, without the first element."
     shared actual native Array<Element> rest;
 
-    "Efficiently copy the elements in the segment 
+    "Efficiently copy the elements in the segment
      `sourcePosition:length` of this array to the segment 
-     `destinationPosition:length` of the given array."
+     `destinationPosition:length` of the given 
+     [[array|other]]."
     shared native void copyTo(
         "The array into which to copy the elements." 
         Array<Element> other,
@@ -53,20 +55,21 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Array<Element> spanTo(Integer to);
     shared actual native Array<Element> segment(Integer from, Integer length);
     
+    "A new array with the same elements as this array."
     shared actual native Array<Element> clone;
 }
 
-"Create an array of the specified size, populating every 
- index with the given element. If the specified size is
- smaller than `1`, return an empty array of the given
- element type."
+"Create an array of the specified [[size]], populating every 
+ index with the given [[element]]. The specified `size` must
+ be in the range `0..runtime.maxArraySize`."
+throws (`class AssertionException`, 
+        "if `size<0` or `size>runtime.maxArraySize`")
 shared native Array<Element> arrayOfSize<Element>(
-        "The size of the resulting array. If the size
-         is non-positive, an empty array will be 
-         created."
+        "The size of the resulting array. If the size is 
+         non-positive, an empty array will be created."
         Integer size,
-        "The element value with which to populate the
-         array. All elements of the resulting array 
-         will have the same value." 
+        "The element value with which to populate the array.
+         All elements of the resulting array will have the 
+         same value." 
         Element element);
 

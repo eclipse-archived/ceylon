@@ -278,6 +278,10 @@ var $maxIntegerValue = Integer(9007199254740989); //(2^53-3) => ((2^53)-2 is NaN
 defineAttr(runtime$proto, 'maxIntegerValue', function() {
     return $maxIntegerValue;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','maxIntegerValue']});
+var $maxArraySize = Integer(4294967295); //(2^32-1)
+defineAttr(runtime$proto, 'maxArraySize', function() {
+    return $maxArraySize;
+},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','runtime','$at','maxArraySize']});
 var runtimeString = String$("runtime", 7);
 defineAttr(runtime$proto, 'string', function() {
     return runtimeString;

@@ -14,16 +14,24 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class arrayOfSize_ {
     
     private arrayOfSize_() {}
+	
+    private static long maxArraySize = runtime_.get_().getMaxArraySize().value;
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Array<Element>")
     public static <Element> Array<Element> arrayOfSize(@Ignore final TypeDescriptor $reifiedElement, 
             @Name("size")
             @TypeInfo("ceylon.language::Integer")
-            final long size,
+            long size,
             @Name("element")
             @TypeInfo("Element")
             final Element element) {
+		if (size>maxArraySize) {
+    		throw new AssertionException("array size must be smaller than " + maxArraySize);
+    	}
+		if (size<0) {
+    		throw new AssertionException("array size must not be negative");
+    	}
         return new Array<Element>($reifiedElement, (int)size, element);
     }
     

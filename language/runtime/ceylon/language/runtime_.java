@@ -17,6 +17,8 @@ public final class runtime_ {
     
     private final Integer minIntegerValue = Integer.instance(Long.MIN_VALUE);
     
+    private final Integer maxArraySize = Integer.instance(java.lang.Integer.MAX_VALUE - 8);
+    
     private runtime_() {}
     
 
@@ -38,6 +40,10 @@ public final class runtime_ {
 
     public Integer getMaxIntegerValue() {
         return maxIntegerValue;
+    }
+    
+    public Integer getMaxArraySize() {
+    	return maxArraySize;
     }
     
     @Override
