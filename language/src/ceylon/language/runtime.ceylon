@@ -32,7 +32,9 @@ shared native object runtime  {
     see (`class Integer`)
     shared native Integer maxIntegerValue;
     
-    "The maximum size of an [[Array]]] that is possible for this runtime."
+    "The maximum size of an [[Array]]] that is possible for this runtime.
+     Note that this is a theoretical limit only. In practice it is usually
+     impossible to allocate an array of this size, due to memory constraints."
     see (`class Array`)
     shared native Integer maxArraySize;
     
