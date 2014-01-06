@@ -45,7 +45,7 @@ shared interface List<out Element>
     see (`value List.size`)
     shared formal Integer? lastIndex;
     
-    "The number of elements in this sequence, always
+    "The number of elements in this list, always
      `list.lastIndex+1`."
     see (`value List.lastIndex`)
     shared actual default Integer size 
@@ -89,7 +89,8 @@ shared interface List<out Element>
         return listIterator;
     }
     
-    "Reverse this list, returning a new list."
+    "A `List` containing the elements of this list in 
+     reverse order."
     shared formal List<Element> reversed;
     
     "Two `List`s are considered equal iff they have the 
