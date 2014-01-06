@@ -209,6 +209,20 @@ class Predicates {
             return "(kind = Function)";
         }
     };
+
+    /** Predicate on Declarations that accepts Method and Value */
+    private static final Predicate<Declaration> DECLARATION_IS_FUNCTION_OR_VALUE = new Predicate<Declaration>() {
+        @Override
+        public boolean accept(Declaration declaration) {
+            return declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value
+                || declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Method
+            ;
+        }
+        @Override
+        public String toString() {
+            return "(kind = Value || kind = Function)";
+        }
+    };
     
     /** Predicate on Declarations that accepts Class */
     private static final Predicate<Declaration> DECLARATION_IS_CLASS = new Predicate<Declaration>() {  
@@ -270,6 +284,8 @@ class Predicates {
                 return DECLARATION_IS_VALUE;
             } else if (declarationClass == ceylon.language.meta.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;
+            } else if (declarationClass == ceylon.language.meta.declaration.FunctionOrValueDeclaration.class) {
+                return DECLARATION_IS_FUNCTION_OR_VALUE;
             } else if (declarationClass == ceylon.language.meta.declaration.ClassDeclaration.class) {
                 return DECLARATION_IS_CLASS;
             } else if (declarationClass == ceylon.language.meta.declaration.InterfaceDeclaration.class) {
