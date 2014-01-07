@@ -159,11 +159,21 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "A stream containing all but the first element of this 
-     stream."
+     stream. For a stream with an unstable iteration order, 
+     a different value might be produced each time `rest` is
+     evaluated.
+     
+     Therefore, if the stream `i` has an unstable iteration
+     order, the stream `{ i.first, *i.rest }` might not have
+     the same elements as `i`."
+    see (`value first`)
     shared default {Element*} rest => skipping(1);
     
-    "A sequence containing all the elements of this stream."
-    shared default Element[] sequence => [ for (x in this) x ];
+    "A [[sequence|Sequential]] containing all the elements 
+     of this stream, in the same order they occur in this
+     stream."
+    shared default Element[] sequence 
+            => SequenceBuilder<Element>().appendAll(this).sequence;
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
