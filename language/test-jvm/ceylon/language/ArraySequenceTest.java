@@ -9,13 +9,6 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-import ceylon.language.ArraySequence;
-import ceylon.language.Boolean;
-import ceylon.language.Iterator;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.finished_;
-
 public class ArraySequenceTest {
 
     private static ceylon.language.Integer i(int i) {
