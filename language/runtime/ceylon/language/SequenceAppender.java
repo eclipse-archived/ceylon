@@ -16,8 +16,8 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     
     public SequenceAppender(@Ignore TypeDescriptor $reifiedElement, 
             @Name("elements") 
-            @TypeInfo("ceylon.language::Sequence<Element>")
-            Sequence<? extends Element> elements) {
+            @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Nothing>")
+            Iterable<? extends Element, ?> elements) {
         super($reifiedElement);
         appendAll(elements);
     }
@@ -33,4 +33,19 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(SequenceAppender.class, $reifiedElement);
     }
+    
+    @Override
+    public SequenceAppender<Element> append(@Name("element") Element element) {
+    	super.append(element);
+    	return this;
+    }
+    
+    @Override
+    public SequenceAppender<Element> appendAll(@Name("elements") 
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
+    Iterable<? extends Element, ? extends java.lang.Object> elements) {
+    	super.appendAll(elements);
+    	return this;
+    }
+    
 }

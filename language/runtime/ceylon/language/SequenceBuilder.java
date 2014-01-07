@@ -89,14 +89,14 @@ public class SequenceBuilder<Element> implements ReifiedType {
         }
     }
     
-    public final SequenceBuilder<Element> append(@Name("element") Element element) {
+    public SequenceBuilder<Element> append(@Name("element") Element element) {
         ensureCapacity$priv$(length+1);
     	array[length] = element;
     	length+=1;
     	return this;
     }
     
-    public final SequenceBuilder<Element> appendAll(@Name("elements") 
+    public SequenceBuilder<Element> appendAll(@Name("elements") 
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
     Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
