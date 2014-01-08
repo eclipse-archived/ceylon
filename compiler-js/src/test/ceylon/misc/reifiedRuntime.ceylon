@@ -23,6 +23,33 @@ String runtimeMethod(Integer param){
     return nothing;
 }
 
+shared interface TestInterface310<in In, out Out=Nothing> {
+}
+
+class Test310Class1<in In, out Out=Nothing>() satisfies TestInterface310<In,Out> {
+}
+class Test310Class2<in In, out Out=Nothing>(TestInterface310<In, Out>|String obj) satisfies TestInterface310<In,Out> {
+    shared Boolean test() {
+        if (is String obj) {
+            return false;
+        } else if (is TestInterface310<In,Out> obj) {
+            return true;
+        } else {
+            throw Exception("Fail!!!");
+        }
+    }
+}
+class Test310Class3<in In, out Out=Nothing>(TestInterface310<In, Out>|String obj) satisfies TestInterface310<In?,Out?> {
+    shared Boolean test() {
+        return Test310Class2<In,Out>(obj).test();
+    }
+}
+class Test310Class4<in In2, out Out=Nothing>(TestInterface310<In2, Out>|String obj) satisfies TestInterface310<In2?,Out?> {
+    shared Boolean test() {
+        return Test310Class2<In2,Out>(obj).test();
+    }
+}
+
 void testReifiedRuntime(){
     print("Reified generics");
     Object member = Container<String>().Member<Integer>();
@@ -95,4 +122,8 @@ void testReifiedRuntime(){
     check(o3 is TestInterface2<String>, "Issue #221 [3]");
     Object o4 = Test4<String>();
     check(o4 is TestInterface2<String>, "Issue #221 [4]");
+
+    //issue #310
+    check(Test310Class3<Integer,Character>(Test310Class1<Integer,Character>()).test(), "Issue 310 [1]");
+    check(Test310Class4<Integer,Character>(Test310Class1<Integer,Character>()).test(), "Issue 310 [2]");
 }
