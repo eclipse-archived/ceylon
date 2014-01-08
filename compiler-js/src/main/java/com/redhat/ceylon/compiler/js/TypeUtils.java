@@ -206,8 +206,9 @@ public class TypeUtils {
                     //when resolving for aliases we just take the type arguments from the alias call
                     gen.out("$$targs$$.", tp.getName());
                 } else {
+                    gen.out("(");
                     gen.self((ClassOrInterface)tp.getContainer());
-                    gen.out(".$$targs$$.", tp.getName());
+                    gen.out(".$$targs$$||$$targs$$).", tp.getName());
                 }
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
