@@ -19,7 +19,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Element;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
-import com.redhat.ceylon.compiler.typechecker.model.Getter;
 import com.redhat.ceylon.compiler.typechecker.model.ImportList;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.InterfaceAlias;
@@ -390,7 +389,7 @@ public class DeclarationVisitor extends Visitor {
         exitScope(o);
         setParameterLists(m, that.getParameterLists(), that);
         Tree.Type type = that.getType();
-        m.setDeclaredAnything(type instanceof Tree.VoidModifier);
+        m.setDeclaredVoid(type instanceof Tree.VoidModifier);
         if (type instanceof Tree.ValueModifier) {
             type.addError("functions may not be declared using the keyword value");
         }
@@ -435,7 +434,7 @@ public class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         setParameterLists(m, that.getParameterLists(), that);
-        m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
+        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
     }
     
     private int fid=0;
@@ -452,7 +451,7 @@ public class DeclarationVisitor extends Visitor {
         endDeclaration(d);
         exitScope(o);
         setParameterLists(m, that.getParameterLists(), that);
-        m.setDeclaredAnything(that.getType() instanceof Tree.VoidModifier);
+        m.setDeclaredVoid(that.getType() instanceof Tree.VoidModifier);
     }
     
     @Override

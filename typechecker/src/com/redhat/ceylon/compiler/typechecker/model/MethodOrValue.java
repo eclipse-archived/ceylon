@@ -64,6 +64,4 @@ public abstract class MethodOrValue extends TypedDeclaration {
         this.captured = local;
     }
 
-    public abstract void setSetter(Setter setter);
-
 }

@@ -23,20 +23,10 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     private boolean overloaded;
     private boolean abstraction;
     private List<Declaration> overloads;
-    private boolean declaredAnything;
+    private boolean declaredVoid;
     private Object annotationConstructor;
     private boolean deferred;
     
-
-    /*public boolean isFormal() {
-         return formal;
-     }
-
-     public void setFormal(boolean formal) {
-         this.formal = formal;
-     }*/
-    
-
     public Object getAnnotationConstructor() {
         return annotationConstructor;
     }
@@ -88,11 +78,11 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
     
     @Override
     public boolean isDeclaredVoid() {
-        return declaredAnything;
+        return declaredVoid;
     }
     
-    public void setDeclaredAnything(boolean declaredAnything) {
-        this.declaredAnything = declaredAnything;
+    public void setDeclaredVoid(boolean declaredVoid) {
+        this.declaredVoid = declaredVoid;
     }
     
     public boolean isDeferred() {
@@ -121,11 +111,6 @@ public class Method extends MethodOrValue implements Generic, Scope, Functional 
         return null;
     }
     
-    @Override
-    public void setSetter(Setter setter) {
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     public boolean isFunctional() {
         return true;

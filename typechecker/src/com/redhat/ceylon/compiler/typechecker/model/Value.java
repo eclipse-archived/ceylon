@@ -20,7 +20,6 @@ public class Value extends MethodOrValue implements Scope {
         return setter;
     }
     
-    @Override
     public void setSetter(Setter setter) {
         this.setter = setter;
     }
