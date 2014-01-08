@@ -50,6 +50,15 @@ class Test310Class4<in In2, out Out=Nothing>(TestInterface310<In2, Out>|String o
     }
 }
 
+interface A309<T> {}
+interface B309<T> {}
+class C309<T>() satisfies A309<List<T>> & B309<T> {
+    shared String foo() {
+        value a = `<T>`;
+        return a.string;
+    }
+}
+
 void testReifiedRuntime(){
     print("Reified generics");
     Object member = Container<String>().Member<Integer>();
@@ -126,4 +135,6 @@ void testReifiedRuntime(){
     //issue #310
     check(Test310Class3<Integer,Character>(Test310Class1<Integer,Character>()).test(), "Issue 310 [1]");
     check(Test310Class4<Integer,Character>(Test310Class1<Integer,Character>()).test(), "Issue 310 [2]");
+    //issue #309
+    check(C309<String>().foo() == "ceylon.language::String", "Issue 309 - expected String got ``C309<String>().foo()``");
 }
