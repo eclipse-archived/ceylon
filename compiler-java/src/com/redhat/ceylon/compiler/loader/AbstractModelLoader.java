@@ -1801,7 +1801,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                               "method '"+methodMirror.getName()+"'", klass);
         method.setType(type);
         method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
-        method.setDeclaredAnything(methodMirror.isDeclaredVoid());
+        method.setDeclaredVoid(methodMirror.isDeclaredVoid());
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
         
         markUnboxed(method, methodMirror.getReturnType());
@@ -2527,7 +2527,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             method.setType(obtainType(meth.getReturnType(), meth, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
                                "toplevel method", method));
-            method.setDeclaredAnything(meth.isDeclaredVoid());
+            method.setDeclaredVoid(meth.isDeclaredVoid());
 
             markUnboxed(method, meth.getReturnType());
             markTypeErased(method, meth, meth.getReturnType());
