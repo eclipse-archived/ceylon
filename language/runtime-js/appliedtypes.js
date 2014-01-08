@@ -17,6 +17,12 @@ function AppliedClass(tipo,$$targs$$,that){
       }
     } else {
       that=function(){
+        if (that.$targs) {
+          var _a=[];
+          for (var i=0;i<arguments.length;i++)_a.push(arguments[i]);
+          _a.push(that.$targs);
+          return tipo.apply(undefined,_a);
+        }
         return tipo.apply(undefined,arguments);
       }
     }
