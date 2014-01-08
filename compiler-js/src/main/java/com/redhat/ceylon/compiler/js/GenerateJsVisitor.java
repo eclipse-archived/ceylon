@@ -534,7 +534,8 @@ public class GenerateJsVisitor extends Visitor
         out(function, names.name(d), "(");
         final List<TypeParameterDeclaration> tparms = that.getTypeParameterList() == null ? null :
             that.getTypeParameterList().getTypeParameterDeclarations();
-        if (tparms != null && !tparms.isEmpty()) {
+        final boolean withTargs = tparms != null && !tparms.isEmpty();
+        if (withTargs) {
             out("$$targs$$,");
         }
         self(d);
@@ -546,8 +547,8 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
-        if (tparms != null && !tparms.isEmpty()) {
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, withTargs);
+        if (withTargs) {
             out(clAlias, "set_type_args(");
             self(d);
             out(",$$targs$$)");
@@ -664,7 +665,7 @@ public class GenerateJsVisitor extends Visitor
         out(function, names.name(d), "(");
         for (Parameter p: that.getParameterList().getParameters()) {
             p.visit(this);
-            out(", ");
+            out(",");
         }
         final boolean withTargs = that.getTypeParameterList() != null &&
                 !that.getTypeParameterList().getTypeParameterDeclarations().isEmpty();
@@ -708,7 +709,7 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(that.getExtendedType(), d, that, superDecs);
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, withTargs);
 
         if (!opts.isOptimize()) {
             //Fix #231 for lexical scope
@@ -844,19 +845,33 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
-            final List<Declaration> superDecs) {
+            final List<Declaration> superDecs, final boolean withTargs) {
         if (satisfiedTypes!=null) {
+            HashSet<String> myTypeArgs = new HashSet<>();
+            for (TypeParameter tp : d.getTypeParameters()) {
+                myTypeArgs.add(tp.getName());
+            }
             for (StaticType st: satisfiedTypes.getTypes()) {
                 TypeDeclaration typeDecl = st.getTypeModel().getDeclaration();
                 qualify(that, typeDecl);
                 out(names.name((ClassOrInterface)typeDecl), "(");
                 if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                    if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
-                        self(d);
-                        out(".$$targs$$===undefined?$$targs$$:");
+                    boolean printArgs = !withTargs;
+                    if (withTargs) {
+                        boolean allArgs = true;
+                        for (TypeParameter tp : typeDecl.getTypeParameters()) {
+                            allArgs &= myTypeArgs.contains(tp.getName());
+                        }
+                        if (allArgs) {
+                            out("$$targs$$,");
+                        } else {
+                            printArgs = true;
+                        }
                     }
-                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this);
-                    out(",");
+                    if (printArgs) {
+                        TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this);
+                        out(",");
+                    }
                 }
                 self(d);
                 out(")");
@@ -1222,7 +1237,7 @@ public class GenerateJsVisitor extends Visitor
             self(c); out(".$$targs$$=$$targs$$"); endLine(true);
         }
         callSuperclass(that.getExtendedType(), c, that, superDecs);
-        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
+        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs, !targs.isEmpty());
         
         that.getClassBody().visit(this);
         returnSelf(c);
@@ -2646,7 +2661,7 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(xt, c, that, superDecs);
-        callInterfaces(sts, c, that, superDecs);
+        callInterfaces(sts, c, that, superDecs, false);
         
         body.visit(this);
         returnSelf(c);
