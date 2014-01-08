@@ -58,8 +58,8 @@ shared class Singleton<out Element>(Element element)
      is `0` and the given `length` is greater than `0`.
      Otherwise, returns an instance of `Empty`."
     shared actual Empty|Singleton<Element> segment
-            (Integer from, Integer length) =>
-                    from<=0 && from+length>0 then this else [];
+            (Integer from, Integer length) 
+            => from<=0 && from+length>0 then this else [];
     
     "Returns a `Singleton` if the given starting index 
      is `0`. Otherwise, returns an instance of `Empty`."
@@ -109,24 +109,32 @@ shared class Singleton<out Element>(Element element)
     "Returns `1` if this `Singleton`\'s element
      satisfies the predicate, or `0` otherwise."
     shared actual Integer count
-            (Boolean selecting(Element element)) =>
-                    selecting(element) then 1 else 0;
+            (Boolean selecting(Element element)) 
+            => selecting(element) then 1 else 0;
     
     shared actual Singleton<Result> map<Result>
-            (Result selecting(Element e)) =>
-                    Singleton(selecting(element));
+            (Result collecting(Element e)) 
+            => Singleton(collecting(element));
     
-    shared actual Singleton<Element>|Empty filter
-            (Boolean selecting(Element e)) => 
-                    selecting(element) then this else {};
+    shared actual Singleton<Element>|[] filter
+            (Boolean selecting(Element e)) 
+            => selecting(element) then this else [];
     
     shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Element e)) =>
-                    accumulating(initial, element);
+            Result accumulating(Result partial, Element e)) 
+            => accumulating(initial, element);
     
     shared actual Element reduce<Result>(
-            Result accumulating(Result|Element partial, Element e)) =>
-                    element;
+            Result accumulating(Result|Element partial, Element e)) 
+            => element;
+    
+    shared actual Singleton<Result> collect<Result>
+            (Result collecting(Element element)) 
+            => Singleton(collecting(element));
+    
+    shared actual Singleton<Element>|[] select
+            (Boolean selecting(Element element)) 
+            => selecting(element) then this else [];
     
     shared actual Element? find
             (Boolean selecting(Element e)) {
@@ -137,25 +145,26 @@ shared class Singleton<out Element>(Element element)
     }
     
     shared actual default Element? findLast
-            (Boolean selecting(Element elem)) => 
-                    find(selecting);
+            (Boolean selecting(Element elem)) 
+            => find(selecting);
     
     shared actual Singleton<Element> sort
-            (Comparison comparing(Element a, Element b)) => this;
+            (Comparison comparing(Element a, Element b)) 
+            => this;
     
     shared actual Boolean any
-            (Boolean selecting(Element e)) =>
-                    selecting(element);
+            (Boolean selecting(Element e)) 
+            => selecting(element);
     
     shared actual Boolean every
-            (Boolean selecting(Element e)) =>
-                    selecting(element);
+            (Boolean selecting(Element e)) 
+            => selecting(element);
     
-    shared actual Singleton<Element>|Empty skipping(Integer skip) => 
-            skip<1 then this else {};
+    shared actual Singleton<Element>|Empty skipping(Integer skip) 
+            => skip<1 then this else {};
     
-    shared actual Singleton<Element>|Empty taking(Integer take) =>
-            take>0 then this else {};
+    shared actual Singleton<Element>|Empty taking(Integer take) 
+            => take>0 then this else {};
     
     shared actual Singleton<Element&Object>|Empty coalesced {
         if (exists element) {
