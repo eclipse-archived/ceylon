@@ -105,14 +105,12 @@ function isOfType(obj, type) {
                 if (!(cmptype.t.$$.T$name && _targ.t.$$.T$name === cmptype.t.$$.T$name))return false;
               } else if (cmptype && cmptype.t && cmptype.t==='i') {
                 //_targ must satisfy all types in cmptype
-                console.log("FIXME! Comparing type argument vs intersection type parameter");
                 if (cmptype.t!==_targ.t || !cmptype.l || cmptype.l.length!==_targ.l.length)return false;
                 for (var i=0; i<_targ.l.length;i++) {
                   if (!extendsType(_targ.l[i],cmptype))return false;
                 }
               } else if (cmptype && cmptype.t && cmptype.t==='u') {
                 //_targ must satisfy at least one type in cmptype
-                console.log("FIXME! Comparing type argument vs union type parameter");
                 if (cmptype.t!==_targ.t || !cmptype.l || cmptype.l.length!==_targ.l.length)return false;
                 for (var i=0; i<_targ.l.length;i++) {
                   if (!extendsType(_targ.l[i],cmptype))return false;
@@ -295,14 +293,14 @@ identityHash.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,
 function set_type_args(obj, targs) {
     if (obj===undefined)return;
     if (obj.$$targs$$ === undefined) {
-        obj.$$targs$$=targs;
-    } else {
-        for (x in targs) {
-            obj.$$targs$$[x] = targs[x];
-        }
+        obj.$$targs$$={};
+    }
+    for (x in targs) {
+        obj.$$targs$$[x] = targs[x];
     }
 }
 function add_type_arg(obj, name, type) {
+    if (obj===undefined)return;
     if (obj.$$targs$$ === undefined) {
         obj.$$targs$$={};
     }
