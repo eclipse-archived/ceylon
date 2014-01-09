@@ -64,8 +64,7 @@
 see (`interface List`, 
      `interface Sequence`, 
      `class String`)
-shared interface Ranged<in Index, out Span> of Span
-        given Index satisfies Comparable<Index> {
+shared interface Ranged<in Index, out Span> of Span {
     
     "Obtain a span containing the mapped values between 
      the two given indices."
