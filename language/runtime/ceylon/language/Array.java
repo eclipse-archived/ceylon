@@ -220,11 +220,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
     
     @Ignore
-    public static Array<Character> instance(char[] array) {
+    public static Array<java.lang.Character> instance(char[] array) {
         if (array == null) {
             return null;
         }
-        return new Array<Character>(Character.$TypeDescriptor$, array);
+        return new Array<java.lang.Character>(TypeDescriptor.klass(java.lang.Character.class), array);
     }
 
     @Ignore
@@ -236,27 +236,27 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Ignore
-    public static Array<Integer> instance(byte[] array) {
+    public static Array<java.lang.Byte> instance(byte[] array) {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor$, array);
+        return new Array<java.lang.Byte>(TypeDescriptor.klass(java.lang.Byte.class), array);
     }
 
     @Ignore
-    public static Array<Integer> instance(short[] array) {
+    public static Array<java.lang.Short> instance(short[] array) {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor$, array);
+        return new Array<java.lang.Short>(TypeDescriptor.klass(java.lang.Short.class), array);
     }
 
     @Ignore
-    public static Array<Integer> instance(int[] array) {
+    public static Array<java.lang.Integer> instance(int[] array) {
         if (array == null) {
             return null;
         }
-        return new Array<Integer>(Integer.$TypeDescriptor$, array);
+        return new Array<java.lang.Integer>(TypeDescriptor.klass(java.lang.Integer.class), array);
     }
 
     @Ignore
@@ -268,11 +268,11 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Ignore
-    public static Array<Float> instance(float[] array) {
+    public static Array<java.lang.Float> instance(float[] array) {
         if (array == null) {
             return null;
         }
-        return new Array<Float>(Float.$TypeDescriptor$, array);
+        return new Array<java.lang.Float>(TypeDescriptor.klass(java.lang.Float.class), array);
     }
 
     @Ignore

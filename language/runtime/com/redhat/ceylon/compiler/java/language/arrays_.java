@@ -96,7 +96,7 @@ public final class arrays_ {
         return Util.toByteArray(values);
     }
 
-    public byte[] asByteArray(@Name("array") Array<Integer> array){
+    public byte[] asByteArray(@Name("array") Array<java.lang.Byte> array){
         // simplest is same underlying type
         if(array.toArray() instanceof byte[]){
             byte[] src = (byte[]) array.toArray();
@@ -151,7 +151,7 @@ public final class arrays_ {
         return Util.toShortArray(values);
     }
 
-    public short[] asShortArray(@Name("array") Array<Integer> array){
+    public short[] asShortArray(@Name("array") Array<java.lang.Short> array){
         // simplest is same underlying type
         if(array.toArray() instanceof short[]){
             short[] src = (short[]) array.toArray();
@@ -206,7 +206,7 @@ public final class arrays_ {
         return Util.toIntArray(values);
     }
 
-    public int[] asIntArray(@Name("array") Array<Integer> array){
+    public int[] asIntArray(@Name("array") Array<java.lang.Integer> array){
         // simplest is same underlying type
         if(array.toArray() instanceof int[]){
             int[] src = (int[]) array.toArray();
@@ -302,7 +302,7 @@ public final class arrays_ {
         return Util.toFloatArray(values);
     }
 
-    public float[] asFloatArray(@Name("array") Array<Float> array){
+    public float[] asFloatArray(@Name("array") Array<java.lang.Float> array){
         // simplest is same underlying type
         if(array.toArray() instanceof float[]){
             float[] src = (float[]) array.toArray();
@@ -384,7 +384,7 @@ public final class arrays_ {
         return Util.toCharArray(values);
     }
 
-    public char[] asCharArray(@Name("array") Array<Character> array){
+    public char[] asCharArray(@Name("array") Array<java.lang.Character> array){
         // simplest is same underlying type
         if(array.toArray() instanceof char[]){
             char[] src = (char[]) array.toArray();

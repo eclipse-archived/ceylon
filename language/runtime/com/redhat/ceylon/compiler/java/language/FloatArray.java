@@ -54,12 +54,12 @@ public final class FloatArray implements ReifiedType {
     public final int length = 0;
 
     @Ignore
-    public static ceylon.language.Array<ceylon.language.Float> getArray(float[] array){
+    public static ceylon.language.Array<java.lang.Float> getArray(float[] array){
         return Array.instance(array);
     }
 
-    @TypeInfo("ceylon.language::Array<ceylon.language::Float>")
-    public ceylon.language.Array<ceylon.language.Float> getArray(){
+    @TypeInfo("ceylon.language::Array<java.lang::Float>")
+    public ceylon.language.Array<java.lang.Float> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
 

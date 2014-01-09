@@ -54,12 +54,12 @@ public final class ShortArray implements ReifiedType {
     public final int length = 0;
 
     @Ignore
-    public static ceylon.language.Array<ceylon.language.Integer> getArray(short[] array){
+    public static ceylon.language.Array<java.lang.Short> getArray(short[] array){
         return Array.instance(array);
     }
 
-    @TypeInfo("ceylon.language::Array<ceylon.language::Integer>")
-    public ceylon.language.Array<ceylon.language.Integer> getArray(){
+    @TypeInfo("ceylon.language::Array<java.lang::Short>")
+    public ceylon.language.Array<java.lang.Short> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
 

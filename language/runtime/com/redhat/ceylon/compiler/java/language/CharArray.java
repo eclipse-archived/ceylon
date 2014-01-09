@@ -54,12 +54,12 @@ public final class CharArray implements ReifiedType {
     public final int length = 0;
 
     @Ignore
-    public static ceylon.language.Array<ceylon.language.Character> getArray(char[] array){
+    public static ceylon.language.Array<java.lang.Character> getArray(char[] array){
         return Array.instance(array);
     }
 
-    @TypeInfo("ceylon.language::Array<ceylon.language::Character>")
-    public ceylon.language.Array<ceylon.language.Character> getArray(){
+    @TypeInfo("ceylon.language::Array<java.lang::Character>")
+    public ceylon.language.Array<java.lang.Character> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
 
