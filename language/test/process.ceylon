@@ -78,7 +78,12 @@ shared void testRuntime() {
     } else {
         fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this runtime");
     }
-    check(runtime.maxArraySize > 4294000000, "runtime.maxArraySize");
+    if (runtime.name == "jvm") {
+        check(runtime.maxArraySize == #7ffffff7, "runtime.maxArraySize");
+    }
+    else {
+        check(runtime.maxArraySize == #FFFFFFFF);
+    }
 }
 
 @test
