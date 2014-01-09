@@ -54,12 +54,22 @@ public final class BooleanArray implements ReifiedType {
     public final int length = 0;
 
     @Ignore
-    public static ceylon.language.Array<ceylon.language.Boolean> getArray(boolean[] array){
+    public static ceylon.language.Array<java.lang.Boolean> getArray(boolean[] array){
         return Array.instance(array);
     }
 
+    @TypeInfo("ceylon.language::Array<java.lang::Boolean>")
+    public ceylon.language.Array<java.lang.Boolean> getArray(){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static ceylon.language.Array<ceylon.language.Boolean> getBooleanArray(boolean[] array){
+        return Array.instanceForBooleans(array);
+    }
+
     @TypeInfo("ceylon.language::Array<ceylon.language::Boolean>")
-    public ceylon.language.Array<ceylon.language.Boolean> getArray(){
+    public ceylon.language.Array<ceylon.language.Boolean> getBooleanArray(){
         throw Util.makeJavaArrayWrapperException();
     }
 

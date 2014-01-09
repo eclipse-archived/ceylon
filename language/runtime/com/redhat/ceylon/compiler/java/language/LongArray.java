@@ -54,12 +54,22 @@ public final class LongArray implements ReifiedType {
     public final int length = 0;
 
     @Ignore
-    public static ceylon.language.Array<ceylon.language.Integer> getArray(long[] array){
+    public static ceylon.language.Array<java.lang.Long> getArray(long[] array){
         return Array.instance(array);
     }
 
+    @TypeInfo("ceylon.language::Array<java.lang::Long>")
+    public ceylon.language.Array<java.lang.Long> getArray(){
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static ceylon.language.Array<ceylon.language.Integer> getIntegerArray(long[] array){
+        return Array.instanceForIntegers(array);
+    }
+
     @TypeInfo("ceylon.language::Array<ceylon.language::Integer>")
-    public ceylon.language.Array<ceylon.language.Integer> getArray(){
+    public ceylon.language.Array<ceylon.language.Integer> getIntegerArray(){
         throw Util.makeJavaArrayWrapperException();
     }
 

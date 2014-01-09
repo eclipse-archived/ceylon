@@ -313,14 +313,94 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 array);
     }
     
+    private static final TypeDescriptor CHAR_TYPE = TypeDescriptor.klass(java.lang.Character.class);
     @Ignore
     public static Array<java.lang.Character> instance(char[] array) {
         if (array == null) {
             return null;
         }
-        return new Array<java.lang.Character>(TypeDescriptor.klass(java.lang.Character.class), array);
+		return new Array<java.lang.Character>(CHAR_TYPE, array);
     }
 
+    private static final TypeDescriptor BYTE_TYPE = TypeDescriptor.klass(java.lang.Byte.class);
+    @Ignore
+    public static Array<java.lang.Byte> instance(byte[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Byte>(BYTE_TYPE, array);
+    }
+
+    private static final TypeDescriptor SHORT_TYPE = TypeDescriptor.klass(java.lang.Short.class);
+    @Ignore
+    public static Array<java.lang.Short> instance(short[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Short>(SHORT_TYPE, array);
+    }
+    
+    private static final TypeDescriptor INT_TYPE = TypeDescriptor.klass(java.lang.Integer.class);
+    @Ignore
+    public static Array<java.lang.Integer> instance(int[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Integer>(INT_TYPE, array);
+    }
+    
+    private static final TypeDescriptor LONG_TYPE = TypeDescriptor.klass(java.lang.Long.class);
+    @Ignore
+    public static Array<java.lang.Long> instance(long[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Long>(LONG_TYPE, array);
+    }
+    
+    private static final TypeDescriptor FLOAT_TYPE = TypeDescriptor.klass(java.lang.Float.class);
+    @Ignore
+    public static Array<java.lang.Float> instance(float[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Float>(FLOAT_TYPE, array);
+    }
+    
+    private static final TypeDescriptor DOUBLE_TYPE = TypeDescriptor.klass(java.lang.Double.class);
+    @Ignore
+    public static Array<java.lang.Double> instance(double[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Double>(DOUBLE_TYPE, array);
+    }
+    
+    private static final TypeDescriptor BOOLEAN_TYPE = TypeDescriptor.klass(java.lang.Boolean.class);
+    @Ignore
+    public static Array<java.lang.Boolean> instance(boolean[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<java.lang.Boolean>(BOOLEAN_TYPE, array);
+    }
+    
+    @Ignore
+    public static Array<Float> instanceForFloats(double[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<Float>(Float.$TypeDescriptor$, array);
+    }
+
+    @Ignore
+    public static Array<Boolean> instanceForBooleans(boolean[] array) {
+        if (array == null) {
+            return null;
+        }
+        return new Array<Boolean>(Boolean.$TypeDescriptor$, array);
+    }
+    
     @Ignore
     public static Array<Character> instanceForCodePoints(int[] array) {
         if (array == null) {
@@ -330,61 +410,13 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     }
 
     @Ignore
-    public static Array<java.lang.Byte> instance(byte[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<java.lang.Byte>(TypeDescriptor.klass(java.lang.Byte.class), array);
-    }
-
-    @Ignore
-    public static Array<java.lang.Short> instance(short[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<java.lang.Short>(TypeDescriptor.klass(java.lang.Short.class), array);
-    }
-
-    @Ignore
-    public static Array<java.lang.Integer> instance(int[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<java.lang.Integer>(TypeDescriptor.klass(java.lang.Integer.class), array);
-    }
-
-    @Ignore
-    public static Array<Integer> instance(long[] array) {
+    public static Array<Integer> instanceForIntegers(long[] array) {
         if (array == null) {
             return null;
         }
         return new Array<Integer>(Integer.$TypeDescriptor$, array);
     }
 
-    @Ignore
-    public static Array<java.lang.Float> instance(float[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<java.lang.Float>(TypeDescriptor.klass(java.lang.Float.class), array);
-    }
-
-    @Ignore
-    public static Array<Float> instance(double[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<Float>(Float.$TypeDescriptor$, array);
-    }
-
-    @Ignore
-    public static Array<Boolean> instance(boolean[] array) {
-        if (array == null) {
-            return null;
-        }
-        return new Array<Boolean>(Boolean.$TypeDescriptor$, array);
-    }
-    
     @Override
     public Array<Element> spanFrom(@Name("from") Integer from) {
         return span(from, Integer.instance(getSize()));
