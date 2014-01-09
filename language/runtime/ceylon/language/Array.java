@@ -105,7 +105,62 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 }
                 return array;
             }
-            //TODO: special cases for Java primitive wrapper types?
+            if (clazz.getKlass().equals(java.lang.Boolean.class)) {
+                boolean[] array = new boolean[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Boolean) list.get(i)).booleanValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Character.class)) {
+                char[] array = new char[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Character) list.get(i)).charValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Float.class)) {
+                float[] array = new float[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Float) list.get(i)).floatValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Double.class)) {
+                double[] array = new double[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Double) list.get(i)).doubleValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Byte.class)) {
+                byte[] array = new byte[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Byte) list.get(i)).byteValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Short.class)) {
+                short[] array = new short[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Short) list.get(i)).shortValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Integer.class)) {
+                int[] array = new int[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Integer) list.get(i)).intValue();
+                }
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Long.class)) {
+                long[] array = new long[list.size()];
+                for (int i=0; i<array.length; i++) {
+                    array[i] = ((java.lang.Long) list.get(i)).longValue();
+                }
+                return array;
+            }
             Element[] array = (Element[])java.lang.reflect.Array.newInstance(clazz.getKlass(), list.size());
             return list.toArray(array);
         }
@@ -142,7 +197,46 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 Arrays.fill(array, ((Boolean) element).booleanValue()); 
                 return array;
             }
-            //TODO: special cases for Java primitive wrapper types?
+            if (clazz.getKlass().equals(java.lang.Boolean.class)) {
+                boolean[] array = new boolean[size];
+                Arrays.fill(array, ((java.lang.Boolean) element).booleanValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Character.class)) {
+                char[] array = new char[size];
+                Arrays.fill(array, ((java.lang.Character) element).charValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Float.class)) {
+                float[] array = new float[size];
+                Arrays.fill(array, ((java.lang.Float) element).floatValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Double.class)) {
+                double[] array = new double[size];
+                Arrays.fill(array, ((java.lang.Double) element).doubleValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Byte.class)) {
+                byte[] array = new byte[size];
+                Arrays.fill(array, ((java.lang.Byte) element).byteValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Short.class)) {
+                short[] array = new short[size];
+                Arrays.fill(array, ((java.lang.Short) element).shortValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Integer.class)) {
+                int[] array = new int[size];
+                Arrays.fill(array, ((java.lang.Integer) element).intValue()); 
+                return array;
+            }
+            if (clazz.getKlass().equals(java.lang.Long.class)) {
+                long[] array = new long[size];
+                Arrays.fill(array, ((java.lang.Long) element).longValue()); 
+                return array;
+            }
             Element[] array = (Element[])java.lang.reflect.Array.newInstance(clazz.getKlass(), size);
             Arrays.fill(array, element);
             return array;
@@ -467,38 +561,39 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     private Element unsafeItem(int index) {
         if (array instanceof char[]) {
             char val = ((char[])array)[index];
-            if ($reifiedElement == Character.$TypeDescriptor$) {
-            	//this case is for CharArray.array
-                return (Element) Character.instance(val);
-            }
-            else {
+//            if ($reifiedElement == Character.$TypeDescriptor$) {
+//            	//this case is for CharArray.array
+//                return (Element) Character.instance(val);
+//            }
+//            else {
             	return (Element) new java.lang.Character(val);
-            }
+//            }
         } else if (array instanceof byte[]) {
         	byte val = ((byte[])array)[index];
-            if ($reifiedElement == Integer.$TypeDescriptor$) {
-            	//this case is for ByteArray.array
-                return (Element) Integer.instance(val);
-            }
-            else {
+//            if ($reifiedElement == Integer.$TypeDescriptor$) {
+//            	//this case is for ByteArray.array
+//                return (Element) Integer.instance(val);
+//            }
+//            else {
             	return (Element) new java.lang.Byte(val);
-            }
+//            }
         } else if (array instanceof short[]) {
         	short val = ((short[])array)[index];
-            if ($reifiedElement == Integer.$TypeDescriptor$) {
-            	//this case is for ShortArray.array
-                return (Element) Integer.instance(val);
-            }
-            else {
+//            if ($reifiedElement == Integer.$TypeDescriptor$) {
+//            	//this case is for ShortArray.array
+//                return (Element) Integer.instance(val);
+//            }
+//            else {
             	return (Element) new java.lang.Short(val);
-            }
+//            }
         } else if (array instanceof int[]) {
             int val = ((int[])array)[index];
-            if ($reifiedElement == Integer.$TypeDescriptor$) {
-            	//this case is for IntArray.array
-                return (Element) Integer.instance(val);
-            }
-            else if ($reifiedElement == Character.$TypeDescriptor$) {
+//            if ($reifiedElement == Integer.$TypeDescriptor$) {
+//            	//this case is for IntArray.array
+//                return (Element) Integer.instance(val);
+//            }
+//            else 
+            if ($reifiedElement == Character.$TypeDescriptor$) {
                 return (Element) Character.instance(val);
             }
             else {
@@ -514,13 +609,13 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             }
         } else if (array instanceof float[]) {
         	float val = ((float[])array)[index];
-            if ($reifiedElement == Float.$TypeDescriptor$) {
-            	//this case is for FloatArray.array
-                return (Element) Float.instance(val);
-            }
-            else {
+//            if ($reifiedElement == Float.$TypeDescriptor$) {
+//            	//this case is for FloatArray.array
+//                return (Element) Float.instance(val);
+//            }
+//            else {
             	return (Element) new java.lang.Float(((float[])array)[index]);
-            }
+//            }
         } else if (array instanceof double[]) {
         	double val = ((double[])array)[index];
             if ($reifiedElement == Float.$TypeDescriptor$) {
@@ -564,36 +659,37 @@ public final class Array<Element> implements List<Element>, ReifiedType {
     	else {
     		int idx = (int) index;
             if (array instanceof char[]) {
-            	if (element instanceof Character) {
-            		//this case is for CharArray.array
-            		((char[])array)[idx] = (char) ((Character) element).codePoint; //TODO: unsafe!
-            	}
-            	else {
+//            	if (element instanceof Character) {
+//            		//this case is for CharArray.array
+//            		((char[])array)[idx] = (char) ((Character) element).codePoint; //TODO: unsafe!
+//            	}
+//            	else {
             		((char[])array)[idx] = ((java.lang.Character)element).charValue();
-            	}
+//            	}
             } else if (array instanceof byte[]) {
-            	if (element instanceof Integer) {
-                	//this case is for ByteArray.array
-                	((byte[])array)[idx] = (byte) ((Integer)element).value; //TODO: unsafe
-                }
-            	else {
+//            	if (element instanceof Integer) {
+//                	//this case is for ByteArray.array
+//                	((byte[])array)[idx] = (byte) ((Integer)element).value; //TODO: unsafe
+//                }
+//            	else {
             		((byte[])array)[idx] = ((java.lang.Byte)element).byteValue();
-            	}
+//            	}
             } else if (array instanceof short[]) {
-            	if (element instanceof Integer) {
-                	//this case is for ShortArray.array
-                	((short[])array)[idx] = (short) ((Integer)element).value; //TODO: unsafe
-                }
-            	else {
+//            	if (element instanceof Integer) {
+//                	//this case is for ShortArray.array
+//                	((short[])array)[idx] = (short) ((Integer)element).value; //TODO: unsafe
+//                }
+//            	else {
             		((short[])array)[idx] = ((java.lang.Short)element).shortValue();
-            	}
+//            	}
             } else if (array instanceof int[]) {
-            	if (element instanceof Integer) {
-            		//this case is for IntArray.array
-                	((int[])array)[idx] = (int) ((Integer)element).value; //TODO: unsafe
-                }
-            	else if (element instanceof Character) {
-                    ((int[])array)[idx] = ((Character)element).codePoint;
+//            	if (element instanceof Integer) {
+//            		//this case is for IntArray.array
+//                	((int[])array)[idx] = (int) ((Integer)element).value; //TODO: unsafe
+//                }
+//            	else 
+            	if (element instanceof Character) {
+//                    ((int[])array)[idx] = ((Character)element).codePoint;
                 }
                 else {
                     ((int[])array)[idx] = ((java.lang.Integer)element).intValue();
@@ -606,13 +702,13 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             		((long[])array)[idx] = ((java.lang.Long) element).longValue();
             	}
             } else if (array instanceof float[]) {
-            	if (element instanceof Float) {
-            		//this case is for FloatArray.array
-                	((float[])array)[idx] = (float) ((Float)element).value; //TODO: unsafe
-                }
-            	else {
+//            	if (element instanceof Float) {
+//            		//this case is for FloatArray.array
+//                	((float[])array)[idx] = (float) ((Float)element).value; //TODO: unsafe
+//                }
+//            	else {
             		((float[])array)[idx] = ((java.lang.Float)element).floatValue();
-            	}
+//            	}
             } else if (array instanceof double[]) {
             	if (element instanceof Float) {
             		((double[])array)[idx] = ((Float)element).value;
@@ -1181,14 +1277,19 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 int sourcei = i+sourcePosition;
 				if (destination.array instanceof double[]) {
                     double[] target = (double[]) destination.array;
-                    if (array instanceof float[]) {
-                    	//this case is for FloatArray.array
-                        target[desti] = ((float[]) array)[sourcei];
-                    }
-                    else if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
+//                    if (array instanceof float[]) {
+//                    	//this case is for FloatArray.array
+//                        target[desti] = ((float[]) array)[sourcei];
+//                    }
+//                    else 
+                    if (array instanceof Object[]) {
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = ((Float) val).value;
+                    	if (val instanceof Float) {
+                    		target[desti] = ((Float) val).value;
+                    	}
+                    	else {
+                    		target[desti] = ((java.lang.Double) val).doubleValue();
+                    	}
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
@@ -1196,14 +1297,14 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 }
                 else if (destination.array instanceof float[]) {
                     float[] target = (float[]) destination.array;
-                    if (array instanceof double[]) {
-                    	//this case is for FloatArray.array
-                        target[desti] = (float) ((double[]) array)[sourcei];
-                    }
-                    else if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
+//                    if (array instanceof double[]) {
+//                    	//this case is for FloatArray.array
+//                        target[desti] = (float) ((double[]) array)[sourcei];
+//                    }
+//                    else
+                    if (array instanceof Object[]) {
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = (float) ((Float) val).value;
+                        target[desti] = ((java.lang.Float) val).floatValue();
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
@@ -1211,52 +1312,57 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 }
                 else if (destination.array instanceof long[]) {
                     long[] target = (long[]) destination.array;
-                    if (array instanceof int[]) {
-                    	//this case is for IntArray.array
-                        target[desti] = ((int[]) array)[sourcei];
-                    }
-                    else if (array instanceof short[]) {
-                    	//this case is for ShortArray.array
-                        target[desti] = ((short[]) array)[sourcei];
-                    }
-                    else if (array instanceof byte[]) {
-                    	//this case is for ByteArray.array
-                        target[desti] = ((byte[]) array)[sourcei];
-                    }
-                    else if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
+//                    if (array instanceof int[]) {
+//                    	//this case is for IntArray.array
+//                        target[desti] = ((int[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof short[]) {
+//                    	//this case is for ShortArray.array
+//                        target[desti] = ((short[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof byte[]) {
+//                    	//this case is for ByteArray.array
+//                        target[desti] = ((byte[]) array)[sourcei];
+//                    }
+//                    else 
+                    if (array instanceof Object[]) {
                         java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = ((Integer) val).value;
+                    	if (val instanceof Integer) {
+                    		target[desti] = ((Integer) val).value;
+                    	}
+                    	else {
+                    		target[desti] = ((java.lang.Long) val).longValue();
+                    	}
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof int[]) {
-                    int[] target = (int[]) destination.array;
-                    if (array instanceof long[]) {
-                        target[desti] = (int) ((long[]) array)[sourcei];
-                    }
-                    else if (array instanceof short[]) {
-                    	//this case is for ShortArray.array
-                        target[desti] = ((short[]) array)[sourcei];
-                    }
-                    else if (array instanceof byte[]) {
-                    	//this case is for ByteArray.array
-                        target[desti] = ((byte[]) array)[sourcei];
-                    }
-                    else if (array instanceof char[]) {
-                    	//this case is for CharArray.array
-                        target[desti] = ((char[]) array)[sourcei];
-                    }
-                    else if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
+                	int[] target = (int[]) destination.array;
+//                    if (array instanceof long[]) {
+//                        target[desti] = (int) ((long[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof short[]) {
+//                    	//this case is for ShortArray.array
+//                        target[desti] = ((short[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof byte[]) {
+//                    	//this case is for ByteArray.array
+//                        target[desti] = ((byte[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof char[]) {
+//                    	//this case is for CharArray.array
+//                        target[desti] = ((char[]) array)[sourcei];
+//                    }
+//                    else 
+                    if (array instanceof Object[]) {
                         java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        if (val instanceof Integer) {
-                        	target[desti] = (int) ((Integer) val).value;
-                        }
-                        else if (val instanceof Character) {
+                        if (val instanceof Character) {
                         	target[desti] = ((Character) val).codePoint;
+                        }
+                        else {
+                        	target[desti] = ((java.lang.Integer) val).intValue();
                         }
                     }
                     else {
@@ -1265,21 +1371,22 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 }
                 else if (destination.array instanceof short[]) {
                     short[] target = (short[]) destination.array;
-                    if (array instanceof long[]) {
-                        target[desti] = (short) ((long[]) array)[sourcei];
-                    }
-                    else if (array instanceof int[]) {
-                    	//this case is for IntArray.array
-                        target[desti] = (short) ((int[]) array)[sourcei];
-                    }
-                    else if (array instanceof byte[]) {
-                    	//this case is for ByteArray.array
-                        target[desti] = ((byte[]) array)[sourcei];
-                    }
-                    else if (array instanceof Object[]) {
+//                    if (array instanceof long[]) {
+//                        target[desti] = (short) ((long[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof int[]) {
+//                    	//this case is for IntArray.array
+//                        target[desti] = (short) ((int[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof byte[]) {
+//                    	//this case is for ByteArray.array
+//                        target[desti] = ((byte[]) array)[sourcei];
+//                    }
+//                    else
+                    if (array instanceof Object[]) {
                     	//TODO: think about java wrapper types here!!!
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = (short) ((Integer) val).value;
+                        target[desti] = ((java.lang.Short) val).shortValue();
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
@@ -1287,20 +1394,21 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 }
                 else if (destination.array instanceof byte[]) {
                     byte[] target = (byte[]) destination.array;
-                    if (array instanceof long[]) {
-                        target[desti] = (byte) ((long[]) array)[sourcei];
-                    }
-                    else if (array instanceof int[]) {
-                    	//this case is for IntArray.array
-                        target[desti] = (byte) ((int[]) array)[sourcei];
-                    }
-                    else if (array instanceof short[]) {
-                    	//this case is for ShortArray.array
-                        target[desti] = (byte) ((short[]) array)[sourcei];
-                    }
-                    else if (array instanceof Object[]) {
+//                    if (array instanceof long[]) {
+//                        target[desti] = (byte) ((long[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof int[]) {
+//                    	//this case is for IntArray.array
+//                        target[desti] = (byte) ((int[]) array)[sourcei];
+//                    }
+//                    else if (array instanceof short[]) {
+//                    	//this case is for ShortArray.array
+//                        target[desti] = (byte) ((short[]) array)[sourcei];
+//                    }
+//                    else
+                    if (array instanceof Object[]) {
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = (byte) ((Integer) val).value;
+                        target[desti] = ((java.lang.Byte) val).byteValue();
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
@@ -1309,9 +1417,13 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 else if (destination.array instanceof boolean[]) {
                     boolean[] target = (boolean[]) destination.array;
                     if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = (boolean) ((Boolean) val).booleanValue();
+                    	if (val instanceof Boolean) {
+                    		target[desti] = ((Boolean) val).booleanValue();
+                    	}
+                    	else {
+                    		target[desti] = ((java.lang.Boolean) val).booleanValue();
+                    	}
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
@@ -1320,43 +1432,47 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                 else if (destination.array instanceof char[]) {
                     char[] target = (char[]) destination.array;
                     if (array instanceof Object[]) {
-                    	//TODO: think about java wrapper types here!!!
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = (char) ((Character) val).codePoint;
+                        target[desti] = ((java.lang.Character) val).charValue();
                     }
-                    else if (array instanceof int[]) {
-                        target[desti] = (char) ((int[]) array)[sourcei];
-                    }
+//                    else if (array instanceof int[]) {
+//                        target[desti] = (char) ((int[]) array)[sourcei];
+//                    }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof java.lang.String[]) {
                 	java.lang.String[] target = (java.lang.String[]) destination.array;
-                    if (array instanceof Object[]) {
+                	if (array instanceof Object[]) {
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
-                        target[desti] = ((String) val).value;
-                    }
-                    else if (array instanceof java.lang.String[]) {
-                        target[desti] = ((java.lang.String[]) array)[sourcei];
+                    	if (val instanceof String) {
+                    		target[desti] = ((String) val).value;
+                    	}
+                    	else {
+                    		target[desti] = (java.lang.String) val;
+                    	}
                     }
                     else {
                         throw new AssertionException("unexpected array types in copyTo()");
                     }
                 }
                 else {
-                	//TODO: think about java wrapper types here!!!
-                	//the special cases handle the java.lang.XxxArrays
-                	//copying to a normal Array
                     java.lang.Object[] target = (java.lang.Object[]) destination.array;
                     if (array instanceof long[]) {
-                        target[desti] = Integer.instance(((long[])array)[sourcei]);
+                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
+                    		target[desti] = Integer.instance(((long[])array)[sourcei]);
+                    	}
+                    	else {
+                    		target[desti] = new java.lang.Long(((long[])array)[sourcei]);
+                    	}
                     }
                     else if (array instanceof int[]) {
-                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
-                    		target[desti] = Integer.instance(((int[])array)[sourcei]);
-                    	}
-                    	else if ($reifiedElement==Character.$TypeDescriptor$) {
+//                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
+//                    		target[desti] = Integer.instance(((int[])array)[sourcei]);
+//                    	}
+//                    	else
+                    	if ($reifiedElement==Character.$TypeDescriptor$) {
                     		target[desti] = Character.instance(((int[])array)[sourcei]);
                     	}
                     	else {
@@ -1364,20 +1480,20 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                     	}
                     }
                     else if (array instanceof short[]) {
-                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
-                    		target[desti] = Integer.instance(((short[])array)[sourcei]);
-                    	}
-                    	else {
+//                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
+//                    		target[desti] = Integer.instance(((short[])array)[sourcei]);
+//                    	}
+//                    	else {
                     		target[desti] = new java.lang.Short(((short[])array)[sourcei]);
-                    	}
+//                    	}
                     }
                     else if (array instanceof byte[]) {
-                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
-                    		target[desti] = Integer.instance(((byte[])array)[sourcei]);
-                    	}
-                    	else {
+//                    	if ($reifiedElement==Integer.$TypeDescriptor$) {
+//                    		target[desti] = Integer.instance(((byte[])array)[sourcei]);
+//                    	}
+//                    	else {
                     		target[desti] = new java.lang.Byte(((byte[])array)[sourcei]);
-                    	}
+//                    	}
                     }
                     else if (array instanceof double[]) {
                     	if ($reifiedElement==Float.$TypeDescriptor$) {
@@ -1388,12 +1504,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                     	}
                     }
                     else if (array instanceof float[]) {
-                    	if ($reifiedElement==Float.$TypeDescriptor$) {
-                    		target[desti] = Float.instance(((float[])array)[sourcei]);
-                    	}
-                    	else {
+//                    	if ($reifiedElement==Float.$TypeDescriptor$) {
+//                    		target[desti] = Float.instance(((float[])array)[sourcei]);
+//                    	}
+//                    	else {
                     		target[desti] = new java.lang.Float(((float[])array)[sourcei]);
-                    	}
+//                    	}
                     }
                     else if (array instanceof boolean[]) {
                     	if ($reifiedElement==Boolean.$TypeDescriptor$) {
@@ -1404,12 +1520,12 @@ public final class Array<Element> implements List<Element>, ReifiedType {
                     	}
                     }
                     else if (array instanceof char[]) {
-                    	if ($reifiedElement==Character.$TypeDescriptor$) {
-                    		target[desti] = Character.instance(((char[])array)[sourcei]);
-                    	}
-                    	else {
+//                    	if ($reifiedElement==Character.$TypeDescriptor$) {
+//                    		target[desti] = Character.instance(((char[])array)[sourcei]);
+//                    	}
+//                    	else {
                     		target[desti] = new java.lang.Character(((char[])array)[sourcei]);
-                    	}
+//                    	}
                     	
                     }
                     else if (array instanceof java.lang.String[]) {
