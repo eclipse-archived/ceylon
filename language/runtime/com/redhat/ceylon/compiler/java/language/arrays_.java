@@ -1,19 +1,9 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import java.util.Arrays;
-
-import ceylon.language.AssertionException;
-import ceylon.language.Boolean;
 import ceylon.language.Array;
-import ceylon.language.Integer;
-import ceylon.language.Float;
-import ceylon.language.Character;
-import ceylon.language.Iterator;
+import ceylon.language.AssertionException;
 import ceylon.language.String;
-import ceylon.language.Iterable;
-import ceylon.language.finished_;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -22,16 +12,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
- * Utilities singleton for Java array convertions:
+ * Utilities singleton for array type conversions operations
+ * that transform Ceylon {@link Array}s to a native Java
+ * arrays.
  * 
- * <ul>
- *  <li>From <tt>Iterable</tt> to Java array</li>
- *  <li>To unwrap Ceylon Arrays as Java arrays</li>
- *  <li>To convert <tt>Iterable&lt;Character&gt;</tt> to <tt>int[]</tt></li>
- *  <li>To convert <tt>Iterable&lt;ceylon.language.String&gt;</tt> to <tt>java.lang.String[]</tt></li>
- *  <li>To convert <tt>Iterable&lt;java.lang.String&gt;</tt> to <tt>ceylon.language.String[]</tt></li>
- * </ul>
- *
  * This class pretends to be part of <tt>java.lang</tt>.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
@@ -49,7 +33,14 @@ public final class arrays_ {
     public static arrays_ get_() {
         return value;
     }
-
+    
+    /**
+     * Cast a Ceylon <code>Array&lt;Integer&gt;</code> to a Java 
+     * <code>LongArray</code>, that is, to <code>long[]</code>, 
+     * preserving the identity of the given array.
+     * 
+     * @see LongArray
+     */
     public long[] asNativeLongArray(@Name("array") Array<ceylon.language.Integer> array){
         // simplest is same underlying type
         if(array.toArray() instanceof long[]){
@@ -59,6 +50,13 @@ public final class arrays_ {
         throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
+    /**
+     * Cast a Ceylon <code>Array&lt;Float&gt;</code> to a Java 
+     * <code>DoubleArray</code>, that is, to <code>double[]</code>, 
+     * preserving the identity of the given array.
+     * 
+     * @see DoubleArray
+     */
     public double[] asNativeDoubleArray(@Name("array") Array<ceylon.language.Float> array){
         // simplest is same underlying type
         if(array.toArray() instanceof double[]){
@@ -68,15 +66,13 @@ public final class arrays_ {
         throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
-    public java.lang.String[] asNativeStringArray(@Name("array") Array<ceylon.language.String> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof java.lang.String[]){
-        	java.lang.String[] src = (java.lang.String[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
+    /**
+     * Cast a Ceylon <code>Array&lt;Boolean&gt;</code> to a Java 
+     * <code>BooleanArray</code>, that is, to <code>boolean[]</code>, 
+     * preserving the identity of the given array.
+     * 
+     * @see BooleanArray
+     */
     public boolean[] asNativeBooleanArray(@Name("array") Array<ceylon.language.Boolean> array){
         // simplest is same underlying type
         if(array.toArray() instanceof boolean[]){
@@ -86,10 +82,180 @@ public final class arrays_ {
         throw new AssertionException("Invalid source array type: "+array.toArray());
     }
 
+    /**
+     * Cast a Ceylon <code>Array&lt;String&gt;</code> to a Java 
+     * <code>ObjectArray&lt;java.lang.String&gt;</code>, that is, 
+     * to <code>java.lang.String[]</code>, preserving the identity 
+     * of the given array.
+     * 
+     * @see ObjectArray
+     */
+    public java.lang.String[] asNativeStringArray(@Name("array") Array<ceylon.language.String> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof java.lang.String[]){
+        	java.lang.String[] src = (java.lang.String[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;Character&gt;</code> to a Java 
+     * <code>IntArray</code>, that is, to <code>int[]</code>, 
+     * preserving the identity of the given array.
+     * 
+     * @see IntArray
+     */
     public int[] asCodePointArray(@Name("array") Array<ceylon.language.Character> array){
         // simplest is same underlying type
         if(array.toArray() instanceof int[]){
             int[] src = (int[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Byte&gt;</code> to a Java 
+     * <code>ByteArray</code>, that is, to <code>byte[]</code>, preserving 
+     * the identity of the given array.
+     * 
+     * @see ByteArray
+     */
+    public byte[] asByteArray(@Name("array") Array<java.lang.Byte> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof byte[]){
+            byte[] src = (byte[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Short&gt;</code> to a Java 
+     * <code>ShortArray</code>, that is, to <code>short[]</code>, preserving 
+     * the identity of the given array.
+     * 
+     * @see ShortArray
+     */
+    public short[] asShortArray(@Name("array") Array<java.lang.Short> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof short[]){
+            short[] src = (short[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Integer&gt;</code> to a Java 
+     * <code>IntArray</code>, that is, to <code>int[]</code>, preserving 
+     * the identity of the given array.
+     * 
+     * @see IntArray
+     */
+    public int[] asIntArray(@Name("array") Array<java.lang.Integer> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof int[]){
+            int[] src = (int[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Long&gt;</code> to a Java 
+     * <code>LongArray</code>, that is, to <code>long[]</code>, preserving 
+     * the identity of the given array.
+     * 
+     * @see LongArray
+     */
+    public long[] asLongArray(@Name("array") Array<java.lang.Long> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof long[]){
+            long[] src = (long[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Float&gt;</code> to a Java 
+     * <code>FloatArray</code>, that is, to <code>float[]</code>, preserving 
+     * the identity of the given array. 
+     * 
+     * @see FloatArray
+     */
+    public float[] asFloatArray(@Name("array") Array<java.lang.Float> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof float[]){
+            float[] src = (float[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Double&gt;</code> to a Java 
+     * <code>DoubleArray</code>, that is, to <code>double[]</code>, preserving 
+     * the identity of the given array. 
+     * 
+     * @see DoubleArray
+     */
+    public double[] asDoubleArray(@Name("array") Array<java.lang.Double> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof double[]){
+            double[] src = (double[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Character&gt;</code> to a Java 
+     * <code>CharArray</code>, that is, to <code>char[]</code>, preserving 
+     * the identity of the given array. 
+     * 
+     * @see CharArray
+     */
+    public char[] asCharArray(@Name("array") Array<java.lang.Character> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof char[]){
+            char[] src = (char[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+
+    /**
+     * Cast a Ceylon <code>Array&lt;java.lang.Boolean&gt;</code> to a Java 
+     * <code>BooleanArray</code>, that is, to <code>boolean[]</code>, preserving 
+     * the identity of the given array. 
+     * 
+     * @see BooleanArray
+     */
+    public boolean[] asBooleanArray(@Name("array") Array<java.lang.Boolean> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof boolean[]){
+            boolean[] src = (boolean[]) array.toArray();
+            return src;
+        }
+        throw new AssertionException("Invalid source array type: "+array.toArray());
+    }
+    
+    /**
+     * Cast a Ceylon <code>Array&lt;T&gt;</code> to a Java <code>ObjectArray&lt;T&gt;</code>,
+     * that is, to <code>T[]</code>, preserving the identity of the given array. 
+     * 
+     * @see ObjectArray
+     */
+    public <T> T[] asObjectArray(@Ignore TypeDescriptor $reifiedT, 
+            @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>") @Name("array") Array<T> array){
+        // simplest is same underlying type
+        if(array.toArray() instanceof java.lang.Object[]){
+            @SuppressWarnings("unchecked")
+            T[] src = (T[]) array.toArray();
             return src;
         }
         throw new AssertionException("Invalid source array type: "+array.toArray());
@@ -141,15 +307,6 @@ public final class arrays_ {
         return Util.toByteArray(values);
     }*/
 
-    public byte[] asByteArray(@Name("array") Array<java.lang.Byte> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof byte[]){
-            byte[] src = (byte[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
     /*public short[] toShortArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
                                 @Name("values")
                                 Iterable<? extends Integer,? extends java.lang.Object> values){
@@ -195,15 +352,6 @@ public final class arrays_ {
         }
         return Util.toShortArray(values);
     }*/
-
-    public short[] asShortArray(@Name("array") Array<java.lang.Short> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof short[]){
-            short[] src = (short[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
 
     /*public int[] toIntArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
                             @Name("values")
@@ -251,15 +399,6 @@ public final class arrays_ {
         return Util.toIntArray(values);
     }*/
 
-    public int[] asIntArray(@Name("array") Array<java.lang.Integer> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof int[]){
-            int[] src = (int[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
     /*public long[] toLongArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
                               @Name("values")
                               Iterable<? extends Integer,? extends java.lang.Object> values){
@@ -306,15 +445,6 @@ public final class arrays_ {
         return Util.toLongArray(values);
     }*/
 
-    public long[] asLongArray(@Name("array") Array<java.lang.Long> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof long[]){
-            long[] src = (long[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
     /*public float[] toFloatArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
                                 @Name("values")
                                 Iterable<? extends Float,? extends java.lang.Object> values){
@@ -347,15 +477,6 @@ public final class arrays_ {
         return Util.toFloatArray(values);
     }*/
     
-    public float[] asFloatArray(@Name("array") Array<java.lang.Float> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof float[]){
-            float[] src = (float[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
     /*public double[] toDoubleArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Float,ceylon.language::Null>")
                                   @Name("values")
                                   Iterable<? extends Float,? extends java.lang.Object> values){
@@ -388,15 +509,6 @@ public final class arrays_ {
         return Util.toDoubleArray(values);
     }*/
 
-    public double[] asDoubleArray(@Name("array") Array<java.lang.Double> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof double[]){
-            double[] src = (double[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
     /*public char[] toCharArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
                               @Name("values")
                               Iterable<? extends Character,? extends java.lang.Object> values){
@@ -428,15 +540,6 @@ public final class arrays_ {
         }
         return Util.toCharArray(values);
     }*/
-
-    public char[] asCharArray(@Name("array") Array<java.lang.Character> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof char[]){
-            char[] src = (char[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
 
     /*public int[] toCodePointArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
                                   @Name("values")
@@ -494,15 +597,6 @@ public final class arrays_ {
         return Util.toBooleanArray(values);
     }*/
 
-    public boolean[] asBooleanArray(@Name("array") Array<java.lang.Boolean> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof boolean[]){
-            boolean[] src = (boolean[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-
     /*public <T> T[] toObjectArray(@Ignore TypeDescriptor $reifiedT, 
                                  @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
                                  @Name("values")
@@ -520,17 +614,6 @@ public final class arrays_ {
         }
         return Util.<T>toArray(values, Util.<T>getJavaClassForDescriptor($reifiedT));
     }*/
-
-    public <T> T[] asObjectArray(@Ignore TypeDescriptor $reifiedT, 
-            @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>") @Name("array") Array<T> array){
-        // simplest is same underlying type
-        if(array.toArray() instanceof java.lang.Object[]){
-            @SuppressWarnings("unchecked")
-            T[] src = (T[]) array.toArray();
-            return src;
-        }
-        throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
 
     /*public java.lang.String[] toJavaStringArray(@TypeInfo("ceylon.language::Iterable<ceylon.language::String|ceylon.language::Null,ceylon.language::Null>")
                                                 @Name("values")
