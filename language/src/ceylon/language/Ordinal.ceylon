@@ -3,7 +3,31 @@
  [[Integer]] and other [[Integral]] numeric types.
  [[Character]] is also considered an ordinal type.
  
- `Ordinal` types may be used to generate a [[Range]].
+ An `Ordinal` type may be used to generate a [[Range]], 
+ using the span or segment operators.
+ 
+ The _span_ operator accepts the first and last values of 
+ the range.
+ 
+     0..5    // [0, 1, 2, 3, 4, 5]
+     0..0    // [0]
+ 
+ If the last value is smaller than the first value, the
+ range is reversed.
+ 
+     5..0    // [5, 4, 3, 2, 1, 0]
+     0..-5   // [0, -1, -2, -3, -4, -5]
+ 
+ The _segment_ operator accepts the first index and maximum 
+ length of the subrange.
+ 
+     0:5     // [0, 1, 2, 3, 4]
+ 
+ If the length is nonpositive, the subrange is empty.
+ 
+     0:0     // []
+     5:0     // []
+     0:-5    // []
  
  Most `Ordinal` types are also [[Enumerable]]."
 see (`class Character`, 

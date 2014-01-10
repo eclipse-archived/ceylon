@@ -24,12 +24,11 @@
    
        String who = "hello world"[6...];
    
-   Note that since `string[index]` evaluates to the
-   optional type `Character?`, it is often more convenient
-   to write `string[index..index]`, which evaluates to a
-   `String` containing a single character, or to the empty
-   string `""` if `index` refers to a position outside the
-   string.
+   Note that since `string[index]` evaluates to the optional 
+   type `Character?`, it is often more convenient to write 
+   `string[index..index]`, which evaluates to a `String` 
+   containing a single character, or to the empty string 
+   `""` if `index` refers to a position outside the string.
    
    It is easy to use comprehensions to transform strings:
    
@@ -231,8 +230,8 @@ shared native final class String(characters)
                                  String replacement);
     
     "Compare this string with the given string 
-     lexicographically, according to the Unicode values of 
-     the characters."
+     lexicographically, according to the Unicode code points
+     of the characters."
     shared actual native Comparison compare(String other);
     
     "Determines if this string is longer than the given
@@ -258,7 +257,7 @@ shared native final class String(characters)
     shared actual String string => this;
     
     "Determines if this string has no characters, that is, 
-     if it has zero `size`. This is a more efficient 
+     if it has zero `size`. This is a _much_ more efficient 
      operation than `string.size==0`."
     see (`value size`)
     shared actual native Boolean empty;
