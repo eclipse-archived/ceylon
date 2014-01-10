@@ -70,91 +70,91 @@ public final class Array<Element> implements List<Element>, ReifiedType {
         java.util.List<Element> list = Util.collectIterable(elements);
         if ($reifiedElement instanceof TypeDescriptor.Class) {
             TypeDescriptor.Class clazz = (TypeDescriptor.Class) $reifiedElement;
-            if (clazz.getKlass().equals(Integer.class)) {
+            if (clazz.getKlass()==Integer.class) {
                 long[] array = new long[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((Integer) list.get(i)).value;
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(Float.class)) {
+            if (clazz.getKlass()==Float.class) {
                 double[] array = new double[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((Float) list.get(i)).value;
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(Character.class)) {
+            if (clazz.getKlass()==Character.class) {
                 int[] array = new int[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((Character) list.get(i)).codePoint;
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(String.class)) {
+            if (clazz.getKlass()==String.class) {
             	java.lang.String[] array = new java.lang.String[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((String) list.get(i)).value;
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(Boolean.class)) {
+            if (clazz.getKlass()==Boolean.class) {
                 boolean[] array = new boolean[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((Boolean) list.get(i)).booleanValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Boolean.class)) {
+            if (clazz.getKlass()==java.lang.Boolean.class) {
                 boolean[] array = new boolean[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Boolean) list.get(i)).booleanValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Character.class)) {
+            if (clazz.getKlass()==java.lang.Character.class) {
                 char[] array = new char[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Character) list.get(i)).charValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Float.class)) {
+            if (clazz.getKlass()==java.lang.Float.class) {
                 float[] array = new float[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Float) list.get(i)).floatValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Double.class)) {
+            if (clazz.getKlass()==java.lang.Double.class) {
                 double[] array = new double[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Double) list.get(i)).doubleValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Byte.class)) {
+            if (clazz.getKlass()==java.lang.Byte.class) {
                 byte[] array = new byte[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Byte) list.get(i)).byteValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Short.class)) {
+            if (clazz.getKlass()==java.lang.Short.class) {
                 short[] array = new short[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Short) list.get(i)).shortValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Integer.class)) {
+            if (clazz.getKlass()==java.lang.Integer.class) {
                 int[] array = new int[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Integer) list.get(i)).intValue();
                 }
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Long.class)) {
+            if (clazz.getKlass()==java.lang.Long.class) {
                 long[] array = new long[list.size()];
                 for (int i=0; i<array.length; i++) {
                     array[i] = ((java.lang.Long) list.get(i)).longValue();
@@ -172,67 +172,67 @@ public final class Array<Element> implements List<Element>, ReifiedType {
             final int size, Element element) {
         if ($reifiedElement instanceof TypeDescriptor.Class) {
             TypeDescriptor.Class clazz = (TypeDescriptor.Class) $reifiedElement;
-            if (clazz.getKlass().equals(Integer.class)) {
+            if (clazz.getKlass()==Integer.class) {
                 long[] array = new long[size];
                 Arrays.fill(array, ((Integer) element).value); 
                 return array;
             }
-            if (clazz.getKlass().equals(Float.class)) {
+            if (clazz.getKlass()==Float.class) {
                 double[] array = new double[size];
                 Arrays.fill(array, ((Float) element).value); 
                 return array;
             }
-            if (clazz.getKlass().equals(Character.class)) {
+            if (clazz.getKlass()==Character.class) {
                 int[] array = new int[size];
                 Arrays.fill(array, ((Character) element).codePoint); 
                 return array;
             }
-            if (clazz.getKlass().equals(String.class)) {
+            if (clazz.getKlass()==String.class) {
             	java.lang.String[] array = new java.lang.String[size];
                 Arrays.fill(array, ((String) element).value); 
                 return array;
             }
-            if (clazz.getKlass().equals(Boolean.class)) {
+            if (clazz.getKlass()==Boolean.class) {
                 boolean[] array = new boolean[size];
                 Arrays.fill(array, ((Boolean) element).booleanValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Boolean.class)) {
+            if (clazz.getKlass()==java.lang.Boolean.class) {
                 boolean[] array = new boolean[size];
                 Arrays.fill(array, ((java.lang.Boolean) element).booleanValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Character.class)) {
+            if (clazz.getKlass()==java.lang.Character.class) {
                 char[] array = new char[size];
                 Arrays.fill(array, ((java.lang.Character) element).charValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Float.class)) {
+            if (clazz.getKlass()==java.lang.Float.class) {
                 float[] array = new float[size];
                 Arrays.fill(array, ((java.lang.Float) element).floatValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Double.class)) {
+            if (clazz.getKlass()==java.lang.Double.class) {
                 double[] array = new double[size];
                 Arrays.fill(array, ((java.lang.Double) element).doubleValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Byte.class)) {
+            if (clazz.getKlass()==java.lang.Byte.class) {
                 byte[] array = new byte[size];
                 Arrays.fill(array, ((java.lang.Byte) element).byteValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Short.class)) {
+            if (clazz.getKlass()==java.lang.Short.class) {
                 short[] array = new short[size];
                 Arrays.fill(array, ((java.lang.Short) element).shortValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Integer.class)) {
+            if (clazz.getKlass()==java.lang.Integer.class) {
                 int[] array = new int[size];
                 Arrays.fill(array, ((java.lang.Integer) element).intValue()); 
                 return array;
             }
-            if (clazz.getKlass().equals(java.lang.Long.class)) {
+            if (clazz.getKlass()==java.lang.Long.class) {
                 long[] array = new long[size];
                 Arrays.fill(array, ((java.lang.Long) element).longValue()); 
                 return array;
