@@ -185,16 +185,16 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         super.completeCommandline(cmd);
         
         if(verbose){
-            cmd.createArgument().setValue("--verbose");
+            appendOption(cmd, "--verbose");
         }
         if (optimize) {
-            cmd.createArgument().setValue("--optimize");
+            appendOption(cmd, "--optimize");
         }
         if (!modulify) {
-            cmd.createArgument().setValue("--no-module");
+            appendOption(cmd, "--no-module");
         }
         if (!gensrc) {
-            cmd.createArgument().setValue("--skip-src-archive");
+            appendOption(cmd, "--skip-src-archive");
         }
 
         for (File file : compileList) {

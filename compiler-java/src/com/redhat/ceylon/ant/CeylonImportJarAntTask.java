@@ -111,7 +111,7 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
         appendPassOption(cmd, getPass());
         
         if (out != null) {
-            cmd.createArgument().setValue("--out=" + getOut());
+            appendOptionArgument(cmd, "--out", getOut());
         }
         
         if (module != null) {

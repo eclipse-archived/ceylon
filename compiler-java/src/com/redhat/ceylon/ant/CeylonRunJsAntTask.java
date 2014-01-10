@@ -95,20 +95,20 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
     @Override
     protected void completeCommandline(Commandline cmd) {
         if(func != null){
-            cmd.createArgument().setValue("--run=" + func);
+            appendOptionArgument(cmd, "--run", func);
         }
         if (systemRepository != null) {
-            cmd.createArgument().setValue("--sysrep=" + systemRepository);
+            appendOptionArgument(cmd, "--sysrep", systemRepository);
         }
         if(compileFlags != null){
-            cmd.createArgument().setValue("--compile=" + compileFlags);
+            appendOptionArgument(cmd, "--compile", compileFlags);
         }
         
         for (Repo rep : reposet.getRepos()) {
             // skip empty entries
             if (rep.url == null || rep.url.isEmpty())
                 continue;
-            cmd.createArgument().setValue("--rep="+rep.url);
+            appendOptionArgument(cmd, "--rep", rep.url);
         }
         
         cmd.createArgument().setValue(module);

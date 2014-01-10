@@ -108,20 +108,20 @@ public class CeylonRunAntTask extends CeylonAntTask {
      */
     protected void completeCommandline(Commandline cmd) {
         if(run != null){
-            cmd.createArgument().setValue("--run=" + run);
+            appendOptionArgument(cmd, "--run", run);
         }
         if (systemRepository != null) {
-            cmd.createArgument().setValue("--sysrep=" + systemRepository);
+            appendOptionArgument(cmd, "--sysrep", systemRepository);
         }
         if(compileFlags != null){
-            cmd.createArgument().setValue("--compile=" + compileFlags);
+            appendOptionArgument(cmd, "--compile", compileFlags);
         }
         
         for(Repo rep : this.reposet.getRepos()){
             // skip empty entries
             if(rep.url == null || rep.url.isEmpty())
                 continue;
-            cmd.createArgument().setValue("--rep="+rep.url);
+            appendOptionArgument(cmd, "--rep", rep.url);
         }
         
         cmd.createArgument().setValue(module);

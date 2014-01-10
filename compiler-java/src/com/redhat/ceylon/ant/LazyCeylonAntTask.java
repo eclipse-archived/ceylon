@@ -145,6 +145,7 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
     public void addConfiguredReposet(RepoSet reposet) {
         this.reposet.addConfiguredRepoSet(reposet);
     }
+    
     protected Set<Repo> getReposet() {
         return reposet.getRepos();
     }
@@ -188,11 +189,11 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
     @Override
     protected void completeCommandline(Commandline cmd) {
         if (out != null) {
-            cmd.createArgument().setValue("--out=" + out);
+            appendOptionArgument(cmd, "--out", out);
         }
 
         if (encoding != null) {
-            cmd.createArgument().setValue("--encoding=" + encoding);
+            appendOptionArgument(cmd, "--encoding", encoding);
         } else  {
             log(getLocation().getFileName() + ":" +getLocation().getLineNumber() + ": No encoding specified, this might cause problems with portability to other platforms!", Project.MSG_WARN);
         }
@@ -213,7 +214,7 @@ abstract class LazyCeylonAntTask extends CeylonAntTask implements Lazy {
             if(rep.url == null || rep.url.isEmpty())
                 continue;
             log("Adding repository: "+rep, Project.MSG_VERBOSE);
-            cmd.createArgument().setValue("--rep=" + rep.url);
+            appendOptionArgument(cmd, "--rep", rep.url);
         }
     }
     

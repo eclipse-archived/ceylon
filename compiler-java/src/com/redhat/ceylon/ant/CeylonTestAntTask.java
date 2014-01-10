@@ -110,17 +110,17 @@ public class CeylonTestAntTask extends CeylonAntTask {
      */
     protected void completeCommandline(Commandline cmd) {
         if (systemRepository != null) {
-            cmd.createArgument().setValue("--sysrep=" + systemRepository);
+            appendOptionArgument(cmd, "--sysrep", systemRepository);
         }
         if(compileFlags != null){
-            cmd.createArgument().setValue("--compile=" + compileFlags);
+            appendOptionArgument(cmd, "--compile", compileFlags);
         }
         
         for(Repo rep : this.reposet.getRepos()){
             // skip empty entries
             if(rep.url == null || rep.url.isEmpty())
                 continue;
-            cmd.createArgument().setValue("--rep="+rep.url);
+            appendOptionArgument(cmd, "--rep", rep.url);
         }
         
         for (Module module : moduleSet.getModules()) {

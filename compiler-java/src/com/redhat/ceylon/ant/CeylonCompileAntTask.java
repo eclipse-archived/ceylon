@@ -358,7 +358,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         }
         
         for (File res : getResource()) {
-            cmd.createArgument().setValue("--resource=" + res.getAbsolutePath());
+            appendOptionArgument(cmd, "--resource", res.getAbsolutePath());
         }
         
         if(classpath != null){

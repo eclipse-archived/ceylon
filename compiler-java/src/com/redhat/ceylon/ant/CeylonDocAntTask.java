@@ -184,21 +184,20 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
         super.completeCommandline(cmd);
         
         if(includeSourceCode)
-            cmd.createArgument().setValue("--source-code");
+            appendOption(cmd, "--source-code");
         if(includeNonShared)
-            cmd.createArgument().setValue("--non-shared");
+            appendOption(cmd, "--non-shared");
         if(ignoreMissingDoc)
-            cmd.createArgument().setValue("--ignore-missing-doc");
+            appendOption(cmd, "--ignore-missing-doc");
         if(ignoreBrokenLink)
-            cmd.createArgument().setValue("--ignore-broken-link");
+            appendOption(cmd, "--ignore-broken-link");
         for (File doc : getDoc()) {
-            cmd.createArgument().setValue("--doc=" + doc.getAbsolutePath());
+            appendOptionArgument(cmd, "--doc", doc.getAbsolutePath());
         }
         // links
         for (Link link : linkset.getLinks()) {
             log("Adding link: "+link, Project.MSG_VERBOSE);
-            cmd.createArgument().setValue("--link");
-            cmd.createArgument().setValue(link.toString());
+            appendOptionArgument(cmd, "--link", link.toString());
         }
         // modules to document
         for (Module module : moduleset.getModules()) {
