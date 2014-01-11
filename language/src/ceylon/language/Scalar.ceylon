@@ -1,7 +1,15 @@
 "Abstraction of [[numeric|Numeric]] types representing 
- scalar values with a [[total order|Comparable]], 
+ scalar values with a natural [[total order|Comparable]], 
  including the built-in numeric types [[Integer]] and 
- [[Float]]."
+ [[Float]].
+ 
+ `Scalar`s have a well-defined [[magnitude]], which should
+ satisfy:
+ 
+ - `x.magnitude >= 0`
+ - `x.magnitude == 0` iff `x==0`
+ 
+ where `0` is the additive identity of the numeric type."
 see (`class Integer`, `class Float`)
 by ("Gavin")
 shared interface Scalar<Other> of Other
@@ -10,18 +18,25 @@ shared interface Scalar<Other> of Other
                   Number
         given Other satisfies Scalar<Other> {
     
-    "The magnitude of this number."
+    "The magnitude of this number. Must satisfy: 
+     
+     - `magnitude>=0` 
+     - `magnitude==0` iff `this==0`
+     
+     where `0` is the additive identity."
     shared actual formal Other magnitude;
-        
-    "The fractional part of the number, after truncation of 
-     the integral part. For integral numeric types, the 
-     fractional part is always zero."
+    
+    "Determine if the number is strictly positive, that is, 
+     if `this>0`, where `0` is the additive identity."
+    shared actual formal Boolean positive;
+    
+    "Determine if the number is strictly negative, that is, 
+     if `this<0`, where `0` is the additive identity."
+    shared actual formal Boolean negative;
+    
     shared actual formal Other fractionalPart;
     
-    "The integral value of the number after truncation of 
-     the fractional part. For integral numeric types, the 
-     integral value of a number is the number itself."
     shared actual formal Other wholePart;
-
+    
 }
 
