@@ -1,5 +1,5 @@
 """A string of characters. Each character in the string is a 
-   [[32-bit Unicode character|Character]. The internal 
+   [[32-bit Unicode character|Character]]. The internal 
    UTF-16 encoding is hidden from clients.
    
    A string is a `Category` of its [[characters|Character]], 
