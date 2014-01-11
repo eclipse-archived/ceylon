@@ -3,12 +3,19 @@
    
    The division operation for integral numeric types results 
    in a remainder. Therefore, integral numeric types have 
-   [[an operation|remainder]] to determine the remainder of 
-   any division operation.
+   [[an operation|remainder]], denoted by the _remainder_
+   operator `%`, to determine the remainder of any division 
+   operation.
    
        if (n%2==0) {
            print("Even!");
        }
+   
+   Division and the remainder operation should satisfy: 
+   
+   - `x == (x/y)*y + x%y`
+   
+   for any instance `y` other than `0`.
    
    `Integral` numeric types are also [[Ordinal]], so ranges 
    of integral values may be produced using the 

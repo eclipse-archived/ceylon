@@ -23,12 +23,25 @@
  It is preferred, but not required, that the class be a
  mathematical _field_. That is, in addition to the above:
  
- - every instance `x` should have a multiplicative inverse 
-   `1/x`, satisfying `x * 1/x == 1`. 
+ - every instance `x` such that `x!=0` should have a 
+   multiplicative inverse `1/x`, satisfying `x * 1/x == 1`. 
  
  For numeric types which are not fields, for example, 
  [[Integer]], there is still a division operation, which is
- understood to produce a [[remainder|Integral.remainder]]. 
+ understood to produce a [[remainder|Integral.remainder]].
+ The division operation should satisfy:
+ 
+ - `x*y / y == x`
+ 
+ for any instance `y` other than `0`.
+ 
+ For numeric types which _are_ fields, division never
+ produces a remainder, and division should additionally 
+ satisfy:
+ 
+ - `x/y * y == x`
+ 
+ for any instance `y` other than `0`.
  
  Some numeric types, for example complex numbers, do not 
  have a [[total order|Comparable]]. Numeric types with a 
