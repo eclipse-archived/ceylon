@@ -1,8 +1,8 @@
 """A 32-bit [Unicode][] character. Ever `Character` has a 
    unique [[Integer]]-valued Unicode _code point_.
    
-       value piCodePoint = '\{GREEK SMALL LETTER PI}'.integer; // #03C0
-       value pi = #03C0.character; // GREEK SMALL LETTER PI
+       Integer piCodePoint = '\{GREEK SMALL LETTER PI}'.integer; // #03C0
+       Character pi = #03C0.character; // GREEK SMALL LETTER PI
    
    Characters are [[Ordinal]], so character ranges may be
    produced using the [[segment and span operators|Ordinal]].
