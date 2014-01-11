@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -23,8 +24,10 @@ public final class Character
 
     @Ignore
     public final int codePoint;
-
-    public Character(@Name("character") int character) {
+    
+    public Character(@Name("character") 
+    @TypeInfo("ceylon.language::Character") 
+    int character) {
         this.codePoint = character;
     }
 
