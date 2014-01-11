@@ -1,6 +1,27 @@
 "Abstraction of [[numeric types|Numeric]] that may be raised 
- to a power `x^p`. Note that the type of the exponent may be 
- different to the numeric type which is exponentiated."
+ to a power using the _exponentiation_ operator ^.
+ 
+     function exp(Float x) => e^x;
+ 
+ The exponentiation operation should obey the usual index
+ laws, including:
+ 
+ - `x^0 = 1`,
+ - `x^1 = x`,
+ - `x^(-1) = 1/x` 
+ - `x^(m+n) = x^m * x^n`
+ - `x^(m-n) = x^m / x^n`
+ - `x^(m*n) = (x^m)^n`
+ - `(x*y)^n = x^n * y^n`
+ 
+ where `0` is the additive identity, and `1` is the 
+ multiplicative identity.
+ 
+ Note that in general, the type of the exponent may be 
+ different to the numeric type which is exponentiated. For
+ example, a `Rational` number class might be a subtype of
+ `Exponentiable<Rational,Integer>`, thus accepting only
+ whole-number exponents."
 see (`class Integer`, `class Float`)
 shared interface Exponentiable<This,Other> of This
         satisfies Numeric<This>

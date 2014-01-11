@@ -1,6 +1,11 @@
-"Abstraction of numeric types with addition, `x + y`, 
- subtraction, `x - y`, multiplication, `x * y`, and 
- division, `x / y`, along with additive inverse `-x`.
+"Abstraction of numeric types with the usual binary 
+ operations:
+ 
+ - addition, `x + y`, 
+ - subtraction, `x - y`, 
+ - multiplication, `x * y`, and 
+ - division, `x / y`, along with 
+ - additive inverse `-x`.
  
  A concrete class which implements this interface should be
  a mathematical _ring_. That is:

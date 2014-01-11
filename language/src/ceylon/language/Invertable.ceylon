@@ -1,6 +1,8 @@
 "Abstraction of types which support a unary additive 
  inversion operation `-x`. For a [[numeric type|Numeric]], 
- this should return the negative of the argument value.
+ this should return the additive inverse of the operand.
+ 
+     Integer negativeOne = -1;
  
  A concrete class that implements this interface and which 
  also satisfies [[Summable]] should be a mathematical 

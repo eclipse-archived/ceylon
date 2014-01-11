@@ -3,6 +3,13 @@
  [[Integer]] and other [[Integral]] numeric types.
  [[Character]] is also considered an ordinal type.
  
+ The _increment_ operator `++` and _decrement_ operator `--`
+ are defined for all `Ordinal` types.
+ 
+     function increment() {
+         count++;
+     }
+ 
  An `Ordinal` type may be used to generate a [[Range]], 
  using the span or segment operators.
  
