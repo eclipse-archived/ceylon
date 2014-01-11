@@ -10,7 +10,19 @@
    a mathematical _semigroup_. That is, the addition 
    operation should be associative, satisfying:
    
-   - `(x+y)+z == x+(y+z)`"""
+   - `(x+y)+z == x+(y+z)`
+   
+   A `Summable` type might be a _monoid_, that is, a 
+   semigroup with an additive identity element, usually 
+   denoted `0`, but this is not required. For example:
+   
+   - `String` is a monoid with identity element `""`, 
+   - `Float` is a monoid with identity element `0.0`, and 
+   - `Integer` is a monoid with identity element `0`.
+   
+   For any monoid, the addition operation must satisfy:
+   
+   - `x + 0 == x`"""
 see (`class String`, `interface Numeric`)
 by ("Gavin")
 shared interface Summable<Other> of Other
