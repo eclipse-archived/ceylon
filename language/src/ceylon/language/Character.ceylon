@@ -1,13 +1,20 @@
-"A 32-bit Unicode character.
- 
- Characters are [[Ordinal]], so character ranges may be
- produced using the [[segment and span operators|Ordinal]].
- 
-     value lowerLatinLetters = 'a'..'z';
-     value upperLatinLetters = 'A':26;
- 
- Characters have a [[natural order|Comparable]] determined
- by their Unicode code points. So, for example, `'a'<'b'`."
+"""A 32-bit [Unicode][] character. Ever `Character` has a 
+   unique [[Integer]]-valued Unicode _code point_.
+   
+       value piCodePoint = '\{GREEK SMALL LETTER PI}'.integer; // #03C0
+       value pi = #03C0.character; // GREEK SMALL LETTER PI
+   
+   Characters are [[Ordinal]], so character ranges may be
+   produced using the [[segment and span operators|Ordinal]].
+   
+       value lowerLatinLetters = 'a'..'z';
+       value upperLatinLetters = 'A':26;
+   
+   Characters have a [[natural order|Comparable]] determined
+   by their Unicode code points. So, for example, `'a'<'b'`,
+   since `'a'.integer<'b'.integer`.
+   
+   [Unicode]: http://www.unicode.org/"""
 see (`class String`)
 by ("Gavin")
 shared final native class Character(Character character)
@@ -18,10 +25,12 @@ shared final native class Character(Character character)
     "A string containing just this character."
     shared actual native String string;
     
-    "The lowercase representation of this character."
+    "The lowercase representation of this character, in the
+     [[system]] default locale."
     shared native Character lowercased;
     
-    "The uppercase representation of this character."
+    "The uppercase representation of this character, in the
+     [[system]] default locale."
     shared native Character uppercased;
     
     "The title case representation of this character."
