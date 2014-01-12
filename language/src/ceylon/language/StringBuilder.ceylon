@@ -34,10 +34,10 @@ shared native class StringBuilder() {
         appendCharacter(' ');
         return this;
     }
-
+    
     "Remove all content and return to initial state."
     shared native StringBuilder reset();
-
+    
     "Insert a [[string]] at the specified [[index]]. If the 
      `index` is beyond the end of the current string, the 
      new content is simply appended to the current content. 
@@ -45,7 +45,7 @@ shared native class StringBuilder() {
      inserted at index 0."
     shared native StringBuilder insert(Integer index, 
             String string);
-
+    
     "Insert a [[character]] at the specified [[index]]. If 
      the `index` is beyond the end of the current string, 
      the new content is simply appended to the current 
@@ -53,18 +53,31 @@ shared native class StringBuilder() {
      content is inserted at index 0."
     shared native StringBuilder insertCharacter(Integer index, 
             Character character);
-
+    
     "Deletes the specified [[number of characters|length]] 
      from the current content, starting at the specified 
      [[index]]. If the `index` is beyond the end of the 
      current content, nothing is deleted. If the number of 
      characters to delete is greater than the available 
      characters from the given `index`, the content is 
-     truncated at the given `index`."
-    shared native StringBuilder delete(Integer index, Integer length);
-
+     truncated at the given `index`. If `length` is 
+     nonpositive, nothing is deleted."
+    shared native StringBuilder delete(Integer index, Integer length=1);
+    
+    "Deletes the specified [[number of characters|length]] 
+     from the start of the string. If `length` is 
+     nonpositive, nothing is deleted."
+    shared StringBuilder deleteInitial(Integer length)
+            => delete(0, length);
+    
+    "Deletes the specified [[number of characters|length]] 
+     from the end of the string. If `length` is nonpositive, 
+     nothing is deleted."
+    shared StringBuilder deleteTerminal(Integer length)
+            => delete(size-length, length);
+    
     "Returns the length of the current content, that is,
      the [[size|String.size]] of the produced [[string]]."
     shared native Integer size;
-
+    
 }

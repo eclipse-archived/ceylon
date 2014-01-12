@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -97,9 +98,21 @@ public class StringBuilder implements ReifiedType {
     }
 
     @TypeInfo("ceylon.language::StringBuilder")
+    public final StringBuilder deleteInitial(
+    		@Name("length") @TypeInfo("ceylon.language::Integer") int length) {
+    	return delete(0, length);
+    }
+    
+    @TypeInfo("ceylon.language::StringBuilder")
+    public final StringBuilder deleteTerminal(
+    		@Name("length") @TypeInfo("ceylon.language::Integer") int length) {
+    	return delete(builder.length()-length, length);
+    }
+    
+    @TypeInfo("ceylon.language::StringBuilder")
     public final StringBuilder delete(
             @Name("index") @TypeInfo("ceylon.language::Integer") int index,
-            @Name("length") @TypeInfo("ceylon.language::Integer") int length) {
+            @Defaulted @Name("length") @TypeInfo("ceylon.language::Integer") int length) {
         if (index < 0) {
             index = 0;
         } else if (index > builder.length()) {
@@ -111,6 +124,16 @@ public class StringBuilder implements ReifiedType {
             builder.delete(index, index+length);
         }
         return this;
+    }
+    
+    @Ignore
+    public final StringBuilder delete(int index) {
+        return delete(index, 1);
+    }
+    
+    @Ignore
+    public final int delete$length(int index) {
+    	return 1;
     }
 
     @TypeInfo("ceylon.language::Integer")

@@ -1045,12 +1045,12 @@ public final class String
 
     @Ignore
     public java.lang.String join() {
-        return join((Sequential)empty_.get_());
+        return "";
     }
 
     @Ignore
     public static java.lang.String join(java.lang.String value) {
-        return join(value, (Sequential)empty_.get_());
+        return "";
     }
 
     @Override
