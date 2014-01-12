@@ -674,40 +674,49 @@ public final class String
     @Override
     @TypeInfo("ceylon.language::Iterator<ceylon.language::Character>")
     public Iterator<Character> iterator() {
-        return iterator(value);
+        return new StringIterator(value);
     }
 
+    
     @Ignore
     public static Iterator<Character> iterator(final java.lang.String value) {
-        class StringIterator extends AbstractIterator<Character> implements ReifiedType {
-
-            public StringIterator() {
-                super(Character.$TypeDescriptor$);
-            }
-
-            private int offset = 0;
-
-            @Override
-            public java.lang.Object next() {
-                java.lang.Object result;
-                if (offset < value.length()) {
-                    int codePoint = value.codePointAt(offset);
-                    result = Character.instance(codePoint);
-                    offset += java.lang.Character.charCount(codePoint);
-                } else {
-                    result = finished_.get_();
-                }
-                return result;
-            }
-
-            @Override
-            @Ignore
-            public TypeDescriptor $getType$() {
-                return TypeDescriptor.klass(StringIterator.class);
-            }
+        return new StringIterator(value);
+    }
+    
+    @Ignore
+    private static class StringIterator 
+            extends AbstractIterator<Character> 
+            implements ReifiedType {
+    	
+        private static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(StringIterator.class);
+        
+    	final java.lang.String value;
+    	
+        public StringIterator(final java.lang.String value) {
+            super(Character.$TypeDescriptor$);
+            this.value = value;
         }
-
-        return new StringIterator();
+        
+        private int offset = 0;
+        
+        @Override
+        public java.lang.Object next() {
+            java.lang.Object result;
+            if (offset < value.length()) {
+                int codePoint = value.codePointAt(offset);
+                result = Character.instance(codePoint);
+                offset += java.lang.Character.charCount(codePoint);
+            } else {
+                result = finished_.get_();
+            }
+            return result;
+        }
+        
+        @Override
+        @Ignore
+        public TypeDescriptor $getType$() {
+			return $TypeDescriptor$;
+        }
     }
     
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
