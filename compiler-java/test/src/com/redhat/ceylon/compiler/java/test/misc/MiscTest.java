@@ -96,10 +96,11 @@ public class MiscTest extends CompilerTest {
             public boolean accept(File pathname) {
                 String filename = pathname.getName();
                 filename = filename.substring(0,  filename.lastIndexOf('.'));
-                for (String s : new String[]{"Array", "ArraySequence", "Boolean", "Callable", "Character", "className",
-                        "Exception", "flatten", "Float", "identityHash", "Integer", "internalSort", 
-                        "language", "metamodel", "modules", "operatingSystem", "process", "integerRangeByIterable",
-                        "runtime", "SequenceBuilder", "SequenceAppender", "String", "StringBuilder", "system", "Tuple"}) {
+                for (String s : new String[]{"Boolean", "Integer", "Float", "Character", "String", 
+                		"Array", "ArraySequence", "Tuple", "Exception", "Callable", 
+                		"flatten", "className", "identityHash", "internalSort", 
+                        "language", "metamodel", "modules", "operatingSystem", "process", "runtime", "system", 
+                        "SequenceBuilder", "SequenceAppender", "StringBuilder" }) {
                     if (s.equals(filename)) {
                         return true;
                     }
@@ -112,8 +113,7 @@ public class MiscTest extends CompilerTest {
             }   
         };
         String[] extras = new String[]{
-                "arrayOfSize", "false", "infinity",
-                "parseFloat", "true", "integerRangeByIterable", "unflatten"
+        		"true", "false", "infinity", "parseFloat", "arrayOfSize", "unflatten"
         };
         String[] modelExtras = new String[]{
                 "annotations", "modules", "type", "typeLiteral"
