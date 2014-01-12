@@ -110,29 +110,3 @@ function toTuple(iterable) {
     {First:seq.$$targs$$.Element, Element:seq.$$targs$$.Element, Rest:{t:Sequential, a:seq.$$targs$$}});
 }
 exports.toTuple=toTuple;
-
-function integerRangeByIterable(range, step, $$$mptypes) {
-    return Comprehension(function(){
-        var a = range.first;
-        var b = range.last;
-        if (a>b) {
-            a += step;
-            return function() {
-                a -= step;
-                return a<b ? getFinished() : a;
-            }
-        }
-        a-=step;
-        return function() {
-            a += step;
-            return a>b ? getFinished() : a;
-        }
-    }, {Element:range.$$targs$$.Element, Absent:range.$$targs$$.Absent});
-}
-integerRangeByIterable.$$metamodel$$=function(){return{
-  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','integerRangeByIterable'],
-  $tp:{Element:{'satisfies':[{t:Ordinal,a:{Other:'Element'}},{t:Comparable,a:{Other:'Element'}}]}},
-  $t:{t:Iterable,a:{Absent:{t:Nothing},Element:'Element'}},
-  $ps:[{$nm:'range',$t:{t:Range,a:{Element:'Element'}},$mt:'prm'},{$nm:'step',$t:{t:Integer},$mt:'prm'}]
-}};
-exports.integerRangeByIterable=integerRangeByIterable;

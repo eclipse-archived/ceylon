@@ -228,8 +228,6 @@
                 <include name="ceylon/language/operatingSystem_.java"/>
                 <exclude name="ceylon/language/process.ceylon"/>
                 <include name="ceylon/language/process_.java"/>
-                <exclude name="ceylon/language/integerRangeByIterable.ceylon"/>
-                <include name="ceylon/language/integerRangeByIterable_.java"/>
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
                 <include name="ceylon/language/SequenceAppender.java"/>

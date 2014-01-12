@@ -13,8 +13,8 @@
  An `Ordinal` type may be used to generate a [[Range]], 
  using the span or segment operators.
  
- The _span_ operator accepts the first and last values of 
- the range.
+ The _span_ operator `..` accepts the first and last values 
+ of the range.
  
      0..5    // [0, 1, 2, 3, 4, 5]
      0..0    // [0]
@@ -25,8 +25,8 @@
      5..0    // [5, 4, 3, 2, 1, 0]
      0..-5   // [0, -1, -2, -3, -4, -5]
  
- The _segment_ operator accepts the first index and maximum 
- length of the subrange.
+ The _segment_ operator `:` accepts the first index and 
+ maximum length of the subrange.
  
      0:5     // [0, 1, 2, 3, 4]
  
