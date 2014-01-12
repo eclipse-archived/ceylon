@@ -1,6 +1,6 @@
 import ceylon.language { internalFirst = first }
 
-"""Abstract supertype of [[categories|Category] whose 
+"""Abstract supertype of [[categories|Category]] whose 
    elements may be iterated. Iterable categories are often 
    called _streams_. A stream need not be finite, but its 
    elements must be countable. That is, for any given 
