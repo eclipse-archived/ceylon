@@ -1,4 +1,4 @@
-"""A 32-bit [Unicode][] character. Ever `Character` has a 
+"""A 32-bit [Unicode][] character. Every `Character` has a 
    unique [[Integer]]-valued Unicode _code point_.
    
        Integer piCodePoint = '\{GREEK SMALL LETTER PI}'.integer; // #03C0
