@@ -5411,7 +5411,9 @@ public class ExpressionVisitor extends Visitor {
         if (td.getSatisfiedTypes().isEmpty()) return; //handle undecidability case
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
-            if (unit.isCallableType(type) && !inLanguageModule(that.getUnit())) {
+            if (td instanceof ClassOrInterface &&
+            		unit.isCallableType(type) && 
+            		!inLanguageModule(that.getUnit())) {
                 t.addError("directly satisfies Callable");
             }
             if (type!=null && type.getDeclaration()!=null) {
