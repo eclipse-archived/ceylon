@@ -63,6 +63,7 @@ import javax.tools.ToolProvider;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
