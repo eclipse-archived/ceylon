@@ -197,6 +197,7 @@ public class JarOutputRepositoryManager {
 
         private void writeManifestJarEntry(Manifest manifest) {
             try {
+                folders.add(META_INF+"/");
                 jarOutputStream.putNextEntry(new ZipEntry(OsgiManifest.MANIFEST_FILE_NAME));
                 manifest.write(jarOutputStream);
             }
@@ -242,6 +243,10 @@ public class JarOutputRepositoryManager {
 
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
             fileName = fileName.replace(File.separatorChar, '/');
+            String folder = JarUtils.getFolder(fileName);
+            if(folder != null)
+                folders.add(folder);
+
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
                 // record the class file we produce so that we don't save it from the original jar
@@ -253,9 +258,6 @@ public class JarOutputRepositoryManager {
                     return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, fileName, module);
                 }
             }
-            String folder = JarUtils.getFolder(fileName);
-            if(folder != null)
-                folders.add(folder);
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, fileName);
         }
 
