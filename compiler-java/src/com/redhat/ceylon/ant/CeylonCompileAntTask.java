@@ -86,9 +86,21 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private final ModuleSet moduleSet = new ModuleSet();
     private FileSet files;
     private List<JavacOption> javacOptions = new ArrayList<JavacOption>(0);
+    private Boolean noOsgi;
 
     public CeylonCompileAntTask() {
         super("compile");
+    }
+
+    /**
+     * Set to true to disable OSGi manifest declaration in the META-INF/MANIFEST.MF car file.
+     */
+    public void setNoOsgi(Boolean noOsgi) {
+        this.noOsgi = noOsgi;
+    }
+    
+    public boolean getNoOsgi() {
+        return noOsgi;
     }
 
     /**
@@ -391,6 +403,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         for (File res : getResource()) {
             appendOptionArgument(cmd, "--resource", res.getAbsolutePath());
         }
+        
+        if (noOsgi != null && noOsgi.booleanValue())
+            appendOption(cmd, "--no-osgi");
         
         if(classpath != null){
             throw new RuntimeException("-classpath not longer supported");

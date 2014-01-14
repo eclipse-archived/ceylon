@@ -106,6 +106,7 @@ public class JarOutputRepositoryManager {
         private Module module;
         private Set<String> folders = new HashSet<String>();
         private boolean manifestWritten = false;
+        private boolean writeOsgiManifest;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.options = options;
@@ -115,6 +116,7 @@ public class JarOutputRepositoryManager {
             this.creator = CeylonUtils.makeSourceArchiveCreator(repoManager, ceyloncFileManager.getLocation(StandardLocation.SOURCE_PATH),
                     module.getNameAsString(), module.getVersion(), options.get(OptionName.VERBOSE) != null, cmrLog);
             this.module = module;
+            this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
             setupJarOutput();
         }
 
@@ -151,7 +153,7 @@ public class JarOutputRepositoryManager {
         public void close() throws IOException {
             Set<String> copiedSourceFiles = creator.copySourceFiles(modifiedSourceFiles);
 
-            if (!manifestWritten) {
+            if (writeOsgiManifest && !manifestWritten) {
                 Manifest manifest = new OsgiManifest(module).build();
                 writeManifestJarEntry(manifest);
             }
@@ -186,7 +188,7 @@ public class JarOutputRepositoryManager {
                     } else {
                         return modifiedResourceFiles.contains(entryFullName)
                                 || entryFullName.equals(MAPPING_FILE)
-                                || OsgiManifest.isManifestFileName(entryFullName);
+                                || (writeOsgiManifest && OsgiManifest.isManifestFileName(entryFullName));
                     }
                 }
             };
@@ -246,7 +248,7 @@ public class JarOutputRepositoryManager {
             	addMappingEntry(fileName, JarUtils.toPlatformIndependentPath(creator.getSourcePaths(), sourceFile.getPath()));
             } else {
                 modifiedResourceFiles.add(fileName);
-                if (OsgiManifest.isManifestFileName(fileName)) {
+                if (writeOsgiManifest && OsgiManifest.isManifestFileName(fileName)) {
                     this.manifestWritten = true;
                     return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, fileName, module);
                 }

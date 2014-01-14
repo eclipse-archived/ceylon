@@ -172,11 +172,18 @@ public class CeylonCompileTool extends RepoUsingTool {
     private String user;
     private String pass;
     private String encoding;
+    private boolean noOsgi;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
     }
     
+    @Option(longName="no-osgi")
+    @Description("Indicates that the generated car file should not contain OSGi module declarations.")
+    public void setNoOsgi(boolean noOsgi) {
+        this.noOsgi = noOsgi;
+    }
+
     @OptionArgument(longName="src", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to directory containing source files. " +
@@ -323,6 +330,10 @@ public class CeylonCompileTool extends RepoUsingTool {
             arguments.add(mavenOverrides);
         }
 
+        if (noOsgi){
+            arguments.add("-noosgi");
+        }
+        
         if (verbose != null) {
             if (verbose.isEmpty()) {
                 arguments.add("-verbose");

@@ -54,6 +54,7 @@ public enum OptionName {
     CEYLONNODEFREPOS("-nodefreps"),
     CEYLONUSER("-user"),
     CEYLONPASS("-pass"),
+    CEYLONNOOSGI("-noosgi"),
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
     CEYLONRESOURCEPATH("-res"),
