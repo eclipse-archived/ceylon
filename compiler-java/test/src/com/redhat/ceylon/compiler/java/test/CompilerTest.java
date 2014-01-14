@@ -383,7 +383,7 @@ public abstract class CompilerTest {
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
 
-    private void assertCompilesOk(ErrorCollector collector, ExitState exitState)
+    protected void assertCompilesOk(ErrorCollector collector, ExitState exitState)
             throws AssertionError {
         switch (exitState.ceylonState) {
         case OK:

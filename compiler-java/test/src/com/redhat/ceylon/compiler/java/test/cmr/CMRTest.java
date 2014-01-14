@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -1076,6 +1077,28 @@ public class CMRTest extends CompilerTest {
 
         assertEquals(moduleName, attr.get(OsgiManifest.Bundle_SymbolicName));
         assertEquals(moduleVersion, attr.get(OsgiManifest.Bundle_Version));
+    }
+
+    @Test
+    public void testMdlOsgiManifestDisabled() throws IOException {
+        ErrorCollector c = new ErrorCollector();
+        List<String> options = new ArrayList<String>(defaultOptions.size()+1);
+        options.addAll(defaultOptions);
+        options.add("-noosgi");
+        assertCompilesOk(c, getCompilerTask(options, c, "modules/osgi/a/module.ceylon",
+                "modules/osgi/a/package.ceylon",
+                "modules/osgi/a/A.ceylon").call2());
+
+        final String moduleName = "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a";
+        final String moduleVersion = "1.1.0";
+
+        File carFile = getModuleArchive(moduleName, moduleVersion);
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry manifest = car.getEntry(OsgiManifest.MANIFEST_FILE_NAME);
+        assertNull(manifest);
+        
+        car.close();
     }
 
     @Test
