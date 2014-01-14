@@ -37,11 +37,13 @@ import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.FileSet;
 
 public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
+
+// TODO Resources not implemented yet for the JS compiler
+//    private Path res;
     
     private List<File> compileList = new ArrayList<File>(2);
     private ModuleSet moduleset = new ModuleSet();
     private FileSet files;
-    private boolean verbose;
     private boolean optimize;
     private boolean modulify = true;
     private boolean gensrc = true;
@@ -57,6 +59,30 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     public CeylonCompileJsAntTask() {
         super("compile-js");
     }
+
+    /**
+     * Set the resource directories to find the resource files.
+     * @param res the resource directories as a path
+     */
+//    public void setResource(Path res) {
+//        if (this.res == null) {
+//            this.res = res;
+//        } else {
+//            this.res.append(res);
+//        }
+//    }
+//
+//    public List<File> getResource() {
+//        if (this.res == null) {
+//            return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_RESOURCE_DIR));
+//        }
+//        String[] paths = this.res.list();
+//        ArrayList<File> result = new ArrayList<File>(paths.length);
+//        for (String path : paths) {
+//            result.add(getProject().resolveFile(path));
+//        }
+//        return result;
+//    }
     
     /** Tells the JS compiler whether to wrap the generated code in CommonJS module format. */
     public void setWrapModule(boolean flag){
@@ -70,9 +96,6 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
      * to save some time when doing joint jvm/js compilation. */
     public void setSrcArchive(boolean flag) {
         gensrc = flag;
-    }
-    public void setVerbose(boolean verbose){
-        this.verbose = verbose;
     }
 
     /**
@@ -184,9 +207,6 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        if(verbose){
-            appendOption(cmd, "--verbose");
-        }
         if (optimize) {
             appendOption(cmd, "--optimize");
         }
@@ -197,16 +217,22 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
             appendOption(cmd, "--skip-src-archive");
         }
 
+        for (File res : getResource()) {
+            appendOptionArgument(cmd, "--resource", res.getAbsolutePath());
+        }
+        
         for (File file : compileList) {
             log("Adding source file: "+file.getAbsolutePath(), Project.MSG_VERBOSE);
             cmd.createArgument().setValue(file.getAbsolutePath());
         }
+        
         // modules to compile
         for (Module module : moduleset.getModules()) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
             cmd.createArgument().setValue(module.toSpec());
         }
     }
+    
     @Override
     protected String getFailMessage() {
         return CeylonCompileAntTask.FAIL_MSG;

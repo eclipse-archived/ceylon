@@ -107,6 +107,8 @@ public class CeylonRunAntTask extends CeylonAntTask {
      * Perform the compilation.
      */
     protected void completeCommandline(Commandline cmd) {
+        super.completeCommandline(cmd);
+        
         if(run != null){
             appendOptionArgument(cmd, "--run", run);
         }

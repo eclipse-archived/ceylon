@@ -47,8 +47,6 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
     
     private String user;
     
-    private String verbose = "false";
-    
     private String module;
     
     private String jar;
@@ -80,14 +78,6 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
         this.user = user;
     }
 
-    public String getVerbose() {
-        return verbose;
-    }
-
-    public void setVerbose(String verbose) {
-        this.verbose = verbose;
-    }
-
     public String getModule() {
         return module;
     }
@@ -106,7 +96,8 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
 
     @Override
     protected void completeCommandline(Commandline cmd) {
-        appendVerboseOption(cmd, getVerbose());
+        super.completeCommandline(cmd);
+        
         appendUserOption(cmd, getUser());
         appendPassOption(cmd, getPass());
         

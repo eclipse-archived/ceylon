@@ -21,7 +21,9 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -37,12 +39,29 @@ import com.redhat.ceylon.launcher.Launcher;
  */
 public abstract class CeylonAntTask extends Task {
 
-    private final String toolName;
-    
-    private File executable;
-    
-    private ExitHandler exitHandler = new ExitHandler();
+    public static class Define {
+        String key;
+        String value;
+        
+        public void setKey(String key) {
+            this.key = key;
+        }
 
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public void addText(String value) {
+            this.value = value;
+        }
+    }
+
+    private final String toolName;
+    private File executable;
+    private ExitHandler exitHandler = new ExitHandler();
+    private String verbose;
+    private List<Define> defines = new ArrayList<Define>(0);
+    
     /**
      * @param toolName The name of the ceylon tool which this task executes.
      */
@@ -50,6 +69,15 @@ public abstract class CeylonAntTask extends Task {
         this.toolName = toolName;
     }
     
+    public void setVerbose(String verbose){
+        this.verbose = verbose;
+    }
+
+    /** Adds an define (key=value) to be passed to the tool */
+    public void addConfiguredDefine(Define define) {
+        this.defines.add(define);
+    }
+
     public String getExecutable() {
         return executable.getPath();
     }
@@ -168,7 +196,14 @@ public abstract class CeylonAntTask extends Task {
      * Completes the building of a partially configured Commandline
      * @param cmd
      */
-    protected abstract void completeCommandline(Commandline cmd);
+    protected void completeCommandline(Commandline cmd) {
+        appendVerboseOption(cmd, verbose);
+        
+        for (Define d : defines) {
+            String arg = (d.key != null) ? d.key + "=" + d.value : d.value;
+            appendOptionArgument(cmd, "--define", arg);
+        }
+    }
 
     /**
      * Checks the parameters

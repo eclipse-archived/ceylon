@@ -109,6 +109,8 @@ public class CeylonTestAntTask extends CeylonAntTask {
      * Perform the compilation.
      */
     protected void completeCommandline(Commandline cmd) {
+        super.completeCommandline(cmd);
+        
         if (systemRepository != null) {
             appendOptionArgument(cmd, "--sysrep", systemRepository);
         }

@@ -30,6 +30,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -45,6 +46,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 
+import com.redhat.ceylon.common.Constants;
 
 public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
@@ -69,19 +71,39 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         }
     };
     
+    private Path res;
     private List<File> compileList = new ArrayList<File>(2);
     private Path classpath;
     private final ModuleSet moduleSet = new ModuleSet();
     private FileSet files;
-    private String verbose;
     private List<String> javacOptions = new ArrayList<String>(0);
 
     public CeylonCompileAntTask() {
         super("compile");
     }
 
-    public void setVerbose(String verbose){
-        this.verbose = verbose;
+    /**
+     * Set the resource directories to find the resource files.
+     * @param res the resource directories as a path
+     */
+    public void setResource(Path res) {
+        if (this.res == null) {
+            this.res = res;
+        } else {
+            this.res.append(res);
+        }
+    }
+
+    public List<File> getResource() {
+        if (this.res == null) {
+            return Collections.singletonList(getProject().resolveFile(Constants.DEFAULT_RESOURCE_DIR));
+        }
+        String[] paths = this.res.list();
+        ArrayList<File> result = new ArrayList<File>(paths.length);
+        for (String path : paths) {
+            result.add(getProject().resolveFile(path));
+        }
+        return result;
     }
 
     /**
@@ -352,7 +374,6 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        appendVerboseOption(cmd, verbose);
         for (String javacOption : javacOptions) {
             appendOptionArgument(cmd, "--javac", javacOption);
         }

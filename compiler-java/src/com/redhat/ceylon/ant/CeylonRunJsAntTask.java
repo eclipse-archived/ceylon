@@ -94,6 +94,8 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
     
     @Override
     protected void completeCommandline(Commandline cmd) {
+        super.completeCommandline(cmd);
+        
         if(func != null){
             appendOptionArgument(cmd, "--run", func);
         }
