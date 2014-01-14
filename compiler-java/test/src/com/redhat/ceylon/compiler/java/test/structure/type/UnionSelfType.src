@@ -13,6 +13,26 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
+    public boolean largerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.largerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean smallerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notSmallerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.notSmallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notLargerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Comparison compare(final .ceylon.language.Comparable other) {
         return (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
     }
@@ -38,6 +58,26 @@ public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runti
     @.java.lang.Override
     public .ceylon.language.Comparable$impl $ceylon$language$Comparable$impl() {
         return $ceylon$language$Comparable$this$;
+    }
+    
+    @.java.lang.Override
+    public boolean largerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.largerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean smallerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notSmallerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.notSmallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notLargerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override

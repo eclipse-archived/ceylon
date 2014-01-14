@@ -167,16 +167,6 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.List<? extends T> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
     }
-    
-    @.java.lang.Override
-    public .ceylon.language.Map<? extends T, ? extends .ceylon.language.Integer> getFrequencies() {
-        return $ceylon$language$List$this$.getFrequencies();
-    }
-    
-    @.java.lang.Override
-    public <GroupKey>.ceylon.language.Map<? extends GroupKey, ? extends .ceylon.language.Set<? extends T>> group(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$GroupKey, final .ceylon.language.Callable<? extends GroupKey> grouping) {
-        return $ceylon$language$List$this$.group($reified$GroupKey, grouping);
-    }
     protected final .ceylon.language.Collection$impl<? extends T> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -213,6 +203,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    public <Result>.java.lang.Object reduce(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.reduce($reified$Result, accumulating);
     }
     
     @.java.lang.Override
@@ -570,16 +565,6 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.List<? extends T> terminal(final long length) {
         return $ceylon$language$List$this$.terminal(length);
     }
-    
-    @.java.lang.Override
-    public .ceylon.language.Map<? extends T, ? extends .ceylon.language.Integer> getFrequencies() {
-        return $ceylon$language$List$this$.getFrequencies();
-    }
-    
-    @.java.lang.Override
-    public <GroupKey>.ceylon.language.Map<? extends GroupKey, ? extends .ceylon.language.Set<? extends T>> group(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$GroupKey, final .ceylon.language.Callable<? extends GroupKey> grouping) {
-        return $ceylon$language$List$this$.group($reified$GroupKey, grouping);
-    }
     protected final .ceylon.language.Collection$impl<? extends T> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -616,6 +601,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
+    }
+    
+    @.java.lang.Override
+    public <Result>.java.lang.Object reduce(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.reduce($reified$Result, accumulating);
     }
     
     @.java.lang.Override

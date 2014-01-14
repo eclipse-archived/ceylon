@@ -12,6 +12,26 @@ abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $ceylon$language$Comparable$this$;
     }
     
+    @.java.lang.Override
+    public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
+        return $ceylon$language$Comparable$this$.largerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
+        return $ceylon$language$Comparable$this$.notSmallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    }
+    
     private final void m$priv$() {
         final .ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> comp = (.ceylon.language.Comparable).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp foo = (.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp)comp;

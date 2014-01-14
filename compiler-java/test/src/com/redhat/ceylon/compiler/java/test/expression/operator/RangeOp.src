@@ -43,6 +43,26 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Comparable$impl() {
         return $ceylon$language$Comparable$this$;
     }
+    
+    @.java.lang.Override
+    public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
+        return $ceylon$language$Comparable$this$.largerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
+        return $ceylon$language$Comparable$this$.notSmallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    }
     protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Ordinal$this$;
     
     @.java.lang.Override
