@@ -3262,43 +3262,43 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(AddAssignOp that) {
-        assignOp(that, "plus", false);
+        assignOp(that, "plus", null);
     }
 
     @Override public void visit(SubtractAssignOp that) {
-        assignOp(that, "minus", false);
+        assignOp(that, "minus", null);
     }
 
     @Override public void visit(MultiplyAssignOp that) {
-        assignOp(that, "times", false);
+        assignOp(that, "times", null);
     }
 
     @Override public void visit(DivideAssignOp that) {
-        assignOp(that, "divided", false);
+        assignOp(that, "divided", null);
     }
 
     @Override public void visit(RemainderAssignOp that) {
-        assignOp(that, "remainder", false);
+        assignOp(that, "remainder", null);
     }
 
     public void visit(Tree.ComplementAssignOp that) {
-        assignOp(that, "complement", true);
+        assignOp(that, "complement", TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"));
     }
     public void visit(Tree.UnionAssignOp that) {
-        assignOp(that, "union", true);
+        assignOp(that, "union", TypeUtils.mapTypeArgument(that, "union", "Element", "Other"));
     }
     public void visit(Tree.IntersectAssignOp that) {
-        assignOp(that, "intersection", true);
+        assignOp(that, "intersection", TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other"));
     }
 
     public void visit(Tree.AndAssignOp that) {
-        assignOp(that, "&&", false);
+        assignOp(that, "&&", null);
     }
     public void visit(Tree.OrAssignOp that) {
-        assignOp(that, "||", false);
+        assignOp(that, "||", null);
     }
 
-    private void assignOp(final Tree.AssignmentOp that, final String functionName, final boolean includeTargs) {
+    private void assignOp(final Tree.AssignmentOp that, final String functionName, final Map<TypeParameter, ProducedType> targs) {
         Term lhs = that.getLeftTerm();
         final boolean isNative="||".equals(functionName)||"&&".equals(functionName);
         if (lhs instanceof BaseMemberExpression) {
@@ -3316,10 +3316,9 @@ public class GenerateJsVisitor extends Visitor
                     }
                     that.getRightTerm().visit(GenerateJsVisitor.this);
                     if (!isNative) {
-                        if (includeTargs) {
+                        if (targs != null) {
                             out(",");
-                            TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
-                                    GenerateJsVisitor.this);
+                            TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
                         }
                         out(")");
                     }
