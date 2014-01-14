@@ -44,7 +44,7 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     private List<File> compileList = new ArrayList<File>(2);
     private ModuleSet moduleset = new ModuleSet();
     private FileSet files;
-    private boolean optimize;
+    private boolean optimize = true;
     private boolean modulify = true;
     private boolean gensrc = true;
 
@@ -88,9 +88,9 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     public void setWrapModule(boolean flag){
         modulify = flag;
     }
-    /** Tells the JS compiler whether to use prototype style or not. */
-    public void setOptimize(boolean flag){
-        this.optimize = flag;
+    /** Tells the JS compiler whether to use lexical scope style or not. */
+    public void setLexicalScopeStyle(boolean flag){
+        this.optimize = !flag;
     }
     /** Tells the JS compiler whether to generate the .src archive; default is true, but can be turned off
      * to save some time when doing joint jvm/js compilation. */
@@ -207,8 +207,8 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        if (optimize) {
-            appendOption(cmd, "--optimize");
+        if (!optimize) {
+            cmd.createArgument().setValue("--lexical-scope-style");
         }
         if (!modulify) {
             appendOption(cmd, "--no-module");
