@@ -384,7 +384,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         super.completeCommandline(cmd);
         
         for (JavacOption opt : javacOptions) {
-            String arg = (opt.key != null) ? opt.key + "=" + opt.value : opt.value;
+            String arg = (opt.key != null) ? opt.key + ":" + opt.value : opt.value;
             appendOptionArgument(cmd, "--javac", arg);
         }
         
