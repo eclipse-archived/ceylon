@@ -883,4 +883,46 @@ public class TypeUtils {
         return ts;
     }
 
+    /** Generates the right type arguments for operators that are sugar for method calls.
+     * @param left The left term of the operator
+     * @param right The right term of the operator
+     * @param methodName The name of the method that is to be invoked
+     * @param rightTpName The name of the type argument on the right term
+     * @param leftTpName The name of the type parameter on the method
+     * @return A map with the type parameter of the method as key
+     * and the produced type belonging to the type argument of the term on the right. */
+    static Map<TypeParameter, ProducedType> mapTypeArgument(final Tree.BinaryOperatorExpression expr,
+            final String methodName, final String rightTpName, final String leftTpName) {
+        Method md = (Method)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
+        if (md == null) {
+            expr.addUnexpectedError("Left term of intersection operator should have method named " + methodName);
+            return null;
+        }
+        Map<TypeParameter, ProducedType> targs = expr.getRightTerm().getTypeModel().getTypeArguments();
+        ProducedType otherType = null;
+        for (TypeParameter tp : targs.keySet()) {
+            if (tp.getName().equals(rightTpName)) {
+                otherType = targs.get(tp);
+                break;
+            }
+        }
+        if (otherType == null) {
+            expr.addUnexpectedError("Right term of intersection operator should have type parameter named " + rightTpName);
+            return null;
+        }
+        targs = new HashMap<>();
+        TypeParameter mtp = null;
+        for (TypeParameter tp : md.getTypeParameters()) {
+            if (tp.getName().equals(leftTpName)) {
+                mtp = tp;
+                break;
+            }
+        }
+        if (mtp == null) {
+            expr.addUnexpectedError("Left term of intersection should have type parameter named " + leftTpName);
+        }
+        targs.put(mtp, otherType);
+        return targs;
+    }
+
 }

@@ -3860,8 +3860,11 @@ public class GenerateJsVisitor extends Visitor
                 out(".union(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
-                        GenerateJsVisitor.this);
+                Map<TypeParameter, ProducedType> targs = TypeUtils.mapTypeArgument(that, "union", "Element", "Other");
+                if (targs == null) {
+                    return;
+                }
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
                 out(")");
             }
         });
@@ -3876,8 +3879,11 @@ public class GenerateJsVisitor extends Visitor
                 out(".intersection(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
-                        GenerateJsVisitor.this);
+                Map<TypeParameter, ProducedType> targs = TypeUtils.mapTypeArgument(that, "intersection", "Element", "Other");
+                if (targs == null) {
+                    return;
+                }
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
                 out(")");
             }
         });
@@ -3892,8 +3898,11 @@ public class GenerateJsVisitor extends Visitor
                 out(".exclusiveUnion(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
-                        GenerateJsVisitor.this);
+                Map<TypeParameter, ProducedType> targs = TypeUtils.mapTypeArgument(that, "exclusiveUnion", "Element", "Other");
+                if (targs == null) {
+                    return;
+                }
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
                 out(")");
             }
         });
@@ -3908,8 +3917,11 @@ public class GenerateJsVisitor extends Visitor
                 out(".complement(");
                 termgen.right();
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getRightTerm().getTypeModel().getTypeArguments(),
-                        GenerateJsVisitor.this);
+                Map<TypeParameter, ProducedType> targs = TypeUtils.mapTypeArgument(that, "complement", "Element", "Other");
+                if (targs == null) {
+                    return;
+                }
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
                 out(")");
             }
         });
