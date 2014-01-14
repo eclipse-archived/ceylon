@@ -920,7 +920,7 @@ public class CMRTest extends CompilerTest {
     @Test
     public void testMdlUsesJavaWithoutImportingIt() throws IOException{
         assertErrors("modules/jdk/usesJavaWithoutImportingIt/Foo",
-                new CompilerError(20, "package not found in imported modules: java.lang"),
+                new CompilerError(20, "package not found in imported modules: java.lang (add module import to module descriptor of com.redhat.ceylon.compiler.java.test.cmr.modules.jdk.usesJavaWithoutImportingIt)"),
                 new CompilerError(23, "function or value does not exist: nanoTime"));
     }
 
@@ -932,7 +932,7 @@ public class CMRTest extends CompilerTest {
         options.addAll(defaultOptions);
         
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
-                new CompilerError(20, "package not found in imported modules: java.lang"),
+                new CompilerError(20, "package not found in imported modules: java.lang (define a module and add module import to its module descriptor)"),
                 new CompilerError(23, "function or value does not exist: nanoTime"));
     }
 
@@ -1054,8 +1054,8 @@ public class CMRTest extends CompilerTest {
                 },
                 defaultOptions,
                 null,
-                new CompilerError( 1, "package not found in imported modules: doesnotExist"),
-                new CompilerError( 2, "package not found in imported modules: com.redhat.ceylon.compiler.java.test.cmr.modules.defaultImportsInexistantPackage.isModule")
+                new CompilerError( 1, "package not found in imported modules: doesnotExist (define a module and add module import to its module descriptor)"),
+                new CompilerError( 2, "package not found in imported modules: com.redhat.ceylon.compiler.java.test.cmr.modules.defaultImportsInexistantPackage.isModule (define a module and add module import to its module descriptor)")
             );
         }
     }

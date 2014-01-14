@@ -443,7 +443,7 @@ public class IssuesTest_0500_0999 extends CompilerTest {
 
     @Test
     public void testBug751() {
-        assertErrors("bug07xx/Bug751", new CompilerError(20, "package not found in imported modules: laknsd.askduyasjd"));
+        assertErrors("bug07xx/Bug751", new CompilerError(20, "package not found in imported modules: laknsd.askduyasjd (add module import to module descriptor of com.redhat.ceylon.compiler.java.test.issues)"));
     }
 
     @Test

@@ -308,7 +308,7 @@ public class RecoveryTest extends CompilerTest {
 
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors,
-                new CompilerError(1, "package not found in imported modules: java.lang"),
+                new CompilerError(1, "package not found in imported modules: java.lang (define a module and add module import to its module descriptor)"),
                 new CompilerError(1, "source code imports two different versions of the same module: version 0.5 and version 1.0.0 of ceylon.file"),
                 new CompilerError(2, "cannot find module artifact fooxhilio.bastardo-77.9(.car|.jar)\n"
                 +"  \t- dependency tree: unknownmodule/1.0.0 -> fooxhilio.bastardo/77.9"),
