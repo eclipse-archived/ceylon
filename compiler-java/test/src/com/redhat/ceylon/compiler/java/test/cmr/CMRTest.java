@@ -1064,7 +1064,7 @@ public class CMRTest extends CompilerTest {
     public void testMdlProducesOsgiManifest() throws IOException {
         compile("modules/osgi/a/module.ceylon",
                 "modules/osgi/a/package.ceylon",
-                "modules/osgi/a/a.ceylon");
+                "modules/osgi/a/A.ceylon");
 
         final String moduleName = "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a";
         final String moduleVersion = "1.1.0";
@@ -1082,7 +1082,7 @@ public class CMRTest extends CompilerTest {
     public void testMdlOsgiManifestRequiresCeylonLanguageBundle() throws IOException {
         compile("modules/osgi/a/module.ceylon",
                 "modules/osgi/a/package.ceylon",
-                "modules/osgi/a/a.ceylon");
+                "modules/osgi/a/A.ceylon");
 
         final Manifest manifest = getManifest(
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a", "1.1.0");
