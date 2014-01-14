@@ -53,11 +53,20 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
     public static class JavacOption {
-        String javacOption;
-        public void addText(String javacOption) {
-            this.javacOption = javacOption;
-        }
+        String key;
+        String value;
         
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public void addText(String value) {
+            this.value = value;
+        }
     }
     
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
@@ -76,7 +85,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private Path classpath;
     private final ModuleSet moduleSet = new ModuleSet();
     private FileSet files;
-    private List<String> javacOptions = new ArrayList<String>(0);
+    private List<JavacOption> javacOptions = new ArrayList<JavacOption>(0);
 
     public CeylonCompileAntTask() {
         super("compile");
@@ -160,7 +169,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
     /** Adds an option to be passed to javac via a {@code --javac=...} option */
     public void addConfiguredJavacOption(JavacOption javacOption) {
-        this.javacOptions.add(javacOption.javacOption);
+        this.javacOptions.add(javacOption);
     }
     
     /**
@@ -374,8 +383,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
-        for (String javacOption : javacOptions) {
-            appendOptionArgument(cmd, "--javac", javacOption);
+        for (JavacOption opt : javacOptions) {
+            String arg = (opt.key != null) ? opt.key + "=" + opt.value : opt.value;
+            appendOptionArgument(cmd, "--javac", arg);
         }
         
         for (File res : getResource()) {
