@@ -424,13 +424,10 @@ public final class Float
     
     @Ignore
     public static int hashCode(double value) {
-        long bits = Double.doubleToLongBits(value);
-        if (value == -0.0) {// make 0.0 and -0.0 have the same hash
-            bits &= 0x7fffffffffffffffL; 
-        }
         if (value == getWholePart(value)) {// make integers and floats have consistent hashes
             return ceylon.language.Integer.hashCode(getWholePart(value));
         } else {
+            final long bits = Double.doubleToLongBits(value);
             return (int)(bits ^ (bits >>> 32));
         }
     }
