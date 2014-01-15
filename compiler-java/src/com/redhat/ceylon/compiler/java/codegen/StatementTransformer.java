@@ -662,8 +662,9 @@ public class StatementTransformer extends AbstractTransformer {
                     make().Block(0, stmts), 
                     elseBlock));
             
-            if (cond.makeTestVarDecl(0, true) != null) {
-                stmts = stmts.prepend(cond.makeTestVarDecl(0, true));
+            JCStatement testVarDecl = cond.makeTestVarDecl(0, true);
+            if (testVarDecl != null) {
+                stmts = stmts.prepend(testVarDecl);
             }
             return stmts;
         }
