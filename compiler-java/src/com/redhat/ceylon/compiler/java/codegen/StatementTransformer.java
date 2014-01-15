@@ -414,10 +414,8 @@ public class StatementTransformer extends AbstractTransformer {
                         transformedCond.makeTypeExpr(), 
                         isDeferred() ? null : transformedCond.makeResultExpr());
                 if (isDeferred()) {
-                    // Note we capture the substitution here, because it won't be 
-                    // in scope when we generate the default assignment branches.
                     unassignedResultVars.put(transformedCond, 
-                            transformedCond.getVariableName().capture());
+                            transformedCond.getVariableName());
                     varDecls.prepend(resultVarDecl);
                     stmts = stmts.prepend(make().Exec(make().Assign(transformedCond.getVariableName().makeIdent(), transformedCond.makeResultExpr())));
                 } else {
@@ -635,6 +633,13 @@ public class StatementTransformer extends AbstractTransformer {
                 scope = scope.getScope();
             }
             subs.scopeClose(scope);
+            // make sure we get a variable name now, and that it doesn't change over time, because
+            // we will need this variable name in transformCommonResultDecl(), which declares it,
+            // and it runs after we process inner conditions, and if we are an assert, inner conditions
+            // may declare new substitutions, which do not close until the end of the outer scope,
+            // so if we use substitutions we will get substituted names, rather than the name we should
+            // be declaring. See https://github.com/ceylon/ceylon-compiler/issues/1532
+            cond.getVariableName();
             return subs;
         }
         
@@ -670,10 +675,7 @@ public class StatementTransformer extends AbstractTransformer {
                         cond.getVariableName().asName(), 
                         cond.makeTypeExpr(), 
                         null);
-                // Note we capture the substitution here, because it won't be 
-                // in scope when we generate the default assignment branches.
-                unassignedResultVars.put(cond, 
-                        cond.getVariableName().capture());
+                unassignedResultVars.put(cond, cond.getVariableName());
                 varDecls.append(resultVarDecl);
                 stmts = stmts.prepend(make().Exec(make().Assign(cond.getVariableName().makeIdent(), cond.makeResultExpr())));
             }
@@ -760,7 +762,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         public Tree.Variable getVariable();
         
-        public SubstitutedName getVariableName();
+        public CName getVariableName();
         
         public boolean hasResultDecl();
         public boolean hasAliasedVariable();
@@ -780,6 +782,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected final Tree.Expression specifierExpr;
         protected final Naming.SyntheticName testVar;
         protected final Tree.Variable variable;
+        private CName variableName;
         SpecialFormCond(
                 C cond,
                 ProducedType toType, 
@@ -803,8 +806,13 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        public final SubstitutedName getVariableName() {
-            return naming.substituted(variable.getDeclarationModel());
+        public final CName getVariableName() {
+            // make sure once we get a variable it never changes name, because the whole code
+            // generation of Cond depends on being able to call this method multiple times and
+            // get the same result. See https://github.com/ceylon/ceylon-compiler/issues/1532
+            if(variableName == null)
+                variableName = naming.substituted(variable.getDeclarationModel()).capture();
+            return variableName;
         }
         
         @Override
@@ -1074,7 +1082,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        public final SubstitutedName getVariableName() {
+        public final CName getVariableName() {
             return null;
         }
 
