@@ -424,8 +424,9 @@ public final class Float
     
     @Ignore
     public static int hashCode(double value) {
-        if (value == getWholePart(value)) {// make integers and floats have consistent hashes
-            return ceylon.language.Integer.hashCode(getWholePart(value));
+    	long wholePart = (long) value;
+        if (value == wholePart) {// make integers and floats have consistent hashes
+            return Integer.hashCode(wholePart);
         } else {
             final long bits = Double.doubleToLongBits(value);
             return (int)(bits ^ (bits >>> 32));
@@ -473,5 +474,6 @@ public final class Float
     public boolean notLargerThan(Float other) {
     	return value<=other.value;
     }
-
+    
 }
+
