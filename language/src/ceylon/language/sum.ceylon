@@ -1,5 +1,5 @@
-"Given a nonempty stream of `Summable` values, return 
- the sum of the values."
+"Given a nonempty stream of [[Summable]] values, return the 
+ sum of the values."
 see (`function product`)
 shared Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value> {

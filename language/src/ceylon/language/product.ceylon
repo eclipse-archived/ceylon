@@ -1,5 +1,5 @@
-"Given a nonempty stream of `Numeric` values, return 
- the product of the values."
+"Given a nonempty stream of [[Numeric]] values, return the 
+ product of the values."
 see (`function sum`)
 shared Value product<Value>({Value+} values) 
         given Value satisfies Numeric<Value> {
