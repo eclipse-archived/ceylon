@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1532_ {
+    
+    private bug1532_() {
+    }
+    
+    static void bug1532(final .java.lang.Object something2) {
+        .java.lang.String $ceylontmp$assert$0 = null;
+        final long something$2$4;
+        final .java.lang.Object something$2;
+        .java.lang.Object something$1 = null;
+        if ((something$1 = something2) != null) {
+            something$2 = something$1;
+            .java.lang.Object something$3 = null;
+            if ((something$3 = something$2) instanceof .ceylon.language.Integer) {
+                something$2$4 = ((.ceylon.language.Integer)something$3).longValue();
+            } else {
+                something$2$4 = 0L;
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists something = something2" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer something";
+            }
+        } else {
+            something$2 = null;
+            something$2$4 = 0L;
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists something = something2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer something";
+        }
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+    }
+}
