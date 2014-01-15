@@ -419,7 +419,7 @@ public final class Float
     
     @Override
     public int hashCode() {
-		return hashCode(value);
+        return hashCode(value);
     }
     
     @Ignore
@@ -428,7 +428,11 @@ public final class Float
         if (value == -0.0) {// make 0.0 and -0.0 have the same hash
             bits &= 0x7fffffffffffffffL; 
         }
-        return (int)(bits ^ (bits >>> 32));
+        if (value == getWholePart(value)) {
+            return ceylon.language.Integer.hashCode(getWholePart(value));
+        } else {
+            return (int)(bits ^ (bits >>> 32));
+        }
     }
 
     @Override
