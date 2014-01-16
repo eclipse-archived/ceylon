@@ -46,6 +46,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
+                            final .java.lang.String x$2 = this.x$2;
                             return .ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$2));
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -95,6 +96,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
+                            final .java.lang.String z$5 = this.z$5;
                             return .ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5));
                         } else return .ceylon.language.finished_.get_();
                     }

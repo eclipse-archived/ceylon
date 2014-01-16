@@ -52,6 +52,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
+                            final long x$2 = this.x$2;
                             return .ceylon.language.Integer.instance(x$2);
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -99,6 +100,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
+                            final long y$5 = this.y$5;
                             return .ceylon.language.Integer.instance(y$5);
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -190,6 +192,7 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
+                            final .java.lang.Object y$10 = this.y$10;
                             return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsNull.this.nowt$priv$(y$10));
                         } else return .ceylon.language.finished_.get_();
                     }

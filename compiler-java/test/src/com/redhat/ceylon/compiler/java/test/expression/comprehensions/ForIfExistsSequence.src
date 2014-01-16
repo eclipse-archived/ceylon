@@ -44,6 +44,7 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
+                            final long y$2 = this.y$2;
                             return .ceylon.language.Integer.instance(y$2);
                         } else return .ceylon.language.finished_.get_();
                     }

@@ -4610,6 +4610,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (transformedCond.hasResultDecl()) {
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), 
                             resultVarName.asName(), transformedCond.makeTypeExpr(), null));
+                    valueCaptures.add(make().VarDef(make().Modifiers(Flags.FINAL),
+                            resultVarName.asName(), transformedCond.makeTypeExpr(), resultVarName.makeIdentWithThis()));
                     stmts = stmts.prepend(make().Exec(make().Assign(resultVarName.makeIdent(), transformedCond.makeResultExpr())));
                 }
                 stmts = List.<JCStatement>of(make().If(

@@ -44,6 +44,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
+                            final long x$2 = this.x$2;
                             return .ceylon.language.Integer.instance(x$2);
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -91,6 +92,7 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
+                            final long y$5 = this.y$5;
                             return .ceylon.language.Integer.instance(y$5);
                         } else return .ceylon.language.finished_.get_();
                     }

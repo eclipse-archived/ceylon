@@ -88,6 +88,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
+                            final .java.lang.Object x$4 = this.x$4;
                             return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x$4).common();
                         } else return .ceylon.language.finished_.get_();
                     }
