@@ -86,16 +86,6 @@
         <pathelement path="${commons-logging.lib}" />
     </path>
 
-    <path id="integrationtest.run.classpath">
-        <path refid="test.compile.classpath" />
-        <pathelement path="${build.lib}/ceylon-ant.jar" />
-    </path>
-
-    <path id="language.classpath">
-        <pathelement path="${language.jar}" />
-        <pathelement path="${build.classes}" />
-    </path>
-
     <!-- ################################################################## -->
 
     <!-- constant to declare a file binary for checksumsum -->
