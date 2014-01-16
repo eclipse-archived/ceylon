@@ -148,7 +148,7 @@ public class JavacMessages implements Messages {
      */
 
     private static final String defaultBundleName =
-        "com.sun.tools.javac.resources.compiler";
+        "com.sun.tools.javac.resources.ceylon-compiler";
     private static ResourceBundle defaultBundle;
     private static JavacMessages defaultMessages;
 
