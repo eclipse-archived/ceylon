@@ -63,8 +63,8 @@ import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import static org.junit.matchers.JUnitMatchers.*;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -1136,12 +1136,12 @@ public class CMRTest extends CompilerTest {
 
         assertThat(
                 Arrays.asList(exportPackage),
-                hasItems(
+                CoreMatchers.hasItems(
                         "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a",
                         "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.c"));
 
         assertThat( Arrays.asList(exportPackage),
-                not(hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b")));
+                not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b")));
     }
 
     @Test
@@ -1188,7 +1188,7 @@ public class CMRTest extends CompilerTest {
                 .get(OsgiManifest.Require_Bundle)).split(",");
         assertEquals(2, requireBundle.length);
 
-        assertThat(Arrays.asList(requireBundle), hasItems(
+        assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version=1.0.0;visibility:=reexport",
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0"));
     }
@@ -1211,7 +1211,7 @@ public class CMRTest extends CompilerTest {
                 .get(OsgiManifest.Require_Bundle)).split(",");
 
         assertEquals(2, requireBundle.length);
-        assertThat(Arrays.asList(requireBundle), hasItems(
+        assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version=1.0.0;visibility:=reexport",
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0;visibility:=reexport"));
     }
