@@ -68,8 +68,8 @@ public final class DoubleArray implements ReifiedType {
         return Array.instanceForFloats(array);
     }
 
-    @TypeInfo("ceylon.language::Array<ceylon.language::Integer>")
-    public ceylon.language.Array<ceylon.language.Integer> getIntegerArray(){
+    @TypeInfo("ceylon.language::Array<ceylon.language::Float>")
+    public ceylon.language.Array<ceylon.language.Integer> getFloatArray(){
         throw Util.makeJavaArrayWrapperException();
     }
 
