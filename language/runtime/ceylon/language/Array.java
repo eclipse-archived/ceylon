@@ -421,6 +421,14 @@ public final class Array<Element>
 		return new Array<T>(TypeDescriptor.klass(componentType), array);
     }
     
+    @Ignore
+    public static Array<String> instance(java.lang.String[] array) {
+        if (array == null) {
+            return null;
+        }
+		return new Array<String>(String.$TypeDescriptor$, array);
+    }
+
     private static final TypeDescriptor CHAR_TYPE = 
     		TypeDescriptor.klass(java.lang.Character.class);
     @Ignore

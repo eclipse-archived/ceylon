@@ -90,7 +90,9 @@ public final class arrays_ {
      * 
      * @see ObjectArray
      */
-    public java.lang.String[] asNativeStringArray(@Name("array") Array<ceylon.language.String> array){
+    public java.lang.String[] asNativeStringArray(@Name("array") 
+    @TypeInfo("ceylon.language::Array<ceylon.language::Null|ceylon.language::String>") 
+    Array<ceylon.language.String> array){
         // simplest is same underlying type
         if(array.toArray() instanceof java.lang.String[]){
         	java.lang.String[] src = (java.lang.String[]) array.toArray();
@@ -245,13 +247,28 @@ public final class arrays_ {
     }
     
     /**
+     * Cast a Java <code>ObjectArray&lt;java.util.String&gt;</code>, that is 
+     * <code>java.util.String[]</code> to a Ceylon <code>Array&lt;String?&gt;</code>, 
+     * preserving the identity of the given array. 
+     * 
+     * @see ObjectArray
+     */
+    @TypeInfo("ceylon.language::Array<ceylon.language::Null|ceylon.language::String>")
+    public Array<String> asStringArray(@Ignore TypeDescriptor $reifiedT, 
+            @Name("array") java.lang.String[] array){
+        // simplest is same underlying type
+        return Array.instance(array);
+    }
+
+    /**
      * Cast a Ceylon <code>Array&lt;T&gt;</code> to a Java <code>ObjectArray&lt;T&gt;</code>,
      * that is, to <code>T[]</code>, preserving the identity of the given array. 
      * 
      * @see ObjectArray
      */
     public <T> T[] asObjectArray(@Ignore TypeDescriptor $reifiedT, 
-            @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>") @Name("array") Array<T> array){
+            @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>") 
+            @Name("array") Array<T> array){
         // simplest is same underlying type
         if(array.toArray() instanceof java.lang.Object[]){
             @SuppressWarnings("unchecked")
