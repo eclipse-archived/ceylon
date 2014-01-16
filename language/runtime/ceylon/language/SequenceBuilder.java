@@ -109,7 +109,8 @@ public class SequenceBuilder<Element> implements ReifiedType {
         } else {
         	java.lang.Object elem;
         	int index = length;
-        	for (Iterator<? extends Element> iter=elements.iterator(); !((elem = iter.next()) instanceof Finished);) {
+        	for (Iterator<? extends Element> iter=elements.iterator(); 
+        			!((elem = iter.next()) instanceof Finished);) {
         	    // In general, Iterable.getSize() could cause an iteration 
                 // through all the elements, so we can't allocate before the loop 
         	    ensureCapacity$priv$(length + 1);
