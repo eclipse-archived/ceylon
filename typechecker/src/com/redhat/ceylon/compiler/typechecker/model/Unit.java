@@ -722,10 +722,16 @@ public class Unit {
     }
     
     public ProducedType denotableType(ProducedType pt) {
-        if ( pt!=null && pt.getDeclaration()!=null &&
-                pt.getDeclaration().isAnonymous() ) {
-            ClassOrInterface etd = pt.getDeclaration().getExtendedTypeDeclaration();
-            List<TypeDeclaration> stds = pt.getDeclaration().getSatisfiedTypeDeclarations();
+    	TypeDeclaration d = pt.getDeclaration();
+		if (d instanceof Functional) {
+    		if (((Functional) d).isOverloaded()) {
+    			pt = pt.getSupertype(d.getExtendedTypeDeclaration());
+    		}
+    	}
+        if ( pt!=null && d!=null &&
+                d.isAnonymous() ) {
+            ClassOrInterface etd = d.getExtendedTypeDeclaration();
+            List<TypeDeclaration> stds = d.getSatisfiedTypeDeclarations();
             List<ProducedType> list = new ArrayList<ProducedType>(stds.size()+1);
             addToIntersection(list, pt.getSupertype(etd), this);
             for (TypeDeclaration td: stds) {
