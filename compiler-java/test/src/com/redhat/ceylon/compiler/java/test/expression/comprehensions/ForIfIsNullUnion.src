@@ -44,6 +44,7 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
+                            final .ceylon.language.Character x$2 = this.x$2;
                             return x$2;
                         } else return .ceylon.language.finished_.get_();
                     }

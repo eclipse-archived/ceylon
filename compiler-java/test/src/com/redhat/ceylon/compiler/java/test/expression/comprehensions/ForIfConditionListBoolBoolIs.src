@@ -75,6 +75,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                         if (this.$next$2()) {
                             final .java.lang.Object x = this.x;
                             final .ceylon.language.Integer z = this.z;
+                            final long x$3 = this.x$3;
                             return .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance(x$3).equals(z));
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -153,6 +154,7 @@ class ForIfConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.r
                         if (this.$next$2()) {
                             final .java.lang.Object x = this.x;
                             final .ceylon.language.Integer z = this.z;
+                            final long y$7 = this.y$7;
                             return .ceylon.language.Boolean.instance(.ceylon.language.Integer.instance(y$7).equals(z));
                         } else return .ceylon.language.finished_.get_();
                     }

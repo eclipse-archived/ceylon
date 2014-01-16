@@ -46,6 +46,7 @@ final class forIfIsBooleanConditions_ {
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object x = this.x;
+                            final long y$2 = this.y$2;
                             return .ceylon.language.Integer.instance(y$2 + 1L);
                         } else return .ceylon.language.finished_.get_();
                     }

@@ -51,6 +51,8 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
+                            final long y$4 = this.y$4;
+                            final .ceylon.language.Sequence<? extends .java.lang.Object> x$2 = this.x$2;
                             return .ceylon.language.Boolean.instance(y$4 == 1L);
                         } else return .ceylon.language.finished_.get_();
                     }

@@ -63,6 +63,8 @@ final class existsCond_ {
                     public final .java.lang.Object next() {
                         if (this.$next$2()) {
                             final .ceylon.language.String x = this.x;
+                            final .java.lang.String x$2 = this.x$2;
+                            final int c$4 = this.c$4;
                             return .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased(c$4));
                         } else return .ceylon.language.finished_.get_();
                     }

@@ -76,6 +76,8 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (this.$next$2()) {
                             final .java.lang.Object x = this.x;
                             final .java.lang.Object y = this.y;
+                            final long y1$5 = this.y1$5;
+                            final long x1$3 = this.x1$3;
                             return .ceylon.language.Boolean.instance(x1$3 == y1$5);
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -155,6 +157,8 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         if (this.$next$2()) {
                             final .java.lang.Object x = this.x;
                             final .java.lang.Object y = this.y;
+                            final long y$11 = this.y$11;
+                            final long x$9 = this.x$9;
                             return .ceylon.language.Boolean.instance(x$9 == y$11);
                         } else return .ceylon.language.finished_.get_();
                     }

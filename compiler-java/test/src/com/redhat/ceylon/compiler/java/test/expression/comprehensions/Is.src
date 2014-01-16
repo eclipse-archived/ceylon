@@ -187,6 +187,7 @@ final class isCond_ {
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2 = this.x$2;
                             return x$2.foo();
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -231,6 +232,7 @@ final class isCond_ {
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub x$5 = this.x$5;
                             return x$5.foo();
                         } else return .ceylon.language.finished_.get_();
                     }

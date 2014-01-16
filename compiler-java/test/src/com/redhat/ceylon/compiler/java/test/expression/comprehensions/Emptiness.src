@@ -366,6 +366,7 @@ final class emptinessParameterised_ {
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final Element e = this.e;
+                            final Element e$13 = this.e$13;
                             return e$13;
                         } else return .ceylon.language.finished_.get_();
                     }

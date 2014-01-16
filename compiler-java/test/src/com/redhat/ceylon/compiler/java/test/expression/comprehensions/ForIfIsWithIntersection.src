@@ -170,6 +170,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
+                            final .java.lang.Object x$8 = this.x$8;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$8).common().toString());
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -214,6 +215,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
+                            final .java.lang.Object x$11 = this.x$11;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$11).foo().toString());
                         } else return .ceylon.language.finished_.get_();
                     }
@@ -258,6 +260,7 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     public final .java.lang.Object next() {
                         if (this.$next$1()) {
                             final .java.lang.Object y = this.y;
+                            final .java.lang.Object x$14 = this.x$14;
                             return .ceylon.language.String.instance(((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface)x$14).bar().toString());
                         } else return .ceylon.language.finished_.get_();
                     }
