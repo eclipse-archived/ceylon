@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,5 +54,28 @@ public class ProducedTypeCache {
         // clear the whole cache for now, unless I can figure out exactly what to
         // clear
         clear();
+    }
+    
+    public void clearNullValues() {
+        List<ProducedType> cachesToremove = new LinkedList<>();
+        for (Map.Entry<ProducedType, Map<TypeDeclaration, ProducedType>> entry : superTypes.entrySet()) {
+            Map<TypeDeclaration, ProducedType> cache = entry.getValue();
+            if (cache == null) {
+                cachesToremove.add(entry.getKey());
+            } else {
+                List<TypeDeclaration> valuesToremove = new LinkedList<>();
+                for (Map.Entry<TypeDeclaration, ProducedType> cacheEntry : cache.entrySet()) {
+                    if (cacheEntry.getValue() == NULL_VALUE) {
+                        valuesToremove.add(cacheEntry.getKey());
+                    }
+                }
+                for (TypeDeclaration toRemove : valuesToremove) {
+                    cache.remove(toRemove);
+                }
+            }
+        }
+        for (ProducedType toRemove : cachesToremove) {
+            superTypes.remove(toRemove);
+        }
     }
 }
