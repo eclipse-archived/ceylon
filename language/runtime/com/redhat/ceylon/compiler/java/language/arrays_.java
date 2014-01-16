@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Array;
 import ceylon.language.AssertionException;
-import ceylon.language.String;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -100,7 +99,7 @@ public final class arrays_ {
         }
         throw new AssertionException("Invalid source array type: "+array.toArray());
     }
-
+    
     /**
      * Cast a Ceylon <code>Array&lt;Character&gt;</code> to a Java 
      * <code>IntArray</code>, that is, to <code>int[]</code>, 
@@ -664,17 +663,4 @@ public final class arrays_ {
         return dst;
     }*/
 
-    public String[] javaStringArrayToCeylonStringArray(@Name("array") java.lang.String[] array){
-        String[] dst = new String[array.length];
-        for(int i=0;i<array.length;i++)
-            dst[i] = String.instance(array[i]);
-        return dst;
-    }
-
-    public java.lang.String[] ceylonStringArrayToJavaStringArray(@Name("array") String[] array){
-        java.lang.String[] dst = new java.lang.String[array.length];
-        for(int i=0;i<array.length;i++)
-            dst[i] = array[i] != null ? array[i].toString() : null;
-        return dst;
-    }
 }
