@@ -722,28 +722,32 @@ public class Unit {
     }
     
     public ProducedType denotableType(ProducedType pt) {
-    	TypeDeclaration d = pt.getDeclaration();
-		if (d instanceof Functional) {
-    		if (((Functional) d).isOverloaded()) {
-    			pt = pt.getSupertype(d.getExtendedTypeDeclaration());
+    	if (pt!=null) {
+    		TypeDeclaration d = pt.getDeclaration();
+    		if (d instanceof Functional) {
+    			if (((Functional) d).isOverloaded()) {
+    				pt = pt.getSupertype(d.getExtendedTypeDeclaration());
+    			}
+    		}
+    		if (d!=null && d.isAnonymous() ) {
+    			ClassOrInterface etd = d.getExtendedTypeDeclaration();
+    			List<TypeDeclaration> stds = d.getSatisfiedTypeDeclarations();
+    			List<ProducedType> list = new ArrayList<ProducedType>(stds.size()+1);
+    			addToIntersection(list, pt.getSupertype(etd), this);
+    			for (TypeDeclaration td: stds) {
+    				addToIntersection(list, pt.getSupertype(td), this);
+    			}
+    			IntersectionType it = new IntersectionType(this);
+    			it.setSatisfiedTypes(list);
+    			return it.getType();
+    		}
+    		else {
+    			return pt;
     		}
     	}
-        if ( pt!=null && d!=null &&
-                d.isAnonymous() ) {
-            ClassOrInterface etd = d.getExtendedTypeDeclaration();
-            List<TypeDeclaration> stds = d.getSatisfiedTypeDeclarations();
-            List<ProducedType> list = new ArrayList<ProducedType>(stds.size()+1);
-            addToIntersection(list, pt.getSupertype(etd), this);
-            for (TypeDeclaration td: stds) {
-                addToIntersection(list, pt.getSupertype(td), this);
-            }
-            IntersectionType it = new IntersectionType(this);
-            it.setSatisfiedTypes(list);
-            return it.getType();
-        }
-        else {
-            return pt;
-        }
+    	else {
+    		return null;
+    	}
     }
     
     public ProducedType nonemptyArgs(ProducedType args) {
