@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -1141,7 +1140,7 @@ public class CMRTest extends CompilerTest {
                         "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.c"));
 
         assertThat( Arrays.asList(exportPackage),
-                not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b")));
+                CoreMatchers.not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b")));
     }
 
     @Test
