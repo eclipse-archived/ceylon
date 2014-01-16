@@ -301,10 +301,6 @@
         </junit>
     </target>
 
-    <path id="ceylon.tests.classpath">
-        <pathelement path="${junit.lib}" />
-    </path>
-
     <target name="gavin" depends="ide">
     </target>
 
