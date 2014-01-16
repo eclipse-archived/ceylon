@@ -1848,7 +1848,9 @@ anonymousFunction returns [Expression expression]
 comprehension returns [Comprehension comprehension]
     @init { $comprehension = new Comprehension(null); }
     : forComprehensionClause
-      { $comprehension.setForComprehensionClause($forComprehensionClause.comprehensionClause); }
+      { $comprehension.setInitialComprehensionClause($forComprehensionClause.comprehensionClause); }
+    | ifComprehensionClause
+      { $comprehension.setInitialComprehensionClause($ifComprehensionClause.comprehensionClause); }
     ;
 
 comprehensionClause returns [ComprehensionClause comprehensionClause]

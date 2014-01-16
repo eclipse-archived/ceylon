@@ -2755,8 +2755,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkComprehensionIndirectArgument(Tree.Comprehension c, 
             ProducedType paramType, boolean atLeastOne) {
-        Tree.ForComprehensionClause fcc = ((Tree.Comprehension) c).getForComprehensionClause();
-        if (fcc.getPossiblyEmpty() && atLeastOne) {
+        Tree.InitialComprehensionClause icc = ((Tree.Comprehension) c).getInitialComprehensionClause();
+        if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
         ProducedType at = c.getTypeModel();
@@ -2802,8 +2802,8 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkComprehensionPositionalArgument(Parameter p, ProducedReference pr,
             Tree.Comprehension c, boolean atLeastOne) {
-        Tree.ForComprehensionClause fcc = ((Tree.Comprehension) c).getForComprehensionClause();
-        if (fcc.getPossiblyEmpty() && atLeastOne) {
+        Tree.InitialComprehensionClause icc = ((Tree.Comprehension) c).getInitialComprehensionClause();
+        if (icc.getPossiblyEmpty() && atLeastOne) {
             c.addError("variadic parameter is required but comprehension is possibly empty");
         }
         ProducedType paramType = pr.getTypedParameter(p).getFullType();
@@ -2847,7 +2847,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Comprehension that) {
         super.visit(that);
-        that.setTypeModel(that.getForComprehensionClause().getTypeModel());
+        that.setTypeModel(that.getInitialComprehensionClause().getTypeModel());
     }
 
     @Override public void visit(Tree.SpreadArgument that) {
@@ -4655,13 +4655,13 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
-                    Tree.ForComprehensionClause fcc = ((Tree.Comprehension) a).getForComprehensionClause();
-                    result = fcc.getPossiblyEmpty() ? 
+                    Tree.InitialComprehensionClause icc = ((Tree.Comprehension) a).getInitialComprehensionClause();
+                    result = icc.getPossiblyEmpty() ? 
                             unit.getSequentialType(et) : 
                             unit.getSequenceType(et);
                     if (!requireSequential) {
                         ProducedType it = producedType(unit.getIterableDeclaration(), 
-                                et, fcc.getFirstTypeModel());
+                                et, icc.getFirstTypeModel());
                         result = intersectionType(result, it, unit);
                     }
                 }

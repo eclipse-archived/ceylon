@@ -858,13 +858,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
-            <para>Every comprehension begins with a <literal>for</literal> clause, and 
-            ends with an expression clause. There may be any number of intervening 
+            <para>Every comprehension begins with a <literal>for</literal> or <literal>if</literal>
+            clause, and ends with an expression clause. There may be any number of intervening 
             <literal>for</literal> or <literal>if</literal> clauses. Each clause in the
             comprehension is considered a child of the clause that immediately precedes 
             it.</para>
             
-            <synopsis>Comprehension: ForComprehensionClause</synopsis>
+            <synopsis>Comprehension: InitialComprehensionClause</synopsis>
+            <synopsis>InitialComprehensionClause: ForComprehensionClause | IfComprehensionClause</synopsis>
             <synopsis>ForComprehensionClause: "for" ForIterator ComprehensionClause</synopsis>
             <synopsis>IfComprehensionClause: "if" ConditionList ComprehensionClause</synopsis>
             <synopsis>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</synopsis>
