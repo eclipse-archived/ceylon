@@ -701,15 +701,13 @@ public final class String
         
         @Override
         public java.lang.Object next() {
-            java.lang.Object result;
             if (offset < value.length()) {
                 int codePoint = value.codePointAt(offset);
-                result = Character.instance(codePoint);
                 offset += java.lang.Character.charCount(codePoint);
+                return Character.instance(codePoint);
             } else {
-                result = finished_.get_();
+                return finished_.get_();
             }
-            return result;
         }
         
         @Override
