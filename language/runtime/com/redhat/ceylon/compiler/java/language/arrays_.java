@@ -91,7 +91,7 @@ public final class arrays_ {
      * @see ObjectArray
      */
     public java.lang.String[] asNativeStringArray(@Name("array") 
-    @TypeInfo("ceylon.language::Array<ceylon.language::Null|ceylon.language::String>") 
+    @TypeInfo("ceylon.language::Array<ceylon.language::String>") 
     Array<ceylon.language.String> array){
         // simplest is same underlying type
         if(array.toArray() instanceof java.lang.String[]){
@@ -244,20 +244,6 @@ public final class arrays_ {
             return src;
         }
         throw new AssertionException("Invalid source array type: "+array.toArray());
-    }
-    
-    /**
-     * Cast a Java <code>ObjectArray&lt;java.util.String&gt;</code>, that is 
-     * <code>java.util.String[]</code> to a Ceylon <code>Array&lt;String?&gt;</code>, 
-     * preserving the identity of the given array. 
-     * 
-     * @see ObjectArray
-     */
-    @TypeInfo("ceylon.language::Array<ceylon.language::Null|ceylon.language::String>")
-    public Array<String> asStringArray(@Ignore TypeDescriptor $reifiedT, 
-            @Name("array") java.lang.String[] array){
-        // simplest is same underlying type
-        return Array.instance(array);
     }
 
     /**
