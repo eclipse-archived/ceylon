@@ -36,11 +36,9 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     private final TypedDeclaration declaration;
     private boolean inCapturingScope = false;
     private boolean inLazySpecifierExpression = false;
-    private Tree.CompilationUnit cu;
     private boolean defaultArgument;
     
-    public MethodOrValueReferenceVisitor(Tree.CompilationUnit cu, TypedDeclaration declaration) {
-        this.cu = cu;
+    public MethodOrValueReferenceVisitor(TypedDeclaration declaration) {
         this.declaration = declaration;
     }
     

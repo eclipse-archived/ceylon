@@ -61,7 +61,6 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -87,7 +86,6 @@ import com.sun.tools.javac.comp.Enter;
 import com.sun.tools.javac.comp.Env;
 import com.sun.tools.javac.comp.Todo;
 import com.sun.tools.javac.file.Paths;
-import com.sun.tools.javac.main.JavaCompiler;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
@@ -120,7 +118,6 @@ public class CeylonEnter extends Enter {
     private Timer timer;
     private Paths paths;
     private CeyloncFileManager fileManager;
-    private JavaCompiler compiler;
     private boolean verbose;
     private Check chk;
     private Types types;
@@ -149,7 +146,6 @@ public class CeylonEnter extends Enter {
         timer = Timer.instance(context);
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-        compiler = LanguageCompiler.instance(context);
         verbose = options.get(OptionName.VERBOSE) != null;
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
         chk = Check.instance(context);
@@ -279,18 +275,6 @@ public class CeylonEnter extends Enter {
             return super.classEnter(tree, env);
     }
     
-    private void printModules() {
-        for(Module module : ceylonContext.getModules().getListOfModules()){
-            System.err.println("Found module: "+module.getNameAsString());
-            for(Package pkg : module.getPackages()){
-                System.err.println(" Found package: "+pkg.getNameAsString());
-                for(Declaration decl : pkg.getMembers()){
-                    System.err.println("  Found Decl: "+decl);
-                }
-            }
-        }
-    }
-
     public void prepareForTypeChecking(List<JCCompilationUnit> trees) {
         if (hasRun)
             throw new RuntimeException("Waaaaa, running twice!!!");
@@ -437,7 +421,7 @@ public class CeylonEnter extends Enter {
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
             for (Declaration d: unit.getDeclarations()) {
                 if (d instanceof TypedDeclaration && !(d instanceof Setter)) {
-                    compilationUnit.visit(new MethodOrValueReferenceVisitor(compilationUnit, (TypedDeclaration) d));
+                    compilationUnit.visit(new MethodOrValueReferenceVisitor((TypedDeclaration) d));
                 }
             }
         }
