@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1536_ {
+    
+    private bug1536_() {
+    }
+    
+    static void bug1536(final .java.lang.Object it) {
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> v = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)){
+                    {
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)it).iterator();
+                    }
+                    private final .ceylon.language.Iterator $iterator$0;
+                    private .java.lang.Object e;
+                    private boolean e$exhausted$;
+                    
+                    private final boolean e() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        e$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (e$exhausted$) {
+                            return false;
+                        } else {
+                            e = (.java.lang.Object)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.e()) {
+                            final .java.lang.Object e = this.e;
+                            return e;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+}
