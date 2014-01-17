@@ -306,7 +306,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     @Override public void visit(Tree.Comprehension that) {
         super.visit(that);
         boolean cs = enterCapturingScope();
-        that.getForComprehensionClause().visit(this);
+        that.getInitialComprehensionClause().visit(this);
         exitCapturingScope(cs);
     }
     @Override public void visit(Tree.ForComprehensionClause that) {

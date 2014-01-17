@@ -198,6 +198,11 @@ public class ComprehensionTest extends CompilerTest {
     }
     
     @Test
+    public void testIfExists() {
+    	compareWithJavaSource("if_exists");
+    }
+    
+    @Test
     @Ignore("#1337")
     public void testOptimizedTupleEnumWithComprehension() throws ReflectiveOperationException {
         compile("OptimizedTupleEnumWithComprehension.ceylon");

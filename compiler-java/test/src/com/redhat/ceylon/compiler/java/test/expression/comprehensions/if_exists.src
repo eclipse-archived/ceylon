@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+final class ifFor_ {
+    
+    private ifFor_() {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> ifFor(final .ceylon.language.String x) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                    }
+                    private boolean $next$0$exhausted$;
+                    private .java.lang.String x$2;
+                    
+                    private final boolean $next$0() {
+                        if ($next$0$exhausted$) return false;
+                        boolean $ceylontmp$result$0 = false;
+                        .ceylon.language.String x$1 = null;
+                        if ((x$1 = x) != null) {
+                            x$2 = x$1.toString();
+                            $ceylontmp$result$0 = true;
+                        }
+                        $next$0$exhausted$ = true;
+                        return $ceylontmp$result$0;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$0()) {
+                            final .java.lang.String x$2 = this.x$2;
+                            return .ceylon.language.String.instance(x$2);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+}
