@@ -84,3 +84,61 @@ final class bug1530_foo_ implements .com.redhat.ceylon.compiler.java.runtime.mod
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.class);
     }
 }
+class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1530() {
+        this.foo = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_();
+        this.bar = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ foo;
+    
+    final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private foo_() {
+        }
+        
+        public final void t() {
+            .ceylon.language.print_.print(getFoo$priv$());
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_.class));
+        }
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ getFoo$priv$() {
+        return foo;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ bar;
+    
+    public final class bar_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private bar_() {
+        }
+        
+        public final void t() {
+            .ceylon.language.print_.print(getBar());
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_.class));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ getBar() {
+        return bar;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.class);
+}

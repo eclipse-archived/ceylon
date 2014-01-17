@@ -41,3 +41,17 @@ object bug1530_foo {
         print(bug1530_foo);
     }
 }
+
+@noanno
+class Bug1530(){
+    object foo {
+        shared void t(){
+            print(foo);
+        }
+    }
+    shared object bar {
+        shared void t(){
+            print(bar);
+        }
+    }
+}
