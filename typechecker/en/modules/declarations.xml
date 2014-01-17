@@ -1710,17 +1710,30 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
         <synopsis>FunctionDeclaration: Annotations FunctionHeader (Block | LazySpecifier? ";")</synopsis>
         
         <para>All function declarations specify the function name, one or more parameter 
-        lists, and, optionally, a list of type parameters. A function declaration may 
-        specify a type, called the <emphasis>return type</emphasis>, to which the values 
-        the method returns are assignable, or it may specify that the function is a 
-        <literal>void</literal> function&mdash;a function which does not return a useful 
-        value, and only useful for its effect. A generic function declaration may have a 
-        list of type constraints.</para>
+        lists, and, optionally, a list of type parameters. A generic function declaration 
+        may have a list of type constraints.</para>
         
-        <synopsis>FunctionHeader: (Type | "function" | "dynamic" | "void") MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
+        <synopsis>FunctionHeader: FunctionPrefix MemberName TypeParameters? Parameters+ TypeConstraints?</synopsis>
         
-        <para>A function may be declared using the keyword <literal>dynamic</literal> 
-        in place of its return type. Such a function has no return type.</para>
+        <para>A function declaration may specify a type, called the <emphasis>return 
+        type</emphasis>, to which the values the method returns are assignable, or it may
+        specify that the function is a <literal>void</literal> function&mdash;a function 
+        which does not return a useful value, and only useful for its effect.</para>
+        
+        <synopsis>FunctionPrefix: Type | "function" | "dynamic" | "void"</synopsis>
+        
+        <para>Instead of an explicit return type, a function may be declared using:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the keyword <literal>dynamic</literal>, indicating that it is a
+                partially typed declaration with no return type, or</para>
+            </listitem>
+            <listitem>
+		        <para>the keyword <literal>function</literal>, indicating that its return
+		        type is inferred.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>A function implementation may be specified using either:</para>
         
@@ -2178,13 +2191,26 @@ case (hexadecimal) {
         
         <synopsis>ValueDeclaration: Annotations ValueHeader (Block | (Specifier | LazySpecifier)? ";")</synopsis>
         
-        <para>All value declarations specify the value name. A value declaration may 
-        specify a type.</para>
+        <para>All value declarations specify the value name.</para> 
             
-        <synopsis>ValueHeader: (Type | "value" | "dynamic") MemberName</synopsis>
+        <synopsis>ValueHeader: ValuePrefix MemberName</synopsis>
         
-        <para>A value may be declared using the keyword <literal>dynamic</literal> in 
-        place of its type. Such a value has no type.</para>
+        <para>A value declaration may specify a type.</para>
+        
+        <synopsis>ValuePrefix: Type | "value" | "dynamic"</synopsis>
+        
+        <para>Instead of an explicit return type, a value may be declared using:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the keyword <literal>dynamic</literal>, indicating that it is a
+                partially typed declaration with no type, or</para>
+            </listitem>
+            <listitem>
+                <para>the keyword <literal>value</literal>, indicating that its type 
+                is inferred.</para>
+            </listitem>
+        </itemizedlist>
         
         <comment><para>Note: syntactically a value declaration looks like a function 
         declaration with zero parameter lists. It is often helpful, in thinking about the 
