@@ -3800,12 +3800,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                     selector = naming.selector((TypedDeclaration)decl);
                 }
             } else if (decl.isCaptured() || decl.isShared()) {
-                TypeDeclaration typeDecl = ((TypedDeclaration)decl).getType().getDeclaration();
+                TypedDeclaration typedDecl = ((TypedDeclaration)decl);
+                TypeDeclaration typeDecl = typedDecl.getType().getDeclaration();
                 mustUseField = Decl.isBoxedVariable((TypedDeclaration)decl);
                 if (Decl.isLocalNotInitializer(typeDecl)
-                        && typeDecl.isAnonymous()) {
+                        && typeDecl.isAnonymous()
+                        // we need the box if it's a captured object
+                        && !typedDecl.isSelfCaptured()) {
                     // accessing a local 'object' declaration, so don't need a getter 
-                } else if (decl.isCaptured() && !((TypedDeclaration) decl).isVariable()) {
+                } else if (decl.isCaptured() 
+                        && !((TypedDeclaration) decl).isVariable()
+                        // captured objects are never variable but need the box
+                        && !typedDecl.isSelfCaptured()) {
                     // accessing a local that is not getter wrapped
                 } else {
                     primaryExpr = naming.makeQualifiedName(primaryExpr, (TypedDeclaration)decl, Naming.NA_Q_LOCAL_INSTANCE);

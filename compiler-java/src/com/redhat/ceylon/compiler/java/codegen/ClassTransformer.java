@@ -82,9 +82,11 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCNewClass;
@@ -3372,7 +3374,21 @@ public class ClassTransformer extends AbstractTransformer {
             .build();
         
         if (makeLocalInstance) {
-            result = result.append(makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false));
+            if(model.isSelfCaptured()){
+                // if it's captured we need to box it and define the var before the class, so it can access it
+                JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
+                JCFieldAccess setter = naming.makeSelect(name, Naming.getSetterName(model));
+                JCStatement assign = make().Exec(make().Assign(setter, newInstance));
+                result = result.prepend(assign);
+
+                JCVariableDecl localDecl = makeVariableBoxDecl(null, model);
+                result = result.prepend(localDecl);
+            }else{
+                // not captured, we can define the var after the class
+                JCVariableDecl localDecl = makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false);
+                result = result.append(localDecl);
+            }
+            
         } else if (Decl.withinClassOrInterface(model)) {
             boolean visible = Decl.isCaptured(model);
             int modifiers = FINAL | ((visible) ? PRIVATE : 0);

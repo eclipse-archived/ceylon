@@ -610,8 +610,14 @@ public class Decl {
     public static boolean isBoxedVariable(TypedDeclaration attr) {
         return isNonTransientValue(attr)
                 && isLocalNotInitializer(attr)
-                && attr.isVariable()
-                && attr.isCaptured();
+                && ((attr.isVariable() && attr.isCaptured())
+                        // self-captured objects must also be boxed like variables
+                        || attr.isSelfCaptured());
+    }
+
+    public static boolean isObjectValue(TypedDeclaration attr) {
+        TypeDeclaration type = attr.getType().getDeclaration();
+        return type.isAnonymous();
     }
 
     public static boolean isAnnotationConstructor(Tree.AnyMethod def) {

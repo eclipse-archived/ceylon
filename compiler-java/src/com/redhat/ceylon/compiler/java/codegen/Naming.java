@@ -55,7 +55,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.parser.Token;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -1266,7 +1265,8 @@ public class Naming implements LocalId {
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
             expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
-            if (decl.isCaptured() && decl.isVariable()) {
+            if ((decl.isCaptured() && decl.isVariable())
+                    || decl.isSelfCaptured()) {
                 expr = makeQualIdent(expr, getVariableBoxName(decl));
             } else {
                 expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));

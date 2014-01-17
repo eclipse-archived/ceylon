@@ -7,12 +7,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
@@ -101,6 +104,9 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                 } else if (Decl.isValue(d) || Decl.isGetter(decl)) {
                     Value v = (Value) d;
                     v.setCaptured(true);
+                    if (Decl.isObjectValue(d)){
+                        v.setSelfCaptured(isSelfCaptured(that, d));
+                    }
                     if (v.getSetter() != null) {
                         v.getSetter().setCaptured(true);
                     }
@@ -114,6 +120,20 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                 }*/
             }
         }
+    }
+
+    /**
+     * Returns true if <code>that</code> is within the scope of the type of <code>d</code>,
+     * which must be a value declaration for an object declaration.
+     */
+    private boolean isSelfCaptured(Primary that, TypedDeclaration d) {
+        TypeDeclaration type = d.getTypeDeclaration();
+        Scope scope = that.getScope();
+        while(scope != null 
+                && scope instanceof Package == false
+                && scope != type)
+            scope = scope.getScope();
+        return scope == type;
     }
 
     /**
