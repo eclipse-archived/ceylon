@@ -170,4 +170,9 @@ public abstract class TypedDeclaration extends Declaration {
         }
         return getName().equals(b.getName());
     }
+
+    // implemented in Value
+    public boolean isSelfCaptured() {
+        return false;
+    }
 }

@@ -15,6 +15,8 @@ public class Value extends MethodOrValue implements Scope {
     private boolean specifiedInForElse;
 
     private Setter setter;
+    // used for object declarations that use their own value binding in their body
+    private boolean selfCaptured;
 
     public Setter getSetter() {
         return setter;
@@ -65,6 +67,15 @@ public class Value extends MethodOrValue implements Scope {
 
     public void setSpecifiedInForElse(boolean assignedInFor) {
         this.specifiedInForElse = assignedInFor;
+    }
+
+    @Override
+    public boolean isSelfCaptured(){
+        return selfCaptured;
+    }
+    
+    public void setSelfCaptured(boolean selfCaptured) {
+        this.selfCaptured = selfCaptured;
     }
 
 }
