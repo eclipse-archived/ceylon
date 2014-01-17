@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1530_ {
+    
+    private bug1530_() {
+    }
+    
+    static void bug1530() {
+        final VariableBox<.java.lang.Object> o = new VariableBox<.java.lang.Object>(.ceylon.language.Integer.instance(1L));
+        final VariableBox<foo_> foo = new VariableBox<foo_>();
+        foo.ref = new foo_();
+        
+        final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private foo_() {
+            }
+            
+            public final void t() {
+                .ceylon.language.print_.print(o.ref);
+                .ceylon.language.print_.print(foo.ref);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class);
+            }
+        }
+        foo.ref.t();
+        
+        final class capturedNotSelfCaptured_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private capturedNotSelfCaptured_() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(capturedNotSelfCaptured_.class);
+            }
+        }
+        final capturedNotSelfCaptured_ capturedNotSelfCaptured = new capturedNotSelfCaptured_();
+        
+        class T implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            T() {
+                .ceylon.language.print_.print(capturedNotSelfCaptured);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(T.class);
+            }
+        }
+        new T();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.bug1530();
+    }
+}
+final class bug1530_foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private bug1530_foo_() {
+    }
+    
+    public final void t() {
+        .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.get_());
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_()};
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationException("Cyclic initialization");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.class);
+    }
+}
