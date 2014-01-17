@@ -500,10 +500,13 @@ TypeConstraints?
             Like any other value declaration, it has a name, type, and, optionally, 
             annotations.</para>
             
-            <synopsis>ValueParameter: Annotations (Type | "dynamic") MemberName</synopsis>
+            <synopsis>ValueParameter: Annotations ValueParameterPrefix MemberName</synopsis>
+            
+            <synopsis>ValueParameterPrefix: Type | "dynamic"</synopsis>
             
             <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
-            in place of the parameter type. Such a parameter has no type.</para>
+            in place of the parameter type, indicating that it is a partially typed declaration.
+            Such a parameter has no type.</para>
             
             <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
             and a parameter list has type <literal>P</literal> with the principal instantiation 
@@ -539,7 +542,9 @@ TypeConstraints?
             any other function declaration, it has a name, type, one or more parameter 
             lists, and, optionally, annotations.</para>
             
-            <synopsis>CallableParameter: Annotations (Type | "void") MemberName Parameters+</synopsis>
+            <synopsis>CallableParameter: Annotations CallableParameterPrefix MemberName Parameters+</synopsis>
+            
+            <synopsis>CallableParameterPrefix: Type | "void"</synopsis>
             
             <para>If a callable parameter <literal>f</literal> has callable type 
             <literal>Callable&lt;X,A&gt;</literal>, as specified below in 
@@ -587,9 +592,9 @@ TypeConstraints?
                 </listitem>
             </itemizedlist>
             
-            <synopsis>VariadicType: UnionType ("*" | "+")</synopsis>
-                        
-            <synopsis>VariadicParameter: Annotations VariadicType MemberName</synopsis>
+            <synopsis>VariadicParameter: Annotations ParameterPrefix MemberName</synopsis>
+            
+            <synopsis>VariadicParameterPrefix: UnionType ("*" | "+")</synopsis>
             
             <para>A variadic parameter in a parameter list may be a variadic parameter 
             declaration, or the name of a variadic parameter declared in the body of
