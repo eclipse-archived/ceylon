@@ -11,7 +11,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        $iterator$0 = xs.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)xs).iterator();
                     }
                     private final .ceylon.language.Iterator $iterator$0;
                     private .java.lang.Object x;
@@ -60,7 +60,7 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
                     {
-                        $iterator$0 = xs.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)xs).iterator();
                     }
                     private final .ceylon.language.Iterator $iterator$0;
                     private .java.lang.Object x;
