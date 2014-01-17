@@ -11,8 +11,28 @@ import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 
 public class ProducedTypeCache {
 
+    public interface CacheEnabler {
+        boolean isCacheEnabled();
+    }
+    
     // need a special value for null because ConcurrentHashMap does not support null
     private final static ProducedType NULL_VALUE = new UnknownType(null).getType();
+    private static CacheEnabler cacheEnabler = new CacheEnabler() {
+        @Override
+        public boolean isCacheEnabled() {
+            return true;
+        }
+    };
+    
+    public static void setCacheEnabler(CacheEnabler newCacheEnabler) {
+        if (newCacheEnabler != null) {
+            cacheEnabler = newCacheEnabler;
+        }
+    }
+    
+    public static boolean isCachingEnabled() {
+        return cacheEnabler.isCacheEnabled();
+    }
     
     // need ConcurrentHashMap even for the cache, otherwise get/put/containsKey can get info infinite loops
     // on concurrent operations

@@ -588,7 +588,9 @@ public class ProducedType extends ProducedReference {
     private ProducedType getSupertypeInternal(TypeDeclaration dec) {
         boolean complexType = dec instanceof UnionType 
         		|| dec instanceof IntersectionType;
-        boolean canCache = !complexType && !hasUnderlyingType(); 
+        boolean canCache = !complexType 
+                && !hasUnderlyingType() 
+                && ProducedTypeCache.isCachingEnabled(); 
         ProducedTypeCache cache = dec.getUnit().getCache();
         if (canCache
                 && cache.containsKey(this, dec)) {
