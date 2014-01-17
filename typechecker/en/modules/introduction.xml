@@ -199,7 +199,7 @@
             
             <para>
             Union types make it possible to write code that operates polymorphically 
-            over types defined in disparate branches of the type heirarchy without the 
+            over types defined in disparate branches of the type hierarchy without the 
             need for intermediate adaptor classes. Intersection types make it possible 
             to operate polymorphically over all subtypes of a list of types. Union and
             intersection types provide some of the benefits of structural ("duck") 

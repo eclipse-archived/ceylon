@@ -445,7 +445,7 @@ String result = middleObject.string;</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>If any initializer in the class heirarchy terminates with a thrown exception,
+            <para>If any initializer in the class hierarchy terminates with a thrown exception,
             initialization terminates and the incompletely-initialized instance never becomes
             accessible.</para>
             
