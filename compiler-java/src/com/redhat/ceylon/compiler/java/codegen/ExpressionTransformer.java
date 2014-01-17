@@ -4649,12 +4649,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType iterType = specexpr.getExpression().getTypeModel();
             JCExpression iterTypeExpr = makeJavaType(typeFact().getIteratorType(
                     typeFact().getIteratedType(iterType)));
+            ProducedType iterableType = iterType.getSupertype(typeFact().getIterableDeclaration());
+            JCExpression iterableExpr = transformExpression(specexpr.getExpression(), BoxingStrategy.BOXED, iterableType);
             if (clause == comp.getForComprehensionClause()) {
                 //The first iterator can be initialized as a field
                 fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
                     null));
                 fieldNames.add(iterVar.getName());
-                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(transformExpression(specexpr.getExpression()), "iterator"), 
+                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(iterableExpr, "iterator"), 
                         List.<JCExpression>nil())));
             } else {
                 //The subsequent iterators need to be inside a method,
@@ -4673,7 +4675,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                   null),
                         make().Exec(make().Assign(iterVar.makeIdent(), 
                                                   make().Apply(null,
-                                                               makeSelect(transformExpression(specexpr.getExpression()), "iterator"), 
+                                                               makeSelect(iterableExpr, "iterator"), 
                                                                List.<JCExpression>nil()))),
                         make().Return(makeBoolean(true))
                 ));
