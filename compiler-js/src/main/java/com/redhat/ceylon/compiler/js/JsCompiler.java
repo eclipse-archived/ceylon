@@ -239,7 +239,7 @@ public class JsCompiler {
                             System.err.println("Errors found. Compilation stopped.");
                             break;
                         }
-                        getOutput(pu).addSource(pu.getUnit().getFullPath());
+                        getOutput(pu).addSource(getFullPath(pu));
                     } else {
                         if (opts.isVerbose()) {
                             System.err.println("Files does not contain "+path);
@@ -276,7 +276,7 @@ public class JsCompiler {
                                     System.err.println("Errors found. Compilation stopped.");
                                     break;
                                 }
-                                getOutput(pu).addSource(pu.getUnit().getFullPath());
+                                getOutput(pu).addSource(getFullPath(pu));
                                 lastUnit = pu;
                             }
                         }
@@ -289,6 +289,10 @@ public class JsCompiler {
             finish();
         }
         return errCount == 0;
+    }
+
+    public String getFullPath(PhasedUnit pu) {
+        return pu.getUnit().getFullPath();
     }
 
     /** Creates a JsOutput if needed, for the PhasedUnit.
