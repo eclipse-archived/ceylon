@@ -653,8 +653,8 @@ public class Util {
 
     /**
      * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
-     * wrapping the given elements, depending on whether the given array and varargs are 
-     * empty
+     * wrapping the given elements, depending on whether the given array 
+     * and varargs are empty
      * @param rest The elements at the end of the sequence
      * @param elements the elements at the start of the sequence
      * @return A Sequential
