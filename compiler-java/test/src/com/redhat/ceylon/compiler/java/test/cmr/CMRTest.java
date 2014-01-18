@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.cmr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -572,6 +573,7 @@ public class CMRTest extends CompilerTest {
             File[] extraClassPath,
             String... sourceFileNames) throws IOException {
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+        assertNotEquals("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", javaCompiler, null);
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
         Set<String> sourceDirectories = new HashSet<String>();
         File[] javaSourceFiles = new File[sourceFileNames.length];
@@ -957,15 +959,15 @@ public class CMRTest extends CompilerTest {
         jarOutputFolder.mkdirs();
 
         compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "1",
-                new File(getPackagePath()+"/modules/bug1062/javaA1-src"),
+                new File(getPackagePath(), "modules/bug1062/javaA1-src"),
                 new File[0],
                 "bug1062/javaA/JavaA.java");
         compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaA", "2",
-                new File(getPackagePath()+"/modules/bug1062/javaA2-src"),
+                new File(getPackagePath(), "modules/bug1062/javaA2-src"),
                 new File[0],
                 "bug1062/javaA/JavaA.java");
         compileJavaModule(jarOutputFolder, classesOutputFolder, "bug1062.javaB", "1",
-                new File(getPackagePath()+"/modules/bug1062/javaB-nomodule-src"),
+                new File(getPackagePath(), "modules/bug1062/javaB-nomodule-src"),
                 new File[]{new File(jarOutputFolder, "bug1062/javaA/1/bug1062.javaA-1.jar")},
                 "bug1062/javaB/JavaB.java");
         

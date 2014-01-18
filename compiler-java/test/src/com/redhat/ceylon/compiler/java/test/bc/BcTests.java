@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.bc;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -168,6 +170,7 @@ public class BcTests extends CompilerTest {
         }
 
         JavaCompiler runCompiler = ToolProvider.getSystemJavaCompiler();
+        assertNotEquals("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", runCompiler, null);
         StandardJavaFileManager runFileManager = runCompiler.getStandardFileManager(null, null, null);
 
         // make sure the destination repo exists
