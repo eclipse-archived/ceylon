@@ -4492,9 +4492,6 @@ public class ExpressionTransformer extends AbstractTransformer {
          * Builds the {@code next()} method of the {@code AbstractIterator}
          */
         private JCMethodDecl makeNextMethod(ProducedType iteratedType) {
-            if (valueCaptures.isEmpty()) {
-                valueCaptures.append(make().Exec(makeErroneous(this.comp, "compiler bug: nothing captured")));
-            }
             List<JCStatement> of = valueCaptures.append(make().Return(transformExpression(excc.getExpression(), BoxingStrategy.BOXED, iteratedType))).toList();
             JCStatement stmt = make().If(
                     make().Apply(null,
