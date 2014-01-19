@@ -4670,36 +4670,47 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         private void transformIfClause(Tree.IfComprehensionClause clause) {
             List<JCStatement> body;
-            if (clause == comp.getInitialComprehensionClause()) {
-                //No previous context
-                ctxtName = naming.synthetic(Prefix.$next$, idx);
+            if (prevItemVar == null) {
+            	List<JCStatement> initBlock;
+            	if (clause == comp.getInitialComprehensionClause()) {
+            		//No previous context
+            		assert (ctxtName == null);
+            		ctxtName = naming.synthetic(Prefix.$next$, idx);
+            		//define a variable that records if the expression was already evaluated
+            		SyntheticName exhaustedName = ctxtName.suffixedBy(Suffix.$exhausted$);
+                    JCVariableDecl exhaustedDef = make().VarDef(make().Modifiers(Flags.PRIVATE),
+                            exhaustedName.asName(), makeJavaType(typeFact().getBooleanDeclaration().getType()), null);
+                    fields.add(exhaustedDef);
+                    JCStatement returnIfExhausted = make().If(exhaustedName.makeIdent(), make().Return(makeBoolean(false)), null);
+                    JCStatement setExhaustedTrue = make().Exec(make().Assign(exhaustedName.makeIdent(), makeBoolean(true)));
+                    initBlock =  List.<JCStatement>of(
+                    		//if we already evaluated the expression, return
+                    		returnIfExhausted,
+                            //record that we will have evaluated the expression
+                            setExhaustedTrue);
+            	} else {
+            		assert (ctxtName != null);
+            		JCStatement returnIfExhausted = make().If(
+            				//if the previous comprehension is false or was already evaluated...
+            				make().Unary(JCTree.NOT, make().Apply(null,
+            						ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+            				//return false
+                    		make().Return(makeBoolean(false)), null);
+            		ctxtName = naming.synthetic(Prefix.$next$, idx);
+            		initBlock = List.<JCStatement>of(returnIfExhausted);
+            	}
                 
-                SyntheticName exhaustedName = ctxtName.suffixedBy(Suffix.$exhausted$);
-                JCVariableDecl exhaustedDef = make().VarDef(make().Modifiers(Flags.PRIVATE),
-                        exhaustedName.asName(), makeJavaType(typeFact().getBooleanDeclaration().getType()), null);
-                fields.add(exhaustedDef);
-                JCStatement returnIfExhausted = make().If(exhaustedName.makeIdent(), make().Return(makeBoolean(false)), null);
-                SyntheticName resultName = naming.temp("result");
-                JCVariableDecl declareResult = make().VarDef(make().Modifiers(0),
-                        resultName.asName(), makeJavaType(typeFact().getBooleanDeclaration().getType()), makeBoolean(false));
-                JCStatement setResultTrue = make().Exec(make().Assign(resultName.makeIdent(), makeBoolean(true)));
-                JCStatement setExhaustedTrue = make().Exec(make().Assign(exhaustedName.makeIdent(), makeBoolean(true)));
-                JCStatement returnResult = make().Return(resultName.makeIdent());
+                JCStatement returnTrue = make().Return(makeBoolean(true));
+                JCStatement returnFalse = make().Return(makeBoolean(false));
                 
                 body = new IfComprehensionCondList(clause.getConditionList().getConditions(),
+                    initBlock,
                     List.<JCStatement>of(
-                        //if we already evaluated the expression, return
-                        returnIfExhausted,
-                        //declare the result variable that's going to store the result of the conditions (init to false)
-                        declareResult),
+                        //if the conditions apply: return true
+                        returnTrue),
                     List.<JCStatement>of(
-                        //if the conditions apply: set the result variable to true
-                        setResultTrue),
-                    List.<JCStatement>of(
-                        //we evaluated the expression
-                        setExhaustedTrue,
-                        //and return the result
-                        returnResult)).getResult();
+                        //the conditions did not apply: return false
+                        returnFalse)).getResult();
             } else {
                 //Filter contexts need to check if the previous context applies and then check the condition
                 JCExpression condExpr = make().Apply(null,
