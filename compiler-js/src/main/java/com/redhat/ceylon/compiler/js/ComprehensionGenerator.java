@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionC
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitialComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
@@ -47,7 +48,48 @@ class ComprehensionGenerator {
         // gather information about all loops and conditions in the comprehension
         List<ComprehensionLoopInfo> loops = new ArrayList<ComprehensionLoopInfo>();
         Expression expression = null;
-        ForComprehensionClause forClause = that.getForComprehensionClause();
+        ComprehensionClause startClause = that.getInitialComprehensionClause();
+        String tail = null;
+        /**
+         * The number of initial "if" comprehension clauses, i.&nbsp;e., the number of blocks that have to be ended.
+         */
+        int initialIfClauses = 0;
+        while (!(startClause instanceof ForComprehensionClause)) {
+            if (startClause instanceof IfComprehensionClause) {
+                // check the condition
+                IfComprehensionClause ifClause = (IfComprehensionClause)startClause;
+                gen.conds.specialConditions(
+                        gen.conds.gatherVariables(ifClause.getConditionList()),
+                        ifClause.getConditionList(),
+                        "if");
+                initialIfClauses++;
+                gen.beginBlock();
+                startClause = ifClause.getComprehensionClause();
+                if (startClause instanceof ForComprehensionClause) {
+                    // we'll put the rest of the condition inside this if block;
+                    // outside the if block, return nothing (if any condition isn't true)
+                    tail = "return function(){return " + finished + ";}";
+                }
+            } else if (startClause instanceof ExpressionComprehensionClause) {
+                // return the expression result
+                gen.out("return function() {");
+                ((ExpressionComprehensionClause)startClause).getExpression().visit(gen);
+                gen.out("};");
+                for (int i = 0; i < initialIfClauses; i++) {
+                    gen.endBlock();
+                }
+                gen.endBlock(); // end one more block - this one is for the function
+                gen.out(",");
+                TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen);
+                gen.out(")");
+                return;
+            } else {
+                that.addError("No support for comprehension clause of type "
+                              + startClause.getClass().getName());
+                return;
+            }
+        }
+        ForComprehensionClause forClause = (ForComprehensionClause)startClause;
         while (forClause != null) {
             ComprehensionLoopInfo loop = new ComprehensionLoopInfo(that, forClause.getForIterator());
             ComprehensionClause clause = forClause.getComprehensionClause();
@@ -197,7 +239,17 @@ class ComprehensionGenerator {
 
         gen.out("return ", finished, ";");
         gen.endBlockNewLine();
-        gen.endBlock(); gen.out(",");
+        if (tail != null) {
+            // tail is set for comprehensions beginning with an "if" clause, and contains the outer else
+            gen.endLine(false);
+            gen.out(tail);
+            // also, we have to close the blocks that were opened by the "if"s
+            for (int i = 0; i < initialIfClauses; i++) {
+                gen.endBlock();
+            }
+        }
+        gen.endBlock();
+        gen.out(",");
         TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen);
         gen.out(")");
     }
