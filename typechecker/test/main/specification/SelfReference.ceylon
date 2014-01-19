@@ -1,3 +1,23 @@
+object bar {
+    @error print(bar);
+    @error print(this);
+    object baz {
+        @error print(bar);
+        @error print(baz);
+        @error print(outer.baz);
+        shared void printSelf() {
+            @error print(bar);
+            print(baz);
+            print(outer.baz);
+        }
+    }
+    shared void printSelf() {
+        print(baz);
+        print(bar);
+        print(this);
+    }
+}
+
 interface SelfReference {
     
     void use(Object o) {}
@@ -115,3 +135,4 @@ interface SelfReference {
         Outer getOut(Outer o) { return o; }
     }
 }
+

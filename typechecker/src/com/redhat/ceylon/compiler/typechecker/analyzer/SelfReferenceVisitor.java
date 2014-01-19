@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecut
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -225,7 +226,7 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.Statement that) {
         super.visit(that);
-        if (directlyInBody()) {
+        if (inBody()) {
             declarationSection = declarationSection || 
                     that==lastExecutableStatement;
         }
@@ -245,6 +246,31 @@ public class SelfReferenceVisitor extends Visitor {
             that.addError("leaks outer reference in initializer: " + 
                     typeDeclaration.getName());
         }
+        if (mayNotLeakAnonymousClass() && t instanceof Tree.BaseMemberExpression) {
+        	Declaration declaration = ((Tree.BaseMemberExpression)t).getDeclaration();
+        	if (declaration instanceof TypedDeclaration) {
+        		if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
+                    that.addError("object leaks self reference in initializer: " + 
+                            typeDeclaration.getName());
+        		}
+        	}
+        }
+        if (mayNotLeakAnonymousClass() && t instanceof Tree.QualifiedMemberExpression) {
+        	Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) t;
+        	if (qme.getPrimary() instanceof Tree.Outer) {
+        		Declaration declaration = qme.getDeclaration();
+        		if (declaration instanceof TypedDeclaration) {
+        			if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
+        				that.addError("object leaks self reference in initializer: " + 
+        						typeDeclaration.getName());
+        			}
+        		}
+        	}
+        }
+    }
+    
+    boolean mayNotLeakAnonymousClass() {
+    	return !declarationSection && inBody();
     }
     
     @Override

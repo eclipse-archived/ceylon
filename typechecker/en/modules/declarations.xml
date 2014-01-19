@@ -1028,12 +1028,17 @@ TypeConstraints?
                 <listitem>
                     <para>any occurrence of the expression <literal>this</literal> or
                     <literal>super</literal>, unless it also occurs in the body of a 
-                    nested class or interface declaration, or</para>
+                    nested class or interface declaration,</para>
                 </listitem>
                 <listitem>
                     <para>any occurrence of the expression <literal>outer</literal> in 
                     the body of a class or interface declaration immediately contained 
-                    by the class.</para>
+                    by the class, or</para>
+                </listitem>
+                <listitem>
+                    <para>in the case of an anonymous class, any base expression, or 
+                    qualified expression with receiver expression <literal>outer</literal>, 
+                    that is a value reference to the anonymous class.</para>
                 </listitem>
             </itemizedlist>
             
