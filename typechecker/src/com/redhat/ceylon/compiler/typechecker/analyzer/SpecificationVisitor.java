@@ -468,12 +468,25 @@ public class SpecificationVisitor extends Visitor {
                     name(bme.getIdentifier()), null, false, bme.getUnit());
 	        if (member==declaration) {
                 boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
-            	if (declaration instanceof Value && 
-            	        !((Value)declaration).isVariable() && 
-            	        lazy!=((Value)declaration).isTransient()) {
-            		that.addError("value must be specified using =>");
+            	if (declaration instanceof Value) {
+            		Value value = (Value) declaration;
+            	    if (!value.isVariable() && lazy!=value.isTransient()) {
+	            		// check that all assignments to a non-variable, in
+            	    	// different paths of execution, all use the same
+            	    	// kind of specifier, all =>, or all =
+            	    	// TODO: sometimes this error appears only because 
+            	    	//       of a later line which illegally reassigns
+	            		that.addError("value must be specified using => lazy specifier: " +
+	            		        member.getName());
+            	    }
+            	    if (value.isVariable() && lazy) {
+            	    	that.addError("variable value may not be specified using => lazy specifier: " +
+            	    			member.getName());
+            	    }
             	}
-	            if (!lazy) that.getSpecifierExpression().visit(this);
+	            if (!lazy) {
+	            	that.getSpecifierExpression().visit(this);
+	            }
 	            boolean constant = !isVariable() && !isLate();
 				if (!declared && constant) {
                     that.addError("value is not yet declared: " + 

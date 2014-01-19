@@ -84,3 +84,19 @@ void testAssignmentInWhile3() {
     if (is String s = (o=hello)) {}
     print(o);
 }
+
+void testForwardLazySpecifier() {
+    String name1;
+    String name2;
+    variable String name3;
+    variable String name4;
+    @error //TODO: should not display error here!
+    name1 = "";
+    name2 => "";
+    name3 = "";
+    @error name4 => "";
+    @error name1 => "";
+    @error name2 => "";
+    @error name3 => "";
+    @error name4 => "";
+}
