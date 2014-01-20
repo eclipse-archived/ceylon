@@ -65,8 +65,8 @@ class ComprehensionGenerator {
                 initialIfClauses++;
                 gen.beginBlock();
                 startClause = ifClause.getComprehensionClause();
-                if (startClause instanceof ForComprehensionClause) {
-                    // we'll put the rest of the condition inside this if block;
+                if (!(startClause instanceof IfComprehensionClause)) {
+                    // we'll put the rest of the comprehension inside this if block;
                     // outside the if block, return nothing (if any condition isn't true)
                     tail = "return function(){return " + finished + ";}";
                 }
@@ -78,6 +78,8 @@ class ComprehensionGenerator {
                 for (int i = 0; i < initialIfClauses; i++) {
                     gen.endBlock();
                 }
+                gen.endLine();
+                gen.out(tail);
                 gen.endBlock(); // end one more block - this one is for the function
                 gen.out(",");
                 TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen);
@@ -240,13 +242,14 @@ class ComprehensionGenerator {
         gen.out("return ", finished, ";");
         gen.endBlockNewLine();
         if (tail != null) {
-            // tail is set for comprehensions beginning with an "if" clause, and contains the outer else
-            gen.endLine(false);
-            gen.out(tail);
-            // also, we have to close the blocks that were opened by the "if"s
+        	// tail is set for comprehensions beginning with an "if" clause
+            // we have to close the blocks that were opened by the "if"s
             for (int i = 0; i < initialIfClauses; i++) {
                 gen.endBlock();
             }
+            // tail contains the outer else
+            gen.endLine();
+            gen.out(tail);
         }
         gen.endBlock();
         gen.out(",");
