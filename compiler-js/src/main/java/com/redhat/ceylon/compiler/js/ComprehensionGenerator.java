@@ -71,10 +71,21 @@ class ComprehensionGenerator {
                     tail = "return function(){return " + finished + ";}";
                 }
             } else if (startClause instanceof ExpressionComprehensionClause) {
-                // return the expression result
-                gen.out("return function(){return ");
+            	// record exhaustion state: return a function that
+            	// * on first call, returns the expression,
+            	// * on subsequent calls, returns finished.
+            	String exhaustionVarName = names.createTempVariable("exhausted"); 
+            	gen.out("var ", exhaustionVarName, "=false");
+            	gen.endLine(true);
+                gen.out("return function()");
+                gen.beginBlock();
+                gen.out("if(", exhaustionVarName, ") return ", finished);
+                gen.endLine(true);
+                gen.out(exhaustionVarName, "=true");
+                gen.endLine(true);
+                gen.out("return ");
                 ((ExpressionComprehensionClause)startClause).getExpression().visit(gen);
-                gen.out("};");
+                gen.endBlockNewLine(true);
                 for (int i = 0; i < initialIfClauses; i++) {
                     gen.endBlock();
                 }
