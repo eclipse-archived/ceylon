@@ -72,7 +72,7 @@ class ComprehensionGenerator {
                 }
             } else if (startClause instanceof ExpressionComprehensionClause) {
                 // return the expression result
-                gen.out("return function() {");
+                gen.out("return function(){return ");
                 ((ExpressionComprehensionClause)startClause).getExpression().visit(gen);
                 gen.out("};");
                 for (int i = 0; i < initialIfClauses; i++) {
