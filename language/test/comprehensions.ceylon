@@ -28,6 +28,14 @@ shared void comprehensions() {
   check(Array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==Array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension
   check([for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension ``[for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]`` instead of {{1,1,1,2},{2,1,2,2}}");
+  //comprehensions beginning with if clause: ceylon-spec#869
+  {String*}? strings = { "Hello", "beautiful", "World" };
+  value existingStrings = strings;
+  assert (exists existingStrings);
+  check([if (is {String*} strings) strings] == { existingStrings }, "comprehensions starting with if 1");
+  check([if (is {String*} strings) for (string in strings) string] == existingStrings, "comprehensions starting with if 2");
+  check([if (is {String*} strings) for (string in strings) if (exists first=string.first, first.uppercase) string] == {"Hello", "World"}, "comprehensions starting with if 3");
+  check([if (2 + 2 == 4) if ((1..10).size==10) if (is {String*} strings) for (string in strings) string.uppercased] == {"HELLO", "BEAUTIFUL", "WORLD"}, "comprehensions starting with if 4");
 
   //new comprehension-related functions
   check(any { for (x in 1..5) x>4 }, "any");
