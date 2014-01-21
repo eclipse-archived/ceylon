@@ -1,5 +1,4 @@
-"Produces elements of an `Iterable` object. Classes that 
- implement this interface should be immutable."
+"Produces elements of an [[Iterable]] object."
 see (`interface Iterable`)
 by ("Gavin")
 shared interface Iterator<out Element> {
