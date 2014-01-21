@@ -2168,7 +2168,7 @@ public class GenerateJsVisitor extends Visitor
                 that.addError("Invalid numeric literal " + that.getText());
             }
         } else {
-            out("(", that.getText(), ")");
+            out("("+Long.parseLong(that.getText(),10), ")");
         }
     }
 
