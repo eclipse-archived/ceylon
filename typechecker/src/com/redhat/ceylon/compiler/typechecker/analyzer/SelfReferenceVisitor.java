@@ -246,7 +246,8 @@ public class SelfReferenceVisitor extends Visitor {
             that.addError("leaks outer reference in initializer: " + 
                     typeDeclaration.getName());
         }
-        if (mayNotLeakAnonymousClass() && t instanceof Tree.BaseMemberExpression) {
+        if (typeDeclaration.isAnonymous() && mayNotLeakAnonymousClass() && 
+        		t instanceof Tree.BaseMemberExpression) {
         	Declaration declaration = ((Tree.BaseMemberExpression)t).getDeclaration();
         	if (declaration instanceof TypedDeclaration) {
         		if (((TypedDeclaration) declaration).getTypeDeclaration()==typeDeclaration) {
@@ -255,7 +256,8 @@ public class SelfReferenceVisitor extends Visitor {
         		}
         	}
         }
-        if (mayNotLeakAnonymousClass() && t instanceof Tree.QualifiedMemberExpression) {
+        if (typeDeclaration.isAnonymous() && mayNotLeakAnonymousClass() && t 
+        		instanceof Tree.QualifiedMemberExpression) {
         	Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) t;
         	if (qme.getPrimary() instanceof Tree.Outer) {
         		Declaration declaration = qme.getDeclaration();
