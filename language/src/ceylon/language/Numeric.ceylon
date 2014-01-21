@@ -63,7 +63,15 @@ shared interface Numeric<Other> of Other
     "The quotient obtained by dividing this number by the 
      given number. For integral numeric types, this 
      operation results in a 
-     [[remainder|Integral.remainder]]."
+     [[remainder|Integral.remainder]].
+     
+     When the given number is `0`, the additive identity,
+     the behavior depends on the numeric type:
+     
+     - For some numeric types, including [[Integer]], 
+       division by `0` results in an exception.
+     - For others, including [[Float]], it results in a 
+       special value of the type, for example, [[infinity]]."
     see (`interface Integral`)
     shared formal Other divided(Other other);
     
