@@ -53,13 +53,14 @@ public class ModuleValidator {
         // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
         Set<Module> compiledModules = moduleManager.getCompiledModules();
         List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
+        List<Module> alreadyResolvedModules = new LinkedList<Module>();
         modules.addAll(compiledModules);
         modules.add(context.getModules().getDefaultModule());
         modules.add(context.getModules().getLanguageModule());
         for (Module module : modules) {
             dependencyTree.addLast(module);
             //we don't care about propagated dependency here as top modules are independent from one another
-            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First);
+            verifyModuleDependencyTree(module.getImports(), dependencyTree, new ArrayList<Module>(), ImportDepth.First, alreadyResolvedModules);
             dependencyTree.pollLast();
         }
         moduleManager.addImplicitImports();
@@ -130,7 +131,8 @@ public class ModuleValidator {
             Collection<ModuleImport> moduleImports,
             LinkedList<Module> dependencyTree,
             List<Module> propagatedDependencies, 
-            ImportDepth importDepth) {
+            ImportDepth importDepth,
+            List<Module> alreadyResolvedModules) {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
@@ -141,31 +143,34 @@ public class ModuleValidator {
             }
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             ImportDepth newImportDepth = importDepth.forModuleImport(moduleImport);
+            boolean visibleToCompiledModules = newImportDepth.isVisibleToCompiledModules();
             
-            if ( ! module.isAvailable() ) {
-                //try and load the module from the repository
-                ArtifactResult artifact = null;
-                RepositoryManager repositoryManager = context.getRepositoryManager();
-                Exception exceptionOnGetArtifact = null;
-                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
-                try {
-                    artifact = repositoryManager.getArtifactResult(artifactContext);
-                } catch (Exception e) {
-                    exceptionOnGetArtifact = e;
-                }
-                if (artifact == null) {
-                    //not there => error
-                    ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManager);
-                }
-                else {
-                    //parse module units and build module dependency and carry on
-                    boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
-                    moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
+            if ( ! module.isAvailable()) { 
+                if (visibleToCompiledModules || !isAlreadyResolved(module, alreadyResolvedModules)) {
+                    //try and load the module from the repository
+                    ArtifactResult artifact = null;
+                    RepositoryManager repositoryManager = context.getRepositoryManager();
+                    Exception exceptionOnGetArtifact = null;
+                    ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                    try {
+                        artifact = repositoryManager.getArtifactResult(artifactContext);
+                    } catch (Exception e) {
+                        exceptionOnGetArtifact = e;
+                    }
+                    if (artifact == null) {
+                        //not there => error
+                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManager);
+                    }
+                    else {
+                        //parse module units and build module dependency and carry on
+                        moduleManager.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, visibleToCompiledModules);
+                        alreadyResolvedModules.add(module);
+                    }
                 }
             }
             dependencyTree.addLast(module);
             List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
-            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, newImportDepth );
+            verifyModuleDependencyTree( module.getImports(), dependencyTree, subModulePropagatedDependencies, newImportDepth, alreadyResolvedModules);
             //visible dependency += subModule + subModulePropagatedDependencies
             checkAndAddDependency(visibleDependencies, module, dependencyTree);
             for (Module submodule : subModulePropagatedDependencies) {
@@ -180,6 +185,11 @@ public class ModuleValidator {
             }
             dependencyTree.pollLast();
         }
+    }
+
+    private boolean isAlreadyResolved(Module module,
+            List<Module> alreadyResolvedModules) {
+        return moduleManager.findModule(module, alreadyResolvedModules, true) != null;
     }
 
     private String[] getArtifactSuffixes(Iterable<String> extensions) {
