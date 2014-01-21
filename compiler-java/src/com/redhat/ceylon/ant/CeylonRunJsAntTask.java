@@ -25,54 +25,23 @@
  */
 package com.redhat.ceylon.ant;
 
-import java.util.Set;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
 
-public class CeylonRunJsAntTask extends CeylonAntTask {
+public class CeylonRunJsAntTask extends RepoUsingCeylonAntTask {
 
     private String module;
     private String func;
-    private RepoSet reposet = new RepoSet();
-    private String systemRepository;
     private String compileFlags;
 
     public CeylonRunJsAntTask() {
         super("run-js");
     }
     
-    /**
-     * Adds a module repository
-     * @param repo the new module repository
-     */
-    public void addConfiguredRep(Repo repo) {
-        reposet.addConfiguredRepo(repo);
-    }
-    
-    public void addConfiguredReposet(RepoSet reposet){
-        this.reposet.addConfiguredRepoSet(reposet);
-    }
-
-    protected Set<Repo> getRepositories() {
-        return reposet.getRepos();
-    }
-
-    protected String getSystemRepository() {
-        return systemRepository;
-    }
-
-    /**
-     * Sets the system repository
-     * @param rep the new system repository
-     */
-    public void setSysRep(String rep) {
-        systemRepository = rep;
-    }
-
     public void setModule(String value) {
         module = value;
     }
+    
     public void setRun(String value) {
         func = value;
     }
@@ -99,18 +68,9 @@ public class CeylonRunJsAntTask extends CeylonAntTask {
         if(func != null){
             appendOptionArgument(cmd, "--run", func);
         }
-        if (systemRepository != null) {
-            appendOptionArgument(cmd, "--sysrep", systemRepository);
-        }
+
         if(compileFlags != null){
             appendOptionArgument(cmd, "--compile", compileFlags);
-        }
-        
-        for (Repo rep : reposet.getRepos()) {
-            // skip empty entries
-            if (rep.url == null || rep.url.isEmpty())
-                continue;
-            appendOptionArgument(cmd, "--rep", rep.url);
         }
         
         cmd.createArgument().setValue(module);

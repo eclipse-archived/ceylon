@@ -29,14 +29,12 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
 
 
-public class CeylonRunAntTask extends CeylonAntTask {
+public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
     
     private String run;
     private String module;
-    private String systemRepository;
-    private RepoSet reposet = new RepoSet();
     private String compileFlags;
     
     public CeylonRunAntTask() {
@@ -48,26 +46,6 @@ public class CeylonRunAntTask extends CeylonAntTask {
      */
     protected boolean shouldSpawnJvm() {
         return true;
-    }
-
-    /**
-     * Adds a module repository
-     * @param repo the new module repository
-     */
-    public void addConfiguredRep(Repo repo){
-        this.reposet.addConfiguredRepo(repo);
-    }
-    
-    public void addConfiguredReposet(RepoSet reposet){
-        this.reposet.addConfiguredRepoSet(reposet);
-    }
-    
-    /**
-     * Sets the system repository
-     * @param rep the new system repository
-     */
-    public void setSysRep(String rep) {
-        systemRepository = rep;
     }
 
     /**
@@ -112,18 +90,9 @@ public class CeylonRunAntTask extends CeylonAntTask {
         if(run != null){
             appendOptionArgument(cmd, "--run", run);
         }
-        if (systemRepository != null) {
-            appendOptionArgument(cmd, "--sysrep", systemRepository);
-        }
+        
         if(compileFlags != null){
             appendOptionArgument(cmd, "--compile", compileFlags);
-        }
-        
-        for(Repo rep : this.reposet.getRepos()){
-            // skip empty entries
-            if(rep.url == null || rep.url.isEmpty())
-                continue;
-            appendOptionArgument(cmd, "--rep", rep.url);
         }
         
         cmd.createArgument().setValue(module);
