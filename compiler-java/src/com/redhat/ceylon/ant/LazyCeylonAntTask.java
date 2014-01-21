@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 
@@ -40,6 +41,7 @@ import com.redhat.ceylon.common.Constants;
 abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy {
 
     private Path src;
+    private String encoding;
     private String out;
     private String user;
     private String pass;
@@ -71,6 +73,14 @@ abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy 
             result.add(getProject().resolveFile(path));
         }
         return result;
+    }
+
+    /**
+     * Set the encoding for the the source files.
+     * @param out Charset encoding name
+     */
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 
     @Override
@@ -130,6 +140,12 @@ abstract class LazyCeylonAntTask extends RepoUsingCeylonAntTask implements Lazy 
 
         appendUserOption(cmd, user);
         appendPassOption(cmd, pass);
+        
+        if (encoding != null) {
+            appendOptionArgument(cmd, "--encoding", encoding);
+        } else  {
+            log(getLocation().getFileName() + ":" +getLocation().getLineNumber() + ": No encoding specified, this might cause problems with portability to other platforms!", Project.MSG_WARN);
+        }
         
         for (File src : getSrc()) {
             appendOptionArgument(cmd, "--source", src.getAbsolutePath());

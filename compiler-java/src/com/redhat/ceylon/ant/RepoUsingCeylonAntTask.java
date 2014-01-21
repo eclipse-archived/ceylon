@@ -31,7 +31,6 @@ import org.apache.tools.ant.types.Commandline;
  */
 abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
 
-    private String encoding;
     private Boolean offline = false;
     private Boolean noDefaultRepositories = false;
     private String systemRepository;
@@ -122,26 +121,12 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
         return offline;
     }
 
-    /**
-     * Set the encoding for the the source files.
-     * @param out Charset encoding name
-     */
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
     @Override
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
         
         if (getCwd() != null) {
             appendOptionArgument(cmd, "--cwd", getCwd());
-        }
-        
-        if (encoding != null) {
-            appendOptionArgument(cmd, "--encoding", encoding);
-        } else  {
-            log(getLocation().getFileName() + ":" +getLocation().getLineNumber() + ": No encoding specified, this might cause problems with portability to other platforms!", Project.MSG_WARN);
         }
         
         if (getSystemRepository() != null) {
