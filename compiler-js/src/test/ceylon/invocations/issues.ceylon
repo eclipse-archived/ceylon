@@ -17,6 +17,17 @@ object objectIssue306 {
     }
 }
 
+class ClassBug314<T>(one=1, two="2") {
+  shared Integer one;
+  shared String two;
+  check(one==1,"Issue 314 class");
+}
+void methodBug314<T>(Integer one=1, String two="2") {
+  check(two=="2", "Issue 314 method");
+}
+
 void testIssues() {
   objectIssue306.foo().call();
+  ClassBug314<Object>();
+  methodBug314<Object>();
 }
