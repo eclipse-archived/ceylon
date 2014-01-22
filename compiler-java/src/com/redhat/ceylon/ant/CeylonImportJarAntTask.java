@@ -42,14 +42,11 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
     }
     
     private String out;
-    
     private String pass;
-    
     private String user;
-    
     private String module;
-    
     private String jar;
+    private String descriptor;
 
     protected String getOut() {
         if (this.out == null) {
@@ -94,6 +91,14 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
         this.jar = jar;
     }
 
+    public String getDescriptor() {
+        return descriptor;
+    }
+
+    public void setDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+    }
+
     @Override
     protected void completeCommandline(Commandline cmd) {
         super.completeCommandline(cmd);
@@ -103,6 +108,10 @@ public class CeylonImportJarAntTask extends CeylonAntTask {
         
         if (out != null) {
             appendOptionArgument(cmd, "--out", getOut());
+        }
+        
+        if (descriptor != null) {
+            appendOptionArgument(cmd, "--descriptor", getDescriptor());
         }
         
         if (module != null) {
