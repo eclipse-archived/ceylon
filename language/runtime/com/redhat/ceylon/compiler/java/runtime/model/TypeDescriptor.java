@@ -148,6 +148,11 @@ public abstract class TypeDescriptor {
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
             return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
         }
+        
+        @Override
+        public String toString() {
+            return "ceylon.language.Nothing";
+        }
     }
     
     private abstract static class Composite extends TypeDescriptor {
