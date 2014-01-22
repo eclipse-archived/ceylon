@@ -183,18 +183,15 @@ public class InvocationGenerator {
                 Declaration bmed = ((Tree.StaticMemberOrTypeExpression)typeArgSource).getDeclaration();
                 if (bmed instanceof Functional) {
                     //If there are fewer arguments than there are parameters...
-                    if (((Functional) bmed).getParameterLists().get(0).getParameters().size()
-                            > argList.getPositionalArguments().size()) {
-                        //It could be because all args will be sequenced/defaulted...
-                        if (argList.getPositionalArguments().isEmpty()) {
+                    final int argsSize = argList.getPositionalArguments().size();
+                    int paramArgDiff = ((Functional) bmed).getParameterLists().get(0).getParameters().size() - argsSize;
+                    if (paramArgDiff > 0) {
+                        final Tree.PositionalArgument parg = argsSize > 0 ? argList.getPositionalArguments().get(argsSize-1) : null;
+                        if (parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument) {
+                            paramArgDiff--;
+                        }
+                        for (int i=0; i < paramArgDiff; i++) {
                             gen.out("undefined,");
-                        } else {
-                            //Or because the last argument is a comprehension or a spread
-                            Tree.PositionalArgument parg = argList.getPositionalArguments().get(
-                                    argList.getPositionalArguments().size()-1);
-                            if (!(parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument)) {
-                                gen.out("undefined,");
-                            }
                         }
                     }
                     if (targs != null && targs.getTypeModels() != null && !targs.getTypeModels().isEmpty()) {
