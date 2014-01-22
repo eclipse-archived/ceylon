@@ -25,13 +25,14 @@ import org.jboss.ceylon.test.modules.interop.test.AetherInteropTestCase;
 import org.jboss.ceylon.test.modules.interop.test.InteropTestCase;
 import org.jboss.ceylon.test.modules.ondemand.test.OnDemandTestCase;
 import org.jboss.ceylon.test.modules.repo.test.RepositoryTestCase;
+import org.jboss.ceylon.test.modules.services.test.ServicesTestCase;
 import org.jboss.ceylon.test.modules.smoke.test.SmokeTestCase;
 import org.jboss.ceylon.test.modules.sources.test.SourcesTestCase;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(Suite.class) 
+@RunWith(Suite.class)
 @SuiteClasses({
     SmokeTestCase.class,
     DefaultTestCase.class,
@@ -40,7 +41,8 @@ import org.junit.runners.Suite.SuiteClasses;
     AetherInteropTestCase.class,
     OnDemandTestCase.class,
     RepositoryTestCase.class,
-    SourcesTestCase.class
+    SourcesTestCase.class,
+    ServicesTestCase.class
 })
 public class AllRuntimeTests {
 }

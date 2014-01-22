@@ -362,7 +362,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         final ModuleIdentifier mi = createModuleIdentifier(i);
         final boolean export = (i.importType() == ImportType.EXPORT);
         return DependencySpec.createModuleDependencySpec(
-            PathFilters.getDefaultImportFilterWithServices(), // import everything?
+            PathFilters.getMetaInfSubdirectoriesWithoutMetaInfFilter(), // import everything?
             (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
             this,
             mi,
