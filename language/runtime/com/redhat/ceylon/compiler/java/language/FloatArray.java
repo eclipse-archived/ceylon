@@ -14,12 +14,15 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
- * A Ceylon schema for a Java float[]
+ * A Ceylon schema for a Java <code>float[]</code>.
  *
- * This type is never instantiated, it is completely erased to float[].
+ * This type is never instantiated, it is completely erased to 
+ * <code>float[]</code>.
  * 
- * The "get", "set", "size" methods and the constructor are also completely erased to Java array operators, or "Util.fillArray"
- * in the case of the constructor if the initial element is specified.
+ * The {@link #get(int)}, {@link #set(int,float)}, {@link #length size}
+ * methods and the constructor are also completely erased to Java array 
+ * operators, or {@link Util#fillArray(float[],float)} in the case that 
+ * an initial element is specified.
  * 
  * Only the value type static methods are really invoked.
  *

@@ -14,12 +14,15 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
- * A Ceylon schema for a Java int[]
+ * A Ceylon schema for a Java <code>int[]</code>.
  *
- * This type is never instantiated, it is completely erased to int[].
+ * This type is never instantiated, it is completely erased to 
+ * <code>int[]</code>.
  * 
- * The "get", "set", "size" methods and the constructor are also completely erased to Java array operators, or "Util.fillArray"
- * in the case of the constructor if the initial element is specified.
+ * The {@link #get(int)}, {@link #set(int,int)}, {@link #length size} 
+ * methods and the constructor are also completely erased to Java array 
+ * operators, or {@link Util#fillArray(int[],int)} in the case that an
+ * initial element is specified.
  * 
  * Only the value type static methods are really invoked.
  *

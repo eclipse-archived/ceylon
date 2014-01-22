@@ -14,12 +14,15 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
- * A Ceylon schema for a Java short[]
+ * A Ceylon schema for a Java <code>short[]</code>.
  *
- * This type is never instantiated, it is completely erased to short[].
+ * This type is never instantiated, it is completely erased to 
+ * <code>short[]</code>.
  * 
- * The "get", "set", "size" methods and the constructor are also completely erased to Java array operators, or "Util.fillArray"
- * in the case of the constructor if the initial element is specified.
+ * The {@link #get(int)}, {@link #set(int,short)}, {@link #length size} 
+ * methods and the constructor are also completely erased to Java array 
+ * operators, or {@link Util#fillArray(short[],short)} in the case that 
+ * an initial element is specified.
  * 
  * Only the value type static methods are really invoked.
  *
