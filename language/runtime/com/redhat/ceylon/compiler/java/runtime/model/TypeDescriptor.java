@@ -12,6 +12,8 @@ import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 
 public abstract class TypeDescriptor {
 
@@ -214,7 +216,7 @@ public abstract class TypeDescriptor {
             UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
             ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>(members.length);
             for(TypeDescriptor member : members)
-                caseTypes.add(member.toProducedType(moduleManager));
+                Util.addToUnion(caseTypes,member.toProducedType(moduleManager));
             ret.setCaseTypes(caseTypes);
             return ret.getType();
         }
@@ -242,10 +244,13 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            IntersectionType ret = new IntersectionType(moduleManager.getModelLoader().getUnit());
+            Unit unit = moduleManager.getModelLoader().getUnit();
+			IntersectionType ret = new IntersectionType(unit);
+            ArrayList<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(members.length);
             for(TypeDescriptor member : members)
-                ret.getSatisfiedTypes().add(member.toProducedType(moduleManager));
-            return ret.getType();
+            	Util.addToIntersection(satisfiedTypes, member.toProducedType(moduleManager), unit);
+            ret.setSatisfiedTypes(satisfiedTypes);
+            return ret.canonicalize().getType();
         }
     }
 
