@@ -2160,15 +2160,16 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(NaturalLiteral that) {
         char prefix = that.getText().charAt(0);
+        int radix = 10;
+        String nt = that.getText();
         if (prefix == '$' || prefix == '#') {
-            int radix= prefix == '$' ? 2 : 16;
-            try {
-                out("(", new java.math.BigInteger(that.getText().substring(1), radix).toString(), ")");
-            } catch (NumberFormatException ex) {
-                that.addError("Invalid numeric literal " + that.getText());
-            }
-        } else {
-            out("("+Long.parseLong(that.getText(),10), ")");
+            radix = prefix == '$' ? 2 : 16;
+            nt = nt.substring(1);
+        }
+        try {
+            out("(", new java.math.BigInteger(nt, radix).toString(), ")");
+        } catch (NumberFormatException ex) {
+            that.addError("Invalid numeric literal " + that.getText());
         }
     }
 
