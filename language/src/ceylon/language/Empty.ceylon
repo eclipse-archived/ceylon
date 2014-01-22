@@ -73,7 +73,8 @@ shared interface Empty of e
     "Returns `other`."
     shared actual Iterable<Other,OtherAbsent> 
     chain<Other,OtherAbsent>(Iterable<Other,OtherAbsent> other) 
-            given OtherAbsent satisfies Null => other;
+            given OtherAbsent satisfies Null 
+            => other;
     
     "Returns `false` for any given element."
     shared actual Boolean contains(Object element) => false;
@@ -91,12 +92,12 @@ shared interface Empty of e
             (Boolean selecting(Nothing element)) => this;
     
     shared actual Result fold<Result>(Result initial,
-            Result accumulating(Result partial, Nothing element)) => 
-                    initial;
+            Result accumulating(Result partial, Nothing element)) 
+            => initial;
     
     shared actual Null reduce<Result>(
-            Result accumulating(Result partial, Nothing element)) => 
-                    null;
+            Result accumulating(Result partial, Nothing element)) 
+            => null;
     
     shared actual Null find
             (Boolean selecting(Nothing element)) => null;
@@ -128,8 +129,9 @@ shared interface Empty of e
     shared actual [Element] withTrailing<Element>
             (Element element) => [element];
     
-    shared actual {Other+} following<Other>(Other head) => 
-            Singleton(head);
+    shared actual {Other+} following<Other>(Other head) 
+            => Singleton(head);
+    
 }
 
 "A sequence with no elements, abbreviated `[]`. The unique 
