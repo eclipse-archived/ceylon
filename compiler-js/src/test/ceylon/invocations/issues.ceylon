@@ -30,4 +30,6 @@ void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
   methodBug314<Object>();
+  value t=[1,"2"];
+  methodBug314<Object>(*t);
 }
