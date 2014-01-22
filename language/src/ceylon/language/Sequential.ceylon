@@ -67,10 +67,15 @@ shared interface Sequential<out Element>
             => [*super.trimLeading(trimming)]; //TODO: inefficient?
     
     "Trim the elements satisfying the given predicate
-     function from the end of this sequence, returning 
-     a sequence no longer than this sequence."
+     function from the end of this sequence, returning a 
+     sequence no longer than this sequence."
     shared actual default Element[] trimTrailing(Boolean trimming(Element elem))
             => [*super.trimTrailing(trimming)]; //TODO: inefficient?
+    
+    "Produces a sequence with a given [[initial element|head]], 
+     followed by the elements of this sequence."
+    //TODO: type should be [Other,Element*]
+    shared actual formal [Other|Element+] following<Other>(Other head);
     
     "This sequence."
     shared actual default Element[] clone => this;

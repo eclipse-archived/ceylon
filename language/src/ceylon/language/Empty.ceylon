@@ -129,8 +129,8 @@ shared interface Empty of e
     shared actual [Element] withTrailing<Element>
             (Element element) => [element];
     
-    shared actual {Other+} following<Other>(Other head) 
-            => Singleton(head);
+    shared actual [Other] following<Other>(Other head) 
+            => [head];
     
 }
 

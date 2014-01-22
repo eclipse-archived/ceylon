@@ -92,4 +92,7 @@ shared interface Sequence<out Element>
     shared actual default Element[] repeat(Integer times)
             => (super of Element[]).repeat(times);
     
+    shared actual default [Other,Element+] following<Other>(Other head)
+            => [head,*this];
+
 }

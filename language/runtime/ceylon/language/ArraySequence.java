@@ -685,8 +685,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other> Iterable following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Iterable$this.following($reifiedOther, other);
+    public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequence<? extends Element>> 
+    following(@Ignore TypeDescriptor $reifiedOther, Other other) {
+        return $ceylon$language$Sequence$this.following($reifiedOther, other);
     }
     @Override @Ignore
     public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
