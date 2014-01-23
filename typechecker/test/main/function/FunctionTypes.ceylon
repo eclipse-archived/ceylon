@@ -103,7 +103,7 @@ void method() {
         strings = ["goodbye"];
         Integer f(String s) { print(s); return s.size; }
     };
-    higher2 { 
+    higher2 {
         strings = ["goodbye"];
         @error void f(Integer n) { print(n.string); }
     };

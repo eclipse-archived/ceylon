@@ -121,4 +121,104 @@ class BreakContinue() {
         return 1;
     }
     
+    Integer p() {
+        for (i in 1..10) {
+            return i;
+        }
+        @error return 1;
+    }
+    Integer q() {
+        for (i in 1:10) {
+            return i;
+        }
+        return 1;
+    }
+    
+    
+    Integer foo() {
+        for (i in 1..10) {
+            break;
+            @error return i;
+        }
+        return 1;
+    }
+    
+    Integer foo1() {
+        for (i in 1..10) {
+            break;
+            @error throw;
+        }
+        return 1;
+    }
+    
+    Integer foo2() {
+        for (i in 1..10) {
+            break;
+            @error break;
+        }
+        return 1;
+    }
+    
+    Integer bar() {
+        for (i in 1..10) {
+            if (i<6) {
+                break;
+            }
+            return i;
+        }
+        return 1;
+    }
+    
+    Integer baz() {
+        for (i in 1..10) {
+            if (i<6) {
+                break;
+            }
+            else {
+                break;
+            }
+            @error return i;
+        }
+        return 1;
+    }
+    
+    Integer baz3() {
+        for (i in 1..10) {
+            if (i<6) {
+                break;
+            }
+            else {
+                continue;
+            }
+            @error return i;
+        }
+        return 1;
+    }
+    
+    Integer baz2() {
+        for (i in 1..10) {
+            if (i<6) {
+                break;
+            }
+            else {
+                break;
+            }
+            @error throw;
+        }
+        return 1;
+    }
+    
+    Integer baz1() {
+        for (i in 1..10) {
+            if (i<6) {
+                break;
+            }
+            else {
+                break;
+            }
+            @error continue;
+        }
+        return 1;
+    }
+    
 }
