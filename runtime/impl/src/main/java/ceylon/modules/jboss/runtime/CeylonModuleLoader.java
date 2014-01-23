@@ -73,6 +73,8 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final DependencySpec JDK_DEPENDENCY;
     private static final Set<String> JDK_MODULE_NAMES;
 
+    private static final List<LogChecker> checkers;
+
     static {
         final String defaultVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
@@ -116,6 +118,13 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
         // always exported implicitely
         JDK_DEPENDENCY = DependencySpec.createSystemDependencySpec(jdkPaths, true);
+
+        // add log checkers
+        checkers = new ArrayList<>();
+        for (LogChecker checker : ServiceLoader.load(LogChecker.class)) {
+            checkers.add(checker);
+        }
+        checkers.add(DefaultLogChecker.INSTANCE);
     }
 
     private RepositoryManager repository;
@@ -213,6 +222,16 @@ public class CeylonModuleLoader extends ModuleLoader {
         return repository.getArtifactResult(context);
     }
 
+    protected boolean isLogging(List<DependencySpec> deps, Builder builder, ArtifactResult result) {
+        for (LogChecker checker : checkers) {
+            if (checker.match(result)) {
+                addLoggingModule(builder, deps);
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     protected ModuleSpec findModule(ModuleIdentifier moduleIdentifier) throws ModuleLoadException {
         try {
@@ -245,20 +264,9 @@ public class CeylonModuleLoader extends ModuleLoader {
                 for (ArtifactResult i : artifact.dependencies()) {
                     final String name = i.name();
 
-                    ServiceLoader<LogChecker> ldr = ServiceLoader.load(LogChecker.class);
-                    boolean logCheckerServicePresent = false;
-                    for (LogChecker checker : ldr) {
-                        logCheckerServicePresent = true;
-                        if (checker.match(i)) {
-                            addLoggingModule(builder, deps);
-                            break;
-                        }
-                    }
-                    if (!logCheckerServicePresent) {
-                        LogChecker checker = new DefaultLogChecker();
-                        if (checker.match(i)) {
-                            addLoggingModule(builder, deps);
-                        }
+                    // route logging to JBoss LogManager
+                    if (isLogging(deps, builder, i)) {
+                        continue;
                     }
 
                     // skip JDK modules

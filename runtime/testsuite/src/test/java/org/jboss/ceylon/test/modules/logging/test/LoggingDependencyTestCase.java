@@ -2,7 +2,6 @@ package org.jboss.ceylon.test.modules.logging.test;
 
 import net.acme.logging.module_;
 import net.acme.logging.run_;
-
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -11,7 +10,7 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:matejonnet@gmail.com">Matej Lazar</a>
  */
-public class LoggingDependencyTest extends ModulesTest {
+public class LoggingDependencyTestCase extends ModulesTest {
 
     @Test
     public void testLoggingDependency() throws Throwable {

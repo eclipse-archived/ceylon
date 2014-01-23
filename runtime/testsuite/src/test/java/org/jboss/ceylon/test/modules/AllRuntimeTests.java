@@ -23,6 +23,7 @@ import org.jboss.ceylon.test.modules.defaultx.test.DefaultTestCase;
 import org.jboss.ceylon.test.modules.examples.test.ExamplesTestCase;
 import org.jboss.ceylon.test.modules.interop.test.AetherInteropTestCase;
 import org.jboss.ceylon.test.modules.interop.test.InteropTestCase;
+import org.jboss.ceylon.test.modules.logging.test.LoggingDependencyTestCase;
 import org.jboss.ceylon.test.modules.ondemand.test.OnDemandTestCase;
 import org.jboss.ceylon.test.modules.repo.test.RepositoryTestCase;
 import org.jboss.ceylon.test.modules.services.test.ServicesTestCase;
@@ -42,7 +43,8 @@ import org.junit.runners.Suite.SuiteClasses;
     OnDemandTestCase.class,
     RepositoryTestCase.class,
     SourcesTestCase.class,
-    ServicesTestCase.class
+    ServicesTestCase.class,
+    LoggingDependencyTestCase.class
 })
 public class AllRuntimeTests {
 }
