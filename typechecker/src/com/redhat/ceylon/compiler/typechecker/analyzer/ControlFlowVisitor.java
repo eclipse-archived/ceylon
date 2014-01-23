@@ -91,7 +91,6 @@ public class ControlFlowVisitor extends Visitor {
     
     void exitLoop() {
         possiblyBreaks = true;
-        definitelyBreaksOrContinues = true;
     }
     
     boolean inLoop() {
