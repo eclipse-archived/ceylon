@@ -228,4 +228,16 @@ class BreakContinue() {
         return 1;
     }
     
+    Integer c1() {
+        for (i in 1..10) {
+            if (i>6) {
+                continue;
+            }
+            else {
+                return i;
+            }
+        }
+        return 1;
+    }
+    
 }

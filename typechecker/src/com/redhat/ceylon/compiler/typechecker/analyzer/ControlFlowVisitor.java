@@ -350,7 +350,6 @@ public class ControlFlowVisitor extends Visitor {
             that.addError("no surrounding loop to continue");
         }
         super.visit(that);
-        exit();
         exitLoopScope();
     }
     
