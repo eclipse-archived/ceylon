@@ -3753,7 +3753,7 @@ public class GenerateJsVisitor extends Visitor
                String lhsVar = createRetainedTempVar("opt");
                out("(", lhsVar, "=");
                termgen.left();
-               out(",", lhsVar, "!==null?", lhsVar, ":");
+               out(",", lhsVar, "!==null&&",lhsVar,"!==undefined?", lhsVar, ":");
                termgen.right();
                out(")");
            }
