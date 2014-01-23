@@ -221,4 +221,11 @@ class BreakContinue() {
         return 1;
     }
     
+    Integer c() {
+        for (i in 1..10) {
+            continue;
+        }
+        return 1;
+    }
+    
 }
