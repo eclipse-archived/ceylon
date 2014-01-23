@@ -316,30 +316,6 @@ defineAttr(String$proto, 'normalized', function() {
     }
     return String$(result, len);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$at','normalized']}});
-/*String$proto.firstOccurrence = function(sub) {
-    if (sub.length == 0) {return 0}
-    var bound = this.length - sub.length;
-    for (var i=0, count=0; i<=bound; ++count) {
-        if (cmpSubString(this, sub, i)) {return count}
-        if ((this.charCodeAt(i++)&0xfc00) === 0xd800) {++i}
-    }
-    return null;
-}
-String$proto.firstOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','firstOccurrence']};
-String$proto.lastOccurrence = function(sub) {
-    if (sub.length == 0) {return this.length>0 ? this.length-1 : 0}
-    for (var i=this.length-sub.length; i>=0; --i) {
-        if (cmpSubString(this, sub, i)) {
-            for (var count=0; i>0; ++count) {
-                if ((this.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
-            }
-            return count;
-        }
-    }
-    return null;
-}
-String$proto.lastOccurrence.$$metamodel$$={mod:$$METAMODEL$$,d:['ceylon.language','String','$m','lastOccurrence']};
-*/
 String$proto.firstOccurrence = function(subc) {
     for (var i=0, count=0; i<this.length; count++) {
         var cp = this.charCodeAt(i++);
@@ -560,6 +536,9 @@ String$proto.occurrences.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Iterable,a:{Abse
 String$proto.$filter = function(f) {
     var r = Iterable.$$.prototype.$filter.call(this, f);
     return String$(r);
+}
+String$proto.following=function(o,$mpt) {
+  return Iterable.$$.prototype.following.call(this,o,$mpt);
 }
 String$proto.$filter.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','filter']};
 String$proto.skipping = function(skip) {
