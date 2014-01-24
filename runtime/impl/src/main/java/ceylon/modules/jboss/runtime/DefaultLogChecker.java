@@ -22,13 +22,8 @@ public class DefaultLogChecker implements LogChecker {
         loggingModules.add("java.logging");
     }
 
-    @Override
-    public boolean match(ArtifactResult i) {
-        String moduleName = i.name();
+    public Boolean match(ArtifactResult dependency) {
+        String moduleName = dependency.name();
         return loggingModules.contains(moduleName);
-    }
-
-    static boolean check(ArtifactResult result) {
-        return INSTANCE.match(result);
     }
 }

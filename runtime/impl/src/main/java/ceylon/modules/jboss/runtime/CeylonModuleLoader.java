@@ -224,9 +224,12 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     protected boolean isLogging(List<DependencySpec> deps, Builder builder, ArtifactResult result) {
         for (LogChecker checker : checkers) {
-            if (checker.match(result)) {
-                addLoggingModule(builder, deps);
-                return true;
+            Boolean match = checker.match(result);
+            if (match != null) {
+                if (match) {
+                    addLoggingModule(builder, deps);
+                }
+                return match;
             }
         }
         return false;
