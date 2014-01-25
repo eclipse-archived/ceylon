@@ -3583,6 +3583,12 @@ public class ExpressionVisitor extends Visitor {
                             + dec.getName(unit), 800);
                 }
             }
+            if (that instanceof Tree.QualifiedMemberOrTypeExpression) {
+            	if (!(((Tree.QualifiedMemberOrTypeExpression) that).getMemberOperator() instanceof Tree.MemberOp)) {
+            		that.addUnsupportedError("assignment to expression involving ?. and *. not supported");
+            	}
+            	
+            }
         }
         else {
             that.addError("expression cannot be assigned");
