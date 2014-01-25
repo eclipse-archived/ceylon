@@ -39,10 +39,10 @@ public class UsageVisitor extends Visitor {
 		Declaration d = that.getDeclarationModel();
         boolean referenced=true;
         if (d!=null) {
-        	referenced = rc.referenced(d);
+        	referenced = rc.isReferenced(d);
         	if (isAbstraction(d)) {
         		for (Declaration od: ((Functional) d).getOverloads()) {
-        			referenced=referenced||rc.referenced(od);
+        			referenced=referenced||rc.isReferenced(od);
         		}
         	}
         	ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
@@ -65,7 +65,7 @@ public class UsageVisitor extends Visitor {
         if (declaration!=null && 
         		!declaration.isShared() && 
         		!declaration.isToplevel() && 
-        		!rc.referenced(declaration) &&
+        		!rc.isReferenced(declaration) &&
         		!declaration.isParameter() &&
         		!(that instanceof Tree.Variable)) {
             that.addUsageWarning("declaration is never used: " + 
