@@ -56,11 +56,17 @@ defineAttr(JSNum$proto, 'string', function(){ return String$(this.toString()); }
 JSNum$proto.plus = function(other) {
     return (this.float$||other.float$) ? Float(this+other) : (this+other);
 }
+JSNum$proto.plusInteger = function(other) {
+    return this.float$ ? Float(this+other) : (this+other);
+}
 JSNum$proto.minus = function(other) {
     return (this.float$||other.float$) ? Float(this-other) : (this-other);
 }
 JSNum$proto.times = function(other) {
     return (this.float$||other.float$) ? Float(this*other) : (this*other);
+}
+JSNum$proto.timesInteger = function(other) {
+    return this.float$ ? Float(this*other) : (this*other);
 }
 JSNum$proto.divided = function(other) {
     if (this.float$||other.float$) { return Float(this/other); }

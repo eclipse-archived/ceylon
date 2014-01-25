@@ -475,5 +475,23 @@ public final class Float
     	return value<=other.value;
     }
     
+    @Override
+    public Float timesInteger(long integer) {
+    	return instance(value*integer);
+    }
+    
+    public static double timesInteger(double value, long integer) {
+    	return value*integer;
+    }
+    
+    @Override
+    public Float plusInteger(long integer) {
+    	return instance(value+integer);
+    }
+    
+    public static double plusInteger(double value, long integer) {
+    	return value+integer;
+    }
+    
 }
 

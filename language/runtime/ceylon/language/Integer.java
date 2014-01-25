@@ -756,4 +756,22 @@ public final class Integer
     	return value<=other.value;
     }
 
+    @Override
+    public Integer timesInteger(long integer) {
+    	return instance(value*integer);
+    }
+    
+    public static long timesInteger(long value, long integer) {
+    	return value*integer;
+    }
+    
+    @Override
+    public Integer plusInteger(long integer) {
+    	return instance(value+integer);
+    }
+    
+    public static long plusInteger(long value, long integer) {
+    	return value+integer;
+    }
+    
 }

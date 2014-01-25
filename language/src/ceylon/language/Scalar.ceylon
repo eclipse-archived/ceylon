@@ -38,5 +38,13 @@ shared interface Scalar<Other> of Other
     
     shared actual formal Other wholePart;
     
+    "The result of multiplying this number by the given 
+     [[Integer]]."
+    shared formal Other timesInteger(Integer integer);
+    
+    "The result of adding this number to the given 
+     [[Integer]]."
+    shared formal Other plusInteger(Integer integer);
+    
 }
 

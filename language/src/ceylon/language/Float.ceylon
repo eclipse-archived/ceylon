@@ -106,6 +106,9 @@ shared native final class Float(float)
     shared actual Float float;
     shared actual native Integer integer;
     
+    shared actual native Float timesInteger(Integer integer);    
+    shared actual native Float plusInteger(Integer integer);
+    
 }
 
 "The `Float` value of the given string representation of 
