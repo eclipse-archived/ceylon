@@ -716,9 +716,12 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.AttributeGetterDefinition that) {
         if (that.getDeclarationModel()==declaration) {
             declare();
+            super.visit(that);        
             specify();
         }
-        super.visit(that);        
+        else {
+            super.visit(that);        
+        }
     }
     
     @Override

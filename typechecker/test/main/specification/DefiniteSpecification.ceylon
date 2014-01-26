@@ -48,7 +48,7 @@ interface DefiniteSpecification {
     
     void goodMethodWithRecursiveSpec() {
         X x {
-            return x;
+            @error return x;
         }
         doSomething();
         use(x);
@@ -672,7 +672,7 @@ void localFatArrows() {
     Integer bar() => bar();
     @error Integer baz = baz;
     @error Integer qux() = qux();
-    Integer fee { return fee; }
+    Integer fee { @error return fee; }
     Integer fum() { return fum(); }
 }
 class LocalFatArrows() {
@@ -682,6 +682,6 @@ class LocalFatArrows() {
     Integer bar() => bar();
     @error Integer baz = baz;
     @error Integer qux() = qux();
-    Integer fee { return fee; }
+    Integer fee { @error return fee; }
     Integer fum() { return fum(); }
 }

@@ -6,7 +6,7 @@ class Test() {
     String attribute { 
         Inner();
         method();
-        print(attribute);
+        @error print(attribute);
         return "hello"; 
     }
     class Inner() {
