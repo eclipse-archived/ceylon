@@ -11,7 +11,7 @@ class MyCollection() satisfies Collection<Character> {
     value s = "hello";
     shared actual Integer size { return s.size; }
     shared actual Iterator<Character> iterator() { return s.iterator(); }
-    shared actual MyCollection clone { return MyCollection(); }
+    shared actual MyCollection clone() { return MyCollection(); }
 }
 class MyComparable() satisfies Comparable<MyComparable> {
     value p = system.milliseconds;
@@ -78,7 +78,7 @@ class MySequence() satisfies Sequence<Integer> {
     shared actual Integer hash => 1;
     shared actual Boolean equals(Object other) => (super of List<Integer>).equals(other);
     shared actual Boolean contains(Object element) => element==1;
-    shared actual MySequence clone => MySequence();
+    shared actual MySequence clone() => MySequence();
     shared actual Sequence<Integer> reversed => this;
     shared actual Integer? get(Integer index) {
         return index==0 then 1 else null;

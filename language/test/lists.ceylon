@@ -9,7 +9,7 @@ class TestList<Element>(Element* elems) satisfies List<Element> {
     shared actual TestList<Element> spanFrom(Integer a) => TestList(*elems.spanFrom(a));
     shared actual TestList<Element> spanTo(Integer b) => TestList(*elems.spanTo(b));
     shared actual TestList<Element> segment(Integer a, Integer b) => TestList(*elems.segment(a, b));
-    shared actual TestList<Element> clone => TestList(*elems);
+    shared actual TestList<Element> clone() => TestList(*elems);
 }
 
 @test

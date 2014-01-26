@@ -14,7 +14,7 @@ class MapTest<Key, Item>(<Key->Item>* entry)
     shared actual Entry<Key, Item>[] entries = entry.sequence;
     shared actual Integer size { return entries.size; }
     shared actual Boolean empty { return entries.empty; }
-    shared actual MapTest<Key, Item> clone { return this; }
+    shared actual MapTest<Key, Item> clone() { return this; }
     shared actual Iterator<Key->Item> iterator() { return entries.iterator(); }
     shared actual Item? get(Object key) {
         for (e in entries) {
@@ -32,7 +32,7 @@ shared void testMaps() {
     check(2->"B" in m1, "Map.contains(2->B) should be true");
     check(!(4.2 in m1), "Map.contains 2");
     check(!(1->"C" in m1), "Map.contains 3");
-    check(m1.clone == m1, "Map.clone/equals");
+    check(m1.clone() == m1, "Map.clone/equals");
     check(m1 != 5, "Map.equals");
     check(m1.defines(4), "Map.defines(4) should be true");
     check(!m1.defines(5), "Map.defines 2");
@@ -49,8 +49,8 @@ shared void testMaps() {
     for (e in m1) {
         check(e.key in m1.keys, "Map.keys.contains(`` e.key ``) should be true");
     }
-    check("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
-    check(m1.inverse.size==3, "Map.inverse 1: sizes `` m1.inverse.size `` should be 3");
+    //check("B"->SetTest(2, 4) in m1.inverse, "Map.inverse should contain B->Set(2,4)");
+    //check(m1.inverse.size==3, "Map.inverse 1: sizes `` m1.inverse.size `` should be 3");
     value m2 = m1.mapItems((Integer k, String v) => k*100);
     check(1->100 in m2, "Map.mapItems");
     for (k->v in m2) {

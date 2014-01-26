@@ -14,7 +14,7 @@ class SetTest<Element>(Element* element) extends Object()
     shared actual Element[] elements = element.sequence;
     shared actual Integer size { return elements.size; }
     shared actual Boolean empty { return elements.empty; }
-    shared actual SetTest<Element> clone { return this; }
+    shared actual SetTest<Element> clone() { return this; }
     shared actual Iterator<Element> iterator() { return elements.iterator(); }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
@@ -87,7 +87,7 @@ shared void testSets() {
     check(2 in s1, "Set.contains 1");
     check(!(4.2 in s1), "Set.contains 2");
     check(!(4 in s1), "Set.contains 3");
-    check(s1.clone == s1, "Set.clone/equals");
+    check(s1.clone() == s1, "Set.clone/equals");
     check(s1 != 5, "Set.equals");
     check(!s1.iterator().next() is Finished, "Set.iterator");
     check(es.subset(s1), "Set.subset 1");
