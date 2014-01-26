@@ -105,9 +105,9 @@ public class CustomTree extends Tree {
                 super.visit(visitor);
             }
             else {
-//                if (getSpecifierExpression()!=null &&
-//                		!(getSpecifierExpression() instanceof LazySpecifierExpression))
-//                    getSpecifierExpression().visit(visitor);
+                if (getSpecifierExpression()!=null &&
+                		!(getSpecifierExpression() instanceof LazySpecifierExpression))
+                    getSpecifierExpression().visit(visitor);
                 super.visit(visitor);
             }
         }
@@ -125,8 +125,8 @@ public class CustomTree extends Tree {
                 List<ParameterList> parameterLists = getParameterLists();
                 for (int i=0,l=parameterLists.size();i<l;i++)
                     parameterLists.get(i).visit(visitor);
-//                if (getSpecifierExpression() instanceof LazySpecifierExpression)
-                if (getSpecifierExpression()!=null)
+                if (getSpecifierExpression() instanceof LazySpecifierExpression)
+//                if (getSpecifierExpression()!=null)
                 	getSpecifierExpression().visit(visitor);
             }
         }

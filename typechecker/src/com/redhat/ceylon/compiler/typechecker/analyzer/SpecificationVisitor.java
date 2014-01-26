@@ -541,8 +541,8 @@ public class SpecificationVisitor extends Visitor {
         if (that.getDeclarationModel()==declaration) {
             inLoop = false;
             beginDisabledSpecificationScope();
-            super.visit(that);
             declare();
+            super.visit(that);
             endDisabledSpecificationScope(false);
             inLoop = false;
         }
@@ -588,30 +588,36 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodDeclaration that) {
-        super.visit(that);
         if (that.getDeclarationModel()==declaration) {
             if (that.getSpecifierExpression()!=null) {
                 specify();
+                super.visit(that);
             }
-            else if (declaration.isToplevel() && 
-                    !declaration.isNative()) {
-                that.addError("toplevel function must be specified: " +
-                        declaration.getName());
+            else {
+                super.visit(that);
+            	if (declaration.isToplevel() && 
+	                    !declaration.isNative()) {
+	                that.addError("toplevel function must be specified: " +
+	                        declaration.getName());
+	            }
+	            else if (declaration.isClassMember() && 
+	                    !declaration.isNative() && 
+	                    !declaration.isFormal() && 
+	                    that.getDeclarationModel().getInitializerParameter()==null &&
+	                    declarationSection) {
+	                that.addError("forward declaration may not occur in declaration section: " +
+	                            declaration.getName());
+	            }
+	            else if (declaration.isInterfaceMember() && 
+	                    !declaration.isNative() &&
+	            		!declaration.isFormal()) {
+	                that.addError("interface method must be formal or specified: " +
+	                        declaration.getName(), 1400);
+	            }
             }
-            else if (declaration.isClassMember() && 
-                    !declaration.isNative() && 
-                    !declaration.isFormal() && 
-                    that.getDeclarationModel().getInitializerParameter()==null &&
-                    declarationSection) {
-                that.addError("forward declaration may not occur in declaration section: " +
-                            declaration.getName());
-            }
-            else if (declaration.isInterfaceMember() && 
-                    !declaration.isNative() &&
-            		!declaration.isFormal()) {
-                that.addError("interface method must be formal or specified: " +
-                        declaration.getName(), 1400);
-            }
+        }
+        else {
+            super.visit(that);
         }
     }
     
@@ -670,33 +676,39 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeDeclaration that) {
-        super.visit(that);        
         if (that.getDeclarationModel()==declaration) {
         	Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
                 specify();
+                super.visit(that);
             }
-            else if (declaration.isToplevel() && 
-                    !declaration.isNative() &&
-                    !isLate()) {
-                if (isVariable()) {
-                    that.addError("toplevel variable value must be initialized: " +
-                            declaration.getName());
-                }
-                else {
-                    that.addError("toplevel value must be specified: " +
-                            declaration.getName());
-                }
+            else {
+            	super.visit(that);
+            	if (declaration.isToplevel() && 
+	                    !declaration.isNative() &&
+	                    !isLate()) {
+	                if (isVariable()) {
+	                    that.addError("toplevel variable value must be initialized: " +
+	                            declaration.getName());
+	                }
+	                else {
+	                    that.addError("toplevel value must be specified: " +
+	                            declaration.getName());
+	                }
+	            }
+	            else if (declaration.isClassOrInterfaceMember() && 
+	                    !declaration.isNative() &&
+	                    !declaration.isFormal() &&
+	                    that.getDeclarationModel().getInitializerParameter()==null &&
+	                    !that.getDeclarationModel().isLate() &&
+	                    declarationSection) {
+	                that.addError("forward declaration may not occur in declaration section: " +
+	                            declaration.getName());
+	            }
             }
-            else if (declaration.isClassOrInterfaceMember() && 
-                    !declaration.isNative() &&
-                    !declaration.isFormal() &&
-                    that.getDeclarationModel().getInitializerParameter()==null &&
-                    !that.getDeclarationModel().isLate() &&
-                    declarationSection) {
-                that.addError("forward declaration may not occur in declaration section: " +
-                            declaration.getName());
-            }
+        }
+        else {
+        	super.visit(that);
         }
     }
     

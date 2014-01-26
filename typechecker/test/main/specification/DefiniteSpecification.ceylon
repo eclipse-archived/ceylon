@@ -664,3 +664,24 @@ interface DefiniteSpecification {
     }
 
 }
+
+void localFatArrows() {
+    @error Integer fi => foo;
+    Integer fo { @error return foo; }
+    Integer foo => foo;
+    Integer bar() => bar();
+    @error Integer baz = baz;
+    @error Integer qux() = qux();
+    Integer fee { return fee; }
+    Integer fum() { return fum(); }
+}
+class LocalFatArrows() {
+    @error Integer fi => foo;
+    Integer fo { @error return foo; }
+    Integer foo => foo;
+    Integer bar() => bar();
+    @error Integer baz = baz;
+    @error Integer qux() = qux();
+    Integer fee { return fee; }
+    Integer fum() { return fum(); }
+}
