@@ -668,7 +668,7 @@ interface DefiniteSpecification {
 void localFatArrows() {
     @error Integer fi => foo;
     Integer fo { @error return foo; }
-    Integer foo => foo;
+    @error Integer foo => foo;
     Integer bar() => bar();
     @error Integer baz = baz;
     @error Integer qux() = qux();
@@ -678,7 +678,7 @@ void localFatArrows() {
 class LocalFatArrows() {
     @error Integer fi => foo;
     Integer fo { @error return foo; }
-    Integer foo => foo;
+    @error Integer foo => foo;
     Integer bar() => bar();
     @error Integer baz = baz;
     @error Integer qux() = qux();

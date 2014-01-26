@@ -679,8 +679,8 @@ public class SpecificationVisitor extends Visitor {
         if (that.getDeclarationModel()==declaration) {
         	Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
-                specify();
                 super.visit(that);
+                specify();
             }
             else {
             	super.visit(that);
