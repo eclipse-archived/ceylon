@@ -24,8 +24,7 @@ by ("Gavin")
 see (`interface Ordinal`)
 shared final class Range<Element>(first, last) 
         extends Object() 
-        satisfies [Element+] & 
-                  Cloneable<Range<Element>>
+        satisfies [Element+]
         given Element satisfies Ordinal<Element> & 
                                 Comparable<Element> { 
     
@@ -198,7 +197,7 @@ shared final class Range<Element>(first, last)
     
     "Returns the range itself, since ranges are 
      immutable."
-    shared actual Range<Element> clone => this;
+    shared actual Range<Element> clone() => this;
     
     shared actual Range<Element>|Empty segment(
             Integer from, 

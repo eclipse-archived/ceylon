@@ -3,7 +3,7 @@ function Sequential($$sequential) {
 }
 function $init$Sequential() {
     if (Sequential.$$===undefined) {
-        initTypeProto(Sequential, 'ceylon.language::Sequential', $init$List(), $init$Ranged(), $init$Cloneable());
+        initTypeProto(Sequential, 'ceylon.language::Sequential', $init$List(), $init$Ranged());
     }
     return Sequential;
 }
@@ -20,7 +20,7 @@ function Empty() {
     that.$$targs$$={Element:{t:Nothing}};
     return that;
 }
-initTypeProto(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged(), $init$Cloneable());
+initTypeProto(Empty, 'ceylon.language::Empty', Sequential, $init$Ranged());
 var Empty$proto = Empty.$$.prototype;
 Empty$proto.getEmpty = function() { return true; }
 Empty$proto.defines = function(x) { return false; }
@@ -39,7 +39,7 @@ Empty$proto.getIterator = function() { return getEmptyIterator(); }
 Empty$proto.getString = function() { return String$("{}"); }
 Empty$proto.contains = function(x) { return false; }
 Empty$proto.getLastIndex = function() { return null; }
-Empty$proto.getClone = function() { return this; }
+Empty$proto.clone = function() { return this; }
 Empty$proto.count = function(x) { return 0; }
 Empty$proto.getReversed = function() { return this; }
 Empty$proto.skipping = function(skip) { return this; }
@@ -102,7 +102,7 @@ function Sequence($$sequence) {
 function $init$Sequence() {
     if (Sequence.$$===undefined) {
         initTypeProto(Sequence, 'ceylon.language::Sequence', $init$Sequential(),
-            $init$Container(), $init$Cloneable());
+            $init$Container());
     }
     return Sequence;
 }
@@ -115,4 +115,4 @@ Sequence$proto.sort = function(comp) {
 Sequence$proto.collect = function(f, $$$mptypes) {
     return this.map(f, $$$mptypes).getSequence();
 }
-Sequence$proto.getClone = function() { return this; }
+Sequence$proto.clone = function() { return this; }

@@ -19,8 +19,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
         @com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
         @com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
 @com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
-        "ceylon.language::Sequence<Element>",
-        "ceylon.language::Cloneable<ceylon.language::Tuple<Element,First,Rest>>"})
+        "ceylon.language::Sequence<Element>"})
 @com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "Element",
@@ -220,8 +219,8 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
             @com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @java.lang.Override
     @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Tuple<Element,First,Rest>")
-    public final Tuple<Element, ? extends First, ? extends Rest> getClone() {
-        return (Tuple<Element, ? extends First, ? extends Rest>) super.getClone();
+    public final Tuple<Element, ? extends First, ? extends Rest> $clone() {
+        return (Tuple<Element, ? extends First, ? extends Rest>) super.$clone();
     }
     
     @com.redhat.ceylon.compiler.java.metadata.Annotations({

@@ -6,7 +6,7 @@ function Exception(){}//IGNORE
 function isOfType(a,b){}//IGNORE
 function String$(x,l){}//IGNORE
 function TypeCategory(a,b){}//IGNORE
-var exports,Container,Cloneable,smaller,larger,Object$;//IGNORE
+var exports,Container,smaller,larger,Object$;//IGNORE
 var Iterable,Iterator;//IGNORE
 
 function Map(wat) {
@@ -14,7 +14,7 @@ function Map(wat) {
 }
 function $init$Map() {
     if (Map.$$===undefined) {
-        initTypeProto(Map, 'ceylon.language::Map', Collection, $init$Correspondence(), Cloneable);
+        initTypeProto(Map, 'ceylon.language::Map', Collection, $init$Correspondence());
     }
     return Map;
 }
@@ -54,7 +54,7 @@ initTypeProto(MapValues, 'ceylon.language::MapValues', $init$Basic(), Collection
 var MapValues$proto = MapValues.$$.prototype;
 MapValues$proto.getSize = function() { return this.map.getSize(); }
 MapValues$proto.getEmpty = function() { return this.map.getEmpty(); }
-MapValues$proto.getClone = function() { return this; }
+MapValues$proto.clone = function() { return this; }
 MapValues$proto.getIterator = function() { return MapValuesIterator(this.map); }
 function MapValuesIterator(map) {
     var iter = new MapValuesIterator.$$;
@@ -80,7 +80,7 @@ var KeySet$proto = KeySet.$$.prototype;
 KeySet$proto.getSize = function() { return this.map.getSize(); }
 KeySet$proto.getEmpty = function() { return this.map.getEmpty(); }
 KeySet$proto.contains = function(elem) { return this.map.defines(elem); }
-KeySet$proto.getClone = function() { return this; }
+KeySet$proto.clone = function() { return this; }
 KeySet$proto.getIterator = function() { return KeySetIterator(this.map); }
 function KeySetIterator(map) {
     var iter = new KeySetIterator.$$;
@@ -128,22 +128,6 @@ KeySet$proto.complement = function(other, $$$mptypes) {
     return set;
 }
 
-Map$proto.getInverse = function() {
-    var inv = HashMap(undefined, {Key:this.$$targs$$.Item, Item:{t:Set, a:{Element:this.$$targs$$.Key}}});
-    var it = this.getIterator();
-    var entry;
-    var newSet = HashSet(undefined, {Element:this.$$targs$$.Key});
-    while ((entry=it.next()) !== getFinished()) {
-        var item = entry.getItem();
-        var set = inv.put(Entry(item, newSet, {Key:this.$$targs$$.Item, Item:{t:Set, a:{Element:this.$$targs$$.Key}}}), true);
-        if (set === null) {
-            set = newSet;
-            newSet = HashSet(undefined, {Element:this.$$targs$$.Key});
-        }
-        set.add(entry.getKey());
-    }
-    return inv;
-}
 Map$proto.mapItems = function(mapping, $$$mptypes) {
     function EmptyMap(orig, $$targs$$) {
         var em = new EmptyMap.$$;
@@ -227,7 +211,7 @@ HashMap$proto.getLast = function() {
     return arr[arr.length - 1];
 }
 HashMap$proto.getIterator = function() { return HashMapIterator(this.map); }
-HashMap$proto.getClone = function() { return this; }
+HashMap$proto.clone = function() { return this; }
 HashMap$proto.get = function(key) {
     var hash = key.getHash();
     var arr = this.map[hash];
@@ -278,7 +262,7 @@ HashSet$proto.getLast = function() {
     return (entry !== null) ? entry.getKey() : null;
 }
 HashSet$proto.getIterator = function() { return HashSetIterator(this.map, this.$$targs$$); }
-HashSet$proto.getClone = function() { return this; }
+HashSet$proto.clone = function() { return this; }
 HashSet$proto.contains = function(elem) { return this.map.get(elem) !== null; }
 HashSet$proto.union = function(other, $$$mptypes) {
     var set = hashSetFromMap(copyHashMap(this.map));

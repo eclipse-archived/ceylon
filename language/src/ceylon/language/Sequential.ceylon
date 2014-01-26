@@ -13,8 +13,7 @@ see (`class Tuple`)
 shared interface Sequential<out Element>
         of []|[Element+]
         satisfies List<Element> & 
-                  Ranged<Integer,Element[]> &
-                  Cloneable<Element[]> {
+                  Ranged<Integer,Element[]> {
     
     "Reverse this sequence, returning a new sequence."
     shared actual formal Element[] reversed;
@@ -78,7 +77,7 @@ shared interface Sequential<out Element>
     shared actual formal [Other|Element+] following<Other>(Other head);
     
     "This sequence."
-    shared actual default Element[] clone => this;
+    shared actual default Element[] clone() => this;
     
     "A string of form `\"[ x, y, z ]\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 

@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
-    "ceylon.language::Cloneable<ceylon.language::Array<Element>>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
 public final class Array<Element> 
@@ -45,9 +44,7 @@ public final class Array<Element>
     protected final Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
     @Ignore
     protected final Ranged$impl<Integer,List<Element>> $ceylon$language$Ranged$this;
-    @Ignore
-    protected final Cloneable$impl<? extends Array<Element>> $ceylon$language$Cloneable$this;
-
+    
     private final java.lang.Object array;
     
     @Ignore
@@ -361,9 +358,6 @@ public final class Array<Element>
         		new Ranged$impl<Integer,List<Element>>(Integer.$TypeDescriptor$, 
                         TypeDescriptor.klass(Array.class, $reifiedElement), 
                         (Ranged<Integer, ? extends List<Element>>)this);
-        this.$ceylon$language$Cloneable$this = 
-        		new Cloneable$impl(TypeDescriptor.klass(Array.class, 
-        				$reifiedElement), this);
         this.array = array;
         this.$reifiedElement = $reifiedElement;
     }
@@ -403,13 +397,6 @@ public final class Array<Element>
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Ranged$impl $ceylon$language$Ranged$impl(){
         return $ceylon$language$Ranged$this;
-    }
-
-    @Ignore
-    @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Cloneable$impl $ceylon$language$Cloneable$impl(){
-        return $ceylon$language$Cloneable$this;
     }
     
     @Ignore
@@ -973,7 +960,7 @@ public final class Array<Element>
 //    }
 
     @Override
-    public Array<Element> getClone() {
+    public Array<Element> $clone() {
         return new Array<Element>($reifiedElement, this);
     }
 

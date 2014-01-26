@@ -22,8 +22,7 @@ see (`interface Empty`)
 by ("Gavin")
 shared interface Sequence<out Element>
         satisfies Element[] & 
-                  {Element+} &
-                  Cloneable<[Element+]> {
+                  {Element+} {
     
     "The index of the last element of the sequence."
     see (`value Sequence.size`)
@@ -74,7 +73,7 @@ shared interface Sequence<out Element>
     }
     
     "This nonempty sequence."
-    shared actual default [Element+] clone => this;
+    shared actual default [Element+] clone() => this;
     
     shared actual default String string 
             => (super of Sequential<Element>).string;

@@ -11,7 +11,6 @@
 shared final native class Array<Element>({Element*} elements) 
         extends Object()
         satisfies List<Element> &
-                  Cloneable<Array<Element>> &
                   Ranged<Integer, Array<Element>> {
 
     "Replace the existing element at the specified index 
@@ -56,7 +55,7 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Array<Element> segment(Integer from, Integer length);
     
     "A new array with the same elements as this array."
-    shared actual native Array<Element> clone;
+    shared actual native Array<Element> clone();
 }
 
 "Create an array of the specified [[size]], populating every 

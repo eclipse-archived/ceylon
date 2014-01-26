@@ -27,8 +27,7 @@ see (`class Entry`,
      `function byItem`, `function byKey`)
 shared interface Map<out Key,out Item>
         satisfies Collection<Key->Item> &
-                  Correspondence<Object,Item> &
-                  Cloneable<Map<Key,Item>>
+                  Correspondence<Object,Item>
         given Key satisfies Object
         given Item satisfies Object {
     
@@ -82,7 +81,7 @@ shared interface Map<out Key,out Item>
                 satisfies Collection<Key> {
             contains(Object key) => outer.defines(key);
             iterator() => { for (k->v in outer) k }.iterator();
-            clone => this;
+            clone() => this;
             size => outer.size;
         }
         return keys;
@@ -104,33 +103,10 @@ shared interface Map<out Key,out Item>
                 return false;
             }
             iterator() => { for (k->v in outer) v }.iterator();
-            clone => this;
+            clone() => this;
             size => outer.size;
         }
         return values;
-    }
-    
-    "Returns a `Map` in which every key is an `Item` in this 
-     map, and every value is the set of keys that stored the 
-     `Item` in this map."
-    deprecated
-    shared default Map<Item,Set<Key>> inverse {
-        object inverse
-                satisfies Map<Item,Set<Key>> {
-            shared actual Set<Key>? get(Object item) {
-                value keys = getKeys(item);
-                return !keys.empty then keys;
-            }
-            Set<Key> getKeys(Object item) 
-                    => LazySet { for (k->i in outer) if (item==i) k };
-            iterator() => UniqueElements { for (k->i in outer) i }
-                    .map((Item i)=>i->getKeys(i)).iterator();
-            clone => this;
-            equals(Object that) => (super of Map<Item,Set<Key>>).equals(that);
-            hash => (super of Map<Item,Set<Key>>).hash;
-            
-        }
-        return inverse;
     }
     
     "Returns a `Map` with the same keys as this map. For
@@ -156,7 +132,7 @@ shared interface Map<out Key,out Item>
                     => entry.key->mapping(entry.key, entry.item))
                             .iterator();
             size => outer.size;
-            clone => this;
+            clone() => this;
             equals(Object that) => (super of Map<Key,Result>).equals(that);
             hash => (super of Map<Key,Result>).hash;
         }
@@ -171,11 +147,10 @@ shared object emptyMap
         satisfies Map<Nothing, Nothing> {
     
     shared actual Null get(Object key) => null;
-    shared actual Set<Nothing> keys => emptySet;
-    shared actual Map<Nothing,Nothing> inverse => emptyMap;
+    shared actual Collection<Nothing> keys => emptySet;
     shared actual Collection<Nothing> values => [];
     
-    clone => emptyMap;
+    clone() => emptyMap;
     iterator() => emptyIterator;
     size => 0;
     empty => true;

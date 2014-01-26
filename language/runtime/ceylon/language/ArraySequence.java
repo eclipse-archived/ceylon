@@ -44,8 +44,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private final ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this;
     @Ignore
     private final ceylon.language.Ranged$impl<Integer,List<? extends Element>> $ceylon$language$Ranged$this;
-    @Ignore
-    private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     /** 
      * A backing array. Maybe shared between many ArraySequence instances
@@ -129,7 +127,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         this.$ceylon$language$Sequence$this = new ceylon.language.Sequence$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Sequential$this = new ceylon.language.Sequential$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<? extends Element>>(Integer.$TypeDescriptor$, TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged)this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Sequence.class, $reifiedElement), this);
         if (length == USE_ARRAY_SIZE) {
             length = array.length;
         }
@@ -219,12 +216,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public Sequence$impl<Element> $ceylon$language$Sequence$impl(){
         return $ceylon$language$Sequence$this;
-    }
-
-    @Ignore
-    @Override
-    public Cloneable$impl $ceylon$language$Cloneable$impl(){
-        return $ceylon$language$Cloneable$this;
     }
 
     @Override
@@ -438,7 +429,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 //    }
 
     @Override
-    public ArraySequence<Element> getClone() {
+    public ArraySequence<Element> $clone() {
         return this;
     }
 

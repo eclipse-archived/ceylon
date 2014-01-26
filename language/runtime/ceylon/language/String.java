@@ -20,8 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",
-                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>",
-                 "ceylon.language::Cloneable<ceylon.language::String>"})
+                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>"})
 @ValueType
 public final class String
     implements Comparable<String>, List<Character>,
@@ -46,8 +45,6 @@ public final class String
     protected final ceylon.language.Summable$impl<String> $ceylon$language$Summable$this;
     @Ignore
     protected final ceylon.language.Ranged$impl<Integer,List<Character>> $ceylon$language$Ranged$this;
-    @Ignore
-    protected final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     @Ignore
     public final java.lang.String value;
@@ -63,7 +60,6 @@ public final class String
         this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, String.$TypeDescriptor$,(Ranged)this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor$, this);
         if (characters instanceof String) {
             value = ((String)characters).value;
         } else {
@@ -87,7 +83,6 @@ public final class String
         this.$ceylon$language$Comparable$this = new ceylon.language.Comparable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Summable$this = new ceylon.language.Summable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Ranged$this = new ceylon.language.Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, String.$TypeDescriptor$,(Ranged)this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(String.$TypeDescriptor$, this);
         value = string;
     }
 
@@ -125,12 +120,6 @@ public final class String
     @Override
     public Ranged$impl $ceylon$language$Ranged$impl(){
         return (Ranged$impl)$ceylon$language$Ranged$this;
-    }
-
-    @Ignore
-    @Override
-    public Cloneable$impl $ceylon$language$Cloneable$impl(){
-        return $ceylon$language$Cloneable$this;
     }
 
     @Ignore
@@ -1327,12 +1316,12 @@ public final class String
     }
 
     @Override
-    public String getClone() {
+    public String $clone() {
         return this;
     }
 
     @Ignore
-    public static java.lang.String getClone(java.lang.String value) {
+    public static java.lang.String $clone(java.lang.String value) {
         return value;
     }
 

@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.java.language;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
-import ceylon.language.Cloneable$impl;
 import ceylon.language.Collection;
 import ceylon.language.Collection$impl;
 import ceylon.language.Comparison;
@@ -52,8 +51,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     private final ceylon.language.Map$impl<Key, Item> $ceylon$language$Map$this;
     @Ignore
     private final ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>> $ceylon$language$Collection$this;
-    @Ignore
-    private final ceylon.language.Cloneable$impl $ceylon$language$Cloneable$this;
 
     @Ignore
     private TypeDescriptor $reifiedItem;
@@ -68,7 +65,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(ceylon.language.Object.$TypeDescriptor$, $reifiedItem, this);
         this.$ceylon$language$Map$this = new ceylon.language.Map$impl<Key, Item>($reifiedKey, $reifiedItem, this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Entry<? extends Key,? extends Item>>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), this);
-        this.$ceylon$language$Cloneable$this = new ceylon.language.Cloneable$impl(TypeDescriptor.klass(Map.class, $reifiedKey, $reifiedItem), (Map)this);
 
         this.m = map;
         this.$reifiedKey = $reifiedKey;
@@ -104,12 +100,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Override
     public Correspondence$impl<java.lang.Object,Item> $ceylon$language$Correspondence$impl(){
         return $ceylon$language$Correspondence$this;
-    }
-
-    @Ignore
-    @Override
-    public Cloneable$impl $ceylon$language$Cloneable$impl(){
-        return $ceylon$language$Cloneable$this;
     }
 
     @Override
@@ -468,7 +458,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     @Override
     @Annotations(@Annotation("formal"))
-    public InternalMap<? extends Key, ? extends Item> getClone() {
+    public InternalMap<? extends Key, ? extends Item> $clone() {
         return new InternalMap<Key,Item>($reifiedKey, $reifiedItem, java.util.Collections.unmodifiableMap(m));
     }
 
@@ -484,13 +474,6 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @TypeInfo("ceylon.language::Collection<Item>")
     public Collection<? extends Item> getValues() {
         return $ceylon$language$Map$this.getValues();
-    }
-
-    @Override
-    @Annotations(@Annotation("default"))
-    @TypeInfo("ceylon.language::Map<Item,ceylon.language::Set<Key>>")
-    public Map<? extends Item, ? extends Set<? extends Key>> getInverse() {
-        return $ceylon$language$Map$this.getInverse();
     }
 
     @Override

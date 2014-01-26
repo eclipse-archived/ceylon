@@ -2,13 +2,12 @@ function List(wat) {
     Collection(wat);
     Correspondence(wat);
     Ranged(wat);
-    Cloneable(wat);
     return wat;
 }
 function $init$List() {
     if (List.$$===undefined) {
         initTypeProto(List, 'ceylon.language::List', $init$Collection(), $init$Correspondence(),
-            $init$Ranged(), $init$Cloneable());
+            $init$Ranged());
     }
 var List$proto = List.$$.prototype;
 List$proto.getSize = function() {

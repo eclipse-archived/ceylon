@@ -46,8 +46,7 @@ by ("Gavin")
 shared final class Tuple<out Element, out First, out Rest=[]>
             (first, rest)
         extends Object()
-        satisfies [Element+] & 
-                  Cloneable<Tuple<Element,First,Rest>>
+        satisfies [Element+]
         given First satisfies Element
         given Rest satisfies Element[] {
     
@@ -110,7 +109,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     spanFrom(Integer from) => span(from, size);
     
-    clone => this;
+    clone() => this;
     
     reversed => rest.reversed.withTrailing(first);
     

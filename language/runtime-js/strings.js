@@ -20,16 +20,14 @@ function String$(/*{Character*}*/value,size) {
 String$.$$metamodel$$=function(){return{'super':{t:Object$},
   $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element:{t:Character},Absent:{t:Null}}},$mt:'prm'}],
   'satisfies':[{t:List,a:{Element:{t:Character}}}, {t:Comparable,a:{Other:{t:String$}}},
-    {t:Summable,a:{Other:{t:String$}}}, {t:Ranged,a:{Index:{t:Integer},Span:{t:String$}}},
-    {t:Cloneable,a:{Clone:{t:String$}}}],
+    {t:Summable,a:{Other:{t:String$}}}, {t:Ranged,a:{Index:{t:Integer},Span:{t:String$}}}],
   $an:function(){return[shared(),native(),final()];},
   mod:$$METAMODEL$$,d:['ceylon.language','String']};};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
-        Ranged, Summable, Cloneable);
+        Ranged, Summable);
 var origStrToString = String.prototype.toString;
-inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable,
-        Cloneable);
+inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable);
 var String$proto = String$.$$.prototype;
 String$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
 String$proto.getT$name = function() {

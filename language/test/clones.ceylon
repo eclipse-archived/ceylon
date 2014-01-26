@@ -1,3 +1,8 @@
+interface Cloneable<Clone> of Clone
+        given Clone satisfies Cloneable<Clone> {
+    shared formal Clone clone;
+}
+
 class Prototype<out Element>(Element e)
            satisfies Cloneable<Prototype<Element>> {
    shared actual Prototype<Element> clone { return this; }

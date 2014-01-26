@@ -37,8 +37,7 @@ see (`interface Sequence`,
 shared interface List<out Element>
         satisfies Collection<Element> &
                   Correspondence<Integer,Element> &
-                  Ranged<Integer,List<Element>> &
-                  Cloneable<List<Element>> {
+                  Ranged<Integer,List<Element>> {
     
     "The index of the last element of the list, or `null` if 
      the list is empty."

@@ -6,18 +6,24 @@
  is [[Iterable]]. The elements of a collection are not
  necessarily distinct when compared using [[Object.equals]].
  
- Every `Collection` is [[Cloneable]]. If a collection is
- immutable, it is acceptable that `clone` produce a
+ A `Collection` may be [[cloned|clone]]. If a collection is
+ immutable, it is acceptable that `clone()` produce a
  reference to the collection itself. If a collection is
- mutable, `clone` should produce an immutable collection
- containing references to the same elements, with the same 
- structure as the original collection&mdash;that is, it 
- should produce an immutable shallow copy of the
- collection."
+ mutable, `clone()` should produce a collection containing 
+ references to the same elements, with the same structure as 
+ the original collection&mdash;that is, it should produce a 
+ shallow copy of the collection."
 see (`interface List`, `interface Map`, `interface Set`)
 shared interface Collection<out Element>
-        satisfies {Element*} &
-                  Cloneable<Collection<Element>> {
+        satisfies {Element*} {
+    
+    "A shallow copy of this collection, that is, a 
+     collection with identical elements which does not
+     change if this collection changes. If this collection
+     is immutable, it is acceptable to return a reference to
+     this collection. If this collection is mutable, a newly
+     instantiated collection must be returned."
+    shared formal Collection<Element> clone();
     
     "Determine if the collection is empty, that is, if it 
      has no elements."

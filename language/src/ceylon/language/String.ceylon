@@ -46,8 +46,7 @@ shared native final class String(characters)
         satisfies List<Character> & 
                   Comparable<String> &
                   Summable<String> & 
-                  Ranged<Integer,String> &
-                  Cloneable<String> {
+                  Ranged<Integer,String> {
     
     "The characters that form this string."
     shared {Character*} characters;
@@ -266,6 +265,6 @@ shared native final class String(characters)
     shared actual String coalesced => this;
     
     "This string."
-    shared actual native String clone;
+    shared actual String clone() => this;
     
 }

@@ -11,14 +11,14 @@ function Array$(elems,$$targs$$) {
     return e;
 }
 Array$.$$metamodel$$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent:{t:Null},Element:'Element'}}}],$an:function(){return[shared(),final(),native()];},mod:$$METAMODEL$$,d:['ceylon.language','Array'],
-  'super':{t:Object$}, $tp:{Element:{}}, satisfies:[{t:List,a:{Element:'Element'}},{t:Cloneable,a:{Other:{t:Array$,a:{Element:'Element'}}}},
+  'super':{t:Object$}, $tp:{Element:{}}, satisfies:[{t:List,a:{Element:'Element'}},
     {t:Ranged,a:{Index:{t:Integer},Span:{t:Array$,a:{Element:'Element'}}}}]};
 
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
-        Cloneable, Ranged, $init$List());
+        Ranged, $init$List());
 var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
-inheritProto(Array$, Object$, Cloneable, Ranged, $init$List());
+inheritProto(Array$, Object$, Ranged, $init$List());
 Array$proto.toString = origArrToString;
 Array$proto.reifyCeylonType = function(typeParameters) {
     this.$$targs$$ = typeParameters;

@@ -30,7 +30,7 @@ shared class Singleton<out Element>(Element element)
     }
     
     "Returns a `Singleton` with the same element."
-    shared actual Singleton<Element> clone => this;
+    shared actual Singleton<Element> clone() => this;
     
     shared actual default Iterator<Element> iterator() {
         class SingletonIterator()

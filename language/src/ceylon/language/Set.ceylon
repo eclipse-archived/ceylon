@@ -11,8 +11,7 @@
  or [[Comparable.compare]]. An element may occur at most 
  once in a set."
 shared interface Set<out Element>
-        satisfies Collection<Element> &
-                  Cloneable<Set<Element>>
+        satisfies Collection<Element>
         given Element satisfies Object {
     
     "Determines if this set is a superset of the given 
@@ -116,7 +115,7 @@ shared object emptySet
     subset(Set<Object> set) => true;
     superset(Set<Object> set) => set.empty;
     
-    clone => emptySet;
+    clone() => emptySet;
     iterator() => emptyIterator;
     size => 0;
     empty => true;

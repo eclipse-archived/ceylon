@@ -12,8 +12,7 @@ import ceylon.language { e=empty }
 see (`interface Sequence`)
 shared interface Empty of e
            satisfies Nothing[] &
-                     Ranged<Integer,[]> &
-                     Cloneable<[]> {
+                     Ranged<Integer,[]> {
     
     "Returns an iterator that is already exhausted."
     shared actual Iterator<Nothing> iterator() => emptyIterator;
@@ -62,7 +61,7 @@ shared interface Empty of e
     shared actual [] rest => this;
     
     "Returns an `Empty`."
-    shared actual [] clone => this;
+    shared actual [] clone() => this;
     
     "Returns an `Empty`."
     shared actual [] coalesced => this; 

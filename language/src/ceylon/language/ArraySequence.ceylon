@@ -19,7 +19,7 @@ shared final native class ArraySequence<out Element>({Element+} elements)
     
     shared native actual Boolean contains(Object element);
     
-    shared actual ArraySequence<Element> clone => this;
+    shared actual ArraySequence<Element> clone() => this;
     
     shared native actual Element? get(Integer index);
     
