@@ -17,7 +17,21 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
@@ -42,10 +56,15 @@ public class IOUtils {
      */
     public static void safeClose(Closeable c) {
         try {
-            if (c != null)
+            if (c != null) {
                 c.close();
+            }
         } catch (IOException ignored) {
         }
+    }
+
+    public static IOException toIOException(Throwable t) {
+        return (t instanceof IOException ? (IOException) t : new IOException(t));
     }
 
     /**
@@ -65,16 +84,22 @@ public class IOUtils {
     /**
      * Copy stream.
      *
-     * @param in  input stream
-     * @param out output stream
+     * @param in       input stream
+     * @param out      output stream
+     * @param closeIn  do we close input stream
+     * @param closeOut do we close output stream
      * @throws IOException for any I/O error
      */
-    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+    public static void copyStream(InputStream in, OutputStream out, boolean closeIn, boolean closeOut) throws IOException {
         try {
             copyStreamNoClose(in, out);
         } finally {
-            safeClose(in);
-            safeClose(out);
+            if (closeIn) {
+                safeClose(in);
+            }
+            if (closeOut) {
+                safeClose(out);
+            }
         }
     }
 
@@ -109,24 +134,20 @@ public class IOUtils {
             throw new IllegalArgumentException("Null input stream!");
 
         final ClassLoader cl = contentType.getClassLoader();
-        final ObjectInputStream ois = new ObjectInputStream(inputStream) {
-            @Override
+        try (ObjectInputStream ois = new ObjectInputStream(inputStream) {
             protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
                 return cl.loadClass(desc.getName());
             }
-        };
-        try {
+        }) {
             Object result = ois.readObject();
             return contentType.cast(result);
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
-        } finally {
-            ois.close();
         }
     }
 
     static void writeToFile(File file, InputStream inputStream) throws IOException {
-        copyStream(inputStream, new FileOutputStream(file));
+        copyStream(inputStream, new FileOutputStream(file), false, true);
     }
 
     static String sha1(InputStream is) {
@@ -173,58 +194,55 @@ public class IOUtils {
         return new String(chars);
     }
 
-    public static class ZipRoot{
+    public static class ZipRoot {
         public final File root;
         public final String prefix;
-        
-        public ZipRoot(File root, String prefix){
+
+        public ZipRoot(File root, String prefix) {
             this.root = root;
             this.prefix = prefix;
         }
     }
-    
-    public static File zipFolder(File root) throws IOException{
+
+    public static File zipFolder(File root) throws IOException {
         return zipFolders(new ZipRoot(root, ""));
     }
-    
-    public static File zipFolders(ZipRoot... zipRoots) throws IOException{
-        for(ZipRoot zipRoot : zipRoots){
-            if(!zipRoot.root.isDirectory())
+
+    public static File zipFolders(ZipRoot... zipRoots) throws IOException {
+        for (ZipRoot zipRoot : zipRoots) {
+            if (!zipRoot.root.isDirectory())
                 throw new IOException("Zip root must be a folder");
         }
         File zipFile = File.createTempFile("module-doc", ".zip");
-        try{
+        try {
             ZipOutputStream os = new ZipOutputStream(new FileOutputStream(zipFile));
-            try{
-                for(ZipRoot zipRoot : zipRoots){
-                    for(File f : zipRoot.root.listFiles()){
+            try {
+                for (ZipRoot zipRoot : zipRoots) {
+                    for (File f : zipRoot.root.listFiles()) {
                         zipInternal(zipRoot.prefix, f, os);
                     }
                 }
-            }finally{
+            } finally {
                 os.flush();
                 os.close();
             }
             return zipFile;
-        }catch(IOException x){
+        } catch (IOException x) {
             zipFile.delete();
             throw x;
         }
     }
 
     private static void zipInternal(String path, File file, ZipOutputStream os) throws IOException {
-        String filePath = path+"/"+file.getName();
-        if(file.isDirectory()){
-            for(File f : file.listFiles())
+        String filePath = path + "/" + file.getName();
+        if (file.isDirectory()) {
+            for (File f : file.listFiles())
                 zipInternal(filePath, f, os);
-        }else{
+        } else {
             ZipEntry entry = new ZipEntry(filePath);
             os.putNextEntry(entry);
-            FileInputStream in = new FileInputStream(file);
-            try{
+            try (FileInputStream in = new FileInputStream(file)) {
                 copyStreamNoClose(in, os);
-            }finally{
-                in.close();
             }
             os.closeEntry();
         }

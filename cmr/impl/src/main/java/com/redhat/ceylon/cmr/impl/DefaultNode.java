@@ -111,8 +111,9 @@ public class DefaultNode extends AbstractOpenNode {
 
     @Override
     public <T extends Serializable> OpenNode addContent(String label, T content, ContentOptions options) throws IOException {
-        InputStream stream = IOUtils.toObjectStream(content);
-        return addContent(label, stream, options);
+        try (InputStream stream = IOUtils.toObjectStream(content)) {
+            return addContent(label, stream, options);
+        }
     }
 
     protected OpenNode addNode(final String label, final Object value, InputStream content, ContentOptions options, boolean allowNoContent) throws IOException {

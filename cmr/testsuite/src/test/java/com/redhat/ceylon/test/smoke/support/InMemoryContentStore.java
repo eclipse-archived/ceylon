@@ -62,7 +62,7 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     @Override
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IOUtils.copyStream(stream, baos);
+        IOUtils.copyStream(stream, baos, false, false);
         final byte[] bytes = baos.toByteArray();
         store.put(node, bytes);
         return new InMemoryContentHandle(bytes);
@@ -123,7 +123,7 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         @Override
         public File getContentAsFile() throws IOException {
             final File temp = File.createTempFile("in-memory-", ".car");
-            IOUtils.copyStream(getBinariesAsStream(), new FileOutputStream(temp));
+            IOUtils.copyStream(getBinariesAsStream(), new FileOutputStream(temp), false, true);
             temp.deleteOnExit();
             return temp;
         }

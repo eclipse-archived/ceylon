@@ -24,9 +24,34 @@ import java.io.File;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface ArtifactCallback {
+    /**
+     * Artifact size callback, or -1 if it cannot be determined.
+     * The callback is invoked before streaming.
+     * e.g. to be able to display % of downloaded artifact.
+     *
+     * @param size the size
+     */
     void size(long size);
 
+    /**
+     * Invoked for every byte stream read.
+     *
+     * @param bytes  the bytes read
+     * @param length the bytes read length
+     */
     void read(byte[] bytes, int length);
 
+    /**
+     * Invoked once streaming is successfully finished.
+     *
+     * @param localFile the downloaded file
+     */
     void done(File localFile);
+
+    /**
+     * For any error during streaming.
+     *
+     * @param err the cause
+     */
+    void error(Throwable err);
 }

@@ -59,6 +59,15 @@ public class CallbackTestCase extends AbstractTest {
         }
     }
 
+    @Test
+    public void testErr() throws Exception {
+        TestArtifactCallback callback = new TestArtifactCallback();
+        callback.ts = String.valueOf(System.currentTimeMillis());
+        ArtifactContext context = new ArtifactContext(name, version);
+        context.setCallback(callback);
+        doTest(context, callback);
+    }
+
     protected void doTest(ArtifactContext context, TestArtifactCallback callback) throws Exception {
         String repoURL = "http://jboss-as7-modules-repository.googlecode.com/svn/trunk/ceylon";
         try {
@@ -78,6 +87,10 @@ public class CallbackTestCase extends AbstractTest {
             Assert.assertNotNull(file);
             Assert.assertTrue(callback.size > 0);
             Assert.assertEquals(callback.size, callback.current);
+        } catch (Exception re) {
+            Assert.assertNotNull(callback.ts);
+            Assert.assertNotNull(callback.err);
+            Assert.assertEquals(callback.ts, callback.err.getMessage());
         } finally {
             manager.removeArtifact(name, version);
             // test if remove really works
@@ -86,10 +99,16 @@ public class CallbackTestCase extends AbstractTest {
     }
 
     private static class TestArtifactCallback implements ArtifactCallback {
+        private String ts;
+
         private long size;
         private long current;
+        private Throwable err;
 
         public void size(long size) {
+            if (ts != null) {
+                throw new IllegalArgumentException(ts);
+            }
             this.size = size;
         }
 
@@ -99,6 +118,10 @@ public class CallbackTestCase extends AbstractTest {
 
         public void done(File file) {
             Assert.assertNotNull(file);
+        }
+
+        public void error(Throwable err) {
+            this.err = err;
         }
     }
 }

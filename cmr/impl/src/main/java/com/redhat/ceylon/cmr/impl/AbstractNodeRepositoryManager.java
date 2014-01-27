@@ -52,7 +52,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
 
-    protected List<Repository> roots = new CopyOnWriteArrayList<Repository>(); // lookup roots - order matters!
+    protected List<Repository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
 
     protected Repository cache; // cache root
     protected boolean addCacheAsRoot; // do we treat cache as repo
@@ -101,7 +101,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     public List<String> getRepositoriesDisplayString() {
-        final List<String> displayStrings = new ArrayList<String>();
+        final List<String> displayStrings = new ArrayList<>();
         boolean cacheAdded = false;
         for (Repository root : roots) {
             if (!addCacheAsRoot && !cacheAdded && root.getRoot().isRemote()) {
@@ -117,6 +117,14 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
+        try {
+            putArtifactInternal(context, content);
+        } finally {
+            IOUtils.safeClose(content);
+        }
+    }
+
+    private void putArtifactInternal(ArtifactContext context, InputStream content) throws RepositoryException {
         final Node parent = getOrCreateParent(context);
         log.debug("Adding artifact " + context + " to cache " + cache.getDisplayString());
         log.debug(" -> " + NodeUtils.getFullPath(parent));
@@ -177,8 +185,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return cs != null && cs.isHerd();
     }
 
+    @SuppressWarnings("UnusedParameters")
     private void uploadToHerd(Node parent, ArtifactContext context, File folder) {
-        log.debug("Not uploading folder to Herd: module-doc zip will be used instead");
+        log.debug(String.format("Not uploading folder [%s] to Herd: module-doc zip will be used instead", folder));
     }
 
     protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {
@@ -398,7 +407,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             // we need to merge manually
             ModuleSearchResult[] results = new ModuleSearchResult[roots.size()];
             // keep an overall module name ordering
-            SortedSet<String> names = new TreeSet<String>();
+            SortedSet<String> names = new TreeSet<>();
             int i = 0;
             long[] pagingInfo = query.getPagingInfo();
             if (pagingInfo != null) {

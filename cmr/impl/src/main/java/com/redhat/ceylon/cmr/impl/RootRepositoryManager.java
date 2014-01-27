@@ -69,18 +69,23 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 final boolean forceOp = context.isForceOperation();
                 try {
                     context.setForceOperation(true); // just force the ops
-                    log.debug("Looking up artifact "+context+" from "+node+" to cache it");
+                    log.debug("Looking up artifact " + context + " from " + node + " to cache it");
                     InputStream inputStream = node.getInputStream();
                     // temp fix for https://github.com/ceylon/ceylon-module-resolver/issues/60
                     // in theory we should not have nodes with null streams, but at least provide a helpful exception
-                    if(inputStream == null)
-                        throw new RepositoryException("Node "+node+" for repository "+this+" returned a null stream");
-                    context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
-                    log.debug(" -> Found it, now caching it");
-                    final File file = putContent(context, node, inputStream);
-                    log.debug("    Caching done");
-                    // we expect the remote nodes to support Ceylon module info                    
-                    return new FileArtifactResult(this, context.getName(), context.getVersion(), file);
+                    if (inputStream == null) {
+                        throw new RepositoryException("Node " + node + " for repository " + this + " returned a null stream");
+                    }
+                    try {
+                        context.setSuffixes(ArtifactContext.getSuffixFromNode(node)); // Make sure we'll have only one suffix
+                        log.debug(" -> Found it, now caching it");
+                        final File file = putContent(context, node, inputStream);
+                        log.debug("    Caching done: " + file);
+                        // we expect the remote nodes to support Ceylon module info
+                        return new FileArtifactResult(this, context.getName(), context.getVersion(), file);
+                    } finally {
+                        IOUtils.safeClose(inputStream);
+                    }
                 } catch (IOException e) {
                     throw new RepositoryException(e);
                 } finally {
@@ -101,14 +106,26 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         if (callback == null) {
             callback = ArtifactCallbackStream.getCallback();
         }
-        if (callback != null) {
-            callback.size(node.getSize());
-            stream = new ArtifactCallbackStream(callback, stream);
-        }
-        fileContentStore.putContent(node, stream, context);
-        final File file = fileContentStore.getFile(node); // re-get
-        if (callback != null) {
-            callback.done(file);
+        final File file;
+        try {
+            if (callback != null) {
+                callback.size(node.getSize());
+                stream = new ArtifactCallbackStream(callback, stream);
+            }
+            fileContentStore.putContent(node, stream, context); // stream should be closed closer to API call
+            file = fileContentStore.getFile(node); // re-get
+            if (callback != null) {
+                callback.done(file);
+            }
+        } catch (Throwable t) {
+            if (callback != null) {
+                callback.error(t);
+            }
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw IOUtils.toIOException(t);
+            }
         }
 
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
@@ -148,7 +165,9 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             // transfer descriptor as well, if there is one
             final Node descriptor = Configuration.getResolvers().descriptor(node);
             if (descriptor != null && descriptor.hasBinaries()) {
-                fileContentStore.putContent(descriptor, descriptor.getInputStream(), context);
+                try (InputStream is = descriptor.getInputStream()) {
+                    fileContentStore.putContent(descriptor, is, context);
+                }
             }
         }
 

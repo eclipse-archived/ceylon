@@ -116,7 +116,8 @@ public interface RepositoryManager {
 
     /**
      * Publishes an artifact by context as an InputStream
-     * 
+     * The stream is closed after this invocation.
+     *
      * @param context the artifact lookup info
      * @param content the artifact content as an InputStream
      * 
@@ -148,8 +149,7 @@ public interface RepositoryManager {
      * Removes an artifact by context
      * 
      * @param context the artifact lookup info
-     * @param content the artifact content as a File
-     * 
+     *
      * @throws RepositoryException if anything went wrong
      */
     void removeArtifact(ArtifactContext context) throws RepositoryException;
