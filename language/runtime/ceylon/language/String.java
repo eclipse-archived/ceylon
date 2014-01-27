@@ -249,13 +249,7 @@ public final class String
     public boolean asSmallAs(@Name("other") String other) {
         return value.compareTo(other.value) <= 0;
     }*/
-
-    @Ignore
-    public static <CastValue extends String> CastValue castTo(java.lang.String value) {
-        // FIXME Is this correct?
-        return (CastValue) instance(value);
-    }
-
+    
     @Override
     public String plus(@Name("other") String other) {
         return instance(value + other.value);
