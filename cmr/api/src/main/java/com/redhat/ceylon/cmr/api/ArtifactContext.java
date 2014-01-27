@@ -44,7 +44,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     private String name;
     private String version;
-    private String[] suffixes = { CAR };
+    private String[] suffixes = {CAR};
     private boolean localOnly;
     private boolean ignoreSHA;
     private boolean ignoreCache;
@@ -52,6 +52,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean forceOperation;
     private boolean forceDescriptorCheck;
     private boolean fetchSingleArtifact;
+    private ArtifactCallback callback;
 
     public ArtifactContext(String name, String version) {
         this.name = name;
@@ -75,15 +76,15 @@ public class ArtifactContext implements Serializable, ContentOptions {
     }
 
     public ArtifactContext getDocsContext() {
-        return new ArtifactContext(name, version, new String[] { DOCS });
+        return new ArtifactContext(name, version, new String[]{DOCS});
     }
 
     public ArtifactContext getModuleProperties() {
-        return new ArtifactContext(name, version, new String[] { MODULE_PROPERTIES });
+        return new ArtifactContext(name, version, new String[]{MODULE_PROPERTIES});
     }
 
     public ArtifactContext getModuleXml() {
-        return new ArtifactContext(name, version, new String[] { MODULE_XML });
+        return new ArtifactContext(name, version, new String[]{MODULE_XML});
     }
 
     public void toNode(Node node) {
@@ -137,7 +138,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         }
         return suffixes[0];
     }
-    
+
     public static String getSuffixFromNode(Node node) {
         String fileName = node.getLabel();
         return getSuffixFromFilename(fileName);
@@ -213,6 +214,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     public void setFetchSingleArtifact(boolean fetchSingleArtifact) {
         this.fetchSingleArtifact = fetchSingleArtifact;
+    }
+
+    public ArtifactCallback getCallback() {
+        return callback;
+    }
+
+    public void setCallback(ArtifactCallback callback) {
+        this.callback = callback;
     }
 
     @Override

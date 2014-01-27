@@ -42,6 +42,8 @@ public interface Node {
 
     long getLastModified() throws IOException;
 
+    long getSize() throws IOException;
+
     Node getParent(String label);
 
     Iterable<? extends Node> getParents();

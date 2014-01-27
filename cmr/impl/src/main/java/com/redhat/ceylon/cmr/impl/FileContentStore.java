@@ -17,8 +17,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,6 +27,13 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.ContentStore;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.cmr.spi.StructureBuilder;
+
 /**
  * File content store.
  *
@@ -37,7 +42,7 @@ import java.util.concurrent.ConcurrentMap;
 public class FileContentStore implements ContentStore, StructureBuilder {
 
     private final File root;
-    private final ConcurrentMap<Node, File> cache = new ConcurrentHashMap<Node, File>();
+    private final ConcurrentMap<Node, File> cache = new ConcurrentHashMap<>();
 
     public FileContentStore(File root) {
         if (root == null)
@@ -161,7 +166,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
     public Iterable<? extends OpenNode> find(Node parent) {
         final File pf = getFile(parent);
         if (pf.exists()) {
-            List<OpenNode> nodes = new ArrayList<OpenNode>();
+            List<OpenNode> nodes = new ArrayList<>();
             for (File file : pf.listFiles()) {
                 DefaultNode node = new DefaultNode(file.getName());
                 node.setHandle(createContentHandle(node, file));
@@ -213,6 +218,10 @@ public class FileContentStore implements ContentStore, StructureBuilder {
 
         public long getLastModified() throws IOException {
             return file.lastModified();
+        }
+
+        public long getSize() throws IOException {
+            return file.length();
         }
 
         public void clean() {

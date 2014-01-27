@@ -23,13 +23,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.redhat.ceylon.test.maven.test.AetherTestCase;
-
-@RunWith(Suite.class) 
+@RunWith(Suite.class)
 @SuiteClasses({
-    SmokeTestCase.class,
-    HerdTestCase.class,
-    AetherTestCase.class
+        SmokeTestCase.class,
+        HerdTestCase.class,
+        BuilderTestCase.class,
+        CallbackTestCase.class
 })
 public class AllCmrTests {
 }

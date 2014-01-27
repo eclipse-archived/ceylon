@@ -191,7 +191,8 @@ public class SmokeTestCase extends AbstractTest {
         String repoURL = "http://jboss-as7-modules-repository.googlecode.com/svn/trunk/ceylon";
         try {
             new URL(repoURL).openStream();
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            log.error(String.format("Cannot connect to repo %s - %s", repoURL, e));
             return; // probably not on the internet?
         }
 

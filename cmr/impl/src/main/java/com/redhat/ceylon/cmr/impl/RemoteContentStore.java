@@ -136,6 +136,11 @@ public class RemoteContentStore extends URLContentStore {
             return lastModified(url);
         }
 
+        public long getSize() throws IOException {
+            final URL url = getURL(NodeUtils.getFullPath(node, SEPARATOR));
+            return size(url);
+        }
+
         public void clean() {
         }
     }

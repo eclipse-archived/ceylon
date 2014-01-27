@@ -17,13 +17,13 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.ContentOptions;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.cmr.spi.OpenNode;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * Marker node.
@@ -85,6 +85,11 @@ public class MarkerNode extends AbstractOpenNode {
     @Override
     public long getLastModified() {
         return -1L;
+    }
+
+    @Override
+    public long getSize() {
+        return -1;
     }
 
     @Override

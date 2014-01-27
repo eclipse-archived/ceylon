@@ -25,9 +25,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.http.ProtocolException;
-import org.apache.http.client.ClientProtocolException;
-
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
@@ -40,6 +37,8 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
 
 /**
  * WebDAV content store.
@@ -79,7 +78,7 @@ public class WebDAVContentStore extends URLContentStore {
             return null;
         }
         try {
-            if(!isHerd())
+            if (!isHerd())
                 mkdirs(getSardine(), parent);
             return createNode(child);
         } catch (IOException e) {
@@ -117,24 +116,24 @@ public class WebDAVContentStore extends URLContentStore {
              * By making an extra HEAD request (restartable because no entity body) we force the auth to happen.
              * Yuk.
              */
-            if(isHerd() && !forcedAuthenticationForPutOnHerd){
+            if (isHerd() && !forcedAuthenticationForPutOnHerd) {
                 s.exists(getUrlAsString(node));
                 forcedAuthenticationForPutOnHerd = true;
             }
             final Node parent = NodeUtils.firstParent(node);
-            if(!isHerd())
+            if (!isHerd())
                 mkdirs(s, parent);
 
             final String pUrl = getUrlAsString(parent);
             String token = null;
-            if(!isHerd())
+            if (!isHerd())
                 token = s.lock(pUrl); // local parent
             try {
                 final String url = getUrlAsString(node);
                 s.put(url, stream);
                 return new WebDAVContentHandle(url);
             } finally {
-                if(!isHerd())
+                if (!isHerd())
                     s.unlock(pUrl, token);
             }
         } catch (IOException x) {
@@ -179,7 +178,7 @@ public class WebDAVContentStore extends URLContentStore {
         }
         final String url = getUrlAsString(parent);
         try {
-            final List<OpenNode> nodes = new ArrayList<OpenNode>();
+            final List<OpenNode> nodes = new ArrayList<>();
             final List<DavResource> resources = getSardine().list(url);
             for (DavResource dr : resources) {
                 final String label = dr.getName();
@@ -259,10 +258,29 @@ public class WebDAVContentStore extends URLContentStore {
             return null;
         }
 
+        public long getSize() throws IOException {
+            if (connectionAllowed()) {
+                if (isHerd()) {
+                    return size(new URL(url));
+                }
+
+                final List<DavResource> list = getSardine().list(url);
+                if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
+                    Long length = list.get(0).getContentLength();
+                    if (length != null) {
+                        return length;
+                    }
+                }
+            }
+            return -1L;
+        }
+
         public long getLastModified() throws IOException {
             if (connectionAllowed()) {
-                if(isHerd())
+                if (isHerd()) {
                     return lastModified(new URL(url));
+                }
+
                 final List<DavResource> list = getSardine().list(url);
                 if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
                     Date modified = list.get(0).getModified();

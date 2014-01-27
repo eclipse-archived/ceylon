@@ -16,6 +16,12 @@
 
 package com.redhat.ceylon.cmr.maven;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.impl.AbstractContentStore;
@@ -25,12 +31,6 @@ import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
 
 /**
  * Sonatype Aether content store.
@@ -113,6 +113,10 @@ public class AetherContentStore extends AbstractContentStore {
             return file.lastModified();
         }
 
+        public long getSize() throws IOException {
+            return file.length();
+        }
+
         public void clean() {
         }
     }
@@ -142,6 +146,10 @@ public class AetherContentStore extends AbstractContentStore {
 
         public long getLastModified() throws IOException {
             return getContentAsFile().lastModified();
+        }
+
+        public long getSize() throws IOException {
+            return getContentAsFile().length();
         }
 
         public void clean() {

@@ -134,6 +134,11 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
         }
 
         @Override
+        public long getSize() throws IOException {
+            return bytes.length;
+        }
+
+        @Override
         public void clean() {
         }
     }

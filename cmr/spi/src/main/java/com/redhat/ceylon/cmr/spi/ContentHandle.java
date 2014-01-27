@@ -62,6 +62,15 @@ public interface ContentHandle {
     long getLastModified() throws IOException;
 
     /**
+     * Get size.
+     * If size cannot be determined, return -1.
+     *
+     * @return the last modified, or -1 if undefined
+     * @throws IOException for any I/O error
+     */
+    long getSize() throws IOException;
+
+    /**
      * Cleanup content.
      */
     void clean();

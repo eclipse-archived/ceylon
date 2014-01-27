@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.ArtifactCallback;
+import com.redhat.ceylon.cmr.api.ArtifactCallbackStream;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
@@ -94,6 +96,12 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
 
     protected File putContent(ArtifactContext context, Node node, InputStream stream) throws IOException {
         log.debug("Creating local copy of external node: " + node + " at repo: " + fileContentStore.getDisplayString());
+
+        ArtifactCallback callback = context.getCallback();
+        if (callback != null) {
+            callback.size(node.getSize());
+            stream = new ArtifactCallbackStream(callback, stream);
+        }
         fileContentStore.putContent(node, stream, context);
         File file = fileContentStore.getFile(node); // re-get
 

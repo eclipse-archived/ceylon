@@ -256,6 +256,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         return con != null ? con.getLastModified() : -1;
     }
 
+    protected long size(final URL url) throws IOException {
+        HttpURLConnection con = head(url);
+        return con != null ? con.getContentLength() : -1;
+    }
+
     protected HttpURLConnection head(final URL url) throws IOException {
         if (connectionAllowed()) {
             final URLConnection conn = url.openConnection();

@@ -64,16 +64,20 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
             return -1L;
         }
 
+        public long getSize() throws IOException {
+            return -1L;
+        }
+
         public void clean() {
         }
     };
 
     private String label;
     private Object value;
-    private final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<String, OpenNode>();
-    private final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<String, OpenNode>();
+    private final ConcurrentMap<String, OpenNode> parents = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, OpenNode> children = new ConcurrentHashMap<>();
 
-    private transient final Map<Class<?>, Object> services = new WeakHashMap<Class<?>, Object>();
+    private transient final Map<Class<?>, Object> services = new WeakHashMap<>();
 
     public AbstractOpenNode() {
         // serialization only
@@ -224,14 +228,14 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
         if (!children.containsKey(NODE_MARKER)) {
             children.put(NODE_MARKER, new MarkerNode()); // add marker
 
-            ConcurrentMap<String, OpenNode> tmp = new ConcurrentHashMap<String, OpenNode>();
+            ConcurrentMap<String, OpenNode> tmp = new ConcurrentHashMap<>();
             for (OpenNode on : findService(StructureBuilder.class).find(this))
                 put(tmp, on.getLabel(), on);
             children.putAll(tmp);
 
             return tmp.values();
         } else {
-            List<Node> nodes = new ArrayList<Node>();
+            List<Node> nodes = new ArrayList<>();
             for (Node on : children.values()) {
                 if (on instanceof MarkerNode == false)
                     nodes.add(on);

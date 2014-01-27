@@ -17,12 +17,16 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import com.redhat.ceylon.cmr.spi.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+
+import com.redhat.ceylon.cmr.spi.ContentHandle;
+import com.redhat.ceylon.cmr.spi.ContentOptions;
+import com.redhat.ceylon.cmr.spi.ContentStore;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.cmr.spi.OpenNode;
 
 /**
  * Default node impl.
@@ -221,6 +225,26 @@ public class DefaultNode extends AbstractOpenNode {
         }
 
         return ch.getLastModified();
+    }
+
+    @Override
+    public long getSize() throws IOException {
+        synchronized (this) {
+            if (handle != null)
+                return handle.getSize();
+        }
+
+        final ContentStore cs = findService(ContentStore.class);
+        ContentHandle ch = cs.getContent(this);
+        if (ch == null) {
+            ch = HANDLE_MARKER;
+        }
+
+        synchronized (this) {
+            handle = ch;
+        }
+
+        return ch.getSize();
     }
 
     @Override
