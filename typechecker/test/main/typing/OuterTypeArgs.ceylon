@@ -104,3 +104,28 @@ class OuterTypeArgs() {
 
 }
 
+void qualifyingTypeParameters() {
+    class X() {}
+    class Y() extends X() {
+        shared String hello = "hello";
+    }
+    
+    class Sup() {
+        shared default class XX() => X();
+    }
+    
+    class Sub() extends Sup() {
+        shared actual class XX() => Y();
+    }
+    
+    @error S.XX fn<S>(S s) 
+            given S satisfies Sup 
+            => s.XX();
+    
+    void test() {
+        @type:"Sup.XX" value supXX = fn(Sup());  //inferred type Sup.XX
+        //@type:"Sup.XX" value subXX = fn(Sub());  //inferred type Sub.XX
+        @error print(subXX.hello);  //error!
+        @error Sub.XX err = subXX;  //error!
+    }
+}
