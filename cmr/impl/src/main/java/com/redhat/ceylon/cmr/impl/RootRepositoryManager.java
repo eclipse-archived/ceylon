@@ -98,12 +98,18 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         log.debug("Creating local copy of external node: " + node + " at repo: " + fileContentStore.getDisplayString());
 
         ArtifactCallback callback = context.getCallback();
+        if (callback == null) {
+            callback = ArtifactCallbackStream.getCallback();
+        }
         if (callback != null) {
             callback.size(node.getSize());
             stream = new ArtifactCallbackStream(callback, stream);
         }
         fileContentStore.putContent(node, stream, context);
-        File file = fileContentStore.getFile(node); // re-get
+        final File file = fileContentStore.getFile(node); // re-get
+        if (callback != null) {
+            callback.done(file);
+        }
 
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
             final OpenNode on = (OpenNode) node;

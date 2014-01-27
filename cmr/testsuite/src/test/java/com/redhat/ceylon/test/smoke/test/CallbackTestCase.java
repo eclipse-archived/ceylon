@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.URL;
 
 import com.redhat.ceylon.cmr.api.ArtifactCallback;
+import com.redhat.ceylon.cmr.api.ArtifactCallbackStream;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -35,8 +36,30 @@ import org.junit.Test;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class CallbackTestCase extends AbstractTest {
+    private String name = "com.redhat.fizbiz";
+    private String version = "1.0.0.Beta1";
+
     @Test
     public void testDefault() throws Exception {
+        TestArtifactCallback callback = new TestArtifactCallback();
+        ArtifactContext context = new ArtifactContext(name, version);
+        context.setCallback(callback);
+        doTest(context, callback);
+    }
+
+    @Test
+    public void testThreadLocal() throws Exception {
+        TestArtifactCallback callback = new TestArtifactCallback();
+        ArtifactCallbackStream.setCallback(callback);
+        try {
+            ArtifactContext context = new ArtifactContext(name, version);
+            doTest(context, callback);
+        } finally {
+            ArtifactCallbackStream.setCallback(null);
+        }
+    }
+
+    protected void doTest(ArtifactContext context, TestArtifactCallback callback) throws Exception {
         String repoURL = "http://jboss-as7-modules-repository.googlecode.com/svn/trunk/ceylon";
         try {
             new URL(repoURL).openStream();
@@ -50,12 +73,7 @@ public class CallbackTestCase extends AbstractTest {
         Repository repo = new DefaultRepository(rcs.createRoot());
         RepositoryManager manager = builder.addRepository(repo).buildRepository();
 
-        String name = "com.redhat.fizbiz";
-        String version = "1.0.0.Beta1";
         try {
-            TestArtifactCallback callback = new TestArtifactCallback();
-            ArtifactContext context = new ArtifactContext(name, version);
-            context.setCallback(callback);
             File file = manager.getArtifact(context);
             Assert.assertNotNull(file);
             Assert.assertTrue(callback.size > 0);
@@ -77,6 +95,10 @@ public class CallbackTestCase extends AbstractTest {
 
         public void read(byte[] bytes, int length) {
             current += length;
+        }
+
+        public void done(File file) {
+            Assert.assertNotNull(file);
         }
     }
 }

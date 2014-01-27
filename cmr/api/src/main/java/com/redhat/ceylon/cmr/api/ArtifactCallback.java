@@ -16,6 +16,8 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.io.File;
+
 /**
  * Artifact callback.
  *
@@ -25,4 +27,6 @@ public interface ArtifactCallback {
     void size(long size);
 
     void read(byte[] bytes, int length);
+
+    void done(File localFile);
 }

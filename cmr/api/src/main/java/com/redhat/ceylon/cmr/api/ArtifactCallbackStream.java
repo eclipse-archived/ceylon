@@ -26,7 +26,26 @@ import java.io.InputStream;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class ArtifactCallbackStream extends FilterInputStream {
+    private static final ThreadLocal<ArtifactCallback> TL = new ThreadLocal<>();
     private ArtifactCallback callback;
+
+    /**
+     * Set callback for this thread.
+     * If callback param is null, it will remove any currently set callback.
+     *
+     * @param callback the callback
+     */
+    public static void setCallback(ArtifactCallback callback) {
+        if (callback != null) {
+            TL.set(callback);
+        } else {
+            TL.remove();
+        }
+    }
+
+    public static ArtifactCallback getCallback() {
+        return TL.get();
+    }
 
     public ArtifactCallbackStream(ArtifactCallback callback, InputStream in) {
         super(in);
