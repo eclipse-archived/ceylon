@@ -8,7 +8,7 @@ class List<T>()
     shared actual Integer lastIndex {
         return 0;
     }
-    shared actual List<T> clone {
+    shared actual List<T> clone() {
         return this;
     }
     shared actual T? get(Integer n) {

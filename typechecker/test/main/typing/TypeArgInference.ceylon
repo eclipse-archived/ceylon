@@ -204,8 +204,11 @@ void folding() {
     {String+} s2 = { "Hello", "World" };
     s2.fold(1, (Integer a, String b) => a+b.size);
     
-    LazyMap<String,Integer> m = LazyMap({"a"->1, "b"->2, "c"->3});
+    ArraySequence<String->Integer> m = ArraySequence({"a"->1, "b"->2, "c"->3});
     m.fold(0, (Integer x, String->Integer e) => x+e.item);
+    
+    Map<String,Integer> m0 = nothing;
+    m0.fold(0, (Integer x, String->Integer e) => x+e.item);
     
     Integer hashes0(String* objects) =>
             objects.fold(0, (Integer result, String obj) => result+obj.size);
