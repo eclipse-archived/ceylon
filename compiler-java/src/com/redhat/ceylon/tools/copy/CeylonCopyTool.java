@@ -110,7 +110,11 @@ public class CeylonCopyTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         setSystemProperties();
-        // If all are correct we unpack them
+        // FIXME: copying is currently very inefficient!
+        // All possible suffix types are tried which will result in numerous
+        // unnecessary roundtrips to external servers, also, no de-duplication
+        // is done so if a module is encountered several times it will be
+        // copied the same number of times (only one copy will exist but it's slow)
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
