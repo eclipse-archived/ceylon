@@ -3618,8 +3618,11 @@ public class ExpressionVisitor extends Visitor {
         if (that instanceof Tree.PowerOp) {
             return unit.getExponentiableDeclaration();
         }
-        if (that instanceof Tree.SumOp) {
+        else if (that instanceof Tree.SumOp) {
             return unit.getSummableDeclaration();
+        }
+        else if (that instanceof Tree.DifferenceOp) {
+            return unit.getInvertableDeclaration();
         }
         else if (that instanceof Tree.RemainderOp) {
             return unit.getIntegralDeclaration();
@@ -3632,6 +3635,9 @@ public class ExpressionVisitor extends Visitor {
     private Interface getArithmeticDeclaration(Tree.ArithmeticAssignmentOp that) {
         if (that instanceof Tree.AddAssignOp) {
             return unit.getSummableDeclaration();
+        }
+        else if (that instanceof Tree.SubtractAssignOp) {
+            return unit.getInvertableDeclaration();
         }
         else if (that instanceof Tree.RemainderAssignOp) {
             return unit.getIntegralDeclaration();
