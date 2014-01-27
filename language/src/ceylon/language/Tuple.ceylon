@@ -109,9 +109,9 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     spanFrom(Integer from) => span(from, size);
     
-    clone() => this;
-    
     reversed => rest.reversed.withTrailing(first);
+    
+    shared actual Tuple<Element,First,Rest> clone() => this;
     
     shared actual Iterator<Element> iterator() {
         object iterator satisfies Iterator<Element> {
