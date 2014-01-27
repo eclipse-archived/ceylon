@@ -373,6 +373,10 @@ class Operators() {
     {Object*} map = nothing;
     for (@error k->v in map) {}
     
+    Cat cat_ = Cat();
+    Boolean incat1 = "" in cat_;
+    @error Boolean incat2 = 1 in cat_;
+    
     [String+] strings1 = [""];
     @type:"Null" value null1 = strings1[-1];
     @type:"String" value notNull1 = strings1[0];
@@ -401,3 +405,6 @@ void testScale() {
     @error value s3 = 2.0**"hello";
 }
 
+class Cat() satisfies Category<String> {
+    contains(String string) => !string.empty;
+}
