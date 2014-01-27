@@ -1651,7 +1651,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCTree transform(Tree.InOp op) {
         JCExpression left = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, typeFact().getObjectDeclaration().getType());
-        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, typeFact().getCategoryDeclaration().getType());
+        JCExpression right = transformExpression(op.getRightTerm(), BoxingStrategy.BOXED, op.getRightTerm().getTypeModel()
+        		.getSupertype(typeFact().getCategoryDeclaration()));
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
         JCExpression contains = at(op).Apply(null, makeSelect(right, "contains"), List.<JCExpression> of(varIdent));

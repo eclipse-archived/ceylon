@@ -347,11 +347,7 @@ public class Naming implements LocalId {
             } else if ("equals".equals(name)) {
                 // This is a special case where we override the mangling of getMethodNameInternal()
                 return "equals";
-            } else if ("clone".equals(name)
-                    && Decl.getClassOrInterfaceContainer(decl).getType().isSubtypeOf(
-                            ((TypeDeclaration)decl.getUnit().getLanguageModuleDeclaration("Cloneable")).getType())) {
-                return "clone";
-            } 
+            }
             methodName = getMethodNameInternal(decl);
         } else {
             methodName = getMethodNameInternal(decl);
