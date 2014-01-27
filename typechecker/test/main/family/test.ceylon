@@ -45,8 +45,8 @@ void testGraph() {
 
     Edge method3<ActualGraph, Node, Edge>(ActualGraph g) 
             given ActualGraph satisfies Graph<Node,Edge> 
-            given Node satisfies ActualGraph.Node 
-            given Edge satisfies ActualGraph.Edge {
+            @error given Node satisfies ActualGraph.Node 
+            @error given Edge satisfies ActualGraph.Edge {
     	Node n1 = g.Node() of Node;
     	Node n2 = g.Node() of Node;
         return g.Edge(n1,n2) of Edge;

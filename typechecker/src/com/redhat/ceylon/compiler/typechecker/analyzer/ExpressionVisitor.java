@@ -3836,6 +3836,16 @@ public class ExpressionVisitor extends Visitor {
                 that.addError("protected member type is not visible: " + 
                         qualifiedDescription(that));
             }
+            //Note: we should remove this check if we ever 
+            //      make qualified member types like T.Member
+            //      into a sort of virtual type
+            Tree.StaticType outerType = that.getOuterType();
+			if (outerType instanceof Tree.SimpleType) {
+				if (((Tree.SimpleType) outerType).getDeclarationModel() instanceof TypeParameter) {
+					outerType.addError("type parameter should not occur as qualifying type: " +
+							qualifiedDescription(that));
+				}
+			}
         }
     }
 
