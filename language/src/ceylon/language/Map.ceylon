@@ -41,6 +41,8 @@ shared interface Map<out Key,out Item>
         }
     }
     
+    shared actual formal Map<Key,Item> clone();
+    
     "Two `Map`s are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
      `Entry`s belonging to the map. Therefore, the maps are 
@@ -132,9 +134,9 @@ shared interface Map<out Key,out Item>
                     => entry.key->mapping(entry.key, entry.item))
                             .iterator();
             size => outer.size;
-            clone() => this;
             equals(Object that) => (super of Map<Key,Result>).equals(that);
             hash => (super of Map<Key,Result>).hash;
+            shared actual Map<Key,Result> clone() => this;
         }
         return map;
     }

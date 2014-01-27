@@ -424,4 +424,6 @@ shared interface List<out Element>
         }
     }
     
+    shared actual formal List<Element> clone();
+    
 }

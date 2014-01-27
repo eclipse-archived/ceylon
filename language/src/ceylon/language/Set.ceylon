@@ -92,6 +92,8 @@ shared interface Set<out Element>
     shared formal Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object;
     
+    shared actual formal Set<Element> clone();
+    
 }
 
 "An immutable [[Set]] with no elements."

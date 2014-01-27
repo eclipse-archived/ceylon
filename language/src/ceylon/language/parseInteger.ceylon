@@ -81,7 +81,7 @@ shared Integer? parseInteger(String string, Integer radix = 10) {
             }
             if (ii + 1 == length && 
                     radix == 10 && 
-                    ['k','M','G','T','P'].contains(ch)) {
+                    ch in "kMGTP") {
                 // The magnitude
                 if (exists magnitude = computeMagnitude(radix, string[ii++])) {
                     if ((limit / magnitude) < result) {
