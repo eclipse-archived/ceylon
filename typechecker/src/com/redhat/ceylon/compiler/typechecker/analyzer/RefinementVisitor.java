@@ -382,9 +382,11 @@ public class RefinementVisitor extends Visitor {
         else {
             boolean found = false;
             for (Declaration refined: others) {
-                if (isAbstraction(refined) || 
+            	ProducedType st = ci.getType()
+            			.getSupertype((TypeDeclaration)refined.getContainer());
+                if (isAbstraction(refined) || st==null ||
                 		isOverloadedVersion(refined) && 
-                		!refinesOverloaded(dec, refined)) {
+                		!refinesOverloaded(dec, refined, st)) {
                     continue;
                 }
                 found = true;
@@ -438,7 +440,8 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private boolean refinesOverloaded(Declaration dec, Declaration refined) {
+    private boolean refinesOverloaded(Declaration dec, Declaration refined,
+    		ProducedType st) {
         Functional fun1 = (Functional) dec;
         Functional fun2 = (Functional) refined;
         if (fun1.getParameterLists().size()!=1 ||
@@ -454,8 +457,11 @@ public class RefinementVisitor extends Visitor {
             Parameter p1 = pl1.get(i);
             Parameter p2 = pl2.get(i);
             if (p1==null || p2==null ||
-                p1.getType()==null || p2.getType()==null ||
-                !p1.getType().isExactly(p2.getType())) {
+            		p1.getType()==null || 
+            		p2.getType()==null) {
+            	return false;
+            }
+            else if (!p1.getType().isExactly(p2.getType().substitute(st.getTypeArguments()))) {
                 return false;
             }
         }
