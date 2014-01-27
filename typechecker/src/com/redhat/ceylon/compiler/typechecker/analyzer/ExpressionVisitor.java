@@ -3484,10 +3484,14 @@ public class ExpressionVisitor extends Visitor {
         ProducedType lhst = leftType(that);
         ProducedType rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkAssignable(lhst, unit.getType(unit.getObjectDeclaration()), that.getLeftTerm(), 
-                    "operand expression must support equality");
-            checkAssignable(rhst, unit.getType(unit.getCategoryDeclaration()), that.getRightTerm(), 
-                    "operand expression must be a category");
+            ProducedType ct = checkSupertype(rhst,unit.getCategoryDeclaration(),
+            		that.getRightTerm(), "operand expression must be a category");
+            if (ct!=null) {
+                ProducedType at = ct.getTypeArguments().isEmpty() ? 
+                        null : ct.getTypeArgumentList().get(0);
+            	checkAssignable(lhst, at, that.getLeftTerm(), 
+            			"operand expression must be assignable to category type");
+            }
         }
         that.setTypeModel( unit.getType(unit.getBooleanDeclaration()) );
     }
