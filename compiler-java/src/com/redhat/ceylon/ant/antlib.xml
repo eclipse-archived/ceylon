@@ -16,4 +16,5 @@
     
     <typedef name="ceylon-doc" classname="com.redhat.ceylon.ant.CeylonDocAntTask"/>
     <typedef name="ceylon-import-jar" classname="com.redhat.ceylon.ant.CeylonImportJarAntTask"/>
+    <typedef name="ceylon-copy" classname="com.redhat.ceylon.ant.CeylonCopyAntTask"/>
 </antlib>
