@@ -142,6 +142,7 @@ class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
         }
         return false;
     }
+    shared actual MyInvertable plus(MyInvertable y) { return MyInvertable(x+y.x); }
 }
 class MyCorrespondence() satisfies Correspondence<Integer, Character> {
     value a = "abcdef";

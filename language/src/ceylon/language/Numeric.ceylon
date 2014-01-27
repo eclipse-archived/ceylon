@@ -49,13 +49,8 @@
 see (`interface Scalar`)
 by ("Gavin")
 shared interface Numeric<Other> of Other
-        satisfies Summable<Other> & 
-                  Invertable<Other>
+        satisfies Invertable<Other>
         given Other satisfies Numeric<Other> {
-    
-    "The difference between this number and the given 
-     number."
-    shared formal Other minus(Other other);
     
     "The product of this number and the given number."
     shared formal Other times(Other other);
@@ -76,10 +71,3 @@ shared interface Numeric<Other> of Other
     shared formal Other divided(Other other);
     
 }
-
-/*shared N plus<X,Y,N>(X x, Y y)
-        given N of X|Y satisfies Numeric<N>
-        given X satisfies Castable<N> & Numeric<X>
-        given Y satisfies Castable<N> & Numeric<Y> {
-    return x.as<N>().plus(y.as<N>());
-}*/      

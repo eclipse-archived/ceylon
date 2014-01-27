@@ -1,30 +1,37 @@
-"Abstraction of types which support a unary additive 
- inversion operation `-x`. For a [[numeric type|Numeric]], 
- this should return the additive inverse of the operand.
+"Abstraction of [[additive|Summable]] numeric types which 
+ support a unary operation `-x` producing the additive
+ inverse of `x`. Every `Invertable` type supports a binary 
+ subtraction operation `x-y`.
  
      Integer negativeOne = -1;
+     Float delta = x-y;
  
- A concrete class that implements this interface and which 
- also satisfies [[Summable]] should be a mathematical 
- _group_. That is, it should have an additive identity, 
- denoted `0`, and satisfy:
+ A concrete class that implements this interface should be a 
+ mathematical _group_. That is, it should have an additive 
+ identity, denoted `0`, and satisfy:
  
  - `0+x == x+0 == x`
  - `x + -x == 0`
  
- Concrete implementations of `Invertable` which are not also
- `Summable` are discouraged."
+ Subtraction must be defined so that it is consistent with
+ the additive inverse:
+ 
+ - `x - y == x + -y`"
 see (`class Integer`, `class Float`)
 by ("Gavin")
-shared interface Invertable<out Inverse> of Inverse
-    given Inverse satisfies Invertable<Inverse> {
+shared interface Invertable<Other> of Other
+        satisfies Summable<Other>
+    given Other satisfies Invertable<Other> {
     
-    "The additive inverse of the value, which may be expressed
-     as an instance of a wider type."
-    shared formal Inverse negativeValue;
+    "The additive inverse of this value."
+    shared formal Other negativeValue;
     
-    "The value itself, expressed as an instance of the
-     wider type."
-    shared formal Inverse positiveValue;
-
+    "This value."
+    deprecated
+    shared formal Other positiveValue;
+    
+    "The difference between this number and the given 
+     number. Must produce the value `x + -y`."
+    shared default Other minus(Other other) => this + -other;
+    
 }
