@@ -6,3 +6,4 @@ com.redhat.ceylon.tools.new_.CeylonNewTool
 com.redhat.ceylon.tools.src.CeylonSrcTool
 com.redhat.ceylon.tools.info.CeylonInfoTool
 com.redhat.ceylon.tools.version.CeylonVersionTool
+com.redhat.ceylon.tools.copy.CeylonCopyTool
