@@ -24,12 +24,10 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 
 @Summary("Copies modules from one module repository to another")
-@Description("Fetches the source archive of the given `module` from the " +
-		"first configured repository to contain the module and extracts " +
-		"the source code into the output source directory. Multiple modules " +
-		"can be given.\n" +
-		"\n" +
-		"This tool is especially useful for working with example projects.")
+@Description("Copies a module or a set of modules from one repository " +
+		"to another. If set for recursive copying it will also copy " +
+		"all the module's dependencies and their dependencies until the " +
+		"entire module tree has been copied.")
 public class CeylonCopyTool extends RepoUsingTool {
     
     private List<ModuleSpec> modules;
