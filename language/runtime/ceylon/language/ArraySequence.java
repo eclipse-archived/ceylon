@@ -29,7 +29,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private static final long USE_ARRAY_SIZE = -10L;
 
     @Ignore
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
     @Ignore
     private final ceylon.language.Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
@@ -119,7 +119,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Ignore
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, java.lang.Object[] array, long first, long length, boolean copy) {
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,java.lang.Object>($reifiedElement, TypeDescriptor.NothingType, this);
         this.$ceylon$language$Collection$this = new ceylon.language.Collection$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, $reifiedElement, this);

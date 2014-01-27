@@ -17,7 +17,6 @@ import ceylon.language.Map;
 import ceylon.language.Map$impl;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
-import ceylon.language.Set;
 
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -42,7 +41,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     private final java.util.Map<? extends Key, ? extends Item> m;
 
     @Ignore
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
     @Ignore
     private final ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
@@ -60,7 +59,7 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 
     public InternalMap(@Ignore TypeDescriptor $reifiedKey, @Ignore TypeDescriptor $reifiedItem,
             final java.util.Map<? extends Key, ? extends Item> map) {
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(ceylon.language.Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Entry<? extends Key,? extends Item>,java.lang.Object>(TypeDescriptor.klass(Entry.class, $reifiedKey, $reifiedItem), Null.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<java.lang.Object, Item>(ceylon.language.Object.$TypeDescriptor$, $reifiedItem, this);
         this.$ceylon$language$Map$this = new ceylon.language.Map$impl<Key, Item>($reifiedKey, $reifiedItem, this);

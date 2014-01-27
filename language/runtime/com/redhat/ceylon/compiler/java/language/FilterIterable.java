@@ -31,7 +31,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     @Ignore
     private final ceylon.language.Iterable$impl<Element,Absent> $ceylon$language$Iterable$this;
     @Ignore
-    private final ceylon.language.Category$impl $ceylon$language$Category$this;
+    private final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
     
     final Iterable<? extends Element, ? extends java.lang.Object> iterable;
     final Callable<? extends Boolean> f;
@@ -43,7 +43,7 @@ public class FilterIterable<Element,Absent> implements Iterable<Element,Absent>,
     public FilterIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent,
             Iterable<? extends Element, ? extends java.lang.Object> iterable, Callable<? extends Boolean> selecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(ceylon.language.Object.$TypeDescriptor$,this);
         this.iterable = iterable;
         f = selecting;
         this.$reifiedElement = $reifiedElement;

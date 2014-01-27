@@ -33,7 +33,7 @@ public final class Array<Element>
         implements List<Element>, ReifiedType {
     
     @Ignore
-    protected final Category$impl $ceylon$language$Category$this;
+    protected final Category$impl<java.lang.Object> $ceylon$language$Category$this;
     @Ignore
     protected final Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
@@ -343,7 +343,7 @@ public final class Array<Element>
     
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
-        this.$ceylon$language$Category$this = new Category$impl(this);
+        this.$ceylon$language$Category$this = new Category$impl(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = 
         		new Iterable$impl<Element,java.lang.Object>($reifiedElement, 
         				Null.$TypeDescriptor$, this);

@@ -18,26 +18,29 @@
    equivalence relation. For example, an `IdentitySet` is a 
    meaningful `Category`."""
 by ("Gavin")
-shared interface Category {
+shared interface Category<in Element=Object>
+        given Element satisfies Object {
     
-    "Determines if the given value belongs to this
+    "Returns `true` if the given value belongs to this
      `Category`, that is, if it is an element of this
-     `Category`.
+     `Category`, or `false` otherwise.
      
-     For most `Category`s, if `x==y`, then 
-     `category.contains(x)` evaluates to the same
-     value as `category.contains(y)`. However, it is
-     possible to form a `Category` consistent with some 
-     other equivalence relation, for example `===`. 
-     Therefore implementations of `contains()` which do 
-     not satisfy this relationship are tolerated."
+     For most `Category`s the following relationship is 
+     satisfied by every pair of elements `x` and `y`:
+     
+     - if `x==y`, then `x in category == y in category`
+     
+     However, it is possible to form a useful `Category` 
+     consistent with some other equivalence relation, for 
+     example `===`. Therefore implementations of `contains()` 
+     which do not satisfy this relationship are tolerated."
     see (`function containsEvery`, `function containsAny`)
-    shared formal Boolean contains(Object element);
+    shared formal Boolean contains(Element element);
     
-    "Determines if every one of the given values belongs
-     to this `Category`."
+    "Returns `true` if every one of the given values belongs 
+     to this `Category`, or `false` otherwise."
     see (`function contains`)
-    shared default Boolean containsEvery({Object*} elements) {
+    shared default Boolean containsEvery({Element*} elements) {
         for (element in elements) {
             if (!contains(element)) {
                 return false;
@@ -48,10 +51,10 @@ shared interface Category {
         }
     }
 
-    "Determines if any one of the given values belongs 
-     to this `Category`"
+    "Returns `true` if any one of the given values belongs 
+     to this `Category`, or `false` otherwise."
     see (`function contains`)
-    shared default Boolean containsAny({Object*} elements) {
+    shared default Boolean containsAny({Element*} elements) {
         for (element in elements) {
             if (contains(element)) {
                 return true;

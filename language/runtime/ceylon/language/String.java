@@ -30,7 +30,7 @@ public final class String
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(String.class);
     
     @Ignore
-    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    protected final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
     @Ignore
     protected final ceylon.language.Iterable$impl<Character,java.lang.Object> $ceylon$language$Iterable$this;
     @Ignore
@@ -52,7 +52,7 @@ public final class String
     public String(@Name("characters") 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     final Iterable<? extends Character, ? extends java.lang.Object> characters) {
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor$, this);
@@ -75,7 +75,7 @@ public final class String
 
     @Ignore
     public String(final java.lang.String string) {
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Character,java.lang.Object>(Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this = new ceylon.language.Correspondence$impl<Integer,Character>(Integer.$TypeDescriptor$, Character.$TypeDescriptor$, this);
         this.$ceylon$language$List$this = new ceylon.language.List$impl<Character>(Character.$TypeDescriptor$, this);
@@ -1699,7 +1699,7 @@ public final class String
         @Ignore
         private final ceylon.language.Iterable$impl<String,java.lang.Object> $ceylon$language$Iterable$this;
         @Ignore
-        private final ceylon.language.Category$impl $ceylon$language$Category$this;
+        private final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
         
         private final java.lang.String str;
         private final Callable<? extends Boolean> separator;
@@ -1711,7 +1711,7 @@ public final class String
                 Callable<? extends Boolean> separator,
                 boolean keepSeparators, boolean groupSeparators) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor$, Null.$TypeDescriptor$, this);
-            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(Object.$TypeDescriptor$,this);
             this.str = str;
             this.separator = separator;
             this.keepSeparators = keepSeparators;
@@ -2080,14 +2080,14 @@ public final class String
         @Ignore
         private final ceylon.language.Iterable$impl<Integer,java.lang.Object> $ceylon$language$Iterable$this;
         @Ignore
-        private final ceylon.language.Category$impl $ceylon$language$Category$this;
+        private final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
         
         private final java.lang.String str;
         private final java.lang.String oc;
 
         public Inclusions(java.lang.String str, java.lang.String oc) {
             this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Integer,java.lang.Object>(Integer.$TypeDescriptor$, Null.$TypeDescriptor$, this);
-            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+            this.$ceylon$language$Category$this = new ceylon.language.Category$impl(Object.$TypeDescriptor$,this);
             this.str = str;
             this.oc = oc;
         }

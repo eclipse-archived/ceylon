@@ -31,7 +31,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Ignore
     protected final ceylon.language.Iterable$impl<Element, Absent> $ceylon$language$Iterable$this;
     @Ignore
-    protected final ceylon.language.Category$impl $ceylon$language$Category$this;
+    protected final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
 
     protected final Element[] array;
     protected final Iterable<? extends Element, ? extends java.lang.Object> rest;
@@ -50,7 +50,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent,
             Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(ceylon.language.Object.$TypeDescriptor$,this);
     	if (array.length==0 || array.length<=first) {
     		throw new AssertionException("ArrayIterable may not have zero elements (array)");
     	}

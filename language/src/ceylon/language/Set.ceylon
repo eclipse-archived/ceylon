@@ -19,7 +19,7 @@ shared interface Set<out Element>
      elements in the given set."
     shared default Boolean superset(Set<Object> set) {
         for (element in set) {
-            if (!element in this) {
+            if (!contains(element)) {
                 return false;
             }
         }
