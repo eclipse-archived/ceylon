@@ -26,12 +26,14 @@ class Bug269() {
 @noanno
 class Bug269_2() {
     shared actual String string {
-        print(this.string);
         return "";
     }
     shared actual Integer hash {
-        print(this.hash);
         return +0;
+    }
+    void test(){
+        print(this.string);
+        print(this.hash);
     }
 }
 

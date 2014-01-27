@@ -59,5 +59,8 @@ class ScalarImpl() satisfies Scalar<ScalarImpl> {
         return nothing;
     }
     
+    shared actual ScalarImpl timesInteger(Integer integer) => nothing;
+    
+    shared actual ScalarImpl plusInteger(Integer integer) => nothing;
 
 }

@@ -26,12 +26,4 @@ void bug1152() {
         enum();
     }
     enum();
-    
-    Integer getter {
-        Integer g {
-            return getter + g;
-        }
-        return getter + g;
-    }
-    Integer g = getter;
 }

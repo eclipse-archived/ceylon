@@ -33,7 +33,7 @@ class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             
             public long get_() {
-                if (get_() > 0L) {
+                if (1L > 0L) {
                     return 1L;
                 } else {
                     return 0L;

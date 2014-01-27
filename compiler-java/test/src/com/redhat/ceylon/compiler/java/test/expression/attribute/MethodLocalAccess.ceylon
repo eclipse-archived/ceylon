@@ -31,7 +31,7 @@ class MethodLocalAccess(){
     }
     Integer m3(){
         Integer selfref {
-            if (selfref > 0) {
+            if (1 > 0) {
                 return 1;
             } else {
                 return 0;

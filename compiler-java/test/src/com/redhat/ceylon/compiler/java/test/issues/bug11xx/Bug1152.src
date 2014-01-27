@@ -29,29 +29,6 @@ final class bug1152_ {
         }
         final enum_ enum = new enum_();
         enum.$enum();
-        
-        final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
-            
-            private getter$getter$_() {
-            }
-            
-            public long get_() {
-                
-                final class g$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
-                    
-                    private g$getter$_() {
-                    }
-                    
-                    public long get_() {
-                        return get_() + get_();
-                    }
-                }
-                final .com.redhat.ceylon.compiler.java.language.GetterLong g$getter$_ = new g$getter$_();
-                return get_() + g$getter$_.get_();
-            }
-        }
-        final .com.redhat.ceylon.compiler.java.language.GetterLong getter$getter$_ = new getter$getter$_();
-        final long g = getter$getter$_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
