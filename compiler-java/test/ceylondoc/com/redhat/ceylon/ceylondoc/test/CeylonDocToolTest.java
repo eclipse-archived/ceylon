@@ -20,7 +20,7 @@
 package com.redhat.ceylon.ceylondoc.test;
 
 import static com.redhat.ceylon.compiler.typechecker.TypeChecker.LANGUAGE_MODULE_VERSION;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -517,7 +517,7 @@ public class CeylonDocToolTest {
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        assertNotEquals("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", compiler, null);
+        assertNotNull("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", compiler);
         List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), "-classpath", artifact.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{

@@ -21,7 +21,6 @@ package com.redhat.ceylon.compiler.java.test.cmr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -573,7 +572,7 @@ public class CMRTest extends CompilerTest {
             File[] extraClassPath,
             String... sourceFileNames) throws IOException {
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-        assertNotEquals("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", javaCompiler, null);
+        assertNotNull("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", javaCompiler);
         StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
         Set<String> sourceDirectories = new HashSet<String>();
         File[] javaSourceFiles = new File[sourceFileNames.length];

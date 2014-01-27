@@ -6,8 +6,9 @@
 	<classpathentry excluding="**/*.ceylon" kind="src" path="test/runtime"/>
 	<classpathentry kind="src" path="langtools/src/share/classes"/>
 	<classpathentry kind="src" path="test/ceylondoc"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/ant-1.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.11.0.jar"/>
+	<classpathentry kind="lib" path="lib/hamcrest-core-1.3.0.v201303031735.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/ceylon-module-resolver"/>
