@@ -33,7 +33,10 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @ValueType
 public final class ObjectArray<T> implements ReifiedType {
     
-    public ObjectArray(@Ignore TypeDescriptor $reifiedT, @Name("size") int size, @TypeInfo("T|ceylon.language::Null") @Defaulted @Name("element") T element){
+    public ObjectArray(@Ignore TypeDescriptor $reifiedT, 
+    		@Name("size") int size, 
+    		@TypeInfo("T|ceylon.language::Null") @Defaulted 
+    		@Name("element") T element){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -42,7 +45,7 @@ public final class ObjectArray<T> implements ReifiedType {
         throw Util.makeJavaArrayWrapperException();
     }
 
-    @TypeInfo(value = "T", uncheckedNull = true)
+    @TypeInfo(value = "T", uncheckedNull = true) //for consistency with other Java methods
     public T get(int index) {
         throw Util.makeJavaArrayWrapperException();
     }
