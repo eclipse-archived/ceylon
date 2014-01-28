@@ -20,7 +20,7 @@
 @noanno
 abstract class Bug477_1<out T>() satisfies List<T> {
 
-    shared actual Bug477_1<T> clone = nothing;
+    shared actual Bug477_1<T> clone() => nothing;
 
     shared actual String string = nothing;
     shared actual Integer hash = 1;
@@ -32,7 +32,7 @@ abstract class Bug477_1<out T>() satisfies List<T> {
 @noanno
 abstract class Bug477_2<out T>() satisfies List<T> {
 
-    shared actual List<T> clone = nothing;
+    shared actual List<T> clone() => nothing;
 
     shared actual String string = nothing;
     shared actual Integer hash = 1;

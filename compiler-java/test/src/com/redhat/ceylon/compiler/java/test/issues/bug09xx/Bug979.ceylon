@@ -28,7 +28,7 @@ class Bug979Set({String*} strings)
 
     shared actual Iterator<String> iterator() { return strings.iterator(); }
 
-    shared actual Set<String> clone => this;
+    shared actual Set<String> clone() => this;
 
     shared actual Set<String> complement<Other>(Set<Other> set)
             given Other satisfies Object {

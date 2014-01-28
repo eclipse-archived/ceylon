@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category {
+public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category<.java.lang.Object> {
     
     public Bug966(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element first, final Element last) {
         super();
@@ -12,8 +12,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<Element>($reified$Element, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<Element>($reified$Element, this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends Element>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element, this);
         this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reified$Element), (.ceylon.language.Ranged<.ceylon.language.Integer, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
     }
@@ -46,8 +45,8 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> getClone() {
-        return $ceylon$language$Sequence$this$.getClone();
+    public .ceylon.language.Sequence<? extends Element> $clone() {
+        return $ceylon$language$Sequence$this$.$clone();
     }
     
     @.java.lang.Override
@@ -323,10 +322,10 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> cycle(final long times) {
         return $ceylon$language$Iterable$this$.cycle(times);
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+    public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
         return $ceylon$language$Category$this$;
     }
     
@@ -339,12 +338,6 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this$.containsAny(elements);
     }
-    protected final .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends Element>> $ceylon$language$Cloneable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends Element>> $ceylon$language$Cloneable$impl() {
-        return $ceylon$language$Cloneable$this$;
-    }
     protected final .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends Element> $ceylon$language$Correspondence$this$;
     
     @.java.lang.Override
@@ -353,7 +346,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category getKeys() {
+    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     

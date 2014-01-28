@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 class ListImpl<out Element>() extends Object() satisfies List<Element> {
-    shared actual ListImpl<Element> clone = nothing;
+    shared actual ListImpl<Element> clone() => nothing;
     shared actual ListImpl<Element> segment(Integer element, Integer length) {
         return nothing;
     }

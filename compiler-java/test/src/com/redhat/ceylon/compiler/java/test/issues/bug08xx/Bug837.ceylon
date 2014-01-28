@@ -58,7 +58,7 @@ class Bug837<Element>(first, Integer length)
         throw;
     }
 
-    shared actual Sequence<Element> clone { 
+    shared actual Sequence<Element> clone() { 
         return this; 
     }
     

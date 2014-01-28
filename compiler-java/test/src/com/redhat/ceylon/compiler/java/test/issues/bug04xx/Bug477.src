@@ -7,11 +7,9 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<T>($reified$T, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<T>($reified$T, this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
         this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
-        this.clone = (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.get_();
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
         this.hash = 1L;
     }
@@ -309,10 +307,10 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.List<? extends T> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+    public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
         return $ceylon$language$Category$this$;
     }
     
@@ -325,12 +323,6 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this$.containsAny(elements);
     }
-    protected final .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$impl() {
-        return $ceylon$language$Cloneable$this$;
-    }
     protected final .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends T> $ceylon$language$Correspondence$this$;
     
     @.java.lang.Override
@@ -339,7 +331,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category getKeys() {
+    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     
@@ -363,11 +355,10 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
         return $ceylon$language$Ranged$this$;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T> clone;
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T> getClone() {
-        return clone;
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T> $clone() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     
@@ -405,11 +396,9 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<T>($reified$T, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<T>($reified$T, this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends T>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
         this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
-        this.clone = (.ceylon.language.List).ceylon.language.nothing_.get_();
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
         this.hash = 1L;
     }
@@ -707,10 +696,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.List<? extends T> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+    public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
         return $ceylon$language$Category$this$;
     }
     
@@ -723,12 +712,6 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this$.containsAny(elements);
     }
-    protected final .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends T>> $ceylon$language$Cloneable$impl() {
-        return $ceylon$language$Cloneable$this$;
-    }
     protected final .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends T> $ceylon$language$Correspondence$this$;
     
     @.java.lang.Override
@@ -737,7 +720,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category getKeys() {
+    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     
@@ -761,11 +744,10 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
         return $ceylon$language$Ranged$this$;
     }
-    private final .ceylon.language.List<? extends T> clone;
     
     @.java.lang.Override
-    public final .ceylon.language.List<? extends T> getClone() {
-        return clone;
+    public final .ceylon.language.List<? extends T> $clone() {
+        return (.ceylon.language.List).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     

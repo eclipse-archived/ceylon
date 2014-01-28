@@ -20,7 +20,7 @@
 @noanno
 class ListImplementor<X>() satisfies List<X> {
 
-    shared actual ListImplementor<X> clone { 
+    shared actual ListImplementor<X> clone() { 
         throw;
     }
     

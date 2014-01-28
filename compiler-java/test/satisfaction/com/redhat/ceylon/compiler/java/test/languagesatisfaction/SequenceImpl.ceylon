@@ -25,7 +25,7 @@ class SequenceImpl<out Element>() satisfies Sequence<Element> {
 
     shared actual Element[] rest = nothing;
 
-    shared actual SequenceImpl<Element> clone = nothing;
+    shared actual SequenceImpl<Element> clone() => nothing;
 
     shared actual Integer hash = nothing;
 

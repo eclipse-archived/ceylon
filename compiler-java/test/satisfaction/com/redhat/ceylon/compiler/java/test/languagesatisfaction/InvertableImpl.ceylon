@@ -20,4 +20,5 @@
 class InvertableImpl() satisfies Invertable<InvertableImpl> {
     shared actual InvertableImpl negativeValue = nothing;
     shared actual InvertableImpl positiveValue = nothing;
+    shared actual InvertableImpl plus(InvertableImpl other) => nothing;
 }

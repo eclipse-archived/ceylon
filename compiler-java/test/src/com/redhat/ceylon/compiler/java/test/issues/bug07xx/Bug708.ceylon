@@ -59,7 +59,7 @@ shared class Bug708Map<T>() extends Object()
     shared actual String|T? get(Object key) { return null; }
     shared actual Boolean contains(Object element) { return false; }
     shared actual Boolean defines(Object key) { return false; }
-    shared actual Bug708Map<T> clone { return this; }
+    shared actual Bug708Map<T> clone() { return this; }
     shared actual Iterator<Entry<Integer, String|T>> iterator() { return nothing; }
     shared actual Set<Integer> keys { return nothing; }
     shared actual Collection<String|T> values { return nothing; }    

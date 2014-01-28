@@ -22,7 +22,7 @@ class MapImpl<out Key,out Item>() extends Object()
         given Key satisfies Object
         given Item satisfies Object {
         
-    shared actual MapImpl<Key,Item> clone {
+    shared actual MapImpl<Key,Item> clone() {
         return nothing;
     }
     

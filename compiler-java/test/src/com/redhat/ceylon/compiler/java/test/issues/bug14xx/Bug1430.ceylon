@@ -28,7 +28,7 @@ class Bug1430() satisfies Sequence<Integer> {
     shared actual Integer hash => 1;
     shared actual Boolean equals(Object other) => false;
     shared actual Boolean contains(Object element) => element==1;
-    shared actual Bug1430 clone => Bug1430();
+    shared actual Bug1430 clone() => Bug1430();
     shared actual Sequence<Integer> reversed => this;
     shared actual Integer? get(Integer index) {
         return index==0 then 1 else null;

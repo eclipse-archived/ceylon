@@ -78,7 +78,7 @@ shared abstract class Bug844_Tuple<out Element, out First, out Rest>(first, rest
     shared actual Element[] spanFrom(Integer from) { return nothing; }
     shared actual Element[] spanTo(Integer to) { return nothing; }
 
-    shared actual Sequence<Element> clone { 
+    shared actual Sequence<Element> clone() { 
         return this; 
     }
 }

@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 class CollectionImpl<out Element>() satisfies Collection<Element> {
-    shared actual CollectionImpl<Element> clone {
+    shared actual CollectionImpl<Element> clone() {
         return nothing;
     }
     shared actual Integer size = 0;

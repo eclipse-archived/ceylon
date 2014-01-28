@@ -5,7 +5,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     Bug979Iterable(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings) {
         this.strings = strings;
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings;
     
@@ -193,10 +193,10 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public .ceylon.language.List<? extends .ceylon.language.String> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+    public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
         return $ceylon$language$Category$this$;
     }
     
@@ -229,8 +229,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
         this.$ceylon$language$Set$this$ = new .ceylon.language.Set$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
-        this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.ceylon.language.Collection<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, .ceylon.language.String.$TypeDescriptor$), (.ceylon.language.Cloneable<.ceylon.language.Collection<? extends .ceylon.language.String>>)(.ceylon.language.Cloneable)this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings;
     
@@ -450,10 +449,10 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     public .ceylon.language.List<? extends .ceylon.language.String> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+    public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
         return $ceylon$language$Category$this$;
     }
     
@@ -466,12 +465,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this$.containsAny(elements);
     }
-    protected final .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends .ceylon.language.String>> $ceylon$language$Cloneable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Cloneable$impl<? extends .ceylon.language.Collection<? extends .ceylon.language.String>> $ceylon$language$Cloneable$impl() {
-        return $ceylon$language$Cloneable$this$;
-    }
     
     @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
@@ -479,7 +472,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Set<? extends .ceylon.language.String> getClone() {
+    public final .ceylon.language.Set<? extends .ceylon.language.String> $clone() {
         return this;
     }
     
