@@ -18,6 +18,12 @@
  * MA  02110-1301, USA.
  */
 @noanno
+shared interface Cloneable<out Clone> of Clone
+        given Clone satisfies Cloneable<Clone> {
+    shared formal Clone clone;
+}
+
+@noanno
 interface IBug441 satisfies Cloneable<IBug441> {}
 @noanno
 class Bug441() satisfies IBug441&Cloneable<Bug441> {

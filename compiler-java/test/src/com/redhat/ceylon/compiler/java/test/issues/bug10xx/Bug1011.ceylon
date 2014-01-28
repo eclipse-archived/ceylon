@@ -23,6 +23,23 @@ void bug1011(Iterable<Integer> it) {
 }
 
 @noanno
+shared class LazyMap<out Key,out Item>(entries)
+        given Key satisfies Object
+        given Item satisfies Object {
+    
+    "The entries in the map, which must have distinct keys."
+    {<Key->Item>*} entries;
+}
+
+@noanno
+shared class LazySet<out Element>(elements)
+        given Element satisfies Object {
+    
+    "The elements of the set, which must be distinct."
+    {Element*} elements;
+}
+
+@noanno
 Map<Item,Set<Key>> foo<Key,Item>(Map<Key,Item> map, Entry<Item,Set<Key>> extra)
    given Key satisfies Object
    given Item satisfies Object {
