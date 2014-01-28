@@ -17,17 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { ObjectArray, LongArray, arrays }
-
-@noanno
-shared void bug640() {
-    value x = Array { Accept(), Accept(), Accept() };
-    Accept().accepts(arrays.toObjectArray(x));
-    value y = Array { "aap", "noot", "mies" };
-    Accept().strings(arrays.toJavaStringArray(y));
-    value z = Array { 1, 2, 3 };
-    Accept().longs(arrays.toLongArray(z));
-}
+// some of this test moved to SDK ceylon.interop.java
 @noanno
 shared void bug640gen<T>(SequenceBuilder<T> sb) {
     value x = Array(sb.sequence);
