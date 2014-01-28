@@ -301,11 +301,12 @@
     Declaration declaration;)
 
 ^(TYPE_LITERAL:META_LITERAL
-    STATIC_TYPE type)
+    STATIC_TYPE? type
+    BASE_MEMBER_EXPRESSION? objectExpression)
 
 ^(MEMBER_LITERAL:META_LITERAL
     STATIC_TYPE? type
-    BASE_MEMBER_EXPRESSION? objectExpression 
+    BASE_MEMBER_EXPRESSION? objectExpression
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
     ProducedReference target;)

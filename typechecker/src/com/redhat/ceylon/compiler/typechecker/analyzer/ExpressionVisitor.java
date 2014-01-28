@@ -5795,63 +5795,74 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeLiteral that) {
         super.visit(that);
-        if (that.getType() != null) {
-            // FIXME: should we disallow type parameters in there?
-            ProducedType t = that.getType().getTypeModel();
-            if (t != null) {
-                TypeDeclaration d = t.getDeclaration();
-                that.setDeclaration(d);
-                that.setWantsDeclaration(true);
-                if (that instanceof Tree.ClassLiteral) {
-                    if (!(d instanceof Class)) {
-                        that.getType().addError("referenced declaration is not a class" +
-                                getDeclarationReferenceSuggestion(d));
-                    }
-                    else {
+        ProducedType t = null;
+        TypeDeclaration d = null;
+        Tree.StaticType type = that.getType();
+        Tree.BaseMemberExpression oe = that.getObjectExpression();
+		if (type != null) {
+        	t = type.getTypeModel();
+        	d = t.getDeclaration();
+        }
+		else if (oe != null ) {
+        	t = oe.getTypeModel();
+        	d = t.getDeclaration();
+        	if (!d.isAnonymous()) {
+        		oe.addError("must be a reference to an anonymous class");
+        	}
+        }
+        // FIXME: should we disallow type parameters in there?
+        if (t != null) {
+            that.setDeclaration(d);
+            that.setWantsDeclaration(true);
+            if (that instanceof Tree.ClassLiteral) {
+                if (!(d instanceof Class)) {
+                    type.addError("referenced declaration is not a class" +
+                            getDeclarationReferenceSuggestion(d));
+                }
+                else {
 //                        checkNonlocal(that, d);
-                    }
-                    that.setTypeModel(unit.getClassDeclarationType());
                 }
-                else if (that instanceof Tree.InterfaceLiteral) {
-                    if (!(d instanceof Interface)) {
-                        that.getType().addError("referenced declaration is not an interface" +
-                                getDeclarationReferenceSuggestion(d));
-                    }
-                    that.setTypeModel(unit.getInterfaceDeclarationType());
+                that.setTypeModel(unit.getClassDeclarationType());
+            }
+            else if (that instanceof Tree.InterfaceLiteral) {
+                if (!(d instanceof Interface)) {
+                    type.addError("referenced declaration is not an interface" +
+                            getDeclarationReferenceSuggestion(d));
                 }
-                else if (that instanceof Tree.AliasLiteral) {
-                    if (!(d instanceof TypeAlias)) {
-                        that.getType().addError("referenced declaration is not a type alias" +
-                                getDeclarationReferenceSuggestion(d));
-                    }
-                    that.setTypeModel(unit.getAliasDeclarationType());
+                that.setTypeModel(unit.getInterfaceDeclarationType());
+            }
+            else if (that instanceof Tree.AliasLiteral) {
+                if (!(d instanceof TypeAlias)) {
+                    type.addError("referenced declaration is not a type alias" +
+                            getDeclarationReferenceSuggestion(d));
                 }
-                else if (that instanceof Tree.TypeParameterLiteral) {
-                    if (!(d instanceof TypeParameter)) {
-                        that.getType().addError("referenced declaration is not a type parameter" +
-                                getDeclarationReferenceSuggestion(d));
-                    }
-                    that.setTypeModel(unit.getTypeParameterDeclarationType());
+                that.setTypeModel(unit.getAliasDeclarationType());
+            }
+            else if (that instanceof Tree.TypeParameterLiteral) {
+                if (!(d instanceof TypeParameter)) {
+                    type.addError("referenced declaration is not a type parameter" +
+                            getDeclarationReferenceSuggestion(d));
                 }
-                else if (d != null) {
-                    that.setWantsDeclaration(false);
-                    t = t.resolveAliases();
-                    //checkNonlocalType(that.getType(), t.getDeclaration());
-                    if (d instanceof Class) {
+                that.setTypeModel(unit.getTypeParameterDeclarationType());
+            }
+            else if (d != null) {
+                that.setWantsDeclaration(false);
+                t = t.resolveAliases();
+                //checkNonlocalType(that.getType(), t.getDeclaration());
+                if (d instanceof Class) {
 //                        checkNonlocal(that, t.getDeclaration());
-                        if (((Class) d).isAbstraction()) {
-                            that.addError("class constructor is overloaded");
-                        }
-                        else {
-                            that.setTypeModel(unit.getClassMetatype(t));
-                        }
-                    }
-                    else if (d instanceof Interface) {
-                        that.setTypeModel(unit.getInterfaceMetatype(t));
+                    if (((Class) d).isAbstraction()) {
+                        that.addError("class constructor is overloaded");
                     }
                     else {
-                        that.setTypeModel(unit.getTypeMetaType(t));
+                        that.setTypeModel(unit.getClassMetatype(t));
                     }
+                }
+                else if (d instanceof Interface) {
+                    that.setTypeModel(unit.getInterfaceMetatype(t));
+                }
+                else {
+                    that.setTypeModel(unit.getTypeMetaType(t));
                 }
             }
         }

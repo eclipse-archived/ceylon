@@ -2499,9 +2499,17 @@ metaLiteral returns [MetaLiteral meta]
       { c = new ClassLiteral($d1);
         c.setEndToken($CLASS_DEFINITION); 
         $meta=c; }
-      ct=type
-      { c.setType($ct.type); 
-        c.setEndToken(null); }
+      (
+        ct=type
+        { c.setType($ct.type); 
+          c.setEndToken(null); }
+      |
+        ot=memberName
+        { BaseMemberExpression bme = new BaseMemberExpression(null);
+          bme.setIdentifier($ot.identifier);
+          bme.setTypeArguments(new InferredTypeArguments(null));
+          c.setObjectExpression(bme); }
+      )
     |
       INTERFACE_DEFINITION
       { i = new InterfaceLiteral($d1);
