@@ -2605,7 +2605,8 @@ metaLiteral returns [MetaLiteral meta]
         ta1=typeArguments
         { ml.setTypeArgumentList($ta1.typeArgumentList); }
       )?
-    | (groupedType MEMBER_OP) =>
+    | 
+      (groupedType MEMBER_OP) =>
       { ml = new MemberLiteral($d1);
         $meta = ml; }
       gt=groupedType
@@ -2619,11 +2620,31 @@ metaLiteral returns [MetaLiteral meta]
         ta2=typeArguments
         { ml.setTypeArgumentList($ta2.typeArgumentList); }
       )?
-    | t=type
+    |
+      (memberName MEMBER_OP) =>
+      { ml = new MemberLiteral($d1);
+        $meta = ml; }
+      mn=memberName
+      { BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($mn.identifier);
+        bme.setTypeArguments(new InferredTypeArguments(null));
+        ml.setObjectExpression(bme); }
+      o1=MEMBER_OP
+      { ml.setEndToken($o1); }
+      m4=memberName
+      { ml.setIdentifier($m4.identifier); 
+        ml.setEndToken(null); }
+      (
+        ta1=typeArguments
+        { ml.setTypeArgumentList($ta1.typeArgumentList); }
+      )?
+    | 
+      t=type
       { tl = new TypeLiteral($d1);
         $meta = tl;
         tl.setType($t.type); }
-    | m3=memberName
+    | 
+      m3=memberName
       { ml = new MemberLiteral($d1);
         $meta = ml;
         ml.setIdentifier($m3.identifier); }
