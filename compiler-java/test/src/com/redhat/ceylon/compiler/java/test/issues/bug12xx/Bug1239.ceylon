@@ -18,6 +18,12 @@
  * MA  02110-1301, USA.
  */
 @noanno
+shared class LazyMap<out Key,out Item>({<Key->Item>*} entries)
+        given Key satisfies Object
+        given Item satisfies Object {
+}
+
+@noanno
 Anything bug1239 = LazyMap({
     "d" -> ((Integer lxx)  => ""),
     "i" -> ((Integer lxx)  => "")  // 'l' clash with previous line; works if l is renamed
