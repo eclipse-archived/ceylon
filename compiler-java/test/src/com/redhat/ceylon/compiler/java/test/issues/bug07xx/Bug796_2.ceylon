@@ -48,18 +48,6 @@ void bug796() {
 
     Bug796_OnOffGraph.Edge e2 = method2(Bug796_OnOffGraph());
 
-    Edge method3<ActualGraph, Node, Edge>(ActualGraph g) 
-            given ActualGraph satisfies Bug796_Graph<Node,Edge> 
-            given Node satisfies ActualGraph.Node 
-            given Edge satisfies ActualGraph.Edge {
-        Node n1 = g.Node() of Node;
-        Node n2 = g.Node() of Node;
-        return g.Edge(n1,n2) of Edge;
-    }
-
-    Bug796_OnOffGraph.Edge e3 = method3(Bug796_OnOffGraph());
-    print(e3);
-
     Bug796_Graph<Bug796_BasicGraph.Node, Bug796_BasicGraph.Edge>.Node nn = Bug796_BasicGraph().Node();
     Bug796_BasicGraph.Node nnn1 = nn of Bug796_BasicGraph.Node;
     Bug796_Graph<Bug796_BasicGraph.Node, Bug796_BasicGraph.Edge>.Node nn2 = nnn1;
