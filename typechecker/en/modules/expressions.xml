@@ -2843,19 +2843,27 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         The referenced declaration is determined according to
         <xref linkend="unqualifiedreferenceresolution"/>.</para>
         
-        <para>A <emphasis>member metamodel expression</emphasis> is a type, as
-        defined by <xref linkend="type"/>, followed by a member name, with an 
-        optional list of type arguments, surrounded by backticks.</para>
+        <para>A <emphasis>member metamodel expression</emphasis> is a qualifier, 
+        followed by a member name, with an optional list of type arguments, 
+        surrounded by backticks.</para>
         
-        <synopsis>MemberMeta: "`" (QualifiedType|GroupedType) "." MemberName TypeArguments? "`"</synopsis>
+        <synopsis>MemberMeta: "`" MetaQualifier "." MemberName TypeArguments? "`"</synopsis>
+        
+        <para>The member metamodel expression qualifier is a type, as defined by 
+        <xref linkend="type"/>, or a base expression referring to an anonymous 
+        class declaration.</para>
+        
+        <synopsis>MetaQualifier: QualifiedType | GroupedType | MemberName</synopsis>
         
         <para>A member metamodel expression is a reference to an attribute or 
-        method of the type. The member is resolved as a member of the type 
-        according to <xref linkend="qualifiedreferenceresolution"/>.</para>
+        method of the type identified by the qualifier. The member is resolved 
+        as a member of the type according to 
+        <xref linkend="qualifiedreferenceresolution"/>.</para>
         
         <programlisting>Function&lt;Float,[{Float+}]&gt; sumFunction = `sum&lt;Float&gt;`;</programlisting>
         <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
         <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
+        <programlisting>Value&lt;Integer&gt; systemMillis = `system.milliseconds`;</programlisting>
         
         <para>Type argument inference is impossible in a metamodel expression,
         so type arguments must be explicitly provided for every generic 
@@ -2893,6 +2901,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <literal>Interface&lt;R&gt;</literal>.</para>
                 </listitem>
             </itemizedlist>
+            
+            <comment><para>Note: members of anonymous classes are treated as 
+            toplevels here.</para></comment>
             
             <para>Furthermore, given a member of a type <literal>T</literal>:</para>
             
@@ -2973,38 +2984,55 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="declarationreferences">
             <title>Declaration references</title>
             
+            <para>Declaration reference expressions may be qualified by a
+            <emphasis>member declaration qualifier</emphasis>, a sequence
+            of identifiers identifying a class or interface declaration or 
+            an anonymous class declaration:</para>
+            
+            <synopsis>MemberDecQualifier: (TypeName ".")+ | MemberName</synopsis>
+            
+            <para>Each identifier in the member declaration qualifier is 
+            the name of a class, interface, or anonymous class.</para>
+            
             <para>A <emphasis>class reference expression</emphasis>, 
             <emphasis>interface reference expression</emphasis>,
             <emphasis>alias reference expression</emphasis>, or
-            <emphasis>type parameter reference expression</emphasis> is a
-            series of initial uppercase identifiers, with the keyword 
+            <emphasis>type parameter reference expression</emphasis> is an
+            optional member declaration qualifier, followed by the name of
+            a class, interface, alias, or anonymous class, with the keyword 
             <literal>class</literal>, <literal>interface</literal>, 
             <literal>alias</literal>, or <literal>given</literal>, respectively, 
             surrounded by backticks.</para>
             
-            <synopsis>TypeDec: "`" ("class" | "interface" | "alias" | "given") (TypeName ".")* TypeName "`"</synopsis>
+            <synopsis>TypeKeyword: "class" | "interface" | "alias" | "given"</synopsis>
+            
+            <synopsis>TypeDec: "`" TypeKeyword MemberDecQualifier? (TypeName | MemberName) "`"</synopsis>
             
             <para>A <emphasis>value reference expression</emphasis> or
-            <emphasis>function reference expression</emphasis> is an initial
-            lowercase identifier, qualified by a list of initial uppercase 
-            identifiers, with the keyword <literal>value</literal> or
-            <literal>function</literal>, surrounded by backticks.</para>
+            <emphasis>function reference expression</emphasis> is an optional 
+            member declaration qualifier, followed by the name of a function,
+            value, or anonymous class, with the keyword <literal>value</literal> 
+            or <literal>function</literal>, surrounded by backticks.</para>
             
-            <synopsis>MemberDec: "`" ("value" | "function") (TypeName ".")* MemberName "`"</synopsis>
+            <synopsis>MemberKeyword: "value" | "function"</synopsis>
             
-            <para>A reference expression is a reference to a declaration. 
-            The referenced declaration is determined according to
+            <synopsis>MemberDec: "`" MemberKeyword MemberDecQualifier? MemberName "`"</synopsis>
+            
+            <para>A reference expression is a reference to a declaration. The 
+            referenced declaration is determined according to
             <xref linkend="unqualifiedreferenceresolution"/> and
             <xref linkend="qualifiedreferenceresolution"/>. The kind of the
             referenced declaration must match the kind of reference indicated
             by the keyword.</para>
-        
+            
             <programlisting>ClassDeclaration personClass = `class Person`;</programlisting>
             <programlisting>InterfaceDeclaration stringListInterface = `interface List`;</programlisting>
             <programlisting>AliasDeclaration numberAlias = `alias Number`;</programlisting>
             <programlisting>TypeParameter elementTypeParameter = `given Element`;</programlisting>
             <programlisting>ValueDeclaration personNameAttribute = `value Person.name`;</programlisting>
             <programlisting>FunctionDeclaration personSayMethod = `function Person.say`;</programlisting>
+            <programlisting>FunctionDeclaration processWriteMethod = `function process.write`;</programlisting>
+            <programlisting>ClassDeclaration processClass = `class process`;</programlisting>
             
         </section>
         
@@ -3077,6 +3105,21 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>for an interface or interface alias, the type 
                     is <literal>InterfaceDeclaration</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For a reference to an anonymous class, the type depends
+            upon the keyword, <literal>class</literal>, or <literal>value</literal>, 
+            specified in the reference expression:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>for a class reference expression, the type is 
+                    <literal>ClassDeclaration</literal>, but</para>
+                </listitem>
+                <listitem>
+                    <para>for a value reference expression, the type is 
+                    <literal>ValueDeclaration</literal>.</para>
                 </listitem>
             </itemizedlist>
             
