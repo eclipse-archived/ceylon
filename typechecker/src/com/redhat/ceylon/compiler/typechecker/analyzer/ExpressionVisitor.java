@@ -5862,33 +5862,44 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         if (that.getIdentifier() != null) {
             String name = name(that.getIdentifier());
-            if (that.getType() != null) {
-                ProducedType qt = that.getType().getTypeModel();
-                if (qt != null) {
-                    qt = qt.resolveAliases();
-                    TypeDeclaration qtd = qt.getDeclaration();
-                    if (qtd instanceof UnknownType) {
-                        // let it go, we already logged an error for the missing type
-                        return;
-                    }
-                    //checkNonlocalType(that.getType(), qtd);
-                    String container = "type " + qtd.getName(unit);
-                    TypedDeclaration member = getTypedMember(qtd, name, null, false, unit);
-                    if (member==null) {
-                        if (qtd.isMemberAmbiguous(name, unit, null, false)) {
-                            that.addError("method or attribute is ambiguous: " +
-                                    name + " for " + container);
-                        }
-                        else {
-                            that.addError("method or attribute does not exist: " +
-                                    name + " in " + container);
-                        }
-                    }
-                    else {
-                        checkQualifiedVisibility(that, member, name, container, false);
-                        setMemberMetatype(that, member);
-                    }
-                }
+            ProducedType qt = null;
+            TypeDeclaration qtd = null;
+            Tree.StaticType type = that.getType();
+            Tree.BaseMemberExpression oe = that.getObjectExpression();
+			if (type != null) {
+            	qt = type.getTypeModel();
+            	qtd = qt.getDeclaration();
+            }
+			else if (oe != null) {
+            	qt = oe.getTypeModel();
+            	qtd = qt.getDeclaration();
+            	if (!qtd.isAnonymous()) {
+            		oe.addError("must be a reference to an anonymous class");
+            	}
+            }
+            if (qt != null) {
+            	qt = qt.resolveAliases();
+            	if (qtd instanceof UnknownType) {
+            		// let it go, we already logged an error for the missing type
+            		return;
+            	}
+            	//checkNonlocalType(that.getType(), qtd);
+            	String container = "type " + qtd.getName(unit);
+            	TypedDeclaration member = getTypedMember(qtd, name, null, false, unit);
+            	if (member==null) {
+            		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
+            			that.addError("method or attribute is ambiguous: " +
+            					name + " for " + container);
+            		}
+            		else {
+            			that.addError("method or attribute does not exist: " +
+            					name + " in " + container);
+            		}
+            	}
+            	else {
+            		checkQualifiedVisibility(that, member, name, container, false);
+            		setMemberMetatype(that, member);
+            	}
             }
             else {
                 TypedDeclaration result = getTypedDeclaration(that.getScope(), 

@@ -130,7 +130,6 @@
     SIMPLE_TYPE type
     INVOCATION_EXPRESSION)
 
-
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST
@@ -306,6 +305,7 @@
 
 ^(MEMBER_LITERAL:META_LITERAL
     STATIC_TYPE? type
+    BASE_MEMBER_EXPRESSION? objectExpression 
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
     ProducedReference target;)

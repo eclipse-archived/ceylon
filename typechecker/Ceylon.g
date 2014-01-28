@@ -2540,9 +2540,18 @@ metaLiteral returns [MetaLiteral meta]
           $meta=v; }
       )
       (
-        vt=type
-        { v.setType($vt.type); 
-          v.setEndToken(null); }
+        (
+          vt=type
+          { v.setType($vt.type); 
+            v.setEndToken(null); }
+        |
+          vom=memberName
+          { BaseMemberExpression bme = new BaseMemberExpression(null);
+            bme.setIdentifier($vom.identifier);
+            bme.setTypeArguments(new InferredTypeArguments(null));
+            v.setObjectExpression(bme);
+            v.setEndToken(null); }
+        )
         vo=MEMBER_OP
         { v.setEndToken($vo); }
       )?
@@ -2555,9 +2564,18 @@ metaLiteral returns [MetaLiteral meta]
         f.setEndToken($FUNCTION_MODIFIER); 
         $meta=f; }
       (
-        ft=type
-        { f.setType($ft.type); 
-          f.setEndToken(null); }
+        (
+          ft=type
+          { f.setType($ft.type); 
+            f.setEndToken(null); }
+        |
+          fom=memberName
+          { BaseMemberExpression bme = new BaseMemberExpression(null);
+            bme.setIdentifier($fom.identifier);
+            bme.setTypeArguments(new InferredTypeArguments(null));
+            f.setObjectExpression(bme);
+            f.setEndToken(null); }
+        )
         fo=MEMBER_OP
         { f.setEndToken($fo); }
       )?
