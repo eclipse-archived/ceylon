@@ -1043,7 +1043,7 @@ public class DeclarationVisitor extends Visitor {
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
-                that.addError("value may not be annotated both variable and transient: " + model.getName());
+                that.addError("getter not be annotated variable: " + model.getName());
             }
         }
         if (hasAnnotation(al, "deprecated", unit)) {
