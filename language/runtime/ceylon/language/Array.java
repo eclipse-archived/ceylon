@@ -227,10 +227,10 @@ public final class Array<Element>
                 return array;
             }
             else {
-            	Element[] array = (Element[])java.lang.reflect.Array
+            	java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
             			.newInstance(clazz.getKlass(), size);
             	for (int i=0; i<array.length; i++) {
-            		array[i] = (Element) iterator.next();
+            		array[i] = iterator.next();
             	}
                 return array;
             }
@@ -328,7 +328,7 @@ public final class Array<Element>
                 return array;
             }
             else {
-            	Element[] array = (Element[])java.lang.reflect.Array
+            	java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
             			.newInstance(clazz.getKlass(), size);
             	if (element!=null) Arrays.fill(array, element);
             	return array;
@@ -1174,13 +1174,13 @@ public final class Array<Element>
             return new Array<Element>($reifiedElement, rev);
         }
 
-        Element[] __a = (Element[])array;
-        Element[] rev = (Element[])java.lang.reflect.Array
+        java.lang.Object[] __a = (java.lang.Object[])array;
+        java.lang.Object[] rev = (java.lang.Object[])java.lang.reflect.Array
         		.newInstance(__a.getClass().getComponentType(),__a.length);
         for (int i = 0, j=__a.length-1; i < __a.length; i++, j--) {
             rev[i] = __a[j];
         }
-        return new Array<Element>($reifiedElement, (Element[])rev);
+        return new Array<Element>($reifiedElement, rev);
     }
 
     @Override @Ignore
@@ -1315,7 +1315,7 @@ public final class Array<Element>
         java.lang.Object[] result;
         if ($reifiedElement instanceof TypeDescriptor.Class) {
             TypeDescriptor.Class clazz = (TypeDescriptor.Class) $reifiedElement;
-            result = (Element[])java.lang.reflect.Array.newInstance(clazz.getKlass(), (int)size);
+            result = (java.lang.Object[])java.lang.reflect.Array.newInstance(clazz.getKlass(), (int)size);
         }
         else {
             result = new java.lang.Object[(int)size];
