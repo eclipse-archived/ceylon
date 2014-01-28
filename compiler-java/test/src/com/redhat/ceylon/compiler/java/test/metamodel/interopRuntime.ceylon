@@ -1,6 +1,9 @@
 import ceylon.language.meta.model { Class, Attribute, Function, Method, MemberClass }
 import ceylon.language.meta { type }
-import java.lang { ByteArray, ShortArray, IntArray, LongArray, FloatArray, DoubleArray, CharArray, BooleanArray, ObjectArray, arrays }
+import java.lang { ByteArray, ShortArray, IntArray, LongArray, FloatArray, DoubleArray, CharArray, BooleanArray, ObjectArray,
+    JByte = Byte, JShort = Short, JInteger = Integer, JLong = Long, JFloat = Float, JDouble = Double,
+    JCharacter = Character, JBoolean = Boolean
+}
 
 void interopRuntime(){
     Class<JavaType,[Boolean,Integer,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;
@@ -252,7 +255,10 @@ void interopRuntime(){
 }
 
 void testByteArray(){
-    value byteArray = arrays.toByteArray{1, 2, 3};
+    value byteArray = ByteArray(3);
+    byteArray.set(0, 1);
+    byteArray.set(1, 2);
+    byteArray.set(2, 3);
     // type
     assert("java.lang::ByteArray" == type(byteArray).string);
     // constructor
@@ -303,11 +309,14 @@ void testByteArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `ByteArray.array`;
-    assert(array(byteArray).get() == {10, 11, 12});
+    assert(array(byteArray).get() == {JByte(10), JByte(11), JByte(12)});
 }
 
 void testShortArray(){
-    value shortArray = arrays.toShortArray{1, 2, 3};
+    value shortArray = ShortArray(3);
+    shortArray.set(0, 1);
+    shortArray.set(1, 2);
+    shortArray.set(2, 3);
     // type
     assert("java.lang::ShortArray" == type(shortArray).string);
     // constructor
@@ -358,11 +367,14 @@ void testShortArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `ShortArray.array`;
-    assert(array(shortArray).get() == {10, 11, 12});
+    assert(array(shortArray).get() == {JShort(10), JShort(11), JShort(12)});
 }
 
 void testIntArray(){
-    value intArray = arrays.toIntArray{1, 2, 3};
+    value intArray = IntArray(3);
+    intArray.set(0, 1);
+    intArray.set(1, 2);
+    intArray.set(2, 3);
     // type
     assert("java.lang::IntArray" == type(intArray).string);
     // constructor
@@ -413,14 +425,17 @@ void testIntArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `IntArray.array`;
-    assert(array(intArray).get() == {10, 11, 12});
+    assert(array(intArray).get() == {JInteger(10), JInteger(11), JInteger(12)});
     // codePointArray
     value codePointArray = `IntArray.codePointArray`;
     assert(codePointArray(intArray).get() == {'\{#0A}', '\{#0B}', '\{#0C}'});
 }
 
 void testLongArray(){
-    value longArray = arrays.toLongArray{1, 2, 3};
+    value longArray = LongArray(3);
+    longArray.set(0, 1);
+    longArray.set(1, 2);
+    longArray.set(2, 3);
     // type
     assert("java.lang::LongArray" == type(longArray).string);
     // constructor
@@ -471,11 +486,16 @@ void testLongArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `LongArray.array`;
-    assert(array(longArray).get() == {10, 11, 12});
+    assert(array(longArray).get() == {JLong(10), JLong(11), JLong(12)});
+    value integerArrayAttribute = `LongArray.integerArray`;
+    assert(integerArrayAttribute(longArray).get() == {10, 11, 12});
 }
 
 void testFloatArray(){
-    value floatArray = arrays.toFloatArray{1.0, 2.0, 3.0};
+    value floatArray = FloatArray(3);
+    floatArray.set(0, 1.0);
+    floatArray.set(1, 2.0);
+    floatArray.set(2, 3.0);
     // type
     assert("java.lang::FloatArray" == type(floatArray).string);
     // constructor
@@ -526,11 +546,14 @@ void testFloatArray(){
     assert(dest.get(3) == 12.0);//left-over
     // array
     value array = `FloatArray.array`;
-    assert(array(floatArray).get() == {10.0, 11.0, 12.0});
+    assert(array(floatArray).get() == {JFloat(10.0), JFloat(11.0), JFloat(12.0)});
 }
 
 void testDoubleArray(){
-    value doubleArray = arrays.toDoubleArray{1.0, 2.0, 3.0};
+    value doubleArray = DoubleArray(3);
+    doubleArray.set(0, 1.0);
+    doubleArray.set(1, 2.0);
+    doubleArray.set(2, 3.0);
     // type
     assert("java.lang::DoubleArray" == type(doubleArray).string);
     // constructor
@@ -581,11 +604,16 @@ void testDoubleArray(){
     assert(dest.get(3) == 12.0);//left-over
     // array
     value array = `DoubleArray.array`;
-    assert(array(doubleArray).get() == {10.0, 11.0, 12.0});
+    assert(array(doubleArray).get() == {JDouble(10.0), JDouble(11.0), JDouble(12.0)});
+    value floatArrayAttribute = `DoubleArray.floatArray`;
+    assert(floatArrayAttribute(doubleArray).get() == {10.0, 11.0, 12.0});
 }
 
 void testCharArray(){
-    value charArray = arrays.toCharArray{'1', '2', '3'};
+    value charArray = CharArray(3);
+    charArray.set(0, '1');
+    charArray.set(1, '2');
+    charArray.set(2, '3');
     // type
     assert("java.lang::CharArray" == type(charArray).string);
     // constructor
@@ -636,11 +664,14 @@ void testCharArray(){
     assert(dest.get(3) == 'c');//left-over
     // array
     value array = `CharArray.array`;
-    assert(array(charArray).get() == {'a', 'b', 'c'});
+    assert(array(charArray).get() == {JCharacter('a'), JCharacter('b'), JCharacter('c')});
 }
 
 void testBooleanArray(){
-    value booleanArray = arrays.toBooleanArray{true, false, true};
+    value booleanArray = BooleanArray(3);
+    booleanArray.set(0, true);
+    booleanArray.set(1, false);
+    booleanArray.set(2, true);
     // type
     assert("java.lang::BooleanArray" == type(booleanArray).string);
     // constructor
@@ -691,7 +722,9 @@ void testBooleanArray(){
     assert(dest.get(3) == false);//left-over
     // array
     value array = `BooleanArray.array`;
-    assert(array(booleanArray).get() == {false, true, false});
+    assert(array(booleanArray).get() == {JBoolean(false), JBoolean(true), JBoolean(false)});
+    value booleanArrayAttribute = `BooleanArray.booleanArray`;
+    assert(booleanArrayAttribute(booleanArray).get() == {false, true, false});
 }
 
 Boolean eq(Anything a, Anything b){
@@ -705,7 +738,10 @@ Boolean eq(Anything a, Anything b){
 }
 
 void testObjectArray(){
-    value objectArray = arrays.toObjectArray{1, 2, 3};
+    value objectArray = ObjectArray<Integer>(3);
+    objectArray.set(0, 1);
+    objectArray.set(1, 2);
+    objectArray.set(2, 3);
     // type
     assert("java.lang::ObjectArray<ceylon.language::Integer>" == type(objectArray).string);
     // constructor

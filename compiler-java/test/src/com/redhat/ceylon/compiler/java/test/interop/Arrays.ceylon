@@ -72,11 +72,10 @@ void test_booleans() {
     java.take_booleans(items);
     java.take_booleans(booleanArray([true, true, false]));
     java.take_booleans(booleanArray{});
-    java.take_booleans(arrays.toBooleanArray{true, true, false});
     BooleanArray{size=2;};
     Integer i = items.size;
-    Array<Boolean> arr = items.array;
-    assert(items === arrays.asBooleanArray(arr));
+    Array<Boolean> arr = items.booleanArray;
+    assert(items === arrays.asNativeBooleanArray(arr));
 
     items.copyTo(items);
     items.copyTo(items, 0, 0, items.size);
