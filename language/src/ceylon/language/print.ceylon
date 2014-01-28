@@ -7,16 +7,16 @@
      process.writeLine(line?.string else \"<null>\")
  
  and is intended mainly for debugging purposes."
-// FIXME: see https://github.com/ceylon/ceylon-spec/issues/694
-//see (`process.writeLine`)
+see (`function process.writeLine`)
 by ("Gavin")
-shared void print(Anything val) =>
-        process.writeLine(stringify(val));
+shared void print(Anything val) 
+        => process.writeLine(stringify(val));
 
 "Print multiple values to the standard output of the virtual 
  machine process as a single line of text, separated by a
  given character sequence."
 by ("Gavin")
+see (`function process.write`)
 shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"
         String separator=", ") {
