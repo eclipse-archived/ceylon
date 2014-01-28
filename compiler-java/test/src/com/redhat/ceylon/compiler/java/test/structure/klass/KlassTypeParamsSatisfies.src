@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassTypeParamsSatisfies<U extends .ceylon.language.Invertable<? extends .ceylon.language.Integer>, V extends .ceylon.language.Summable<.ceylon.language.Integer>, W extends .ceylon.language.Invertable<? extends .ceylon.language.Integer> & .ceylon.language.Summable<.ceylon.language.Integer>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassTypeParamsSatisfies<U extends .ceylon.language.Invertable<.ceylon.language.Integer>, V extends .ceylon.language.Summable<.ceylon.language.Integer>, W extends .ceylon.language.Invertable<.ceylon.language.Integer> & .ceylon.language.Summable<.ceylon.language.Integer>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KlassTypeParamsSatisfies(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W) {
         this.$reified$U = $reified$U;

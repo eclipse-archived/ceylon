@@ -17,7 +17,7 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     NameCollision() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl(this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl(this);
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.empty = true;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$;
@@ -187,10 +187,10 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public .ceylon.language.List<? extends .ceylon.language.Integer> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Category$impl $ceylon$language$Category$impl() {
+    public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
         return $ceylon$language$Category$this$;
     }
     

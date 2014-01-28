@@ -7,8 +7,8 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
         this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Scalar$this$ = new .ceylon.language.Scalar$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Numeric$this$ = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Invertable$this$ = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Number$this$ = new .ceylon.language.Number$impl(this);
         this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
@@ -38,17 +38,22 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Numeric$impl() {
         return $ceylon$language$Numeric$this$;
     }
+    protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$impl() {
+        return $ceylon$language$Invertable$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Invertable$this$.minus(other);
+    }
     protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$impl() {
         return $ceylon$language$Summable$this$;
-    }
-    protected final .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$impl() {
-        return $ceylon$language$Invertable$this$;
     }
     protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$this$;
     

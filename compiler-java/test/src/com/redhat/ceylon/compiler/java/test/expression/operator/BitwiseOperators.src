@@ -8,8 +8,8 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
         this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Scalar$this$ = new .ceylon.language.Scalar$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Numeric$this$ = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Invertable$this$ = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Number$this$ = new .ceylon.language.Number$impl(this);
         this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
@@ -55,17 +55,22 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Numeric$impl() {
         return $ceylon$language$Numeric$this$;
     }
+    protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$impl() {
+        return $ceylon$language$Invertable$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Invertable$this$.minus(other);
+    }
     protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Summable$impl() {
         return $ceylon$language$Summable$this$;
-    }
-    protected final .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Invertable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertable$impl() {
-        return $ceylon$language$Invertable$this$;
     }
     protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Comparable$this$;
     
