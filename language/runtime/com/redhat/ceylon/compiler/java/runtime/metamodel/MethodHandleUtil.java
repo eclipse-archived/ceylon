@@ -533,6 +533,9 @@ public class MethodHandleUtil {
     public static Class<?>[] getJavaArrayGetArrayParameterTypes(Class<?> arrayClass, String getterName) {
         Class<?> arrayType = getJavaArrayType(arrayClass);
         if(getterName.equals("getArray") 
+                || (arrayClass == BooleanArray.class && getterName.equals("getBooleanArray"))
+                || (arrayClass == LongArray.class && getterName.equals("getIntegerArray"))
+                || (arrayClass == DoubleArray.class && getterName.equals("getFloatArray"))
                 || (arrayClass == IntArray.class && getterName.equals("getCodePointArray")))
             return new Class<?>[]{arrayType};
         throw new RuntimeException("No such property in Java array "+arrayClass+": "+getterName);
