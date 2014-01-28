@@ -28,6 +28,34 @@ shared void comprehensions() {
   check(Array{for (k->v in entries(["a","b","c","d","e"])) if (k%2==0) v.uppercased}==Array({"A","C","E"}), "key-value comprehensions");
   // comprehension nested inside comprehension
   check([for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]==[["1,1","1,2"],["2,1","2,2"]], "nested comprehension ``[for(i in 1..2)[for(j in 1..2)"``i``,``j``"]]`` instead of {{1,1,1,2},{2,1,2,2}}");
+  //comprehensions beginning with if clause: ceylon-spec#869
+  {String*}? strings = { "Hello", "beautiful", "World" };
+  value existingStrings = strings;
+  assert (exists existingStrings);
+  check([if (is {String*} strings) strings] == { existingStrings }, "comprehensions starting with if 1: if");
+  check([if (is {String*} strings) for (string in strings) string] == existingStrings, "comprehensions starting with if 2: if for");
+  check([if (is {String*} strings) for (string in strings) if (exists first=string.first, first.uppercase) string] == {"Hello", "World"}, "comprehensions starting with if 3: if for if");
+  check([if (2 + 2 == 4) if ((1..10).size==10) if (is {String*} strings) for (string in strings) string.uppercased] == {"HELLO", "BEAUTIFUL", "WORLD"}, "comprehensions starting with if 4: if if if for");
+  check([if (1+1==2) if (2+2==5) if (2+3==5) true] == empty, "comprehensions starting with if 5: if ifFalse if");
+  check([if (1+1==2) if (2+2==4) if (2+2==5) true] == empty, "comprehensions starting with if 6: if if ifFalse");
+  check([if (2+2==5) if (1+1==2) if (2+2==4) true] == empty, "comprehensions starting with if 7: ifFalse if if");
+  variable value test=0;
+  function f() => test++>0;
+  check(test==0, "comprehensions starting with if 8: general laziness");
+  f();
+  check(test==1, "comprehensions starting with if 8: variable capture");
+  check([if (f()) 1] == {1}, "comprehensions starting with if 8: collection");
+  check(test==2, "comprehensions starting with if 8: evaluation");
+  check(![if (!f()) 1] nonempty, "comprehensions starting with if 8: nonemptiness");
+  check(test==3, "comprehensions starting with if 8: evaluation 2");
+  value c = {if (f()) if (!f()) 1};
+  check(test==3, "comprehensions starting with if 8: evaluation 3");
+  check(c.size==0, "comprehensions starting with if 8: emptiness");
+  check(test==5, "comprehensions starting with if 8: reevaluation");
+  value c2 = {if (f()) if (!f()) if (f()) 1};
+  check(test==5, "comprehensions starting with if 9: evaluation");
+  check(c2.size==0, "comprehensions starting with if 9: emptiness");
+  check(test==7, "comprehensions starting with if 9: reevaluation, not too much");
 
   //new comprehension-related functions
   check(any { for (x in 1..5) x>4 }, "any");
