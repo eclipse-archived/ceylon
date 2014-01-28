@@ -130,7 +130,7 @@ public class CeylonSrcTool extends RepoUsingTool {
                     try {
                         BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out));
                         try {
-                            IOUtils.copyStream(zipIn, fileOut);
+                            IOUtils.copyStream(zipIn, fileOut, false, false);
                         } finally {
                             fileOut.close();
                         }
