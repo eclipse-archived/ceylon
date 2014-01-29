@@ -1034,13 +1034,18 @@ public class ProducedType extends ProducedReference {
         if (argList==null) {
             List<TypeParameter> tps = getDeclaration().getTypeParameters();
             List<ProducedType> argList;
-            if(tps.isEmpty()){
+            if (tps.isEmpty()) {
                 argList = Collections.emptyList();
-            }else{
+            }
+            else {
                 argList = new ArrayList<ProducedType>(tps.size());
                 Map<TypeParameter, ProducedType> args = getTypeArguments();
                 for (TypeParameter tp: tps) {
-                    argList.add(args.get(tp));
+                	ProducedType arg = args.get(tp);
+                	if (arg==null) {
+                		arg = tp.getDefaultTypeArgument();
+                	}
+                    argList.add(arg);
                 }
             }
             this.argList = argList;
