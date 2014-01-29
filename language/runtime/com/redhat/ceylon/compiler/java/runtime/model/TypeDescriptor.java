@@ -9,6 +9,15 @@ import ceylon.language.Basic;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
 
+import com.redhat.ceylon.compiler.java.language.BooleanArray;
+import com.redhat.ceylon.compiler.java.language.ByteArray;
+import com.redhat.ceylon.compiler.java.language.CharArray;
+import com.redhat.ceylon.compiler.java.language.DoubleArray;
+import com.redhat.ceylon.compiler.java.language.FloatArray;
+import com.redhat.ceylon.compiler.java.language.IntArray;
+import com.redhat.ceylon.compiler.java.language.LongArray;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
+import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -116,6 +125,33 @@ public abstract class TypeDescriptor {
 			}
 			if (klass==Exception.class) {
 				return java.lang.Throwable.class;
+			}
+			if (klass==ObjectArray.class) {
+				return java.lang.Object[].class;
+			}
+			if (klass==BooleanArray.class) {
+				return boolean[].class;
+			}
+			if (klass==LongArray.class) {
+				return long[].class;
+			}
+			if (klass==IntArray.class) {
+				return int[].class;
+			}
+			if (klass==ShortArray.class) {
+				return short[].class;
+			}
+			if (klass==ByteArray.class) {
+				return byte[].class;
+			}
+			if (klass==DoubleArray.class) {
+				return double[].class;
+			}
+			if (klass==FloatArray.class) {
+				return float[].class;
+			}
+			if (klass==CharArray.class) {
+				return char[].class;
 			}
 	        return klass;
         }
