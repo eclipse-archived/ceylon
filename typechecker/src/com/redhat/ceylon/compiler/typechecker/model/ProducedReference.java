@@ -45,7 +45,7 @@ public abstract class ProducedReference {
         		if (dta!=null) {
         			if (!typeArguments.containsKey(pt)) {
         				// only make a copy of typeArguments if required
-        				if(typeArguments == result){
+        				if (typeArguments == result) {
         					// make a copy big enough to fit every type parameter
         					result = new HashMap<TypeParameter,ProducedType>(typeParameters.size());
         					result.putAll(typeArguments);
