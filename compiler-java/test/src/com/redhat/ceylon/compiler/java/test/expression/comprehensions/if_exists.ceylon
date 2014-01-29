@@ -18,6 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-{String*} ifFor(String? x) {
-    return { if (exists x) x };
+void ifFor(String? x, String|Integer|Null x2) {
+    {String*} c1 = { if (exists x) x };
+    {String*} c2 = { if (exists x2) if (is String x2) x2 };
 }
