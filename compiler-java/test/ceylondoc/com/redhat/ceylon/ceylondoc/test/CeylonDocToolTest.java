@@ -68,6 +68,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -81,7 +82,7 @@ public class CeylonDocToolTest {
     public TestName name = new TestName();
     
     private CeylonDocTool tool(List<File> sourceFolders, List<File> docFolders, List<String> moduleName, 
-            boolean haltOnError, String... repositories)
+            boolean haltOnError, boolean deleteDestDir, String... repositories)
             throws Exception {
         
         CeylonDocTool tool = new CeylonDocTool();
@@ -90,12 +91,12 @@ public class CeylonDocToolTest {
         tool.setModuleSpecs(moduleName);
         tool.setDocFolders(docFolders);
         tool.setHaltOnError(haltOnError);
-        tool.initialize();
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
-        if (dir.exists()) {
+        if (deleteDestDir && dir.exists()) {
             Util.delete(dir);
         }
         tool.setOutputRepository(dir.getAbsolutePath());
+        tool.initialize();
         return tool;
     }
 
@@ -111,7 +112,7 @@ public class CeylonDocToolTest {
         return tool(Arrays.asList(new File(pathname)),
                 Arrays.asList(new File(docPath)),
                 Arrays.asList(moduleName),
-                throwOnError, repositories);
+                throwOnError, true, repositories);
     }
 
     protected void assertFileExists(File destDir, String path) {
@@ -319,7 +320,7 @@ public class CeylonDocToolTest {
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.dependency.c");
         modules.add("com.redhat.ceylon.ceylondoc.test.modules.externallinks");
 
-        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), Collections.<File>emptyList(), modules, true, "build/ceylon-cars");
+        CeylonDocTool tool = tool(Arrays.asList(new File("test/ceylondoc")), Collections.<File>emptyList(), modules, true, true, "build/ceylon-cars");
         tool.setLinks(Arrays.asList(linkArgs));
         tool.run();
 
@@ -481,8 +482,7 @@ public class CeylonDocToolTest {
 
         CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")),
                 Collections.<File>emptyList(),
-                Arrays.asList(fullModuleNames), true, 
-                "build/CeylonDocToolTest/" + name.getMethodName() + "-native");
+                Arrays.asList(fullModuleNames), true, false);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.run();
@@ -505,7 +505,7 @@ public class CeylonDocToolTest {
      */
     private void compileSdkJavaFiles() throws FileNotFoundException, IOException {
         // put it all in a special folder
-        File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName() + "-native");
+        File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
         if (dir.exists()) {
             Util.delete(dir);
         }
@@ -513,15 +513,24 @@ public class CeylonDocToolTest {
 
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
-        File artifact = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
+        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
+        File languageModule = repoManager.getArtifact(new ArtifactContext("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         assertNotNull("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", compiler);
-        List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), "-classpath", artifact.getAbsolutePath());
+        List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), 
+                "-classpath", undertowCoreModule.getAbsolutePath()+File.pathSeparator+languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
                 "ceylon/net/http/server/internal/JavaHelper.java",
+                "ceylon/interop/java/javaByteArray_.java",
+                "ceylon/interop/java/javaShortArray_.java",
+                "ceylon/interop/java/javaIntArray_.java",
+                "ceylon/interop/java/javaLongArray_.java",
+                "ceylon/interop/java/javaFloatArray_.java",
+                "ceylon/interop/java/javaDoubleArray_.java",
+                "ceylon/interop/java/javaString_.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
@@ -533,12 +542,20 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
-        File jarFolder = new File(dir, "ceylon/net/1.0.0");
+        makeCarFromClassFiles(dir, fileNames, "ceylon.net", "1.0.1");
+        makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", "1.0.0");
+    }
+
+    private void makeCarFromClassFiles(File dir, String[] fileNames, String module, String version) throws IOException {
+        String modulePath = module.replace('.', '/') + "/";
+        File jarFolder = new File(dir, modulePath+version);
         jarFolder.mkdirs();
-        File jarFile = new File(jarFolder, "ceylon.net-1.0.0.car");
+        File jarFile = new File(jarFolder, module+"-"+version+".car");
         // now jar it up
         JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
         for(String name : fileNames){
+            if(!name.startsWith(modulePath))
+                continue;
             String classFile = name.substring(0, name.length()-5) + ".class";
             ZipEntry entry = new ZipEntry(classFile);
             outputStream.putNextEntry(entry);
