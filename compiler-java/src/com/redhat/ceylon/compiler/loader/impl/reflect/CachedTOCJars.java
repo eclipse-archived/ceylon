@@ -142,6 +142,11 @@ public class CachedTOCJars {
             }
 
         }
+
+        @Override
+        public String toString(){
+            return "CachedTOCJar[jar="+jar+"; contents="+contents+"; packages="+packages+"]";
+        }
     }
     
     private List<CachedTOCJar> jars = new LinkedList<CachedTOCJar>();
@@ -188,4 +193,8 @@ public class CachedTOCJars {
         return null;
     }
 
+    @Override
+    public String toString(){
+        return "CachedTOCJars[jars="+jars+"]";
+    }
 }
