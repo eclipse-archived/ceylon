@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.AssertionException;
+import ceylon.language.Null;
 
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
@@ -23,6 +24,8 @@ public abstract class TypeDescriptor {
     // Methods
 
     public abstract ProducedType toProducedType(RuntimeModuleManager moduleManager);
+    
+    public abstract java.lang.Class<?> getArrayElementClass();
 
     //
     // Subtypes
@@ -94,6 +97,11 @@ public abstract class TypeDescriptor {
             }
             return decl.getProducedType(qualifyingType, typeArgs);
         }
+
+		@Override
+        public java.lang.Class<?> getArrayElementClass() {
+	        return klass;
+        }
     }
 
     public static class Member extends TypeDescriptor {
@@ -138,6 +146,11 @@ public abstract class TypeDescriptor {
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
             return ((Class)member).toProducedType(container.toProducedType(moduleManager), moduleManager);
         }
+
+		@Override
+        public java.lang.Class<?> getArrayElementClass() {
+	        return member.getArrayElementClass();
+        }
     }
     
     private static class Nothing extends TypeDescriptor {
@@ -154,6 +167,11 @@ public abstract class TypeDescriptor {
         @Override
         public String toString() {
             return "ceylon.language.Nothing";
+        }
+        
+		@Override
+        public java.lang.Class<?> getArrayElementClass() {
+	        return java.lang.Object.class;
         }
     }
     
@@ -220,6 +238,26 @@ public abstract class TypeDescriptor {
             ret.setCaseTypes(caseTypes);
             return ret.getType();
         }
+
+		@Override
+        public java.lang.Class<?> getArrayElementClass() {
+			java.lang.Class<?> result = null;
+			for (TypeDescriptor td: members) {
+	        	if (td instanceof Nothing ||
+	        		td.getArrayElementClass()==Null.class) {
+	        		continue;
+	        	}
+	        	java.lang.Class<?> c = td.getArrayElementClass();
+	        	if (result==null) {
+	        		result = c;
+	        	}
+	        	else if (result!=c) {
+	        		return java.lang.Object.class;
+	        	}
+	        }
+	        return result==null ? 
+	        		java.lang.Object.class : result;
+        }
     }
 
     public static class Intersection extends Composite {
@@ -251,6 +289,22 @@ public abstract class TypeDescriptor {
             	Util.addToIntersection(satisfiedTypes, member.toProducedType(moduleManager), unit);
             ret.setSatisfiedTypes(satisfiedTypes);
             return ret.canonicalize().getType();
+        }
+        
+		@Override
+        public java.lang.Class<?> getArrayElementClass() {
+			java.lang.Class<?> result = null;
+			for (TypeDescriptor td: members) {
+	        	java.lang.Class<?> c = td.getArrayElementClass();
+	        	if (result==null) {
+	        		result = c;
+	        	}
+	        	else if (result!=c) {
+	        		return java.lang.Object.class;
+	        	}
+	        }
+	        return result==null ? 
+	        		java.lang.Object.class : result;
         }
     }
 
