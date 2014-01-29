@@ -3,7 +3,10 @@ package com.redhat.ceylon.compiler.java.runtime.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import ceylon.language.Anything;
 import ceylon.language.AssertionException;
+import ceylon.language.Basic;
+import ceylon.language.Identifiable;
 import ceylon.language.Null;
 
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
@@ -27,9 +30,8 @@ public abstract class TypeDescriptor {
     
     public abstract java.lang.Class<?> getArrayElementClass();
     
-    public java.lang.Class<?> getDefiniteArrayElementClass() {
-		return getArrayElementClass();
-    }
+    
+    public abstract boolean containsNull();
 	
 
     //
@@ -105,7 +107,22 @@ public abstract class TypeDescriptor {
 
 		@Override
         public java.lang.Class<?> getArrayElementClass() {
+			if (klass==Null.class ||
+				klass==Object.class ||
+				klass==Anything.class ||
+				klass==Basic.class ||
+				klass==Identifiable.class) {
+				return java.lang.Object.class;
+			}
+			if (klass==Exception.class) {
+				return java.lang.Throwable.class;
+			}
 	        return klass;
+        }
+
+		@Override
+        public boolean containsNull() {
+	        return klass==Null.class;
         }
     }
 
@@ -156,6 +173,11 @@ public abstract class TypeDescriptor {
         public java.lang.Class<?> getArrayElementClass() {
 	        return member.getArrayElementClass();
         }
+
+		@Override
+        public boolean containsNull() {
+	        return false;
+        }
     }
     
     private static class Nothing extends TypeDescriptor {
@@ -177,6 +199,11 @@ public abstract class TypeDescriptor {
 		@Override
         public java.lang.Class<?> getArrayElementClass() {
 	        return java.lang.Object.class;
+        }
+
+		@Override
+        public boolean containsNull() {
+	        return false;
         }
     }
     
@@ -248,8 +275,8 @@ public abstract class TypeDescriptor {
         public java.lang.Class<?> getArrayElementClass() {
 			java.lang.Class<?> result = null;
 			for (TypeDescriptor td: members) {
-	        	if (td instanceof Nothing ||
-	        		td.getArrayElementClass()==Null.class) {
+	        	if (td instanceof Nothing || 
+	        		td instanceof Class && td.containsNull()) {
 	        		continue;
 	        	}
 	        	java.lang.Class<?> c = td.getArrayElementClass();
@@ -263,30 +290,13 @@ public abstract class TypeDescriptor {
 	        return result==null ? 
 	        		java.lang.Object.class : result;
         }
-		
+
 		@Override
-        public java.lang.Class<?> getDefiniteArrayElementClass() {
-			java.lang.Class<?> result = null;
+        public boolean containsNull() {
 			for (TypeDescriptor td: members) {
-	        	if (td instanceof Nothing) {
-	        		continue;
-	        	}
-	        	java.lang.Class<?> c = td.getArrayElementClass();
-	        	if (result==null) {
-	        		result = c;
-	        	}
-	        	else if (result.isAssignableFrom(c)) {
-	        		//do nothing
-	        	}
-	        	else if (c.isAssignableFrom(result)) {
-	        		result = c;
-	        	}
-	        	else if (result!=c) {
-	        		return java.lang.Object.class;
-	        	}
-	        }
-	        return result==null ? 
-	        		java.lang.Object.class : result;
+				if (td.containsNull()) return true;
+			}
+	        return false;
         }
 		
     }
@@ -326,7 +336,7 @@ public abstract class TypeDescriptor {
         public java.lang.Class<?> getArrayElementClass() {
 			java.lang.Class<?> result = null;
 			for (TypeDescriptor td: members) {
-	        	java.lang.Class<?> c = td.getArrayElementClass();
+				java.lang.Class<?> c = td.getArrayElementClass();
 	        	if (result==null) {
 	        		result = c;
 	        	}
@@ -344,6 +354,14 @@ public abstract class TypeDescriptor {
 	        		java.lang.Object.class : result;
         }
 
+		@Override
+        public boolean containsNull() {
+			for (TypeDescriptor td: members) {
+				if (!td.containsNull()) return false;
+			}
+	        return true;
+        }
+		
     }
 
     //
@@ -356,13 +374,13 @@ public abstract class TypeDescriptor {
     public static TypeDescriptor klass(java.lang.Class<?> klass, TypeDescriptor... typeArguments) {
         return new Class(klass, typeArguments);
     }
-
+    
     public static TypeDescriptor union(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionException("members can't be null or empty");
         return new Union(members);
     }
-
+    
     public static TypeDescriptor intersection(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionException("members can't be null or empty");
