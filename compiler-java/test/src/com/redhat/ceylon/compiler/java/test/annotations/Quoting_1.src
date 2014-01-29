@@ -1,5 +1,24 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
+public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.annotations.Cloneable$impl<? extends Clone> $com$redhat$ceylon$compiler$java$test$annotations$Cloneable$impl();
+    
+    public abstract Clone getClone();
+}
+public final class Cloneable$impl<Clone extends .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone>> {
+    
+    public Cloneable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone, .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone> $this) {
+        this.$reified$Clone = $reified$Clone;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone;
+    private final .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone) {
+        this.$reified$Clone = $reified$Clone;
+    }
+}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({})
@@ -28,8 +47,8 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         @.com.redhat.ceylon.compiler.java.metadata.Annotation("final")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
         "ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::Quoting,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration>",
-        "ceylon.language::Cloneable<com.redhat.ceylon.compiler.java.test.annotations::Quoting>"})
-final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>, .ceylon.language.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.Quoting> {
+        "com.redhat.ceylon.compiler.java.test.annotations::Cloneable<com.redhat.ceylon.compiler.java.test.annotations::Quoting>"})
+final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>, .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.Quoting> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Quoting(.com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$ anno) {
@@ -52,7 +71,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
-        this.$ceylon$language$Cloneable$this$ = new .ceylon.language.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, this);
+        this.$com$redhat$ceylon$compiler$java$test$annotations$Cloneable$this$ = new .com.redhat.ceylon.compiler.java.test.annotations.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting>(.com.redhat.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String string;
@@ -135,12 +154,12 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $ceylon$language$Annotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $ceylon$language$Cloneable$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.annotations.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $com$redhat$ceylon$compiler$java$test$annotations$Cloneable$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $ceylon$language$Cloneable$impl() {
-        return $ceylon$language$Cloneable$this$;
+    public .com.redhat.ceylon.compiler.java.test.annotations.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $com$redhat$ceylon$compiler$java$test$annotations$Cloneable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$annotations$Cloneable$this$;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

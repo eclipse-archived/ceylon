@@ -1,5 +1,11 @@
 import ceylon.language.meta.declaration { ClassOrInterfaceDeclaration }
 
+ @noanno
+shared interface Cloneable<out Clone> of Clone
+        given Clone satisfies Cloneable<Clone> {
+    shared formal Clone clone;
+}
+
 annotation final class Quoting(
     shared actual String string,
     shared String toString,
