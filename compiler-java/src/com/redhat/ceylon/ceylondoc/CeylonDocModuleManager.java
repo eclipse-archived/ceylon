@@ -25,6 +25,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
@@ -46,9 +47,11 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     private List<ModuleSpec> modulesSpecs;
     private Logger log;
     private CeylonDocTool tool;
+    private RepositoryManager outputRepositoryManager;
 
-    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, Logger log) {
+    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, Logger log) {
         super(context);
+        this.outputRepositoryManager = outputRepositoryManager;
         this.modulesSpecs = modules;
         this.log = log;
         this.tool = tool;
@@ -142,7 +145,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     private void addOutputModuleToClassPath(Module module) {
         ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
-        ArtifactResult result = getContext().getRepositoryManager().getArtifactResult(ctx);
+        ArtifactResult result = outputRepositoryManager.getArtifactResult(ctx);
         if(result != null)
             getModelLoader().addModuleToClassPath(module, result);
     }

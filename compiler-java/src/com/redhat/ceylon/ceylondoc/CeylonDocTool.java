@@ -158,6 +158,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private final Map<Parameter, PhasedUnit> parameterUnitMap = new HashMap<Parameter, PhasedUnit>();
     private final Map<Parameter, Node> parameterNodeMap = new HashMap<Parameter, Node>();
     private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
+    private RepositoryManager outputRepositoryManager;
 
     public CeylonDocTool() {
         super(CeylondMessages.RESOURCE_BUNDLE);
@@ -355,12 +356,20 @@ public class CeylonDocTool extends RepoUsingTool {
         
         builder.setRepositoryManager(repository);
         
+        // make a destination repo
+        outputRepositoryManager = createRepositoryManagerBuilder()
+                .outRepo(this.outputRepository)
+                .logger(log)
+                .user(user)
+                .password(pass)
+                .buildOutputManager();
+
         // we need to plug in the module manager which can load from .cars
         final List<ModuleSpec> modules = ModuleSpec.parseEachList(moduleSpecs);
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, log);
+                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, log);
             }
         });
         
@@ -512,14 +521,6 @@ public class CeylonDocTool extends RepoUsingTool {
         collectSubclasses();
         collectAnnotationConstructors();
 
-        // make a destination repo
-        RepositoryManager outputRepository = createRepositoryManagerBuilder()
-                .outRepo(this.outputRepository)
-                .logger(log)
-                .user(user)
-                .password(pass)
-                .buildOutputManager();
-
         try{
             // document every module
             boolean documentedOne = false;
@@ -555,13 +556,13 @@ public class CeylonDocTool extends RepoUsingTool {
                 File docZipFile = IOUtils.zipFolders(roots);
                 File docZipSha1File = ShaSigner.sign(docZipFile, log, verbose != null);
                 
-                repositoryRemoveArtifact(outputRepository, artifactDocs);
-                repositoryRemoveArtifact(outputRepository, artifactDocsZip);
-                repositoryRemoveArtifact(outputRepository, artifactDocsZip.getSha1Context());
+                repositoryRemoveArtifact(outputRepositoryManager, artifactDocs);
+                repositoryRemoveArtifact(outputRepositoryManager, artifactDocsZip);
+                repositoryRemoveArtifact(outputRepositoryManager, artifactDocsZip.getSha1Context());
                 
-                repositoryPutArtifact(outputRepository, artifactDocs, outputFolder);
-                repositoryPutArtifact(outputRepository, artifactDocsZip, docZipFile);
-                repositoryPutArtifact(outputRepository, artifactDocsZip.getSha1Context(), docZipSha1File);
+                repositoryPutArtifact(outputRepositoryManager, artifactDocs, outputFolder);
+                repositoryPutArtifact(outputRepositoryManager, artifactDocsZip, docZipFile);
+                repositoryPutArtifact(outputRepositoryManager, artifactDocsZip.getSha1Context(), docZipSha1File);
                 
                 docZipFile.delete();
                 docZipSha1File.delete();
