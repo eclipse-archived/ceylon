@@ -17,13 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { IntArray, ObjectArray, arrays }
+import java.lang { IntArray, ObjectArray }
 
 @noanno
 void variadicArraysMethods() {
     TypesJava java = TypesJava();
 
-    Iterable<ObjectArray<Object>> objectArray = {arrays.toObjectArray<Object>{"a"}, arrays.toObjectArray<Object>{"b"}};
+    ObjectArray<Object> arr1 = ObjectArray<Object>(1);
+    arr1.set(0, "a");
+    ObjectArray<Object> arr2 = ObjectArray<Object>(1);
+    arr2.set(0, "b");
+    Iterable<ObjectArray<Object>> objectArray = {arr1, arr2};
     java.variadicObjectArray(*objectArray);
     
     // Callable has a variadic param which can mess things up

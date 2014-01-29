@@ -7,31 +7,19 @@ final class variadicArraysMethods_ {
     
     static void variadicArraysMethods() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .java.lang.Object[] arr1 = new .java.lang.Object[(int)1L];
+        arr1[(int)0L] = .ceylon.language.String.instance("a");
+        final .java.lang.Object[] arr2 = new .java.lang.Object[(int)1L];
+        arr2[(int)0L] = .ceylon.language.String.instance("b");
         final .ceylon.language.Iterable<? extends .java.lang.Object[], ? extends .java.lang.Object> objectArray = .ceylon.language.ArraySequence.<.java.lang.Object[]>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{
-                (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.language.arrays_ arg$0$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
-                        .ceylon.language.Iterable arg$0$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("a")});
-                    }
-                    returning arg$0$callable$.<.java.lang.Object>toObjectArray(arg$0$reified$0, arg$0$0);
-                ),
-                (
-                    let
-                    {
-                        .com.redhat.ceylon.compiler.java.language.arrays_ arg$1$callable$ = .com.redhat.ceylon.compiler.java.language.arrays_.get_();
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
-                        .ceylon.language.Iterable arg$1$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("b")});
-                    }
-                    returning arg$1$callable$.<.java.lang.Object>toObjectArray(arg$1$reified$0, arg$1$0);
-                )});
+                arr1,
+                arr2});
         java.variadicObjectArray((
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$2$0 = objectArray.getSequence();
+                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$0$0 = objectArray.getSequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$2$0, new .java.lang.Object[(int)$ceylontmp$2$0.getSize()][]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$0$0, new .java.lang.Object[(int)$ceylontmp$0$0.getSize()][]);
         ));
         final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
         final .java.lang.Object[] objectArray1 = new .java.lang.Object[(int)0L];

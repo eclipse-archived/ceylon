@@ -35,8 +35,7 @@ import java.lang {
     FloatArray,
     DoubleArray,
     CharArray,
-    ObjectArray,
-    arrays
+    ObjectArray
 }
 import com.redhat.ceylon.compiler.java.test.interop { TypesJava }
 import java.io { File }
@@ -74,8 +73,8 @@ void test_booleans() {
     java.take_booleans(booleanArray{});
     BooleanArray{size=2;};
     Integer i = items.size;
-    Array<Boolean> arr = items.booleanArray;
-    assert(items === arrays.asNativeBooleanArray(arr));
+    Array<Boolean> arr1 = items.booleanArray;
+    Array<JBoolean> arr2 = items.array;
 
     items.copyTo(items);
     items.copyTo(items, 0, 0, items.size);
@@ -267,8 +266,8 @@ void test_chars() {
     java.take_chars(items);
     
     IntArray ints = java.return_ints();
-    Array<Character> chars = ints.codePointArray;
-    assert(arrays.asCodePointArray(chars) == ints);
+    Array<JInteger> chars1 = ints.array;
+    Array<Character> chars2 = ints.codePointArray;
 }
 
 @noanno
@@ -294,12 +293,9 @@ void test_Strings() {
     //for (String s2 in items) { print(s2); }
     java.take_Strings(items);
     
-    ObjectArray<String> ceylonStrings = arrays.javaStringArrayToCeylonStringArray(items);
+    ObjectArray<String> ceylonStrings = ObjectArray<String>(0);
     Array<String?> ceylonStringArray = ceylonStrings.array;
-    ObjectArray<JString> javaStrings = arrays.ceylonStringArrayToJavaStringArray(ceylonStrings);
-    Array<JString?> javaStringArray = javaStrings.array;
-    ObjectArray<JString> javaStrings2 = arrays.toJavaStringArray(ceylonStringArray);
-    ObjectArray<String> ceylonStrings2 = arrays.toStringArray(javaStringArray);
+    Array<JString?> javaStringArray = items.array;
 }
 
 @noanno
