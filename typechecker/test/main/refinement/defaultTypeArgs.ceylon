@@ -22,3 +22,21 @@ shared interface Cat<in Element=String>
         given Element satisfies Object {
     shared formal Boolean contains(Element element);
 }
+
+alias F => MyFoo;
+alias FB => MyFoo.Bar;
+
+void testF() {
+    F.Bar bar = MyFoo("hello").Bar();
+    @error F.Bar bar0 = MyFoo(1).Bar();
+    MyFoo<String>.Bar barbar = bar;
+    @error MyFoo<Integer>.Bar barbar0 = bar;
+    FB fb = MyFoo("hello").Bar();
+    @error FB fb0 = MyFoo(1).Bar();
+    MyFoo<String>.Bar barfb = fb;
+    @error MyFoo<Integer>.Bar barfb0 = fb;
+}
+
+class MyFoo<T=String>(T t) {
+    shared class Bar() {}
+}
