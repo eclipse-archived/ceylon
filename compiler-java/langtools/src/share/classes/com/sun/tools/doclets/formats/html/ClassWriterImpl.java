@@ -431,7 +431,8 @@ public class ClassWriterImpl extends SubWriterHolderWriter
         if (! classDoc.isInterface()) {
             return;
         }
-        if (classDoc.qualifiedName().equals("java.io.Serializable")) {
+        if (classDoc.qualifiedName().equals("java.lang.Cloneable") ||
+                classDoc.qualifiedName().equals("java.io.Serializable")) {
             return;   // Don't generate the list, too big
         }
         List<ClassDoc> implcl = classtree.implementingclasses(classDoc);
