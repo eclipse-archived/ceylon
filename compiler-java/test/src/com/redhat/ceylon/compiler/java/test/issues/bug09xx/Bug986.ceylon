@@ -21,21 +21,30 @@
 @noanno
 shared void bug986() {
     value values = { 100, 110, 120 };
-    class Fun(shared Integer() fun) {}
-    value funcs = { for (v in values) Fun(()=>v) };
-    assert (exists first=funcs.sequence[0]);
-    assert (exists second=funcs.sequence[1]);
-    assert (exists third=funcs.sequence[2]);
-    if (first.fun() != 100) {
-        print(first.fun());
-        throw Exception();
-    }
-    if (second.fun() != 110) {
-        print(second.fun());
-        throw Exception();
-    } 
-    if (third.fun() != 120) {
-        print(third.fun());
-        throw Exception();
-    }
+    value funcs = { for (v in values) ()=>v };
+    assert({100, 110, 120} == { for (f in funcs) f() }.sequence);
+    ifCaptures();
+    nestedIfCaptures();
+    nestedForCaptures();
+}
+
+@noanno
+shared void ifCaptures() {
+    value values = { 100, 110, 120, null };
+    value funcs = { for (v in values) if (exists w=v) ()=>w };
+    assert({100, 110, 120} == { for (f in funcs) f() }.sequence);
+}
+
+@noanno
+shared void nestedIfCaptures() {
+    value values = { 100, 110, 120, null, "a" };
+    value funcs = { for (v in values) if (exists v2=v) if(is Integer v3 = v2) ()=>v2 };
+    assert({100, 110, 120} == { for (f in funcs) f() }.sequence);
+}
+
+@noanno
+shared void nestedForCaptures() {
+    value values = { {100}, {110}, {120} };
+    value funcs = { for (v in values) for (v2 in v) ()=>v };
+    assert({{100}, {110}, {120}} == { for (f in funcs) f() }.sequence);
 }
