@@ -2565,19 +2565,23 @@ abbreviatedType returns [StaticType type]
       )
       )*
     ;
-    
+
+baseType returns [StaticType type]
+    : 
+      ot=typeNameWithArguments
+      { BaseType bt = new BaseType(null);
+        bt.setIdentifier($ot.identifier);
+        if ($ot.typeArgumentList!=null)
+            bt.setTypeArgumentList($ot.typeArgumentList);
+        $type=bt; }
+    |
+      groupedType
+      { $type=$groupedType.type; }
+    ;
+
 qualifiedType returns [StaticType type]
-    : ( 
-        ot=typeNameWithArguments
-        { BaseType bt = new BaseType(null);
-          bt.setIdentifier($ot.identifier);
-          if ($ot.typeArgumentList!=null)
-              bt.setTypeArgumentList($ot.typeArgumentList);
-          $type=bt; }
-      |
-        groupedType
-        { $type=$groupedType.type; }
-      )
+    : baseType
+      { $type=$baseType.type; }
       (
         MEMBER_OP 
         it=typeNameWithArguments

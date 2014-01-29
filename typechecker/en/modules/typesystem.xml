@@ -681,7 +681,8 @@
             class or interface, the type must be fully qualified by its containing types, 
             except when used inside the body of a containing type.</para>
             
-            <synopsis>QualifiedType: TypeNameWithArguments ("." TypeNameWithArguments)*</synopsis>
+            <synopsis>BaseType: TypeNameWithArguments | GroupedType</synopsis>
+            <synopsis>QualifiedType: BaseType ("." TypeNameWithArguments)*</synopsis>
             
             <para>If a type declaration is generic, a type argument list must be specified. 
             If a type declaration is not generic, no type argument list may be specified.</para>
@@ -701,7 +702,7 @@
             <para>Certain important types may be written using an abbreviated syntax.</para>
             
             <synopsis>PrimaryType: AtomicType | OptionalType | SequenceType | CallableType</synopsis>   
-            <synopsis>AtomicType: QualifiedType | EmptyType | TupleType | IterableType | GroupedType</synopsis>
+            <synopsis>AtomicType: QualifiedType | EmptyType | TupleType | IterableType</synopsis>
             
             <para>First, there are postfix-style abbreviations for <emphasis>optional types</emphasis>, 
             <emphasis>sequence types</emphasis>, and <emphasis>callable types</emphasis>.</para>
