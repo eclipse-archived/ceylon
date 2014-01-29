@@ -26,6 +26,11 @@ public abstract class TypeDescriptor {
     public abstract ProducedType toProducedType(RuntimeModuleManager moduleManager);
     
     public abstract java.lang.Class<?> getArrayElementClass();
+    
+    public java.lang.Class<?> getDefiniteArrayElementClass() {
+		return getArrayElementClass();
+    }
+	
 
     //
     // Subtypes
@@ -258,6 +263,32 @@ public abstract class TypeDescriptor {
 	        return result==null ? 
 	        		java.lang.Object.class : result;
         }
+		
+		@Override
+        public java.lang.Class<?> getDefiniteArrayElementClass() {
+			java.lang.Class<?> result = null;
+			for (TypeDescriptor td: members) {
+	        	if (td instanceof Nothing) {
+	        		continue;
+	        	}
+	        	java.lang.Class<?> c = td.getArrayElementClass();
+	        	if (result==null) {
+	        		result = c;
+	        	}
+	        	else if (result.isAssignableFrom(c)) {
+	        		//do nothing
+	        	}
+	        	else if (c.isAssignableFrom(result)) {
+	        		result = c;
+	        	}
+	        	else if (result!=c) {
+	        		return java.lang.Object.class;
+	        	}
+	        }
+	        return result==null ? 
+	        		java.lang.Object.class : result;
+        }
+		
     }
 
     public static class Intersection extends Composite {
@@ -299,6 +330,12 @@ public abstract class TypeDescriptor {
 	        	if (result==null) {
 	        		result = c;
 	        	}
+	        	else if (result.isAssignableFrom(c)) {
+	        		result = c;
+	        	}
+	        	else if (c.isAssignableFrom(result)) {
+	        		//do nothing
+	        	}
 	        	else if (result!=c) {
 	        		return java.lang.Object.class;
 	        	}
@@ -306,6 +343,7 @@ public abstract class TypeDescriptor {
 	        return result==null ? 
 	        		java.lang.Object.class : result;
         }
+
     }
 
     //

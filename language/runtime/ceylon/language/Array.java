@@ -68,7 +68,7 @@ public final class Array<Element>
             		? extends java.lang.Object> elements) {
         int size = (int) elements.getSize();
         Iterator<?> iterator = elements.iterator();
-        java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
+        java.lang.Class<?> clazz = $reifiedElement.getDefiniteArrayElementClass();
         if (clazz==Integer.class) {
         	long[] array = new long[size];
         	if (elements instanceof Array) {
@@ -227,7 +227,7 @@ public final class Array<Element>
         }
         else {
         	java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-        			.newInstance(clazz, size);
+        			.newInstance($reifiedElement.getArrayElementClass(), size);
         	for (int i=0; i<array.length; i++) {
         		array[i] = iterator.next();
         	}
@@ -238,7 +238,7 @@ public final class Array<Element>
     private static <Element> java.lang.Object createArray(
         final TypeDescriptor $reifiedElement,
         final int size, Element element) {
-        java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
+        java.lang.Class<?> clazz = $reifiedElement.getDefiniteArrayElementClass();
         if (clazz==Integer.class) {
             long[] array = new long[size];
             long value = ((Integer) element).value;
@@ -319,7 +319,7 @@ public final class Array<Element>
         }
         else {
         	java.lang.Object[] array = (java.lang.Object[]) java.lang.reflect.Array
-        			.newInstance(clazz, size);
+        			.newInstance($reifiedElement.getArrayElementClass(), size);
         	if (element!=null) Arrays.fill(array, element);
         	return array;
         }
