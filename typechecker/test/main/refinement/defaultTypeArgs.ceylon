@@ -40,3 +40,26 @@ void testF() {
 class MyFoo<T=String>(T t) {
     shared class Bar() {}
 }
+
+
+class CC() satisfies II&JJ {
+    shared actual class Inner()
+            extends super.Inner() {
+        shared actual Nothing get() => nothing;
+    }
+}
+
+interface JJ satisfies II {}
+
+interface KK satisfies II<Integer> {
+    shared actual class Inner()
+             extends super.Inner() {
+        shared actual Integer get() => 1;
+    }
+}
+
+interface II<out T=String> {
+    shared formal class Inner() {
+        shared formal T get();
+    }
+}
