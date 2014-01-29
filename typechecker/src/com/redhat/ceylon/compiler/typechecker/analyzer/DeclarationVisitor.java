@@ -347,14 +347,6 @@ public class DeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.InterfaceDefinition that) {
-        super.visit(that);
-        if (that.getAdaptedTypes()!=null) {
-            that.addUnsupportedError("introductions are not yet supported");
-        }
-    }
-    
-    @Override
     public void visit(Tree.TypeAliasDeclaration that) {
         TypeAlias a = new TypeAlias();
         that.setDeclarationModel(a);

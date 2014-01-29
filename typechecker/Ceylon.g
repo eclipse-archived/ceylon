@@ -767,31 +767,6 @@ satisfiedTypes returns [SatisfiedTypes satisfiedTypes]
       )*
     ;
 
-abstractedType returns [AbstractedType abstractedType]
-    : ABSTRACTED_TYPE
-      { $abstractedType = new AbstractedType($ABSTRACTED_TYPE); }
-      qualifiedType
-      { $abstractedType.setType($qualifiedType.type); }
-    ;
-
-/*adaptedTypes returns [AdaptedTypes adaptedTypes]
-    : ADAPTED_TYPES 
-      { $adaptedTypes = new AdaptedTypes($ADAPTED_TYPES); }
-      t1=qualifiedType 
-      { $adaptedTypes.addType($t1.type); }
-      (
-        i=INTERSECTION_OP 
-        { $adaptedTypes.setEndToken($i); }
-        (
-          t2=qualifiedType
-          { $adaptedTypes.addType($t2.type); 
-            $adaptedTypes.setEndToken(null); }
-        | { displayRecognitionError(getTokenNames(),
-              new MismatchedTokenException(UIDENTIFIER, input)); }
-        )
-      )*
-    ;*/
-
 caseTypes returns [CaseTypes caseTypes]
     : CASE_TYPES
       { $caseTypes = new CaseTypes($CASE_TYPES); }
@@ -821,12 +796,12 @@ caseType returns [StaticType type, BaseMemberExpression instance]
     | objectDeclaration*/
     ;
 
-//Support for metatypes
-//Note that we don't need this for now
-/*metatypes
-    : IS_OP type ('&' type)* 
-    -> ^(METATYPES[$IS_OP] type*)
-    ;*/
+abstractedType returns [AbstractedType abstractedType]
+    : ABSTRACTED_TYPE
+      { $abstractedType = new AbstractedType($ABSTRACTED_TYPE); }
+      abbreviatedType
+      { $abstractedType.setType($abbreviatedType.type); }
+    ;
 
 parameters returns [ParameterList parameterList]
     : LPAREN
@@ -2539,8 +2514,6 @@ qualifiedOrTupleType returns [StaticType type]
       { $type=$tupleType.type; }
     | iterableType
       { $type=$iterableType.type; }
-    | groupedType
-      { $type=$groupedType.type; }
     ;
 
 /*typeAbbreviationStart
@@ -2593,13 +2566,18 @@ abbreviatedType returns [StaticType type]
       )*
     ;
     
-qualifiedType returns [SimpleType type]
-    : ot=typeNameWithArguments
-      { BaseType bt = new BaseType(null);
-        bt.setIdentifier($ot.identifier);
-        if ($ot.typeArgumentList!=null)
-            bt.setTypeArgumentList($ot.typeArgumentList);
-        $type=bt; }
+qualifiedType returns [StaticType type]
+    : ( 
+        ot=typeNameWithArguments
+        { BaseType bt = new BaseType(null);
+          bt.setIdentifier($ot.identifier);
+          if ($ot.typeArgumentList!=null)
+              bt.setTypeArgumentList($ot.typeArgumentList);
+          $type=bt; }
+      |
+        groupedType
+        { $type=$groupedType.type; }
+      )
       (
         MEMBER_OP 
         it=typeNameWithArguments
@@ -2789,10 +2767,10 @@ isCondition returns [IsCondition condition]
 satisfiesCondition returns [SatisfiesCondition condition]
     : SATISFIES 
       { $condition = new SatisfiesCondition($SATISFIES); }
-      (t1=qualifiedType 
-      { $condition.setLeftType($t1.type); }
-      t2=qualifiedType 
-      { $condition.setRightType($t2.type); })?
+      type 
+      { $condition.setType($type.type); }
+      typeName
+      { $condition.setIdentifier($typeName.identifier); }
     ;
 
 controlStatement returns [ControlStatement controlStatement]
@@ -2971,8 +2949,8 @@ isCaseCondition returns [IsCase item]
 satisfiesCaseCondition returns [SatisfiesCase item]
     : SATISFIES 
       { $item = new SatisfiesCase($SATISFIES); }
-      qualifiedType
-      { $item.setType($qualifiedType.type); }
+      type
+      { $item.setType($type.type); }
     ;
 
 forElse returns [ForStatement statement]
