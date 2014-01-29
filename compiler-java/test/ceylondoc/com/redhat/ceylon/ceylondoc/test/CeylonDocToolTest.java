@@ -272,7 +272,9 @@ public class CeylonDocToolTest {
     @Test
     public void externalLinksToLocalRepoPathWithModuleNamePattern() throws Exception {
         String repoUrl = new File("").getAbsolutePath() + "/build/CeylonDocToolTest/" + name.getMethodName();
-        externalLinks(repoUrl, "com.redhat=" + repoUrl);
+        // note that even though we pass a path, the links are created as URIs, which must include the file: scheme
+        // but the // for authority is not required and will in fact not be generated, as per URI RFC
+        externalLinks("file:"+repoUrl, "com.redhat=" + repoUrl);
     }
 
     @Test
