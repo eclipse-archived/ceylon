@@ -207,6 +207,14 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         if (testMethods.isEmpty() && errorIfNoTests) {
             createFailingTest("No tests!", new Exception("contains no tests"));
         }
+        Method failureCountGetter = null;
+        if(moduleName.equals("default")){
+            failureCountGetter = getFailureCountGetter(cl);
+            // check if an error was produced
+            if(failureCountGetter == null)
+                return;
+        }
+
         for (Map.Entry<String, List<String>> entry : testMethods.entrySet()) {
             final String className = entry.getKey();
             
@@ -225,7 +233,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 final Description description;
                 description = Description.createTestDescription(testClass, className);
                 List<String> testMethodNames = entry.getValue();
-                CeylonTestRunner classTestRunner = new CeylonTestRunner(testClass, testMethodNames);
+                CeylonTestRunner classTestRunner = new CeylonTestRunner(testClass, failureCountGetter, testMethodNames);
                 // Add child descriptions to my description
                 for (Method testMethod : classTestRunner.getChildren()) {
                     description.addChild(classTestRunner.describeChild(testMethod));
@@ -246,6 +254,32 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
     }
     
+    private Method getFailureCountGetter(URLClassLoader cl) {
+        Class<?> failureCountClass;
+        try {
+            failureCountClass = cl.loadClass("failureCount_");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            failureCountClass = null;
+        }
+        if(failureCountClass == null) {
+            // Create a fake (failing) test for classes we couldn't find the failure count
+            createFailingTest("Initialisation error", new CompilationException("Count not find test.failureCount class"));
+            return null;
+        }
+        // get the method for getting the failure count
+        Method failureCountGetter = null;
+        try {
+            failureCountGetter = failureCountClass.getDeclaredMethod("get_");
+            failureCountGetter.setAccessible(true);
+        } catch (NoSuchMethodException | SecurityException e1) {
+            // Create a fake (failing) test for classes we couldn't find the failure count
+            createFailingTest("Initialisation error", new CompilationException("Could not find getter for failure count: "+e1));
+            return null;
+        }
+        return failureCountGetter;
+    }
+
     public void noTests() {
         Assert.fail("No tests found");
     }

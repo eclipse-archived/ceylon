@@ -39,9 +39,12 @@ public class CeylonTestRunner extends ParentRunner<Method> {
     
     private LinkedHashMap<Method, Description> children = new LinkedHashMap<Method, Description>();
 
-    public CeylonTestRunner(Class<?> testClass, List<String> list) throws InitializationError {
+    private Method failureCountGetter;
+
+    public CeylonTestRunner(Class<?> testClass, Method failureCountGetter, List<String> list) throws InitializationError {
         super(testClass);
         this.testClass = testClass;
+        this.failureCountGetter = failureCountGetter;
         for (String method : list) {
             Method m;
             try {
@@ -89,8 +92,17 @@ public class CeylonTestRunner extends ParentRunner<Method> {
             } else {
                 instance = testClass.newInstance();
             }
+            Long previousCount = null;
+            if(failureCountGetter != null)
+                previousCount = (Long) failureCountGetter.invoke(null);
+            
             child.invoke(instance);
             
+            if(failureCountGetter != null){
+                Long newCount = (Long) failureCountGetter.invoke(null);
+                if(!newCount.equals(previousCount))
+                    failure = new Failure(description, new AssertionError("check() failed: "+(newCount - previousCount)+" errors"));
+            }
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             StackTraceElement[] st = cause.getStackTrace();
