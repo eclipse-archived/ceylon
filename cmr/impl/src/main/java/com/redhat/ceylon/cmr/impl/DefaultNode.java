@@ -248,6 +248,11 @@ public class DefaultNode extends AbstractOpenNode {
         return ch.getSize();
     }
 
+    @Override public String getStoreDisplayString() {
+        final ContentStore cs = findService(ContentStore.class);
+        return cs.getDisplayString();
+    }
+
     @Override
     public String getDisplayString() {
         return getLabel();

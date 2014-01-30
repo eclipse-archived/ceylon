@@ -51,4 +51,6 @@ public interface Node {
     boolean isRemote();
 
     String getDisplayString();
+
+    String getStoreDisplayString();
 }

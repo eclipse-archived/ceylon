@@ -315,6 +315,11 @@ public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
         return false;
     }
+    
+    @Override
+    public String getStoreDisplayString() {
+        return "";
+    };
 
     protected class LazyInputStream extends InputStream {
         private InputStream delegate;
