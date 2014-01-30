@@ -105,7 +105,7 @@ public class CallbackTestCase extends AbstractTest {
         private long current;
         private Throwable err;
 
-        public void size(long size) {
+        public void start(String nodeFullPath, long size, String contentStore) {
             if (ts != null) {
                 throw new IllegalArgumentException(ts);
             }
@@ -120,7 +120,7 @@ public class CallbackTestCase extends AbstractTest {
             Assert.assertNotNull(file);
         }
 
-        public void error(Throwable err) {
+        public void error(File file, Throwable err) {
             this.err = err;
         }
     }

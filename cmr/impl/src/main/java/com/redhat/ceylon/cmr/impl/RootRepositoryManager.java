@@ -109,7 +109,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         final File file;
         try {
             if (callback != null) {
-                callback.size(node.getSize());
+                callback.start(NodeUtils.getFullPath(node), node.getSize(), node.getStoreDisplayString());
                 stream = new ArtifactCallbackStream(callback, stream);
             }
             fileContentStore.putContent(node, stream, context); // stream should be closed closer to API call
@@ -119,7 +119,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             }
         } catch (Throwable t) {
             if (callback != null) {
-                callback.error(t);
+                callback.error(fileContentStore.getFile(node), t);
             }
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

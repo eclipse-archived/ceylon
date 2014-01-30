@@ -18,6 +18,8 @@ package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
 
+import com.redhat.ceylon.cmr.spi.ContentStore;
+
 /**
  * Artifact callback.
  *
@@ -25,13 +27,16 @@ import java.io.File;
  */
 public interface ArtifactCallback {
     /**
-     * Artifact size callback, or -1 if it cannot be determined.
-     * The callback is invoked before streaming.
+     * 
+     * The callback is invoked before streaming of a node.
+     * it gives the estimated size of the artifact, or -1 if it cannot be determined.
      * e.g. to be able to display % of downloaded artifact.
      *
+     * @param nodeFullPath the full path of the node
      * @param size the size
+     * @param contentStore the content store this artifact will be downloaded from
      */
-    void size(long size);
+    void start(String nodeFullPath, long size, String contentStore);
 
     /**
      * Invoked for every byte stream read.
@@ -52,6 +57,7 @@ public interface ArtifactCallback {
      * For any error during streaming.
      *
      * @param err the cause
+     * @param localFile the downloaded file (even if not finished)
      */
-    void error(Throwable err);
+    void error(File localFile, Throwable err);
 }
