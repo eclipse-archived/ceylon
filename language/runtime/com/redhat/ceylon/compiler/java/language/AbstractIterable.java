@@ -42,7 +42,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Ignore
     private TypeDescriptor $reifiedAbsent;
     @Ignore
-    private final Iterable[] $iterables;
+    private final Iterable<?,?>[] $iterables;
 
     public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
@@ -52,7 +52,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         this.$iterables = null;
     }
     
-    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, Iterable... iterables) {
+    public AbstractIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, Iterable<?,?>... iterables) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl<java.lang.Object>(ceylon.language.Object.$TypeDescriptor$,this);
         this.$reifiedElement = $reifiedElement;
@@ -61,13 +61,13 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
     
     @Ignore
-    public Iterable[] $getIterables$() {
+    public Iterable<?,?>[] $getIterables$() {
         return $iterables;
     }
     
     @Ignore
     @Override
-    public Category$impl $ceylon$language$Category$impl(){
+    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
     }
 
@@ -98,7 +98,8 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     public Sequential<? extends Element> getSequence() {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>($reifiedElement);
         java.lang.Object next = null;
-        for (Iterator<? extends Element> iter = iterator(); (next = iter.next()) != finished_.get_();) {
+        for (Iterator<? extends Element> iter = iterator(); 
+        		(next = iter.next()) != finished_.get_();) {
             sb.append((Element) next);
         }
         return sb.getSequence();

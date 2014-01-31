@@ -52,7 +52,7 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
     public MapIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, @Ignore TypeDescriptor $reifiedResult,
             Iterable<? extends Element, ? extends Absent> iterable, Callable<? extends Result> collecting) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Result,Absent>($reifiedResult, $reifiedAbsent, this);
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(ceylon.language.Object.$TypeDescriptor$,this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl<java.lang.Object>(ceylon.language.Object.$TypeDescriptor$,this);
         this.iterable = iterable;
         this.sel = collecting;
         this.$reifiedElement = $reifiedElement;
@@ -62,7 +62,7 @@ public class MapIterable<Element, Absent, Result> implements Iterable<Result,Abs
 
     @Ignore
     @Override
-    public Category$impl $ceylon$language$Category$impl(){
+    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
     }
 

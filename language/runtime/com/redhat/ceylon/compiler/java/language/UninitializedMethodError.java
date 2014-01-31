@@ -18,7 +18,9 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 @Class
 public class UninitializedMethodError extends Error {
 
-    public UninitializedMethodError() {
+    private static final long serialVersionUID = 7063698116161174567L;
+
+	public UninitializedMethodError() {
         super();
     }
 

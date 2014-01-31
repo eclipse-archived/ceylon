@@ -50,7 +50,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent,
             Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
-        this.$ceylon$language$Category$this = new ceylon.language.Category$impl(ceylon.language.Object.$TypeDescriptor$,this);
+        this.$ceylon$language$Category$this = new ceylon.language.Category$impl<java.lang.Object>(ceylon.language.Object.$TypeDescriptor$,this);
     	if (array.length==0 || array.length<=first) {
     		throw new AssertionException("ArrayIterable may not have zero elements (array)");
     	}
@@ -63,7 +63,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 
     @Ignore
     @Override
-    public Category$impl $ceylon$language$Category$impl(){
+    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
     }
 
@@ -74,7 +74,9 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Ignore
-    public static <Element> Iterable<? extends Element, ? extends java.lang.Object> instance(TypeDescriptor $reifiedElement, Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array){
+    public static <Element> Iterable<? extends Element, ? extends java.lang.Object> 
+    instance(TypeDescriptor $reifiedElement, Iterable<? extends Element, ? extends java.lang.Object> rest, 
+    		Element... array){
         // make sure we dont' create ArrayIterables with no fixed elements
         if(array.length == 0)
             return rest;
@@ -309,9 +311,9 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
             return true;
         if(that instanceof Iterable == false)
             return false;
-        Iterable other = (Iterable) that;
+        Iterable<?,?> other = (Iterable<?,?>) that;
         Iterator<? extends Element> myIterator = iterator();
-        Iterator otherIterator = other.iterator();
+        Iterator<?> otherIterator = other.iterator();
         Object myElem;
         while((myElem = myIterator.next()) != finished_.get_()){
             Object otherElem;
