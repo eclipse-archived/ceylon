@@ -323,11 +323,16 @@ public final class Tuple<Element, First extends Element,
     
     @Ignore
     private TypeDescriptor $getElementType(int index) {
-    	//TODO: handle case of not ReifiedType
-        ReifiedType element = (ReifiedType)array[first + index];
-        return element != null ? 
-        		element.$getType$() : 
-        		Null.$TypeDescriptor$;
+        java.lang.Object object = array[first + index];
+        if (object==null) {
+        	return Null.$TypeDescriptor$;
+        }
+        else if (object instanceof ReifiedType) {
+			return ((ReifiedType) object).$getType$();
+        }
+        else {
+        	return null;
+        }
     }
 
 }
