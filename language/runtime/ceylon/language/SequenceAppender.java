@@ -25,7 +25,7 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     @Override
     @TypeInfo("ceylon.language::Sequence<Element>")
     public final Sequence<? extends Element> getSequence() {
-        return (Sequence)super.getSequence();
+        return (Sequence<? extends Element>)super.getSequence();
     }
 
     @Override

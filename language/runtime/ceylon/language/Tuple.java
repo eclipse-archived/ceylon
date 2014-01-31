@@ -43,9 +43,12 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
         ceylon.language.Sequence<Element> {
 
     public Tuple(@com.redhat.ceylon.compiler.java.metadata.Ignore
-    final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, @com.redhat.ceylon.compiler.java.metadata.Ignore
-    final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, @com.redhat.ceylon.compiler.java.metadata.Ignore
-    final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, @com.redhat.ceylon.compiler.java.metadata.Name("first")
+    final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedElement, 
+    @com.redhat.ceylon.compiler.java.metadata.Ignore
+    final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedFirst, 
+    @com.redhat.ceylon.compiler.java.metadata.Ignore
+    final com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reifiedRest, 
+    @com.redhat.ceylon.compiler.java.metadata.Name("first")
     @com.redhat.ceylon.compiler.java.metadata.TypeInfo("First")
     final First first, @com.redhat.ceylon.compiler.java.metadata.Name("rest")
     @com.redhat.ceylon.compiler.java.metadata.TypeInfo("Rest")
@@ -59,7 +62,7 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
     }
     
     @Ignore
-    public Tuple(TypeDescriptor $reifiedElement, java.lang.Object[] elements, ceylon.language.Sequential tail) {
+    public Tuple(TypeDescriptor $reifiedElement, java.lang.Object[] elements, Sequential tail) {
         this($reifiedElement, makeArray(elements, tail));
     }
     
@@ -68,21 +71,21 @@ public final class Tuple<Element, First extends Element, Rest extends ceylon.lan
         super($reifiedElement, array, first, length, copy);
     }
     
-    private static java.lang.Object[] makeArray(java.lang.Object first, ceylon.language.Sequential rest) {
+    private static java.lang.Object[] makeArray(java.lang.Object first, Sequential rest) {
         java.lang.Object[] elements = new java.lang.Object[(int)rest.getSize() + 1];
         elements[0] = first;
         copyToArray(rest, elements, 1);
         return elements;
     }
     
-    private static java.lang.Object[] makeArray(java.lang.Object[] array, ceylon.language.Sequential tail) {
+    private static java.lang.Object[] makeArray(java.lang.Object[] array, Sequential tail) {
         java.lang.Object[] elements = Arrays.copyOf(array, array.length + (int)tail.getSize());
         copyToArray(tail, elements, array.length);
         return elements;
     }
     
-    private static void copyToArray(ceylon.language.Sequential seq, java.lang.Object[] array, int offset) {
-        ceylon.language.Iterator iter = seq.iterator();
+    private static void copyToArray(Sequential seq, java.lang.Object[] array, int offset) {
+        Iterator<?> iter = seq.iterator();
         int i = offset;
         for (java.lang.Object elem = iter.next(); elem != ceylon.language.finished_.get_(); elem = iter.next()) {
             array[i++] = elem;

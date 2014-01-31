@@ -35,7 +35,8 @@ public class SequenceBuilder<Element> implements ReifiedType {
     }
     
     @Ignore
-    public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement, int initialCapacity) {
+    public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement, 
+    		int initialCapacity) {
         this($reifiedElement);
         if (initialCapacity >= 0) {
             resize$priv$(initialCapacity);
@@ -72,7 +73,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     }
     /** Trims the array so it's just big enough */
     @Ignore
-    SequenceBuilder trim$priv() {
+    SequenceBuilder<Element> trim$priv() {
         if (array.length != length) {
             resize$priv$(length);
         }
@@ -82,10 +83,11 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
         if (array==null || length == 0) {
-            return (Sequential)empty_.get_();
+            return (Sequential<? extends Element>)empty_.get_();
         }
         else {
-            return ArraySequence.backedBy$hidden($reifiedElement, (Element[])array, 0, length);
+            return ArraySequence.backedBy$hidden($reifiedElement, 
+            		(Element[])array, 0, length);
         }
     }
     
@@ -139,6 +141,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(SequenceBuilder.class, $reifiedElement);
+        return TypeDescriptor.klass(SequenceBuilder.class, 
+        		$reifiedElement);
     }
 }

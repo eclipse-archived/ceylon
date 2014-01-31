@@ -75,7 +75,7 @@ public final class Array<Element>
         		//      because it would break javaObjectArray()
         		java.lang.String[] array = new java.lang.String[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -88,7 +88,7 @@ public final class Array<Element>
         	else if (clazz==Integer.class) {
         		long[] array = new long[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -100,7 +100,7 @@ public final class Array<Element>
         	else if (clazz==Float.class) {
         		double[] array = new double[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -112,7 +112,7 @@ public final class Array<Element>
         	else if (clazz==Character.class) {
         		int[] array = new int[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -124,7 +124,7 @@ public final class Array<Element>
         	else if (clazz==Boolean.class) {
         		boolean[] array = new boolean[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -136,7 +136,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Boolean.class) {
         		boolean[] array = new boolean[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -148,7 +148,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Character.class) {
         		char[] array = new char[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -160,7 +160,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Float.class) {
         		float[] array = new float[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -172,7 +172,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Double.class) {
         		double[] array = new double[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -184,7 +184,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Byte.class) {
         		byte[] array = new byte[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -196,7 +196,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Short.class) {
         		short[] array = new short[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -208,7 +208,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Integer.class) {
         		int[] array = new int[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -220,7 +220,7 @@ public final class Array<Element>
         	else if (clazz==java.lang.Long.class) {
         		long[] array = new long[size];
         		if (elements instanceof Array) {
-        			arraycopy(((Array)elements).array, 0, array, 0, size);
+        			arraycopy(((Array<?>)elements).array, 0, array, 0, size);
         		}
         		else {
         			for (int i=0; i<array.length; i++) {
@@ -334,7 +334,8 @@ public final class Array<Element>
     
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
-        this.$ceylon$language$Category$this = new Category$impl(Object.$TypeDescriptor$,this);
+        this.$ceylon$language$Category$this = 
+        		new Category$impl<java.lang.Object>(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = 
         		new Iterable$impl<Element,java.lang.Object>($reifiedElement, 
         				Null.$TypeDescriptor$, this);
@@ -355,7 +356,7 @@ public final class Array<Element>
 
     @Ignore
     @Override
-    public Category$impl $ceylon$language$Category$impl(){
+    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
     }
 
@@ -876,7 +877,7 @@ public final class Array<Element>
 
     @Override
     @Ignore
-    public Category getKeys() {
+    public Category<? super java.lang.Object> getKeys() {
         return $ceylon$language$Correspondence$this.getKeys();
     }
 

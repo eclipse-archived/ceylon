@@ -26,13 +26,13 @@ final class internalSort_ {
         final Callable<? extends Comparison> comparing,
         @Name("elements")
         @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-        final Iterable<? extends Element, ? extends java.lang.Object> elements) {
+        final Iterable<? extends Element, ?> elements) {
         
         if( elements.getEmpty() ) {
-            return (Sequential)empty_.get_();   
+            return (Sequential<? extends Element>)empty_.get_();   
         }
         
-        ArraySequence<? extends Element> result = new ArraySequence<Element>($reifiedElement, (ceylon.language.Iterable)elements);
+        ArraySequence<? extends Element> result = new ArraySequence<Element>($reifiedElement, elements);
         Arrays.sort((Element[])result.array, result.first, result.first+result.length, comparator(comparing));
         return result;
     }
@@ -43,8 +43,8 @@ final class internalSort_ {
         return new Comparator<Element>() {
             public int compare(Element x, Element y) {
                 Comparison result = comparing.$call$(x, y);
-                if (result.largerThan()) return 1;
-                if (result.smallerThan()) return -1;
+                if (result==larger_.get_()) return 1;
+                if (result==smaller_.get_()) return -1;
                 return 0;
             }
         };
