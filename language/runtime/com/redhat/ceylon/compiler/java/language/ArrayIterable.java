@@ -175,12 +175,12 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Override
     public <Result> Iterable<? extends Result, ? extends Absent> map(@Ignore TypeDescriptor $reifiedResult, 
             Callable<? extends Result> f) {
-        return new MapIterable<Element, Absent, Result>($reifiedElement, $reifiedAbsent, $reifiedResult, this, f);
+        return $ceylon$language$Iterable$this.map($reifiedResult, f);
     }
     
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f);
+        return $ceylon$language$Iterable$this.filter(f);
     }
 
     @Override
@@ -218,7 +218,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
 
     @Override
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, f).getSequence();
+        return $ceylon$language$Iterable$this.select(f);
     }
     
     @Override @Ignore

@@ -3,8 +3,6 @@ package ceylon.language;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
-import com.redhat.ceylon.compiler.java.language.FilterIterable;
-import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -29,21 +27,29 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private static final long USE_ARRAY_SIZE = -10L;
 
     @Ignore
-    private final Category$impl<java.lang.Object> $ceylon$language$Category$this;
+    private final Category$impl<java.lang.Object> 
+    $ceylon$language$Category$this;
     @Ignore
-    private final Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$this;
+    private final Iterable$impl<Element,java.lang.Object> 
+    $ceylon$language$Iterable$this;
     @Ignore
-    private final Collection$impl<Element> $ceylon$language$Collection$this;
+    private final Collection$impl<Element> 
+    $ceylon$language$Collection$this;
     @Ignore
-    private final Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
+    private final Correspondence$impl<Integer,Element> 
+    $ceylon$language$Correspondence$this;
     @Ignore
-    private final List$impl<Element> $ceylon$language$List$this;
+    private final List$impl<Element> 
+    $ceylon$language$List$this;
     @Ignore
-    private final Sequential$impl<Element> $ceylon$language$Sequential$this;
+    private final Sequential$impl<Element> 
+    $ceylon$language$Sequential$this;
     @Ignore
-    private final Sequence$impl<Element> $ceylon$language$Sequence$this;
+    private final Sequence$impl<Element> 
+    $ceylon$language$Sequence$this;
     @Ignore
-    private final Ranged$impl<Integer,Sequential<? extends Element>> $ceylon$language$Ranged$this;
+    private final Ranged$impl<Integer,Sequential<? extends Element>> 
+    $ceylon$language$Ranged$this;
 
     /** 
      * A backing array. Maybe shared between many ArraySequence instances
@@ -84,19 +90,22 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Ignore
-    private static <Element> java.lang.Object[] copyOrNot_array$hidden(TypeDescriptor $reifiedElement,
+    private static <Element> java.lang.Object[] 
+    copyOrNot_array$hidden(TypeDescriptor $reifiedElement,
             Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>)elements).array;
         } else {
             // Note we trim the array which means copyOrNot_length$hidden() 
             // can use USE_ARRAY_SIZE
-            return new SequenceBuilder<Element>($reifiedElement).appendAll(elements).trim$priv().array;
+            return new SequenceBuilder<Element>($reifiedElement)
+            		.appendAll(elements).trim$priv().array;
         }
     }
     
     @Ignore
-    private static <Element> int copyOrNot_first$hidden(
+    private static <Element> int 
+    copyOrNot_first$hidden(
             Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>) elements).first;
@@ -105,17 +114,20 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Ignore
-    private static <Element> long copyOrNot_length$hidden(
-            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+    private static <Element> long 
+    copyOrNot_length$hidden(
+    		Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>) elements).length;
         }
         return USE_ARRAY_SIZE;
     }
 
-    public static <Element> ArraySequence<Element> instance(@Ignore TypeDescriptor $reifiedElement, 
+    public static <Element> ArraySequence<Element> 
+    instance(@Ignore TypeDescriptor $reifiedElement, 
     		java.lang.Object[] array) {
-        return new ArraySequence<Element>($reifiedElement, array, 0, array.length, true);
+        return new ArraySequence<Element>($reifiedElement, 
+        		array, 0, array.length, true);
     }
 
     @Ignore
@@ -149,11 +161,13 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     		throw new AssertionException("ArraySequence may not have zero elements");
     	}
     	if (first + length > array.length) {
-    	    throw new AssertionException("Overflow :" + (first + length) + " > " + array.length);
+    	    throw new AssertionException("Overflow :" + 
+    	    		(first + length) + " > " + array.length);
     	}
     	this.$reifiedElement = $reifiedElement;
     	if (copy) {
-    	    this.array = (Element[])Arrays.copyOfRange(array, (int)first, (int)length);
+    	    this.array = (Element[])Arrays.copyOfRange(array, 
+    	    		(int)first, (int)length);
     	    this.first = 0;
     	    
     	} else {
@@ -174,31 +188,38 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
      * can use it. 
      */
     @Ignore
-    static <Element> ArraySequence<Element> backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, 
+    static <Element> ArraySequence<Element> 
+    backedBy$hidden(@Ignore TypeDescriptor $reifiedElement, 
     		Element[] array, long first, long length) {
-        return new ArraySequence<Element>($reifiedElement, array, first, length, false);
+        return new ArraySequence<Element>($reifiedElement, 
+        		array, first, length, false);
     }
     
     @Ignore
-    protected ArraySequence<Element> backedBy$hidden(Element[] array, long first, long length) {
-        return new ArraySequence<Element>($reifiedElement, array, first, length, false);
+    protected ArraySequence<Element> 
+    backedBy$hidden(Element[] array, long first, long length) {
+        return new ArraySequence<Element>($reifiedElement, 
+        		array, first, length, false);
     }
     
     @Ignore
     @Override
-    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
+    public Category$impl<java.lang.Object> 
+    $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
     }
 
     @Ignore
     @Override
-    public Iterable$impl<Element,java.lang.Object> $ceylon$language$Iterable$impl(){
+    public Iterable$impl<Element,java.lang.Object> 
+    $ceylon$language$Iterable$impl(){
         return $ceylon$language$Iterable$this;
     }
 
     @Ignore
     @Override
-    public Collection$impl<Element> $ceylon$language$Collection$impl(){
+    public Collection$impl<Element> 
+    $ceylon$language$Collection$impl(){
         return $ceylon$language$Collection$this;
     }
 
@@ -210,7 +231,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Ignore
     @Override
-    public Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$impl(){
+    public Correspondence$impl<Integer,Element> 
+    $ceylon$language$Correspondence$impl(){
         return $ceylon$language$Correspondence$this;
     }
 
@@ -223,13 +245,15 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Ignore
     @Override
-    public Sequential$impl<Element> $ceylon$language$Sequential$impl(){
+    public Sequential$impl<Element> 
+    $ceylon$language$Sequential$impl(){
         return $ceylon$language$Sequential$this;
     }
 
     @Ignore
     @Override
-    public Sequence$impl<Element> $ceylon$language$Sequence$impl(){
+    public Sequence$impl<Element> 
+    $ceylon$language$Sequence$impl(){
         return $ceylon$language$Sequence$this;
     }
 
@@ -244,7 +268,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
             return (Sequential<? extends Element>)empty_.get_();
         }
         else {
-            return backedBy$hidden((Element[])array, first + 1, length - 1);
+            return backedBy$hidden((Element[])array, 
+            		first + 1, length - 1);
         }
     }
 
@@ -270,7 +295,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    public Sequential<? extends Element> span(Integer from, Integer to) {
+    public Sequential<? extends Element> span(Integer from, 
+    		Integer to) {
         long fromIndex = from.longValue();
         long toIndex = to==null ? getSize() : to.longValue();
         long lastIndex = getLastIndex().longValue();
@@ -298,7 +324,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    public Sequential<? extends Element> segment(Integer from, long length) {
+    public Sequential<? extends Element> segment(Integer from, 
+    		long length) {
         long fromIndex = from.longValue();
         if (fromIndex < 0) {
             length = length+fromIndex;
@@ -334,7 +361,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     /** 
      * A copy of the given elements of the given array, but in reversed order. 
      */
-    private static <Element> Element[] reversedCopy$priv$(Element[] array, int first, int length) {
+    private static <Element> Element[] 
+    		reversedCopy$priv$(Element[] array, int first, 
+    				int length) {
         java.lang.Object[] reversed = new java.lang.Object[length];
         for (int i = 0; i < length; i++) {
             reversed[length-1-i] = array[first+i];
@@ -344,7 +373,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Override
     public Sequence<? extends Element> getReversed() {
-    	Element[] reversed = reversedCopy$priv$((Element[])array, first, length);
+    	Element[] reversed = reversedCopy$priv$((Element[])array, 
+    			first, length);
 		return backedBy$hidden(reversed, 0, length);
     }
 
@@ -359,7 +389,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return new ArrayListIterator();
     }
 
-    public class ArrayListIterator extends AbstractIterator<Element> {
+    public class ArrayListIterator 
+            extends AbstractIterator<Element> {
 
         public ArrayListIterator() {
             super($getReifiedElement$());
@@ -399,19 +430,22 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     @Ignore
-    public boolean definesEvery(Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    public boolean 
+    definesEvery(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
     @Override
     @Ignore
-    public boolean definesAny(Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    public boolean 
+    definesAny(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @Override
     @Ignore
-    public Sequential<? extends Element> items(Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    public Sequential<? extends Element> 
+    items(Iterable<? extends Integer,? extends java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
@@ -564,37 +598,46 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
     map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, java.lang.Object, Result>($getReifiedElement$(), 
-        		Null.$TypeDescriptor$, $reifiedResult, this, f);
+        return $ceylon$language$Iterable$this.map($reifiedResult, f);
     }
     @Override
-    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($getReifiedElement$(), Null.$TypeDescriptor$, this, f);
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    filter(Callable<? extends Boolean> f) {
+        return $ceylon$language$Iterable$this.filter(f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> indexes(Callable<? extends Boolean> f) {
+    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    indexes(Callable<? extends Boolean> f) {
         return $ceylon$language$List$this.indexes(f);
     }
     @Override
-    public <Result> Sequence<? extends Result> collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+    public <Result> Sequence<? extends Result> 
+    collect(@Ignore TypeDescriptor $reifiedResult, 
+    		Callable<? extends Result> f) {
         return $ceylon$language$Sequence$this.collect($reifiedResult, f);
     }
 
     @Override
-    public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($getReifiedElement$(), Null.$TypeDescriptor$, this, f).getSequence();
+    public Sequential<? extends Element> 
+    select(Callable<? extends Boolean> f) {
+        return $ceylon$language$Iterable$this.select(f);
     }
 
     @Override
     @Ignore
-    public <Result> Result fold(@Ignore TypeDescriptor $reifiedResult, Result ini, Callable<? extends Result> f) {
-        return $ceylon$language$Iterable$this.fold($reifiedResult, ini, f);
+    public <Result> Result 
+    fold(@Ignore TypeDescriptor $reifiedResult, 
+    		Result ini, Callable<? extends Result> f) {
+        return $ceylon$language$Iterable$this.fold($reifiedResult, 
+        		ini, f);
     }
     
     @Override
     @Ignore
-    public <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+    public <Result> java.lang.Object 
+    reduce(@Ignore TypeDescriptor $reifiedResult, 
+    		Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
     }
     
@@ -615,70 +658,89 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return this.length<length;
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> by(long step) {
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> getCoalesced() {
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> getIndexed() {
+    public Iterable<? extends Entry<? extends Integer, ? extends Element>, 
+    		? extends java.lang.Object> 
+    getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @SuppressWarnings("rawtypes")
     @Override @Ignore 
-    public <Other,Absent>Iterable chain(@Ignore TypeDescriptor $reifiedOther, 
-    		@Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
-        return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
+    public <Other,Absent>Iterable 
+    chain(@Ignore TypeDescriptor $reifiedOther, 
+    		@Ignore TypeDescriptor $reifiedOtherAbsent, 
+    		Iterable<? extends Other, ? extends Absent> other) {
+        return $ceylon$language$Iterable$this.chain($reifiedOther, 
+        		$reifiedOtherAbsent, other);
     }
     @Override @Ignore 
     public <Other> Tuple<java.lang.Object,? extends Other,? extends Sequence<? extends Element>> 
     following(@Ignore TypeDescriptor $reifiedOther, Other other) {
-        return $ceylon$language$Sequence$this.following($reifiedOther, other);
+        return $ceylon$language$Sequence$this.following($reifiedOther, 
+        		other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,?> defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, Default defaultValue) {
-        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
+    public <Default>Iterable<?,?> 
+    defaultNullElements(@Ignore TypeDescriptor $reifiedDefault, 
+    		Default defaultValue) {
+        return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, 
+        		defaultValue);
     }
     @Override
     @Annotations({ @Annotation("actual") })
     @SuppressWarnings("rawtypes")
-    public <Other>Sequence withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    public <Other>Sequence 
+    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
     @Override
     @Annotations({ @Annotation("actual") })
     @SuppressWarnings("rawtypes")
-    public <Other>Sequence withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    public <Other>Sequence 
+    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
     
     @Override @Ignore
-    public Sequential<? extends Element> trim(Callable<? extends Boolean> characters) {
+    public Sequential<? extends Element> 
+    trim(Callable<? extends Boolean> characters) {
         return $ceylon$language$Sequential$this.trim(characters);
     }
 
     @Override @Ignore
-    public Sequential<? extends Element> trimLeading(Callable<? extends Boolean> characters) {
+    public Sequential<? extends Element> 
+    trimLeading(Callable<? extends Boolean> characters) {
         return $ceylon$language$Sequential$this.trimLeading(characters);
     }
 
     @Override @Ignore
-    public Sequential<? extends Element> trimTrailing(Callable<? extends Boolean> characters) {
+    public Sequential<? extends Element> 
+    trimTrailing(Callable<? extends Boolean> characters) {
         return $ceylon$language$Sequential$this.trimTrailing(characters);
     }
     
     @Override @Ignore
-    public Sequential<? extends Element> initial(long length) {
+    public Sequential<? extends Element> 
+    initial(long length) {
         return $ceylon$language$Sequential$this.initial(length);
     }
     
@@ -688,12 +750,14 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+    public Iterable<? extends Element, ? extends java.lang.Object> 
+    skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }
     
@@ -718,7 +782,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     @Ignore
     public TypeDescriptor $getType$() {
-        return TypeDescriptor.klass(ArraySequence.class, $reifiedElement);
+        return TypeDescriptor.klass(ArraySequence.class, 
+        		$reifiedElement);
     }
     
     @Ignore

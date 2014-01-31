@@ -11,7 +11,6 @@ import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.List;
-import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
@@ -125,13 +124,13 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     public <Result> Iterable<? extends Result, ? extends Absent> map(
             TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
-        return new MapIterable<Element, Absent, Result>($reifiedElement, $reifiedAbsent, $reifiedResult, this, collecting);
+        return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
 
     @Override
     public Iterable<? extends Element, ? extends java.lang.Object> filter(
             Callable<? extends Boolean> selecting) {
-        return new FilterIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, this, selecting);
+        return $ceylon$language$Iterable$this.filter(selecting);
     }
 
     @Override

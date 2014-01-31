@@ -6,8 +6,6 @@ import static java.util.Arrays.copyOfRange;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
-import com.redhat.ceylon.compiler.java.language.FilterIterable;
-import com.redhat.ceylon.compiler.java.language.MapIterable;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -1140,15 +1138,13 @@ public final class Array<Element>
     @Ignore
     public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
     map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, 
-        		Null.$TypeDescriptor$, $reifiedResult, this, f);
+        return $ceylon$language$Iterable$this.map($reifiedResult, f);
     }
     @Override
     @Ignore
     public Iterable<? extends Element, ? extends java.lang.Object> 
     filter(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, 
-        		Null.$TypeDescriptor$, this, f);
+        return $ceylon$language$Iterable$this.filter(f);
     }
     @Override
     @Ignore
@@ -1159,13 +1155,11 @@ public final class Array<Element>
     @Override @Ignore
     public <Result> Sequential<? extends Result> 
     collect(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
-        return new MapIterable<Element, java.lang.Object, Result>($reifiedElement, 
-        		Null.$TypeDescriptor$, $reifiedResult, this, f).getSequence();
+        return $ceylon$language$Iterable$this.collect($reifiedResult, f);
     }
     @Override @Ignore
     public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
-        return new FilterIterable<Element,  Null>($reifiedElement, 
-        		Null.$TypeDescriptor$, this, f).getSequence();
+        return $ceylon$language$Iterable$this.select(f);
     }
     @Override
     @Ignore
