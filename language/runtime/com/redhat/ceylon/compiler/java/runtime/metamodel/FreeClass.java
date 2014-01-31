@@ -197,21 +197,21 @@ public class FreeClass
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> instantiate$typeArguments(){
-        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_();
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> instantiate$typeArguments(){
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public java.lang.Object instantiate(){
-        return instantiate((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_());
+        return instantiate((ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
     }
 
     @Ignore
     @Override
     public java.lang.Object instantiate(
-            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments){
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         return instantiate(typeArguments, empty_.get_());
     }
 
@@ -220,32 +220,32 @@ public class FreeClass
     public java.lang.Object instantiate(
             @Name("typeArguments") @Defaulted 
             @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
-            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
-            ceylon.language.Sequential<? extends java.lang.Object> arguments){
+            ceylon.language.Sequential<?> arguments){
         return classApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
-    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> 
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> 
         memberInstantiate$typeArguments(java.lang.Object container){
-        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_();
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
     public java.lang.Object memberInstantiate(java.lang.Object container){
-        return memberInstantiate(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>>)(Sequential)empty_.get_());
+        return memberInstantiate(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
     }
 
     @Ignore
     @Override
     public java.lang.Object memberInstantiate(
             java.lang.Object container,
-            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments){
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         return memberInstantiate(container, typeArguments, empty_.get_());
     }
 
@@ -256,9 +256,9 @@ public class FreeClass
             java.lang.Object container,
             @Name("typeArguments") @Defaulted 
             @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
-            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends java.lang.Object>> typeArguments,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
-            ceylon.language.Sequential<? extends java.lang.Object> arguments){
+            ceylon.language.Sequential<?> arguments){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
         return memberClassApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, 
                 containerType, typeArguments).bind(container).apply(arguments);

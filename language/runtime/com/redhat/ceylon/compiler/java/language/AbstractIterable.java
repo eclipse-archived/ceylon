@@ -116,7 +116,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     @Override
     @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
+    public Iterable<? extends Element, ?> getRest() {
     	return $ceylon$language$Iterable$this.getRest();
     }
 
@@ -128,7 +128,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
 
     @Override
-    public Iterable<? extends Element, ? extends java.lang.Object> filter(
+    public Iterable<? extends Element, ?> filter(
             Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
@@ -158,12 +158,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+    public Iterable<? extends Element, ?> takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+    public Iterable<? extends Element, ?> skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }
     
@@ -197,11 +197,11 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.shorterThan(length);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
+    public Iterable<? extends Element, ?> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
+    public Iterable<? extends Element, ?> taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore

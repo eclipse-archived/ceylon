@@ -195,7 +195,7 @@ public class Util {
     // Java variadic conversions
     
     @SuppressWarnings("unchecked")
-    public static <T> List<T> collectIterable(Iterable<? extends T, ? extends java.lang.Object> sequence) {
+    public static <T> List<T> collectIterable(Iterable<? extends T, ?> sequence) {
         List<T> list = new LinkedList<T>();
         if (sequence != null) {
             Iterator<? extends T> iterator = sequence.iterator();
@@ -207,7 +207,7 @@ public class Util {
         return list;
     }
 
-    public static boolean[] toBooleanArray(ceylon.language.Iterable<? extends ceylon.language.Boolean, ? extends java.lang.Object> sequence,
+    public static boolean[] toBooleanArray(ceylon.language.Iterable<? extends ceylon.language.Boolean, ?> sequence,
                                            boolean... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toBooleanArray((ceylon.language.List<? extends ceylon.language.Boolean>)sequence, initialElements);
@@ -237,7 +237,7 @@ public class Util {
         return ret;
     }
     
-    public static byte[] toByteArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends java.lang.Object> sequence,
+    public static byte[] toByteArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
                                      long... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toByteArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
@@ -267,7 +267,7 @@ public class Util {
         return ret;
     }
     
-    public static short[] toShortArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends java.lang.Object> sequence,
+    public static short[] toShortArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
                                        long... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toShortArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
@@ -297,7 +297,7 @@ public class Util {
         return ret;
     }
     
-    public static int[] toIntArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends java.lang.Object> sequence,
+    public static int[] toIntArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
                                    long... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toIntArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
@@ -327,7 +327,7 @@ public class Util {
         return ret;
     }
     
-    public static long[] toLongArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends java.lang.Object> sequence,
+    public static long[] toLongArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
                                      long... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toLongArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
@@ -357,7 +357,7 @@ public class Util {
         return ret;
     }
 
-    public static float[] toFloatArray(ceylon.language.Iterable<? extends ceylon.language.Float, ? extends java.lang.Object> sequence, 
+    public static float[] toFloatArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence, 
                                        double... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toFloatArray((ceylon.language.List<? extends ceylon.language.Float>)sequence, initialElements);
@@ -387,7 +387,7 @@ public class Util {
         return ret;
     }
 
-    public static double[] toDoubleArray(ceylon.language.Iterable<? extends ceylon.language.Float, ? extends java.lang.Object> sequence,
+    public static double[] toDoubleArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence,
                                          double... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toDoubleArray((ceylon.language.List<? extends ceylon.language.Float>)sequence, initialElements);
@@ -417,7 +417,7 @@ public class Util {
         return ret;
     }
 
-    public static char[] toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ? extends java.lang.Object> sequence,
+    public static char[] toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
                                      int... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toCharArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, initialElements);
@@ -449,7 +449,7 @@ public class Util {
         return ret;
     }
 
-    public static int[] toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ? extends java.lang.Object> sequence,
+    public static int[] toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
                                          int... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toCodepointArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, initialElements);
@@ -479,7 +479,7 @@ public class Util {
         return ret;
     }
 
-    public static java.lang.String[] toJavaStringArray(ceylon.language.Iterable<? extends ceylon.language.String, ? extends java.lang.Object> sequence,
+    public static java.lang.String[] toJavaStringArray(ceylon.language.Iterable<? extends ceylon.language.String, ?> sequence,
                                                        java.lang.String... initialElements){
         if(sequence instanceof ceylon.language.List)
             return toJavaStringArray((ceylon.language.List<? extends ceylon.language.String>)sequence, initialElements);
@@ -534,7 +534,7 @@ public class Util {
         return ret;
     }
 
-    public static <T> T[] toArray(ceylon.language.Iterable<? extends T, ? extends java.lang.Object> iterable,
+    public static <T> T[] toArray(ceylon.language.Iterable<? extends T, ?> iterable,
             java.lang.Class<T> klass, T... initialElements){
         List<T> list = collectIterable(iterable);
         @SuppressWarnings("unchecked")

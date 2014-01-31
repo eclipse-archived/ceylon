@@ -74,7 +74,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement,
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Nothing>")
             @Name("elements")
-            ceylon.language.Iterable<? extends Element, ? extends java.lang.Object> elements) {
+            ceylon.language.Iterable<? extends Element, ?> elements) {
         /*
          * Ugly, optimization:
          * In the case that the Iterable is an ArraySequence we can avoid 
@@ -92,7 +92,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     private static <Element> java.lang.Object[] 
     copyOrNot_array$hidden(TypeDescriptor $reifiedElement,
-            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+            Iterable<? extends Element, ?> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>)elements).array;
         } else {
@@ -106,7 +106,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     private static <Element> int 
     copyOrNot_first$hidden(
-            Iterable<? extends Element, ? extends java.lang.Object> elements) {
+            Iterable<? extends Element, ?> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>) elements).first;
         }
@@ -116,7 +116,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Ignore
     private static <Element> long 
     copyOrNot_length$hidden(
-    		Iterable<? extends Element, ? extends java.lang.Object> elements) {
+    		Iterable<? extends Element, ?> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>) elements).length;
         }
@@ -431,21 +431,21 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     @Ignore
     public boolean 
-    definesEvery(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
+    definesEvery(Iterable<? extends Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
     @Override
     @Ignore
     public boolean 
-    definesAny(Iterable<? extends Integer, ? extends java.lang.Object> keys) {
+    definesAny(Iterable<? extends Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
     
     @Override
     @Ignore
     public Sequential<? extends Element> 
-    items(Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    items(Iterable<? extends Integer,?> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
@@ -596,18 +596,18 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
+    public <Result> Iterable<? extends Result, ?> 
     map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.map($reifiedResult, f);
     }
     @Override
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     filter(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.filter(f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    public Iterable<? extends Integer, ?> 
     indexes(Callable<? extends Boolean> f) {
         return $ceylon$language$List$this.indexes(f);
     }
@@ -658,28 +658,28 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return this.length<length;
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>, 
-    		? extends java.lang.Object> 
+    		?> 
     getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
@@ -750,13 +750,13 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }

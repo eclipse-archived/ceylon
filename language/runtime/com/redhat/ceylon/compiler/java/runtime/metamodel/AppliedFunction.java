@@ -52,7 +52,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private int variadicIndex = -1;
     private ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> typeArguments;
     private Object instance;
-    private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
+    private ceylon.language.meta.model.Type<?> container;
     private List<ProducedType> parameterProducedTypes;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
 
@@ -408,7 +408,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     public Type apply(@Name("arguments")
         @Sequenced
         @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
-        Sequential<? extends java.lang.Object> arguments){
+        Sequential<?> arguments){
         
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
@@ -449,7 +449,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>|ceylon.language::Null")
-    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
+    public ceylon.language.meta.model.Type<?> getContainer(){
         return container;
     }
 

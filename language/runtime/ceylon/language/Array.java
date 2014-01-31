@@ -56,14 +56,14 @@ public final class Array<Element>
     public Array(@Ignore final TypeDescriptor $reifiedElement, 
             @Name("elements")
             @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
-            final ceylon.language.Iterable<? extends Element,? extends java.lang.Object> elements) {
+            final ceylon.language.Iterable<? extends Element,?> elements) {
         this($reifiedElement, createArray($reifiedElement, elements));
     }
 
     private static <Element> java.lang.Object createArray(
             final TypeDescriptor $reifiedElement,
             final ceylon.language.Iterable<? extends Element, 
-            		? extends java.lang.Object> elements) {
+            		?> elements) {
         int size = (int) elements.getSize();
         Iterator<?> iterator = elements.iterator();
         java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
@@ -883,7 +883,7 @@ public final class Array<Element>
     @Ignore
     public boolean definesEvery(@Name("keys")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer, ? extends java.lang.Object> keys) {
+    Iterable<? extends Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.definesEvery(keys);
     }
 
@@ -891,7 +891,7 @@ public final class Array<Element>
     @Ignore
     public boolean definesAny(@Name("keys")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer, ? extends java.lang.Object> keys) {
+    Iterable<? extends Integer, ?> keys) {
         return $ceylon$language$Correspondence$this.definesAny(keys);
     }
 
@@ -899,7 +899,7 @@ public final class Array<Element>
     @Ignore
     public Sequential<? extends Element> items(@Name("keys")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer, ? extends java.lang.Object> keys){
+    Iterable<? extends Integer, ?> keys){
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
@@ -1136,19 +1136,19 @@ public final class Array<Element>
     }
     @Override
     @Ignore
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
+    public <Result> Iterable<? extends Result, ?> 
     map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.map($reifiedResult, f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     filter(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.filter(f);
     }
     @Override
     @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    public Iterable<? extends Integer, ?> 
     indexes(Callable<? extends Boolean> f) {
         return $ceylon$language$List$this.indexes(f);
     }
@@ -1193,30 +1193,30 @@ public final class Array<Element>
     }
     
     @Override @Ignore
-	public Iterable<? extends Element, ? extends java.lang.Object> 
+	public Iterable<? extends Element, ?> 
     skipping(long skip) {
 		return $ceylon$language$Iterable$this.skipping(skip);
 	}
 
 	@Override @Ignore
-	public Iterable<? extends Element, ? extends java.lang.Object> 
+	public Iterable<? extends Element, ?> 
 	taking(long take) {
 		return $ceylon$language$Iterable$this.taking(take);
 	}
 
 	@Override @Ignore
-	public Iterable<? extends Element, ? extends java.lang.Object> 
+	public Iterable<? extends Element, ?> 
 	by(long step) {
 		return $ceylon$language$Iterable$this.by(step);
 	}
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Element>, 
-    		? extends java.lang.Object> 
+    		?> 
     getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
@@ -1675,13 +1675,13 @@ public final class Array<Element>
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> 
+    public Iterable<? extends Element, ?> 
     skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }

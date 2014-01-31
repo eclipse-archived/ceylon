@@ -260,7 +260,7 @@ public abstract class AppliedClassOrInterface<Type>
     }
     
     @SuppressWarnings("rawtypes")
-    private <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<? extends java.lang.Object>>
+    private <Container, Kind extends ceylon.language.meta.model.ClassOrInterface<?>>
     ceylon.language.meta.model.Member<Container, Kind> applyClassOrInterface(@Ignore TypeDescriptor $reifiedContainer, 
                                                                         @Ignore TypeDescriptor $reifiedKind, 
                                                                         FreeClassOrInterface type, 
@@ -442,7 +442,6 @@ public abstract class AppliedClassOrInterface<Type>
                                  (ceylon.language.meta.model.Type<Container>)this, types);
     }
 
-    @SuppressWarnings("hiding")
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),
@@ -476,7 +475,7 @@ public abstract class AppliedClassOrInterface<Type>
         }
     }
 
-    @SuppressWarnings({ "hiding", "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     @Override
     @TypeParameters({
         @TypeParameter(value = "Container"),

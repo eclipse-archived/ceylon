@@ -34,7 +34,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     protected final ceylon.language.Category$impl<java.lang.Object> $ceylon$language$Category$this;
 
     protected final Element[] array;
-    protected final Iterable<? extends Element, ? extends java.lang.Object> rest;
+    protected final Iterable<? extends Element, ?> rest;
     protected final long first;
     @Ignore
     private TypeDescriptor $reifiedElement;
@@ -42,13 +42,13 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     private TypeDescriptor $reifiedAbsent;
 
     private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, 
-            Iterable<? extends Element, ? extends java.lang.Object> rest, Element... array) {
+            Iterable<? extends Element, ?> rest, Element... array) {
         this($reifiedElement, $reifiedAbsent, rest, array, 0);
     }
 
     @Ignore
     private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent,
-            Iterable<? extends Element, ? extends java.lang.Object> rest, Element[] array, long first) {
+            Iterable<? extends Element, ?> rest, Element[] array, long first) {
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl<java.lang.Object>(ceylon.language.Object.$TypeDescriptor$,this);
     	if (array.length==0 || array.length<=first) {
@@ -74,8 +74,8 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Ignore
-    public static <Element> Iterable<? extends Element, ? extends java.lang.Object> 
-    instance(TypeDescriptor $reifiedElement, Iterable<? extends Element, ? extends java.lang.Object> rest, 
+    public static <Element> Iterable<? extends Element, ?> 
+    instance(TypeDescriptor $reifiedElement, Iterable<? extends Element, ?> rest, 
     		Element... array){
         // make sure we dont' create ArrayIterables with no fixed elements
         if(array.length == 0)
@@ -107,7 +107,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Override
-    public Iterable<? extends Element, ? extends java.lang.Object> getRest() {
+    public Iterable<? extends Element, ?> getRest() {
         if(first + 1 < array.length){
             return new ArrayIterable<Element,  Null>($reifiedElement, Null.$TypeDescriptor$, rest, array, first + 1);
         }else{
@@ -179,7 +179,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     
     @Override
-    public Iterable<? extends Element, ? extends java.lang.Object> filter(Callable<? extends Boolean> f) {
+    public Iterable<? extends Element, ?> filter(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.filter(f);
     }
 
@@ -231,11 +231,11 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> skipping(long skip) {
+    public Iterable<? extends Element, ?> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> taking(long take) {
+    public Iterable<? extends Element, ?> taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     
@@ -345,12 +345,12 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> takingWhile(Callable<? extends Boolean> take) {
+    public Iterable<? extends Element, ?> takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> skippingWhile(Callable<? extends Boolean> skip) {
+    public Iterable<? extends Element, ?> skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }
     

@@ -223,7 +223,7 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
-    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
+    public ceylon.language.meta.model.Type<?> getContainer(){
         return getDeclaringType();
     }
 }

@@ -43,7 +43,7 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     @Override
     public SequenceAppender<Element> appendAll(@Name("elements") 
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
-    Iterable<? extends Element, ? extends java.lang.Object> elements) {
+    Iterable<? extends Element, ?> elements) {
     	super.appendAll(elements);
     	return this;
     }

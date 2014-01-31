@@ -53,7 +53,7 @@ public class AppliedValue<Get, Set>
     private MethodHandle getter;
     private MethodHandle setter;
     private Object instance;
-    private ceylon.language.meta.model.Type<? extends java.lang.Object> container;
+    private ceylon.language.meta.model.Type<?> container;
     protected ProducedType producedType;
 
     public AppliedValue(@Ignore TypeDescriptor $reifiedGet, @Ignore TypeDescriptor $reifiedSet,
@@ -336,7 +336,7 @@ public class AppliedValue<Get, Set>
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>|ceylon.language::Null")
-    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
+    public ceylon.language.meta.model.Type<?> getContainer(){
         return container;
     }
 

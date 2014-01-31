@@ -860,7 +860,7 @@ public class Metamodel {
     }
     
     public static String toTypeString(ceylon.language.meta.declaration.NestableDeclaration declaration, 
-            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends java.lang.Object> typeArguments){
+            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ?> typeArguments){
         StringBuffer string = new StringBuffer();
         string.append(declaration.getName());
         if(declaration instanceof ceylon.language.meta.declaration.GenericDeclaration)
@@ -880,7 +880,7 @@ public class Metamodel {
     }
     
     private static void addTypeArguments(StringBuffer string, ceylon.language.meta.declaration.GenericDeclaration declaration,
-            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends java.lang.Object> typeArguments) {
+            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ?> typeArguments) {
         if(!declaration.getTypeParameterDeclarations().getEmpty()){
             string.append("<");
             Iterator<?> iterator = declaration.getTypeParameterDeclarations().iterator();
@@ -1051,7 +1051,7 @@ public class Metamodel {
     }
     
     public static <Return> Return apply(Callable<? extends Return> function,
-            Sequential<? extends java.lang.Object> arguments, 
+            Sequential<?> arguments, 
             List<ProducedType> parameterProducedTypes,
             int firstDefaulted, int variadicIndex){
         int argumentCount = (int) arguments.getSize();

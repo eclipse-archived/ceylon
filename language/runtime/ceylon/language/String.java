@@ -58,7 +58,7 @@ public final class String
 
     public String(@Name("characters") 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
-    final Iterable<? extends Character, ? extends java.lang.Object> characters) {
+    final Iterable<? extends Character, ?> characters) {
         this.$ceylon$language$Category$this = 
         		new Category$impl<java.lang.Object>(Object.$TypeDescriptor$,this);
         this.$ceylon$language$Iterable$this = 
@@ -364,7 +364,7 @@ public final class String
     @Ignore
     public boolean definesEvery(@Name("keys")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    Iterable<? extends Integer,?> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return $ceylon$language$Correspondence$this.definesEvery(keys);
@@ -388,7 +388,7 @@ public final class String
     @Ignore
     public boolean definesAny(@Name("keys")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    Iterable<? extends Integer,?> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         return $ceylon$language$Correspondence$this.definesAny(keys);
@@ -412,7 +412,7 @@ public final class String
     @Ignore
     public Sequential<? extends Character> items(@Name("keys")
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
-    Iterable<? extends Integer,? extends java.lang.Object> keys) {
+    Iterable<? extends Integer,?> keys) {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
@@ -508,7 +508,7 @@ public final class String
     
     @Override
     @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    public Iterable<? extends Integer, ?> 
     inclusions(List<?> sublist) {
         if (sublist instanceof String) {
             return new Inclusions(value, ((String) sublist).value);
@@ -519,7 +519,7 @@ public final class String
     }
 
     @Ignore
-    public static Iterable<? extends Integer, ? extends java.lang.Object> 
+    public static Iterable<? extends Integer, ?> 
     inclusions(java.lang.String value, List<?> substring) {
         if (substring instanceof String) {
             return new Inclusions(value, ((String) substring).value);
@@ -531,7 +531,7 @@ public final class String
 
     @Override
     @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    public Iterable<? extends Integer, ?> 
     occurrences(java.lang.Object element) {
         return $ceylon$language$List$this.occurrences(element);
     }
@@ -1034,13 +1034,13 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public java.lang.String join(@Name("strings") 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    Iterable<? extends String,? extends java.lang.Object> strings) {
+    Iterable<? extends String,?> strings) {
         return join(value, strings);
     }
 
     @Ignore
     public static java.lang.String join(java.lang.String value, 
-    		Iterable<? extends String, ? extends java.lang.Object> strings) {
+    		Iterable<? extends String, ?> strings) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
         Iterator<? extends String> it = strings.iterator();
         java.lang.Object elem = it.next();
@@ -1234,7 +1234,7 @@ public final class String
     }
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-    public Iterable<? extends String, ? extends java.lang.Object> split(
+    public Iterable<? extends String, ?> split(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Defaulted
             @Name("splitting") Callable<? extends Boolean> splitting,
@@ -1249,7 +1249,7 @@ public final class String
     }
 
     @Ignore
-    public static Iterable<? extends String, ? extends java.lang.Object> 
+    public static Iterable<? extends String, ?> 
     split(java.lang.String value,
             Callable<? extends Boolean> splitting,
             boolean discardSeparators,
@@ -1263,7 +1263,7 @@ public final class String
     }
 
     @Ignore
-    public Iterable<? extends String, ? extends java.lang.Object> 
+    public Iterable<? extends String, ?> 
     split(Callable<? extends Boolean> splitting,
             boolean discardSeparators) {
         return split(splitting, discardSeparators, 
@@ -1271,7 +1271,7 @@ public final class String
     }
 
     @Ignore
-    public static Iterable<? extends String, ? extends java.lang.Object> 
+    public static Iterable<? extends String, ?> 
     split(java.lang.String value,
             Callable<? extends Boolean> splitting,
             boolean discardSeparators) {
@@ -1280,25 +1280,25 @@ public final class String
     }
 
     @Ignore
-    public Iterable<? extends String, ? extends java.lang.Object> split(
+    public Iterable<? extends String, ?> split(
             Callable<? extends Boolean> splitting) {
         return split(splitting, split$discardSeparators(splitting));
     }
 
     @Ignore
-    public static Iterable<? extends String, ? extends java.lang.Object> 
+    public static Iterable<? extends String, ?> 
     split(java.lang.String value,
             Callable<? extends Boolean> splitting) {
         return split(value, splitting, split$discardSeparators(splitting));
     }
 
     @Ignore
-    public Iterable<? extends String, ? extends java.lang.Object> split() {
+    public Iterable<? extends String, ?> split() {
         return split(split$splitting());
     }
 
     @Ignore
-    public static Iterable<? extends String, ? extends java.lang.Object> 
+    public static Iterable<? extends String, ?> 
     split(java.lang.String value) {
         return split(value, split$splitting());
     }
@@ -1328,7 +1328,7 @@ public final class String
     }
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
-    public Iterable<? extends String, ? extends java.lang.Object> getLines() {
+    public Iterable<? extends String, ?> getLines() {
         return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
                 		Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
@@ -1341,7 +1341,7 @@ public final class String
     }
 
     @Ignore
-    public static Iterable<? extends String, ? extends java.lang.Object> 
+    public static Iterable<? extends String, ?> 
     getLines(java.lang.String value) {
         return split(value, new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
@@ -1355,7 +1355,7 @@ public final class String
     }
 
     @Ignore
-    public static Iterable<? extends Integer, ? extends java.lang.Object> 
+    public static Iterable<? extends Integer, ?> 
     occurrences(java.lang.String value, java.lang.Object element) {
         return instance(value).occurrences(element);
     }
@@ -1371,13 +1371,13 @@ public final class String
     }
 
     @Override @Ignore
-    public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
+    public <Result> Iterable<? extends Result, ?> 
     map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.map($reifiedResult, f);
     }
 
     @Ignore
-    public static <Result> Iterable<? extends Result, ? extends java.lang.Object> 
+    public static <Result> Iterable<? extends Result, ?> 
     map(@Ignore TypeDescriptor $reifiedResult, java.lang.String value, 
     		Callable<? extends Result> f) {
         return instance(value).map($reifiedResult, f);
@@ -1525,20 +1525,20 @@ public final class String
 
     @Override
     @Ignore
-    public Iterable<? extends Integer, ? extends java.lang.Object> 
+    public Iterable<? extends Integer, ?> 
     indexes(Callable<? extends Boolean> f) {
         return $ceylon$language$List$this.indexes(f);
     }
     
     @Ignore
-    public static Iterable<? extends Integer, ? extends java.lang.Object> 
+    public static Iterable<? extends Integer, ?> 
     indexes(java.lang.String value, Callable<? extends Boolean> f) {
         return instance(value).indexes(f);
     }
     
     @Override
     @Ignore
-    public Iterable<? extends Character, ? extends java.lang.Object> 
+    public Iterable<? extends Character, ?> 
     filter(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.filter(f);
     }
@@ -1627,13 +1627,13 @@ public final class String
     }
 
     @Override @Ignore
-    public Iterable<? extends Character, ? extends java.lang.Object> 
+    public Iterable<? extends Character, ?> 
     skipping(long skip) {
         return this.segment(Integer.instance(skip), this.getSize());
     }
     
     @Ignore
-    public static Iterable<? extends Character, ? extends java.lang.Object> 
+    public static Iterable<? extends Character, ?> 
     skipping(java.lang.String value, long skip) {
         if (value.isEmpty()) {
             return instance(value);
@@ -1643,13 +1643,13 @@ public final class String
     }
 
     @Override @Ignore
-    public Iterable<? extends Character, ? extends java.lang.Object> 
+    public Iterable<? extends Character, ?> 
     taking(long take) {
         return this.segment(Integer.instance(0), take);
     }
     
     @Ignore
-    public static Iterable<? extends Character, ? extends java.lang.Object> 
+    public static Iterable<? extends Character, ?> 
     taking(java.lang.String value, long take) {
         if (value.isEmpty()) {
             return instance(value);
@@ -1659,37 +1659,37 @@ public final class String
     }
     
     @Override @Ignore
-    public Iterable<? extends Character, ? extends java.lang.Object> 
+    public Iterable<? extends Character, ?> 
     takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Character, ? extends java.lang.Object> 
+    public Iterable<? extends Character, ?> 
     skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }
     
     @Ignore
-    public static Iterable<? extends Character, ? extends java.lang.Object> 
+    public static Iterable<? extends Character, ?> 
     takingWhile(java.lang.String value, Callable<? extends Boolean> take) {
         return instance(value).takingWhile(take);
     }
     
     @Ignore
-    public static Iterable<? extends Character, ? extends java.lang.Object> 
+    public static Iterable<? extends Character, ?> 
     skippingWhile(java.lang.String value, Callable<? extends Boolean> skip) {
         return instance(value).skippingWhile(skip);
     }
     
     @Override @Ignore
-    public Iterable<? extends Character, ? extends java.lang.Object> 
+    public Iterable<? extends Character, ?> 
     by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     
     @Ignore
-    public static Iterable<? extends Character, ? extends java.lang.Object> 
+    public static Iterable<? extends Character, ?> 
     by(java.lang.String value, long step) {
         if (value.isEmpty()) {
             return instance(value);
@@ -1717,12 +1717,12 @@ public final class String
 
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Character>, 
-    		? extends java.lang.Object> getIndexed() {
+    		?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Ignore
     public static Iterable<? extends Entry<? extends Integer, ? extends Character>, 
-    		? extends java.lang.Object> 
+    		?> 
     getIndexed(java.lang.String value) {
         if (value.isEmpty()) {
             return (Iterable)instance(value);
@@ -1978,7 +1978,7 @@ public final class String
                             return false;
                         int charCodePoint = java.lang.Character.codePointAt(chars, index);
                         java.lang.Object $tmp;
-                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character, ? extends java.lang.Object>)separator).iterator();
+                        for (Iterator<? extends Character> iter = ((Iterable<? extends Character, ?>)separator).iterator();
                                 !(($tmp = iter.next()) instanceof Finished);) {
                             if (((Character)$tmp).getInteger() == charCodePoint) {
                                 return true;
@@ -2022,19 +2022,19 @@ public final class String
 
         @Override
         @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         getRest() {
         	return $ceylon$language$Iterable$this.getRest();
         }
 
         @Override @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         takingWhile(Callable<? extends Boolean> take) {
             return $ceylon$language$Iterable$this.takingWhile(take);
         }
         
         @Override @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         skippingWhile(Callable<? extends Boolean> skip) {
             return $ceylon$language$Iterable$this.skippingWhile(skip);
         }
@@ -2077,13 +2077,13 @@ public final class String
         }
         @Override
         @Ignore
-        public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
+        public <Result> Iterable<? extends Result, ?> 
         map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
             return $ceylon$language$Iterable$this.map($reifiedResult, f);
         }
         @Override
         @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         filter(Callable<? extends Boolean> f) {
             return $ceylon$language$Iterable$this.filter(f);
         }
@@ -2122,17 +2122,17 @@ public final class String
             return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         skipping(long n) {
             return $ceylon$language$Iterable$this.skipping(n);
         }
         @Override @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         taking(long n) {
             return $ceylon$language$Iterable$this.taking(n);
         }
         @Override @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         by(long n) {
             return $ceylon$language$Iterable$this.by(n);
         }
@@ -2141,13 +2141,13 @@ public final class String
             return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
-        public Iterable<? extends String, ? extends java.lang.Object> 
+        public Iterable<? extends String, ?> 
         getCoalesced() {
             return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
         public Iterable<? extends Entry<? extends Integer, ? extends String>, 
-        		? extends java.lang.Object> 
+        		?> 
         getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
@@ -2315,19 +2315,19 @@ public final class String
 
         @Override
         @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         getRest() {
         	return $ceylon$language$Iterable$this.getRest();
         }
 
         @Override @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         takingWhile(Callable<? extends Boolean> take) {
             return $ceylon$language$Iterable$this.takingWhile(take);
         }
         
         @Override @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         skippingWhile(Callable<? extends Boolean> skip) {
             return $ceylon$language$Iterable$this.skippingWhile(skip);
         }
@@ -2353,13 +2353,13 @@ public final class String
         }
         @Override
         @Ignore
-        public <Result> Iterable<? extends Result, ? extends java.lang.Object> 
+        public <Result> Iterable<? extends Result, ?> 
         map(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
             return $ceylon$language$Iterable$this.map($reifiedResult, f);
         }
         @Override
         @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         filter(Callable<? extends Boolean> f) {
             return $ceylon$language$Iterable$this.filter(f);
         }
@@ -2397,12 +2397,12 @@ public final class String
             return $ceylon$language$Iterable$this.every(f);
         }
         @Override @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         skipping(long n) {
             return $ceylon$language$Iterable$this.skipping(n);
         }
         @Override @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         taking(long n) {
             return $ceylon$language$Iterable$this.taking(n);
         }
@@ -2415,7 +2415,7 @@ public final class String
             return $ceylon$language$Iterable$this.shorterThan(length);
         }
         @Override @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         by(long n) {
             return $ceylon$language$Iterable$this.by(n);
         }
@@ -2424,13 +2424,13 @@ public final class String
             return $ceylon$language$Iterable$this.count(f);
         }
         @Override @Ignore
-        public Iterable<? extends Integer, ? extends java.lang.Object> 
+        public Iterable<? extends Integer, ?> 
         getCoalesced() {
             return $ceylon$language$Iterable$this.getCoalesced();
         }
         @Override @Ignore
         public Iterable<? extends Entry<? extends Integer, ? extends Integer>, 
-        		? extends java.lang.Object> 
+        		?> 
         getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }

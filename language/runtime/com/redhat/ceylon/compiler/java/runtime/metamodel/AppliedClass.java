@@ -406,7 +406,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
     public Type apply(@Name("arguments")
         @Sequenced
         @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>")
-        Sequential<? extends java.lang.Object> arguments){
+        Sequential<?> arguments){
         checkInit();
         checkConstructor();
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
@@ -448,7 +448,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>|ceylon.language::Null")
-    public ceylon.language.meta.model.Type<? extends java.lang.Object> getContainer(){
+    public ceylon.language.meta.model.Type<?> getContainer(){
         return container;
     }
 
