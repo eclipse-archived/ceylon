@@ -78,20 +78,20 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
          * {@code copyOrNot_*()} methods figure out the arguments for the 
          * this() call. Oh for a Let expr.
          */
-        this($reifiedElement, copyOrNot_array$hidden(elements), 
+        this($reifiedElement, copyOrNot_array$hidden($reifiedElement, elements), 
                 copyOrNot_first$hidden(elements), copyOrNot_length$hidden(elements), 
                 false);
     }
     
     @Ignore
-    private static <Element> java.lang.Object[] copyOrNot_array$hidden(
+    private static <Element> java.lang.Object[] copyOrNot_array$hidden(TypeDescriptor $reifiedElement,
             Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
             return ((ArraySequence<?>)elements).array;
         } else {
             // Note we trim the array which means copyOrNot_length$hidden() 
             // can use USE_ARRAY_SIZE
-            return new SequenceBuilder<Element>(null).appendAll(elements).trim$priv().array;
+            return new SequenceBuilder<Element>($reifiedElement).appendAll(elements).trim$priv().array;
         }
     }
     
