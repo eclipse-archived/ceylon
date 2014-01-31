@@ -1224,13 +1224,40 @@ public final class String
     public java.lang.String replace(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
-        return value.replace(substring, replacement);
+        return replace(value, substring, replacement);
     }
 
     @Ignore
     public static java.lang.String replace(java.lang.String value, 
     		java.lang.String substring, java.lang.String replacement) {
-        return value.replace(substring, replacement);
+    	int index = value.indexOf(substring);
+    	while (index>=0) {
+            value = value.substring(0,index) + replacement + 
+    				value.substring(index+substring.length());
+            index = value.indexOf(substring, 
+            		index+replacement.length());
+    	}
+		return value;
+    }
+
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String replaceFirst(
+            @Name("substring") java.lang.String substring,
+            @Name("replacement") java.lang.String replacement) {
+        return replaceFirst(value, substring, replacement);
+    }
+
+    @Ignore
+    public static java.lang.String replaceFirst(java.lang.String value, 
+    		java.lang.String substring, java.lang.String replacement) {
+    	int index = value.indexOf(substring);
+    	if (index<0) {
+    		return value;
+    	}
+    	else {
+    		return value.substring(0,index) + replacement + 
+    				value.substring(index+substring.length());
+    	}
     }
 
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")

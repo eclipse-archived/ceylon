@@ -501,9 +501,16 @@ defineAttr(String$proto, 'reversed', function() {
     return String$(result);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$at','reversed']}});
 String$proto.$replace = function(sub, repl) {
+    //TODO: escape regex metachars
     return String$(this.replace(new RegExp(sub, 'g'), repl));
 }
 String$proto.$replace.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','replace'],
+  $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};
+String$proto.$replaceFirst = function(sub, repl) {
+    //TODO: escape regex metachars
+    return String$(this.replace(sub, repl));
+}
+String$proto.$replaceFirst.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','replaceFirst'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};
 String$proto.repeat = function(times) {
     var sb = StringBuilder();
