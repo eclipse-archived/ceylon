@@ -171,6 +171,7 @@ public class Metamodel {
         if(klass.isArray())
             return getJavaArrayTypeDescriptor(klass);
         // make sure java.lang.Object doesn't leak in the ceylon metamodel
+        // TODO: what about Throwable/j.l.Exception/RuntimeException?
         if(klass == Object.class)
             return ceylon.language.Object.$TypeDescriptor$;
         return TypeDescriptor.klass(klass);
