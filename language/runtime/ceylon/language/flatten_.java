@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
+
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -8,7 +10,6 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
@@ -51,8 +52,7 @@ public final class flatten_ {
             }
             
             private TypeDescriptor getArgType(java.lang.Object arg) {
-                ReifiedType element = (ReifiedType)arg;
-                return element != null ? element.$getType$() : Null.$TypeDescriptor$;
+                return getTypeDescriptor(arg);
             }
 
 			@SuppressWarnings("rawtypes")

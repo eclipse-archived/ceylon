@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
+
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
@@ -323,16 +325,7 @@ public final class Tuple<Element, First extends Element,
     
     @Ignore
     private TypeDescriptor $getElementType(int index) {
-        java.lang.Object object = array[first + index];
-        if (object==null) {
-        	return Null.$TypeDescriptor$;
-        }
-        else if (object instanceof ReifiedType) {
-			return ((ReifiedType) object).$getType$();
-        }
-        else {
-        	return null;
-        }
+        return getTypeDescriptor(array[first + index]);
     }
 
 }
