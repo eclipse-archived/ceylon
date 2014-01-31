@@ -43,7 +43,8 @@ public class Util {
         return name.replace("::", ".");
     }
 
-    public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
+    public static void loadModule(String name, String version, 
+    		ArtifactResult result, ClassLoader classLoader){
         Metamodel.loadModule(name, version, result, classLoader);
     }
     
@@ -207,10 +208,13 @@ public class Util {
         return list;
     }
 
-    public static boolean[] toBooleanArray(ceylon.language.Iterable<? extends ceylon.language.Boolean, ?> sequence,
-                                           boolean... initialElements){
+    @SuppressWarnings("unchecked")
+    public static boolean[] 
+    toBooleanArray(ceylon.language.Iterable<? extends ceylon.language.Boolean, ?> sequence,
+    		boolean... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toBooleanArray((ceylon.language.List<? extends ceylon.language.Boolean>)sequence, initialElements);
+            return toBooleanArray((ceylon.language.List<? extends ceylon.language.Boolean>)sequence, 
+            		initialElements);
         List<ceylon.language.Boolean> list = collectIterable(sequence);
         boolean[] ret = new boolean[list.size() + initialElements.length];
         int i=0;
@@ -223,8 +227,9 @@ public class Util {
         return ret;
     }
     
-    public static boolean[] toBooleanArray(ceylon.language.List<? extends ceylon.language.Boolean> sequence,
-                                           boolean... initialElements){
+    public static boolean[] 
+    toBooleanArray(ceylon.language.List<? extends ceylon.language.Boolean> sequence,
+    		boolean... initialElements){
         boolean[] ret = new boolean[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -237,10 +242,13 @@ public class Util {
         return ret;
     }
     
-    public static byte[] toByteArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-                                     long... initialElements){
+    @SuppressWarnings("unchecked")
+    public static byte[] 
+    toByteArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
+    		long... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toByteArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
+            return toByteArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, 
+            		initialElements);
         List<ceylon.language.Integer> list = collectIterable(sequence);
         byte[] ret = new byte[initialElements.length + list.size()];
         int i=0;
@@ -253,8 +261,9 @@ public class Util {
         return ret;
     }
 
-    public static byte[] toByteArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
-                                     long... initialElements){
+    public static byte[] 
+    toByteArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
+    		long... initialElements){
         byte[] ret = new byte[initialElements.length + (int) sequence.getSize()];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -267,10 +276,13 @@ public class Util {
         return ret;
     }
     
-    public static short[] toShortArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-                                       long... initialElements){
+    @SuppressWarnings("unchecked")
+    public static short[] 
+    toShortArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
+    		long... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toShortArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
+            return toShortArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, 
+            		initialElements);
         List<ceylon.language.Integer> list = collectIterable(sequence);
         short[] ret = new short[list.size() + initialElements.length];
         int i=0;
@@ -283,8 +295,9 @@ public class Util {
         return ret;
     }
 
-    public static short[] toShortArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
-                                       long... initialElements){
+    public static short[] 
+    toShortArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
+    		long... initialElements){
         short[] ret = new short[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -297,10 +310,13 @@ public class Util {
         return ret;
     }
     
-    public static int[] toIntArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-                                   long... initialElements){
+    @SuppressWarnings("unchecked")
+    public static int[] 
+    toIntArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
+    		long... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toIntArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
+            return toIntArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, 
+            		initialElements);
         List<ceylon.language.Integer> list = collectIterable(sequence);
         int[] ret = new int[list.size() + initialElements.length];
         int i=0;
@@ -313,8 +329,9 @@ public class Util {
         return ret;
     }
 
-    public static int[] toIntArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
-                                   long... initialElements){
+    public static int[] 
+    toIntArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
+    		long... initialElements){
         int[] ret = new int[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -327,10 +344,13 @@ public class Util {
         return ret;
     }
     
-    public static long[] toLongArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
-                                     long... initialElements){
+    @SuppressWarnings("unchecked")
+    public static long[] 
+    toLongArray(ceylon.language.Iterable<? extends ceylon.language.Integer, ?> sequence,
+    		long... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toLongArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, initialElements);
+            return toLongArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence, 
+            		initialElements);
         List<ceylon.language.Integer> list = collectIterable(sequence);
         long[] ret = new long[list.size() + initialElements.length];
         int i=0;
@@ -343,8 +363,9 @@ public class Util {
         return ret;
     }
 
-    public static long[] toLongArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
-                                     long... initialElements){
+    public static long[] 
+    toLongArray(ceylon.language.List<? extends ceylon.language.Integer> sequence,
+    		long... initialElements){
         long[] ret = new long[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -357,10 +378,13 @@ public class Util {
         return ret;
     }
 
-    public static float[] toFloatArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence, 
-                                       double... initialElements){
+    @SuppressWarnings("unchecked")
+    public static float[] 
+    toFloatArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence, 
+    		double... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toFloatArray((ceylon.language.List<? extends ceylon.language.Float>)sequence, initialElements);
+            return toFloatArray((ceylon.language.List<? extends ceylon.language.Float>)sequence, 
+            		initialElements);
         List<ceylon.language.Float> list = collectIterable(sequence);
         float[] ret = new float[initialElements.length + list.size()];
         int i=0;
@@ -373,8 +397,9 @@ public class Util {
         return ret;
     }
 
-    public static float[] toFloatArray(ceylon.language.List<? extends ceylon.language.Float> sequence,
-                                       double... initialElements){
+    public static float[] 
+    toFloatArray(ceylon.language.List<? extends ceylon.language.Float> sequence,
+    		double... initialElements){
         float[] ret = new float[initialElements.length + (int) sequence.getSize()];
         int i = 0;
         for(;i<initialElements.length;i++){
@@ -387,10 +412,13 @@ public class Util {
         return ret;
     }
 
-    public static double[] toDoubleArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence,
-                                         double... initialElements){
+    @SuppressWarnings("unchecked")
+    public static double[] 
+    toDoubleArray(ceylon.language.Iterable<? extends ceylon.language.Float, ?> sequence,
+    		double... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toDoubleArray((ceylon.language.List<? extends ceylon.language.Float>)sequence, initialElements);
+            return toDoubleArray((ceylon.language.List<? extends ceylon.language.Float>)sequence, 
+            		initialElements);
         List<ceylon.language.Float> list = collectIterable(sequence);
         double[] ret = new double[list.size() + initialElements.length];
         int i=0;
@@ -403,8 +431,9 @@ public class Util {
         return ret;
     }
 
-    public static double[] toDoubleArray(ceylon.language.List<? extends ceylon.language.Float> sequence,
-                                         double... initialElements){
+    public static double[] 
+    toDoubleArray(ceylon.language.List<? extends ceylon.language.Float> sequence,
+    		double... initialElements){
         double[] ret = new double[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -417,10 +446,13 @@ public class Util {
         return ret;
     }
 
-    public static char[] toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
-                                     int... initialElements){
+    @SuppressWarnings("unchecked")
+    public static char[] 
+	toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
+			int... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toCharArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, initialElements);
+            return toCharArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, 
+            		initialElements);
         List<ceylon.language.Character> list = collectIterable(sequence);
         char[] ret = new char[list.size() + initialElements.length];
         int i=0;
@@ -434,8 +466,9 @@ public class Util {
         return ret;
     }
 
-    public static char[] toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
-                                     int... initialElements){
+    public static char[] 
+	toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
+			int... initialElements){
         char[] ret = new char[(int) sequence.getSize() + initialElements.length];
         int i=0;
         // FIXME: this is invalid and should yield a larger array by splitting chars > 16 bits in two
@@ -449,10 +482,13 @@ public class Util {
         return ret;
     }
 
-    public static int[] toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
-                                         int... initialElements){
+    @SuppressWarnings("unchecked")
+    public static int[] 
+	toCodepointArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
+			int... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toCodepointArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, initialElements);
+            return toCodepointArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, 
+            		initialElements);
         List<ceylon.language.Character> list = collectIterable(sequence);
         int[] ret = new int[list.size() + initialElements.length];
         int i=0;
@@ -465,8 +501,9 @@ public class Util {
         return ret;
     }
 
-    public static int[] toCodepointArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
-                                         int... initialElements){
+    public static int[] 
+    toCodepointArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
+            int... initialElements){
         int[] ret = new int[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -479,10 +516,13 @@ public class Util {
         return ret;
     }
 
-    public static java.lang.String[] toJavaStringArray(ceylon.language.Iterable<? extends ceylon.language.String, ?> sequence,
-                                                       java.lang.String... initialElements){
+    @SuppressWarnings("unchecked")
+    public static java.lang.String[] 
+    toJavaStringArray(ceylon.language.Iterable<? extends ceylon.language.String, ?> sequence,
+            java.lang.String... initialElements){
         if(sequence instanceof ceylon.language.List)
-            return toJavaStringArray((ceylon.language.List<? extends ceylon.language.String>)sequence, initialElements);
+            return toJavaStringArray((ceylon.language.List<? extends ceylon.language.String>)sequence, 
+            		initialElements);
         List<ceylon.language.String> list = collectIterable(sequence);
         java.lang.String[] ret = new java.lang.String[list.size() + initialElements.length];
         int i=0;
@@ -495,8 +535,9 @@ public class Util {
         return ret;
     }
 
-    public static java.lang.String[] toJavaStringArray(ceylon.language.List<? extends ceylon.language.String> sequence,
-                                                       java.lang.String... initialElements){
+    public static java.lang.String[] 
+    toJavaStringArray(ceylon.language.List<? extends ceylon.language.String> sequence,
+            java.lang.String... initialElements){
         java.lang.String[] ret = new java.lang.String[(int) sequence.getSize() + initialElements.length];
         int i=0;
         for(;i<initialElements.length;i++){
@@ -509,6 +550,7 @@ public class Util {
         return ret;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.List<? extends T> sequence,
             T[] ret, T... initialElements){
         System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
@@ -520,10 +562,11 @@ public class Util {
         return ret;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.List<? extends T> sequence,
             java.lang.Class<T> klass, T... initialElements){
-        @SuppressWarnings("unchecked")
-        T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, (int)sequence.getSize() + initialElements.length);
+        T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, 
+        		(int)sequence.getSize() + initialElements.length);
 
         System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
         int i=initialElements.length;
@@ -534,11 +577,12 @@ public class Util {
         return ret;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.Iterable<? extends T, ?> iterable,
             java.lang.Class<T> klass, T... initialElements){
         List<T> list = collectIterable(iterable);
-        @SuppressWarnings("unchecked")
-        T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, list.size() + initialElements.length);
+        T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, 
+        		list.size() + initialElements.length);
         // fast path
         if(initialElements.length == 0){
             // fast copy of list
@@ -567,7 +611,9 @@ public class Util {
      * @param elements The elements
      * @return A Sequential
      */
-    public static <T> Sequential<T> sequentialInstance(TypeDescriptor $reifiedT, T[] elements) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static <T> Sequential<T> 
+    sequentialInstance(TypeDescriptor $reifiedT, T[] elements) {
         if (elements.length == 0) {
             return (Sequential)empty_.get_();
         }
@@ -575,7 +621,9 @@ public class Util {
         return ArraySequence.<T>instance($reifiedT, elements);
     }
 
-    public static Sequential<? extends ceylon.language.String> sequentialInstanceBoxed(java.lang.String[] elements) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.String> 
+    sequentialInstanceBoxed(java.lang.String[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -587,10 +635,13 @@ public class Util {
             newArray[i++] = ceylon.language.String.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.String.$TypeDescriptor$, newArray);
+        return ArraySequence.instance(ceylon.language.String.$TypeDescriptor$, 
+        		newArray);
     }
 
-    public static Sequential<? extends ceylon.language.Integer> sequentialInstanceBoxed(long[] elements) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Integer> 
+    sequentialInstanceBoxed(long[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -602,10 +653,13 @@ public class Util {
             newArray[i++] = ceylon.language.Integer.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Integer.$TypeDescriptor$, newArray);
+        return ArraySequence.instance(ceylon.language.Integer.$TypeDescriptor$, 
+        		newArray);
     }
 
-    public static Sequential<? extends ceylon.language.Character> sequentialInstanceBoxed(int[] elements) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Character> 
+    sequentialInstanceBoxed(int[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -617,10 +671,13 @@ public class Util {
             newArray[i++] = ceylon.language.Character.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Character.$TypeDescriptor$, newArray);
+        return ArraySequence.instance(ceylon.language.Character.$TypeDescriptor$, 
+        		newArray);
     }
 
-    public static Sequential<? extends ceylon.language.Boolean> sequentialInstanceBoxed(boolean[] elements) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Boolean> 
+    sequentialInstanceBoxed(boolean[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -632,10 +689,13 @@ public class Util {
             newArray[i++] = ceylon.language.Boolean.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Boolean.$TypeDescriptor$, newArray);
+        return ArraySequence.instance(ceylon.language.Boolean.$TypeDescriptor$, 
+        		newArray);
     }
 
-    public static Sequential<? extends ceylon.language.Float> sequentialInstanceBoxed(double[] elements) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Float> 
+    sequentialInstanceBoxed(double[] elements) {
         if (elements.length == 0){
             return (Sequential)empty_.get_();
 
@@ -647,7 +707,8 @@ public class Util {
             newArray[i++] = ceylon.language.Float.instance(element);
         }
         // TODO Annoyingly this results in an extra copy
-        return ArraySequence.instance(ceylon.language.Float.$TypeDescriptor$, newArray);
+        return ArraySequence.instance(ceylon.language.Float.$TypeDescriptor$, 
+        		newArray);
     }
 
 
@@ -659,8 +720,12 @@ public class Util {
      * @param elements the elements at the start of the sequence
      * @return A Sequential
      */
-    public static <T> Sequential<? extends T> sequentialInstance(TypeDescriptor $reifiedT, Sequential<? extends T> rest, T... elements) {
-        return sequentialInstance($reifiedT, 0, elements.length, elements, true, rest);
+    @SuppressWarnings({"unchecked"})
+    public static <T> Sequential<? extends T> 
+    sequentialInstance(TypeDescriptor $reifiedT, Sequential<? extends T> rest, 
+    		T... elements) {
+        return sequentialInstance($reifiedT, 0, 
+        		elements.length, elements, true, rest);
     }
         
     /**
@@ -670,19 +735,21 @@ public class Util {
      * 
      * <strong>This method does not copy {@code elements} unless it has to</strong>
      */
+    @SuppressWarnings("unchecked")
     public static <T> Sequential<? extends T> sequentialInstance(
             TypeDescriptor $reifiedT,  
             int start, int length, T[] elements, boolean copy,
             Sequential<? extends T> rest) {
         if (length == 0){
             if(rest.getEmpty()) {
-                return (Sequential)empty_.get_();
+                return (Sequential<T>)empty_.get_();
             }
             return rest;
         }
         // elements is not empty
         if(rest.getEmpty()) {
-            return new ArraySequence($reifiedT, elements, start, length, copy);
+            return new ArraySequence<T>($reifiedT, elements, 
+            		start, length, copy);
         }
         // we have both, let's find the total size
         int total = (int) (rest.getSize() + length);
@@ -703,7 +770,9 @@ public class Util {
      * @param length The size of the Range to create
      * @return A range
      */
-    public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> spreadOp(TypeDescriptor $reifiedT, T start, long length) {
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static <T extends ceylon.language.Ordinal<? extends T>> Sequential<T> 
+    spreadOp(TypeDescriptor $reifiedT, T start, long length) {
         if (length <= 0) {
             return (Sequential)empty_.get_();
         }
@@ -726,7 +795,8 @@ public class Util {
     }
 
     /**
-     * Returns a runtime exception. To be used by implementors of mixin methods used to access super-interfaces $impl fields
+     * Returns a runtime exception. To be used by implementors 
+     * of mixin methods used to access super-interfaces $impl fields
      * for final classes that don't and will never need them
      */
     public static RuntimeException makeUnimplementedMixinAccessException() {
@@ -734,11 +804,14 @@ public class Util {
     }
 
     /**
-     * Specialised version of Tuple.spanFrom for when the typechecker determines that it can do better than the generic one
-     * that returns a Sequential. Here we return a Tuple, although our type signature hides this.
+     * Specialised version of Tuple.spanFrom for when the
+     * typechecker determines that it can do better than the 
+     * generic one that returns a Sequential. Here we return 
+     * a Tuple, although our type signature hides this.
      */
-    public static Sequential tuple_spanFrom(Ranged tuple, ceylon.language.Integer index){
-        Sequential seq = (Sequential)tuple;
+    public static Sequential<?> tuple_spanFrom(Ranged tuple, 
+    		ceylon.language.Integer index){
+        Sequential<?> seq = (Sequential<?>)tuple;
         long i = index.longValue();
         while(i-- > 0){
             seq = seq.getRest();
@@ -792,19 +865,24 @@ public class Util {
     }
 
     /**
-     * Returns a runtime exception. To be used by implementors of Java array methods used to make sure they are never called
+     * Returns a runtime exception. To be used by implementors 
+     * of Java array methods used to make sure they are never 
+     * called
      */
     public static RuntimeException makeJavaArrayWrapperException() {
         return new RuntimeException("Internal error: should never be called");
     }
 
     /**
-     * Throws an exception without having to declare it. This uses a Ceylon helper that does
-     * this because Ceylon does not have checked exceptions. This is merely to avoid a javac
-     * check wrt. checked exceptions.
-     * Stef tried using Unsafe.throwException() but Unsafe.getUnsafe() throws if we have a
-     * ClassLoader, and the only other way is using reflection to get to it, which starts
-     * to smell real bad when we can just use a Ceylon helper.
+     * Throws an exception without having to declare it. This 
+     * uses a Ceylon helper that does this because Ceylon does 
+     * not have checked exceptions. This is merely to avoid a 
+     * javac check wrt. checked exceptions.
+     * Stef tried using Unsafe.throwException() but 
+     * Unsafe.getUnsafe() throws if we have a ClassLoader, and 
+     * the only other way is using reflection to get to it, 
+     * which starts to smell real bad when we can just use a 
+     * Ceylon helper.
      */
     public static void rethrow(final Throwable t){
         ceylon.language.impl.rethrow_.rethrow(t);
@@ -822,17 +900,23 @@ public class Util {
     }
     
     /**
-     * Applies the given function to the given arguments. The argument types are assumed to be correct and
-     * will not be checked. This method will properly deal with variadic functions. The arguments are expected
-     * to be spread in the given sequential, even in the case of variadic functions, which means that there will
-     * be no spreading of any Sequential instance in the given arguments. On the contrary, a portion of the given
-     * arguments may be packaged into a Sequential if the given function is variadic.
+     * Applies the given function to the given arguments. The 
+     * argument types are assumed to be correct and will not 
+     * be checked. This method will properly deal with variadic 
+     * functions. The arguments are expected to be spread in the 
+     * given sequential, even in the case of variadic functions, 
+     * which means that there will be no spreading of any 
+     * Sequential instance in the given arguments. On the 
+     * contrary, a portion of the given arguments may be packaged 
+     * into a Sequential if the given function is variadic.
      * 
      * @param function the function to apply
      * @param arguments the argument values to pass to the function
      * @return the function's return value
      */
-    public static <Return> Return apply(Callable<? extends Return> function, Sequential<? extends Object> arguments){
+    public static <Return> Return 
+    apply(Callable<? extends Return> function, 
+    		Sequential<? extends Object> arguments){
         int variadicParameterIndex = function.$getVariadicParameterIndex$();
         switch ((int) arguments.getSize()) {
         case 0:
@@ -849,7 +933,7 @@ public class Util {
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
             case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
-                                              (Sequential)arguments.spanFrom(Integer.instance(1)));
+                    (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
             // no variadic param, or after we run out of elements to pass
             default:
                 return function.$call$(arguments.get(Integer.instance(0)), 
@@ -861,16 +945,16 @@ public class Util {
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
             case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
-                                              (Sequential)arguments.spanFrom(Integer.instance(1)));
+                    (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
             // extract the first and second, pass the rest
             case 2: return function.$callvariadic$(arguments.get(Integer.instance(0)),
-                                              arguments.get(Integer.instance(1)),
-                                              (Sequential)arguments.spanFrom(Integer.instance(2)));
+                    arguments.get(Integer.instance(1)),
+                    (Sequential<?>)arguments.spanFrom(Integer.instance(2)));
             // no variadic param, or after we run out of elements to pass
             default:
             return function.$call$(arguments.get(Integer.instance(0)), 
-                                      arguments.get(Integer.instance(1)), 
-                                      arguments.get(Integer.instance(2)));
+                    arguments.get(Integer.instance(1)), 
+                    arguments.get(Integer.instance(2)));
             }
         default:
             switch(variadicParameterIndex){
@@ -878,29 +962,32 @@ public class Util {
             case 0: return function.$callvariadic$(arguments);
             // extract the first, pass the rest
             case 1: return function.$callvariadic$(arguments.get(Integer.instance(0)), 
-                                             (Sequential)arguments.spanFrom(Integer.instance(1)));
+                    (Sequential<?>)arguments.spanFrom(Integer.instance(1)));
             // extract the first and second, pass the rest
             case 2: return function.$callvariadic$(arguments.get(Integer.instance(0)),
-                                              arguments.get(Integer.instance(1)),
-                                              (Sequential)arguments.spanFrom(Integer.instance(2)));
+                    arguments.get(Integer.instance(1)),
+                    (Sequential<?>)arguments.spanFrom(Integer.instance(2)));
             case 3: return function.$callvariadic$(arguments.get(Integer.instance(0)),
-                                            arguments.get(Integer.instance(1)),
-                                            arguments.get(Integer.instance(2)),
-                                            (Sequential)arguments.spanFrom(Integer.instance(3)));
+                    arguments.get(Integer.instance(1)),
+                    arguments.get(Integer.instance(2)),
+                    (Sequential<?>)arguments.spanFrom(Integer.instance(3)));
             // no variadic param
             case -1:
-                java.lang.Object[] args = Util.toArray(arguments, new java.lang.Object[(int) arguments.getSize()]);
+                java.lang.Object[] args = Util.toArray(arguments, 
+                		new java.lang.Object[(int) arguments.getSize()]);
                 return function.$call$(args);
             // we have a variadic param in there bothering us
             default:
                 // we stuff everything before the variadic into an array
-                int beforeVariadic = (int)Math.min(arguments.getSize(), variadicParameterIndex);
+                int beforeVariadic = (int)Math.min(arguments.getSize(), 
+                		variadicParameterIndex);
                 boolean needsVariadic = beforeVariadic < arguments.getSize();
                 args = new java.lang.Object[beforeVariadic + (needsVariadic ? 1 : 0)];
-                Iterator iterator = arguments.iterator();
+                Iterator<?> iterator = arguments.iterator();
                 java.lang.Object it;
                 int i=0;
-                while(i < beforeVariadic && (it = iterator.next()) != finished_.get_()){
+                while(i < beforeVariadic && 
+                		(it = iterator.next()) != finished_.get_()){
                     args[i++] = it;
                 }
                 // add the remainder as a variadic arg if required
@@ -913,13 +1000,15 @@ public class Util {
         }
     }
 
-    public static <T> java.lang.Class<T> getJavaClassForDescriptor(TypeDescriptor descriptor) {
+    @SuppressWarnings("unchecked")
+    public static <T> java.lang.Class<T> 
+    getJavaClassForDescriptor(TypeDescriptor descriptor) {
         if(descriptor == TypeDescriptor.NothingType
-                || descriptor == ceylon.language.Object.$TypeDescriptor$
-                || descriptor == ceylon.language.Anything.$TypeDescriptor$
-                || descriptor == ceylon.language.Basic.$TypeDescriptor$
-                || descriptor == ceylon.language.Null.$TypeDescriptor$
-                || descriptor == ceylon.language.Identifiable.$TypeDescriptor$)
+           || descriptor == ceylon.language.Object.$TypeDescriptor$
+           || descriptor == ceylon.language.Anything.$TypeDescriptor$
+           || descriptor == ceylon.language.Basic.$TypeDescriptor$
+           || descriptor == ceylon.language.Null.$TypeDescriptor$
+           || descriptor == ceylon.language.Identifiable.$TypeDescriptor$)
             return (java.lang.Class<T>) Object.class;
         if(descriptor instanceof TypeDescriptor.Class)
             return (java.lang.Class<T>) ((TypeDescriptor.Class) descriptor).getKlass();
