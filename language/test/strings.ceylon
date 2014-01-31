@@ -311,9 +311,9 @@ shared void strings() {
     check("hello".repeat(1)=="hello", "string repeat 2");
     check("hello".repeat(3)=="hellohellohello", "string repeat 3");
     
-    check("hello world".replace("hello","goodbye")=="goodbye world", "string replace");
-    check("hello hello world".replace("hello","goodbye")=="goodbye goodbye world", "string replace");
-    check("hello hello world".replaceFirst("hello","goodbye")=="hello goodbye world", "string replace");
+    check("hello world".replace("hello","goodbye")=="goodbye world", "string replace 1");
+    check("hello hello world".replace("hello","goodbye")=="goodbye goodbye world", "string replace 1");
+    check("hello hello world".replaceFirst("hello","goodbye")=="goodbye hello world", "string replace first");
     
     value nlb = StringBuilder();
     nlb.appendNewline();

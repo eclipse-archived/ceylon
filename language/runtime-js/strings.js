@@ -506,11 +506,11 @@ String$proto.$replace = function(sub, repl) {
 }
 String$proto.$replace.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','replace'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};
-String$proto.$replaceFirst = function(sub, repl) {
+String$proto.replaceFirst = function(sub, repl) {
     //TODO: escape regex metachars
     return String$(this.replace(sub, repl));
 }
-String$proto.$replaceFirst.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','replaceFirst'],
+String$proto.replaceFirst.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','replaceFirst'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};
 String$proto.repeat = function(times) {
     var sb = StringBuilder();
