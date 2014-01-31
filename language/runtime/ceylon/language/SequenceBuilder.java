@@ -102,7 +102,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
     Iterable<? extends Element, ? extends java.lang.Object> elements) {
         if (elements instanceof ArraySequence) {
-            ArraySequence as = (ArraySequence)elements;
+            ArraySequence<? extends Element> as = (ArraySequence<? extends Element>)elements;
             int size = (int)as.getSize();
             ensureCapacity$priv$(length + size);
             java.lang.Object[] a = as.array;
