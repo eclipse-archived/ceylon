@@ -139,7 +139,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         		new Sequential$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Ranged$this = 
         		new Ranged$impl<Integer,Sequential<? extends Element>>(Integer.$TypeDescriptor$, 
-        				TypeDescriptor.klass(Sequence.class, $reifiedElement), this);
+        				TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged) this);
         if (length == USE_ARRAY_SIZE) {
             length = array.length;
         }

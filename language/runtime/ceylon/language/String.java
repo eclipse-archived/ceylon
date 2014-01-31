@@ -70,8 +70,7 @@ public final class String
         		new Summable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Ranged$this = 
         		new Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, 
-        				String.$TypeDescriptor$,
-        				(Ranged<? super Integer, ? extends List<Character>>) this);
+        				String.$TypeDescriptor$, (Ranged) this);
         if (characters instanceof String) {
             value = ((String)characters).value;
         } else {
@@ -105,8 +104,7 @@ public final class String
         		new Summable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Ranged$this = 
         		new Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, 
-        				String.$TypeDescriptor$,
-        				(Ranged<? super Integer, ? extends List<Character>>) this);
+        				String.$TypeDescriptor$, (Ranged) this);
         value = string;
     }
 
