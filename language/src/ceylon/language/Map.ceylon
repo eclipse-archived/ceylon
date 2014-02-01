@@ -83,7 +83,7 @@ shared interface Map<out Key,out Item>
                 satisfies Collection<Key> {
             contains(Object key) => outer.defines(key);
             iterator() => { for (k->v in outer) k }.iterator();
-            clone() => this;
+            clone() => outer.clone().keys; //TODO: not efficient
             size => outer.size;
         }
         return keys;
@@ -105,7 +105,7 @@ shared interface Map<out Key,out Item>
                 return false;
             }
             iterator() => { for (k->v in outer) v }.iterator();
-            clone() => this;
+            clone() => outer.clone().values; //TODO: not efficient
             size => outer.size;
         }
         return values;
