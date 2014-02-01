@@ -14,6 +14,11 @@ shared interface Set<out Element>
         satisfies Collection<Element>
         given Element satisfies Object {
     
+    "The fundamental operation for `Set`s. Determines if the
+     given value belongs to this set."
+    shared actual Boolean contains(Object element)
+            => super.contains(element);
+    
     "Determines if this set is a superset of the given 
      `Set`, that is, if this set contains all of the 
      elements in the given set."
@@ -45,7 +50,7 @@ shared interface Set<out Element>
     "Two `Set`s are considered equal if they have the same 
      size and if every element of the first set is also an 
      element of the second set, as determined by 
-     `contains()`. Equivalently, a set is equal to a second 
+     [[contains]]. Equivalently, a set is equal to a second 
      set if it is both a subset and a superset of the second
      set."
     shared actual default Boolean equals(Object that) {
