@@ -171,6 +171,13 @@ shared native final class String(characters)
      Otherwise, return a string of the given length."
     shared native actual String terminal(Integer length);
     
+    "Return two strings, the first containing the characters
+     that occur before the given [[index]], the second with
+     the characters that occur after the given `index`. If 
+     the given `index` is outside the range of indices of 
+     this string, one of the returned strings will be empty."
+    shared native [String,String] slice(Integer index);
+    
     "The length of the string (the number of characters it 
      contains). In the case of the empty string, the string 
      has length zero. Note that this operation is 

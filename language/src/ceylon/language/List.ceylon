@@ -424,6 +424,15 @@ shared interface List<out Element>
         }
     }
     
+    //TODO: enable when backend bug is fixed
+    //"Return two lists, the first containing the elements
+    // that occur before the given [[index]], the second with
+    // the elements that occur after the given `index`. If the
+    // given `index` is outside the range of indices of this
+    // list, one of the returned lists will be empty."
+    //shared default [List<Element>,List<Element>] slice(Integer index)
+    //    => [this[...index-1], this[index...]];
+    
     shared actual formal List<Element> clone();
     
 }

@@ -1354,6 +1354,40 @@ public final class String
         return true;
     }
 
+    @TypeInfo("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
+    public
+    Tuple<String,? extends String,
+    		? extends Tuple<String,? extends String,
+    				? extends Sequential<? extends String>>>
+    slice(long index) {
+    	return slice(value,index);
+    }
+    
+    @Ignore
+    public static
+    Tuple<String,? extends String,
+    		? extends Tuple<String,? extends String,
+    				? extends Sequential<? extends String>>>
+    slice(java.lang.String value, long index) {
+    	java.lang.String first;
+    	java.lang.String second;
+    	if (index<=0) {
+    		first = "";
+    		second = value;
+    	}
+    	else if (index>=value.length()) {
+    		first = value;
+    		second = "";
+    	}
+    	else {
+    		first = value.substring(0,(int)index);
+    		second = value.substring((int)index);
+    	}
+    	return new Tuple(String.$TypeDescriptor$, 
+    			new String[] { instance(first), 
+    			        instance(second) });
+    }
+    
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
     public Iterable<? extends String, ?> getLines() {
         return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 

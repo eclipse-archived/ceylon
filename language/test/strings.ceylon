@@ -404,4 +404,10 @@ shared void strings() {
     check(("\{#0001F638}\{#0001f63e}".first else ' ')=='\{#0001F638}', "first cats");
     check(("\{#0001F638}\{#0001f63e}".rest.first else ' ')=='\{#0001f63e}', "second cats");
     check("\{#0001F638}\{#0001f63e}".reversed=="\{#0001f63e}\{#0001F638}", "cats reversed");
+    
+    check("helloworld".slice(5)==["hello","world"], "string slice 1");
+    check("helloworld".slice(0)==["","helloworld"], "string slice 2");
+    check("helloworld".slice(-1)==["","helloworld"], "string slice 3");
+    check("helloworld".slice(10)==["helloworld",""], "string slice 4");
+    check("helloworld".slice(100)==["helloworld",""], "string slice 5");
 }
