@@ -19,6 +19,7 @@ public final class arrayOfSize_ {
     
     @TypeParameters(@TypeParameter(value="Element"))
     @TypeInfo("ceylon.language::Array<Element>")
+    @ceylon.language.SharedAnnotation$annotation$
     public static <Element> Array<Element> arrayOfSize(@Ignore final TypeDescriptor $reifiedElement, 
             @Name("size")
             @TypeInfo("ceylon.language::Integer")

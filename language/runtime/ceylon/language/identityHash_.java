@@ -9,10 +9,11 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Method
 public final class identityHash_ {
     
-    private identityHash_() {
-    }
+    private identityHash_() {}
     
-    public static long identityHash(@Name("x")
+    @ceylon.language.SharedAnnotation$annotation$
+    public static long 
+    identityHash(@Name("x")
     @TypeInfo("ceylon.language::Identifiable")
     final java.lang.Object x) {
         return System.identityHashCode(x);

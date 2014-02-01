@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 	@TypeParameter(value="Return", variance=Variance.OUT),
 	@TypeParameter(value="CallableArgument", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)
 })
+@ceylon.language.SharedAnnotation$annotation$
 public interface Callable<Return> {
     
     /** 

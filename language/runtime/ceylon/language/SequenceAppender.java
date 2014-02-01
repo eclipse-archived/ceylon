@@ -12,7 +12,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 6)
 @Class(extendsType="ceylon.language::SequenceBuilder<Element>")
 @TypeParameters(@TypeParameter(value = "Element"))
-public class SequenceAppender<Element> extends SequenceBuilder<Element> {
+@ceylon.language.SharedAnnotation$annotation$
+public class SequenceAppender<Element> 
+        extends SequenceBuilder<Element> {
     
     public SequenceAppender(@Ignore TypeDescriptor $reifiedElement, 
             @Name("elements") 

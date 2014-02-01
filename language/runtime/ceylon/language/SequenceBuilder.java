@@ -13,7 +13,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 6)
 @Class
 @TypeParameters(@TypeParameter(value = "Element"))
-public class SequenceBuilder<Element> implements ReifiedType {
+@ceylon.language.SharedAnnotation$annotation$
+public class SequenceBuilder<Element> 
+        implements ReifiedType {
 
     private final static int MIN_CAPACITY = 5;
     private final static int MAX_CAPACITY = java.lang.Integer.MAX_VALUE;

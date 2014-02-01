@@ -37,6 +37,7 @@ public final class parseFloat_
     }
     
     @TypeInfo("ceylon.language::Null|ceylon.language::Float")
+    @ceylon.language.SharedAnnotation$annotation$
     public static Float parseFloat(@Name("string") java.lang.String string) {
     	final int length = string.length();
     	if (length == 0) {

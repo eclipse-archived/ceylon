@@ -11,7 +11,9 @@ public final class className_ {
     
     private className_() {}
     
-    public static java.lang.String className(@Name("obj")
+    @ceylon.language.SharedAnnotation$annotation$
+    public static java.lang.String 
+    className(@Name("obj")
     @TypeInfo("ceylon.language::Object")
     final java.lang.Object object) {
         return object.getClass().getName();

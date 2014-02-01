@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
 @Class(extendsType = "ceylon.language::Basic")
+@ceylon.language.SharedAnnotation$annotation$
 public class Exception extends RuntimeException implements ReifiedType {
 
     @Ignore

@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @ValueType
+@ceylon.language.SharedAnnotation$annotation$
 public abstract class Boolean implements ReifiedType {
 
     @Ignore

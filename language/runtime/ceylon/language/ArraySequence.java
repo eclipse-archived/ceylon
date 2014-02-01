@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 @TypeParameters(@TypeParameter(value = "Element"))
+@ceylon.language.SharedAnnotation$annotation$
 public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     // The array length is the first element in the array

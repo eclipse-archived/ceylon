@@ -5,10 +5,12 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 6)
 @Object
+@ceylon.language.SharedAnnotation$annotation$
 public final class operatingSystem_ {
 
     private static final operatingSystem_ value = new operatingSystem_();
 
+    @ceylon.language.SharedAnnotation$annotation$
     public static operatingSystem_ get_() {
         return value;
     }
@@ -17,8 +19,7 @@ public final class operatingSystem_ {
     private final java.lang.String fileSeparator = System.getProperty("file.separator");
     private final java.lang.String pathSeparator = System.getProperty("path.separator");
 
-    private operatingSystem_() {
-    }
+    private operatingSystem_() {}
 
     public java.lang.String getName() {
         java.lang.String os = System.getProperty("os.name").toLowerCase();

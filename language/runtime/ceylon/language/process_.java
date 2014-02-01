@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 6) @Object
+@ceylon.language.SharedAnnotation$annotation$
 public final class process_ {
 
     @SuppressWarnings("unchecked")
@@ -178,6 +179,7 @@ public final class process_ {
     private process_() {}
     private static final process_ value = new process_();
     
+    @ceylon.language.SharedAnnotation$annotation$
     public static process_ get_() {
         return value;
     }

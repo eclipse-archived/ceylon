@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>"
 })
 @ValueType
+@ceylon.language.SharedAnnotation$annotation$
 public final class Float
     implements Scalar<Float>, Exponentiable<Float,Float>, ReifiedType {
     
