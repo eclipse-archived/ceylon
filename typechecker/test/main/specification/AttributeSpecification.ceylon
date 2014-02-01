@@ -494,3 +494,11 @@ void n9(Person[] people) {
     }
     print(minors);
 }
+
+class InitializerWithAnonFunction() {
+    shared String name;
+    value val = "hello" filter (Character ch) {
+        return ch.letter;
+    };
+    name = "gavin";
+}

@@ -303,12 +303,14 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.FunctionArgument that) {
+    	boolean c = beginDisabledSpecificationScope();
         boolean oicoaf = inAnonFunctionOrComprehension;
         inAnonFunctionOrComprehension = declared&&inExtends;
     	SpecificationState ss = beginSpecificationScope();
     	super.visit(that);
     	endSpecificationScope(ss);
         inAnonFunctionOrComprehension = oicoaf;
+        endDisabledSpecificationScope(c);
     }
     
     @Override
