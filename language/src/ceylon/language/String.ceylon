@@ -2,8 +2,8 @@
    [[32-bit Unicode character|Character]]. The internal 
    UTF-16 encoding is hidden from clients.
    
-   A string is a [[Category]] of its [[characters|Character]], 
-   and of its substrings:
+   A string is a [[Category]] of its [[characters]], and of 
+   its substrings:
    
        'w' in greeting 
        "hello" in greeting
@@ -207,7 +207,7 @@ shared native final class String(characters)
     
     "Determines if the given object is a `String` and, if 
      so, if it occurs as a substring of this string, or if 
-     the object is a Character that occurs in this string. 
+     the object is a `Character` that occurs in this string. 
      That is to say, a string is considered a [[Category]] 
      of its substrings and of its characters."
     shared actual native Boolean contains(Object element);
