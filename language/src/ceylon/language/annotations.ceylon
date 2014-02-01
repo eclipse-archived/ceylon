@@ -192,7 +192,7 @@ shared final annotation class DeprecationAnnotation(
      is deprecated, and what alternatives are available, or 
      null."
     shared String? reason 
-            => description.empty then null else description;
+            => !description.empty then description;
 }
 
 "Annotation to mark program elements which should not be 
