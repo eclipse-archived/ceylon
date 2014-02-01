@@ -294,8 +294,8 @@ shared interface List<out Element>
          return false;
     }
     
-    "Determines if this list contains the given value. 
-     Equivalent to `occurs()`."
+    "Determines if this list contains the given value.
+     Returns `true` for every element of this list."
     see (`function occurs`)
     shared actual default Boolean contains(Object element) 
             => occurs(element);
