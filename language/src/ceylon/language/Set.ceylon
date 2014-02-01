@@ -16,7 +16,7 @@ shared interface Set<out Element>
     
     "The fundamental operation for `Set`s. Determines if the
      given value belongs to this set."
-    shared actual Boolean contains(Object element)
+    shared actual default Boolean contains(Object element)
             => super.contains(element);
     
     "Determines if this set is a superset of the given 
