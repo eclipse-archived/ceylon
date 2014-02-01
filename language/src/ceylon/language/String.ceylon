@@ -8,11 +8,11 @@
        'w' in greeting 
        "hello" in greeting
    
-   Strings are summable:
+   Strings are [[summable|Summable]]:
    
        String greeting = "hello" + " " + "world";
    
-   They are efficiently iterable:
+   They are efficiently [[iterable|Iterable]]:
    
        for (char in "hello world") { ... }
    
