@@ -48,8 +48,8 @@ public final class annotations_ {
             @Name("programElement")
             @TypeInfo("ProgramElement")
             final ProgramElement programElement) {
-        Sequential<ceylon.language.Annotation> annots = (Sequential)Metamodel.annotations($reifiedValue, programElement);
-        final java.lang.Class<?> refAnnotationClass = (java.lang.Class<?>)Metamodel.getReflectedAnnotationClass(annotationType);
+        Sequential<? extends ceylon.language.Annotation> annots = Metamodel.annotations($reifiedValue, programElement);
+        final java.lang.Class<?> refAnnotationClass = Metamodel.getReflectedAnnotationClass(annotationType);
         if (ceylon.language.OptionalAnnotation.class.isAssignableFrom(refAnnotationClass)) {
             if (annots.getSize() > 1L) {
                 throw new AssertionException("optional annotation occurs more than once");
