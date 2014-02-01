@@ -30,4 +30,10 @@ shared void testRange() {
     variable value az = 'a':26;
     check(az.string == "a..z", "a:26 string == " + az.string);
     
+    check((1..5).by(2).sequence==[1,3,5], "int range by 1");
+    check((1..4).by(2).sequence==[1,3], "int range by 2");
+    check(('a'..'e').by(2).sequence==['a','c','e'], "char range by 1");
+    check((1..4).shifted(2)==3..6, "int range shift 1");
+    check((1..5).shifted(-2)==-1..3, "int range shift 2");
+    check(('a'..'c').shifted(1)=='b'..'d', "char range shift 1");
 }

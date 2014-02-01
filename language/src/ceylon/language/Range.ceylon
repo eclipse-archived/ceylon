@@ -69,7 +69,7 @@ shared final class Range<Element>(first, last)
     "The rest of the range, without the start of the
      range."
     shared actual Element[] rest {
-        if (size==1) { return {}; }
+        if (size==1) { return []; }
         Element n = next(first);
         return Range<Element>(n,last);
     }
@@ -122,11 +122,50 @@ shared final class Range<Element>(first, last)
             return this;
         }
         else if (is Integer first, is Integer last) {
-            assert (is {Element+} result = IntegerRangeBy(first, last, step));
+            assert (is {Element+} result 
+                    = IntegerRangeBy(first, last, step));
             return result;
         }
         else {
             return super.by(step);
+        }
+    }
+    
+    "Returns a range of the same length and type as this
+     range, with its endpoints shifted by the given number 
+     of elements, where:
+     
+     - a negative [[shift]] measures 
+       [[decrements|Ordinal.predecessor]], and 
+     - a positive `shift` measures 
+       [[increments|Ordinal.successor]]."
+    shared Range<Element> shifted(Integer shift) {
+        if (shift==0) {
+            return this;
+        }
+        //TODO: reenable when compiler bug is fixed 
+        /*else if (is Integer first, is Integer last) {
+            assert (is Range<Element> shifted 
+                    = first+shift..last+shift);
+            return shifted;
+        }*/
+        else {
+            variable value shiftedFirst = first;
+            variable value shiftedLast = last;
+            value max = shift.magnitude;
+            value increasing = shift.positive;
+            variable value count = 0;
+            while (count++<max) {
+                if (increasing) {
+                    shiftedFirst++;
+                    shiftedLast++;
+                }
+                else {
+                    shiftedFirst--;
+                    shiftedLast--;
+                }
+            }
+            return shiftedFirst..shiftedLast;
         }
     }
     
