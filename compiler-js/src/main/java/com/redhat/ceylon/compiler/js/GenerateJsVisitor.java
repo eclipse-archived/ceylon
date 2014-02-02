@@ -1152,12 +1152,6 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         endLine();
-        /*out("var ");
-        self(d);
-        out("=");
-        self();
-        out(";");
-        endLine();*/
     }
 
     private void instantiateSelf(ClassOrInterface d) {
@@ -3035,17 +3029,9 @@ public class GenerateJsVisitor extends Visitor
                     //a local declaration of some kind,
                     //perhaps in an outer scope
                     id = (TypeDeclaration) d.getContainer();
-                } //else {
-                    //an inherited declaration that might be
-                    //inherited by an outer scope
-                //}
+                }
                 String path = "";
                 Scope scope = that.getScope();
-//                if (inProto) {
-//                    while ((scope != null) && (scope instanceof TypeDeclaration)) {
-//                        scope = scope.getContainer();
-//                    }
-//                }
                 if ((scope != null) && ((that instanceof ClassDeclaration)
                                         || (that instanceof InterfaceDeclaration))) {
                     // class/interface aliases have no own "this"
@@ -3114,27 +3100,6 @@ public class GenerateJsVisitor extends Visitor
     private String createRetainedTempVar() {
         return createRetainedTempVar("tmp");
     }
-
-//    @Override
-//    public void visit(Expression that) {
-//        if (that.getTerm() instanceof QualifiedMemberOrTypeExpression) {
-//            QualifiedMemberOrTypeExpression term = (QualifiedMemberOrTypeExpression) that.getTerm();
-//            // References to methods of types from other packages always need
-//            // special treatment, even if opts.isOptimize()==false, because they
-//            // may have been generated in prototype style. In particular,
-//            // ceylon.language is always in prototype style.
-//            if ((term.getDeclaration() instanceof Functional)
-//                    && (opts.isOptimize() || !declaredInThisPackage(term.getDeclaration()))) {
-//                if (term.getMemberOperator() instanceof SpreadOp) {
-//                    generateSpread(term);
-//                } else {
-//                    generateCallable(term, names.name(term.getDeclaration()));
-//                }
-//                return;
-//            }
-//        }
-//        super.visit(that);
-//    }
 
     @Override
     public void visit(Return that) {
@@ -3376,12 +3341,6 @@ public class GenerateJsVisitor extends Visitor
                     out("(-");
                     termgen.term();
                     out(")");
-                //This is not really optimal yet, since it generates
-                //stuff like Float(-Float((5.1)))
-                /*} else if (d.inherits(types._float)) {
-                    out(clAlias, "Float(-");
-                    termgen.term();
-                    out(")");*/
                 } else {
                     termgen.term();
                     out(".negativeValue");
