@@ -12,7 +12,6 @@ public final class suppressedExceptions_ {
     private suppressedExceptions_() {}
     
     @TypeInfo("ceylon.language::Sequential<ceylon.language::Exception>")
-    @ceylon.language.SharedAnnotation$annotation$
     public static ceylon.language.Sequential<? extends java.lang.Throwable> suppressedExceptions(
             @Name("exception")
             @TypeInfo("ceylon.language::Exception")

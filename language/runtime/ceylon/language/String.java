@@ -20,7 +20,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
                  "ceylon.language::Summable<ceylon.language::String>",
                  "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>"})
 @ValueType
-@ceylon.language.SharedAnnotation$annotation$
 public final class String
     implements Comparable<String>, List<Character>,
                Summable<String>, ReifiedType {

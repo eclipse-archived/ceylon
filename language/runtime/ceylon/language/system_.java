@@ -7,12 +7,10 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 6) @Object
-@ceylon.language.SharedAnnotation$annotation$
 public final class system_ {
     
     private static final system_ value = new system_();
     
-    @ceylon.language.SharedAnnotation$annotation$
     public static system_ get_() {
         return value;
     }

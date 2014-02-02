@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::List<Element>",
     "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
 })
-@ceylon.language.SharedAnnotation$annotation$
 public final class Array<Element> 
         implements List<Element>, ReifiedType {
     

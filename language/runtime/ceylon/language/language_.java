@@ -5,7 +5,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 6) @Object
-@ceylon.language.SharedAnnotation$annotation$
 public final class language_ {
     
     public java.lang.String getVersion() {
@@ -44,7 +43,6 @@ public final class language_ {
     private language_() {}
     private static final language_ value = new language_();
     
-    @ceylon.language.SharedAnnotation$annotation$
     public static language_ get_() {
         return value;
     }

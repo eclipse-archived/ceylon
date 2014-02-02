@@ -21,7 +21,6 @@ public final class flatten_ {
     @TypeParameters({@TypeParameter(value="Return"),
                      @TypeParameter(value="Args", satisfies="ceylon.language::Sequential<ceylon.language::Anything>")})
     @TypeInfo("ceylon.language::Callable<Return,Args>")
-    @ceylon.language.SharedAnnotation$annotation$
     public static <Return,Args> Callable<Return> flatten(
             @Ignore final TypeDescriptor $reifiedReturn,
             @Ignore final TypeDescriptor $reifiedArgs, 

@@ -5,12 +5,10 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 6) @Object
-@ceylon.language.SharedAnnotation$annotation$
 public final class runtime_ {
     
     private static final runtime_ value = new runtime_();
     
-    @ceylon.language.SharedAnnotation$annotation$
     public static runtime_ get_() {
         return value;
     }

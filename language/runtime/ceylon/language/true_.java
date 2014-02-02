@@ -8,7 +8,6 @@ public class true_ extends Boolean {
     
     private final static true_ value = new true_();
 
-    @ceylon.language.SharedAnnotation$annotation$
     public static true_ get_(){
         return value;
     }

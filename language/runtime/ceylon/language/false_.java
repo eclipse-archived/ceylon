@@ -7,8 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Object;
 public class false_ extends Boolean {
     
     private final static false_ value = new false_();
-    
-    @ceylon.language.SharedAnnotation$annotation$
+
     public static false_ get_(){
         return value;
     }

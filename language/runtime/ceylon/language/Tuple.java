@@ -49,7 +49,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
                 satisfies = {"ceylon.language::Sequential<Element>"},
                 caseTypes = {},
                 defaultValue = "ceylon.language::Empty")})
-@ceylon.language.SharedAnnotation$annotation$
 public final class Tuple<Element, First extends Element, 
                 Rest extends Sequential<? extends Element>>
         extends ArraySequence<Element>

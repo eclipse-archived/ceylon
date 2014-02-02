@@ -11,7 +11,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
 @Class
-@ceylon.language.SharedAnnotation$annotation$
 public class StringBuilder implements ReifiedType {
     
     @Ignore
