@@ -435,25 +435,28 @@ public class ExpressionVisitor extends Visitor {
     private void checkReferenceIsNonVariable(Tree.Variable v,
             Tree.SpecifierExpression se) {
         if (v.getType() instanceof Tree.SyntheticVariable) {
-            checkReferenceIsNonVariable((Tree.BaseMemberExpression) se.getExpression().getTerm());
+            Tree.BaseMemberExpression term = (Tree.BaseMemberExpression) se.getExpression().getTerm();
+			checkReferenceIsNonVariable(term, false);
         }
     }
 
-    private void checkReferenceIsNonVariable(Tree.BaseMemberExpression ref) {
+    private void checkReferenceIsNonVariable(Tree.BaseMemberExpression ref,
+    		boolean isSwitch) {
         Declaration d = ref.getDeclaration();
         if (d!=null) {
+        	int code = isSwitch ? 3101:3100;
             String help=" (assign to a new local value to narrow type)";
             if (!(d instanceof Value)) {
                 ref.addError("referenced declaration is not a value: " + 
-                        d.getName(unit), 3100);
+                        d.getName(unit), code);
             }
             else if (isNonConstant(d)) {
                 ref.addError("referenced value is non-constant: " + 
-                        d.getName(unit) + help, 3100);
+                        d.getName(unit) + help, code);
             }
             else if (d.isDefault() || d.isFormal()) {
                 ref.addError("referenced value may be refined by a non-constant value: " + 
-                        d.getName(unit) + help, 3100);
+                        d.getName(unit) + help, code);
             }
         }
     }
@@ -4987,10 +4990,10 @@ public class ExpressionVisitor extends Visitor {
         if (hasIsCase) {
             Tree.Term st = switchExpression.getTerm();
             if (st instanceof Tree.BaseMemberExpression) {
-                checkReferenceIsNonVariable((Tree.BaseMemberExpression) st);
+                checkReferenceIsNonVariable((Tree.BaseMemberExpression) st, true);
             }
-            else {
-                switchExpression.addError("switch expression must be a value reference in switch with type cases");
+            else if (st!=null) {
+                st.addError("switch expression must be a value reference in switch with type cases", 3102);
             }
         }   
     }
