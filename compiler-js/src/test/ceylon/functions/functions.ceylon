@@ -32,7 +32,6 @@ class MySequence<out Element>(Sequence<Element> seq)
     shared actual Element[] spanFrom(Integer from) { return seq.spanFrom(from); }
     shared actual Element[] spanTo(Integer to) { return seq.spanTo(to); }
     shared actual Element[] segment(Integer from, Integer length) { return seq.segment(from, length); }
-    shared actual MySequence<Element> clone { return this; }
     shared actual String string { return seq.string; }
     shared actual Integer hash { return seq.hash; }
     shared actual Boolean equals(Object other) { return seq.equals(other); }

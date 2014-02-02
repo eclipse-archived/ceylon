@@ -58,7 +58,6 @@ class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
     shared actual [Integer+]? get(Integer i) => grid[i];
     shared actual [Integer+][] rest = grid.rest;
     shared actual [Integer+] first = grid.first;
-    shared actual MiMatrix clone => this;
     shared actual Integer size => grid.size;
     shared actual Boolean contains(Object other) => grid.contains(other);
     last => grid.last;

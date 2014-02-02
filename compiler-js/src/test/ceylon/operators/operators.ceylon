@@ -440,9 +440,39 @@ void compareStringNumber() {
     check(s2 != n2, "String and Float should NOT be equal");
 }
 
+class TestSet<out Element>({Element*} e) satisfies Set<Element>
+    given Element satisfies Object {
+    hash = e.hash;
+    shared actual TestSet<Element> clone() => this;
+    shared actual Iterator<Element> iterator() => e.iterator();
+    shared actual Set<Element|Other> union<Other>(Set<Other> other)
+            given Other satisfies Object {
+        value others = [for (o in e) if (is Other o, !o in other) o];
+        return TestSet(other.chain(others));
+    }
+    shared actual Set<Element&Other> intersection<Other>(Set<Other> set)
+            given Other satisfies Object {
+        return TestSet{for (elem in e) if (is Other elem, elem in set) elem };
+    }
+    shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
+            given Other satisfies Object {
+        return set;
+    }
+    shared actual Set<Element> complement<Other>(Set<Other> set)
+            given Other satisfies Object {
+        return TestSet{for (o in e) if (!o in set) o};
+    }
+    shared actual Boolean equals(Object other) {
+        if (is TestSet<Element> other) {
+            return size==other.size && every((Object o) => o in other) && other.every((Object o) => o in this);
+        }
+        return false;
+    }
+}
+
 void testSetOperators() {
-  variable value s1 = LazySet{1,2,3,4};
-  value s2 = LazySet{4,5,6};
+  variable value s1 = TestSet{1,2,3,4};
+  value s2 = TestSet{4,5,6};
   check((s1|s2).size == 6, "|");
   check((s1~s2).size == 3, "~");
   check((s1&s2).size == 1, "&");
