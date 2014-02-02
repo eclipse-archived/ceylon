@@ -48,7 +48,7 @@ shared void test() {
         if (n is Singleton<Object>) {
             fail("what? n is NOT a Singleton!");
         }
-        check(!n is Category, "n is a Category?");
+        check(!n is {Object*}, "n is an Iterable?");
         try {
             testSingleton = n;
             fail("dynamic should not be assignable to typed");
@@ -144,7 +144,7 @@ shared void test() {
             check(true, "OK incomplete switch fails at runtime");
         }
     }
-    check(leakTest(true) is Category, "leak test 1");
+    check(leakTest(true) is {Integer*}, "leak test 1");
     try {
         leakTest(false);
         fail("leaking objects outside dynamic blocks...");
