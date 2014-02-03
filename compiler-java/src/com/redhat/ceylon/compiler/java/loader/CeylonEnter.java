@@ -72,6 +72,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
+import com.sun.source.util.TaskEvent;
+import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
@@ -126,6 +128,8 @@ public class CeylonEnter extends Enter {
     private boolean isBootstrap;
     private Annotate annotate;
     private Set<Module> modulesAddedToClassPath = new HashSet<Module>();
+    private TaskListener taskListener;
+
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -153,6 +157,7 @@ public class CeylonEnter extends Enter {
         symtab = Symtab.instance(context);
         todo = Todo.instance(context);
         annotate = Annotate.instance(context);
+        taskListener = context.get(TaskListener.class);
 
         // now superclass init
         init(context);
@@ -324,7 +329,14 @@ public class CeylonEnter extends Enter {
                 CeylonPhasedUnit phasedUnit = (CeylonPhasedUnit)ceylonTree.phasedUnit;
                 gen.setFileObject(phasedUnit.getFileObject());
                 nested.startTask("Ceylon code generation for " + phasedUnit.getUnitFile().getName());
+                TaskEvent event = new TaskEvent(TaskEvent.Kind.PARSE, tree);
+                if (taskListener != null) {
+                    taskListener.started(event);
+                }
                 ceylonTree.defs = gen.transformAfterTypeChecking(ceylonTree.ceylonTree).toList();
+                if (taskListener != null) {
+                    taskListener.finished(event);
+                }
                 nested.endTask();
                 if(isVerbose("ast")){
                     System.err.println("Model tree for "+tree.getSourceFile());
