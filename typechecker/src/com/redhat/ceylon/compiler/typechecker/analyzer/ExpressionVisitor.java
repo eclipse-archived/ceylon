@@ -2532,8 +2532,7 @@ public class ExpressionVisitor extends Visitor {
             if (t!=null) {
                 t = t.resolveAliases();
                 if (!foundParameters.contains(p) &&
-                        t.getDeclaration() instanceof Interface &&
-                        t.getDeclaration().equals(unit.getIterableDeclaration())) {
+                		unit.isIterableParameterType(t)) {
                     return p;
                 }
             }

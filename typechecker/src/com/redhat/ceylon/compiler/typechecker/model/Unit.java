@@ -1074,6 +1074,11 @@ public class Unit {
         return null;
     }
     
+    public boolean isIterableParameterType(ProducedType t) {
+    	return t.getDeclaration() instanceof Interface &&
+    			t.getDeclaration().equals(getIterableDeclaration());
+    }
+    
     public TypeDeclaration getLanguageModuleModelTypeDeclaration(String name) {
         return (TypeDeclaration) getLanguageModuleModelDeclaration(name);
     }
