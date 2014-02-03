@@ -201,6 +201,6 @@ class WithGoodFunParam2(Boolean eq(Object that) => true) {}
 
 
 @error class WithBadFunParam1(eq = (Object that) => 1) {
-    Boolean equals(Object that);
+    Boolean eq(Object that);
 }
 class WithBadFunParam2(@error Boolean eq(Object that) => 1) {}
