@@ -979,9 +979,14 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        ProducedType type = that.getParameterModel().getType();
-        if (type!=null && !isTypeUnknown(type)) {
-            checkType(type, that.getSpecifierExpression());
+        MethodOrValue model = that.getParameterModel().getModel();
+        if (model!=null) {
+        	ProducedType type = model.getProducedReference(null, 
+        			Collections.<ProducedType>emptyList())
+        					.getFullType();
+        	if (type!=null && !isTypeUnknown(type)) {
+        		checkType(type, that.getSpecifierExpression());
+        	}
         }
     }
     
