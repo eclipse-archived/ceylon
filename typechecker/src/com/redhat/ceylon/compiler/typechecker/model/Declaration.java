@@ -266,6 +266,8 @@ public abstract class Declaration
     public abstract ProducedReference getProducedReference(ProducedType pt,
             List<ProducedType> typeArguments);
 
+    public abstract ProducedReference getReference();
+    
     protected java.lang.Class<?> getModelClass() {
         return getClass();
     }

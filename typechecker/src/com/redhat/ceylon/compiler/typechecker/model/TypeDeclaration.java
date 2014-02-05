@@ -146,6 +146,18 @@ public abstract class TypeDeclaration extends Declaration
         return getProducedType(pt, typeArguments);
     }
 
+    @Override
+    public ProducedType getReference() {
+    	ProducedType pt = new ProducedType();
+        if (isMember()) {
+            pt.setQualifyingType(((ClassOrInterface) getContainer()).getType());
+        }
+        pt.setDeclaration(this);
+        pt.setTypeArguments(getTypeArgumentMap(this, pt.getQualifyingType(), 
+        		Collections.<ProducedType>emptyList()));
+        return pt;
+    }
+
     /**
      * Get a produced type for this declaration by
      * binding explicit or inferred type arguments
