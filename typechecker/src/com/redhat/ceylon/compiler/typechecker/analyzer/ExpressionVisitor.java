@@ -157,7 +157,7 @@ public class ExpressionVisitor extends Visitor {
             that.getDeclarationModel().setType(vt);            
         }
         that.setTypeModel(that.getDeclarationModel()
-                .getProducedTypedReference(null, Collections.<ProducedType>emptyList())
+                .getTypedReference()
                 .getFullType());
     }
     
@@ -671,7 +671,8 @@ public class ExpressionVisitor extends Visitor {
                                 ProducedType at = argTypes.get(i);
                                 Tree.Parameter param = params.get(i);
                                 ProducedType t = param.getParameterModel().getModel()
-                                        .getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType();
+                                        .getTypedReference()
+                                        .getFullType();
                                 checkAssignable(at, t, param, "type of parameter " + param.getParameterModel().getName() + 
                                         " must be a supertype of parameter type in declaration of " + refName);
                             }
@@ -933,8 +934,9 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     Tree.Parameter tp = tpl.getParameters().get(j++);
                     Parameter rp = tp.getParameterModel();
-                    ProducedType rpt = rp.getModel().getProducedReference(null, 
-                            Collections.<ProducedType>emptyList()).getFullType();
+                    ProducedType rpt = rp.getModel()
+                    		.getTypedReference()
+                    		.getFullType();
                     checkAssignable(rpt, pt, tp, 
                             "declared parameter type must exactly the same as type of parameter of refined method");
                     rp.setDefaulted(p.isDefaulted());
@@ -981,8 +983,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         MethodOrValue model = that.getParameterModel().getModel();
         if (model!=null) {
-        	ProducedType type = model.getProducedReference(null, 
-        			Collections.<ProducedType>emptyList())
+        	ProducedType type = model.getTypedReference()
         					.getFullType();
         	if (type!=null && !isTypeUnknown(type)) {
         		checkType(type, that.getSpecifierExpression());
@@ -1910,9 +1911,9 @@ public class ExpressionVisitor extends Visitor {
         else if (arg instanceof Tree.TypedArgument) {
             //copy/pasted from checkNamedArgument()
             Tree.TypedArgument ta = (Tree.TypedArgument) arg;
-            type = ta.getDeclarationModel().getProducedTypedReference(null,
-                    //assuming an argument can't have type params 
-                    Collections.<ProducedType>emptyList()).getFullType();
+            type = ta.getDeclarationModel()
+            		.getTypedReference() //argument can't have type parameters
+            		.getFullType();
         }
         if (type!=null) {
             Parameter parameter = getMatchingParameter(parameters, arg, foundParameters);
@@ -2439,10 +2440,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (a instanceof Tree.TypedArgument) {
             Tree.TypedArgument ta = (Tree.TypedArgument) a;
-            argType = ta.getDeclarationModel().getProducedTypedReference(null,
-                     //assuming an argument can't have type params 
-                    Collections.<ProducedType>emptyList()).getFullType();
-            //argType = ta.getType().getTypeModel();
+            argType = ta.getDeclarationModel()
+            		.getTypedReference() //argument can't have type parameters
+            		.getFullType();
             checkArgumentToVoidParameter(p, ta);
         }
         ProducedType pt = pr.getTypedParameter(p).getFullType();
@@ -6010,8 +6010,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 Tree.TypeArgumentList tal = that.getTypeArgumentList();
                 if (explicitTypeArguments(method, tal, null)) {
-                    List<ProducedType> ta = getTypeArguments(tal, getTypeParameters(method),
-                            outerType);
+                    List<ProducedType> ta = getTypeArguments(tal, 
+                    		getTypeParameters(method), outerType);
                     if (tal != null) {
                         tal.setTypeModels(ta);
                     }

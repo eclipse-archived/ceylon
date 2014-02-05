@@ -332,51 +332,83 @@ public class Util {
      * @param typeArguments explicit or inferred type 
      *        arguments of the declaration
      */
-    static Map<TypeParameter,ProducedType> arguments(Declaration declaration, 
-            ProducedType receivingType, List<ProducedType> typeArguments) {
-        if(receivingType == null 
-                && declaration instanceof Generic
-                && ((Generic)declaration).getTypeParameters().isEmpty())
-            return Collections.emptyMap();
-        
-        List<TypeParameter> params = null;
-        if (declaration instanceof Generic) {
-            Generic g = (Generic) declaration;
-            params = g.getTypeParameters();
-        }
-        Map<TypeParameter, ProducedType> map = getArgumentsOfOuterType(receivingType, params == null ? 0 : params.size());
-        //now turn the type argument tuple into a
-        //map from type parameter to argument
-        if (params != null) {
-            for (int i=0; i<params.size(); i++) {
-                if (typeArguments.size()>i) {
-                    map.put(params.get(i), typeArguments.get(i));
-                }
-            }
-        }
-        return map;
+    static Map<TypeParameter,ProducedType> getTypeArgumentMap(Declaration declaration, 
+            ProducedType receivingType, List<ProducedType> typeArguments) {        
+    	List<TypeParameter> typeParameters = getTypeParameters(declaration);
+		//make sure we collect all type arguments
+		//from the whole qualified type!
+        int count = countTypeParameters(receivingType, typeParameters);
+		if (count==0) {
+		    return Collections.emptyMap();
+		}
+		else {
+			return aggregateTypeArguments(receivingType, typeArguments,
+                    typeParameters, count);
+		}
     }
 
-    public static Map<TypeParameter, ProducedType> getArgumentsOfOuterType(
-            ProducedType receivingType, int additionalTypeArgumentCount) {
-        //make sure we collect all type arguments
-        //from the whole qualified type!
-        ProducedType dt = receivingType;
-        int count = additionalTypeArgumentCount;
-        while (dt!=null) {
-            count += dt.getTypeArguments().size();
-            dt = dt.getQualifyingType();
+	private static Map<TypeParameter, ProducedType> aggregateTypeArguments(
+            ProducedType receivingType, List<ProducedType> typeArguments,
+            List<TypeParameter> typeParameters, int count) {
+	    Map<TypeParameter,ProducedType> map = 
+	    		new HashMap<TypeParameter,ProducedType>(count);
+	    ProducedType dt = receivingType;
+	    while (dt!=null) {
+	    	map.putAll(dt.getTypeArguments());
+	    	dt = dt.getQualifyingType();
+	    }
+	    //now turn the type argument tuple into a
+	    //map from type parameter to argument
+	    for (int i=0; i<typeParameters.size() && i<typeArguments.size(); i++) {
+	    	map.put(typeParameters.get(i), typeArguments.get(i));
+	    }
+	    return map;
+    }
+
+	private static int countTypeParameters(ProducedType receivingType,
+            List<TypeParameter> typeParameters) {
+	    ProducedType dt = receivingType;
+		int count = typeParameters.size();
+		while (dt!=null) {
+		    count += dt.getTypeArguments().size();
+		    dt = dt.getQualifyingType();
+		}
+	    return count;
+    }
+
+	private static List<TypeParameter> getTypeParameters(Declaration declaration) {
+    	if (declaration instanceof Generic) {
+            Generic g = (Generic) declaration;
+            return g.getTypeParameters();
         }
-        if(count == 0)
-            return Collections.<TypeParameter,ProducedType>emptyMap();
-        
-        Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>(count);
-        dt = receivingType;
-        while (dt!=null) {
-            map.putAll(dt.getTypeArguments());
-            dt = dt.getQualifyingType();
+        else {
+        	return Collections.emptyList();
         }
-        return map;
+    }
+
+    public static Map<TypeParameter,ProducedType> getArgumentsOfOuterType(
+            ProducedType receivingType, List<TypeParameter> typeParameters, 
+            List<ProducedType> typeArguments) {
+        ProducedType dt;
+        int count = countTypeParameters(receivingType, typeParameters);
+        if (count==0) {
+            return Collections.emptyMap();
+        }
+        else {
+        	Map<TypeParameter,ProducedType> map = 
+        			new HashMap<TypeParameter,ProducedType>(count);
+        	dt = receivingType;
+        	while (dt!=null) {
+        		map.putAll(dt.getTypeArguments());
+        		dt = dt.getQualifyingType();
+        	}
+        	//now turn the type argument tuple into a
+        	//map from type parameter to argument
+        	for (int i=0; i<typeParameters.size() && i<typeArguments.size(); i++) {
+        		map.put(typeParameters.get(i), typeArguments.get(i));
+        	}
+        	return map;
+        }
     }
     
     static <T> List<T> list(List<T> list, T element) {

@@ -5,11 +5,9 @@ import static com.redhat.ceylon.compiler.typechecker.model.Module.LANGUAGE_MODUL
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -212,8 +210,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getClassDeclarationType(),
-                unit.getClassMetatype(dm.getProducedType(qualifyingType(dm), 
-                        Collections.<ProducedType>emptyList())));
+                unit.getClassMetatype(dm.getType()));
     }
 
     @Override 
@@ -223,8 +220,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getInterfaceDeclarationType(),
-                unit.getInterfaceMetatype(dm.getProducedType(qualifyingType(dm), 
-                        Collections.<ProducedType>emptyList())));
+                unit.getInterfaceMetatype(dm.getType()));
     }
     
     @Override
@@ -234,8 +230,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getValueDeclarationType(dm),
-                unit.getValueMetatype(dm.getProducedTypedReference(qualifyingType(dm), 
-                        Collections.<ProducedType>emptyList())));
+                unit.getValueMetatype(dm.getTypedReference()));
     }
 
     @Override
@@ -250,8 +245,7 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getFunctionDeclarationType(),
-                unit.getFunctionMetatype(dm.getProducedTypedReference(qualifyingType(dm), 
-                        Collections.<ProducedType>emptyList())));
+                unit.getFunctionMetatype(dm.getTypedReference()));
     }
 
     private void checkAnnotationType(Tree.AnyClass that, Class c) {
@@ -579,15 +573,6 @@ public class AnnotationVisitor extends Visitor {
             else {
                 checkAnnotationArguments(null, (Tree.InvocationExpression) that);
             }
-        }
-    }
-    
-    private static ProducedType qualifyingType(Declaration d) {
-        if (d.isClassOrInterfaceMember()) {
-            return ((ClassOrInterface) d.getContainer()).getType();
-        }
-        else {
-            return null;
         }
     }
 

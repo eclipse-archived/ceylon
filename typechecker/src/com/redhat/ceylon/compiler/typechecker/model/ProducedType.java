@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.model;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToIntersection;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.addToUnion;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.principalInstantiation;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -447,7 +447,7 @@ public class ProducedType extends ProducedReference {
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(member);
         ptr.setQualifyingType(declaringType);
-        Map<TypeParameter, ProducedType> map = arguments(member, declaringType, typeArguments);
+        Map<TypeParameter, ProducedType> map = getTypeArgumentMap(member, declaringType, typeArguments);
         //map.putAll(sub(map));
         ptr.setTypeArguments(map);
         return ptr;
@@ -493,7 +493,7 @@ public class ProducedType extends ProducedReference {
             List<ProducedType> typeArguments) {
         ProducedType rst = (receiver==null) ? null : 
                 receiver.getSupertype((TypeDeclaration) member.getContainer());
-        return new Substitution().substitute(this, arguments(member, rst, typeArguments));
+        return new Substitution().substitute(this, getTypeArgumentMap(member, rst, typeArguments));
     }
 
     public ProducedType getType() {
@@ -1753,7 +1753,7 @@ public class ProducedType extends ProducedReference {
     			return new UnknownType(d.getUnit()).getType();
     		}
     		return et.resolveAliases()
-    				.substitute(arguments(d, aliasedQualifyingType, aliasedArgs));
+    				.substitute(getTypeArgumentMap(d, aliasedQualifyingType, aliasedArgs));
     	}
     	else {
     		return d.getProducedType(aliasedQualifyingType, aliasedArgs);

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isNameMatching;
@@ -168,7 +168,7 @@ public abstract class TypeDeclaration extends Declaration
         ProducedType pt = new ProducedType();
         pt.setDeclaration(this);
         pt.setQualifyingType(qualifyingType);
-        pt.setTypeArguments(arguments(this, qualifyingType, typeArguments));
+        pt.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));
         return pt;
     }
     
@@ -191,10 +191,12 @@ public abstract class TypeDeclaration extends Declaration
         type.setDeclaration(this);
         //each type parameter is its own argument
         List<TypeParameter> typeParameters = getTypeParameters();
-        if(typeParameters.isEmpty()){
-            type.setTypeArguments(Collections.<TypeParameter, ProducedType>emptyMap());
-        }else{
-            Map<TypeParameter, ProducedType> map = new HashMap<TypeParameter, ProducedType>();
+        if (typeParameters.isEmpty()) {
+            type.setTypeArguments(Collections.<TypeParameter,ProducedType>emptyMap());
+        }
+        else {
+            Map<TypeParameter, ProducedType> map = 
+            		new HashMap<TypeParameter, ProducedType>();
             for (TypeParameter p: typeParameters) {
                 ProducedType pta = new ProducedType();
                 pta.setDeclaration(p);

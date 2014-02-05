@@ -1,7 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.arguments;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentMap;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -79,7 +80,22 @@ public abstract class TypedDeclaration extends Declaration {
         ProducedTypedReference ptr = new ProducedTypedReference();
         ptr.setDeclaration(this);
         ptr.setQualifyingType(qualifyingType);
-        ptr.setTypeArguments(arguments(this, qualifyingType, typeArguments));
+        ptr.setTypeArguments(getTypeArgumentMap(this, qualifyingType, typeArguments));
+        return ptr;
+    }
+    
+    /**
+     * The type of this declaration, as viewed from within
+     * itself.
+     */
+    public ProducedTypedReference getTypedReference() {
+    	ProducedTypedReference ptr = new ProducedTypedReference();
+        if (isMember()) {
+            ptr.setQualifyingType(((ClassOrInterface) getContainer()).getType());
+        }
+        ptr.setDeclaration(this);
+        ptr.setTypeArguments(getTypeArgumentMap(this, ptr.getQualifyingType(), 
+        		Collections.<ProducedType>emptyList()));
         return ptr;
     }
 
