@@ -372,7 +372,7 @@ public final class String
 
     @Ignore
     public static boolean definesEvery(java.lang.String value, 
-    		Sequential<? extends Integer> keys) {
+    		Iterable<? extends Integer,?> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         // TODO We're still boxing here!
@@ -396,7 +396,7 @@ public final class String
 
     @Ignore
     public static boolean definesAny(java.lang.String value, 
-    		Sequential<? extends Integer> keys) {
+    		Iterable<? extends Integer, ?> keys) {
         //TODO: inefficient ... better to cache the result
         //      of getSize()
         // TODO We're still boxing here!
