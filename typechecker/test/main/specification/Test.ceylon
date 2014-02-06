@@ -20,3 +20,12 @@ class Test() {
         print(attribute);
     }
 }
+
+abstract class WithFormals() {
+    shared formal String name;
+    @error name = "Ceylon";
+    shared formal Integer count;
+    @error count => 0;
+    shared formal variable Float price;
+    @error print(price=0.0);
+}
