@@ -421,10 +421,10 @@ public class ProducedType extends ProducedReference {
     public ProducedReference getTypedReference(Declaration member, 
             List<ProducedType> typeArguments) {
         if (member instanceof TypeDeclaration) {
-            return getTypeMember( (TypeDeclaration) member, typeArguments );
+            return getTypeMember((TypeDeclaration) member, typeArguments);
         }
         else {
-            return getTypedMember( (TypedDeclaration) member, typeArguments);
+            return getTypedMember((TypedDeclaration) member, typeArguments);
         }
     }
 

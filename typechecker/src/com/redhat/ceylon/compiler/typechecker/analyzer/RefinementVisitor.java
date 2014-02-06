@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
@@ -110,16 +111,18 @@ public class RefinementVisitor extends Visitor {
         if (inExportedScope(member)) {
             Module declarationModule = getModule(member);
             if (declarationModule!=null) {
-                return isCompletelyVisibleFromOtherModules(member, pt, declarationModule);
+                return isCompletelyVisibleFromOtherModules(member,pt,declarationModule);
             }
         }
         return true;
     }
 
-    private static boolean isCompletelyVisibleFromOtherModules(Declaration member, ProducedType pt, Module thisModule) {
+    private static boolean isCompletelyVisibleFromOtherModules(Declaration member, 
+    		ProducedType pt, Module thisModule) {
         if (pt.getDeclaration() instanceof UnionType) {
             for (ProducedType ct: pt.getDeclaration().getCaseTypes()) {
-                if ( !isCompletelyVisibleFromOtherModules(member, ct.substitute(pt.getTypeArguments()), thisModule) ) {
+                if (!isCompletelyVisibleFromOtherModules(member, 
+                		ct.substitute(pt.getTypeArguments()), thisModule)) {
                     return false;
                 }
             }
@@ -127,18 +130,21 @@ public class RefinementVisitor extends Visitor {
         }
         else if (pt.getDeclaration() instanceof IntersectionType) {
             for (ProducedType ct: pt.getDeclaration().getSatisfiedTypes()) {
-                if ( !isCompletelyVisibleFromOtherModules(member, ct.substitute(pt.getTypeArguments()), thisModule) ) {
+                if (!isCompletelyVisibleFromOtherModules(member, 
+                		ct.substitute(pt.getTypeArguments()), thisModule)) {
                     return false;
                 }
             }
             return true;
         }
         else {
-            if (!isVisibleFromOtherModules(member, thisModule, pt.getDeclaration())) {
+            if (!isVisibleFromOtherModules(member, thisModule, 
+            		pt.getDeclaration())) {
                 return false;
             }
             for (ProducedType at: pt.getTypeArgumentList()) {
-                if ( at!=null && !isCompletelyVisibleFromOtherModules(member, at, thisModule) ) {
+                if ( at!=null && 
+                		!isCompletelyVisibleFromOtherModules(member,at,thisModule) ) {
                     return false;
                 }
             }
@@ -146,22 +152,25 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private static boolean isVisibleFromOtherModules(Declaration member, Module thisModule, TypeDeclaration type) {
+    private static boolean isVisibleFromOtherModules(Declaration member, 
+    		Module thisModule, TypeDeclaration type) {
         // type parameters are OK
-        if(type instanceof TypeParameter)
+        if (type instanceof TypeParameter) {
             return true;
+        }
         
         Module typeModule = getModule(type);
-        if(typeModule != null && thisModule != null && thisModule != typeModule){
+        if (typeModule!=null && thisModule!=null && 
+        		thisModule!=typeModule) {
             // find the module import, but only in exported imports, otherwise it's an error anyways
 
             // language module stuff is automagically exported
-            if(typeModule == thisModule.getLanguageModule())
+            if (typeModule == thisModule.getLanguageModule()) {
                 return true;
-            
+            }
             // try to find a direct import first
-            for(ModuleImport imp : thisModule.getImports()){
-                if(imp.isExport() && imp.getModule() == typeModule){
+            for (ModuleImport imp: thisModule.getImports()) {
+                if (imp.isExport() && imp.getModule() == typeModule) {
                     // found it
                     return true;
                 }
@@ -169,9 +178,10 @@ public class RefinementVisitor extends Visitor {
             // then try the more expensive implicit imports
             Set<Module> visited = new HashSet<Module>();
             visited.add(thisModule);
-            for(ModuleImport imp : thisModule.getImports()){
+            for (ModuleImport imp : thisModule.getImports()) {
                 // now try implicit dependencies
-                if(imp.isExport() && includedImplicitly(imp.getModule(), typeModule, visited)){
+                if (imp.isExport() && 
+                		includedImplicitly(imp.getModule(), typeModule, visited)) {
                     // found it
                     return true;
                 }
@@ -183,16 +193,18 @@ public class RefinementVisitor extends Visitor {
         return true;
     }
 
-    private static boolean includedImplicitly(Module importedModule, Module targetModule, Set<Module> visited) {
+    private static boolean includedImplicitly(Module importedModule, 
+    		Module targetModule, Set<Module> visited) {
         // don't visit them twice
-        if(!visited.add(importedModule))
-            return false;
-        for(ModuleImport imp : importedModule.getImports()){
-            // only consider modules it exported back to us
-            if(imp.isExport()
-                    && (imp.getModule() == targetModule
-                        || includedImplicitly(imp.getModule(), targetModule, visited)))
-                return true;
+        if (visited.add(importedModule)) {
+        	for (ModuleImport imp: importedModule.getImports()){
+        		// only consider modules it exported back to us
+        		if (imp.isExport()
+        				&& (imp.getModule() == targetModule
+        				|| includedImplicitly(imp.getModule(), targetModule, visited))) {
+        			return true;
+        		}
+        	}
         }
         return false;
     }
@@ -209,12 +221,14 @@ public class RefinementVisitor extends Visitor {
     }
 
     @Override public void visit(Tree.ObjectDefinition that) {
-        validateSupertypes(that, that.getDeclarationModel().getType().getDeclaration());
+        validateSupertypes(that, 
+        		that.getDeclarationModel().getType().getDeclaration());
         super.visit(that);
     }
 
     @Override public void visit(Tree.ObjectArgument that) {
-        validateSupertypes(that, that.getDeclarationModel().getType().getDeclaration());
+        validateSupertypes(that, 
+        		that.getDeclarationModel().getType().getDeclaration());
         super.visit(that);
     }
 
@@ -270,7 +284,8 @@ public class RefinementVisitor extends Visitor {
         if (!td.isInconsistentType()) {
             Unit unit = that.getUnit();
             List<ProducedType> upperBounds = td.getSatisfiedTypes();
-            List<ProducedType> list = new ArrayList<ProducedType>(upperBounds.size());
+            List<ProducedType> list = 
+            		new ArrayList<ProducedType>(upperBounds.size());
             for (ProducedType st: upperBounds) {
                 addToIntersection(list, st, unit);
             }
@@ -311,8 +326,10 @@ public class RefinementVisitor extends Visitor {
         super.visit(that);
         Declaration dec = that.getDeclarationModel();
         if (dec!=null) {
-            boolean toplevel = dec.getContainer() instanceof Package;
-            boolean member = dec.isClassOrInterfaceMember() &&
+            boolean toplevel = 
+            		dec.getContainer() instanceof Package;
+            boolean member = 
+            		dec.isClassOrInterfaceMember() &&
                     dec.isShared() &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!
             
@@ -348,9 +365,11 @@ public class RefinementVisitor extends Visitor {
                 if (!(dec instanceof Setter)) {
                     checkMember(that, dec);
                 }
-                ClassOrInterface declaringType = (ClassOrInterface) dec.getContainer();
-                Declaration refined = declaringType.getRefinedMember(dec.getName(), 
-                        getSignature(dec), false);
+                ClassOrInterface declaringType = 
+                		(ClassOrInterface) dec.getContainer();
+                Declaration refined = 
+                		declaringType.getRefinedMember(dec.getName(), 
+                				getSignature(dec), false);
                 dec.setRefinedDeclaration(refined);
                 if (refined!=null) {
                     if (refined.isPackageVisibility() && 
@@ -373,7 +392,8 @@ public class RefinementVisitor extends Visitor {
                 that.addError("formal member belongs to non-abstract, non-formal class", 1100);
             }
         }
-        List<Declaration> others = ci.getInheritedMembers(dec.getName());
+        List<Declaration> others = 
+        		ci.getInheritedMembers(dec.getName());
         if (others.isEmpty()) {
             if (dec.isActual()) {
                 that.addError("actual member does not refine any inherited member", 1300);
@@ -383,7 +403,7 @@ public class RefinementVisitor extends Visitor {
             boolean found = false;
             for (Declaration refined: others) {
             	ProducedType st = ci.getType()
-            			.getSupertype((TypeDeclaration)refined.getContainer());
+            			.getSupertype((TypeDeclaration) refined.getContainer());
                 if (isAbstraction(refined) || st==null ||
                 		isOverloadedVersion(refined) && 
                 		!refinesOverloaded(dec, refined, st)) {
@@ -440,16 +460,18 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private boolean refinesOverloaded(Declaration dec, Declaration refined,
-    		ProducedType st) {
+    private boolean refinesOverloaded(Declaration dec, 
+    		Declaration refined, ProducedType st) {
         Functional fun1 = (Functional) dec;
         Functional fun2 = (Functional) refined;
         if (fun1.getParameterLists().size()!=1 ||
             fun2.getParameterLists().size()!=1) {
             return false;
         }
-        List<Parameter> pl1 = fun1.getParameterLists().get(0).getParameters();
-        List<Parameter> pl2 = fun2.getParameterLists().get(0).getParameters();
+        List<Parameter> pl1 = fun1.getParameterLists()
+        		.get(0).getParameters();
+        List<Parameter> pl2 = fun2.getParameterLists()
+        		.get(0).getParameters();
         if (pl1.size()!=pl2.size()) {
             return false;
         }
@@ -461,8 +483,12 @@ public class RefinementVisitor extends Visitor {
             		p2.getType()==null) {
             	return false;
             }
-            else if (!p1.getType().isExactly(p2.getType().substitute(st.getTypeArguments()))) {
-                return false;
+            else {
+            	ProducedType p2st = p2.getType()
+            			.substitute(st.getTypeArguments());
+				if (!p1.getType().isExactly(p2st)) {
+                    return false;
+            	}
             }
         }
         return true;
@@ -482,97 +508,152 @@ public class RefinementVisitor extends Visitor {
 
     private void checkRefinedTypeAndParameterTypes(Tree.Declaration that,
             Declaration dec, ClassOrInterface ci, Declaration refined) {
-        List<ProducedType> typeArgs = new ArrayList<ProducedType>(3);
+        
+    	List<ProducedType> typeArgs;
         if (refined instanceof Generic && dec instanceof Generic) {
             List<TypeParameter> refinedTypeParams = ((Generic) refined).getTypeParameters();
             List<TypeParameter> refiningTypeParams = ((Generic) dec).getTypeParameters();
-            int refiningSize = refiningTypeParams.size();
-            int refinedSize = refinedTypeParams.size();
-            if (refiningSize!=refinedSize) {
-                that.addError("member does not have the same number of type parameters as refined member: " + 
-                            message(refined));
-            }
-            for (int i=0; i<(refiningSize<=refinedSize ? refiningSize : refinedSize); i++) {
-                TypeParameter refinedTypeParam = refinedTypeParams.get(i);
-                TypeParameter refiningTypeParam = refiningTypeParams.get(i);
-                ProducedType refinedProducedType = refinedTypeParam.getType();
-                for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
-                    ProducedType bound = t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
-                    Map<TypeParameter, ProducedType> args = ci.getType()
-                            .getSupertype((TypeDeclaration)refined.getContainer())
-                            .getTypeArguments();
-                    //for every type constraint of the refining member, there must
-                    //be at least one type constraint of the refined member which
-                    //is assignable to it, guaranteeing that the intersection of
-                    //the refined member bounds is assignable to the intersection
-                    //of the refining member bounds
-                    //TODO: would it be better to just form the intersections and
-                    //      test assignability directly (the error messages might
-                    //      not be as helpful, but it might be less restrictive)
-                    boolean ok = false;
-                    for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
-                        if (st.substitute(args).isSubtypeOf(bound)) {
-                            ok = true;
-                        }
-                    }
-                    if (!ok) {
-                        that.addError("member type parameter " + refiningTypeParam.getName() +
-                                " has upper bound which refined member type parameter " + 
-                                refinedTypeParam.getName() + " of " + message(refined) + 
-                                " does not satisfy: " + t.getProducedTypeName(that.getUnit()));
-                    }
-                }
-                typeArgs.add(refinedProducedType);
-            }
+            checkRefiningMemberTypeParameters(that, refined, 
+            		refinedTypeParams, refiningTypeParams);
+            typeArgs = checkRefiningMemberUpperBounds(that, ci, refined, 
+            		refinedTypeParams, refiningTypeParams);
         }
+        else {
+        	typeArgs = emptyList();
+        }
+        
         ProducedReference refinedMember = ci.getType().getTypedReference(refined, typeArgs);
         ProducedReference refiningMember = ci.getType().getTypedReference(dec, typeArgs);
         Declaration refinedMemberDec = refinedMember.getDeclaration();
 		Declaration refiningMemberDec = refiningMember.getDeclaration();
 		Node typeNode = getTypeErrorNode(that);
-		if (refinedMemberDec instanceof TypedDeclaration && 
-				refiningMemberDec instanceof TypedDeclaration && 
-        		((TypedDeclaration) refinedMemberDec).isDynamicallyTyped()) {
-        	if (!((TypedDeclaration) refiningMemberDec).isDynamicallyTyped()) {
-        		typeNode.addError("member which refines dynamically typed refined member must also be dynamically typed: " + 
-        				message(refined));
-        	}
+		if (refinedMemberIsDynamicallyTyped(refinedMemberDec, refiningMemberDec)) {
+        	checkRefiningMemberDynamicallyTyped(refined, refiningMemberDec, typeNode);
         }
-		else if (refinedMemberDec instanceof TypedDeclaration && 
-				refiningMemberDec instanceof TypedDeclaration && 
-        		((TypedDeclaration) refiningMemberDec).isDynamicallyTyped()) {
-        	if (!((TypedDeclaration) refinedMemberDec).isDynamicallyTyped()) {
-        		typeNode.addError("member which refines statically typed refined member must also be statically typed: " + 
-        				message(refined));
-        	}
+		else if (refiningMemberIsDynamicallyTyped(refinedMemberDec, refiningMemberDec)) {
+        	checkRefinedMemberDynamicallyTyped(refined, refinedMemberDec, typeNode);
         }
-		else if (refinedMemberDec instanceof TypedDeclaration &&
-                ((TypedDeclaration) refinedMemberDec).isVariable()) {
-            checkRefinedMemberTypeExactly(refiningMember, refinedMember, typeNode,
-                    "type of member must be exactly the same as type of variable refined member: " + 
-                    message(refined));
+		else if (refinedMemberIsVariable(refinedMemberDec)) {
+            checkRefinedMemberTypeExactly(refiningMember, refinedMember, typeNode, refined);
         }
         else {
             //note: this version checks return type and parameter types in one shot, but the
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
-            checkRefinedMemberTypeAssignable(refiningMember, refinedMember, typeNode,
-                    "type of member must be assignable to type of refined member: " + 
-                    message(refined));
+            checkRefinedMemberTypeAssignable(refiningMember, refinedMember, typeNode, refined);
         }
         if (dec instanceof Functional && refined instanceof Functional) {
-           List<ParameterList> refiningParamLists = ((Functional) dec).getParameterLists();
-           List<ParameterList> refinedParamLists = ((Functional) refined).getParameterLists();
-           if (refinedParamLists.size()!=refiningParamLists.size()) {
-               that.addError("member must have the same number of parameter lists as refined member: " + 
-                            message(refined));
-           }
-           for (int i=0; i<refinedParamLists.size() && i<refiningParamLists.size(); i++) {
-               checkParameterTypes(that, getParameterList(that, i), 
-                       refiningMember, refinedMember, 
-                       refiningParamLists.get(i), refinedParamLists.get(i));
-           }
+           checkRefiningMemberParameters(that, dec, refined, refinedMember, refiningMember);
         }
+    }
+
+	private void checkRefiningMemberParameters(Tree.Declaration that,
+            Declaration dec, Declaration refined,
+            ProducedReference refinedMember, ProducedReference refiningMember) {
+		List<ParameterList> refiningParamLists = ((Functional) dec).getParameterLists();
+		List<ParameterList> refinedParamLists = ((Functional) refined).getParameterLists();
+		if (refinedParamLists.size()!=refiningParamLists.size()) {
+			that.addError("member must have the same number of parameter lists as refined member: " + 
+					message(refined));
+		}
+		for (int i=0; i<refinedParamLists.size() && i<refiningParamLists.size(); i++) {
+			checkParameterTypes(that, getParameterList(that, i), 
+					refiningMember, refinedMember, 
+					refiningParamLists.get(i), refinedParamLists.get(i));
+		}
+    }
+
+	private boolean refinedMemberIsVariable(Declaration refinedMemberDec) {
+	    return refinedMemberDec instanceof TypedDeclaration &&
+                ((TypedDeclaration) refinedMemberDec).isVariable();
+    }
+
+	private void checkRefinedMemberDynamicallyTyped(Declaration refined,
+            Declaration refinedMemberDec, Node typeNode) {
+	    if (!((TypedDeclaration) refinedMemberDec).isDynamicallyTyped()) {
+	    	typeNode.addError("member which refines statically typed refined member must also be statically typed: " + 
+	    			message(refined));
+	    }
+    }
+
+	private void checkRefiningMemberDynamicallyTyped(Declaration refined,
+            Declaration refiningMemberDec, Node typeNode) {
+	    if (!((TypedDeclaration) refiningMemberDec).isDynamicallyTyped()) {
+	    	typeNode.addError("member which refines dynamically typed refined member must also be dynamically typed: " + 
+	    			message(refined));
+	    }
+    }
+
+	private boolean refiningMemberIsDynamicallyTyped(
+            Declaration refinedMemberDec, Declaration refiningMemberDec) {
+	    return refinedMemberDec instanceof TypedDeclaration && 
+				refiningMemberDec instanceof TypedDeclaration && 
+        		((TypedDeclaration) refiningMemberDec).isDynamicallyTyped();
+    }
+
+	private boolean refinedMemberIsDynamicallyTyped(
+            Declaration refinedMemberDec, Declaration refiningMemberDec) {
+	    return refinedMemberDec instanceof TypedDeclaration && 
+				refiningMemberDec instanceof TypedDeclaration && 
+        		((TypedDeclaration) refinedMemberDec).isDynamicallyTyped();
+    }
+
+	private void checkRefiningMemberTypeParameters(Tree.Declaration that,
+            Declaration refined, List<TypeParameter> refinedTypeParams,
+            List<TypeParameter> refiningTypeParams) {
+	    int refiningSize = refiningTypeParams.size();
+	    int refinedSize = refinedTypeParams.size();
+	    if (refiningSize!=refinedSize) {
+	        that.addError("member does not have the same number of type parameters as refined member: " + 
+	                    message(refined));
+	    }
+    }
+
+	List<ProducedType> checkRefiningMemberUpperBounds(Tree.Declaration that,
+            ClassOrInterface ci, Declaration refined,
+            List<TypeParameter> refinedTypeParams, 
+            List<TypeParameter> refiningTypeParams) {
+        int refiningSize = refiningTypeParams.size();
+        int refinedSize = refinedTypeParams.size();
+	    int max = refiningSize <= refinedSize ? refiningSize : refinedSize;
+	    if (max==0) {
+	    	return emptyList();
+	    }
+		List<ProducedType> typeArgs = new ArrayList<ProducedType>(max); 
+		for (int i=0; i<max; i++) {
+	        TypeParameter refinedTypeParam = refinedTypeParams.get(i);
+	        TypeParameter refiningTypeParam = refiningTypeParams.get(i);
+	        ProducedType refinedProducedType = refinedTypeParam.getType();
+	        for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+	            ProducedType bound = 
+	            		t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
+	            Map<TypeParameter, ProducedType> args = ci.getType()
+	                    .getSupertype((TypeDeclaration)refined.getContainer())
+	                    .getTypeArguments();
+	            //for every type constraint of the refining member, there must
+	            //be at least one type constraint of the refined member which
+	            //is assignable to it, guaranteeing that the intersection of
+	            //the refined member bounds is assignable to the intersection
+	            //of the refining member bounds
+	            //TODO: would it be better to just form the intersections and
+	            //      test assignability directly (the error messages might
+	            //      not be as helpful, but it might be less restrictive)
+	            boolean ok = false;
+	            for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
+	                if (st.substitute(args).isSubtypeOf(bound)) {
+	                    ok = true;
+	                }
+	            }
+	            if (!ok) {
+	                that.addError("member type parameter " + refiningTypeParam.getName() +
+	                        " has upper bound which refined member type parameter " + 
+	                        refinedTypeParam.getName() + " of " + message(refined) + 
+	                        " does not satisfy: " + t.getProducedTypeName(that.getUnit()));
+	            }
+	        }
+	        typeArgs.add(refinedProducedType);
+	    }
+	    return typeArgs;
     }
 
     private static Node getTypeErrorNode(Node that) {
@@ -586,30 +667,36 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefinedMemberTypeAssignable(ProducedReference refiningMember, 
-    		ProducedReference refinedMember, Node that, String message) {
+    		ProducedReference refinedMember, Node that, Declaration refined) {
         if (hasUncheckedNullType(refinedMember)) {
             ProducedType optionalRefinedType = refiningMember.getDeclaration()
             		.getUnit().getOptionalType(refinedMember.getType());
             checkAssignableToOneOf(refiningMember.getType(), refinedMember.getType(), 
-            		optionalRefinedType, that, message);
+            		optionalRefinedType, that, 
+            		"type of member must be assignable to type of refined member: " + 
+            				message(refined));
         }
-        else{
+        else {
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
-                    message);
+            		"type of member must be assignable to type of refined member: " + 
+            				message(refined));
         }
     }
 
     private void checkRefinedMemberTypeExactly(ProducedReference refiningMember, 
-    		ProducedReference refinedMember, Node that, String message) {
+    		ProducedReference refinedMember, Node that, Declaration refined) {
         if (hasUncheckedNullType(refinedMember)) {
             ProducedType optionalRefinedType = refiningMember.getDeclaration()
             		.getUnit().getOptionalType(refinedMember.getType());
             checkIsExactlyOneOf(refiningMember.getType(), refinedMember.getType(), 
-            		optionalRefinedType, that, message);
+            		optionalRefinedType, that, 
+            		"type of member must be exactly the same as type of variable refined member: " + 
+            	            message(refined));
         }
-        else{
+        else {
             checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
-                    message);
+            		"type of member must be exactly the same as type of variable refined member: " + 
+            	            message(refined));
         }
     }
 
@@ -753,15 +840,18 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
-            ProducedType parameterType, ProducedType refinedParameterType, Node node, String message) {
-        if (isCeylon){
+            ProducedType parameterType, ProducedType refinedParameterType, Node node, 
+            String message) {
+        if (isCeylon) {
             // it must be a Ceylon method
             checkIsExactly(parameterType, refinedParameterType, node, message);
         }
-        else{
+        else {
             // we're refining a Java method
-            ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit().getDefiniteType(refinedParameterType);
-            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, node, message);
+            ProducedType refinedDefiniteType = refinedMember.getDeclaration().getUnit()
+            		.getDefiniteType(refinedParameterType);
+            checkIsExactlyOneOf(parameterType, refinedParameterType, refinedDefiniteType, 
+            		node, message);
         }
     }
 
