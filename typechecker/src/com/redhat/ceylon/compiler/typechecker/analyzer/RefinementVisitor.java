@@ -611,7 +611,7 @@ public class RefinementVisitor extends Visitor {
 	    }
     }
 
-	List<ProducedType> checkRefiningMemberUpperBounds(Tree.Declaration that,
+	private List<ProducedType> checkRefiningMemberUpperBounds(Tree.Declaration that,
             ClassOrInterface ci, Declaration refined,
             List<TypeParameter> refinedTypeParams, 
             List<TypeParameter> refiningTypeParams) {
@@ -778,11 +778,7 @@ public class RefinementVisitor extends Visitor {
         List<Parameter> paramsList = params.getParameters();
 		List<Parameter> refinedParamsList = refinedParams.getParameters();
 		if (paramsList.size()!=refinedParamsList.size()) {
-           that.addError("member does not have the same number of parameters as the member it refines: " + 
-                   member.getDeclaration().getName() + 
-                   " declared by " + containerName(member) +
-                   " refining " + refinedMember.getDeclaration().getName() +
-                   " declared by " + containerName(refinedMember));
+           handleWrongParameterListLength(that, member, refinedMember);
         }
         else {
             for (int i=0; i<paramsList.size(); i++) {
@@ -823,6 +819,15 @@ public class RefinementVisitor extends Visitor {
                 param.setDefaulted(rparam.isDefaulted());
             }
         }
+    }
+
+	private void handleWrongParameterListLength(Tree.Declaration that,
+            ProducedReference member, ProducedReference refinedMember) {
+	    that.addError("member does not have the same number of parameters as the member it refines: " + 
+                   member.getDeclaration().getName() + 
+                   " declared by " + containerName(member) +
+                   " refining " + refinedMember.getDeclaration().getName() +
+                   " declared by " + containerName(refinedMember));
     }
 
 	private void checkRefiningParameterType(ProducedReference member,
