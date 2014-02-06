@@ -365,9 +365,13 @@ public class SpecificationVisitor extends Visitor {
             Declaration member = getTypedDeclaration(m.getScope(), 
                     name(m.getIdentifier()), null, false, m.getUnit());
             if (member==declaration) {
-                if (!isVariable() && !isLate()) {
+            	if (declaration.isFormal()) {
+	        		node.addError("member is formal and may not be assigned: " +
+	        				member.getName());
+            	}
+            	else if (!isVariable() && !isLate()) {
                     if (node instanceof Tree.AssignOp) {
-                        node.addError("cannot specify non-variable value here: " +
+                        node.addError("cannot assign non-variable value here: " +
                                         member.getName(), 803);
                     }
                     else {
@@ -469,7 +473,12 @@ public class SpecificationVisitor extends Visitor {
             Declaration member = getTypedDeclaration(bme.getScope(), 
                     name(bme.getIdentifier()), null, false, bme.getUnit());
 	        if (member==declaration) {
-                boolean lazy = that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression;
+	        	if (declaration.isFormal()) {
+	        		that.addError("member is formal and may not be specified: " +
+	        				member.getName());
+	        	}
+                boolean lazy = that.getSpecifierExpression() 
+                		instanceof Tree.LazySpecifierExpression;
             	if (declaration instanceof Value) {
             		Value value = (Value) declaration;
             	    if (!value.isVariable() && lazy!=value.isTransient()) {
