@@ -201,7 +201,8 @@ public class RefinementVisitor extends Visitor {
         		// only consider modules it exported back to us
         		if (imp.isExport()
         				&& (imp.getModule() == targetModule
-        				|| includedImplicitly(imp.getModule(), targetModule, visited))) {
+        				|| includedImplicitly(imp.getModule(), 
+        						targetModule, visited))) {
         			return true;
         		}
         	}
@@ -232,7 +233,8 @@ public class RefinementVisitor extends Visitor {
         super.visit(that);
     }
 
-    private void validateSupertypes(Tree.StatementOrArgument that, TypeDeclaration td) {
+    private void validateSupertypes(Tree.StatementOrArgument that, 
+    		TypeDeclaration td) {
         List<ProducedType> supertypes = td.getType().getSupertypes();
         if (td instanceof TypeAlias && 
                 td.getExtendedType()!=null) {
@@ -773,7 +775,9 @@ public class RefinementVisitor extends Visitor {
     private void checkParameterTypes(Tree.Declaration that, Tree.ParameterList pl,
             ProducedReference member, ProducedReference refinedMember,
             ParameterList params, ParameterList refinedParams) {
-        if (params.getParameters().size()!=refinedParams.getParameters().size()) {
+        List<Parameter> paramsList = params.getParameters();
+		List<Parameter> refinedParamsList = refinedParams.getParameters();
+		if (paramsList.size()!=refinedParamsList.size()) {
            that.addError("member does not have the same number of parameters as the member it refines: " + 
                    member.getDeclaration().getName() + 
                    " declared by " + containerName(member) +
@@ -781,62 +785,94 @@ public class RefinementVisitor extends Visitor {
                    " declared by " + containerName(refinedMember));
         }
         else {
-            for (int i=0; i<params.getParameters().size(); i++) {
-                Parameter rparam = refinedParams.getParameters().get(i);
-                ProducedType refinedParameterType = refinedMember.getTypedParameter(rparam).getFullType();
-                Parameter param = params.getParameters().get(i);
-                ProducedType parameterType = member.getTypedParameter(param).getFullType();
+            for (int i=0; i<paramsList.size(); i++) {
+                Parameter rparam = refinedParamsList.get(i);
+                Parameter param = paramsList.get(i);
+                ProducedType refinedParameterType = 
+                		refinedMember.getTypedParameter(rparam).getFullType();
+                ProducedType parameterType = 
+                		member.getTypedParameter(param).getFullType();
                 Tree.Parameter parameter = pl.getParameters().get(i);
                 Node typeNode = parameter;
                 if (parameter instanceof Tree.ParameterDeclaration) {
-                	Tree.Type type = ((Tree.ParameterDeclaration) parameter).getTypedDeclaration().getType();
+                	Tree.Type type = ((Tree.ParameterDeclaration) parameter)
+                			.getTypedDeclaration().getType();
                 	if (type!=null) {
                 		typeNode = type;
                 	}
                 }
                 if (parameter!=null) {
             		if (rparam.getModel().isDynamicallyTyped()) {
-                    	if (!param.getModel().isDynamicallyTyped()) {
-                    		typeNode.addError("parameter which refines dynamically typed parameter must also be dynamically typed: " + 
-                    				param.getName() + " of " + member.getDeclaration().getName() + 
-                                    " declared by " + containerName(member) +
-                                    " refining " + refinedMember.getDeclaration().getName() +
-                                    " declared by " + containerName(refinedMember));
-                    	}
+                    	checkRefiningParameterDynamicallyTyped(member,
+                                refinedMember, param, typeNode);
                     }
             		else if (param.getModel().isDynamicallyTyped()) {
-                    	if (!rparam.getModel().isDynamicallyTyped()) {
-                    		typeNode.addError("parameter which refines statically typed parameter must also be statically typed: " + 
-                    				param.getName() + " of " + member.getDeclaration().getName() + 
-                                    " declared by " + containerName(member) +
-                                    " refining " + refinedMember.getDeclaration().getName() +
-                                    " declared by " + containerName(refinedMember));
-                    	}
+                    	checkRefinedParameterDynamicallyTyped(member,
+                                refinedMember, rparam, param, typeNode);
                     }
             		else if (refinedParameterType==null || parameterType==null) {
-            			typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
-                                param.getName() + " of " + member.getDeclaration().getName() + 
-                                " declared by " + containerName(member) +
-                                " refining " + refinedMember.getDeclaration().getName() +
-                                " declared by " + containerName(refinedMember));
+            			handleUnknownParameterType(member, refinedMember,
+                                param, typeNode);
                     }
                     else {
-                        //TODO: consider type parameter substitution!!!
-                        checkIsExactlyForInterop(refinedMember, 
-                                refinedParams.isNamedParametersSupported(), 
-                                parameterType, refinedParameterType, typeNode,
-                                "type of parameter " + param.getName() + " of " + 
-                                        member.getDeclaration().getName() +
-                                        " declared by " + containerName(member) +
-                                        " is different to type of corresponding parameter " +
-                                        rparam.getName() + " of refined member " + 
-                                        refinedMember.getDeclaration().getName() + " of " +
-                                        containerName(refinedMember));
+                        checkRefiningParameterType(member, refinedMember,
+                                refinedParams, rparam, refinedParameterType,
+                                param, parameterType, typeNode);
                     }
                 }
                 param.setDefaulted(rparam.isDefaulted());
             }
         }
+    }
+
+	private void checkRefiningParameterType(ProducedReference member,
+            ProducedReference refinedMember, ParameterList refinedParams,
+            Parameter rparam, ProducedType refinedParameterType,
+            Parameter param, ProducedType parameterType, Node typeNode) {
+	    //TODO: consider type parameter substitution!!!
+	    checkIsExactlyForInterop(refinedMember, 
+	            refinedParams.isNamedParametersSupported(), 
+	            parameterType, refinedParameterType, typeNode,
+	            "type of parameter " + param.getName() + " of " + 
+	                    member.getDeclaration().getName() +
+	                    " declared by " + containerName(member) +
+	                    " is different to type of corresponding parameter " +
+	                    rparam.getName() + " of refined member " + 
+	                    refinedMember.getDeclaration().getName() + " of " +
+	                    containerName(refinedMember));
+    }
+
+	private void handleUnknownParameterType(ProducedReference member,
+            ProducedReference refinedMember, Parameter param, Node typeNode) {
+	    typeNode.addError("could not determine if parameter type is the same as the corresponding parameter of refined member: " +
+	            param.getName() + " of " + member.getDeclaration().getName() + 
+	            " declared by " + containerName(member) +
+	            " refining " + refinedMember.getDeclaration().getName() +
+	            " declared by " + containerName(refinedMember));
+    }
+
+	private void checkRefinedParameterDynamicallyTyped(
+            ProducedReference member, ProducedReference refinedMember,
+            Parameter rparam, Parameter param, Node typeNode) {
+	    if (!rparam.getModel().isDynamicallyTyped()) {
+	    	typeNode.addError("parameter which refines statically typed parameter must also be statically typed: " + 
+	    			param.getName() + " of " + member.getDeclaration().getName() + 
+	                " declared by " + containerName(member) +
+	                " refining " + refinedMember.getDeclaration().getName() +
+	                " declared by " + containerName(refinedMember));
+	    }
+    }
+
+	private void checkRefiningParameterDynamicallyTyped(
+            ProducedReference member, ProducedReference refinedMember,
+            Parameter param, Node typeNode) {
+	    if (!param.getModel().isDynamicallyTyped()) {
+	    	typeNode.addError("parameter which refines dynamically typed parameter must also be dynamically typed: " + 
+	    			param.getName() + " of " + member.getDeclaration().getName() + 
+	                " declared by " + containerName(member) +
+	                " refining " + refinedMember.getDeclaration().getName() +
+	                " declared by " + containerName(refinedMember));
+	    }
     }
 
     private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
