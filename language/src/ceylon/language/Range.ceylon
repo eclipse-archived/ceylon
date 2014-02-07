@@ -143,12 +143,11 @@ shared final class Range<Element>(first, last)
         if (shift==0) {
             return this;
         }
-        //TODO: reenable when compiler bug is fixed 
-        /*else if (is Integer first, is Integer last) {
+        else if (is Integer first, is Integer last) {
             assert (is Range<Element> shifted 
                     = first+shift..last+shift);
             return shifted;
-        }*/
+        }
         else {
             variable value shiftedFirst = first;
             variable value shiftedLast = last;
