@@ -9,7 +9,7 @@ import ceylon.html.serializer {
     NodeSerializer
 }
 import ceylon.net.http.server {
-    newServer,
+    newServer_bogus,
     Endpoint,
     startsWith,
     Response,
@@ -27,7 +27,7 @@ Html html(Request request) {
 }
 
 shared void run() {
-    newServer {
+    newServer_bogus {
         Endpoint { 
             path = startsWith("/"); 
             void service(Request request, Response response) {
