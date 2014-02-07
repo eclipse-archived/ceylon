@@ -301,6 +301,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(declaration == null)
             return;
         setBoxingState(declaration, declaration);
+        setErasureState(declaration);
     }
 
     @Override
