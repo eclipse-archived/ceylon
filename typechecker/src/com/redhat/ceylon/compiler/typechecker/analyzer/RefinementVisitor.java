@@ -827,7 +827,7 @@ public class RefinementVisitor extends Visitor {
                    member.getDeclaration().getName() + 
                    " declared by " + containerName(member) +
                    " refining " + refinedMember.getDeclaration().getName() +
-                   " declared by " + containerName(refinedMember));
+                   " declared by " + containerName(refinedMember), 9100);
     }
 
 	private void checkRefiningParameterType(ProducedReference member,
@@ -844,7 +844,7 @@ public class RefinementVisitor extends Visitor {
 	                    " is different to type of corresponding parameter " +
 	                    rparam.getName() + " of refined member " + 
 	                    refinedMember.getDeclaration().getName() + " of " +
-	                    containerName(refinedMember));
+	                    containerName(refinedMember), 9200);
     }
 
 	private void handleUnknownParameterType(ProducedReference member,
@@ -882,10 +882,10 @@ public class RefinementVisitor extends Visitor {
 
     private void checkIsExactlyForInterop(ProducedReference refinedMember, boolean isCeylon,  
             ProducedType parameterType, ProducedType refinedParameterType, Node node, 
-            String message) {
+            String message, int code) {
         if (isCeylon) {
             // it must be a Ceylon method
-            checkIsExactly(parameterType, refinedParameterType, node, message);
+            checkIsExactly(parameterType, refinedParameterType, node, message, 9200);
         }
         else {
             // we're refining a Java method
