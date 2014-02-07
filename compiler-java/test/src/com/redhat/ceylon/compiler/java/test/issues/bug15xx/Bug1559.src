@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1559_ {
+    
+    private bug1559_() {
+    }
+    
+    static void bug1559(final int[] a) {
+        final long h = a.hashCode();
+        final long size1 = 1L;
+        final long[] array1 = new long[(int)size1];
+        final long size2 = array1.length;
+        final long[] array2 = new long[.com.redhat.ceylon.compiler.java.Util.toInt(size2)];
+        final long[] array3 = new long[array1.length];
+        final long size3 = .ceylon.language.String.hashCode("");
+        final long[] array4 = new long[(int)size3];
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1559_.bug1559();
+    }
+}
