@@ -55,7 +55,7 @@ class MethodWhileExists2dArray implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.Array r$8;
             if ((r$8 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
                 final .ceylon.language.Array r$9 = r$8;
-                r$9.set(0L, obj);
+                ((.ceylon.language.Array)r$9).set(0L, obj);
             } else break;
         }
     }

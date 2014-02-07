@@ -244,6 +244,11 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     }
     
     @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Set$this$.contains(element);
+    }
+    
+    @.java.lang.Override
     public boolean superset(final .ceylon.language.Set<? extends .java.lang.Object> set) {
         return $ceylon$language$Set$this$.superset(set);
     }
@@ -272,11 +277,6 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this$.getEmpty();
-    }
-    
-    @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$Collection$this$.contains(element);
     }
     
     @.java.lang.Override

@@ -52,7 +52,7 @@ class AssertExists2dArray implements .com.redhat.ceylon.compiler.java.runtime.mo
         if ((r$13 = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.Correspondence)t).get(.ceylon.language.Integer.instance(0L))) != null) {
             r$14 = r$13;
         } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists r=t[0]"));
-        r$14.set(0L, obj);
+        ((.ceylon.language.Array)r$14).set(0L, obj);
     }
     
     public static void main(.java.lang.String[] args) {
