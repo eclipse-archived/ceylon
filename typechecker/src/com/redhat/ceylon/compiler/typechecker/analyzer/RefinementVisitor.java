@@ -681,7 +681,7 @@ public class RefinementVisitor extends Visitor {
         else {
             checkAssignable(refiningMember.getType(), refinedMember.getType(), that,
             		"type of member must be assignable to type of refined member: " + 
-            				message(refined));
+            				message(refined), 9000);
         }
     }
 
@@ -698,7 +698,7 @@ public class RefinementVisitor extends Visitor {
         else {
             checkIsExactly(refiningMember.getType(), refinedMember.getType(), that,
             		"type of member must be exactly the same as type of variable refined member: " + 
-            	            message(refined));
+            	            message(refined), 9000);
         }
     }
 

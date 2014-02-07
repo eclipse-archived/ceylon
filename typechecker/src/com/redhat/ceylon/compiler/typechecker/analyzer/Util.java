@@ -281,7 +281,8 @@ public class Util {
     static void checkAssignableToOneOf(ProducedType type, 
     		ProducedType supertype1, ProducedType supertype2, 
             Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
+        if (isTypeUnknown(type) || 
+        		isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
             addTypeUnknownError(node, message);
         }
         else if (!type.isSubtypeOf(supertype1)
@@ -318,18 +319,33 @@ public class Util {
             addTypeUnknownError(node, message);
         }
         else if (!type.isExactly(supertype)) {
-            node.addError(message + message(type, " is not exactly ", supertype, node.getUnit()));
+            node.addError(message + message(type, " is not exactly ", 
+            		supertype, node.getUnit()));
         }
     }
 
-    static void checkIsExactlyOneOf(ProducedType type, ProducedType supertype1, ProducedType supertype2, 
+    static void checkIsExactly(ProducedType type, ProducedType supertype, 
+            Node node, String message, int code) {
+        if (isTypeUnknown(type) || isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, message);
+        }
+        else if (!type.isExactly(supertype)) {
+            node.addError(message + message(type, " is not exactly ", 
+            		supertype, node.getUnit()), code);
+        }
+    }
+
+    static void checkIsExactlyOneOf(ProducedType type, 
+    		ProducedType supertype1, ProducedType supertype2, 
             Node node, String message) {
-        if (isTypeUnknown(type) || isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
+        if (isTypeUnknown(type) || 
+        		isTypeUnknown(supertype1) || isTypeUnknown(supertype2)) {
             addTypeUnknownError(node, message);
         }
         else if (!type.isExactly(supertype1)
                 && !type.isExactly(supertype2)) {
-            node.addError(message + message(type, " is not exactly ", supertype1, node.getUnit()));
+            node.addError(message + message(type, " is not exactly ", 
+            		supertype1, node.getUnit()));
         }
     }
 
