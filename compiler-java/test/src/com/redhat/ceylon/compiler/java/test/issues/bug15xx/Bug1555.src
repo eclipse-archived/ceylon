@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+class Bug1555<Element extends .ceylon.language.Ordinal<? extends Element> & .ceylon.language.Comparable<? super Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1555(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final long first, final long last) {
+        this.$reified$Element = $reified$Element;
+        this.first = first;
+        this.last = last;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final long first;
+    
+    public final long getFirst() {
+        return first;
+    }
+    private final long last;
+    
+    public final long getLast() {
+        return last;
+    }
+    
+    public final .ceylon.language.Range<Element> shifted(final long shift) {
+        final .ceylon.language.Sequential shiftedResult$2;
+        .java.lang.Object shiftedResult$1 = null;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(shiftedResult$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getFirst() + shift), .ceylon.language.Integer.instance(getLast() + shift)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, $reified$Element))) {
+            shiftedResult$2 = (.ceylon.language.Sequential)shiftedResult$1;
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Range<Element> shiftedResult \n                = first+shift..last+shift"));
+        return (.ceylon.language.Range<Element>)(.ceylon.language.Range)shiftedResult$2;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1555.class, $reified$Element);
+    }
+}
