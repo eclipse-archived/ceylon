@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 

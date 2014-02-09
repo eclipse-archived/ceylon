@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.typechecker.model;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class UnknownType extends TypeDeclaration {
 
