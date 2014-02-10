@@ -243,7 +243,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         if(!isJavaMember)
             constructor = constructor.asType(MethodType.methodType(Object.class, parameterTypes));
         
-        int typeParametersCount = (int) this.declaration.getTypeParameterDeclarations().getSize();
+        int typeParametersCount = Util.toInt(this.declaration.getTypeParameterDeclarations().getSize());
         int skipParameters = 0;
         if(isJavaMember)
             skipParameters++; // skip the first parameter for boxing

@@ -10,6 +10,7 @@ import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.meta.model.nothingType_;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -380,7 +381,7 @@ class Predicates {
     private static Predicate<Declaration>[] mapTypesToDeclarationAnnotatedWith(TypeDescriptor annotation,
             Sequential<? extends Type<?>> caseTypes) {
         @SuppressWarnings("unchecked")
-        Predicate<Declaration>[] preds = new Predicate[(int)caseTypes.getSize()];
+        Predicate<Declaration>[] preds = new Predicate[Util.toInt(caseTypes.getSize())];
         int ii = 0;
         Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object element = iterator.next();
@@ -425,7 +426,7 @@ class Predicates {
     private static <A extends ceylon.language.Annotation> Predicate<A>[] mapTypesToIsAnnotationOfType(TypeDescriptor $reifiedAnnotation, 
             Sequential<? extends Type<?>> caseTypes) {
         @SuppressWarnings("unchecked")
-        Predicate<A>[] preds = new Predicate[(int)caseTypes.getSize()];
+        Predicate<A>[] preds = new Predicate[Util.toInt(caseTypes.getSize())];
         int ii = 0;
         Iterator<? extends Type<?>> iterator = caseTypes.iterator();
         Object element = iterator.next();

@@ -1361,7 +1361,7 @@ public class Metamodel {
             Sequential<?> arguments, 
             List<ProducedType> parameterProducedTypes,
             int firstDefaulted, int variadicIndex){
-        int argumentCount = (int) arguments.getSize();
+        int argumentCount = Util.toInt(arguments.getSize());
         int parameters = parameterProducedTypes.size();
         
         // check minimum
