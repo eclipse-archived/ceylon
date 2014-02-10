@@ -3404,7 +3404,7 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression sizeExpr = make().Apply(List.<JCExpression>nil(), 
                 make().Select(seqName.makeIdent(), names().fromString("getSize")),
                 List.<JCExpression>nil());
-        sizeExpr = make().TypeCast(syms().intType, sizeExpr);
+        sizeExpr = utilInvocation().toInt(sizeExpr);
         
         // add initial elements if required
         if(!initialElements.isEmpty())

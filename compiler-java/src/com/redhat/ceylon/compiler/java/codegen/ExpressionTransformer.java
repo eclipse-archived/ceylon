@@ -128,6 +128,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * constructing the type casts.
      */
     public static final int EXPR_WANTS_COMPANION = 1 << 5;
+
     /** 
      * The expected type has type parameters with {@code satisfies} 
      * constraints which have a covariant type parameter that is used by other
@@ -135,6 +136,17 @@ public class ExpressionTransformer extends AbstractTransformer {
      * than using wildcards and in some cases we need to cast to raw
      */
     public static final int EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS = 1 << 6;
+
+    
+    /**
+     * Usually if a {@code long} to {@code int}, {@code short} or {@code byte}
+     * conversion is required we use a Util invocation so that a runtime check 
+     * is performed. 
+     * 
+     * In some circumstances (e.g. annotations) we need to use a 
+     * real typecast.
+     */
+    public static final int EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK = 1 << 7;
 
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
@@ -566,7 +578,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, flags);
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
-        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy);
+        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, flags);
         return ret;
     }
 
@@ -786,7 +798,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return findTypeArgument(type.getQualifyingType(), declaration);
     }
 
-    private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, BoxingStrategy boxingStrategy) {
+    private JCExpression applyJavaTypeConversions(JCExpression ret, ProducedType exprType, ProducedType expectedType, BoxingStrategy boxingStrategy, int flags) {
         if(exprType == null || boxingStrategy != BoxingStrategy.UNBOXED)
             return ret;
         ProducedType definiteExprType = simplifyType(exprType);
@@ -806,11 +818,23 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (convertTo != null) {
             if(convertTo.equals("byte")) {
-                ret = make().TypeCast(syms().byteType, ret);
+                if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                    ret = utilInvocation().toByte(ret);
+                } else {
+                    ret = make().TypeCast(syms().byteType, ret);
+                }
             } else if(convertTo.equals("short")) {
-                ret = make().TypeCast(syms().shortType, ret);
+                if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                    ret = utilInvocation().toShort(ret);
+                } else {
+                    ret = make().TypeCast(syms().shortType, ret);
+                }
             } else if(convertTo.equals("int")) {
-                ret = make().TypeCast(syms().intType, ret);
+                if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
+                    ret = utilInvocation().toInt(ret);
+                } else {
+                    ret = make().TypeCast(syms().intType, ret);
+                }
             } else if(convertTo.equals("float")) {
                 ret = make().TypeCast(syms().floatType, ret);
             } else if(convertTo.equals("char")) {
@@ -4024,7 +4048,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         && (CodegenUtil.isUnBoxed(qmePrimary) || isJavaArray(qmePrimary.getTypeModel()))
                         // Java arrays length property does not go via value types
                         && (!isJavaArray(qmePrimary.getTypeModel())
-                                || !"length".equals(selector))) {
+                                || (!"length".equals(selector) && !"hashCode".equals(selector)))) {
                     JCExpression primTypeExpr = makeJavaType(qmePrimary.getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
                     result = makeQualIdent(primTypeExpr, selector);
                     result = make().Apply(List.<JCTree.JCExpression>nil(),
@@ -5050,7 +5074,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression unAutoPromote(JCExpression ret, ProducedType returnType) {
         // +/- auto-promotes to int, so if we're using java types we'll need a cast
         return applyJavaTypeConversions(ret, typeFact().getIntegerDeclaration().getType(), 
-                returnType, BoxingStrategy.UNBOXED);
+                returnType, BoxingStrategy.UNBOXED, 0);
     }
 
     private ProducedType getMostPreciseType(Tree.Term term, ProducedType defaultType) {

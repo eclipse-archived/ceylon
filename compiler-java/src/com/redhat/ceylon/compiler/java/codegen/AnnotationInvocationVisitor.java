@@ -472,14 +472,16 @@ class AnnotationInvocationVisitor extends Visitor {
     public void visit(Tree.NegativeOp term) {
         if (term.getTerm() instanceof Tree.NaturalLiteral
                 || term.getTerm() instanceof Tree.FloatLiteral) {
-            append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType()));
+            append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType(), 
+                    ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK));
         } else {
             append(exprGen.makeErroneous(term, "compiler bug: " + term.getNodeType() + " is an unsupported term in an annotation invocation"));
         }
     }
     
     public void visit(Tree.Literal term) {
-        append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType()));
+        append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, expectedType(), 
+                ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK));
     }
 
     private ProducedType expectedType() {

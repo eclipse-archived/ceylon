@@ -183,4 +183,16 @@ class RuntimeUtil {
     public JCExpression arrayLength(JCExpression array) {
         return makeUtilInvocation(null, "arrayLength", List.of(array));
     }
+
+    public JCExpression toByte(JCExpression expr) {
+        return makeUtilInvocation(null, "toByte", List.of(expr));
+    }
+    
+    public JCExpression toShort(JCExpression expr) {
+        return makeUtilInvocation(null, "toShort", List.of(expr));
+    }
+    
+    public JCExpression toInt(JCExpression expr) {
+        return makeUtilInvocation(null, "toInt", List.of(expr));
+    }
 }
