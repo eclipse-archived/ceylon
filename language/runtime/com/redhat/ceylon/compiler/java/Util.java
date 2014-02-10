@@ -1549,5 +1549,64 @@ public class Util {
             throw new AssertionError("Assertion failed: Sequence expected");
         }
     }
+
+    /** 
+     * <p>Typecast a {@code long} to an {@code int}, or throw if the {@code long} 
+     * cannot be safely converted.</p>
+     *   
+     * <p>We need to do this:</p>
+     *  <ul>
+     *  <li>when creating or indexing into an array,</li>
+     *  <li>when invoking a Java method which takes an {@code int},</li>
+     *  <li>when assigning to a Java {@code int} field.</li>
+     *  <ul>
+     *  @throws ceylon.language.OverflowException
+     */
+    public static int toInt(long value) {
+        if (value <= java.lang.Integer.MAX_VALUE
+                && value >= java.lang.Integer.MIN_VALUE) {
+            return (int)value;
+        }
+        throw new ceylon.language.OverflowException();
+    }
+    
+    /** 
+     * <p>Typecast a {@code long} to a {@code shot}, or throw if the {@code long} 
+     * cannot be safely converted.</p>
+     *   
+     * <p>We need to do this:</p>
+     *  <ul>
+     *  <li>when invoking a Java method which takes a {@code short},</li>
+     *  <li>when assigning to a Java {@code short} field.</li>
+     *  <ul>
+     *  @throws ceylon.language.OverflowException
+     */
+    public static short toShort(long value) {
+        if (value <= java.lang.Short.MAX_VALUE
+                && value >= java.lang.Short.MIN_VALUE) {
+            return (short)value;
+        }
+        throw new ceylon.language.OverflowException();
+    }
+    
+    /** 
+     * <p>Typecast a {@code long} to a {@code byte}, or throw if the {@code long} 
+     * cannot be safely converted.</p>
+     *   
+     * <p>We need to do this:</p>
+     *  <ul>
+     *  <li>when creating or indexing into an array,</li>
+     *  <li>when invoking a Java method which takes a {@code byte},</li>
+     *  <li>when assigning to a Java {@code byte} field.</li>
+     *  <ul>
+     *  @throws ceylon.language.OverflowException
+     */
+    public static byte toByte(long value) {
+        if (value <= java.lang.Byte.MAX_VALUE
+                && value >= java.lang.Byte.MIN_VALUE) {
+            return (byte)value;
+        }
+        throw new ceylon.language.OverflowException();
+    }
     
 }
