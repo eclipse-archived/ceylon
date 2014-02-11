@@ -21,7 +21,9 @@ annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelRef
 @nomodel
 annotation AnnotationClassMetamodelReferenceVariadic annotationClassMetamodelReferenceVariadic3(Declaration mmr) => AnnotationClassMetamodelReferenceVariadic(mmr, mmr);
 
-shared abstract class ObjectAlias() => Object();
+shared abstract class ClassAlias() => Object();
+shared interface InterfaceAlias => Declaration;
+shared alias TypeAlias => Declaration;
 
 @nomodel
 annotationClassMetamodelReference(`class Anything`)
@@ -33,12 +35,16 @@ annotationClassMetamodelReference(`value List.size`)
 annotationClassMetamodelReference(`function List.get`)
 annotationClassMetamodelReference(`function sort`)
 annotationClassMetamodelReference(`value true`)
-annotationClassMetamodelReference(`class ObjectAlias`)
+annotationClassMetamodelReference(`class ClassAlias`)
+annotationClassMetamodelReference(`interface InterfaceAlias`)
+annotationClassMetamodelReference(`alias TypeAlias`)
 //illegal annotationClassMetamodelReference(`sort<String>`)
-// TODO annotationClassMetamodelReference(`package`)
-// TODO annotationClassMetamodelReference(`package ceylon.language`)
-// TODO annotationClassMetamodelReference(`module`)
-// TODO annotationClassMetamodelReference(`module ceylon.language`)
+// annotationClassMetamodelReference(`package`)
+annotationClassMetamodelReference(`package ceylon.language.meta`)
+annotationClassMetamodelReference(`package ceylon.language`)
+annotationClassMetamodelReference(`package org.w3c.dom`)
+// annotationClassMetamodelReference(`module`)
+annotationClassMetamodelReference(`module ceylon.language`)
 annotationClassMetamodelReferenceLiteral
 annotationClassMetamodelReferenceDefaulted1(`class Anything`)
 annotationClassMetamodelReferenceDefaulted2()
