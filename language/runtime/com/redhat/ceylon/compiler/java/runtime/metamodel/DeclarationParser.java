@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import ceylon.language.meta.declaration.AliasDeclaration;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.meta.declaration.Declaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
@@ -29,6 +30,7 @@ import ceylon.language.meta.declaration.ValueDeclaration;
  * type             ::= class | interface ;
  * class            ::= 'C' ident ( '.' member )?
  * interface        ::= 'I' ident ( '.' member )?
+ * alias            ::= 'A' ident ( '.' member )?
  * member           ::= declaration ;
  * function         ::= 'F' ident ;
  * value            ::= 'V' ident ;
@@ -200,9 +202,12 @@ class DeclarationParser {
     }
 
     private Declaration type(Declaration packageOrType) {
-        ClassOrInterfaceDeclaration result = class_(packageOrType);
+        Declaration result = class_(packageOrType);
         if (result == null) {
             result = interface_(packageOrType);
+        }
+        if (result == null) {
+            result = alias(packageOrType);
         }
         
         if (result != null && at('.')) {
@@ -221,7 +226,7 @@ class DeclarationParser {
         }
         throw unexpectedToken();
     }
-    
+
     private ClassOrInterfaceDeclaration interface_(Declaration packageOrType) {
         if (!at('I')) {
             return null;
@@ -232,7 +237,18 @@ class DeclarationParser {
         }
         throw unexpectedToken();
     }
-    
+
+    private AliasDeclaration alias(Declaration packageOrType) {
+        if (!at('A')) {
+            return null;
+        }
+        String fn = ident();
+        if (fn != null) {
+            return makeAlias(packageOrType, fn);
+        }
+        throw unexpectedToken();
+    }
+
     private RuntimeException metamodelError(String msg) {
         return new RuntimeException(msg);
     }
@@ -275,7 +291,22 @@ class DeclarationParser {
         }
         return result;
     }
-    
+
+    protected AliasDeclaration makeAlias(Declaration packageOrType, String aliasName) {
+        final AliasDeclaration result;
+        if (packageOrType instanceof Package) {
+            result = ((Package)packageOrType).getAlias(aliasName);
+        } else if (packageOrType instanceof ClassOrInterfaceDeclaration) {
+            result = ((ClassOrInterfaceDeclaration)packageOrType).<AliasDeclaration>getMemberDeclaration(AliasDeclaration.$TypeDescriptor$, aliasName);
+        } else {
+            throw metamodelError("Unexpected container " + packageOrType.getClass() + " for alias " + aliasName);
+        }
+        if (result == null) {
+            throw metamodelNotFound("Could not find alias: " + aliasName + " in " + packageOrType.getName());
+        }
+        return result;
+    }
+
     protected FunctionDeclaration makeFunction(Declaration packageOrType, String fn) {
         final FunctionDeclaration result;
         if (packageOrType instanceof Package) {

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.lang.annotation.Annotation;
+
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.AliasDeclaration$impl;
 import ceylon.language.meta.declaration.GenericDeclaration$impl;
@@ -12,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 public class FreeAliasDeclaration extends FreeNestableDeclaration 
-    implements ceylon.language.meta.declaration.AliasDeclaration {
+    implements ceylon.language.meta.declaration.AliasDeclaration, AnnotationBearing {
 
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeAliasDeclaration.class);
@@ -181,5 +183,12 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     @Ignore
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
+    }
+
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
+        checkInit();
+        return Metamodel.getJavaClass(declaration).getAnnotations();
     }
 }

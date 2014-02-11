@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.loader.model.LazyElement;
 import com.redhat.ceylon.compiler.loader.model.LazyInterface;
 import com.redhat.ceylon.compiler.loader.model.LazyMethod;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
+import com.redhat.ceylon.compiler.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -391,6 +392,10 @@ public class Metamodel {
         }
         if (declaration instanceof LazyClassAlias) {
             ReflectionClass classMirror = (ReflectionClass) ((LazyClassAlias) declaration).classMirror;
+            return classMirror.klass;
+        }
+        if (declaration instanceof LazyTypeAlias) {
+            ReflectionClass classMirror = (ReflectionClass) ((LazyTypeAlias) declaration).classMirror;
             return classMirror.klass;
         }
         if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
