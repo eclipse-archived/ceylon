@@ -73,9 +73,17 @@ public class MetamodelGenerator {
         model.put("$mod-version", module.getVersion());
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
         if (!module.getImports().isEmpty()) {
-            ArrayList<String> imps = new ArrayList<String>(module.getImports().size());
+            ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
-                imps.add(String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion()));
+                String impath = String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion());
+                if (mi.isOptional()) {
+                    Map<String,String> optimp = new HashMap<>(2);
+                    optimp.put("path",impath);
+                    optimp.put("opt","1");
+                    imps.add(optimp);
+                } else {
+                    imps.add(impath);
+                }
             }
             model.put("$mod-deps", imps);
         }

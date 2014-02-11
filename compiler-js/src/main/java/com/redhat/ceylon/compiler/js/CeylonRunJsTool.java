@@ -309,30 +309,41 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return repo;
     }
 
-    private List<String> getDependencies(File jsmod) throws IOException {
+    private List<Object> getDependencies(File jsmod) throws IOException {
         final Map<String,Object> model = JsModuleManager.loadMetamodel(jsmod);
         if (model == null) {
             return Collections.emptyList();
         }
         @SuppressWarnings("unchecked")
-        List<String> deps = (List<String>)model.get("$mod-deps");
+        List<Object> deps = (List<Object>)model.get("$mod-deps");
         return deps;
     }
 
     private void loadDependencies(Set<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
-        final List<String> deps = getDependencies(jsmod);
+        final List<Object> deps = getDependencies(jsmod);
         if (deps == null) {
             return;
         }
-        for (String dep : deps) {
+        for (Object dep : deps) {
+            final String depname;
+            boolean optional = false;
+            if (dep instanceof String) {
+                //it's a mandatory dependency
+                depname = (String)dep;
+            } else {
+                depname = (String)((Map)dep).get("path");
+                optional = "1".equals(((Map)dep).get("opt"));
+            }
             //Module names have escaped forward slashes due to JSON encoding
-            int idx = dep.indexOf('/');
-            ArtifactContext ac = new ArtifactContext(dep.substring(0, idx), dep.substring(idx+1), ".js");
+            int idx = depname.indexOf('/');
+            ArtifactContext ac = new ArtifactContext(depname.substring(0, idx), depname.substring(idx+1), ".js");
             ac.setFetchSingleArtifact(true);
-            ac.setThrowErrorIfMissing(true);
+            ac.setThrowErrorIfMissing(!optional);
             File other = repoman.getArtifact(ac);
-            repos.add(getRepoDir(ac.getName(), other));
-            loadDependencies(repos, repoman, other);
+            if (other != null) {
+                repos.add(getRepoDir(ac.getName(), other));
+                loadDependencies(repos, repoman, other);
+            }
         }
     }
 
