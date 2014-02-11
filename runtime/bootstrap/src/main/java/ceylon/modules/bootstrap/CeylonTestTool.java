@@ -2,9 +2,11 @@ package ceylon.modules.bootstrap;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -34,13 +36,15 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends RepoUsingTool {
     
-    private static final String CEYLON_TEST_MODULE = "com.redhat.ceylon.test/" + Versions.CEYLON_VERSION_NUMBER;
-    private static final String CEYLON_TEST_RUN_FUNCTION = "com.redhat.ceylon.test.run";
+	private static final String TEST_MODULE_NAME = "com.redhat.ceylon.test";
+	private static final String TEST_MODULE_DEFAULT_VERSION = "1.0.0";
+    private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.test.run";
     
     private List<String> moduleNameOptVersionList;
     private List<String> testList;
     private List<String> argumentList;
     private String compileFlags;
+	private String version;
 
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -69,6 +73,12 @@ public class CeylonTestTool extends RepoUsingTool {
     public void setCompile(String compile) {
         this.compileFlags = compile;
     }
+    
+    @OptionArgument(argumentName = "version")
+    @Description("Specifies version of test module, which will be used, if no value is set, then the latest available version will be used.")
+    public void setVersion(String version) {
+    	this.version = version;
+    }
 
     @Rest
     public void setArgs(List<String> argumentList) {
@@ -78,6 +88,23 @@ public class CeylonTestTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         List<String> args = new ArrayList<String>();
+        
+		if (version == null) {
+			Collection<ModuleVersionDetails> versions = getModuleVersions(
+			        getRepositoryManager(),
+			        TEST_MODULE_NAME,
+			        null,
+			        ModuleQuery.Type.JVM,
+			        Versions.JVM_BINARY_MAJOR_VERSION,
+			        Versions.JVM_BINARY_MINOR_VERSION);
+
+			if (versions == null || versions.isEmpty()) {
+				version = TEST_MODULE_DEFAULT_VERSION;
+			} else {
+				ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
+				version = mdv.getVersion();
+			}
+		}
         
         if (moduleNameOptVersionList != null) {
             for (String moduleNameOptVersion : moduleNameOptVersionList) {
@@ -109,8 +136,8 @@ public class CeylonTestTool extends RepoUsingTool {
         }
         
         CeylonRunTool ceylonRunTool = new CeylonRunTool();
-        ceylonRunTool.setModule(CEYLON_TEST_MODULE);
-        ceylonRunTool.setRun(CEYLON_TEST_RUN_FUNCTION);
+		ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
+        ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
         ceylonRunTool.setRepository(repo);
         ceylonRunTool.setSystemRepository(systemRepo);
