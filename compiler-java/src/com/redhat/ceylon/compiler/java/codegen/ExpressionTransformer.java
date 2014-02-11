@@ -5336,6 +5336,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             sb.append("C").append(decl.getName());
         } else if (decl instanceof Interface) {
             sb.append("I").append(decl.getName());
+        } else if (decl instanceof TypeAlias) {
+            sb.append("A").append(decl.getName());
         } else if (decl instanceof Value) {
             sb.append("V").append(decl.getName());
         } else if (decl instanceof Method) {
