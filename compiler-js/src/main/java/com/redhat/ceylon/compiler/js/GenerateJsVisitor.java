@@ -1550,7 +1550,7 @@ public class GenerateJsVisitor extends Visitor
                             // function parameter defaulted using "=>"
                             singleExprFunction(
                                     ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                                    expr.getExpression(), m.getContainer());
+                                    expr.getExpression(), m);
                         } else {
                             expr.visit(this);
                         }
