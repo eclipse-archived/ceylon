@@ -26,7 +26,6 @@ abstract class ClassVariable(){
     publicvar = "";
     uncapturedvar = "";
     capturedvar = "";
-    formalvar = "";
     
     void m() {
         capturedvar = "new value";

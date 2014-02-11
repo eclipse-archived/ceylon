@@ -7,7 +7,6 @@ abstract class ClassVariable implements .com.redhat.ceylon.compiler.java.runtime
         setPublicvar("");
         uncapturedvar = "";
         setCapturedvar$priv$("");
-        setFormalvar("");
     }
     private .java.lang.String publicvar;
     
