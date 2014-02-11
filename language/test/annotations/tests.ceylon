@@ -8,6 +8,7 @@ import ceylon.language.meta.model{
     Function, Attribute
 }
 import ceylon.language.meta.declaration {
+    AliasDeclaration,
     ValueDeclaration,
     NestableDeclaration,
     FunctionDeclaration,
@@ -837,6 +838,14 @@ shared void checkMetamodelRefs() {
     assert(exists d29 = decls[29],
         d29.decl is ClassDeclaration,
         `class AClassAlias` == d29.decl);
+
+    assert(exists d30 = decls[30],
+        d30.decl is AliasDeclaration,
+        `alias Alias` == d30.decl);
+
+    assert(exists d31 = decls[31],
+        d31.decl is AliasDeclaration,
+        `alias AAbstractClass.Alias` == d31.decl);
 }
 
 @test

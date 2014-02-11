@@ -187,6 +187,8 @@ shared abstract class AAbstractClass (
             "AAbstractClass.InnerInterface.method.parameter"
             String parameter) {}
     }
+
+    shared alias Alias => AInterface;
 }
 
 "AClass"
@@ -215,6 +217,8 @@ shared class AClass(
 class AClassAlias(
         "AClassAlias.p"
         String p) => AClass(p);
+
+shared alias Alias => AInterface;
 
 decl(`value aToplevelAttribute`)
 decl(`value aToplevelGetterSetter`)
@@ -248,6 +252,8 @@ decl(`class AClass`)
 decl(`class MetamodelRefs`)
 decl(`value MetamodelRefs.parameter`)
 decl(`class AClassAlias`)
+decl(`alias Alias`)
+decl(`alias AAbstractClass.Alias`)
 class MetamodelRefs(
     shared String parameter) {
 }
