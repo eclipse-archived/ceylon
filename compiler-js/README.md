@@ -31,9 +31,9 @@ To compile the compiler, type:
 Directory structure:
 --------------------
 
-* `src/`     - the Java implementation of the Ceylon JS compiler
-* `runtime/` - the JS implementation of the Ceylon language module
-* `test/`    - the tests
+* `src/main/` - the Java implementation of the Ceylon JS compiler
+* `src/test/` - the test code and other resources for testing
+* `lib`       - libraries used by the compiler
 
 License
 -------
