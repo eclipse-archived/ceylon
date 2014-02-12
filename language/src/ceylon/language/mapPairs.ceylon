@@ -5,7 +5,7 @@
  
  Thus:
  
-     mapPairs(xs,ys,fun)[i]==fun(xs[i],ys[i])
+     mapPairs(fun,xs,ys)[i]==fun(xs[i],ys[i])
  
  for every `0<=i<min({xs.size,ys.size})`."
 shared {Result*} mapPairs<Result,FirstArgument,SecondArgument>(
