@@ -317,10 +317,12 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
         assign(lt);
-        if (lt instanceof Tree.BaseMemberExpression) {
-            Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) lt;
-            Declaration member = getTypedDeclaration(m.getScope(), 
-                    name(m.getIdentifier()), null, false, m.getUnit());
+        if (isEffectivelyBaseMemberExpression(lt)) {
+            Tree.StaticMemberOrTypeExpression m = 
+                    (Tree.StaticMemberOrTypeExpression) lt;
+//            Declaration member = getTypedDeclaration(m.getScope(), 
+//                    name(m.getIdentifier()), null, false, m.getUnit());
+            Declaration member = m.getDeclaration();
             if (member==declaration) {
                 if (that.getRightTerm()!=null) {
                     that.getRightTerm().visit(this);
@@ -357,15 +359,16 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private void checkVariable(Tree.Term term, Node node) {
-        //TODO: we don't really need this error check here,
-        //      since it duplicates a check done more 
-        //      completely in ExpressionVisitor.checkAssignable()
-        if (term instanceof Tree.BaseMemberExpression) {
-            Tree.BaseMemberExpression m = (Tree.BaseMemberExpression) term;
-            Declaration member = getTypedDeclaration(m.getScope(), 
-                    name(m.getIdentifier()), null, false, m.getUnit());
+        //TODO: sometimes we get a dupe error b/w here and
+        //      ExpressionVisitor.checkAssignable()
+        if (isEffectivelyBaseMemberExpression(term)) {
+            Tree.StaticMemberOrTypeExpression m = 
+                    (Tree.StaticMemberOrTypeExpression) term;
+//            Declaration member = getTypedDeclaration(m.getScope(), 
+//                    name(m.getIdentifier()), null, false, m.getUnit());
+            Declaration member = m.getDeclaration();
             if (member==declaration) {
-            	if (declaration.isFormal()) {
+            	if (declaration.isFormal() && !isForwardReferenceable()) {
 	        		node.addError("member is formal and may not be assigned: " +
 	        				member.getName());
             	}
@@ -381,6 +384,12 @@ public class SpecificationVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
+        return term instanceof Tree.BaseMemberExpression ||
+                term instanceof Tree.QualifiedMemberExpression &&
+                isSelfReference(((Tree.QualifiedMemberExpression)term).getPrimary());
     }
     
     private Tree.Continue lastContinue;
@@ -473,7 +482,7 @@ public class SpecificationVisitor extends Visitor {
             Declaration member = getTypedDeclaration(bme.getScope(), 
                     name(bme.getIdentifier()), null, false, bme.getUnit());
 	        if (member==declaration) {
-	        	if (declaration.isFormal()) {
+	        	if (declaration.isFormal() && !isForwardReferenceable()) {
 	        		that.addError("member is formal and may not be specified: " +
 	        				member.getName());
 	        	}
@@ -532,7 +541,9 @@ public class SpecificationVisitor extends Visitor {
 	                specify();
 	                m.visit(this);
 	            }
-	            if (lazy) that.getSpecifierExpression().visit(this);
+	            if (lazy) {
+	                that.getSpecifierExpression().visit(this);
+	            }
 	        }
 	        else {
 	            super.visit(that);

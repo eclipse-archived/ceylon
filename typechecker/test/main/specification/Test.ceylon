@@ -29,3 +29,33 @@ abstract class WithFormals() {
     shared formal variable Float price;
     @error print(price=0.0);
 }
+
+abstract class CcCc() {
+    shared formal variable String name;
+    @error this.name = "";
+    @error print(this.name = "");
+}
+
+abstract class DdDd() {
+    shared String name = "";
+    @error this.name = "";
+    @error print(this.name = "");
+}
+
+interface InterfaceAttributeWithConflictingMethods {
+    shared formal variable String attr;
+    shared void m(){
+        attr = attr;
+        print(attr = attr);
+        this.attr = this.attr;
+    } 
+}
+
+class ClassAttributeWithConflictingMethods() {
+    shared String attr="";
+    shared void m(){
+        @error attr = attr;
+        @error print(attr = attr);
+        @error this.attr = this.attr;
+    } 
+}
