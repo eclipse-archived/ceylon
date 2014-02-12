@@ -236,9 +236,19 @@ class QuxQux() extends Qux() {
     }
 }
 
+class CX() {
+    shared default String name = "Gavin";
+    shared actual String string => name;
+}
+class CY() {
+    shared default String name;
+    @error name = "Gavin";
+    @error shared actual String string => name;
+}
+
 class Elephant() {
     default shared String name;
-    name = "Trompon";
+    @error name = "Trompon"; //this is controversial. Should it really be an error?
     default shared Float size=1000.0;
     @error default shared Integer count;
     @error count++;

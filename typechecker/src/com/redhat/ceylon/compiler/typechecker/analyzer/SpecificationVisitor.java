@@ -1,10 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getLastExecutableStatement;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -368,7 +366,8 @@ public class SpecificationVisitor extends Visitor {
 //                    name(m.getIdentifier()), null, false, m.getUnit());
             Declaration member = m.getDeclaration();
             if (member==declaration) {
-            	if (declaration.isFormal() && !isForwardReferenceable()) {
+            	if ((declaration.isFormal()||declaration.isDefault()) && 
+            	        !isForwardReferenceable()) {
 	        		node.addError("member is formal and may not be assigned: " +
 	        				member.getName());
             	}
@@ -479,10 +478,12 @@ public class SpecificationVisitor extends Visitor {
         assign(m);
         if (m instanceof Tree.BaseMemberExpression) {
 	        BaseMemberExpression bme = (Tree.BaseMemberExpression) m;
-            Declaration member = getTypedDeclaration(bme.getScope(), 
-                    name(bme.getIdentifier()), null, false, bme.getUnit());
+//            Declaration member = getTypedDeclaration(bme.getScope(), 
+//                    name(bme.getIdentifier()), null, false, bme.getUnit());
+	        Declaration member = bme.getDeclaration();
 	        if (member==declaration) {
-	        	if (declaration.isFormal() && !isForwardReferenceable()) {
+	        	if ((declaration.isFormal()||declaration.isDefault()) && 
+	        	        !isForwardReferenceable()) {
 	        		that.addError("member is formal and may not be specified: " +
 	        				member.getName());
 	        	}
