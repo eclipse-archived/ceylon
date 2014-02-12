@@ -112,6 +112,7 @@ public class JsIdentifierNames {
         // implementation of the language module.
         substitutedMemberNames.add("ceylon.language::String.split");
         substitutedMemberNames.add("ceylon.language::String.replace");
+        substitutedMemberNames.add("ceylon.language::String.slice");
         substitutedMemberNames.add("ceylon.language::Iterable.filter");
         substitutedMemberNames.add("ceylon.language::Iterable.every");
         substitutedMemberNames.add("ceylon.language::Iterable.map");
