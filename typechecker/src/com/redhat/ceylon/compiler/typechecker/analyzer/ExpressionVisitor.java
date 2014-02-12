@@ -1514,7 +1514,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType type = e.getTypeModel();
             if (type!=null) {
-                ProducedType t = unit.denotableType(type);
+                ProducedType t = unit.denotableType(type).withoutUnderlyingType();
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
@@ -1528,7 +1528,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType type = e.getTypeModel();
             if (type!=null) {
-                ProducedType t = unit.denotableType(type);
+                ProducedType t = unit.denotableType(type).withoutUnderlyingType();
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
@@ -1537,14 +1537,14 @@ public class ExpressionVisitor extends Visitor {
         
     private void setFunctionType(Tree.FunctionModifier local, 
             ProducedType et, Tree.TypedDeclaration that) {
-        ProducedType t = unit.denotableType(et);
+        ProducedType t = unit.denotableType(et).withoutUnderlyingType();
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
             ProducedType et, Tree.MethodArgument that) {
-        ProducedType t = unit.denotableType(et);
+        ProducedType t = unit.denotableType(et).withoutUnderlyingType();
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
