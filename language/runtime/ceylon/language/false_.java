@@ -1,10 +1,11 @@
 package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
 @Ceylon(major = 6) @Object
-public class false_ extends Boolean {
+public final class false_ extends Boolean {
     
     private final static false_ value = new false_();
 
@@ -13,6 +14,7 @@ public class false_ extends Boolean {
     }
 
     @Override
+    @Ignore
     public boolean booleanValue() {
         return false;
     }

@@ -18,8 +18,8 @@ public abstract class Boolean implements ReifiedType {
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Boolean.class);
 
     @Ignore
-    public static Boolean instance(boolean b) {
-        return b ? true_.get_() : false_.get_();
+    public static Boolean instance(boolean value) {
+        return value ? true_.get_() : false_.get_();
     }
 
     @Ignore
@@ -27,14 +27,13 @@ public abstract class Boolean implements ReifiedType {
     
     @Ignore
     public static java.lang.String toString(boolean value) {
-        return (value) ? true_.get_().toString() : false_.get_().toString();
+        return value ? "true" : "false";
     }
     
     @Ignore
     public static boolean equals(boolean value, java.lang.Object that) {
         if (that instanceof Boolean) {
-            Boolean s = (Boolean)that;
-            return value = s.booleanValue();
+            return value == ((Boolean) that).booleanValue();
         }
         else {
             return false;
@@ -42,18 +41,20 @@ public abstract class Boolean implements ReifiedType {
     }
 
     @Override
-    public int hashCode() {
-        return java.lang.Boolean.valueOf(booleanValue()).hashCode();
+    @Ignore
+    public final int hashCode() {
+        return hashCode(booleanValue());
     }
 
     @Ignore
     public static int hashCode(boolean value) {
-        return java.lang.Boolean.valueOf(value).hashCode();
+        return value ? 1231 : 1237;
     }
 
     @Override
     @Ignore
-    public TypeDescriptor $getType$() {
+    public final TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+    
 }
