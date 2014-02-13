@@ -684,6 +684,15 @@ function $init$OpenAlias(){
         return String$(this._alias.$$metamodel$$.d[this._alias.$$metamodel$$.d.length-1]);
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','name']};});
       defineAttr($$openAlias,'string',function(){return StringBuilder().append(String$("alias ")).append(this.qualifiedName).string;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','string']};});
+  $$openAlias.equals=function equals(o) {
+    if (o && isOfType(o, {t:OpenAlias})) {
+      if (o._alias.a) {
+        return o._alias.a == this._alias.a;
+      }
+      return o._alias.t === this._alias.t;
+    }
+    return false;
+  }
     })(OpenAlias.$$.prototype);
   }
   return OpenAlias;
@@ -705,9 +714,6 @@ function $init$OpenTypeParam(){
   if (OpenTypeParam.$$===undefined){
     initTypeProto(OpenTypeParam,'ceylon.language.meta.declaration::OpenTypeParam',Basic,TypeParameter$meta$declaration);
     (function($$openTypeParam){
-$$openTypeParam.equals=function(o) {
-  return isOfType(o,{t:OpenTypeParam}) && this._name==o._name && this._cont==o._cont;
-}
       //AttributeGetterDefinition container at caca.ceylon (7:4-7:94)
       defineAttr($$openTypeParam,'container',function(){return this._cont;},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:NestableDeclaration$meta$declaration},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','container']};});
       //AttributeGetterDefinition defaulted at caca.ceylon (8:4-8:82)
