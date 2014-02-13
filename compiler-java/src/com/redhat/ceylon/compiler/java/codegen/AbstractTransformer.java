@@ -3372,6 +3372,74 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
+    boolean containsTypeParameter(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof TypeParameter){
+            return true;
+        }
+        if(declaration instanceof UnionType){
+            for(ProducedType m : declaration.getCaseTypes())
+                if(containsTypeParameter(m))
+                    return true;
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(ProducedType m : declaration.getSatisfiedTypes())
+                if(containsTypeParameter(m))
+                    return true;
+            return false;
+        }
+        // check its type arguments
+        // special case for Callable which has only a single type param in Java
+        boolean isCallable = isCeylonCallable(type);
+        for(ProducedType typeArg : type.getTypeArgumentList()){
+            if(containsTypeParameter(typeArg))
+                return true;
+            // stop after the first type arg for Callable
+            if(isCallable)
+                break;
+        }
+        return false;
+    }
+
+    boolean hasDependentCovariantTypeParameters(ProducedType type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof UnionType){
+            for(ProducedType m : declaration.getCaseTypes())
+                if(hasDependentCovariantTypeParameters(m))
+                    return true;
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(ProducedType m : declaration.getSatisfiedTypes())
+                if(hasDependentCovariantTypeParameters(m))
+                    return true;
+            return false;
+        }
+        // check its type arguments
+        // special case for Callable which has only a single type param in Java
+        boolean isCallable = isCeylonCallable(type);
+        // check if any type parameter is dependent on and covariant
+        java.util.List<TypeParameter> typeParams = declaration.getTypeParameters();
+        Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
+        for(TypeParameter typeParam : typeParams){
+            ProducedType typeArg = typeArguments.get(typeParam);
+            if(typeParam.isCovariant()
+                    && hasDependentTypeParameters(typeParams, typeParam)){
+                // see if the type argument in question contains type parameters and is erased to Object
+                if(containsTypeParameter(typeArg) && willEraseToObject(typeArg))
+                    return true;
+            }
+            // now check if we the type argument has the same problem
+            if(hasDependentCovariantTypeParameters(typeArg))
+                return true;            
+            // stop after the first type arg for Callable
+            if(isCallable)
+                break;
+        }
+        return false;
+    }
+
     private JCTypeParameter makeTypeParameter(String name, java.util.List<ProducedType> satisfiedTypes, boolean covariant, boolean contravariant) {
         return make().TypeParameter(names().fromString(name), makeTypeParameterBounds(satisfiedTypes));
     }
