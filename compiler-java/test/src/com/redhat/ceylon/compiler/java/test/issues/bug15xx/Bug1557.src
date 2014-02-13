@@ -1,0 +1,103 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class run_ {
+    
+    private run_() {
+    }
+    
+    static void run(final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C c) {
+        .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.cmp_.<.ceylon.language.String, .ceylon.language.Integer>cmp(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Tuple)new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.Integer.instance(2L)}), (.ceylon.language.Tuple)new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.Integer.instance(4L)})));
+        .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.cmp_.<.ceylon.language.Integer, .ceylon.language.Integer>cmp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Tuple)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L)}), (.ceylon.language.Tuple)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(4L)})));
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.cmp1_.<.ceylon.language.Integer, .ceylon.language.Integer>cmp1(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Tuple)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L)}));
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.cmp2_.cmp2((.ceylon.language.Tuple<.java.lang.Object, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B>>>)(.ceylon.language.Tuple)new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C>>>(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C.$TypeDescriptor$, new .java.lang.Object[]{
+                c,
+                c}));
+    }
+}
+interface A {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$A$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.A.class);
+}
+final class A$impl {
+    
+    A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.A $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A $this;
+}
+interface B {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$B$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B.class);
+}
+final class B$impl {
+    
+    B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B $this;
+}
+interface C extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$C$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C.class);
+}
+final class C$impl {
+    
+    C$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C $this;
+}
+final class cmp_ {
+    
+    private cmp_() {
+    }
+    
+    static <Value1 extends .ceylon.language.Comparable<? super Value1>, Value2 extends .ceylon.language.Comparable<? super Value2>>.ceylon.language.Comparison cmp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value2, final .ceylon.language.Tuple<.java.lang.Object, ? extends Value1, ? extends .ceylon.language.Tuple<Value2, ? extends Value2, ? extends .ceylon.language.Sequential<? extends Value2>>> a, final .ceylon.language.Tuple<.java.lang.Object, ? extends Value1, ? extends .ceylon.language.Tuple<Value2, ? extends Value2, ? extends .ceylon.language.Sequential<? extends Value2>>> b) {
+        if (((Value1)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)a).get(.ceylon.language.Integer.instance(0L))).compare((Value1)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)b).get(.ceylon.language.Integer.instance(0L))).smallerThan()) {
+            return .ceylon.language.smaller_.get_();
+        } else {
+            if (((Value1)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)a).get(.ceylon.language.Integer.instance(0L))).compare((Value1)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)b).get(.ceylon.language.Integer.instance(0L))).largerThan()) {
+                return .ceylon.language.larger_.get_();
+            } else {
+                if (((Value2)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)a).get(.ceylon.language.Integer.instance(1L))).compare((Value2)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)b).get(.ceylon.language.Integer.instance(1L))).smallerThan()) {
+                    return .ceylon.language.smaller_.get_();
+                } else {
+                    if (((Value2)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)a).get(.ceylon.language.Integer.instance(1L))).compare((Value2)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)b).get(.ceylon.language.Integer.instance(1L))).largerThan()) {
+                        return .ceylon.language.larger_.get_();
+                    } else {
+                        return .ceylon.language.equal_.get_();
+                    }
+                }
+            }
+        }
+    }
+}
+final class cmp1_ {
+    
+    private cmp1_() {
+    }
+    
+    static <Value1, Value2>void cmp1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value2, final .ceylon.language.Tuple<.java.lang.Object, ? extends Value1, ? extends .ceylon.language.Tuple<Value2, ? extends Value2, ? extends .ceylon.language.Sequential<? extends Value2>>> a) {
+    }
+}
+final class cmp2_ {
+    
+    private cmp2_() {
+    }
+    
+    static void cmp2(final .ceylon.language.Tuple<.java.lang.Object, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B>>> a) {
+    }
+}
