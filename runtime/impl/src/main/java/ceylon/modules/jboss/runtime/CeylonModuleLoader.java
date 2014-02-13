@@ -34,6 +34,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
@@ -124,7 +125,6 @@ public class CeylonModuleLoader extends ModuleLoader {
         for (LogChecker checker : ServiceLoader.load(LogChecker.class)) {
             checkers.add(checker);
         }
-        checkers.add(DefaultLogChecker.INSTANCE);
     }
 
     private RepositoryManager repository;
@@ -224,12 +224,13 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     protected boolean isLogging(List<DependencySpec> deps, Builder builder, ArtifactResult result) {
         for (LogChecker checker : checkers) {
-            Boolean match = checker.match(result);
-            if (match != null) {
-                if (match) {
-                    addLoggingModule(builder, deps);
+            final List<ModuleInfo> replacements = checker.handle(result);
+            if (replacements != null) {
+                if (replacements.isEmpty()) {
+                    throw new IllegalArgumentException(String.format("Log replacements cannot be empty - %s [%s]!", result, checker));
                 }
-                return match;
+                addLoggingModules(builder, deps, replacements);
+                return true;
             }
         }
         return false;
@@ -332,16 +333,19 @@ public class CeylonModuleLoader extends ModuleLoader {
         }
     }
 
-    private void addLoggingModule(Builder builder, List<DependencySpec> deps) {
-        final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
-            PathFilters.acceptAll(),
-            PathFilters.rejectAll(),
-            this,
-            LOGMANAGER,
-            false
-        );
-        builder.addDependency(dependency);
-        deps.add(dependency);
+    private void addLoggingModules(Builder builder, List<DependencySpec> deps, List<ModuleInfo> replacements) {
+        for (ModuleInfo mi : replacements) {
+            ModuleIdentifier identifier = ModuleIdentifier.create(mi.getName(), mi.getVersion());
+            final DependencySpec dependency = DependencySpec.createModuleDependencySpec(
+                PathFilters.acceptAll(),
+                mi.isExport() ? PathFilters.acceptAll() : PathFilters.rejectAll(),
+                this,
+                identifier,
+                mi.isOptional()
+            );
+            builder.addDependency(dependency);
+            deps.add(dependency);
+        }
     }
 
     protected void createModuleDependency(Graph.Vertex<ModuleIdentifier, Boolean> vertex, List<DependencySpec> deps, ModuleSpec.Builder builder, ModuleIdentifier mi, boolean optional) {
