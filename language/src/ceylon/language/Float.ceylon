@@ -1,16 +1,3 @@
-"An instance of [[Float]] representing positive infinity, 
- \{#221E}, the result of dividing a positive number by zero. 
- Negative infinity, -\{#221E}, the result of dividing a
- negative number by zero, is the additive inverse `-infinity`.
- 
- Note that any floating-point computation that results in a
- positive value too large to be represented as a `Float` is 
- \"rounded up\" to `infinity`. Likewise, any floating-point 
- computation that yields a negative value whose magnitude is
- too large to be represented as a `Float` is \"rounded down\" 
- to `-infinity`."
-shared Float infinity = 1.0/0.0;
-
 "An IEEE 754 64-bit [floating point number][]. A `Float` is 
  capable of approximately representing numeric values 
  between:
@@ -110,13 +97,3 @@ shared native final class Float(float)
     shared actual native Float plusInteger(Integer integer);
     
 }
-
-"The `Float` value of the given string representation of 
- a decimal number or `null` if the string does not 
- represent a decimal number.
- 
- The syntax accepted by this method is the same as the 
- syntax for a `Float` literal in the Ceylon language 
- except that it may optionally begin with a sign 
- character (`+` or `-`)."
-shared native Float? parseFloat(String string);

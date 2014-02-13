@@ -197,6 +197,7 @@
                 <include name="ceylon/language/Array.java"/>
                 <exclude name="ceylon/language/ArraySequence.ceylon"/>
                 <include name="ceylon/language/ArraySequence.java"/>
+                <exclude name="ceylon/language/arrayOfSize.ceylon"/>
                 <include name="ceylon/language/arrayOfSize_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>
                 <include name="ceylon/language/Boolean.java"/>
@@ -214,7 +215,9 @@
                 <include name="ceylon/language/suppressedExceptions_.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
+                <exclude name="ceylon/language/parseFloat.ceylon"/>
                 <include name="ceylon/language/parseFloat_.java"/>
+                <exclude name="ceylon/language/infinity.ceylon"/>
                 <include name="ceylon/language/infinity_.java"/>
                 <exclude name="ceylon/language/identityHash.ceylon"/>
                 <include name="ceylon/language/identityHash_.java"/>
@@ -230,6 +233,7 @@
                 <include name="ceylon/language/process_.java"/>
                 <exclude name="ceylon/language/SequenceBuilder.ceylon"/>
                 <include name="ceylon/language/SequenceBuilder.java"/>
+                <exclude name="ceylon/language/SequenceAppender.ceylon"/>
                 <include name="ceylon/language/SequenceAppender.java"/>
                 <exclude name="ceylon/language/system.ceylon"/>
                 <include name="ceylon/language/system_.java"/>
@@ -246,6 +250,7 @@
                 <include name="ceylon/language/Tuple.java"/>
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
+                <exclude name="ceylon/language/unflatten.ceylon"/>
                 <include name="ceylon/language/unflatten_.java"/>
                 <exclude name="ceylon/language/meta/metamodel.ceylon"/>
                 <include name="ceylon/language/meta/type_.java"/>
