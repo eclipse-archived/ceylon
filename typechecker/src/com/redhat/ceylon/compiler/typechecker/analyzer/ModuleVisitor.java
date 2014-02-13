@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -96,7 +97,8 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
             String version = getVersionString(that.getVersion());
-            List<String> name = getNameAsList(that.getImportPath());
+            ImportPath importPath = that.getImportPath();
+            List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
                 that.addError("module descriptor encountered in root source directory");
             }
@@ -104,25 +106,25 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                that.getImportPath().addError("reserved module name: default");
+                importPath.addError("reserved module name: default");
             }
             else if (name.size()==1 && name.get(0).equals("ceylon")) {
-                that.getImportPath().addError("reserved module name: ceylon");
+                importPath.addError("reserved module name: ceylon");
             }
             else {
                 if (name.get(0).equals("ceylon")) {
-                    that.getImportPath().addUsageWarning("discouraged module name: this namespace is used by Ceylon platform modules");
+                    importPath.addUsageWarning("discouraged module name: this namespace is used by Ceylon platform modules");
                 }
                 else if (name.get(0).equals("java")||name.get(0).equals("javax")) {
-                    that.getImportPath().addUsageWarning("discouraged module name: this namespace is used by Java platform modules");
+                    importPath.addUsageWarning("discouraged module name: this namespace is used by Java platform modules");
                 }
                 mainModule = moduleManager.getOrCreateModule(name, version);
-                that.getImportPath().setModel(mainModule);
+                importPath.setModel(mainModule);
                 mainModule.setUnit(unit.getUnit());
                 mainModule.setVersion(version);
-                String nameString = formatPath(that.getImportPath().getIdentifiers());
+                String nameString = formatPath(importPath.getIdentifiers());
 				if ( !pkg.getNameAsString().equals(nameString) ) {
-                    that.getImportPath()
+                    importPath
                         .addError("module name does not match descriptor location: " + 
                         		nameString + " should be " + pkg.getNameAsString(), 
                         		8000);
@@ -151,7 +153,8 @@ public class ModuleVisitor extends Visitor {
     public void visit(Tree.PackageDescriptor that) {
         super.visit(that);
         if (phase==Phase.REMAINING) {
-            List<String> name = getNameAsList(that.getImportPath());
+            Tree.ImportPath importPath = that.getImportPath();
+            List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
                 that.addError("package descriptor encountered in root source directory");
             }
@@ -159,23 +162,23 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing package name");
             }
             else if (name.get(0).equals(Module.DEFAULT_MODULE_NAME)) {
-                that.getImportPath().addError("reserved module name: default");
+                importPath.addError("reserved module name: default");
             }
             else if (name.size()==1 && name.get(0).equals("ceylon")) {
-                that.getImportPath().addError("reserved module name: ceylon");
+                importPath.addError("reserved module name: ceylon");
             }
             else {
                 if (name.get(0).equals("ceylon")) {
-                    that.getImportPath().addUsageWarning("discouraged package name: this namespace is used by Ceylon platform modules");
+                    importPath.addUsageWarning("discouraged package name: this namespace is used by Ceylon platform modules");
                 }
                 else if (name.get(0).equals("java")||name.get(0).equals("javax")) {
-                    that.getImportPath().addUsageWarning("discouraged package name: this namespace is used by Java platform modules");
+                    importPath.addUsageWarning("discouraged package name: this namespace is used by Java platform modules");
                 }
-                that.getImportPath().setModel(pkg);
+                importPath.setModel(pkg);
                 pkg.setUnit(unit.getUnit());
-                String nameString = formatPath(that.getImportPath().getIdentifiers());
+                String nameString = formatPath(importPath.getIdentifiers());
 				if ( !pkg.getNameAsString().equals(nameString) ) {
-                    that.getImportPath()
+                    importPath
                         .addError("package name does not match descriptor location: " + 
                         		nameString + " should be " + pkg.getNameAsString(), 
                                 8000);
