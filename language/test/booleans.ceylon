@@ -8,6 +8,9 @@ shared void booleans() {
     check((1==1)==true, "boolean equals");
     check((1==2)==false, "boolean equals");
     check(true!="true", "boolean equals");
+    Object falseObj = false;
+    check(false == falseObj, "boolean equals");
+    check(true != falseObj, "boolean not equals");
     
     check(true.equals(true), "boolean equals");
     check(!true.equals("true"), "boolean equals");
