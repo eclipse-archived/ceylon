@@ -153,7 +153,12 @@ abstract class Invocation {
         ProducedType type = param.getType();
         return gen.hasConstrainedTypeParameters(type);
     }
-    
+
+    protected boolean isParameterWithDependentCovariantTypeParameters(Parameter param) {
+        ProducedType type = param.getType();
+        return gen.hasDependentCovariantTypeParameters(type);
+    }
+
     protected abstract void addReifiedArguments(ListBuffer<ExpressionAndType> result);
     
     public final void setUnboxed(boolean unboxed) {
@@ -324,6 +329,11 @@ abstract class SimpleInvocation extends Invocation {
 
     // to be overridden
     protected boolean isParameterWithConstrainedTypeParameters(int argIndex) {
+        return false;
+    }
+
+    // to be overridden
+    protected boolean isParameterWithDependentCovariantTypeParameters(int argIndex) {
         return false;
     }
 
@@ -736,7 +746,12 @@ class PositionalInvocation extends DirectInvocation {
     protected boolean isParameterWithConstrainedTypeParameters(int argIndex) {
         return isParameterWithConstrainedTypeParameters(getParameter(argIndex));
     }
-    
+
+    @Override
+    protected boolean isParameterWithDependentCovariantTypeParameters(int argIndex) {
+        return isParameterWithDependentCovariantTypeParameters(getParameter(argIndex));
+    }
+
     protected boolean hasDefaultArgument(int ii) {
         return getParameters().get(ii).isDefaulted();
     }
@@ -1217,6 +1232,9 @@ class NamedArgumentInvocation extends Invocation {
             // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
             // not match, so we go raw
             jtFlags |= JT_RAW;
+        }
+        if(isParameterWithDependentCovariantTypeParameters(declaredParam)) {
+            exprFlags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
         }
         JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
         JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type, exprFlags);

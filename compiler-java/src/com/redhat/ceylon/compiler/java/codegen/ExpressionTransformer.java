@@ -126,6 +126,13 @@ public class ExpressionTransformer extends AbstractTransformer {
      * constructing the type casts.
      */
     public static final int EXPR_WANTS_COMPANION = 1 << 5;
+    /** 
+     * The expected type has type parameters with {@code satisfies} 
+     * constraints which have a covariant type parameter that is used by other
+     * type parameter bounds, so we will always generate types where it is fixed rather
+     * than using wildcards and in some cases we need to cast to raw
+     */
+    public static final int EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS = 1 << 6;
 
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
@@ -437,6 +444,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                 boolean expectedTypeIsNotRaw = (flags & EXPR_EXPECTED_TYPE_NOT_RAW) != 0;
                 boolean expectedTypeHasConstrainedTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS) != 0;
+                boolean expectedTypeHasDependentCovariantTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS) != 0;
                 boolean downCast = (flags & EXPR_DOWN_CAST) != 0;
                 int companionFlags = (flags & EXPR_WANTS_COMPANION) != 0 ? AbstractTransformer.JT_COMPANION : 0;
 
@@ -463,6 +471,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                          // expression type cannot be trusted to be true, most probably because we had to satisfy Java type parameter
                          // bounds that are different from what we think the expression type should be
                          || exprUntrustedType
+                         // if we have a covariant type parameter which is dependent and whose type arg contains erased type parameters
+                         // we need a raw cast because it will be fixed rather than using a wildcard and there's a good chance
+                         // we can't use proper subtyping rules to assign to it
+                         // see https://github.com/ceylon/ceylon-compiler/issues/1557
+                         || expectedTypeHasDependentCovariantTypeParameters
                          // some type parameter somewhere needs a cast
                          || needsCast(exprType, expectedType, expectedTypeIsNotRaw, expectedTypeHasConstrainedTypeParameters, downCast)
                          // if the exprType is raw and the expected type isn't
@@ -496,7 +509,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     //  don't even try making an actual cast if there are bounded type parameters in play, because going raw is much safer
                     //  also don't try making the cast if the expected type is raw because anything goes
                     boolean needsTypedCast = !exprIsRaw 
-                            || (!expectedTypeHasConstrainedTypeParameters && !expectedTypeIsRaw);
+                            || (!expectedTypeHasConstrainedTypeParameters
+                                    && !expectedTypeHasDependentCovariantTypeParameters
+                                    && !expectedTypeIsRaw);
                     if(needsTypedCast
                             // make sure that downcasts get at least one cast
                             || downCast
@@ -540,7 +555,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     boolean needsCast(ProducedType exprType, ProducedType expectedType, 
-                              boolean expectedTypeNotRaw, boolean expectedTypeHasConstrainedTypeParameters,
+                              boolean expectedTypeNotRaw, 
+                              boolean expectedTypeHasConstrainedTypeParameters,
                               boolean downCast) {
         // make sure we work on definite types
         exprType = simplifyType(exprType);
@@ -637,7 +653,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             
-            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, expectedTypeHasConstrainedTypeParameters, downCast))
+            if(needsCast(commonTypeArg, expectedTypeArg, expectedTypeNotRaw, 
+                         expectedTypeHasConstrainedTypeParameters, 
+                         downCast))
                 return true;
             // stop after the first one for Callable
             if(isCallable)
@@ -2346,6 +2364,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
             if(invocation.isParameterWithConstrainedTypeParameters(argIndex))
                 flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
+            if(invocation.isParameterWithDependentCovariantTypeParameters(argIndex))
+                flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);
