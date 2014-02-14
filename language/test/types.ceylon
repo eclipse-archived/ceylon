@@ -154,65 +154,65 @@ shared void types() {
     check(t is T, "custom type 3");
     //check(is Anything t, "custom type 4");
                 
-    //if (bool is Equality) {} else { fail("boolean type 4"); }
-    if (bool is Basic) {} else { fail("boolean type 5"); }
-    if (bool is Object) {} else { fail("boolean type 6"); }
+    //if (bool is Equality) {check(true);} else { fail("boolean type 4"); }
+    if (bool is Basic) {check(true);} else { fail("boolean type 5"); }
+    if (bool is Object) {check(true);} else { fail("boolean type 6"); }
     if (bool is Null) { fail("null type 6"); }
-    if (bool is Boolean?) {} else { fail("optional boolean type 7"); }
+    if (bool is Boolean?) {check(true);} else { fail("optional boolean type 7"); }
 
-    //if (one is Equality) {} else { fail("natural type 4"); }
+    //if (one is Equality) {check(true);} else { fail("natural type 4"); }
     if (one is Basic) { fail("natural type 5"); }
-    if (one is Object) {} else { fail("natural type 6"); }
+    if (one is Object) {check(true);} else { fail("natural type 6"); }
     if (one is Null) { fail("null type 7"); }
-    if (one is Integer) {} else { fail("natural type 7"); }
-    if (one is Integer?) {} else { fail("optional natural type 8"); }
+    if (one is Integer) {check(true);} else { fail("natural type 7"); }
+    if (one is Integer?) {check(true);} else { fail("optional natural type 8"); }
 
-    //if (c is Equality) {} else { fail("character type 1"); }
+    //if (c is Equality) {check(true);} else { fail("character type 1"); }
     if (c is Basic) { fail("character type 2"); }
-    if (c is Object) {} else { fail("character type 3"); }
+    if (c is Object) {check(true);} else { fail("character type 3"); }
     if (c is Null) { fail("null type 8"); }
-    if (c is Character) {} else { fail("character type 4"); }
-    if (c is Character?) {} else { fail("optional character type 5"); }
+    if (c is Character) {check(true);} else { fail("character type 4"); }
+    if (c is Character?) {check(true);} else { fail("optional character type 5"); }
 
-    //if (str is Equality) {} else { fail("string type 4"); }
+    //if (str is Equality) {check(true);} else { fail("string type 4"); }
     if (str is Basic) { fail("string type 5"); }
-    if (str is Object) {} else { fail("string type 6"); }
+    if (str is Object) {check(true);} else { fail("string type 6"); }
     if (str is Null) { fail("null type 9"); }
-    if (str is String?) {} else { fail("optional string type 7"); }
+    if (str is String?) {check(true);} else { fail("optional string type 7"); }
 
     //if (t is Equality) { fail("custom type 5"); }
     if (t is Basic) { fail("custom type 6"); }
-    if (t is Object) {} else { fail("custom type 7"); }
+    if (t is Object) {check(true);} else { fail("custom type 7"); }
     if (t is Null) { fail("null type 10"); }
-    if (t is T?) {} else { fail("optional custom type 8"); }
+    if (t is T?) {check(true);} else { fail("optional custom type 8"); }
 
-    //if (entry is Equality) {} else { fail("entry type 5"); }
+    //if (entry is Equality) {check(true);} else { fail("entry type 5"); }
     if (entry is Basic) { fail("entry type 6"); }
-    if (entry is Object) {} else { fail("entry type 7"); }
+    if (entry is Object) {check(true);} else { fail("entry type 7"); }
     if (entry is Null) { fail("null type 11"); }
-    if (entry is Entry<Object,Object>) {} else { fail("entry type 8"); }
-    //if (is Entry<Integer,Integer> entry) {} else { fail("entry type 8"); }
+    if (entry is Entry<Object,Object>) {check(true);} else { fail("entry type 8"); }
+    //if (is Entry<Integer,Integer> entry) {check(true);} else { fail("entry type 8"); }
     //if (is Entry<Integer,String> entry) { fail("entry type 9 (required reified gens)"); }
     
     //if (is Equality nothing) { fail("null type 12"); }
     if (nothing is Basic) { fail("null type 13"); }
     if (nothing is Object) { fail("null type 14"); }
-    if (nothing is Null) {} else { fail("null type 15"); }
+    if (nothing is Null) {check(true);} else { fail("null type 15"); }
     if (!nothing is Null) { fail("null type 15"); }
-    if (nothing is Character?) {} else { fail("null is optional type"); }
+    if (nothing is Character?) {check(true);} else { fail("null is optional type"); }
     
-    if (is Boolean|Character|T bool) {} else { fail("union type 1"); }
-    if (is Boolean|Character|T t) {} else { fail("union type 2"); }
-    if (is Boolean|Character|T str) { fail("union type 3"); } else {}
-    if (is Boolean|Character|T nothing) { fail("union type 4"); } else {}
-    //if (is Object&Castable<Nothing> one) {} else { fail("intersection type 1"); }
-    //if (is Object&Castable<Nothing> bool) { fail("intersection type 2"); } else {}
-    if (is Category&Iterable<Anything> str) {} else { fail("intersection type 3"); }
-    if (is Category&Iterable<Anything> t) { fail("intersection type 4"); } else {}
-    //if (is String[] empty) {} else { fail("sequence type 1"); }
-    //if (is String[] seq) {} else { fail("sequence type 2"); }
-    //if (is String[]? seq) {} else { fail("sequence type 3"); }
-    //if (is Integer[] seq) { fail("sequence type 4 (required reified gens)"); } else {}
+    if (is Boolean|Character|T bool) {check(true);} else { fail("union type 1"); }
+    if (is Boolean|Character|T t) {check(true);} else { fail("union type 2"); }
+    if (is Boolean|Character|T str) { fail("union type 3"); } else {check(true);}
+    if (is Boolean|Character|T nothing) { fail("union type 4"); } else {check(true);}
+    //if (is Object&Castable<Nothing> one) {check(true);} else { fail("intersection type 1"); }
+    //if (is Object&Castable<Nothing> bool) { fail("intersection type 2"); } else {check(true);}
+    if (is Category&Iterable<Anything> str) {check(true);} else { fail("intersection type 3"); }
+    if (is Category&Iterable<Anything> t) { fail("intersection type 4"); } else {check(true);}
+    //if (is String[] empty) {check(true);} else { fail("sequence type 1"); }
+    //if (is String[] seq) {check(true);} else { fail("sequence type 2"); }
+    //if (is String[]? seq) {check(true);} else { fail("sequence type 3"); }
+    //if (is Integer[] seq) { fail("sequence type 4 (required reified gens)"); } else {check(true);}
     
     if (runtime.name == "jvm") {
         check(className(1)=="ceylon.language.Integer", "natural classname");
@@ -248,7 +248,7 @@ shared void types() {
     testJsIssue9();
 
     TypeTestC1|TypeTestC3 c1 = TypeTestC1();
-    if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {} else { fail("is A&B|C&D"); }
+    if (is TypeTestI1&TypeTestI2|TypeTestI3&TypeTestI4 c1) {check(true);} else { fail("is A&B|C&D"); }
     
     object myId extends Object() satisfies MyIdentifiable {}
     object myIdo extends MyIdentifiableObject() {}
