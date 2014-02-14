@@ -133,7 +133,9 @@ public class InvocationGenerator {
                         }
                         //This is the type of the first argument
                         boolean isSequenced = !(isUnion || gen.getTypeUtils().tuple.equals(callableArgs.getDeclaration()));
-                        ProducedType argtype = isUnion ? callableArgs : callableArgs.getTypeArgumentList().get(
+                        ProducedType argtype = isUnion ? callableArgs :
+                            callableArgs.getDeclaration() instanceof TypeParameter ? callableArgs :
+                            callableArgs.getTypeArgumentList().get(
                                 isSequenced ? 0 : 1);
                         Parameter p = null;
                         int c = 0;
