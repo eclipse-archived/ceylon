@@ -39,6 +39,7 @@ import com.redhat.ceylon.compiler.java.test.interop.InteropTest;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0000_0499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1000_1499;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1500_1999;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
 import com.redhat.ceylon.compiler.java.test.misc.MiscTest;
 import com.redhat.ceylon.compiler.java.test.model.ModelLoaderTest;
@@ -68,6 +69,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     IssuesTest_0000_0499.class,
     IssuesTest_0500_0999.class,
     IssuesTest_1000_1499.class,
+    IssuesTest_1500_1999.class,
     MiscTest.class,
     CeylonDocToolTest.class,
     
