@@ -49,8 +49,14 @@ public class InvocationGenerator {
                 gen.out("(");
                 Map<String, String> argVarNames = defineNamedArguments(that.getPrimary(), argList);
                 that.getPrimary().visit(gen);
-                Tree.TypeArguments targs = that.getPrimary() instanceof Tree.BaseMemberOrTypeExpression ?
-                        ((Tree.BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments() : null;
+                final Tree.TypeArguments targs;
+                if (that.getPrimary() instanceof Tree.BaseMemberOrTypeExpression) {
+                    targs = ((Tree.BaseMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
+                } else if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    targs = ((Tree.QualifiedMemberOrTypeExpression)that.getPrimary()).getTypeArguments();
+                } else {
+                    targs = null;
+                }
                 if (that.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                     Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that.getPrimary();
                     if (mte.getDeclaration() instanceof Functional) {
