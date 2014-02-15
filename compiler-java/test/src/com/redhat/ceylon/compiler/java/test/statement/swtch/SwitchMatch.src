@@ -77,10 +77,10 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final void onBoolean$priv$() {
         final boolean b = true;
         {
-            .java.lang.Object sel$1 = .ceylon.language.Boolean.instance(b);
-            if (sel$1 == .ceylon.language.Boolean.instance(true)) {
+            boolean sel$1 = b;
+            if (sel$1 == true) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
-            } else if (sel$1 == .ceylon.language.Boolean.instance(false)) {
+            } else if (sel$1 == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -93,10 +93,10 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final void onBoxedBoolean$priv$() {
         final boolean b = true;
         {
-            .java.lang.Object sel$2 = <.ceylon.language.Boolean>box$priv$(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(b));
-            if (sel$2 == .ceylon.language.Boolean.instance(true)) {
+            boolean sel$2 = <.ceylon.language.Boolean>box$priv$(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(b)).booleanValue();
+            if (sel$2 == true) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
-            } else if (sel$2 == .ceylon.language.Boolean.instance(false)) {
+            } else if (sel$2 == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
@@ -105,10 +105,10 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final void onNullableType$priv$() {
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(true);
         {
-            .java.lang.Object sel$3 = b;
-            if (sel$3 == .ceylon.language.Boolean.instance(true)) {
+            .ceylon.language.Boolean sel$3 = b;
+            if (sel$3.booleanValue() == true) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("true"));
-            } else if (sel$3 == .ceylon.language.Boolean.instance(false)) {
+            } else if (sel$3.booleanValue() == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false"));
             } else if (sel$3 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
