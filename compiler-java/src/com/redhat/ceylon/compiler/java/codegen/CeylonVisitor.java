@@ -36,15 +36,20 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     ListBuffer<JCTree> defs;
     ClassDefinitionBuilder classBuilder;
     boolean inInitializer = false;
+    final LabelVisitor lv;
     
-    /** For compilation units */
-    public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder) {
+    /** For compilation units 
+     * @param lv */
+    public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder, LabelVisitor lv) {
         this.gen = ceylonTransformer;
         this.gen.visitor = this;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
+        this.lv = lv;
     }
+    
+    
     
     public void handleException(Exception e, Node that) {
         that.addError(new CodeGenError(that, e.getMessage(), e)); 

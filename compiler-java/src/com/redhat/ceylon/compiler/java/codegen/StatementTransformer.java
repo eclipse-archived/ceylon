@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
@@ -506,9 +507,7 @@ public class StatementTransformer extends AbstractTransformer {
         Name tempForFailVariable = currentForFailVariable;
         currentForFailVariable = null;
         final List<JCStatement> res;
-        Tree.Block thenPart = stmt.getWhileClause().getBlock();
-        java.util.List<Tree.Condition> conditions = stmt.getWhileClause().getConditionList().getConditions();
-        res =  new WhileCondList(conditions, thenPart).getResult();    
+        res =  new WhileCondList(stmt.getWhileClause()).getResult();
         currentForFailVariable = tempForFailVariable;
         
         return res;
@@ -517,13 +516,15 @@ public class StatementTransformer extends AbstractTransformer {
     class WhileCondList extends BlockCondList {
 
         private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
-        public WhileCondList(java.util.List<Tree.Condition> conditions, Tree.Block thenPart) {
-            super(conditions, thenPart);
+        private final Name label;
+        public WhileCondList(Tree.WhileClause whileClause) {
+            super(whileClause.getConditionList().getConditions(), whileClause.getBlock());
+            this.label = getLabel(whileClause.getControlBlock());
         }
         
         @Override
         protected JCBreak transformIntermediateElse(Cond transformedCond, java.util.List<Tree.Condition> rest) {
-            return make().Break(null);
+            return make().Break(label);
         }
 
         @Override
@@ -533,7 +534,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         protected JCStatement transformInnermostElse(Cond transformedCond, java.util.List<Tree.Condition> rest) {
-            return make().Break(null);
+            return make().Break(label);
         }
         
         @Override
@@ -576,8 +577,10 @@ public class StatementTransformer extends AbstractTransformer {
                     result = result.prepend(makeFlowAppeaser(conditions.get(0)));
                 }
             }
-            result = result.prepend(make().WhileLoop(makeBoolean(true), 
-                    make().Block(0, loopStmts.toList())));
+            
+            result = result.prepend(
+                    make().Labelled(label, make().WhileLoop(makeBoolean(true), 
+                    make().Block(0, loopStmts.toList()))));
             return result;
         }
 
@@ -1289,11 +1292,11 @@ public class StatementTransformer extends AbstractTransformer {
             }
             
             JCStatement block = make().Block(0, transformedBlock);
-            result.add(make().ForLoop(
+            result.add(make().Labelled(this.label, make().ForLoop(
                     List.<JCStatement>of(iVar), 
                     iCond,
                     List.<JCExpressionStatement>of(make().Exec(iIncr)),
-                    block));
+                    block)));
             return result;
         }
         
@@ -1664,10 +1667,10 @@ public class StatementTransformer extends AbstractTransformer {
                                     List.<JCExpression>nil()))));
             
             if (step == null) {
-                result.add(make().ForLoop(List.<JCStatement>of(init), 
+                result.add(make().Labelled(this.label, make().ForLoop(List.<JCStatement>of(init), 
                         cond, 
                         List.<JCExpressionStatement>of(incr), 
-                        make().Block(0, transformedBlock)));
+                        make().Block(0, transformedBlock))));
             } else {
                 /*for (long kk = 0; kk < step; kk++) {
                     next = range.getDecreasing() ? next.getPredecessor() : next.getSuccessor();
@@ -1914,10 +1917,12 @@ public class StatementTransformer extends AbstractTransformer {
     
     class ForStatementTransformation {
         
-        protected Tree.ForStatement stmt; 
+        protected Tree.ForStatement stmt;
+        protected final Name label; 
         
         ForStatementTransformation(Tree.ForStatement stmt) {
             this.stmt = stmt;
+            this.label = getLabel(stmt.getForClause().getControlBlock());
         }
         
         protected final Tree.ForIterator getForIterator() {
@@ -2079,6 +2084,7 @@ public class StatementTransformer extends AbstractTransformer {
             currentForClause = prevControlClause;
             
             return ListBuffer.<JCStatement>lb().appendList(transformIterableIteration(stmt,
+                    this.label,
                     elem_name, 
                     iteratorVarName,
                     iterDecl.getSpecifierExpression().getExpression().getTypeModel(),
@@ -2108,6 +2114,7 @@ public class StatementTransformer extends AbstractTransformer {
      *         BODY_STMTS;
      *     }
      * </pre>
+     * @param label 
      * 
      * @param iterationVarName The iteration variable (which recieves the value of {@code Iterator.next()})
      * @param iteratorVarName The name of the {@code Iterator} variable
@@ -2120,7 +2127,7 @@ public class StatementTransformer extends AbstractTransformer {
      * @return
      */
     List<JCStatement> transformIterableIteration(Node node,
-            Naming.SyntheticName iterationVarName,
+            Name label, Naming.SyntheticName iterationVarName,
             Naming.SyntheticName iteratorVarName,
             ProducedType iterableType, ProducedType iteratedType, 
             JCExpression iterableExpr,
@@ -2289,7 +2296,10 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         // while (!(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
-        JCWhileLoop whileLoop = at(node).WhileLoop(loopCond, at(node).Block(0, loopBody.toList()));
+        JCStatement whileLoop = at(node).WhileLoop(loopCond, at(node).Block(0, loopBody.toList()));
+        if (label != null) {
+            whileLoop = make().Labelled(label, whileLoop);
+        }
         return result.append(whileLoop).toList();
     }
     
@@ -2434,11 +2444,11 @@ public class StatementTransformer extends AbstractTransformer {
                     make().Binary(JCTree.LE, make().Binary(JCTree.MINUS, varname.makeIdent(), end.makeIdent()), makeZero()), 
                     make().Binary(JCTree.GE, make().Binary(JCTree.MINUS, varname.makeIdent(), end.makeIdent()), makeZero()));
             List<JCExpressionStatement> step = List.<JCExpressionStatement>of(make().Exec(make().Assignop(JCTree.PLUS_ASG, varname.makeIdent(), incr.makeIdent())));
-            result.append(make().ForLoop(
+            result.append(make().Labelled(this.label, make().ForLoop(
                     List.<JCStatement>of(init), 
                     cond, 
                     step, 
-                    make().Block(0, blockStatements)));
+                    make().Block(0, blockStatements))));
             
             return result;
         }
@@ -2698,7 +2708,7 @@ public class StatementTransformer extends AbstractTransformer {
         // in the control block
         closeInnerSubstituionsForSpecifiedValues(currentForClause);
         
-        JCStatement brk = at(stmt).Break(null);
+        JCStatement brk = at(stmt).Break(getLabel(stmt));
     
         if (currentForFailVariable != null) {
             JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
@@ -2712,7 +2722,7 @@ public class StatementTransformer extends AbstractTransformer {
 
     JCStatement transform(Tree.Continue stmt) {
         // continue;
-        return at(stmt).Continue(null);
+        return at(stmt).Continue(getLabel(stmt));
     }
 
     JCStatement transform(Tree.Return ret) {
@@ -3172,5 +3182,41 @@ public class StatementTransformer extends AbstractTransformer {
         // OK to assign it to null even though it may not be an 
         // optional type
         return makeNull();
+    }
+    
+    
+    private Name getLabel(Tree.Directive dir) {
+        Scope scope = dir.getScope();
+        while (!(scope instanceof Package)) {
+            if (scope instanceof ControlBlock) {
+                Integer loopId = gen().visitor.lv.getLoopId((ControlBlock)scope);
+                if (loopId != null) {
+                    return names().fromString("loop_"+loopId);
+                }
+            }
+            scope = scope.getContainer();
+        }
+        throw Assert.fail();
+    }
+    
+    public Name getLabel(Tree.Break brk) {
+        return getLabel((Tree.Directive)brk);
+    }
+    
+    public Name getLabel(Tree.Continue cont) {
+        return getLabel((Tree.Directive)cont);
+    }
+    
+    public Name getLabel(Tree.WhileClause loop) {
+        return getLabel(loop.getControlBlock());
+    }
+    
+    private Name getLabel(ControlBlock block) {
+        Integer i = gen().visitor.lv.getLoopId(block);
+        return names().fromString("loop_"+i);
+    }
+    
+    public Name getLabel(Tree.ForClause loop) {
+        return getLabel(loop.getControlBlock());
     }
 }

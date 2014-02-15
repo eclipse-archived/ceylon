@@ -3462,6 +3462,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy(Suffix.$iterator$);
         backwardBranch(expr);
         List<JCStatement> forStmt = statementGen().transformIterableIteration(expr, 
+                null,
                 iterationVar, srcIteratorName, 
                 expr.getTarget().getType(), srcElementType, 
                 srcIterableName.makeIdent(), 
@@ -4599,12 +4600,12 @@ public class ExpressionTransformer extends AbstractTransformer {
              * Intended to be placed in a {@code while (true) } loop, to keep checking the conditions until they apply
              * or {@code condExpr} doesn't.
              */
-            public IfComprehensionCondList(java.util.List<Tree.Condition> conditions, JCExpression condExpr) {
+            public IfComprehensionCondList(java.util.List<Tree.Condition> conditions, JCExpression condExpr, Name breakLabel) {
                 this(conditions,
                     // check condExpr before the conditions
-                    List.<JCStatement>of(make().If(make().Unary(JCTree.NOT, condExpr), make().Break(null), null)),
+                    List.<JCStatement>of(make().If(make().Unary(JCTree.NOT, condExpr), make().Break(breakLabel), null)),
                     // break if a condition matches
-                    List.<JCStatement>of(make().Break(null)),
+                    List.<JCStatement>of(make().Break(breakLabel)),
                     null);
             }
             
@@ -4736,10 +4737,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression condExpr = make().Apply(null,
                     ctxtName.makeIdentWithThis(), List.<JCExpression>nil());
                 ctxtName = naming.synthetic(Prefix.$next$, idx);
-                
-                IfComprehensionCondList ifComprehensionCondList = new IfComprehensionCondList(clause.getConditionList().getConditions(), condExpr);
+                Name label = names().fromString("ifcomp_"+idx);
+                IfComprehensionCondList ifComprehensionCondList = new IfComprehensionCondList(clause.getConditionList().getConditions(), condExpr, label);
                 List<JCStatement> ifs = ifComprehensionCondList.getResult();
-                JCStatement loop = make().WhileLoop(makeBoolean(true), make().Block(0, ifs));
+                JCStatement loop = make().Labelled(label, make().WhileLoop(makeBoolean(true), make().Block(0, ifs)));
                 body = List.<JCStatement>of(loop,
                     make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy(Suffix.$exhausted$).makeIdent())));
         	}

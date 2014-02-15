@@ -166,9 +166,14 @@ public class CeylonTransformer extends AbstractTransformer {
     @SuppressWarnings("unchecked")
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableAnnotations = 0;
+        
+        
         ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
-        CeylonVisitor visitor = new CeylonVisitor(this, builder);
+        LabelVisitor lv = new LabelVisitor();
+        CeylonVisitor visitor = new CeylonVisitor(this, builder, lv);
+        t.visit(lv);
         t.visit(visitor);
+        
         
         ListBuffer<JCTree> result = ListBuffer.lb();
         result.appendList((ListBuffer<JCTree>) visitor.getResult());
