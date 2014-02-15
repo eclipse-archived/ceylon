@@ -566,6 +566,10 @@ public abstract class AbstractTransformer implements Transformation {
         return decl == typeFact.getBooleanFalseDeclaration();
     }
     
+    boolean isNullValue(Declaration decl) {
+        return decl == typeFact.getNullValueDeclaration();
+    }
+    
     /**
      * Determines whether the given type is optional.
      */

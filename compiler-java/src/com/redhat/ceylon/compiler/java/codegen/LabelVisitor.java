@@ -13,7 +13,10 @@ public class LabelVisitor extends Visitor {
     
     private Tree.ControlClause loop;
     
+
     private Map<ControlBlock, Integer> loopMap = new HashMap<>();
+
+    private Map<Tree.SwitchClause, Integer> switchMap = new HashMap<>();
     
     /** Returns a unique identifier (unique within the compilation unit)
      * for the control block if it's associated with a {@code while} or 
@@ -21,6 +24,10 @@ public class LabelVisitor extends Visitor {
      */
     public Integer getLoopId(ControlBlock controlBlock) {
         return loopMap.get(controlBlock);
+    }
+    
+    public Integer getSwitchId(Tree.SwitchClause switchClause) {
+        return switchMap.get(switchClause);
     }
     
     @Override
@@ -39,6 +46,11 @@ public class LabelVisitor extends Visitor {
         loopMap.put(that.getControlBlock(), id++);
         super.visit(that);
         loop = prev;
+    }
+    
+    @Override
+    public void visit(Tree.SwitchClause that) {
+        switchMap.put(that, id++);
     }
     
 }
