@@ -6,12 +6,12 @@ class MethodWhileConditionListBoolBool implements .com.redhat.ceylon.compiler.ja
     }
     
     private final boolean m$priv$(final long x) {
-        while (true) {
+        loop_0: while (true) {
             if (x > 0L) {
                 if (x < 10L) {
                     return x == 1L;
-                } else break;
-            } else break;
+                } else break loop_0;
+            } else break loop_0;
         }
         return false;
     }

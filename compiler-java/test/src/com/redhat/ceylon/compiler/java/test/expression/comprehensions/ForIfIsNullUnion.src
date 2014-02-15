@@ -30,12 +30,12 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                     private .ceylon.language.Character x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .java.lang.Object x$1 = null;
                             if ((x$1 = x) == null || x$1 instanceof .ceylon.language.Character) {
                                 x$2 = (.ceylon.language.Character)x$1;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;

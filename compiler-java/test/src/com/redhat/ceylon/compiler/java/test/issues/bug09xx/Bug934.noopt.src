@@ -10,7 +10,7 @@ final class bug934_collectMatches_ {
         final .ceylon.language.SequenceBuilder<Element> ko = new .ceylon.language.SequenceBuilder<Element>($reified$Element);
         .java.lang.Object elem$0;
         .ceylon.language.Iterator<? extends Element> element$iterator$$1 = data.iterator();
-        while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final Element element = (Element)elem$0;
             final long result = search.$call$(element).longValue();
             if (result > 0L) {

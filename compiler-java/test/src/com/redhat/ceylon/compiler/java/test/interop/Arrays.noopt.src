@@ -31,7 +31,7 @@ final class booleanArray_ {
         long idx = 0L;
         .java.lang.Object elem$0;
         .ceylon.language.Iterator<? extends .ceylon.language.Boolean> val$iterator$$1 = values.iterator();
-        while (!((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final boolean val = ((.ceylon.language.Boolean)elem$0).booleanValue();
             ret[(int)idx++] = val;
         }
@@ -106,7 +106,7 @@ final class test_booleans_ {
         final boolean[][] matrix = new boolean[(int)10L][];
         .java.lang.Object elem$9;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$10 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), matrix.length).iterator();
-        while (!((elem$9 = x$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (!((elem$9 = x$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
             final long x = ((.ceylon.language.Integer)elem$9).longValue();
             matrix[(int)x] = new boolean[(int)2L];
         }

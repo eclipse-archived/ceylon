@@ -22,10 +22,10 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             length$15 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = isArraySequence$12 ? null : iterable$11.iterator();
-        while (isArraySequence$12 ? i$14 < length$15 : !((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$12 ? i$14 < length$15 : !((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$12) elem$1 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$13, i$14++);
             final .java.lang.String s = ((.ceylon.language.String)elem$1).toString();
-            while (true) {
+            loop_1: while (true) {
                 if (true) {
                     boolean doforelse$3 = true;
                     final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$6 = seq;
@@ -43,20 +43,20 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
                         length$10 = 0;
                     }
                     .ceylon.language.Iterator<? extends .ceylon.language.String> t$iterator$$5 = isArraySequence$7 ? null : iterable$6.iterator();
-                    while (isArraySequence$7 ? i$9 < length$10 : !((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                    loop_2: while (isArraySequence$7 ? i$9 < length$10 : !((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
                         if (isArraySequence$7) elem$4 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$8, i$9++);
                         final .java.lang.String t = ((.ceylon.language.String)elem$4).toString();
                         doforelse$3 = false;
-                        break;
+                        break loop_2;
                     }
                     if (doforelse$3) {
                         return 1L;
                     }
-                    break;
-                } else break;
+                    break loop_1;
+                } else break loop_1;
             }
             doforelse$0 = false;
-            break;
+            break loop_0;
         }
         if (doforelse$0) {
             return 0L;

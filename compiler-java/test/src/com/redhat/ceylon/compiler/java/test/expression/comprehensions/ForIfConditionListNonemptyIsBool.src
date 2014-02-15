@@ -31,8 +31,8 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
                     private .ceylon.language.Sequence<? extends .java.lang.Object> x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .java.lang.Object y$3 = null;
                             .ceylon.language.Sequential<? extends .java.lang.Object> x$1 = null;
                             if ((x$1 = x) instanceof .ceylon.language.Sequence) {
@@ -40,7 +40,7 @@ class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.mod
                                 if ((y$3 = x$2.get(.ceylon.language.Integer.instance(0L))) instanceof .ceylon.language.Integer) {
                                     y$4 = ((.ceylon.language.Integer)y$3).longValue();
                                     if (y$4 > 0L) {
-                                        break;
+                                        break ifcomp_1;
                                     }
                                 }
                             }

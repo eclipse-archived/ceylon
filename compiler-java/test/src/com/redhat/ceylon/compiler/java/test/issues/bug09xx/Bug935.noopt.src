@@ -10,7 +10,7 @@ final class bug_935_collectMatches_ {
         final .ceylon.language.SequenceBuilder<Element> ko = new .ceylon.language.SequenceBuilder<Element>($reified$Element);
         .java.lang.Object elem$0;
         .ceylon.language.Iterator<? extends Element> element$iterator$$1 = data.iterator();
-        while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final Element element = (Element)elem$0;
             final long result = search.$call$(element).longValue();
             if (result > 0L) {
@@ -45,7 +45,7 @@ final class bug_935_test_ {
         .ceylon.language.print_.print(.ceylon.language.String.instance("Uppercase letters: "));
         .java.lang.Object elem$3;
         .ceylon.language.Iterator<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>> result$iterator$$4 = ((.ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.ceylon.language.Correspondence)results).get(.ceylon.language.Integer.instance(0L))).iterator();
-        while (!((elem$3 = result$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (!((elem$3 = result$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>> result = (.ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>)elem$3;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Size: ").append(((.ceylon.language.Integer)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)result).get(.ceylon.language.Integer.instance(0L))).longValue()).append(", for: \'").append(((.ceylon.language.String)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)result).get(.ceylon.language.Integer.instance(1L))).toString()).append("\'").toString()));
         }

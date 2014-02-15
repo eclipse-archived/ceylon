@@ -30,12 +30,12 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .java.lang.Object x$1 = null;
                             if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
                                 x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$1;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;
@@ -78,12 +78,12 @@ class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$5;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.y()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.y()) break ifcomp_1;
                             .java.lang.Object x$4 = null;
                             if ((x$4 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
                                 x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$4;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !y$exhausted$;

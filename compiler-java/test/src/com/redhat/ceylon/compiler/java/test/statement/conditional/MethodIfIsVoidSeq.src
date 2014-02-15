@@ -25,7 +25,7 @@ final class methodIfIsAnythingSeq_ {
                 length$9 = 0;
             }
             .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = isArraySequence$6 ? null : iterable$5.iterator();
-            while (isArraySequence$6 ? i$8 < length$9 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+            loop_0: while (isArraySequence$6 ? i$8 < length$9 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
                 if (isArraySequence$6) elem$3 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$7, i$8++);
                 final .java.lang.Object arg = (.java.lang.Object)elem$3;
             }

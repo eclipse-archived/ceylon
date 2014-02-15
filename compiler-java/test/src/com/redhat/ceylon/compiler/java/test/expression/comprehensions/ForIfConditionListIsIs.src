@@ -57,15 +57,15 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     private long x1$3;
                     
                     private final boolean $next$2() {
-                        while (true) {
-                            if (!this.y()) break;
+                        ifcomp_2: while (true) {
+                            if (!this.y()) break ifcomp_2;
                             .java.lang.Object y1$4 = null;
                             .java.lang.Object x1$2 = null;
                             if ((x1$2 = x) instanceof .ceylon.language.Integer) {
                                 x1$3 = ((.ceylon.language.Integer)x1$2).longValue();
                                 if ((y1$4 = y) instanceof .ceylon.language.Integer) {
                                     y1$5 = ((.ceylon.language.Integer)y1$4).longValue();
-                                    break;
+                                    break ifcomp_2;
                                 }
                             }
                         }
@@ -138,15 +138,15 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     private long x$9;
                     
                     private final boolean $next$2() {
-                        while (true) {
-                            if (!this.y()) break;
+                        ifcomp_2: while (true) {
+                            if (!this.y()) break ifcomp_2;
                             .java.lang.Object y$10 = null;
                             .java.lang.Object x$8 = null;
                             if ((x$8 = x) instanceof .ceylon.language.Integer) {
                                 x$9 = ((.ceylon.language.Integer)x$8).longValue();
                                 if ((y$10 = y) instanceof .ceylon.language.Integer) {
                                     y$11 = ((.ceylon.language.Integer)y$10).longValue();
-                                    break;
+                                    break ifcomp_2;
                                 }
                             }
                         }

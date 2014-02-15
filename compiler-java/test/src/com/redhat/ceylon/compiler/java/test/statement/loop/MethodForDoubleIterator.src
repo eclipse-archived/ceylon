@@ -24,7 +24,7 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
             length$6 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> i$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
-        while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getKey().longValue();
             final .java.lang.String s = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getItem().toString();

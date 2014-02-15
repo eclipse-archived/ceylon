@@ -35,7 +35,7 @@ final class bug568_ {
             length$7 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = isArraySequence$4 ? null : iterable$3.iterator();
-        while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }

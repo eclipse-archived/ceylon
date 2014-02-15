@@ -22,7 +22,7 @@ final class bug568_ {
             }
             returning spread$1$sb$.getSequence();
         ).iterator();
-        while (!((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$0 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }
     }

@@ -12,7 +12,7 @@ final class methodIfIsAnythingSeq_ {
             final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential)args$1;
             .java.lang.Object elem$3;
             .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = args$2.iterator();
-            while (!((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+            loop_0: while (!((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
                 final .java.lang.Object arg = (.java.lang.Object)elem$3;
             }
         }

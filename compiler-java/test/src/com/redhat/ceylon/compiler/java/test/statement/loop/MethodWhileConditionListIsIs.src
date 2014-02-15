@@ -6,7 +6,7 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
     }
     
     private final boolean m$priv$(final .java.lang.Object x, final .java.lang.Object y) {
-        while (true) {
+        loop_0: while (true) {
             .java.lang.Object y1$2;
             .java.lang.Object x1$0;
             if ((x1$0 = x) instanceof .ceylon.language.Integer) {
@@ -14,14 +14,14 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
                 if ((y1$2 = y) instanceof .ceylon.language.Integer) {
                     final long y1$3 = ((.ceylon.language.Integer)y1$2).longValue();
                     return x1$1 == y1$3;
-                } else break;
-            } else break;
+                } else break loop_0;
+            } else break loop_0;
         }
         return false;
     }
     
     private final boolean synthetic$priv$(final .java.lang.Object x, final .java.lang.Object y) {
-        while (true) {
+        loop_1: while (true) {
             .java.lang.Object y$6;
             .java.lang.Object x$4;
             if ((x$4 = x) instanceof .ceylon.language.Integer) {
@@ -29,14 +29,14 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
                 if ((y$6 = y) instanceof .ceylon.language.Integer) {
                     final long y$7 = ((.ceylon.language.Integer)y$6).longValue();
                     return x$5 == y$7;
-                } else break;
-            } else break;
+                } else break loop_1;
+            } else break loop_1;
         }
         return false;
     }
     
     private final boolean mElseIf$priv$(final .java.lang.Object x, final .java.lang.Object y) {
-        while (true) {
+        loop_2: while (true) {
             .java.lang.Object y1$10;
             .java.lang.Object x1$8;
             if ((x1$8 = x) instanceof .ceylon.language.Integer) {
@@ -44,8 +44,8 @@ class MethodWhileConditionListIsIs implements .com.redhat.ceylon.compiler.java.r
                 if ((y1$10 = y) instanceof .ceylon.language.Integer) {
                     final long y1$11 = ((.ceylon.language.Integer)y1$10).longValue();
                     return x1$9 == y1$11;
-                } else break;
-            } else break;
+                } else break loop_2;
+            } else break loop_2;
         }
         return false;
     }

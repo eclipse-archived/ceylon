@@ -352,12 +352,12 @@ final class emptinessParameterised_ {
                     private Element e$13;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.e()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.e()) break ifcomp_1;
                             Element e$12 = null;
                             if ((e$12 = e) != null) {
                                 e$13 = e$12;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !e$exhausted$;

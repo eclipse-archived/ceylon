@@ -23,7 +23,7 @@ final class bug934_collectMatches_ {
             length$7 = 0;
         }
         .ceylon.language.Iterator<? extends Element> element$iterator$$1 = isArraySequence$4 ? null : iterable$3.iterator();
-        while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$4 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final Element element = (Element)elem$0;
             final long result = search.$call$(element).longValue();

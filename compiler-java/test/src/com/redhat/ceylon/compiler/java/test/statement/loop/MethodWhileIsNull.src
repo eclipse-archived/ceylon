@@ -14,43 +14,43 @@ class MethodWhileIsNull implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     private final long m1$priv$(final .ceylon.language.Integer x) {
-        while (true) {
+        loop_0: while (true) {
             .java.lang.Object x$0;
             if ((x$0 = x) != null) {
                 final long x$1 = ((.ceylon.language.Integer)x$0).longValue();
                 return x$1;
-            } else break;
+            } else break loop_0;
         }
         return owt$priv$(x);
     }
     
     private final long m2$priv$(final .ceylon.language.Integer x) {
-        while (true) {
+        loop_1: while (true) {
             .java.lang.Object y$2;
             if ((y$2 = x) != null) {
                 final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                 return y$3;
-            } else break;
+            } else break loop_1;
         }
         return owt$priv$(x);
     }
     
     private final long m3$priv$(final .ceylon.language.Integer x) {
-        while (true) {
+        loop_2: while (true) {
             if (x == null) {
                 return nowt$priv$(x);
-            } else break;
+            } else break loop_2;
         }
         return owt$priv$(x);
     }
     
     private final long m4$priv$(final .ceylon.language.Integer x) {
-        while (true) {
+        loop_3: while (true) {
             .java.lang.Object y$5;
             if ((y$5 = x) == null) {
                 final .java.lang.Object y$6 = y$5;
                 return nowt$priv$(y$6);
-            } else break;
+            } else break loop_3;
         }
         return owt$priv$(x);
     }

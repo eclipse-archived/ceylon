@@ -8,7 +8,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final void m(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
         .java.lang.Object elem$0;
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$1 = seq.iterator();
-        while (!((elem$0 = s$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$0 = s$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }
     }
@@ -19,7 +19,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 .ceylon.language.String.instance("aap"),
                 .ceylon.language.String.instance("noot"),
                 .ceylon.language.String.instance("mies")}).iterator();
-        while (!((elem$2 = s$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (!((elem$2 = s$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$2).toString();
         }
         .java.lang.Object elem$4;
@@ -27,7 +27,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 .ceylon.language.String.instance("aap"),
                 null,
                 .ceylon.language.String.instance("mies")}).iterator();
-        while (!((elem$4 = s$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+        loop_2: while (!((elem$4 = s$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.String s = (.ceylon.language.String)elem$4;
         }
         .java.lang.Object elem$6;
@@ -35,7 +35,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)}).iterator();
-        while (!((elem$6 = n$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
+        loop_3: while (!((elem$6 = n$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
             final long n = ((.ceylon.language.Integer)elem$6).longValue();
         }
         .java.lang.Object elem$8;
@@ -43,12 +43,12 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 .ceylon.language.Integer.instance(1L),
                 null,
                 .ceylon.language.Integer.instance(3L)}).iterator();
-        while (!((elem$8 = n$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+        loop_4: while (!((elem$8 = n$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
             final .ceylon.language.Integer n = (.ceylon.language.Integer)elem$8;
         }
         .java.lang.Object elem$10;
         .ceylon.language.Iterator<? extends .ceylon.language.Character> c$iterator$$11 = .ceylon.language.String.instance("wim").iterator();
-        while (!((elem$10 = c$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
+        loop_5: while (!((elem$10 = c$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
             final int c = ((.ceylon.language.Character)elem$10).intValue();
         }
     }

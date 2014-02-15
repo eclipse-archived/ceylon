@@ -32,7 +32,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$6 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
-        while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
             final long n = ((.ceylon.language.Integer)elem$0).longValue();
         }
@@ -75,7 +75,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$14 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$9 = isArraySequence$11 ? null : iterable$10.iterator();
-        while (isArraySequence$11 ? i$13 < length$14 : !((elem$8 = n$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (isArraySequence$11 ? i$13 < length$14 : !((elem$8 = n$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$11) elem$8 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$12, i$13++);
             final long n = ((.ceylon.language.Integer)elem$8).longValue();
         }
@@ -118,7 +118,7 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$22 = 0;
         }
         .ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$17 = isArraySequence$19 ? null : iterable$18.iterator();
-        while (isArraySequence$19 ? i$21 < length$22 : !((elem$16 = o$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
+        loop_2: while (isArraySequence$19 ? i$21 < length$22 : !((elem$16 = o$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$19) elem$16 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$20, i$21++);
             final .java.lang.Object o = (.java.lang.Object)elem$16;
         }

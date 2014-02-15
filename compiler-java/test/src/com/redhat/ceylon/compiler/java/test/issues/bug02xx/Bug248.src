@@ -6,10 +6,10 @@ final class bug248_ {
     }
     
     static void bug248() {
-        while (true) {
+        loop_0: while (true) {
             if (false) {
                 throw new .ceylon.language.Exception(null, null);
-            } else break;
+            } else break loop_0;
         }
     }
     

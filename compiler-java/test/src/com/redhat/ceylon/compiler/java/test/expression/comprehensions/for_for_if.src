@@ -55,10 +55,10 @@ final class forForIf_ {
                     }
                     
                     private final boolean $next$2() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_2: while (true) {
+                            if (!this.x()) break ifcomp_2;
                             if (x.compare(y).largerThan()) {
-                                break;
+                                break ifcomp_2;
                             }
                         }
                         return !x$exhausted$;

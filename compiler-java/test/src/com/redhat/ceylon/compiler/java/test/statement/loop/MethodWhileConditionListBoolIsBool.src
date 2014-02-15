@@ -6,31 +6,31 @@ class MethodWhileConditionListBoolIsBool implements .com.redhat.ceylon.compiler.
     }
     
     private final boolean m$priv$(final .java.lang.Object x, final long z) {
-        while (true) {
+        loop_0: while (true) {
             .java.lang.Object x$0;
             if (z < 10L) {
                 if ((x$0 = x) instanceof .ceylon.language.Integer) {
                     final long x$1 = ((.ceylon.language.Integer)x$0).longValue();
                     if (x$1 > 0L) {
                         return x$1 == 1L;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_0;
+                } else break loop_0;
+            } else break loop_0;
         }
         return false;
     }
     
     private final boolean synthetic$priv$(final .java.lang.Object x, final long z) {
-        while (true) {
+        loop_1: while (true) {
             .java.lang.Object y$2;
             if (z < 10L) {
                 if ((y$2 = x) instanceof .ceylon.language.Integer) {
                     final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                     if (y$3 > 0L) {
                         return y$3 == 1L;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_1;
+                } else break loop_1;
+            } else break loop_1;
         }
         return false;
     }

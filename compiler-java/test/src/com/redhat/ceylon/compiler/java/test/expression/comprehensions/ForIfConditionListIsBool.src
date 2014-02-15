@@ -30,13 +30,13 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     private .java.lang.String x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .java.lang.Object x$1 = null;
                             if ((x$1 = x) instanceof .ceylon.language.String) {
                                 x$2 = ((.ceylon.language.String)x$1).toString();
                                 if (.ceylon.language.String.getUppercased(x$2).equals("S")) {
-                                    break;
+                                    break ifcomp_1;
                                 }
                             }
                         }
@@ -80,13 +80,13 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     private .java.lang.String z$5;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .java.lang.Object z$4 = null;
                             if ((z$4 = x) instanceof .ceylon.language.String) {
                                 z$5 = ((.ceylon.language.String)z$4).toString();
                                 if (.ceylon.language.String.getUppercased(z$5).equals("S")) {
-                                    break;
+                                    break ifcomp_1;
                                 }
                             }
                         }

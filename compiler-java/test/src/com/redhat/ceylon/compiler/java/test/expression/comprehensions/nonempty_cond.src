@@ -36,12 +36,12 @@ final class nonemptyCond_ {
                     private .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints$1 = null;
                             if ((ints$1 = ints) instanceof .ceylon.language.Sequence) {
                                 ints$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints$1;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;

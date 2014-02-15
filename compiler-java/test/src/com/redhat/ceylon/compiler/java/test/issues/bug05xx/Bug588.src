@@ -22,7 +22,7 @@ final class bug588_ {
             length$6 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Comparable<? super .ceylon.language.String>> c$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
-        while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = c$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = c$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
             final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)elem$0;
             .ceylon.language.print_.print((.ceylon.language.String)c);

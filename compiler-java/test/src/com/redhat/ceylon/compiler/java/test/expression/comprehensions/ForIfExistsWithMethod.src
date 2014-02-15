@@ -34,12 +34,12 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     private long y$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .ceylon.language.Integer y$1 = null;
                             if ((y$1 = x.give$priv$()) != null) {
                                 y$2 = y$1.longValue();
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;

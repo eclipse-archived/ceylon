@@ -21,7 +21,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$6 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
-        while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = s$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = s$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
             final .java.lang.String s = ((.ceylon.language.String)elem$0).toString();
         }
@@ -46,7 +46,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$13 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$8 = isArraySequence$10 ? null : iterable$9.iterator();
-        while (isArraySequence$10 ? i$12 < length$13 : !((elem$7 = s$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (isArraySequence$10 ? i$12 < length$13 : !((elem$7 = s$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$10) elem$7 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$11, i$12++);
             final .java.lang.String s = ((.ceylon.language.String)elem$7).toString();
         }
@@ -68,7 +68,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$20 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$15 = isArraySequence$17 ? null : iterable$16.iterator();
-        while (isArraySequence$17 ? i$19 < length$20 : !((elem$14 = s$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
+        loop_2: while (isArraySequence$17 ? i$19 < length$20 : !((elem$14 = s$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$17) elem$14 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$18, i$19++);
             final .ceylon.language.String s = (.ceylon.language.String)elem$14;
         }
@@ -90,7 +90,7 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$27 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$22 = isArraySequence$24 ? null : iterable$23.iterator();
-        while (isArraySequence$24 ? i$26 < length$27 : !((elem$21 = n$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
+        loop_3: while (isArraySequence$24 ? i$26 < length$27 : !((elem$21 = n$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$24) elem$21 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$25, i$26++);
             final long n = ((.ceylon.language.Integer)elem$21).longValue();
         }
@@ -112,13 +112,13 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
             length$34 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$29 = isArraySequence$31 ? null : iterable$30.iterator();
-        while (isArraySequence$31 ? i$33 < length$34 : !((elem$28 = n$iterator$$29.next()) instanceof .ceylon.language.Finished)) {
+        loop_4: while (isArraySequence$31 ? i$33 < length$34 : !((elem$28 = n$iterator$$29.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$31) elem$28 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$32, i$33++);
             final .ceylon.language.Integer n = (.ceylon.language.Integer)elem$28;
         }
         .java.lang.Object elem$35;
         .ceylon.language.Iterator<? extends .ceylon.language.Character> c$iterator$$36 = .ceylon.language.String.instance("wim").iterator();
-        while (!((elem$35 = c$iterator$$36.next()) instanceof .ceylon.language.Finished)) {
+        loop_5: while (!((elem$35 = c$iterator$$36.next()) instanceof .ceylon.language.Finished)) {
             final int c = ((.ceylon.language.Character)elem$35).intValue();
         }
     }

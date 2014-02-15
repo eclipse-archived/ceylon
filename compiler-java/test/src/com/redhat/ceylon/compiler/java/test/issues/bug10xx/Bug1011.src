@@ -136,10 +136,10 @@ final class foo_ {
                                                 }
                                                 
                                                 private final boolean $next$1() {
-                                                    while (true) {
-                                                        if (!this.$kv$k$i()) break;
+                                                    ifcomp_1: while (true) {
+                                                        if (!this.$kv$k$i()) break ifcomp_1;
                                                         if (i.equals(item)) {
-                                                            break;
+                                                            break ifcomp_1;
                                                         }
                                                     }
                                                     return !$kv$k$i$exhausted$;
@@ -216,10 +216,10 @@ final class foo_ {
                                         }
                                         
                                         private final boolean $next$1() {
-                                            while (true) {
-                                                if (!this.$kv$k$i()) break;
+                                            ifcomp_1: while (true) {
+                                                if (!this.$kv$k$i()) break ifcomp_1;
                                                 if (i.equals(item)) {
-                                                    break;
+                                                    break ifcomp_1;
                                                 }
                                             }
                                             return !$kv$k$i$exhausted$;
@@ -298,10 +298,10 @@ final class foo_ {
                                                 }
                                                 
                                                 private final boolean $next$1() {
-                                                    while (true) {
-                                                        if (!this.$kv$k$i()) break;
+                                                    ifcomp_1: while (true) {
+                                                        if (!this.$kv$k$i()) break ifcomp_1;
                                                         if (i.equals(item)) {
-                                                            break;
+                                                            break ifcomp_1;
                                                         }
                                                     }
                                                     return !$kv$k$i$exhausted$;
@@ -378,10 +378,10 @@ final class foo_ {
                                         }
                                         
                                         private final boolean $next$1() {
-                                            while (true) {
-                                                if (!this.$kv$k$i()) break;
+                                            ifcomp_1: while (true) {
+                                                if (!this.$kv$k$i()) break ifcomp_1;
                                                 if (i.equals(item)) {
-                                                    break;
+                                                    break ifcomp_1;
                                                 }
                                             }
                                             return !$kv$k$i$exhausted$;
@@ -455,10 +455,10 @@ final class foo_ {
                                         }
                                         
                                         private final boolean $next$1() {
-                                            while (true) {
-                                                if (!this.$kv$k$i()) break;
+                                            ifcomp_1: while (true) {
+                                                if (!this.$kv$k$i()) break ifcomp_1;
                                                 if (i.equals(item)) {
-                                                    break;
+                                                    break ifcomp_1;
                                                 }
                                             }
                                             return !$kv$k$i$exhausted$;
@@ -532,10 +532,10 @@ final class foo_ {
                                         }
                                         
                                         private final boolean $next$1() {
-                                            while (true) {
-                                                if (!this.$kv$k$i()) break;
+                                            ifcomp_1: while (true) {
+                                                if (!this.$kv$k$i()) break ifcomp_1;
                                                 if (i.equals(item)) {
-                                                    break;
+                                                    break ifcomp_1;
                                                 }
                                             }
                                             return !$kv$k$i$exhausted$;

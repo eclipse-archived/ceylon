@@ -6,7 +6,7 @@ class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compile
     }
     
     private final boolean m$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
-        while (true) {
+        loop_0: while (true) {
             .java.lang.Object y$2;
             .java.lang.Object z$0;
             if ((z$0 = x.get(.ceylon.language.Integer.instance(0L))) != null) {
@@ -15,9 +15,9 @@ class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compile
                     final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                     if (y$3 > 0L) {
                         return y$3 == 1L;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_0;
+                } else break loop_0;
+            } else break loop_0;
         }
         return false;
     }

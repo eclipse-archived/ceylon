@@ -6,26 +6,26 @@ class MethodWhileConditionListIsBool implements .com.redhat.ceylon.compiler.java
     }
     
     private final void m$priv$(final .java.lang.Object x) {
-        while (true) {
+        loop_0: while (true) {
             .java.lang.Object x$0;
             if ((x$0 = x) instanceof .ceylon.language.String) {
                 final .java.lang.String x$1 = ((.ceylon.language.String)x$0).toString();
                 if (.ceylon.language.String.getUppercased(x$1).equals("S")) {
                     .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$1)));
-                } else break;
-            } else break;
+                } else break loop_0;
+            } else break loop_0;
         }
     }
     
     private final void synthetic$priv$(final .java.lang.Object x) {
-        while (true) {
+        loop_1: while (true) {
             .java.lang.Object z$2;
             if ((z$2 = x) instanceof .ceylon.language.String) {
                 final .java.lang.String z$3 = ((.ceylon.language.String)z$2).toString();
                 if (.ceylon.language.String.getUppercased(z$3).equals("S")) {
                     .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$3)));
-                } else break;
-            } else break;
+                } else break loop_1;
+            } else break loop_1;
         }
     }
     

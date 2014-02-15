@@ -6,20 +6,20 @@ class MethodWhileIsUnion implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public final void m(final .java.lang.Object x) {
-        while (true) {
+        loop_0: while (true) {
             if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x).common();
-            } else break;
+            } else break loop_0;
         }
     }
     
     public final void mvar(final .java.lang.Object y) {
-        while (true) {
+        loop_1: while (true) {
             .java.lang.Object x$1;
             if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
                 final .java.lang.Object x$2 = x$1;
                 ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x$2).common();
-            } else break;
+            } else break loop_1;
         }
     }
     

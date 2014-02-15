@@ -52,12 +52,12 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$8;
                         
                         private final boolean $next$1() {
-                            while (true) {
-                                if (!this.obj()) break;
+                            ifcomp_1: while (true) {
+                                if (!this.obj()) break ifcomp_1;
                                 .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$7 = null;
                                 if ((z$7 = obj.getProp1()) != null) {
                                     z$8 = z$7;
-                                    break;
+                                    break ifcomp_1;
                                 }
                             }
                             return !obj$exhausted$;
@@ -102,12 +102,12 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$14;
                         
                         private final boolean $next$1() {
-                            while (true) {
-                                if (!this.obj()) break;
+                            ifcomp_1: while (true) {
+                                if (!this.obj()) break ifcomp_1;
                                 .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$13 = null;
                                 if ((z$13 = obj.method(x$2)) != null) {
                                     z$14 = z$13;
-                                    break;
+                                    break ifcomp_1;
                                 }
                             }
                             return !obj$exhausted$;

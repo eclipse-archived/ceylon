@@ -30,12 +30,12 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     private .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .ceylon.language.Sequential<? extends .ceylon.language.Integer> x$1 = null;
                             if ((x$1 = x) instanceof .ceylon.language.Sequence) {
                                 x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)x$1;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;
@@ -78,12 +78,12 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                     private .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$4 = null;
                             if ((s$4 = x) instanceof .ceylon.language.Sequence) {
                                 s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$4;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;

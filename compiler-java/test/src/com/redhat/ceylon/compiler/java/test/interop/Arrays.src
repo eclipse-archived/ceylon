@@ -48,7 +48,7 @@ final class booleanArray_ {
             length$7 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Boolean> val$iterator$$1 = isArraySequence$4 || isArray$3 ? null : iterable$2.iterator();
-        while (isArraySequence$4 || isArray$3 ? i$6 < length$7 : !((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$4 || isArray$3 ? i$6 < length$7 : !((elem$0 = val$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$4 || isArray$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final boolean val = ((.ceylon.language.Boolean)elem$0).booleanValue();
             ret[(int)idx++] = val;
@@ -137,7 +137,7 @@ final class test_booleans_ {
             length$21 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$16 = isArraySequence$18 ? null : iterable$17.iterator();
-        while (isArraySequence$18 ? i$20 < length$21 : !((elem$15 = x$iterator$$16.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (isArraySequence$18 ? i$20 < length$21 : !((elem$15 = x$iterator$$16.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$18) elem$15 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$19, i$20++);
             final long x = ((.ceylon.language.Integer)elem$15).longValue();
             matrix[(int)x] = new boolean[(int)2L];

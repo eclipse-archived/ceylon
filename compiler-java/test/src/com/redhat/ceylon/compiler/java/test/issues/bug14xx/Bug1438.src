@@ -16,13 +16,13 @@ public final class bug1438_ {
             final long $ceylontmp$end$4 = 10L;
             final boolean $ceylontmp$increasing$5 = $ceylontmp$start$3 <= $ceylontmp$end$4;
             final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
-            for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
+            loop_0: for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
                 final long i = i$7;
                 if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
                     foo$0 = "break";
                     final .java.lang.String foo$9 = foo$0;
                     doforelse$2 = false;
-                    break;
+                    break loop_0;
                 }
             }
             if (doforelse$2) {
@@ -53,13 +53,13 @@ public final class bug1438_2_ {
             final long $ceylontmp$end$15 = 10L;
             final boolean $ceylontmp$increasing$16 = $ceylontmp$start$14 <= $ceylontmp$end$15;
             final long $ceylontmp$incr$17 = $ceylontmp$increasing$16 ? 1L : -1L;
-            for (long i$18 = $ceylontmp$start$14; $ceylontmp$increasing$16 ? i$18 - $ceylontmp$end$15 <= 0L : i$18 - $ceylontmp$end$15 >= 0L; i$18 += $ceylontmp$incr$17) {
+            loop_1: for (long i$18 = $ceylontmp$start$14; $ceylontmp$increasing$16 ? i$18 - $ceylontmp$end$15 <= 0L : i$18 - $ceylontmp$end$15 >= 0L; i$18 += $ceylontmp$incr$17) {
                 final long i = i$18;
                 if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
                     foo$11 = "break";
                     final .java.lang.String foo$20 = foo$11;
                     doforelse$13 = false;
-                    break;
+                    break loop_1;
                 }
             }
             if (doforelse$13) {

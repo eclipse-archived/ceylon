@@ -30,12 +30,12 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     private long x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .ceylon.language.Integer x$1 = null;
                             if ((x$1 = x) != null) {
                                 x$2 = x$1.longValue();
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;
@@ -78,12 +78,12 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     private long y$5;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .ceylon.language.Integer y$4 = null;
                             if ((y$4 = x) != null) {
                                 y$5 = y$4.longValue();
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;

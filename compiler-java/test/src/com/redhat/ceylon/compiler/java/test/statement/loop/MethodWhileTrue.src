@@ -6,10 +6,10 @@ final class methodWhileTrue_ {
     }
     
     static .java.lang.String methodWhileTrue(final boolean b) {
-        while (true) {
+        loop_0: while (true) {
             if (true) {
                 return "";
-            } else break;
+            } else break loop_0;
         }
         throw new .java.lang.Error("Ceylon flow error");
     }
@@ -20,12 +20,12 @@ final class methodWhileTrue2_ {
     }
     
     static .java.lang.String methodWhileTrue2(final boolean b) {
-        while (true) {
+        loop_1: while (true) {
             if (true) {
                 if (b) {
                     return "";
                 }
-            } else break;
+            } else break loop_1;
         }
         throw new .java.lang.Error("Ceylon flow error");
     }
@@ -36,12 +36,12 @@ final class methodWhileTrue3_ {
     }
     
     static .java.lang.String methodWhileTrue3(final boolean b) {
-        while (true) {
+        loop_2: while (true) {
             if (true) {
                 if (b) {
-                    break;
+                    break loop_2;
                 }
-            } else break;
+            } else break loop_2;
         }
         return "";
     }

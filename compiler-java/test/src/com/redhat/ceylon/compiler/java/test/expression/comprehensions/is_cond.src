@@ -36,12 +36,12 @@ final class isCond_ {
                     private long x$2;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             .java.lang.Object x$1 = null;
                             if ((x$1 = x) instanceof .ceylon.language.Integer) {
                                 x$2 = ((.ceylon.language.Integer)x$1).longValue();
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;

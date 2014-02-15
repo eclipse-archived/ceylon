@@ -9,26 +9,26 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         boolean doforelse$0 = true;
         .java.lang.Object elem$1;
         .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = seq.iterator();
-        while (!((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$1).toString();
-            while (true) {
+            loop_1: while (true) {
                 if (true) {
                     boolean doforelse$3 = true;
                     .java.lang.Object elem$4;
                     .ceylon.language.Iterator<? extends .ceylon.language.String> t$iterator$$5 = seq.iterator();
-                    while (!((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                    loop_2: while (!((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
                         final .java.lang.String t = ((.ceylon.language.String)elem$4).toString();
                         doforelse$3 = false;
-                        break;
+                        break loop_2;
                     }
                     if (doforelse$3) {
                         return 1L;
                     }
-                    break;
-                } else break;
+                    break loop_1;
+                } else break loop_1;
             }
             doforelse$0 = false;
-            break;
+            break loop_0;
         }
         if (doforelse$0) {
             return 0L;

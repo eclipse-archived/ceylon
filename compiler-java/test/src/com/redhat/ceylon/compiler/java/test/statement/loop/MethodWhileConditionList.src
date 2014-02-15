@@ -7,63 +7,63 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
     
     private final void m1$priv$(final long x) {
         long a = 0L;
-        while (true) {
+        loop_0: while (true) {
             if (x > 0L) {
                 if (x < 10L) {
                     a += x;
-                } else break;
-            } else break;
+                } else break loop_0;
+            } else break loop_0;
         }
     }
     
     private final void m2$priv$(final .java.lang.Object x, final long z) {
         long a = 0L;
-        while (true) {
+        loop_1: while (true) {
             .java.lang.Object y$0;
             if ((y$0 = x) instanceof .ceylon.language.Integer) {
                 final long y$1 = ((.ceylon.language.Integer)y$0).longValue();
                 if (y$1 > 0L) {
                     if (z < 10L) {
                         a += y$1;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_1;
+                } else break loop_1;
+            } else break loop_1;
         }
     }
     
     private final void m3$priv$(final .java.lang.Object x, final long z) {
         long a = 0L;
-        while (true) {
+        loop_2: while (true) {
             .java.lang.Object y$2;
             if (z < 10L) {
                 if ((y$2 = x) instanceof .ceylon.language.Integer) {
                     final long y$3 = ((.ceylon.language.Integer)y$2).longValue();
                     if (y$3 > 0L) {
                         a += y$3;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_2;
+                } else break loop_2;
+            } else break loop_2;
         }
     }
     
     private final void m4$priv$(final .java.lang.Object x, final long z) {
         long a = 0L;
-        while (true) {
+        loop_3: while (true) {
             .java.lang.Object y$4;
             if (z < 10L) {
                 if (z > 0L) {
                     if ((y$4 = x) instanceof .ceylon.language.Integer) {
                         final long y$5 = ((.ceylon.language.Integer)y$4).longValue();
                         a += y$5;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_3;
+                } else break loop_3;
+            } else break loop_3;
         }
     }
     
     private final void m5$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
         long a = 0L;
-        while (true) {
+        loop_4: while (true) {
             .java.lang.Object y$8;
             .ceylon.language.Sequential<? extends .java.lang.Object> x$6;
             if ((x$6 = x) instanceof .ceylon.language.Sequence) {
@@ -72,9 +72,9 @@ class MethodWhileConditionList implements .com.redhat.ceylon.compiler.java.runti
                     final long y$9 = ((.ceylon.language.Integer)y$8).longValue();
                     if (y$9 > 0L) {
                         a += y$9;
-                    } else break;
-                } else break;
-            } else break;
+                    } else break loop_4;
+                } else break loop_4;
+            } else break loop_4;
         }
     }
     

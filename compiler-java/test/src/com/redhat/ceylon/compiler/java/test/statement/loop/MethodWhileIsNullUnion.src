@@ -7,11 +7,11 @@ class MethodWhileIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime
     
     public final void m() {
         final .java.lang.Object nothing = null;
-        while (true) {
+        loop_0: while (true) {
             .java.lang.Object nothing$0;
             if ((nothing$0 = nothing) == null || nothing$0 instanceof .ceylon.language.Character) {
                 final .ceylon.language.Character nothing$1 = (.ceylon.language.Character)nothing$0;
-            } else break;
+            } else break loop_0;
         }
     }
     

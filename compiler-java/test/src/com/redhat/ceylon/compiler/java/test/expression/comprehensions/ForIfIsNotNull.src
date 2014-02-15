@@ -29,10 +29,10 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     }
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.x()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
                             if (!(x == null)) {
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !x$exhausted$;
@@ -74,12 +74,12 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     private .java.lang.Object x$4;
                     
                     private final boolean $next$1() {
-                        while (true) {
-                            if (!this.y()) break;
+                        ifcomp_1: while (true) {
+                            if (!this.y()) break ifcomp_1;
                             .java.lang.Object x$3 = null;
                             if (!((x$3 = y) == null)) {
                                 x$4 = x$3;
-                                break;
+                                break ifcomp_1;
                             }
                         }
                         return !y$exhausted$;

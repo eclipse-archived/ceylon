@@ -29,7 +29,7 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
             length$7 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$2 = isArraySequence$4 ? null : iterable$3.iterator();
-        while (isArraySequence$4 ? i$6 < length$7 : !((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$4 ? i$6 < length$7 : !((elem$1 = ff$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$4) elem$1 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final .java.lang.String ff = ((.ceylon.language.String)elem$1).toString();
         }
