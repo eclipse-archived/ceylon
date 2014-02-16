@@ -17,3 +17,12 @@ shared void comparables() {
         check(z.key<z.item, "custom comparables 2: `` z.key `` < `` z.item ``?");
     }
 }
+
+@test
+"Test for [ceylon-compiler#1561](https://github.com/ceylon/ceylon-compiler/issues/1561)"
+shared void bug1561() {
+    check({0, 1}.any(0.smallerThan));
+    check({0.0, 1.0}.any(0.0.smallerThan));
+    check({'0', '1'}.any('0'.smallerThan));
+    check({"0", "1"}.any("0".smallerThan));
+}
