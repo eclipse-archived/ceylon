@@ -19,6 +19,7 @@ shared void run() {
     spansegments();
     print("Comparables & Clones");
     comparables();
+    bug1561();
     clones();
     print("Types/satisfying interfaces");
     types();

@@ -2569,19 +2569,29 @@ public final class String
         return $TypeDescriptor$;
     }
 
+    public static boolean largerThan(java.lang.String value, 
+    		String other) {
+    	return value.compareTo(other.value)>0;
+    }
+
+    public static boolean largerThan(java.lang.String value,
+                java.lang.String other) {
+        return value.compareTo(other)>0;
+    }
+    
     @Override
     public boolean largerThan(String other) {
     	return value.compareTo(other.value)>0;
     }
 
-    public static boolean largerThan(java.lang.String value, 
-    		String other) {
-    	return value.compareTo(other.value)>0;
-    }
-    
     public static boolean notSmallerThan(java.lang.String value, 
     		String other) {
     	return value.compareTo(other.value)>=0;
+    }
+
+    public static boolean notSmallerThan(java.lang.String value,
+                java.lang.String other) {
+        return value.compareTo(other)>=0;
     }
 
     @Override
@@ -2594,6 +2604,11 @@ public final class String
     	return value.compareTo(other.value)<0;
     }
 
+    public static boolean smallerThan(java.lang.String value,
+                java.lang.String other) {
+        return value.compareTo(other)<0;
+    }
+
     @Override
     public boolean smallerThan(String other) {
     	return value.compareTo(other.value)<0;
@@ -2602,6 +2617,11 @@ public final class String
     public static boolean notLargerThan(java.lang.String value, 
     		String other) {
     	return value.compareTo(other.value)<=0;
+    }
+
+    public static boolean notLargerThan(java.lang.String value,
+                java.lang.String other) {
+        return value.compareTo(other)<=0;
     }
 
     @Override

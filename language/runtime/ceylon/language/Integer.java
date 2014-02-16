@@ -720,17 +720,25 @@ public final class Integer
         return $TypeDescriptor$;
     }
     
+    public static boolean largerThan(long value, Integer other) {
+    	return value>other.value;
+    }
+
+    public static boolean largerThan(long value, long other) {
+        return value>other;
+    }
+    
     @Override
     public boolean largerThan(Integer other) {
     	return value>other.value;
     }
 
-    public static boolean largerThan(long value, Integer other) {
-    	return value>other.value;
-    }
-    
     public static boolean notSmallerThan(long value, Integer other) {
     	return value>=other.value;
+    }
+
+    public static boolean notSmallerThan(long value, long other) {
+        return value>=other;
     }
 
     @Override
@@ -742,6 +750,10 @@ public final class Integer
     	return value<other.value;
     }
 
+    public static boolean smallerThan(long value, long other) {
+        return value<other;
+    }
+
     @Override
     public boolean smallerThan(Integer other) {
     	return value<other.value;
@@ -749,6 +761,10 @@ public final class Integer
 
     public static boolean notLargerThan(long value, Integer other) {
     	return value<=other.value;
+    }
+
+    public static boolean notLargerThan(long value, long other) {
+        return value<=other;
     }
 
     @Override
