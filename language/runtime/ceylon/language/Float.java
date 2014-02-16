@@ -439,17 +439,25 @@ public final class Float
         return $TypeDescriptor$;
     }
 
+    public static boolean largerThan(double value, Float other) {
+    	return value>other.value;
+    }
+
+    public static boolean largerThan(double value, double other) {
+        return value>other;
+    }
+    
     @Override
     public boolean largerThan(Float other) {
     	return value>other.value;
     }
 
-    public static boolean largerThan(double value, Float other) {
-    	return value>other.value;
-    }
-    
     public static boolean notSmallerThan(double value, Float other) {
     	return value>=other.value;
+    }
+
+    public static boolean notSmallerThan(double value, double other) {
+        return value>=other;
     }
 
     @Override
@@ -461,6 +469,10 @@ public final class Float
     	return value<other.value;
     }
 
+    public static boolean smallerThan(double value, double other) {
+        return value<other;
+    }
+
     @Override
     public boolean smallerThan(Float other) {
     	return value<other.value;
@@ -468,6 +480,10 @@ public final class Float
 
     public static boolean notLargerThan(double value, Float other) {
     	return value<=other.value;
+    }
+
+    public static boolean notLargerThan(double value, double other) {
+        return value<=other;
     }
 
     @Override
