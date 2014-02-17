@@ -100,7 +100,8 @@ public class MiscTest extends CompilerTest {
                 		"Array", "ArraySequence", "Tuple", "Exception", "Callable", 
                 		"flatten", "className", "identityHash", "internalSort", "integerRangeByIterable",
                         "language", "metamodel", "modules", "operatingSystem", "process", "runtime", "system", 
-                        "SequenceBuilder", "SequenceAppender", "StringBuilder" }) {
+                        "SequenceBuilder", "SequenceAppender", "StringBuilder",
+                        "infinity", "parseFloat", "arrayOfSize", "unflatten"}) {
                     if (s.equals(filename)) {
                         return true;
                     }
@@ -113,7 +114,7 @@ public class MiscTest extends CompilerTest {
             }   
         };
         String[] extras = new String[]{
-        		"true", "false", "infinity", "parseFloat", "arrayOfSize", "unflatten"
+        		"true", "false"
         };
         String[] modelExtras = new String[]{
                 "annotations", "modules", "type", "typeLiteral"
