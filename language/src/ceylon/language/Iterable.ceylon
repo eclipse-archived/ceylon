@@ -6,11 +6,13 @@ import ceylon.language { internalFirst = first }
    elements must be countable. That is, for any given 
    element of the stream, every iterator of the stream must 
    eventually return the element, even if the iterator 
-   itself is not exhaustable. A stream may not have a 
-   well-defined order, and so the order in which elements 
-   are returned by the stream's iterator may not be 
-   _stable_. That is, the order may be different for two
-   different iterators.
+   itself is not exhaustable. 
+   
+   A given stream might not have a well-defined order, and 
+   so the order in which elements are produced by the 
+   stream's iterator may not be _stable_. That is, the order 
+   may be different for two different iterators of the 
+   stream.
    
    The type `Iterable<Element,Null>`, usually abbreviated
    `{Element*}` represents a possibly-empty iterable 
@@ -244,16 +246,18 @@ shared interface Iterable<out Element, out Absent=Null>
             "The accumulating function that accepts an
              intermediate result, and the next element."
             Result accumulating(Result|Element partial, Element elem)) {
-        value initial = first;
-        if (!empty, is Element initial) {
+        value it = iterator();
+        if (is Element initial = it.next()) {
             variable Result|Element partial = initial;
-            for (elem in rest) {
-                partial = accumulating(partial, elem);
+            while (is Element next = it.next()) {
+                partial = accumulating(partial, next);
             }
             return partial;
         }
         else {
-            return initial;
+            "iterable must be empty"
+            assert (is Absent null);
+            return null;
         }
     }
     
