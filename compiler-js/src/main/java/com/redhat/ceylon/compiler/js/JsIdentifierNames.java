@@ -117,6 +117,7 @@ public class JsIdentifierNames {
         substitutedMemberNames.add("ceylon.language::Iterable.every");
         substitutedMemberNames.add("ceylon.language::Iterable.map");
         substitutedMemberNames.add("ceylon.language::Iterable.sort");
+        substitutedMemberNames.add("ceylon.language::Iterable.reduce");
     }
 
     /**
