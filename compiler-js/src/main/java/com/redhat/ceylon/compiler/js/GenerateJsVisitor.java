@@ -856,7 +856,7 @@ public class GenerateJsVisitor extends Visitor
                 qualify(that, typeDecl);
                 out(names.name((ClassOrInterface)typeDecl), "(");
                 if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this, true);
+                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this, d.isToplevel());
                     out(",");
                 }
                 self(d);
@@ -4695,7 +4695,7 @@ public class GenerateJsVisitor extends Visitor
             } else if (that instanceof Tree.TypeParameterLiteral) {
                 out("/*TODO: applied type parameter*/");
             } else {
-                out(clAlias, "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type:");
+                out(clAlias, "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type$typeLiteral:");
                 TypeUtils.typeNameOrList(that, ltype, this, false);
                 out("})");
             }
@@ -4730,7 +4730,7 @@ public class GenerateJsVisitor extends Visitor
                         boolean first=true;
                         for (ProducedType targ : that.getTypeArgumentList().getTypeModels()) {
                             if (first)first=false;else out(",");
-                            out(clAlias,"typeLiteral$meta({Type:");
+                            out(clAlias,"typeLiteral$meta({Type$typeLiteral:");
                             TypeUtils.typeNameOrList(that, targ, this, false);
                             out("})");
                         }
@@ -4771,7 +4771,7 @@ public class GenerateJsVisitor extends Visitor
                 TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                 out(")");
             } else {
-                out(clAlias, "/*TODO:closed member literal*/typeLiteral$meta({Type:");
+                out(clAlias, "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
                 out("{t:");
                 if (ltype == null) {
                     qualify(that, d);
