@@ -24,13 +24,14 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
     for (var i=0; i < anns.length; i++) {
       if (isOfType(anns[i], {t:anntype.tipo}))r.push(anns[i]);
     }
-    return r.length==0?getEmpty():r.reifyCeylonType({Absent:{t:Null},Element:{t:ConstrainedAnnotation,
-      a:{Value:$$$mptypes.Value,Values:$$$mptypes.Values,ProgramElement:$$$mptypes.ProgramElement}}});
+    return r.length==0?getEmpty():r.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:ConstrainedAnnotation,
+      a:{Value$ConstrainedAnnotation:$$$mptypes.Value$annotations,Values$ConstrainedAnnotation:$$$mptypes.Values$annotations,
+      ProgramElement$ConstrainedAnnotation:$$$mptypes.ProgramElement$annotations}}});
   }
   return null;
 }
-annotations$meta.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Values',$ps:[
-  {$nm:'annotationType',$mt:'prm',$t:{t:Class$meta$model,a:{Type:{t:ConstrainedAnnotation,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement'}],
-  $tp:{Value:{'satisfies':[{t:ConstrainedAnnotation$meta$model,a:{Values:'Values',Value:'Value',ProgramElement:'ProgramElement'}}]},Values:{},ProgramElement:{'var':'in','satisfies':[{t:Annotated$meta$model}]}},
+annotations$meta.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:'Values$annotations',$ps:[
+  {$nm:'annotationType',$mt:'prm',$t:{t:Class$meta$model,a:{Type$Class:{t:ConstrainedAnnotation,a:{Values$ConstrainedAnnotation:'Values$annotations',Value$ConstrainedAnnotation:'Value$annotations',ProgramElement$ConstrainedAnnotation:'ProgramElement$annotations'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement$annotations'}],
+  $tp:{Value$annotations:{'satisfies':[{t:ConstrainedAnnotation$meta$model,a:{Values$ConstrainedAnnotation:'Values$annotations',Value$ConstrainedAnnotation:'Value$annotations',ProgramElement$ConstrainedAnnotation:'ProgramElement$annotations'}}]},Values$annotations:{},ProgramElement$annotations:{'var':'in','satisfies':[{t:Annotated$meta$model}]}},
   $an:function(){return[shared(),$native()];},d:['ceylon.language.meta','annotations']};};
 exports.annotations$meta=annotations$meta;

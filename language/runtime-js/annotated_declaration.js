@@ -12,10 +12,11 @@ AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mpty
     _mdl.$an=_ans;
   }
   for (var i=0; i<_ans.length;i++) {
-    if (isOfType(_ans[i], $$$mptypes.Annotation)) {
+    if (isOfType(_ans[i], $$$mptypes.Annotation$annotations)) {
       ans.push(_ans[i]);
     }
   }
-  return ans.length == 0 ? getEmpty() : ans.reifyCeylonType({Element:$$$mptypes.Annotation});
+  return ans.length == 0 ? getEmpty() : ans.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
 };
-AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:AnnotatedDeclaration$meta$declaration,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','AnnotatedDeclaration','$m','annotations']};};
+AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,
+  $t:{t:Sequential,a:{Element$Iterable:'Annotation'}},$ps:[],$cont:AnnotatedDeclaration$meta$declaration,$tp:{Annotation$annotations:{'var':'out','satisfies':[{t:Annotation,a:{Value$Annotation:'Annotation'}}]}},$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','AnnotatedDeclaration','$m','annotations']};};

@@ -10,7 +10,7 @@ function suppressedExceptions(/*Exception*/e) {
     return e.$sups$===undefined?getEmpty():e.$sups$;
 }
 suppressedExceptions.$$metamodel$$=function(){
-  return {mod:$$METAMODEL$$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent:{t:Null},Element:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
+  return {mod:$$METAMODEL$$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
 }
 exports.suppressedExceptions=suppressedExceptions;
 
@@ -20,8 +20,8 @@ function $retuple(t) { //receives {t:'T',l:[...]}
   var r={t:Empty};
   for (var i=t.l.length-1;i>=0;i--){
     var f=$retuple(t.l[i]);
-    var e=(r.a&&r.a.Element)||f;
-    if (r.a&&r.a.Element) {
+    var e=(r.a&&r.a.Element$Tuple)||f;
+    if (r.a&&r.a.Element$Tuple){
       if (e.l) {
         var l2=[];for(var j=0;j<e.l.length;j++)l2.push(e.l[j]);
         l2.unshift(f);
@@ -30,7 +30,7 @@ function $retuple(t) { //receives {t:'T',l:[...]}
         e = {t:'u',l:[f,e]};
       }
     }
-    r={t:Tuple,a:{First:f,Element:e,Rest:r}};
+    r={t:Tuple,a:{First$Tuple:f,Element$Tuple:e,Rest$Tuple:r}};
   }
   return r;
 }

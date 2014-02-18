@@ -9,14 +9,14 @@ function get_model(mm) {
 }
 
 function type$meta(x,$$targs$$) {
-  if (x === null || $$targs$$.Type.t===Nothing) {
+  if (x === null || $$targs$$.Type$type.t===Nothing) {
     return getNothingType$meta$model();
   }
   var mm=x.$$metamodel$$;
   if (typeof(mm)==='function') {
     mm=mm(); x.$$metamodel$$=mm;
   }
-  var _t=$$targs$$.Type.t;
+  var _t=$$targs$$.Type$type.t;
   if (mm===undefined) {
     if (x.getT$name && x.getT$all) {
       var mmm=x.getT$all()[x.getT$name()];
@@ -38,9 +38,9 @@ function type$meta(x,$$targs$$) {
     return AppliedClass(mm.$t.t, {Type:mm.$t,Arguments:{t:Nothing}});
   }
   var c;
-  if ($$targs$$.Type.t==='T') {
-    var rt=$retuple($$targs$$.Type);
-    c=AppliedClass(Tuple,{Type:$$targs$$.Type, Arguments:{t:'T',l:[$$targs$$.Type.l[0],rt.Rest]}});
+  if ($$targs$$.Type$type.t==='T') {
+    var rt=$retuple($$targs$$.Type$type);
+    c=AppliedClass(Tuple,{Type:$$targs$$.Type$type, Arguments:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest]}});
   } else {
     var _ta={Type:{t:x.getT$all()[x.getT$name()]}, Arguments:{t:Sequential,a:{Element:{t:Anything}}}};
     if (x.$$targs$$)_ta.Type.a=x.$$targs$$;
@@ -50,7 +50,7 @@ function type$meta(x,$$targs$$) {
     }
     c=(mm.$cont?AppliedMemberClass:AppliedClass)(_t, _ta);
   }
-  if ($$targs$$.Type.a)c.$targs=$$targs$$.Type.a;
+  if ($$targs$$.Type$type.a)c.$targs=$$targs$$.Type$type.a;
   return c;
 }
 type$meta.$$metamodel$$=function(){return{

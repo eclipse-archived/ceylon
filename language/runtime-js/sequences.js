@@ -7,12 +7,12 @@ function Array$(elems,$$targs$$) {
         }
     }
     e.$$targs$$=$$targs$$;
-    List({Element:$$targs$$.Element}, e);
+    List({Element$List:$$targs$$.Element$Array}, e);
     return e;
 }
-Array$.$$metamodel$$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent:{t:Null},Element:'Element'}}}],$an:function(){return[shared(),final(),native()];},mod:$$METAMODEL$$,d:['ceylon.language','Array'],
-  'super':{t:Object$}, $tp:{Element:{}}, satisfies:[{t:List,a:{Element:'Element'}},
-    {t:Ranged,a:{Index:{t:Integer},Span:{t:Array$,a:{Element:'Element'}}}}]};
+Array$.$$metamodel$$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$Array'}}}],$an:function(){return[shared(),final(),native()];},mod:$$METAMODEL$$,d:['ceylon.language','Array'],
+  'super':{t:Object$}, $tp:{Element$Array:{}}, satisfies:[{t:List,a:{Element$List:'Element$Array'}},
+    {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:Array$,a:{Element$Array:'Element$Array'}}}}]};
 
 initExistingType(Array$, Array, 'ceylon.language::Array', Object$,
         Ranged, $init$List());
@@ -42,7 +42,7 @@ function ArraySequence(/* js array */value, $$targs$$) {
     this.$$targs$$=$$targs$$;
     return value;
 }
-ArraySequence.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','ArraySequence'],$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element:'Element'}}}],$tp:{Element:{'var':'out'}},satisfies:[{t:Sequence,a:{Element:'Element'}}]};};
+ArraySequence.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','ArraySequence'],$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element$Sequence:'Element$ArraySequence'}}}],$tp:{Element$ArraySequence:{'var':'out'}},satisfies:[{t:Sequence,a:{Element$Sequence:'Element$ArraySequence'}}]};};
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), $init$Sequence());
 Array$proto.getT$name = function() {
     return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;
@@ -62,13 +62,13 @@ Array$proto.set = function(idx,elem) {
         this[idx] = elem;
     }
 }
-Array$proto.set.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Array','$m','set'],$t:{t:Anything},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'},{$nm:'element',$mt:'prm',$t:'Element'}]};}
+Array$proto.set.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Array','$m','set'],$t:{t:Anything},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'},{$nm:'element',$mt:'prm',$t:'Element$Array'}]};}
 Array$proto.$get = function(idx) {
     var result = this[idx];
     return result!==undefined ? result:null;
 }
 Array$proto.$get.$$metamodel$$=function(){
-  return{mod:$$METAMODEL$$,d:['ceylon.language','List','$m','get'],$t:{t:'u',l:[{t:Null},'Element']},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'}]};
+  return{mod:$$METAMODEL$$,d:['ceylon.language','List','$m','get'],$t:{t:'u',l:[{t:Null},'Element$Array']},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'}]};
 }
 defineAttr(Array$proto, 'lastIndex', function() {
     return this.length>0 ? (this.length-1) : null;
@@ -78,15 +78,15 @@ defineAttr(Array$proto, 'reversed', function() {
     var arr = this.slice(0);
     arr.reverse();
     return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr.reifyCeylonType(this.$$targs$$);
-},undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','reversed'],$t:{t:List,a:{Element:'Element'}}};});
+},undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','reversed'],$t:{t:List,a:{Element$List:'Element$Array'}}};});
 Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
     return Iterable.$$.prototype.chain.call(this, other, $$$mptypes);
 }
 defineAttr(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; },
-  undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$at','first'],$t:{t:'u',l:[{t:Null},'Element']}};});
+  undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','Iterable','$at','first'],$t:{t:'u',l:[{t:Null},'Element$Array']}};});
 defineAttr(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; },
-  undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','last'],$t:{t:'u',l:[{t:Null},'Element']}};});
+  undefined,function(){return{mod:$$METAMODEL$$,d:['ceylon.language','List','$at','last'],$t:{t:'u',l:[{t:Null},'Element$Array']}};});
 Array$proto.segment = function(from, len) {
     if (len <= 0) { return getEmpty(); }
     var stop = from + len;
@@ -187,7 +187,7 @@ function SequenceBuilder($$targs$$,that) {
     return that;
 }
 SequenceBuilder.$$metamodel$$=function(){return{$ps:[],$an:function(){return[shared()];},
-  $tp:{Element:{}}, mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder']};}
+  $tp:{Element$SequenceBuilder:{}}, mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder']};}
 
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
@@ -214,8 +214,8 @@ function SequenceAppender(other, $$targs$$,that) {
     that.appendAll(other);
     return that;
 }
-SequenceAppender.$$metamodel$$=function(){return{$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element:'Element'}},$mt:'prm'}],$an:function(){return[shared()];},
-  'super':{t:SequenceBuilder,a:{Element:'Element'}},$tp:{Element:{}},mod:$$METAMODEL$$,d:['ceylon.language','SequenceAppender']};}
+SequenceAppender.$$metamodel$$=function(){return{$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element$Sequence:'Element$SequenceAppender'}},$mt:'prm'}],$an:function(){return[shared()];},
+  'super':{t:SequenceBuilder,a:{Element$SequenceBuilder:'Element$SequenceAppender'}},$tp:{Element$SequenceAppender:{}},mod:$$METAMODEL$$,d:['ceylon.language','SequenceAppender']};}
 
 initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
 

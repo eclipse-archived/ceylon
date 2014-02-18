@@ -1,7 +1,7 @@
 function Callable(wat) {
     return wat;
 }
-Callable.$$metamodel$$={mod:$$METAMODEL$$,$an:function(){return[shared()];},$tp:{Arguments:{'var':'out'},Return:{'var':'out'}},d:['ceylon.language','Callable']};
+Callable.$$metamodel$$={mod:$$METAMODEL$$,$an:function(){return[shared()];},$tp:{Arguments$Callable:{'var':'out'},Return$Callable:{'var':'out'}},d:['ceylon.language','Callable']};
 exports.Callable=Callable;
 function $init$Callable() {
     if (Callable.$$===undefined) {
@@ -42,8 +42,8 @@ function JsCallable(o,f) {
     f2.$$metamodel$$=f.$$metamodel$$===undefined?Callable.$$metamodel$$:f.$$metamodel$$;
     return f2;
 }
-JsCallable.$$metamodel$$=function(){return{ 'satisfies':[{t:Callable,a:{Return:'Return',Arguments:'Arguments'}}],
-  $tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Callable']};}
+JsCallable.$$metamodel$$=function(){return{ 'satisfies':[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
+  $tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Callable']};}
 
 //This is used for spread method references
 function JsCallableList(value) {
@@ -56,7 +56,7 @@ function JsCallableList(value) {
         return ArraySequence(rval);
     };
 }
-JsCallableList.$$metamodel$$={$tp:{Return:{'var':'out'}, Arguments:{'var':'in'}},$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Callable']};
+JsCallableList.$$metamodel$$={$tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Callable']};
 
 exports.JsCallableList=JsCallableList;
 exports.JsCallable=JsCallable;

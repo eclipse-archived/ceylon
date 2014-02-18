@@ -134,9 +134,9 @@ function Modulo(meta, $$modulo){
     var r = [];
     for (var i=0; i < anns.length; i++) {
       var an = anns[i];
-      if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
+      if (isOfType(an, $$$mptypes.Annotation$annotations)) r.push(an);
     }
-    return r.reifyCeylonType({Element:$$$mptypes.Annotation});
+    return r.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
   }
   $$modulo.annotations=annotations;
   defineAttr($$modulo,'string',function(){return String$("module " + this.name+"/" + this.version);},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
@@ -216,11 +216,11 @@ function Paquete(name, container, pkg, $$paquete){
     defineAttr($$paquete,'container',function(){return container;},undefined,{mod:$$METAMODEL$$,$t:{t:Module$meta$declaration},$cont:Paquete,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$at','container']});
     function members($$$mptypes){
       var filter=[];
-      if (extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('mthd');
-      if (extendsType({t:ValueDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('attr','gttr','obj');
-      if (extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('cls');
-      if (extendsType({t:InterfaceDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('ifc');
-      if (extendsType({t:AliasDeclaration$meta$declaration},$$$mptypes.Kind))filter.push('als');
+      if (extendsType({t:FunctionDeclaration$meta$declaration},$$$mptypes.Kind$members))filter.push('mthd');
+      if (extendsType({t:ValueDeclaration$meta$declaration},$$$mptypes.Kind$members))filter.push('attr','gttr','obj');
+      if (extendsType({t:ClassDeclaration$meta$declaration},$$$mptypes.Kind$members))filter.push('cls');
+      if (extendsType({t:InterfaceDeclaration$meta$declaration},$$$mptypes.Kind$members))filter.push('ifc');
+      if (extendsType({t:AliasDeclaration$meta$declaration},$$$mptypes.Kind$members))filter.push('als');
       var r=[];
       for (var mn in this.pkg) {
         var m = this.pkg[mn];
@@ -239,12 +239,12 @@ function Paquete(name, container, pkg, $$paquete){
           }
         }
       }
-      return r.reifyCeylonType({Element:$$$mptypes.Kind});
+      return r.reifyCeylonType({Element$Iterable:$$$mptypes.Kind$members});
     }
     $$paquete.members=members;
     members.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','members']};
   function annotatedMembers($$$mptypes){
-    var ms=this.members({Kind:$$$mptypes.Kind});
+    var ms=this.members({Kind$members:$$$mptypes.Kind$annotatedMembers});
     if (ms.length>0) {
       var rv=[];
       for (var i=0; i < ms.length; i++) {
@@ -254,14 +254,14 @@ function Paquete(name, container, pkg, $$paquete){
           var ans=mm.$an;
           if (typeof(ans)==='function'){ans=ans();mm.$an=ans;}
           if (ans) for (var j=0; j<ans.length;j++) {
-            if (isOfType(ans[j],$$$mptypes.Annotation)) {
+            if (isOfType(ans[j],$$$mptypes.Annotation$annotatedMembers)) {
               rv.push(ms[i]);
               break;
             }
           }
         }
       }
-      return rv.reifyCeylonType({Element:$$$mptypes.Kind});
+      return rv.reifyCeylonType({Element$Iterable:$$$mptypes.Kind$annotatedMembers});
     }
     return getEmpty();
   }
@@ -272,39 +272,39 @@ function Paquete(name, container, pkg, $$paquete){
       if (m) {
         var mt = m['$mt'];
         //There's a member alright, but check its type
-        if (extendsType({t:ValueDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        if (extendsType({t:ValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='attr'||m==='gttr'||m==='obj') {
             return OpenValue(this, m);
           }
-        } else if (extendsType({t:FunctionDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        } else if (extendsType({t:FunctionDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='mthd') {
             return OpenFunction(this, m);
           }
-        } else if (extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        } else if (extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='attr'||m==='gttr'||m==='obj') {
             return OpenValue(this, m);
           } else if (mt==='mthd') {
             return OpenFunction(this, m);
           }
-        } else if (extendsType({t:ClassDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        } else if (extendsType({t:ClassDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='cls') {
             return OpenClass(this, m);
           }
-        } else if (extendsType({t:InterfaceDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        } else if (extendsType({t:InterfaceDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='ifc') {
             return OpenInterface(this, m);
           }
-        } else if (extendsType({t:ClassOrInterfaceDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        } else if (extendsType({t:ClassOrInterfaceDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='ifc') {
             return OpenInterface(this, m);
           } else if (mt==='cls') {
             return OpenClass(this, m);
           }
-        } else if (extendsType({t:AliasDeclaration$meta$declaration}, $$$mptypes.Kind)) {
+        } else if (extendsType({t:AliasDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='als')
           return OpenAlias(_findTypeFromModel(this,m));
         } else {
-console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.Kind));
+console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.Kind$getMember));
         }
       }
       return null;
@@ -362,9 +362,9 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
       var r = [];
       for (var i=0; i < anns.length; i++) {
         var an = anns[i];
-        if (isOfType(an, $$$mptypes.Annotation)) r.push(an);
+        if (isOfType(an, $$$mptypes.Annotation$annotations)) r.push(an);
       }
-      return r.reifyCeylonType({Element:$$$mptypes.Annotation});
+      return r.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
     }
     $$paquete.annotations=annotations;
     annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','annotations']};

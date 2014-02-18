@@ -18,9 +18,9 @@ function String$(/*{Character*}*/value,size) {
     return that;
 }
 String$.$$metamodel$$=function(){return{'super':{t:Object$},
-  $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element:{t:Character},Absent:{t:Null}}},$mt:'prm'}],
-  'satisfies':[{t:List,a:{Element:{t:Character}}}, {t:Comparable,a:{Other:{t:String$}}},
-    {t:Summable,a:{Other:{t:String$}}}, {t:Ranged,a:{Index:{t:Integer},Span:{t:String$}}}],
+  $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element$Iterable:{t:Character},Absent$Iterable:{t:Null}}},$mt:'prm'}],
+  'satisfies':[{t:List,a:{Element$List:{t:Character}}}, {t:Comparable,a:{Other$Comparable:{t:String$}}},
+    {t:Summable,a:{Other$Summable:{t:String$}}}, {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:String$}}}],
   $an:function(){return[shared(),native(),final()];},
   mod:$$METAMODEL$$,d:['ceylon.language','String']};};
 
@@ -29,7 +29,7 @@ initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential
 var origStrToString = String.prototype.toString;
 inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable);
 var String$proto = String$.$$.prototype;
-String$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
+String$proto.$$targs$$={Element$Iterable:{t:Character}, Absent$Iterable:{t:Null}};
 String$proto.getT$name = function() {
     return String$.$$.T$name;
 }
@@ -48,7 +48,7 @@ String$proto.plus.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:String
 String$proto.equals = function(other) {
     if (other.constructor===String) {
         return other.valueOf()===this.valueOf();
-    } else if (isOfType(other, {t:Iterable, a:{Element:{t:Character}}})) {
+    } else if (isOfType(other, {t:Iterable, a:{Element$Iterable:{t:Character}}})) {
         if (other.size===this.size) {
             for (var i=0;i<this.size;i++) {
                 if (!this.$get(i).equals(other.$get(i))) return false;
@@ -141,7 +141,7 @@ String$proto.shorterThan.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t
 String$proto.iterator= function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
-String$proto.iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Iterator,a:{Element:{t:Character}}},d:['ceylon.language','String','$m','iterator']};}
+String$proto.iterator.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Iterator,a:{Element$Iterator:{t:Character}}},d:['ceylon.language','String','$m','iterator']};}
 String$proto.$get = function(index) {
     if (index<0 || index>=this.length) {return null}
     var i = 0;
@@ -343,14 +343,14 @@ String$proto.lastOccurrence = function(subc) {
 String$proto.lastOccurrence.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:Null},{t:Integer}]},d:['ceylon.language','String','$m','lastOccurrence']};}
 defineAttr(String$proto, 'characters', function() {
     return this.size>0 ? this:getEmpty();
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent:{t:Null},Element:{t:Character}}},d:['ceylon.language','String','$at','characters']}});
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Character}}},d:['ceylon.language','String','$at','characters']}});
 defineAttr(String$proto, 'first', function() { return this.$get(0); },undefined,function(){return{
   mod:$$METAMODEL$$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','Iterable','$at','first']}});
 defineAttr(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
   mod:$$METAMODEL$$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','Iterable','$at','last']}});
 defineAttr(String$proto, 'keys', function() {
     //TODO implement!!!
-    return this.size > 0 ? Range(0, this.size.predecessor, {Element:{t:Integer}}) : getEmpty();
+    return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Category},d:['ceylon.language','Category','$at','keys']}});
 String$proto.join = function(strings) {
     var it = strings.iterator();
@@ -367,11 +367,11 @@ String$proto.join = function(strings) {
     return String$(result, isNaN(len)?undefined:len);
 }
 String$proto.join.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','String','$m','join'],
-  $ps:[{$nm:'strings',$t:{t:Iterable,a:{Absent:{t:Null},Element:{t:String$}}}}]};}
+  $ps:[{$nm:'strings',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}}}]};}
 function isWhitespace(c) { return c.value in $WS; }
 String$proto.$split = function(sep, discard, group) {
     // shortcut for empty input
-    if (this.length === 0) {return Singleton(this, {Element:{t:String$}}); }
+    if (this.length === 0) {return Singleton(this, {Element$Singleton:{t:String$}}); }
 
     if (sep === undefined) {sep = isWhitespace}
     if (discard === undefined) {discard = true}
@@ -485,9 +485,9 @@ String$proto.$split = function(sep, discard, group) {
     }
 
     this.codePoints = count;
-    return tokens.reifyCeylonType({Absent:{t:Null},Element:{t:String$}});
+    return tokens.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:String$}});
 }
-String$proto.$split.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent:{t:Null},Element:{t:String$}}},d:['ceylon.language','String','$m','split']};}
+String$proto.$split.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['ceylon.language','String','$m','split']};}
 defineAttr(String$proto, 'reversed', function() {
     var result = "";
     for (var i=this.length; i>0;) {
@@ -524,7 +524,7 @@ String$proto.repeat.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Stri
 function isNewline(c) { return c.value===10; }
 defineAttr(String$proto, 'lines', function() {
     return this.$split(isNewline, true);
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent:{t:Null},Element:{t:String$}}},d:['ceylon.language','String','$at','lines']}});
+},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['ceylon.language','String','$at','lines']}});
 String$proto.occurrences = function(sub) {
     if (sub.length == 0) {return 0}
     var ocs = [];
@@ -537,7 +537,7 @@ String$proto.occurrences = function(sub) {
     }
     return ocs.length > 0 ? ocs : getEmpty();
 }
-String$proto.occurrences.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent:{t:Null},Element:{t:Integer}}},d:['ceylon.language','List','$m','occurrences']};}
+String$proto.occurrences.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Integer}}},d:['ceylon.language','List','$m','occurrences']};}
 String$proto.$filter = function(f) {
     var r = Iterable.$$.prototype.$filter.call(this, f);
     return String$(r);
@@ -575,11 +575,11 @@ String$proto.$slice=function(idx) {
   var s1 = idx>0 ? this.segment(0,idx) : String$('',0);
   if (idx<0)idx=0;
   var s2 = idx<this.size ? this.segment(idx,this.size) : String$('',0);
-  return Tuple(s1, Tuple(s2, getEmpty(), {Element:{t:String$},First:{t:String$},Rest:{t:Empty}}),
-    {Element:{t:String$}, First:{t:String$}, Rest:{t:Tuple,a:{Element:{t:String$},First:{t:String$},Rest:{t:Empty}}}});
+  return Tuple(s1, Tuple(s2, getEmpty(), {Element$Tuple:{t:String$},First$Tuple:{t:String$},Rest$Tuple:{t:Empty}}),
+    {Element$Tuple:{t:String$}, First$Tuple:{t:String$}, Rest$Tuple:{t:Tuple,a:{Element$Tuple:{t:String$},First$Tuple:{t:String$},Rest$Tuple:{t:Empty}}}});
 }
 String$proto.$slice.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language','String','$m','slice'],
-  $t:{t:Tuple,a:{Element:{t:String$}, First:{t:String$}, Rest:{t:Tuple,a:{Element:{t:String$},First:{t:String$},Rest:{t:Empty}}}}}};}
+  $t:{t:Tuple,a:{Element$Tuple:{t:String$}, First$Tuple:{t:String$}, Rest$Tuple:{t:Tuple,a:{Element$Tuple:{t:String$},First$Tuple:{t:String$},Rest$Tuple:{t:Empty}}}}}};}
 
 function StringIterator(string) {
     var that = new StringIterator.$$;
@@ -591,7 +591,7 @@ StringIterator.$$metamodel$$=function(){return{$nm:'StringIterator',$mt:'cls',$p
 
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;
-StringIterator$proto.$$targs$$={Element:{t:Character}, Absent:{t:Null}};
+StringIterator$proto.$$targs$$={Element$Iterator:{t:Character}, Absent$Iterator:{t:Null}};
 StringIterator$proto.next = function() {
     if (this.index >= this.str.length) { return getFinished(); }
     var first = this.str.charCodeAt(this.index++);

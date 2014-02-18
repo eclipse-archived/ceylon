@@ -40,21 +40,21 @@ function isOfType(obj, type) {
         //We can navigate the metamodel
         if (_mm.d['$mt'] === 'mthd') {
           if (type.t === Callable) { //It's a callable reference
-            if (type.a && type.a.Return && _mm['$t']) {
+            if (type.a && type.a.Return$Callable && _mm['$t']) {
               //Check if return type matches
-              if (extendsType(_mm['$t'], type.a.Return)) {
-                if (type.a.Arguments && _mm['$ps'] !== undefined) {
+              if (extendsType(_mm['$t'], type.a.Return$Callable)) {
+                if (type.a.Arguments$Callable && _mm['$ps'] !== undefined) {
                   var metaparams = _mm['$ps'];
                   if (metaparams.length == 0) {
-                    return type.a.Arguments.t === Empty;
+                    return type.a.Arguments$Callable.t === Empty;
                   } else {
                     //check if arguments match
-                    var comptype = type.a.Arguments;
+                    var comptype = type.a.Arguments$Callable;
                     for (var i=0; i < metaparams.length; i++) {
-                      if (comptype.t !== Tuple || !extendsType(metaparams[i]['$t'], comptype.a.First)) {
+                      if (comptype.t !== Tuple || !extendsType(metaparams[i]['$t'], comptype.a.First$Tuple)) {
                         return false;
                       }
-                      comptype = comptype.a.Rest;
+                      comptype = comptype.a.Rest$Tuple;
                     }
                   }
                 }
