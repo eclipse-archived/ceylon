@@ -61,7 +61,8 @@ public class TypeUtils {
     }
 
     /** Prints the type arguments, usually for their reification. */
-    public static void printTypeArguments(Node node, Map<TypeParameter,ProducedType> targs, GenerateJsVisitor gen) {
+    public static void printTypeArguments(final Node node, final Map<TypeParameter,ProducedType> targs,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         gen.out("{");
         boolean first = true;
         for (Map.Entry<TypeParameter,ProducedType> e : targs.entrySet()) {
@@ -70,28 +71,28 @@ public class TypeUtils {
             } else {
                 gen.out(",");
             }
-            gen.out(e.getKey().getName(), ":");
+            gen.out(e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), ":");
             final ProducedType pt = e.getValue();
             if (pt == null) {
                 gen.out("'", e.getKey().getName(), "'");
                 continue;
             }
-            if (!outputTypeList(node, pt, gen)) {
+            if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
                 boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
                 boolean closeBracket = false;
                 final TypeDeclaration d = pt.getDeclaration();
                 if (d instanceof TypeParameter) {
-                    resolveTypeParameter(node, (TypeParameter)d, gen);
+                    resolveTypeParameter(node, (TypeParameter)d, gen, skipSelfDecl);
                 } else {
                     closeBracket = pt.getDeclaration() instanceof TypeAlias==false;
                     if (closeBracket)gen.out("{t:");
                     outputQualifiedTypename(
                             gen.isImported(node == null ? null : node.getUnit().getPackage(), pt.getDeclaration()),
-                            pt, gen);
+                            pt, gen, skipSelfDecl);
                 }
                 if (hasParams) {
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen);
+                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl);
                 }
                 if (closeBracket) {
                     gen.out("}");
@@ -101,7 +102,8 @@ public class TypeUtils {
         gen.out("}");
     }
 
-    static void outputQualifiedTypename(final boolean imported, ProducedType pt, GenerateJsVisitor gen) {
+    static void outputQualifiedTypename(final boolean imported, final ProducedType pt,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
         final String qname = t.getQualifiedNameString();
         if (qname.equals("ceylon.language::Nothing")) {
@@ -133,7 +135,7 @@ public class TypeUtils {
                 }
             }
 
-            if (!outputTypeList(null, pt, gen)) {
+            if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
                 String tname = gen.getNames().name(t);
                 if (!qual && isReservedTypename(tname)) {
                     gen.out(tname, "$");
@@ -148,19 +150,19 @@ public class TypeUtils {
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
-    static void typeNameOrList(Node node, ProducedType pt, GenerateJsVisitor gen) {
+    static void typeNameOrList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration type = pt.getDeclaration();
-        if (!outputTypeList(node, pt, gen)) {
+        if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
             if (type instanceof TypeParameter) {
-                resolveTypeParameter(node, (TypeParameter)type, gen);
+                resolveTypeParameter(node, (TypeParameter)type, gen, skipSelfDecl);
             } else if (type instanceof TypeAlias) {
-                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen);
+                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen, skipSelfDecl);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen);
+                outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen, skipSelfDecl);
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen);
+                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl);
                 }
                 gen.out("}");
             }
@@ -168,7 +170,7 @@ public class TypeUtils {
     }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    static boolean outputTypeList(Node node, final ProducedType pt, GenerateJsVisitor gen) {
+    static boolean outputTypeList(final Node node, final ProducedType pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration d = pt.getDeclaration();
         final List<ProducedType> subs;
         if (d instanceof IntersectionType) {
@@ -187,7 +189,7 @@ public class TypeUtils {
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
-            typeNameOrList(node, t, gen);
+            typeNameOrList(node, t, gen, skipSelfDecl);
             first = false;
         }
         gen.out("]}");
@@ -195,28 +197,26 @@ public class TypeUtils {
     }
 
     /** Finds the owner of the type parameter and outputs a reference to the corresponding type argument. */
-    static void resolveTypeParameter(Node node, TypeParameter tp, GenerateJsVisitor gen) {
+    static void resolveTypeParameter(final Node node, final TypeParameter tp,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         Scope parent = node.getScope();
         while (parent != null && parent != tp.getContainer()) {
             parent = parent.getScope();
         }
         if (tp.getContainer() instanceof ClassOrInterface) {
             if (parent == tp.getContainer()) {
-                if (((ClassOrInterface)tp.getContainer()).isAlias()) {
-                    //when resolving for aliases we just take the type arguments from the alias call
-                    gen.out("$$targs$$.", tp.getName());
-                } else {
-                    gen.out("(");
+                if (!skipSelfDecl) {
                     gen.self((ClassOrInterface)tp.getContainer());
-                    gen.out(".$$targs$$||$$targs$$).", tp.getName());
+                    gen.out(".");
                 }
+                gen.out("$$targs$$.", tp.getName(), "$", tp.getDeclaration().getName());
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
             }
         } else if (tp.getContainer() instanceof TypeAlias) {
             if (parent == tp.getContainer()) {
-                gen.out("'", tp.getName(), "'");
+                gen.out("'", tp.getName(), "$", tp.getDeclaration().getName(), "'");
             } else {
                 //This can happen in expressions such as Singleton(n) when n is dynamic
                 gen.out("{/*NO PARENT ALIAS*/t:", GenerateJsVisitor.getClAlias(), "Anything}");
@@ -242,7 +242,7 @@ public class TypeUtils {
             //A component of a union/intersection type, in which case we just use the argument's type (may be null)
             //A type argument of the argument's type, in which case we must get the reified generic from the argument
             if (tp.getContainer() == parent) {
-                gen.out("$$$mptypes.", tp.getName());
+                gen.out("$$$mptypes.", tp.getName(), "$", tp.getDeclaration().getName());
             } else {
                 gen.out("/*METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
                         tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "'");
@@ -321,12 +321,12 @@ public class TypeUtils {
     }
 
     /** Generates the code to throw an Exception if a dynamic object is not of the specified type. */
-    static void generateDynamicCheck(Tree.Term term, final ProducedType t, final GenerateJsVisitor gen) {
+    static void generateDynamicCheck(final Tree.Term term, final ProducedType t, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         String tmp = gen.getNames().createTempVariable();
         gen.out("(", tmp, "=");
         term.visit(gen);
         gen.out(",", GenerateJsVisitor.getClAlias(), "isOfType(", tmp, ",");
-        TypeUtils.typeNameOrList(term, t, gen);
+        TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
         gen.out(")?", tmp, ":");
         gen.generateThrow("dynamic objects cannot be used here", term);
         gen.out(")");
@@ -591,7 +591,7 @@ public class TypeUtils {
                 boolean comma = false;
                 if (!first)gen.out(",");
                 first=false;
-                gen.out(tp.getName(), ":{");
+                gen.out(tp.getName(), "$", tp.getDeclaration().getName(), ":{");
                 if (tp.isCovariant()) {
                     gen.out("'var':'out'");
                     comma = true;
@@ -677,19 +677,19 @@ public class TypeUtils {
         if (!outputMetamodelTypeList(pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
             if (type instanceof TypeParameter) {
-                gen.out("'", type.getNameAsString(), "'");
+                gen.out("'", type.getNameAsString(), "$", ((TypeParameter)type).getDeclaration().getName(), "'");
             } else if (type instanceof TypeAlias) {
-                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen);
+                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen, false);
             } else {
                 gen.out("{t:");
-                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen);
+                outputQualifiedTypename(gen.isImported(pkg, type), pt, gen, false);
                 //Type Parameters
                 if (!pt.getTypeArgumentList().isEmpty()) {
                     gen.out(",a:{");
                     boolean first = true;
                     for (Map.Entry<TypeParameter, ProducedType> e : pt.getTypeArguments().entrySet()) {
                         if (first) first=false; else gen.out(",");
-                        gen.out(e.getKey().getNameAsString(), ":");
+                        gen.out(e.getKey().getNameAsString(), "$", e.getKey().getDeclaration().getName(), ":");
                         metamodelTypeNameOrList(pkg, e.getValue(), gen);
                     }
                     gen.out("}");

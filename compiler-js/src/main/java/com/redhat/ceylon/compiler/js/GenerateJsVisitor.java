@@ -490,7 +490,7 @@ public class GenerateJsVisitor extends Visitor
         tname = tname.substring(0, tname.length()-2);
         String _tmp=names.createTempVariable();
         out(names.self(outer), ".", tname, "=function(){var ", _tmp, "=");
-        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
+        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, true);
         out(";", _tmp, ".$$metamodel$$=");
         TypeUtils.encodeForRuntime(that,d,this);
         out(";return ", _tmp, ";}");
@@ -547,7 +547,7 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, withTargs);
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
         if (withTargs) {
             out(clAlias, "set_type_args(");
             self(d);
@@ -598,7 +598,7 @@ public class GenerateJsVisitor extends Visitor
         qualify(that,aliased);
         out(names.name(aliased), "(");
         if (!pt.getTypeArguments().isEmpty()) {
-            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this);
+            TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this, true);
             out(",");
         }
         self(d);
@@ -641,7 +641,7 @@ public class GenerateJsVisitor extends Visitor
         }
         Map<TypeParameter, ProducedType> invargs = ext.getType().getTypeModel().getTypeArguments();
         if (invargs != null && !invargs.isEmpty()) {
-            TypeUtils.printTypeArguments(that, invargs, this);
+            TypeUtils.printTypeArguments(that, invargs, this, true);
             out(",");
         }
         self(d);
@@ -691,7 +691,7 @@ public class GenerateJsVisitor extends Visitor
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
                             self(d); out(".$$targs$$=");
-                            TypeUtils.printTypeArguments(that, targs, this);
+                            TypeUtils.printTypeArguments(that, targs, this, false);
                             endLine(true);
                         } else {
                             out("/*TODO: more type arguments*/");
@@ -709,7 +709,7 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(that.getExtendedType(), d, that, superDecs);
-        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs, withTargs);
+        callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
 
         if (!opts.isOptimize()) {
             //Fix #231 for lexical scope
@@ -765,7 +765,7 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         final String tname=names.createTempVariable();
         out(function, names.name(d), "{var ", tname, "=");
-        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this);
+        TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, false);
         out(";", tname, ".$$metamodel$$=");
         TypeUtils.encodeForRuntime(that, d, this);
         out(";return ", tname, ";}");
@@ -833,7 +833,7 @@ public class GenerateJsVisitor extends Visitor
             if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
                 extendedType.getType().getTypeArgumentList().getTypeModels();
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(typeDecl.getTypeParameters(),
-                        extendedType.getType().getTypeArgumentList().getTypeModels()), this);
+                        extendedType.getType().getTypeArgumentList().getTypeModels()), this, false);
                 out(",");
             }
             self(d);
@@ -845,7 +845,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
-            final List<Declaration> superDecs, final boolean withTargs) {
+            final List<Declaration> superDecs) {
         if (satisfiedTypes!=null) {
             HashSet<String> myTypeArgs = new HashSet<>();
             for (TypeParameter tp : d.getTypeParameters()) {
@@ -856,22 +856,8 @@ public class GenerateJsVisitor extends Visitor
                 qualify(that, typeDecl);
                 out(names.name((ClassOrInterface)typeDecl), "(");
                 if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
-                    boolean printArgs = !withTargs;
-                    if (withTargs) {
-                        boolean allArgs = true;
-                        for (TypeParameter tp : typeDecl.getTypeParameters()) {
-                            allArgs &= myTypeArgs.contains(tp.getName());
-                        }
-                        if (allArgs) {
-                            out("$$targs$$,");
-                        } else {
-                            printArgs = true;
-                        }
-                    }
-                    if (printArgs) {
-                        TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this);
-                        out(",");
-                    }
+                    TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this, true);
+                    out(",");
                 }
                 self(d);
                 out(")");
@@ -883,8 +869,8 @@ public class GenerateJsVisitor extends Visitor
                         if (e.getValue().getDeclaration() instanceof ClassOrInterface) {
                             out(clAlias, "add_type_arg(");
                             self(d);
-                            out(",'", e.getKey().getName(), "',");
-                            TypeUtils.typeNameOrList(that, e.getValue(), this);
+                            out(",'", e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), "',");
+                            TypeUtils.typeNameOrList(that, e.getValue(), this, false);
                             out(")");
                             endLine(true);
                         }
@@ -1231,7 +1217,7 @@ public class GenerateJsVisitor extends Visitor
             self(c); out(".$$targs$$=$$targs$$"); endLine(true);
         }
         callSuperclass(that.getExtendedType(), c, that, superDecs);
-        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs, !targs.isEmpty());
+        callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
         
         that.getClassBody().visit(this);
         returnSelf(c);
@@ -1249,7 +1235,7 @@ public class GenerateJsVisitor extends Visitor
             if (defineAsProperty(d)) {
                 out("=", names.name(c), "(");
                 if (!targs.isEmpty()) {
-                    TypeUtils.printTypeArguments(that, targs, this);
+                    TypeUtils.printTypeArguments(that, targs, this, false);
                 }
                 out(")");
             }
@@ -1263,7 +1249,7 @@ public class GenerateJsVisitor extends Visitor
             //Create the object lazily
             out("if(", objvar, "===undefined){", objvar, "=$init$", names.name(c), "()(");
             if (!targs.isEmpty()) {
-                TypeUtils.printTypeArguments(that, targs, this);
+                TypeUtils.printTypeArguments(that, targs, this, false);
             }
             out(");", objvar, ".$$metamodel$$=", names.getter(d), ".$$metamodel$$;}");
             endLine();
@@ -1896,7 +1882,7 @@ public class GenerateJsVisitor extends Visitor
             }
             int boxType = boxStart(expr.getExpression().getTerm());
             if (dynblock > 0 && TypeUtils.isUnknown(expr.getExpression().getTypeModel()) && !TypeUtils.isUnknown(decl.getType())) {
-                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this);
+                TypeUtils.generateDynamicCheck(expr.getExpression(), decl.getType(), this, false);
             } else {
                 expr.visit(this);
             }
@@ -1913,7 +1899,7 @@ public class GenerateJsVisitor extends Visitor
                     TypeUtils.encodeCallableArgumentsAsParameterListForRuntime(expr.getExpression().getTypeModel(), this);
                 }
                 out(",");
-                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this);
+                TypeUtils.printTypeArguments(expr, expr.getExpression().getTypeModel().getTypeArguments(), this, false);
             }
             boxUnboxEnd(boxType);
             if (initVal) {
@@ -2656,7 +2642,7 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         callSuperclass(xt, c, that, superDecs);
-        callInterfaces(sts, c, that, superDecs, false);
+        callInterfaces(sts, c, that, superDecs);
         
         body.visit(this);
         returnSelf(c);
@@ -2753,7 +2739,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
                 if (dynblock > 0 && expr instanceof ListedArgument && TypeUtils.isUnknown(expr.getTypeModel())) {
-                    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), types.anything.getType(), this);
+                    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), types.anything.getType(), this, false);
                 } else {
                     expr.visit(this);
                 }
@@ -2765,7 +2751,7 @@ public class GenerateJsVisitor extends Visitor
                 }
             } else {
                 out(",");
-                TypeUtils.printTypeArguments(that, chainedType.getTypeArguments(), this);
+                TypeUtils.printTypeArguments(that, chainedType.getTypeArguments(), this, false);
                 out(")");
             }
         }
@@ -2850,7 +2836,7 @@ public class GenerateJsVisitor extends Visitor
                             if (dynblock > 0 && !TypeUtils.isUnknown(moval.getType())
                                     && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
-                                        moval.getType(), GenerateJsVisitor.this);
+                                        moval.getType(), GenerateJsVisitor.this, false);
                             } else {
                                 specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
                             }
@@ -2867,7 +2853,7 @@ public class GenerateJsVisitor extends Visitor
                                 }
                                 TypeUtils.printTypeArguments(specStmt.getSpecifierExpression().getExpression(),
                                         specStmt.getSpecifierExpression().getExpression().getTypeModel().getTypeArguments(),
-                                        GenerateJsVisitor.this);
+                                        GenerateJsVisitor.this, false);
                             }
                             boxUnboxEnd(boxType);
                         }
@@ -2915,7 +2901,7 @@ public class GenerateJsVisitor extends Visitor
                     out(names.name(bmeDecl), "=");
                     if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
                         TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
-                                bme.getTypeModel(), this);
+                                bme.getTypeModel(), this, false);
                     } else {
                         specStmt.getSpecifierExpression().visit(this);
                     }
@@ -3110,7 +3096,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out(" ");
         if (dynblock > 0 && TypeUtils.isUnknown(that.getExpression().getTypeModel())) {
-            TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this);
+            TypeUtils.generateDynamicCheck(that.getExpression(), that.getExpression().getTypeModel(), this, false);
             endLine(true);
             return;
         }
@@ -3284,7 +3270,7 @@ public class GenerateJsVisitor extends Visitor
                     if (!isNative) {
                         if (targs != null) {
                             out(",");
-                            TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
+                            TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false);
                         }
                         out(")");
                     }
@@ -3693,7 +3679,7 @@ public class GenerateJsVisitor extends Visitor
                termgen.right();
                out(",");
                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(),
-                       GenerateJsVisitor.this);
+                       GenerateJsVisitor.this, false);
                out(")");
            }
        });
@@ -3823,7 +3809,7 @@ public class GenerateJsVisitor extends Visitor
                 if (targs == null) {
                     return;
                 }
-                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false);
                 out(")");
             }
         });
@@ -3842,7 +3828,7 @@ public class GenerateJsVisitor extends Visitor
                 if (targs == null) {
                     return;
                 }
-                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false);
                 out(")");
             }
         });
@@ -3861,7 +3847,7 @@ public class GenerateJsVisitor extends Visitor
                 if (targs == null) {
                     return;
                 }
-                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false);
                 out(")");
             }
         });
@@ -3880,7 +3866,7 @@ public class GenerateJsVisitor extends Visitor
                 if (targs == null) {
                     return;
                 }
-                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this);
+                TypeUtils.printTypeArguments(that, targs, GenerateJsVisitor.this, false);
                 out(")");
             }
         });
@@ -3949,7 +3935,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
         if (type!=null) {
-            TypeUtils.typeNameOrList(term, type.getTypeModel(), this);
+            TypeUtils.typeNameOrList(term, type.getTypeModel(), this, false);
         }
         out(")");
     }
@@ -3997,7 +3983,7 @@ public class GenerateJsVisitor extends Visitor
                out(",");
                TypeUtils.printTypeArguments(that,
                        that.getTypeModel().getTypeArguments(),
-                       GenerateJsVisitor.this);
+                       GenerateJsVisitor.this, false);
                out(")");
            }
        });
@@ -4387,7 +4373,7 @@ public class GenerateJsVisitor extends Visitor
         out(lhs, ",", end, ",");
         TypeUtils.printTypeArguments(that,
                 that.getTypeModel().getTypeArguments(),
-                GenerateJsVisitor.this);
+                GenerateJsVisitor.this, false);
         out(")");
         endLine();
         out("}else return ", clAlias, "getEmpty();}())");
@@ -4522,7 +4508,7 @@ public class GenerateJsVisitor extends Visitor
         			}
         			if (dynblock > 0 && TypeUtils.isUnknown(exprType) && expr instanceof ListedArgument) {
                         exprType = types.anything.getType();
-        			    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), exprType, this);
+        			    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), exprType, this, false);
         			} else {
                         expr.visit(this);
         			}
@@ -4539,7 +4525,7 @@ public class GenerateJsVisitor extends Visitor
         	}
         	for (Map<TypeParameter,ProducedType> t : targs) {
         		out(",");
-        		TypeUtils.printTypeArguments(that, t, this);
+        		TypeUtils.printTypeArguments(that, t, this, false);
         		out(")");
         	}
         }
@@ -4597,7 +4583,7 @@ public class GenerateJsVisitor extends Visitor
     /** Closes a native array and invokes reifyCeylonType with the specified type parameters. */
     void closeSequenceWithReifiedType(Node that, Map<TypeParameter,ProducedType> types) {
         out("].reifyCeylonType(");
-        TypeUtils.printTypeArguments(that, types, this);
+        TypeUtils.printTypeArguments(that, types, this, false);
         out(")");
     }
 
@@ -4688,9 +4674,9 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     out(clAlias, "$init$AppliedMemberClass$meta$model()(");
                 }
-                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this);
+                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this, false);
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                 out(")");
             } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
                 if (td.isToplevel()) {
@@ -4698,9 +4684,9 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     out(clAlias, "$init$AppliedMemberInterface$meta$model()(");
                 }
-                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this);
+                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this, false);
                 out(",");
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                 out(")");
             } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
                 out(clAlias,"getNothingType$meta$model()");
@@ -4710,7 +4696,7 @@ public class GenerateJsVisitor extends Visitor
                 out("/*TODO: applied type parameter*/");
             } else {
                 out(clAlias, "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type:");
-                TypeUtils.typeNameOrList(that, ltype, this);
+                TypeUtils.typeNameOrList(that, ltype, this, false);
                 out("})");
             }
         }
@@ -4745,7 +4731,7 @@ public class GenerateJsVisitor extends Visitor
                         for (ProducedType targ : that.getTypeArgumentList().getTypeModels()) {
                             if (first)first=false;else out(",");
                             out(clAlias,"typeLiteral$meta({Type:");
-                            TypeUtils.typeNameOrList(that, targ, this);
+                            TypeUtils.typeNameOrList(that, targ, this, false);
                             out("})");
                         }
                         out("]");
@@ -4753,12 +4739,12 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         out("undefined,");
                     }
-                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                 } else {
-                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                     if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
                         out(",undefined,");//TODO pass the container
-                        TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this);
+                        TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this, false);
                     }
                 }
                 out(")");
@@ -4782,7 +4768,7 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     out(names.name(d),",");
                 }
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this);
+                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                 out(")");
             } else {
                 out(clAlias, "/*TODO:closed member literal*/typeLiteral$meta({Type:");
@@ -4801,7 +4787,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
                     out(",a:");
-                    TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), this);
+                    TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), this, false);
                 }
                 out("}})");
             }

@@ -5,18 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ComprehensionClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExpressionComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IfComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InitialComprehensionClause;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.KeyValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 
 /** This component is used by the main JS visitor to generate code for comprehensions.
  * 
@@ -38,7 +27,7 @@ class ComprehensionGenerator {
         directAccess = directDeclarations;
     }
 
-    void generateComprehension(Comprehension that) {
+    void generateComprehension(Tree.Comprehension that) {
         gen.out(GenerateJsVisitor.getClAlias(), "Comprehension(function()");
         gen.beginBlock();
         if (gen.opts.isComment()) {
@@ -47,17 +36,17 @@ class ComprehensionGenerator {
 
         // gather information about all loops and conditions in the comprehension
         List<ComprehensionLoopInfo> loops = new ArrayList<ComprehensionLoopInfo>();
-        Expression expression = null;
-        ComprehensionClause startClause = that.getInitialComprehensionClause();
+        Tree.Expression expression = null;
+        Tree.ComprehensionClause startClause = that.getInitialComprehensionClause();
         String tail = null;
         /**
          * The number of initial "if" comprehension clauses, i.&nbsp;e., the number of blocks that have to be ended.
          */
         int initialIfClauses = 0;
-        while (!(startClause instanceof ForComprehensionClause)) {
-            if (startClause instanceof IfComprehensionClause) {
+        while (!(startClause instanceof Tree.ForComprehensionClause)) {
+            if (startClause instanceof Tree.IfComprehensionClause) {
                 // check the condition
-                IfComprehensionClause ifClause = (IfComprehensionClause)startClause;
+                Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause)startClause;
                 gen.conds.specialConditions(
                         gen.conds.gatherVariables(ifClause.getConditionList()),
                         ifClause.getConditionList(),
@@ -65,12 +54,12 @@ class ComprehensionGenerator {
                 initialIfClauses++;
                 gen.beginBlock();
                 startClause = ifClause.getComprehensionClause();
-                if (!(startClause instanceof IfComprehensionClause)) {
+                if (!(startClause instanceof Tree.IfComprehensionClause)) {
                     // we'll put the rest of the comprehension inside this if block;
                     // outside the if block, return nothing (if any condition isn't true)
                     tail = "return function(){return " + finished + ";}";
                 }
-            } else if (startClause instanceof ExpressionComprehensionClause) {
+            } else if (startClause instanceof Tree.ExpressionComprehensionClause) {
             	// record exhaustion state: return a function that
             	// * on first call, returns the expression,
             	// * on subsequent calls, returns finished.
@@ -84,7 +73,7 @@ class ComprehensionGenerator {
                 gen.out(exhaustionVarName, "=true");
                 gen.endLine(true);
                 gen.out("return ");
-                ((ExpressionComprehensionClause)startClause).getExpression().visit(gen);
+                ((Tree.ExpressionComprehensionClause)startClause).getExpression().visit(gen);
                 gen.endBlockNewLine(true);
                 for (int i = 0; i < initialIfClauses; i++) {
                     gen.endBlock();
@@ -93,7 +82,7 @@ class ComprehensionGenerator {
                 gen.out(tail);
                 gen.endBlock(); // end one more block - this one is for the function
                 gen.out(",");
-                TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen);
+                TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen, false);
                 gen.out(")");
                 return;
             } else {
@@ -102,19 +91,19 @@ class ComprehensionGenerator {
                 return;
             }
         }
-        ForComprehensionClause forClause = (ForComprehensionClause)startClause;
+        Tree.ForComprehensionClause forClause = (Tree.ForComprehensionClause)startClause;
         while (forClause != null) {
             ComprehensionLoopInfo loop = new ComprehensionLoopInfo(that, forClause.getForIterator());
-            ComprehensionClause clause = forClause.getComprehensionClause();
-            while ((clause != null) && !(clause instanceof ForComprehensionClause)) {
-                if (clause instanceof IfComprehensionClause) {
-                    IfComprehensionClause ifClause = ((IfComprehensionClause) clause);
+            Tree.ComprehensionClause clause = forClause.getComprehensionClause();
+            while ((clause != null) && !(clause instanceof Tree.ForComprehensionClause)) {
+                if (clause instanceof Tree.IfComprehensionClause) {
+                    Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause) clause;
                     loop.conditions.add(ifClause.getConditionList());
                     loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList()));
                     clause = ifClause.getComprehensionClause();
 
-                } else if (clause instanceof ExpressionComprehensionClause) {
-                    expression = ((ExpressionComprehensionClause) clause).getExpression();
+                } else if (clause instanceof Tree.ExpressionComprehensionClause) {
+                    expression = ((Tree.ExpressionComprehensionClause) clause).getExpression();
                     clause = null;
                 } else {
                     that.addError("No support for comprehension clause of type "
@@ -123,7 +112,7 @@ class ComprehensionGenerator {
                 }
             }
             loops.add(loop);
-            forClause = (ForComprehensionClause) clause;
+            forClause = (Tree.ForComprehensionClause) clause;
         }
 
         // generate variables and "next" function for each for loop
@@ -264,7 +253,7 @@ class ComprehensionGenerator {
         }
         gen.endBlock();
         gen.out(",");
-        TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen);
+        TypeUtils.printTypeArguments(that, gen.getTypeUtils().wrapAsIterableArguments(that.getTypeModel()), gen, false);
         gen.out(")");
     }
 
@@ -281,7 +270,7 @@ class ComprehensionGenerator {
 
     /** Represents one of the for loops of a comprehension including the associated conditions */
     private class ComprehensionLoopInfo {
-        public final ForIterator forIterator;
+        public final Tree.ForIterator forIterator;
         public final List<Tree.ConditionList> conditions = new ArrayList<Tree.ConditionList>();
         public final List<List<ConditionGenerator.VarHolder>> conditionVars = new ArrayList<List<ConditionGenerator.VarHolder>>();
         public final String itVarName;
@@ -290,15 +279,15 @@ class ComprehensionGenerator {
         public final Declaration keyDecl;
         public final Declaration valDecl;
 
-        public ComprehensionLoopInfo(Comprehension that, ForIterator forIterator) {
+        public ComprehensionLoopInfo(Tree.Comprehension that, Tree.ForIterator forIterator) {
             this.forIterator = forIterator;
             itVarName = names.createTempVariable("it");
-            Variable valueVar = null;
-            Variable keyVar = null;
-            if (forIterator instanceof ValueIterator) {
-                valueVar = ((ValueIterator) forIterator).getVariable();
-            } else if (forIterator instanceof KeyValueIterator) {
-                KeyValueIterator kvit = (KeyValueIterator) forIterator;
+            Tree.Variable valueVar = null;
+            Tree.Variable keyVar = null;
+            if (forIterator instanceof Tree.ValueIterator) {
+                valueVar = ((Tree.ValueIterator) forIterator).getVariable();
+            } else if (forIterator instanceof Tree.KeyValueIterator) {
+                Tree.KeyValueIterator kvit = (Tree.KeyValueIterator) forIterator;
                 valueVar = kvit.getValueVariable();
                 keyVar = kvit.getKeyVariable();
             } else {
