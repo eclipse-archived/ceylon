@@ -31,48 +31,52 @@ function type$meta(x,$$targs$$) {
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
       if (mm.$cont) {
-        return AppliedMethod(x,undefined,{Type:mm.$t,Arguments:{t:Nothing}});
+        return AppliedMethod(x,undefined,{Type$Method:mm.$t,Arguments$Method:{t:Nothing}});
       }
-      return AppliedFunction(x,{Type:mm.$t,Arguments:{t:Nothing}});
+      return AppliedFunction(x,{Type$Function:mm.$t,Arguments$Function:{t:Nothing}});
     }
-    return AppliedClass(mm.$t.t, {Type:mm.$t,Arguments:{t:Nothing}});
+    return AppliedClass(mm.$t.t, {Type$Class:mm.$t,Arguments$Class:{t:Nothing}});
   }
   var c;
   if ($$targs$$.Type$type.t==='T') {
     var rt=$retuple($$targs$$.Type$type);
-    c=AppliedClass(Tuple,{Type:$$targs$$.Type$type, Arguments:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest]}});
+    c=AppliedClass(Tuple,{Type$Class:$$targs$$.Type$type, Arguments$Class:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest$Tuple]}});
   } else {
-    var _ta={Type:{t:x.getT$all()[x.getT$name()]}, Arguments:{t:Sequential,a:{Element:{t:Anything}}}};
-    if (x.$$targs$$)_ta.Type.a=x.$$targs$$;
+    var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
+    if (x.$$targs$$)_ta.T.a=x.$$targs$$;
     if (x.$$outer) {
-      _ta.Container={t:x.$$outer.getT$all()[x.$$outer.getT$name()]};
-      if (x.$$outer.$$targs$$)_ta.Container.a=x.$$outer.$$targs$$;
+      _ta.C={t:x.$$outer.getT$all()[x.$$outer.getT$name()]};
+      if (x.$$outer.$$targs$$)_ta.C.a=x.$$outer.$$targs$$;
     }
-    c=(mm.$cont?AppliedMemberClass:AppliedClass)(_t, _ta);
+    if (mm.$cont) {
+      c=AppliedMemberClass(_t, {Type$MemberClass:_ta.T,Arguments$MemberClass:_ta.A,Container$MemberClass:_ta.C});
+    } else {
+      c=AppliedClass(_t, {Type$Class:_ta.T,Arguments$Class:_ta.A});
+    }
   }
   if ($$targs$$.Type$type.a)c.$targs=$$targs$$.Type$type.a;
   return c;
 }
 type$meta.$$metamodel$$=function(){return{
   $ps:[{$nm:'instance',$t:'Type'}],$an:function(){return[shared(),native()];},
-  $t:{t:ClassModel$meta$model,a:{Type:'Type', Arguments:{t:Nothing}}}, $tp:{Type:{satisfies:{t:Anything}}},
+  $t:{t:ClassModel$meta$model,a:{Type$Class:'Type', Arguments$Class:{t:Nothing}}}, $tp:{Type$type:{satisfies:{t:Anything}}},
   mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};}
 exports.type$meta=type$meta;
 
 function typeLiteral$meta($$targs$$) {
-  if ($$targs$$ === undefined || $$targs$$.Type === undefined) {
+  if ($$targs$$ === undefined || $$targs$$.Type$typeLiteral === undefined) {
     throw Exception("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
-  } else if ($$targs$$.Type.$$metamodel$$ == undefined) {
+  } else if ($$targs$$.Type$typeLiteral.$$metamodel$$ == undefined) {
     //closed type
-    var t = $$targs$$.Type.t
+    var t = $$targs$$.Type$typeLiteral.t
     if (t === undefined) {
       throw Exception("'Type' argument should be an open or closed type");
     } else if (t === 'u' || t === 'i') {
-      return t === 'u' ? applyUnionType($$targs$$.Type) : applyIntersectionType($$targs$$.Type);
+      return t === 'u' ? applyUnionType($$targs$$.Type$typeLiteral) : applyIntersectionType($$targs$$.Type$typeLiteral);
     } else if (t === 'T') {
       //TODO arguments
-      var _tt=$retuple($$targs$$.Type);
-      return AppliedClass(Tuple,{Type:$$targs$$.Type,Arguments:{t:'T',l:[_tt.a.First,_tt.a.Rest]}});
+      var _tt=$retuple($$targs$$.Type$typeLiteral);
+      return AppliedClass(Tuple,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
     } else if (t.$$metamodel$$ === undefined) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
@@ -84,17 +88,17 @@ function typeLiteral$meta($$targs$$) {
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
         //TODO tupleize Arguments
-        var r=AppliedClass(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
-        if ($$targs$$.Type.a)r.$targs=$$targs$$.Type.a;
+        var r=AppliedClass(t,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+        if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['$mt'] === 'ifc') {
-        var r=AppliedInterface(t,$$targs$$);
-        if ($$targs$$.Type.a)r.$targs=$$targs$$.Type.a;
+        var r=AppliedInterface(t,{Type$Interface:$$targs$$.Type$typeLiteral});
+        if ($$targs$$.Type$typeLiteral.a)r.$targs=$$targs$$.Type$typeLiteral.a;
         return r;
       } else if (mdl['$mt'] === 'mthd') {
-        return AppliedFunction(t,{Type:$$targs$$.Type,Arguments:{t:Sequential,a:{Element:{t:Anything}}}});
+        return AppliedFunction(t,{Type$Function:$$targs$$.Type$typeLiteral,Arguments$Function:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
       } else if (mdl['$mt'] === 'attr' || mdl['$mt'] === 'gttr' || mdl['$mt'] === 'obj') {
-        return AppliedValue(undefined,t,{Container:{t:mm.$cont},Get:mm.$t,Set:mdl['var']?mm.$t:{t:Nothing}});
+        return AppliedValue(undefined,t,{Container$Value:{t:mm.$cont},Get$Value:mm.$t,Set$Value:mdl['var']?mm.$t:{t:Nothing}});
       } else {
         console.log("WTF is a metatype " + mdl['$mt'] + " on a closed type???????");
       }
@@ -102,7 +106,7 @@ function typeLiteral$meta($$targs$$) {
     }
   } else {
     //open type
-    var t = $$targs$$.Type;
+    var t = $$targs$$.Type$typeLiteral;
     var mm = t.$$metamodel$$;
     if (typeof(mm)==='function') {
       mm=mm();
@@ -138,7 +142,7 @@ function pushTypes(list, types) {
     } else if (t.t === 'i') {
       list.push(applyIntersectionType(t, t.l));
     } else {
-      list.push(typeLiteral$meta({Type:t}));
+      list.push(typeLiteral$meta({Type$typeLiteral:t}));
     }
   }
   return list;
@@ -147,10 +151,10 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType(ut, cases.reifyCeylonType({Absent:{t:Null},Element:{t:Type$meta$model}}), {Union:{t:Anything}});
+  return AppliedUnionType(ut, cases.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:Type$meta$model}}), {Union$UnionType:{t:Anything}});
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent:{t:Null},Element:{t:Type$meta$model}}), {Union:{t:Anything}});
+  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:Type$meta$model}}), {Intersection$IntersectionType:{t:Anything}});
 }

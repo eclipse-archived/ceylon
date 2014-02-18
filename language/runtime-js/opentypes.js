@@ -45,7 +45,7 @@ function _openTypeFromTarg(targ) {
   if (typeof(mm)==='function') {
     mm=mm(); targ.t.$$metamodel$$=mm;
   }
-  var lit = typeLiteral$meta({Type:targ.t});
+  var lit = typeLiteral$meta({Type$typeLiteral:targ.t});
   if (targ.a && lit)lit._targs=targ.a;
   var mdl = get_model(mm);
   if (mdl.$mt==='ifc') {
@@ -152,7 +152,7 @@ $$openFunction.equals.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Bo
 defineAttr($$openFunction,'container',function(){
   if (this.$parent)return this.$parent;
   if (this.toplevel)return this.containingPackage;
-  return typeLiteral$meta({Type:this.tipo.$$metamodel$$.$cont});
+  return typeLiteral$meta({Type$typeLiteral:this.tipo.$$metamodel$$.$cont});
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
 defineAttr($$openFunction,'annotation',function(){
   return $findAnnotation(this.tipo,AnnotationAnnotation)!==null;
@@ -162,7 +162,7 @@ defineAttr($$openFunction,'annotation',function(){
         var mm=this.tipo.$$metamodel$$;
         var ta={t:this.tipo};
         validate$typeparams(ta,mm.$tp,types);
-        validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of arguments when applying function");
+        validate$params(mm.$ps,$mptypes.Arguments$apply,"Wrong number of arguments when applying function");
         return ta.a?AppliedFunction(this.tipo,{Type:mm.$t,Arguments:tupleize$params(mm.$ps,ta.a)},undefined,ta.a):
           AppliedFunction(this.tipo,{Type:mm.$t,Arguments:tupleize$params(mm.$ps)});
       };$$openFunction.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Function$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','apply']};};
@@ -171,11 +171,12 @@ defineAttr($$openFunction,'annotation',function(){
         var mm=this.tipo.$$metamodel$$;
         if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
           throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
-        if (!extendsType(mm.$t,$mptypes.Return))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
-        validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for memberApply");
+        if (!extendsType(mm.$t,$mptypes.Return$memberApply))throw IncompatibleTypeException$meta$model("Incompatible Return type argument");
+        validate$params(mm.$ps,$mptypes.Arguments$memberApply,"Wrong number of Arguments for memberApply");
         var ta={t:this.tipo};
         validate$typeparams(ta,mm.$tp,types);
-        return AppliedMethod(this.tipo,types,{Container:$mptypes.Container,Type:mm.$t,Arguments:tupleize$params(mm.$ps,ta.a)});
+        return AppliedMethod(this.tipo,types,{Container$Method:$mptypes.Container$memberApply,
+          Type$Method:mm.$t,Arguments$Method:tupleize$params(mm.$ps,ta.a)});
       };$$openFunction.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Method$meta$model,a:{Arguments:'Arguments',Type:'MethodType',Container:'Container'}},$ps:[{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element:{t:Type$meta$model}}}}],$cont:OpenFunction,$tp:{Container:{},MethodType:{},Arguments:{'satisfies':[{t:Sequential,a:{Element:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$m','memberApply']};};
             
             //AttributeDeclaration defaulted at X (25:4-25:44)
@@ -262,16 +263,16 @@ function $init$OpenValue(){
 defineAttr($$openValue,'container',function(){
   if (this.$parent)return this.$parent;
   if (this.toplevel)return this.containingPackage;
-  return typeLiteral$meta({Type:this.tipo.$$metamodel$$.$cont});
+  return typeLiteral$meta({Type$typeLiteral:this.tipo.$$metamodel$$.$cont});
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration','NestableDeclaration','$at','container']};});
             
             //MethodDefinition apply at X (39:4-39:68)
       $$openValue.$apply=function $apply($$$mptypes){
         var mm=this.tipo.$$metamodel$$;
         if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
-        if (!extendsType(mm.$t,$$$mptypes.Get))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
-        if (!extendsType($$$mptypes.Set,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
-        return AppliedValue(undefined,this.tipo,$$$mptypes);
+        if (!extendsType(mm.$t,$$$mptypes.Get$apply))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
+        if (!extendsType($$$mptypes.Set$apply,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
+        return AppliedValue(undefined,this.tipo,{Get$Value:$$$mptypes.Get$apply,Set$Value:$$$mptypes.Set$apply});
       };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
 
       $$openValue.memberApply=function memberApply(cont,$mptypes) {
@@ -281,9 +282,10 @@ defineAttr($$openValue,'container',function(){
         }
         if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
           throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
-        if (!extendsType(mm.$t,$mptypes.Get))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
-        if (!extendsType($mptypes.Set,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
-        return AppliedAttribute(this.meta.$nm,this.tipo,$mptypes);
+        if (!extendsType(mm.$t,$mptypes.Get$memberApply))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
+        if (!extendsType($mptypes.Set$memberApply,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
+        return AppliedAttribute(this.meta.$nm,this.tipo,{Get$Attribute:$mptypes.Get$apply,Set$Attribute:$mptypes.Set$apply,
+          Container$Attribute:$mptypes.Container$memberApply});
       };$$openValue.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ValueDeclaration','$m','memberApply']};};
       defineAttr($$openValue,'defaulted',function(){
         return false;
@@ -413,19 +415,19 @@ $$openClass.classApply=function(targs,$mptypes) {
     if (!targs)throw TypeApplicationException$meta$model("This class requires type arguments");
     //TODO generate targs
   }
-  validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
-  return this.$apply(targs,$mptypes);//TODO tupleize
+  validate$params(mm.$ps,$mptypes.Arguments$classApply,"Wrong number of Arguments for classApply");
+  return this.$apply(targs,$mptypes);//TODO tupleize, targs $apply
 }
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$$metamodel$$;
   if (cont!==getNothingType$meta$model() && !extendsType({t:cont.tipo},{t:mm.$cont}))
     throw IncompatibleTypeException$meta$model("Incompatible Container specified");
-  if (!extendsType({t:this.tipo},$mptypes.Type))
+  if (!extendsType({t:this.tipo},$mptypes.Type$memberClassApply))
     throw IncompatibleTypeException$meta$model("Incompatible Type specified");
   var _t={t:this.tipo};
   validate$typeparams(_t,mm.$tp,targs);
-  validate$params(mm.$ps,$mptypes.Arguments,"Wrong number of Arguments for classApply");
-  var rv=AppliedMemberClass(this.tipo,{Container:{t:mm.$cont},Type:_t,Arguments:tupleize$params(mm.$ps)});
+  validate$params(mm.$ps,$mptypes.Arguments$memberClassApply,"Wrong number of Arguments for classApply");
+  var rv=AppliedMemberClass(this.tipo,{Container$MemberClass:{t:mm.$cont},Type$MemberClass:_t,Arguments$MemberClass:tupleize$params(mm.$ps)});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }
@@ -556,12 +558,12 @@ $$openInterface.memberInterfaceApply=function(cont,targs,$mptypes){
     throw IncompatibleTypeException$meta$model("Incompatible Container specified");
   var _t={t:this.tipo};
   validate$typeparams(_t,mm.$tp,targs);
-  var rv=AppliedMemberInterface(this.tipo,{Container:{t:mm.$cont},Type:_t});
+  var rv=AppliedMemberInterface(this.tipo,{Container$MemberInterface:{t:mm.$cont},Type$MemberInterface:_t});
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }
 $$openInterface.interfaceApply=function(targs,$mptypes) {
-  return this.$apply(targs,$mptypes);
+  return this.$apply(targs,$mptypes); //TODO mptypes $apply
 }
             
 defineAttr($$openInterface,'string',function(){
@@ -657,7 +659,7 @@ function $init$OpenAlias(){
           if (cont)cont={t:cont};
         }
         if (cont) {
-          return typeLiteral$meta({Type:cont});
+          return typeLiteral$meta({Type$typeLiteral:cont});
         }
         return null;
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','container']};});
@@ -677,8 +679,18 @@ function $init$OpenAlias(){
       },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:TypeParameter$meta$declaration}}},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','typeParameterDeclarations']};});
       $$openAlias.getTypeParameterDeclaration=function getTypeParameterDeclaration(name$2){
         var tp=this._alias.$$metamodel$$;
-        tp=tp.$tp ? tp.$tp[name$2] : null;
-        return tp ? OpenTypeParam(this._alias, name$2) : null;
+        if (tp.$tp) {
+          var tpn=undefined;
+          for (var ftn in tp.$tp) {
+            if (ftn.substring(0,name$2.length+1)==name$2+'$') {
+              tpn=ftn;
+            }
+          }
+          tp=tpn;
+        } else {
+          tp=undefined;
+        }
+        return tp ? OpenTypeParam(this._alias, tp) : null;
       };$$openAlias.getTypeParameterDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:TypeParameter$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$m','getTypeParameterDeclaration']};};
       defineAttr($$openAlias,'name',function(){
         return String$(this._alias.$$metamodel$$.d[this._alias.$$metamodel$$.d.length-1]);
@@ -704,6 +716,7 @@ function OpenTypeParam(cont, nom, that){
   $init$OpenTypeParam();
   if (that===undefined)that=new OpenTypeParam.$$;
   that._cont=cont;
+  if (nom.indexOf('$')>0)nom=nom.substring(0,nom.indexOf('$'));
   that._name=nom;
   TypeParameter$meta$declaration(that);
   return that;

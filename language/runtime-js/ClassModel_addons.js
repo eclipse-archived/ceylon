@@ -10,9 +10,9 @@ defineAttr(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
       pt=this.$targs[pt];
       if (!pt)throw TypeApplicationException$meta$model(String$("Class model is missing type argument for <" + ps[i].$t + ">"));
     }
-    r.push(typeLiteral$meta({Type:pt}));
+    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
-  return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
+  return r.reifyCeylonType({Element$Iterable:{t:Type$meta$model,a:{t:Anything}},Absent$Iterable:{t:Null}});
 },undefined,function(){return{mod:$$METAMODEL$$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 
 defineAttr(ClassModel$meta$model.$$.prototype,'declaration',function(){

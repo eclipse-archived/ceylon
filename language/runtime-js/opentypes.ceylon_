@@ -270,3 +270,28 @@ class ValParamDecl() satisfies ValueDeclaration {
   shared actual Attribute<Container, Type> memberApply<Container=Nothing, Type=Anything>(AppliedType<Container> containerType) { throw Exception("IMPL memberApply"); }
 }
 
+shared class Mapita<out K, out V>() satisfies Map<K,V>
+    given K satisfies Object
+    given V satisfies Object {
+
+  shared actual Boolean equals(Object other) => (super of Map<K,V>).equals(other);
+  shared actual Integer hash => (super of Map<K,V>).hash;
+  shared actual Mapita<K,V> clone() => this;
+  shared actual Iterator<K->V> iterator() {
+    object miter satisfies Iterator<K->V> {
+      value keys={1,2,3}.sequence;
+      variable value idx=-1;
+      shared actual <K->V>|Finished next() {
+        idx++;
+        if (exists k=keys[idx]) {
+          return nothing;
+        }
+        return finished;
+      }
+    }
+    return miter;
+  }
+  shared actual V get(Object k) {
+    throw Exception("IMPL");
+  }
+}

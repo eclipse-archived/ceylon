@@ -2,7 +2,7 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments
   var tps=this.declaration.tipo.$$metamodel$$.$tp;
   if (tps) {
     var rtps = this.declaration._targs;
-    var targs=[];
+    var targs={};
     for (var tpn in tps) {
       var rtp=rtps&&rtps[tpn];
       var otp=OpenTypeParam(this.declaration.tipo,tpn);
@@ -23,9 +23,9 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'typeArguments
         }
         targ = _openTypeFromTarg(rtp);
       }
-      targs.push(Entry(otp, targ, {Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}));
+      targs[otp]=targ;
     }
-    return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}}}),{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}});
+    return Mapita(targs,{K$Mapita:{t:TypeParameter$meta$declaration},V$Mapita:{t:OpenType$meta$declaration}});
   }
   return getEmpty();
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:OpenType$meta$declaration}}},$cont:OpenClassOrInterfaceType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','typeArguments']};});

@@ -11,7 +11,7 @@ defineAttr(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclar
       for (var tp in tps) {
         rv.push(OpenTypeParam(this.tipo,tp));
       }
-      return rv.reifyCeylonType({Absent:{t:Null},Element:{t:TypeParameter$meta$declaration}});
+      return rv.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:TypeParameter$meta$declaration}});
     }
     return getEmpty();
   }
@@ -27,7 +27,9 @@ GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=fun
     var tps=mm.$tp;
     if (tps) {
       for (var tp in tps) {
-        if (name$14.equals(tp)) {
+        var tpnm = tp;
+        if (tp.indexOf('$')>0)tpnm=tp.substring(0,tp.indexOf('$'));
+        if (name$14==tpnm) {
           return OpenTypeParam(this.tipo,tp);
         }
       }

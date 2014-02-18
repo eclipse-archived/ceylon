@@ -8,7 +8,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
         var t2 = {t:type.t, a:{}};
         for (var targ in type.a) {
           t2.a[targ]=typeof(type.a[targ])==='string' ?
-            t2.a[targ]=root.$$targs$$.Type.a[type.a[targ]]
+            t2.a[targ]=root.$$targs$$.Type$ClassOrInterface.a[type.a[targ]]
             : t2.a[targ]=type.a[targ];
           if (t2.a[targ] && t2.a[targ].a) {
             t2.a[targ]=resolveTypeArguments(root,t2.a[targ]);
@@ -22,9 +22,13 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
       var ifc = resolveTypeArguments(this,ints[i]);
       var mm=ifc.t.$$metamodel$$;
       if (typeof(mm)==='function'){mm=mm();ifc.t.$$metamodel$$=mm;}
-      rv.push((mm.$cont?AppliedMemberInterface:AppliedInterface)(ifc.t, {Type:ifc}));
+      if (mm.$cont) {
+        rv.push(AppliedMemberInterface(ifc.t, {Type$MemberInterface:ifc}));
+      } else {
+        rv.push(AppliedInterface(ifc.t, {Type$Interface:ifc}));
+      }
     }
-    return rv.reifyCeylonType({Absent:{t:Null},Element$Iterable:{t:InterfaceModel$meta$model,a:{Type:{t:Anything}}}});
+    return rv.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}}});
   }
   return getEmpty();
 },undefined,function(){
@@ -59,7 +63,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
     validate$params(mm.$ps,_a,"Wrong number of Arguments for getMethod");
     _a=tupleize$params(mm.$ps);
   }
-  return AppliedMethod(fun, types, {Container:{t:this.tipo},Type:_t,Arguments:_a});
+  return AppliedMethod(fun, types, {Container$Method:{t:this.tipo},Type$Method:_t,Arguments$Method:_a});
 }
 ClassOrInterface$meta$model.$$.prototype.getMethod.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Method$meta$model,a:{Arguments:'Arguments',Type:'Type',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{'satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethod']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod=function(name,types,$$$mptypes) {
@@ -88,8 +92,8 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
     if (!extendsType($$$mptypes.Set$getAttribute,at.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
     _t=mm.$t;
   }
-  var rv=AppliedAttribute(name$15, at, {Get:_t,Set:at.set?_t:{t:Nothing}, Container:{t:this.tipo}});
-  if (this.$targs)rv.$$targs$$.Container.a=this.$targs;
+  var rv=AppliedAttribute(name$15, at, {Get$Attribute:_t,Set$Attribute:at.set?_t:{t:Nothing}, Container$Attribute:{t:this.tipo}});
+  if (this.$targs)rv.$$targs$$.Container$Attribute.a=this.$targs;
   rv.$parent=this;
   return rv;
 };
@@ -109,8 +113,8 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
   var cont = this.tipo.$$metamodel$$.$cont;
   if (cont === undefined)return null;
   if (get_model(cont.$$metamodel$$).$mt === 'ifc')
-    return AppliedInterface(cont,{Type:{t:cont}});
-  return AppliedClass(cont,{Type:{t:cont},Arguments:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+    return AppliedInterface(cont,{Type$Interface:{t:cont}});
+  return AppliedClass(cont,{Type$Class:{t:cont},Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
 ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOrInterface(name$2,types$3,$$$mptypes,noInherit){
   if (!extendsType($$$mptypes.Kind$getClassOrInterface, {t:ClassOrInterface$meta$model}))throw IncompatibleTypeException$meta$model("Kind must be ClassOrInterface");
@@ -147,11 +151,11 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     if (md.$mt==='ifc') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
       validate$typeparams(ict,ic.$$metamodel$$.$tp,types$3);
-      rv=AppliedMemberInterface(ic, {Container:_cont,Type:ict});
+      rv=AppliedMemberInterface(ic, {Container$MemberInterface:_cont,Type$MemberInterface:ict});
     } else if (md.$mt==='cls'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$$metamodel$$.$tp,types$3);
-      rv=AppliedMemberClass(ic, {Container:_cont,Type:ict, Arguments:$$$mptypes.Arguments$getClassOrInterface});
+      rv=AppliedMemberClass(ic, {Container$MemberClass:_cont,Type$MemberClass:ict, Arguments$MemberClass:$$$mptypes.Arguments$getClassOrInterface});
     } else {
       throw IncompatibleTypeException$meta$model("Member " + name$2 + " is not a class or interface");
     }
@@ -160,12 +164,12 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     return rv;
   }
   return null;
-};ClassOrInterface$meta$model.$$.prototype.getClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type:'Container',Kind:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Kind:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getClassOrInterface']};};
+};ClassOrInterface$meta$model.$$.prototype.getClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type$Member:'Container$ClassOrInterface',Kind$Member:'Kind$ClassOrInterface'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$ClassOrInterface:{},Kind$ClassOrInterface:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type$ClassOrInterface:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getClassOrInterface']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface=function getDeclaredClassOrInterface(name$2,types$3,$$$mptypes){
   return this.getClassOrInterface(name$2,types$3,{Kind$getClassOrInterface:$$$mptypes.Kind$getDeclaredClassOrInterface,
     Arguments$getClassOrInterface:$$$mptypes.Arguments$getDeclaredClassOrInterface,
     Container$getClassOrInterface:$$$mptypes.Container$getDeclaredClassOrInterface},1);
-};ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type:'Container',Kind:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Kind:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredClassOrInterface']};};
+};ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Member$meta$model,a:{Type$Member:'Container',Kind$Member:'Kind'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}},{$nm:'types',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Iterable:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Kind:{'satisfies':[{t:ClassOrInterface$meta$model,a:{Type$ClassOrInterface:{t:Anything}}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredClassOrInterface']};};
 
 ClassOrInterface$meta$model.$$.prototype.getClass=function getClass(name,types,$mptypes) {
   var rv=this.getClassOrInterface(name,types,{Container$getClassOrInterface:$mptypes.Container$getClass,
@@ -176,14 +180,16 @@ ClassOrInterface$meta$model.$$.prototype.getClass=function getClass(name,types,$
   return rv;
 };ClassOrInterface$meta$model.$$.prototype.getClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:MemberClass$meta$model},$ps:[],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{satisfies:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}]}},d:['ceylon.language.meta.model','ClassOrInterface','$m','getClass']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredClass=function getClass(name,types,$mptypes) {
-  var rv=this.getDeclaredClassOrInterface(name,types,{Container$getDeclaredClassOrInterface:$mptypes.Container$getClass, Kind:Class$meta$model});
+  var rv=this.getDeclaredClassOrInterface(name,types,{Container$getDeclaredClassOrInterface:$mptypes.Container$getClass,
+    Kind$getDeclaredClassOrInterface:Class$meta$model});
   if (rv && !isOfType(rv, {t:AppliedMemberClass})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not a class");
   }
   return rv;
 };ClassOrInterface$meta$model.$$.prototype.getDeclaredClass.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:MemberClass$meta$model},$ps:[],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{},Arguments:{satisfies:[{t:Sequential,a:{Element$Iterable:{t:Anything}}}]}},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredClass']};};
 ClassOrInterface$meta$model.$$.prototype.getInterface=function(name,types,$mptypes) {
-  var rv=this.getClassOrInterface(name,types,{Container$getClassOrInterface:$mptypes.Container$getInterface, Kind:Interface$meta$model});
+  var rv=this.getClassOrInterface(name,types,{Container$getClassOrInterface:$mptypes.Container$getInterface,
+    Kind$getClassOrInterface:Interface$meta$model});
   if (rv && !isOfType(rv, {t:AppliedMemberInterface})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not an interface");
   }
@@ -220,23 +226,24 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   }
   if (mm) {
     if (mm.$tp) {
-      var targs=[];
+      var targs={};
       for (var tp in mm.$tp) {
         var param = OpenTypeParam(this.tipo,tp);
         var targ;
-        if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
-          var _targ=this.$$targs$$.Type.a[tp];
+        if (this.$$targs$$ && this.$$targs$$.Type$ClassOrInterface && this.$$targs$$.Type$ClassOrInterface.a
+            && this.$$targs$$.Type$ClassOrInterface.a[tp]) {
+          var _targ=this.$$targs$$.Type$ClassOrInterface.a[tp];
           if (typeof(_targ)==='string') {
             console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
             _targ={t:Anything};
           }
-          targ=typeLiteral$meta({Type:_targ});
+          targ=typeLiteral$meta({Type$typeLiteral:_targ});
         } else {
-          targ=typeLiteral$meta({Type:{t:Anything}});
+          targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        targs.push(Entry(param,targ,{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}));
+        targs[param]=targ;
       }
-      return LazyMap(targs.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:Entry,a:{Key$Entry:{t:TypeParameter$meta$declaration},Item$Entry:{t:Type$meta$model,a:{Type:{t:Anything}}}}}}), {Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}});
+      return Mapita(targs,{K$Mapita:{t:TypeParameter$meta$declaration},V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }
@@ -254,15 +261,15 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
       var first=true;
       for (var tp in mm.$tp) {
         var targ;
-        if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
-          var _targ=this.$$targs$$.Type.a[tp];
+        if (this.$$targs$$ && this.$$targs$$.Type$ClassOrInterface && this.$$targs$$.Type$ClassOrInterface.a && this.$$targs$$.Type$ClassOrInterface.a[tp]) {
+          var _targ=this.$$targs$$.Type$ClassOrInterface.a[tp];
           if (typeof(_targ)==='string') {
             console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
             _targ={t:Anything};
           }
-          targ=typeLiteral$meta({Type:_targ});
+          targ=typeLiteral$meta({Type$typeLiteral:_targ});
         } else {
-          targ=typeLiteral$meta({Type:{t:Anything}});
+          targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
         if (first)first=false; else qn+=",";
         if (targ.declaration) {
@@ -285,15 +292,15 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   if (mm.$tp) {
     for (var tp in mm.$tp) {
       var targ;
-      if (this.$$targs$$ && this.$$targs$$.Type && this.$$targs$$.Type.a && this.$$targs$$.Type.a[tp]) {
-        var _targ=this.$$targs$$.Type.a[tp];
+      if (this.$$targs$$ && this.$$targs$$.Type$ClassOrInterface && this.$$targs$$.Type$ClassOrInterface.a && this.$$targs$$.Type$ClassOrInterface.a[tp]) {
+        var _targ=this.$$targs$$.Type$ClassOrInterface.a[tp];
         if (typeof(_targ)==='string') {
           console.log("TODO buscar " + tp + "->" + _targ + " para " + this.declaration.qualifiedName);
           _targ={t:Anything};
         }
-        targ=typeLiteral$meta({Type:_targ});
+        targ=typeLiteral$meta({Type$typeLiteral:_targ});
       } else {
-        targ=typeLiteral$meta({Type:{t:Anything}});
+        targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
       }
       h+=targ.hash;
     }
@@ -309,9 +316,13 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
     mm = mm();
     sc.t.$$metamodel$$=mm;
   }
-  var ac=(mm.$cont?AppliedMemberClass:AppliedClass)(sc.t, {Type:sc,Arguments:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  var ac;
+  if (mm.$cont) {
+    ac=AppliedMemberClass(sc.t, {Type$MemberClass:sc,Arguments$MemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$MemberClass:mm.$cont});
+  } else {
+    ac=AppliedClass(sc.t, {Type$Class:sc,Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
+  }
   if (sc.a)ac.$targs=sc.a;
   return ac;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
-
 

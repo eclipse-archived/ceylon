@@ -9,27 +9,27 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
       pt=this.$targs[pt];
       if (!pt)throw TypeApplicationException$meta$model(String$("Function model is missing type argument for <" + ps[i].$t + ">"));
     }
-    r.push(typeLiteral$meta({Type:pt}));
+    r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
-  return r.reifyCeylonType({Element:{t:Type$meta$model,a:{t:Anything}},Absent:{t:Null}});
+  return r.reifyCeylonType({Element$Iterable:{t:Type$meta$model,a:{t:Anything}},Absent$Iterable:{t:Null}});
 },undefined,function(){return{mod:$$METAMODEL$$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 defineAttr(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
   var mm = this.tipo.$$metamodel$$;
   if (mm) {
     if (mm.$tp) {
       if (this.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+this.string);
-      var targs=[];
+      var targs={};
       for (var tp in mm.$tp) {
         var param = OpenTypeParam(this.tipo,tp);
         var targ = this.$targs[tp];
         if (targ) {
-          targ=typeLiteral$meta({Type:targ});
+          targ=typeLiteral$meta({Type$typeLiteral:targ});
         } else {
-          targ=typeLiteral$meta({Type:{t:Anything}});
+          targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
         }
-        targs.push(Entry(param,targ,{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}));
+        targs[param]=targ;
       }
-      return LazyMap(targs.reifyCeylonType({Absent:{t:Null},Element:{t:Entry,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}}}), {Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}});
+      return Mapita(targs,{K$Mapita:{t:TypeParameter$meta$declaration},V$Mapita:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}});
     }
     return getEmpty();
   }
@@ -41,7 +41,7 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
   if (mm.$cont) {
     qn=$qname(mm.$cont);
     if (mm.$cont.$$metamodel$$.$tp) {
-      var cnt=this.$$targs$$&&this.$$targs$$.Container&&this.$$targs$$.Container.a;
+      var cnt=this.$$targs$$&&this.$$targs$$.Container$Function&&this.$$targs$$.Container$Function.a;
       qn+="<";var first=true;
       for (var tp in mm.$cont.$$metamodel$$.$tp) {
         if (first)first=false;else qn+=",";
