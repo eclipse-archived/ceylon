@@ -4646,8 +4646,17 @@ public class GenerateJsVisitor extends Visitor
                     imported = qualify(that, _d);
                     first=false;
                 }
-                if (!imported)out("$init$");
-                out(names.name(_d), imported?".$$.prototype.":"().$$.prototype.");
+                if (_d.isAnonymous()) {
+                    final boolean wasShared=_d.isShared();
+                    _d.setShared(true);
+                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(false);
+                    out(names.getter(_d), "().");
+                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(true);
+                    _d.setShared(wasShared);
+                } else {
+                    if (!imported)out("$init$");
+                    out(names.name(_d), imported?".$$.prototype.":"().$$.prototype.");
+                }
                 imported=true;
             }
         } else {
@@ -4656,7 +4665,17 @@ public class GenerateJsVisitor extends Visitor
         if (d instanceof Value) {
             out("$prop$", names.getter(d), ")");
         } else {
-            out(names.name(d), ")");
+            if (d.isAnonymous()) {
+                final boolean wasShared=d.isShared();
+                d.setShared(true);
+                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(false);
+                out(names.getter(d), "().$$metamodel$$.$t.t");
+                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(true);
+                d.setShared(wasShared);
+            } else {
+                out(names.name(d));
+            }
+            out(")");
         }
     }
 
@@ -4703,14 +4722,14 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(MemberLiteral that) {
+    public void visit(Tree.MemberLiteral that) {
         if (that.getWantsDeclaration()) {
             generateOpenType(that);
         } else {
             final com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
             final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
             final Declaration d = ref.getDeclaration();
-            if (that instanceof FunctionLiteral || d instanceof Method) {
+            if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
                 out(clAlias, d.isMember()?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
                 if (ltype == null) {
                     qualify(that, d);
