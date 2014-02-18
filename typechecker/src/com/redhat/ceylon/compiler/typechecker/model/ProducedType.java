@@ -378,6 +378,29 @@ public class ProducedType extends ProducedReference {
         }
     }
     
+    public ProducedType shallowMinus(ProducedType pt) {
+        TypeDeclaration dec = getDeclaration();
+        Unit unit = dec.getUnit();
+        if (isSubtypeOf(pt)) {
+            return unit.getNothingDeclaration().getType();
+        }
+        else if (dec instanceof UnionType) {
+            List<ProducedType> caseTypes = getCaseTypes();
+            List<ProducedType> types = new ArrayList<ProducedType>(caseTypes.size());
+            for (ProducedType ct: caseTypes) {
+//                if (ct.getSupertype(nd)==null) {
+                    addToUnion(types, ct.shallowMinus(pt));
+//                }
+            }
+            UnionType ut = new UnionType(unit);
+            ut.setCaseTypes(types);
+            return ut.getType();
+        }
+        else {
+            return this;
+        }
+    }
+    
     private ProducedType minusInternal(ProducedType pt) {
         Unit unit = getDeclaration().getUnit();
         if (pt.coversInternal(this)) { //note: coversInternal() already calls getUnionOfCases()

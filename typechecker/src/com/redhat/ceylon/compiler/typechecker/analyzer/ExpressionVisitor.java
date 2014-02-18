@@ -2125,14 +2125,14 @@ public class ExpressionVisitor extends Visitor {
                         //some element of the argument union is already a subtype
                         //of the parameter union, so throw it away from both unions
                         if (act.substitute(argType.getTypeArguments()).isSubtypeOf(paramType)) {
-                            pt = pt.minus(act);
-                            apt = apt.minus(act);
+                            pt = pt.shallowMinus(act);
+                            apt = apt.shallowMinus(act);
                         }
                     }
                 }
                 if (pt.getDeclaration() instanceof UnionType)  {
                     boolean found = false;
-                	for (TypeDeclaration td: ((UnionType) pt.getDeclaration()).getCaseTypeDeclarations()) {
+                	for (TypeDeclaration td: pt.getDeclaration().getCaseTypeDeclarations()) {
                 		if (td instanceof TypeParameter) {
                 			if (found) return null;
                 			found = true;
