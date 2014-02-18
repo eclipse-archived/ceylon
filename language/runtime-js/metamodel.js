@@ -12,10 +12,7 @@ function type$meta(x,$$targs$$) {
   if (x === null || $$targs$$.Type$type.t===Nothing) {
     return getNothingType$meta$model();
   }
-  var mm=x.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm(); x.$$metamodel$$=mm;
-  }
+  var mm=getrtmm$$(x);
   var _t=$$targs$$.Type$type.t;
   if (mm===undefined) {
     if (x.getT$name && x.getT$all) {
@@ -80,11 +77,7 @@ function typeLiteral$meta($$targs$$) {
     } else if (t.$$metamodel$$ === undefined) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
-      var mm = t.$$metamodel$$;
-      if (typeof(mm)==='function') {
-        mm=mm();
-        t.$$metamodel$$=mm;
-      }
+      var mm = getrtmm$$(t);
       var mdl = get_model(mm);
       if (mdl['$mt'] === 'cls') {
         //TODO tupleize Arguments
@@ -107,11 +100,7 @@ function typeLiteral$meta($$targs$$) {
   } else {
     //open type
     var t = $$targs$$.Type$typeLiteral;
-    var mm = t.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm();
-      t.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(t);
     var mdl = get_model(mm);
     //We need the module
     var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);

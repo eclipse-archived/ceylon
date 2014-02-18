@@ -249,8 +249,7 @@ function Paquete(name, container, pkg, $$paquete){
       var rv=[];
       for (var i=0; i < ms.length; i++) {
         if (ms[i].tipo && ms[i].tipo.$$metamodel$$) {
-          var mm=ms[i].tipo.$$metamodel$$;
-          if (typeof(mm)==='function'){mm=mm();ms[i].tipo.$$metamodel$$=mm;}
+          var mm=getrtmm$$(ms[i].tipo);
           var ans=mm.$an;
           if (typeof(ans)==='function'){ans=ans();mm.$an=ans;}
           if (ans) for (var j=0; j<ans.length;j++) {

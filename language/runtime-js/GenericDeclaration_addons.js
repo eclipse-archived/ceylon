@@ -1,10 +1,7 @@
 //Addendum to GenericDeclaration
 defineAttr(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclarations',function(){
   if (this.tipo) {
-    var mm=this.tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); this.tipo.$$metamodel$$=mm;
-    }
+    var mm=getrtmm$$(this.tipo);
     var tps=mm.$tp;
     if (tps) {
       var rv=[];
@@ -20,10 +17,7 @@ defineAttr(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclar
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:TypeParameter$meta$declaration}}},$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$at','typeParameterDeclarations']};});
 GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=function (name$14){
   if (this.tipo) {
-    var mm=this.tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); this.tipo.$$metamodel$$=mm;
-    }
+    var mm=getrtmm$$(this.tipo);
     var tps=mm.$tp;
     if (tps) {
       for (var tp in tps) {

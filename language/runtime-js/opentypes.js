@@ -1,9 +1,9 @@
 function $findAnnotation(cont,ant) {
-  if (typeof(cont.$$metamodel$$)==='function')cont.$$metamodel$$=cont.$$metamodel$$();
-  if (typeof(cont.$$metamodel$$.$an)==='function')cont.$$metamodel$$.$an=cont.$$metamodel$$.$an();
-  if (!cont.$$metamodel$$.$an)return null;
-  for (var i=0; i < cont.$$metamodel$$.$an.length; i++) {
-    if (isOfType(cont.$$metamodel$$.$an[i],{t:ant}))return cont.$$metamodel$$.$an[i];
+  var _m=getrtmm$$(cont);
+  if (!(_m && _m.$an))return null;
+  if (typeof(_m.$an)==='function')_m.$an=_m.$an();
+  for (var i=0; i < _m.$an.length; i++) {
+    if (isOfType(_m.$an[i],{t:ant}))return _m.$an[i];
   }
   return null;
 }
@@ -17,8 +17,7 @@ function _findTypeFromModel(pkg,mdl,cont) {
     nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
   }
   if (cont) {
-    var imm=cont.$$metamodel$$;
-    if (typeof(imm)==='function'){imm=imm();cont.$$metamodel$$=imm;}
+    var imm=getrtmm$$(cont);
     if (mt==='cls'||mt==='ifc')nm=nm+'$'+imm.d[imm.d.length-1];
   }else {
     nm+=pkg.suffix;
@@ -41,10 +40,7 @@ function _openTypeFromTarg(targ) {
   } else if (targ.t==='T') {
     targ=$retuple(targ);
   }
-  var mm=targ.t.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm(); targ.t.$$metamodel$$=mm;
-  }
+  var mm=getrtmm$$(targ.t);
   var lit = typeLiteral$meta({Type$typeLiteral:targ.t});
   if (targ.a && lit)lit._targs=targ.a;
   var mdl = get_model(mm);
@@ -113,23 +109,15 @@ function OpenFunction(pkg, meta, that){
     $init$OpenFunction();
     if (that===undefined)that=new OpenFunction.$$;
     that._pkg=pkg;
-    var _mm=meta.$$metamodel$$;
+    var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
       //it's a metamodel
       that.meta=meta;
       that.tipo=_findTypeFromModel(pkg,meta);
-      _mm=that.tipo.$$metamodel$$;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        that.tipo.$$metamodel$$=_mm;
-      }
+      _mm=getrtmm$$(that.tipo);
     } else {
       //it's a type
       that.tipo = meta;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        meta.$$metamodel$$=_mm;
-      }
       that.meta = get_model(_mm);
     }
     that.name_=_mm.d[_mm.d.length-1];
@@ -225,7 +213,7 @@ function OpenValue(pkg, meta, that){
   $init$OpenValue();
   if (that===undefined)that=new OpenValue.$$;
   that._pkg = pkg;
-  var _mm=meta.$$metamodel$$;
+  var _mm=getrtmm$$(meta);
   if (_mm === undefined) {
     //it's a metamodel
     that.meta=meta;
@@ -235,18 +223,10 @@ function OpenValue(pkg, meta, that){
     } else {
       that.tipo=_findTypeFromModel(pkg,meta);
     }
-    _mm = that.tipo.$$metamodel$$;
-    if (typeof(_mm)==='function') {
-      _mm=_mm();
-      that.tipo.$$metamodel$$=_mm;
-    }
+    _mm = getrtmm$$(that.tipo);
   } else {
     //it's a type
     that.tipo = meta;
-    if (typeof(_mm)==='function') {
-      _mm=_mm();
-      meta.$$metamodel$$=_mm;
-    }
     that.meta = get_model(_mm);
   }
   that.name_=_mm.d===undefined?_mm['$nm']:_mm.d[_mm.d.length-1];
@@ -268,18 +248,14 @@ defineAttr($$openValue,'container',function(){
             
             //MethodDefinition apply at X (39:4-39:68)
       $$openValue.$apply=function $apply($$$mptypes){
-        var mm=this.tipo.$$metamodel$$;
-        if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+        var mm=getrtmm$$(this.tipo);
         if (!extendsType(mm.$t,$$$mptypes.Get$apply))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
         if (!extendsType($$$mptypes.Set$apply,this.tipo.set?mm.$t:{t:Nothing}))throw IncompatibleTypeException$meta$model("Incompatible Set type argument");
         return AppliedValue(undefined,this.tipo,{Get$Value:$$$mptypes.Get$apply,Set$Value:$$$mptypes.Set$apply});
       };$$openValue.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Value$meta$model,a:{Type:{t:Anything}}},$ps:[{$nm:'instance',$mt:'prm',$def:1,$t:{t:Anything}}],$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$m','apply']};};
 
       $$openValue.memberApply=function memberApply(cont,$mptypes) {
-        var mm=this.tipo.$$metamodel$$;
-        if (typeof(mm)==='function'){
-          mm=mm(); this.tipo.$$metamodel$$=mm;
-        }
+        var mm=getrtmm$$(this.tipo);
         if (!(cont.tipo && extendsType({t:cont.tipo},{t:mm.$cont}))&&cont!==getNothingType$meta$model())
           throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
         if (!extendsType(mm.$t,$mptypes.Get$memberApply))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
@@ -299,10 +275,7 @@ defineAttr($$openValue,'container',function(){
             
   defineAttr($$openValue,'openType',function(){
     if (this.tipo) {
-      var mm = this.tipo.$$metamodel$$;
-      if (typeof(mm)==='function'){
-        mm=mm(); this.tipo.$$metamodel$$=mm;
-      }
+      var mm = getrtmm$$(this.tipo);
       if (typeof(mm.$t)==='string') {
         return OpenTypeParam(mm.$cont,mm.$t);
       }
@@ -353,8 +326,7 @@ function OpenSetter(v, $$openSetter){
   $$openSetter.tipo=v.tipo.set;
   if (v.tipo.set && v.tipo.set.setter$anns) {
     var mm={};
-    var omm=v.tipo.set.$$metamodel$$;
-    if (typeof(omm)==='function')omm=omm();
+    var omm=getrtmm$$(v.tipo.set)
     for (var k in omm)mm[k]=omm[k];
     mm.$an=v.tipo.set.setter$anns;
     v.tipo.set.$$metamodel$$=mm;
@@ -379,23 +351,15 @@ function OpenClass(pkg, meta, that){
     $init$OpenClass();
     if (that===undefined)that=new OpenClass.$$;
     that._pkg = pkg;
-    var _mm=meta.$$metamodel$$;
+    var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
       //it's a metamodel
       that.meta=meta;
       that.tipo=_findTypeFromModel(pkg,meta);
-      _mm = that.tipo.$$metamodel$$;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        that.tipo.$$metamodel$$=_mm;
-      }
+      _mm = getrtmm$$(that.tipo);
     } else {
       //it's a type
       that.tipo = meta;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        meta.$$metamodel$$=_mm;
-      }
       that.meta = get_model(_mm);
     }
     that.name_=_mm.d[_mm.d.length-1];
@@ -466,11 +430,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
             defineAttr($$openClass,'extendedType',function(){
               var sc = this.tipo.$$metamodel$$['super'];
               if (sc === undefined)return null;
-              var mm = sc.t.$$metamodel$$;
-              if (typeof(mm)==='function') {
-                mm = mm();
-                sc.t.$$metamodel$$=mm;
-              }
+              var mm = getrtmm$$(sc.t);
               var fc=FreeClass(OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), sc.t));
               if (sc.a)fc.declaration._targs=sc.a;
               return fc;
@@ -483,11 +443,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
                 var rv = [];
                 for (var i=0; i < ints.length; i++) {
                   var ifc = ints[i];
-                  var mm = ifc.t.$$metamodel$$;
-                  if (typeof(mm)==='function') {
-                    mm = mm();
-                    ifc.t.$$metamodel$$=mm;
-                  }
+                  var mm = getrtmm$$(ifc.t);
                   var fi=FreeInterface(OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), ifc.t));
                   if (ifc.a)fi.declaration._targs=ifc.a;
                   rv.push(fi);
@@ -520,23 +476,15 @@ function OpenInterface(pkg, meta, that) {
     $init$OpenInterface();
     if (that===undefined)that=new OpenInterface.$$;
     that._pkg = pkg;
-    var _mm=meta.$$metamodel$$;
+    var _mm=getrtmm$$(meta);
     if (_mm === undefined) {
       //it's a metamodel
       that.meta=meta;
       that.tipo=_findTypeFromModel(pkg,meta);
-      _mm = that.tipo.$$metamodel$$;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        that.tipo.$$metamodel$$=_mm;
-      }
+      _mm = getrtmm$$(that.tipo);
     } else {
       //it's a type
       that.tipo = meta;
-      if (typeof(_mm)==='function') {
-        _mm=_mm();
-        meta.$$metamodel$$=_mm;
-      }
       that.meta = get_model(_mm);
     }
     that.name_=_mm.d[_mm.d.length-1];
@@ -576,11 +524,7 @@ defineAttr($$openInterface,'string',function(){
             defineAttr($$openInterface,'extendedType',function(){
               var sc = this.tipo.$$metamodel$$['super'];
               if (sc === undefined)return null;
-              var mm = sc.t.$$metamodel$$;
-              if (typeof(mm)==='function') {
-                mm = mm();
-                sc.t.$$metamodel$$=mm;
-              }
+              var mm = getrtmm$$(sc.t);
               return FreeClass(OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), sc.t));
             },undefined,function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:OpenClasType$meta$declaration}]},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','InterfaceDeclaration','$at','extendedType']};});
             
@@ -591,11 +535,7 @@ defineAttr($$openInterface,'string',function(){
                 var rv = [];
                 for (var i=0; i < ints.length; i++) {
                   var ifc = ints[i].t;
-                  var mm = ifc.$$metamodel$$;
-                  if (typeof(mm)==='function') {
-                    mm = mm();
-                    ifc.$$metamodel$$=mm;
-                  }
+                  var mm = getrtmm$$(ifc);
                   rv.push(FreeInterface(OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), ifc)));
                 }
                 return rv.reifyCeylonType({Absent:{t:Null},Element:{t:OpenInterfaceType$meta$declaration}});
@@ -623,10 +563,7 @@ function OpenAlias(alias, $$openAlias){
   if (typeof(alias)==='function')alias=alias();
   $$openAlias._alias = alias;
   //Get model from path
-  var mm=alias.$$metamodel$$;
-  if (typeof(mm)==='function'){
-    mm=mm(); alias.$$metamodel$$=mm;
-  }
+  var mm=getrtmm$$(alias);
   $$openAlias.meta=get_model(mm);
   AliasDeclaration$meta$declaration($$openAlias);
   return $$openAlias;

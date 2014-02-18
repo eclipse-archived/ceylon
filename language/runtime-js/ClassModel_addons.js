@@ -18,11 +18,7 @@ defineAttr(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
 defineAttr(ClassModel$meta$model.$$.prototype,'declaration',function(){
   var $$clase=this;
   if ($$clase._decl)return $$clase._decl;
-  var mm = $$clase.tipo.$$metamodel$$;
-  if (typeof(mm)==='function'){
-    mm=mm();
-    $$clase.tipo.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$($$clase.tipo);
   $$clase._decl = OpenClass(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), $$clase.tipo);
   return $$clase._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ClassDeclaration$meta$declaration},$cont:ClassModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassModel','$at','declaration']};});

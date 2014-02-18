@@ -1,10 +1,7 @@
 function AppliedClass(tipo,$$targs$$,that){
   $init$AppliedClass();
   if (that===undefined){
-    var mm = tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); tipo.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
       that=function(x){/*Class*/
         if (that.$targs) {
@@ -109,10 +106,7 @@ $init$AppliedClass();
 function AppliedMemberClass(tipo,$$targs$$,that){
   $init$AppliedMemberClass();
   if (that===undefined) {
-    var mm = tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); tipo.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
       that=function(x){
         var rv=tipo.bind(x);
@@ -176,10 +170,8 @@ function $init$AppliedMemberClass(){
       $$amc.$bind=function $bind(cont){
         var ot=cont.getT$name ? cont.getT$all()[cont.getT$name()]:throwexc(IncompatibleTypeException$meta$model("Container does not appear to be a Ceylon object"));
         if (!ot)throw IncompatibleTypeException$meta$model("Incompatible Container (has no metamodel information");
-        var omm=ot.$$metamodel$$;
-        if (typeof(omm)==='function'){omm=omm();ot.$$metamodel$$=omm;}
-        var mm=this.tipo.$$metamodel$$;
-        if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+        var omm=getrtmm$$(ot);
+        var mm=getrtmm$$(this.tipo);
         if (!extendsType({t:ot},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
         return this(cont);
       };$$amc.$bind.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Class$meta$model,a:{Arguments$Class:'Arguments',Type$Class:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
@@ -193,10 +185,7 @@ $init$AppliedMemberClass();
 function AppliedInterface(tipo,$$targs$$,that) {
   $init$AppliedInterface();
   if (that===undefined){
-    var mm = tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); tipo.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
       that=function(x){
         that.tipo=function(){return tipo.apply(x,arguments);};
@@ -246,10 +235,7 @@ $init$AppliedInterface();
 function AppliedMemberInterface(tipo,$$targs$$,that){
   $init$AppliedMemberInterface();
   if (that===undefined){
-    var mm = tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); tipo.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(tipo);
     if (mm && mm.$cont) {
       that=function(x){
         var rv=tipo.bind(x);
@@ -515,8 +501,7 @@ exports.$init$AppliedIntersectionType$meta$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
 
 function AppliedFunction(m,$$targs$$,o,mptypes) {
-  var mm=m.$$metamodel$$;
-  if (typeof(mm)==='function') {mm=mm();m.$$metamodel$$=mm;}
+  var mm=getrtmm$$(m);
   var ttargs;
   if (mm.$tp) {
     if (!mptypes || mptypes.size<1)throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
@@ -587,11 +572,7 @@ exports.AppliedFunction$meta$model=AppliedFunction;
 initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,Function$meta$model);
 
 function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
-  var mm = attr.$$metamodel$$;
-  if (typeof(mm)==='function'){
-    mm=mm();
-    attr.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$(attr);
   $init$AppliedValue();
   if ($$appliedValue===undefined){
     if (obj||mm.$cont===undefined)$$appliedValue=new AppliedValue.$$;
@@ -686,11 +667,7 @@ $init$AppliedValue();
 //ClassDefinition AppliedMethod at X (10:0-21:0)
 function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   $init$AppliedMethod();
-  var mm = tipo.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm = mm();
-    tipo.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$(tipo);
   if (mm.$tp) {
     if (typeArgs===undefined || typeArgs.size<1)
       throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
@@ -785,21 +762,13 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   $$appliedAttribute.tipo=atr;
   $$appliedAttribute.pname=pname;
   defineAttr($$appliedAttribute,'type',function(){
-    var t = atr.$$metamodel$$;
-    if (typeof(t)==='function'){
-      t=t();
-      atr.$$metamodel$$=t;
-    }
+    var t = getrtmm$$(atr);
     t=t.$t;
     return typeLiteral$meta({Type$typeLiteral:t});
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Attribute'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
   //AttributeGetterDefinition declaration at X (100:4-100:83)
   defineAttr($$appliedAttribute,'declaration',function(){
-    var mm = atr.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm();
-      atr.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(atr);
     var pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
     return OpenValue(pkg, atr);
   },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
@@ -808,8 +777,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
       Container$Value:$$targs$$.Container$Attribute});
   }
   defineAttr($$appliedAttribute,'string',function(){
-    if (typeof(atr.$$metamodel$$)==='function')atr.$$metamodel$$=atr.$$metamodel$$();
-    var c=atr.$$metamodel$$.$cont;
+    var c=getrtmm$$(atr).$cont;
     if (typeof(c.$$metamodel$$)==='function')c.$$metamodel$$=c.$$metamodel$$();
     if (!c)return String$($qname(atr));
     c=c.$$metamodel$$;

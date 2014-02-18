@@ -95,8 +95,7 @@ function $qname(mm) {
   if (mm.t) {
     mm=mm.t;
   }
-  if (typeof(mm.$$metamodel$$)==='function')mm.$$metamodel$$=mm.$$metamodel();
-  if (mm.$$metamodel$$)mm=mm.$$metamodel$$;
+  if (mm.$$metamodel$$)mm=getrtmm$$(mm);
   if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
@@ -156,3 +155,9 @@ function convert$params(mm,a) {
   a = fa;
   return a;
 }
+
+function getrtmm$$(x) {
+  if (typeof(x.$$metamodel$$)==='function')x.$$metamodel$$=x.$$metamodel$$();
+  return x.$$metamodel$$;
+}
+exports.getrtmm$$=getrtmm$$;

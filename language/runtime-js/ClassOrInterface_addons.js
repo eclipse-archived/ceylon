@@ -20,8 +20,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
     }
     for (var i=0; i < ints.length; i++) {
       var ifc = resolveTypeArguments(this,ints[i]);
-      var mm=ifc.t.$$metamodel$$;
-      if (typeof(mm)==='function'){mm=mm();ifc.t.$$metamodel$$=mm;}
+      var mm=getrtmm$$(ifc.t);
       if (mm.$cont) {
         rv.push(AppliedMemberInterface(ifc.t, {Type$MemberInterface:ifc}));
       } else {
@@ -40,10 +39,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethod=function(name,types,$$$mptype
   var fun = this.tipo[name];
   if (!fun) fun = this.tipo.$$.prototype[name];
   if (!fun) return null;
-  var mm=fun.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm();fun.$$metamodel$$=mm;
-  }
+  var mm=getrtmm$$(fun);
   var _t=$$$mptypes.Type$getMethod;
   var _a=$$$mptypes.Arguments$getMethod;
   if (mm) {
@@ -70,8 +66,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod=function(name,types,$
   var rv=this.getMethod(name,types,{Type$getMethod:$$$mptypes.Type$getDeclaredMethod,Arguments$getMethod:$$$mptypes.Arguments$getDeclaredMethod,
     Container$getMethod:$$$mptypes.Container$getDeclaredMethod});
   if (rv && rv.tipo) {
-    var mm=rv.tipo.$$metamodel$$;
-    if (typeof(mm)==='function'){mm=mm();rv.tipo.$$metamodel$$=mm;}
+    var mm=getrtmm$$(rv.tipo);
     if (mm && mm.$cont!==this.tipo)return null;
   }
   return rv;
@@ -82,10 +77,7 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = this.tipo.$$.prototype[nom];
   if (!at)return null;
-  var mm=at.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm();at.$$metamodel$$=mm;
-  }
+  var mm=getrtmm$$(at);
   var _t=$$$mptypes.Get$getAttribute;
   if (mm && mm.$t) {
     if (!extendsType(mm.$t,_t))throw IncompatibleTypeException$meta$model("Incompatible Get type argument");
@@ -102,8 +94,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute=function getDeclar
   var rv=this.getAttribute(name$15,{Get$getAttribute:$$$mptypes.Get$getDeclaredAttribute,Set$getAttribute:$$$mptypes.Set$getDeclaredAttribute,
     Container$getAttribute:$$$mptypes.Container$getDeclaredAttribute});
   if (rv && rv.tipo) {
-    var mm=rv.tipo.$$metamodel$$;
-    if (typeof(mm)==='function'){mm=mm();rv.tipo.$$metamodel$$=mm;}
+    var mm=getrtmm$$(rv.tipo);
     if (mm&&mm.$cont!==this.tipo)return null;
   }
   return rv;
@@ -121,28 +112,21 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
   if (!extendsType($$$mptypes.Container$getClassOrInterface,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible type specified in Container");
   var $$clase=this;
   if(types$3===undefined){types$3=getEmpty();}
-  var mm = $$clase.tipo.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm(); $$clase.tipo.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$($$clase.tipo);
   var nom = name$2 + '$' + mm.d[mm.d.length-1];
   var ic = $$clase.tipo.$$.prototype[nom];
   if (!ic) {
     if (noInherit)return null;
     var pere=mm['super'];
     while (!ic && pere) {
-      mm=pere.t.$$metamodel$$;
-      if (typeof(mm)==='function'){mm=mm();pere.t.$$metamodel$$=mm;}
+      mm=getrtmm$$(pere.t);
       nom=mm&&mm.d?name$2+'$'+mm.d[mm.d.length-1]:undefined;
       if (nom)ic=$$clase.tipo.$$.prototype[nom];
       if (!ic)pere=mm['super'];
     }
   }
   if (ic) {
-    mm = ic.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm(); ic.$$metamodel$$=mm;
-    }
+    mm = getrtmm$$(ic);
     var md = get_model(mm);
     var rv;
     var ict={t:ic};
@@ -220,10 +204,7 @@ ClassOrInterface$meta$model.$$.prototype.exactly=function exactly(type$10){
 };
 ClassOrInterface$meta$model.$$.prototype.exactly.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','exactly']};};
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
-  var mm = this.tipo.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm(); this.tipo.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$(this.tipo);
   if (mm) {
     if (mm.$tp) {
       var targs={};
@@ -250,11 +231,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   throw Exception(String$("ClassOrInterface.typeArguments-we don't have a metamodel!"));
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
-    var mm = this.tipo.$$metamodel$$;
-    if (typeof(mm)==='function') {
-      mm=mm();
-      this.tipo.$$metamodel$$=mm;
-    }
+    var mm = getrtmm$$(this.tipo);
     var qn=$qname(mm);
     if (mm.$tp) {
       qn+="<";
@@ -283,11 +260,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     return String$(qn);
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
-  var mm = this.tipo.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm();
-    this.tipo.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$(this.tipo);
   var h=String$($qname(mm)).hash;
   if (mm.$tp) {
     for (var tp in mm.$tp) {
@@ -311,11 +284,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
   var sc = this.tipo.$$metamodel$$['super'];
   if (sc === undefined)return null;
-  var mm = sc.t.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm = mm();
-    sc.t.$$metamodel$$=mm;
-  }
+  var mm = getrtmm$$(sc.t);
   var ac;
   if (mm.$cont) {
     ac=AppliedMemberClass(sc.t, {Type$MemberClass:sc,Arguments$MemberClass:{t:Sequential,a:{Element$Iterable:{t:Anything}}},Container$MemberClass:mm.$cont});

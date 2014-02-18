@@ -1,11 +1,8 @@
 /*Native Implementation of annotations() */
 function annotations$meta(anntype, progelem, $$$mptypes) {
   if (progelem.tipo)progelem=progelem.tipo;
-  var mm = progelem.$$metamodel$$;
+  var mm = getrtmm$$(progelem);
   if (progelem.$anns)mm={$an:typeof(progelem.$anns)==='function'?progelem.$anns():progelem.$anns};
-  if (typeof(mm) === 'function') {
-    mm = mm();
-  }
   if (mm && mm.$an) {
     var anns=mm.$an;
     if (typeof(anns) === 'function') {

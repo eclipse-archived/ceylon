@@ -62,8 +62,8 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
       if (first)first=false; else qn+=",";
       var targ=this.$targs[tp];
       if (targ.t) {
-        if (typeof(targ.t.$$metamodel$$)==='function')targ.t.$$metamodel$$=targ.t.$$metamodel$$();
-        qn+=$qname(targ.t.$$metamodel$$);
+        var _m=getrtmm$$(targ.t);
+        qn+=$qname(_m);
       } else {
         qn+=tp;
       }

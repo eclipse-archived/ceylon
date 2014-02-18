@@ -1,11 +1,7 @@
 //Add-on to AnnotatedDeclaration
 AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mptypes) {
   var ans = [];
-  var _mdl = this.tipo.$$metamodel$$;
-  if (typeof(_mdl)==='function') {
-    _mdl = _mdl();
-    this.tipo.$$metamodel$$=_mdl;
-  }
+  var _mdl = getrtmm$$(this.tipo);
   var _ans = _mdl.$an;
   if (typeof(_ans)==='function') {
     _ans = _ans();

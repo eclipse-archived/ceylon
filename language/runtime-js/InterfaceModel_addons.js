@@ -1,10 +1,6 @@
 defineAttr(InterfaceModel$meta$model.$$.prototype,'declaration',function(){
 if (this._decl)return this._decl;
-var mm = this.tipo.$$metamodel$$;
-if (typeof(mm)==='function') {
-  mm = mm();
-  this.tipo.$$metamodel$$=mm;
-}
+var mm = getrtmm$$(this.tipo);
 this._decl = OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), this.tipo);
 return this._decl;
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:InterfaceDeclaration$meta$declaration},$cont:InterfaceModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','InterfaceModel','$at','declaration']};});

@@ -5,8 +5,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     var _d = this.tipo.$$.prototype['$prop$get'+name$20[0].toUpperCase()+name$20.substring(1)];
     if (_d){
       if (noInherit) {
-        var mm=_d.$$metamodel$$;
-        if (typeof(mm)==='function'){mm=mm();_d.$$metamodel$$=mm;}
+        var mm=getrtmm$$(_d);
         if (mm.$cont!==this.tipo)return null;
       }
       _m=OpenValue(this.containingPackage, _d);
@@ -18,8 +17,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     var _d = this.tipo.$$.prototype[nom];
     if(_d){
       if (noInherit) {
-        var mm=_d.$$metamodel$$;
-        if (typeof(mm)==='function'){mm=mm();_d.$$metamodel$$=mm;}
+        var mm=getrtmm$$(_d);
         if (mm.$cont!==this.tipo)return null;
       }
       _m=OpenFunction(this.containingPackage, _d);
@@ -32,8 +30,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       if (noInherit)return null;
       var pere=this.tipo.$$metamodel$$['super'];
       while (!_d && pere) {
-        var mm=pere.t.$$metamodel$$;
-        if (typeof(mm)==='function'){mm=mm();pere.t.$$metamodel$$=mm;}
+        var mm=getrtmm$$(pere.t);
         nom=mm&&mm.d?name$20+'$'+mm.d[mm.d.length-1]:undefined;
         if(nom)_d=this.tipo.$$.prototype[nom];
         if (!_d)pere=mm['super'];
@@ -42,8 +39,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     if(_d){
       var wantsClass=extendsType($$$mptypes.Kind$getMemberDeclaration,{t:ClassDeclaration$meta$declaration});
       var wantsIface=extendsType($$$mptypes.Kind$getMemberDeclaration,{t:InterfaceDeclaration$meta$declaration});
-      if (typeof(_d.$$metamodel$$)==='function')_d.$$metamodel$$=_d.$$metamodel$$();
-      var _mdl=get_model(_d.$$metamodel$$);
+      var _$m = getrtmm$$(_d);
+      var _mdl=get_model(_$m);
       if ((wantsClass && _mdl.$mt!=='cls') || (wantsIface && _mdl.$mt!=='ifc'))return null;
       _m=(_mdl.$mt==='cls'?OpenClass:OpenInterface)(this.containingPackage, _d);
     }
@@ -137,10 +134,8 @@ defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes'
 },undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,$mptypes){
   var _t = {t:this.tipo};
-  if (typeof(this.tipo.$$metamodel$$)==='function') {
-    this.tipo.$$metamodel$$=this.tipo.$$metamodel$$();
-  }
-  validate$typeparams(_t,this.tipo.$$metamodel$$.$tp,types);
+  var _m = getrtmm$$(this.tipo);
+  validate$typeparams(_t,_m.$tp,types);
   if (!extendsType(_t, $mptypes.Type$apply))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
   var rv=this.meta.$mt==='ifc'?AppliedInterface(_t.t, {Type$Interface:$mptypes.Type$apply}):
@@ -150,10 +145,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(cont, types,$mptypes) {
-  var mm=this.tipo.$$metamodel$$;
-  if (typeof(mm)==='function') {
-    mm=mm(); this.tipo.$$metamodel$$=mm();
-  }
+  var mm=getrtmm$$(this.tipo);
   if (!extendsType({t:cont.tipo},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container type");
   var _t = {t:this.tipo};
   validate$typeparams(_t,mm.$tp,types);
@@ -166,8 +158,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$$metamodel$$=function(){return{mod:$$METAMODEL$$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};
 defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',function(){
   if (this.$parent)return this.$parent;
-  var mm=this.tipo.$$metamodel$$;
-  if (typeof(mm)==='function'){mm=mm();this.tipo.$$metamodel$$=mm;}
+  var mm=getrtmm$$(this.tipo);
   if (mm.$cont) {
     return typeLiteral$meta({Type$typeLiteral:mm.$cont});
   }
@@ -178,8 +169,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclara
   if (list.length) {
     var rv=[];
     for (var i=0; i < list.length; i++) {
-      var mm = list[i].tipo.$$metamodel$$;
-      if (typeof(mm)==='function'){mm=mm();list[i].tipo.$$metamodel$$=mm;}
+      var mm = getrtmm$$(list[i].tipo);
       var anns = mm.$an;
       if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
       for (var j=0; j<anns.length; j++) {
