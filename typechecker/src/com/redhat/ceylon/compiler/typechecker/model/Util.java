@@ -1057,7 +1057,10 @@ public class Util {
 
     static boolean isVisible(Declaration member, TypeDeclaration type) {
         return type instanceof TypeParameter || 
-                type.isVisible(member.getVisibleScope());
+                type.isVisible(member.getVisibleScope()) &&
+                (member.getVisibleScope()!=null || 
+                !member.getUnit().getPackage().isShared() || 
+                type.getUnit().getPackage().isShared());
     }
 
     /**

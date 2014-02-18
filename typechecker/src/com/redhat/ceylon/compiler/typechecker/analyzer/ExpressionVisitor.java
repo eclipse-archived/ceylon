@@ -24,7 +24,6 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getRealScope;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionOfSupertypes;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
@@ -203,42 +202,6 @@ public class ExpressionVisitor extends Visitor {
         Tree.ComprehensionClause cc = that.getComprehensionClause();
         if (cc!=null) {
             that.setTypeModel(cc.getTypeModel());
-        }
-    }
-    
-    @Override
-    public void visit(Tree.AnyMethod that) {
-        super.visit(that);
-        TypedDeclaration td = that.getDeclarationModel();
-        for (Tree.ParameterList list: that.getParameterLists()) {
-            for (Tree.Parameter tp: list.getParameters()) {
-                if (tp instanceof Tree.ParameterDeclaration) {
-                    Parameter p = tp.getParameterModel();
-                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        ((Tree.ParameterDeclaration) tp).getTypedDeclaration().getType()
-                                .addError("type of parameter is not visible everywhere declaration is visible: " 
-                                        + p.getName(), 710);
-                    }
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void visit(Tree.AnyClass that) {
-        super.visit(that);
-        Class td = that.getDeclarationModel();
-        if (that.getParameterList()!=null) {
-            for (Tree.Parameter tp: that.getParameterList().getParameters()) {
-                if (tp instanceof Tree.ParameterDeclaration) {
-                    Parameter p = tp.getParameterModel();
-                    if (p.getType()!=null && !isCompletelyVisible(td, p.getType())) {
-                        ((Tree.ParameterDeclaration)tp).getTypedDeclaration().getType()
-                                .addError("type of parameter is not visible everywhere declaration is visible: " 
-                                        + p.getName(), 710);
-                    }
-                }
-            }
         }
     }
     
