@@ -98,7 +98,12 @@ public final class JarUtils {
             if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
                 srcDirLength = prefix.length();
             }
-            String absPrefix = prefixFile.getAbsolutePath();
+            String absPrefix;
+            try {
+                absPrefix = prefixFile.getCanonicalPath();
+            } catch (IOException e) {
+                absPrefix = prefixFile.getAbsolutePath();
+            }
             if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
                 srcDirLength = absPrefix.length();
             }
