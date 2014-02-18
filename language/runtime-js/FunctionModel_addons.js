@@ -42,6 +42,7 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
     qn=$qname(mm.$cont);
     if (mm.$cont.$$metamodel$$.$tp) {
       var cnt=this.$$targs$$&&this.$$targs$$.Container$Function&&this.$$targs$$.Container$Function.a;
+      if (!cnt)cnt=this.$$targs$$&&this.$$targs$$.Container$Method&&this.$$targs$$.Container$Method.a;
       qn+="<";var first=true;
       for (var tp in mm.$cont.$$metamodel$$.$tp) {
         if (first)first=false;else qn+=",";
