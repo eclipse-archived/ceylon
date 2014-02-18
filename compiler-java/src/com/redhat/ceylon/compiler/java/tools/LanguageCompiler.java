@@ -230,7 +230,12 @@ public class LanguageCompiler extends JavaCompiler {
             if (fo.getName().startsWith(prefix)) {
                 return true;
             }
-            String absPrefix = dir.getAbsolutePath();
+            String absPrefix;
+            try {
+                absPrefix = dir.getCanonicalPath();
+            } catch (IOException e) {
+                absPrefix = dir.getAbsolutePath();
+            }
             if (fo.getName().startsWith(absPrefix)) {
                 return true;
             }
