@@ -49,7 +49,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Type;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -65,7 +64,7 @@ public class RefinementVisitor extends Visitor {
     private void checkParameterVisibility(Tree.Declaration that,
             Declaration td, Tree.Parameter tp, Parameter p) {
         ProducedType pt = p.getType();
-        Type typeNode = ((Tree.ParameterDeclaration) tp).getTypedDeclaration().getType();
+        Tree.Type typeNode = ((Tree.ParameterDeclaration) tp).getTypedDeclaration().getType();
         if (!isCompletelyVisible(td, pt)) {
             typeNode.addError("type of parameter " + p.getName() + " of " + td.getName() +
                             " is not visible everywhere declaration is visible: " + 
