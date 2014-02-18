@@ -2358,7 +2358,7 @@ public class StatementTransformer extends AbstractTransformer {
                 loopVarType = sequenceElementType;
                 loopVarInit = castElem;
             } else {
-                loopVarType = actualType(variable);
+                loopVarType = variable.getDeclarationModel().getType();
                 loopVarInit = at(stmt).Apply(null, makeSelect(castElem, Naming.getGetterName("key")), List.<JCExpression> nil());
             }
             JCVariableDecl itemOrKeyDecl = at(stmt).VarDef(make().Modifiers(FINAL, annots), loopVarName.asName(), makeJavaType(loopVarType), 
@@ -2368,7 +2368,7 @@ public class StatementTransformer extends AbstractTransformer {
 
             if (valueVariable != null) {
                 // final V n = $elem$X.getElement();
-                ProducedType valueVarType = actualType(valueVariable);
+                ProducedType valueVarType = valueVariable.getDeclarationModel().getType();
                 JCExpression valueVarTypeExpr = makeJavaType(valueVarType);
                 JCExpression valueVarInitExpr = at(stmt).Apply(null, makeSelect(castElem, Naming.getGetterName("item")), List.<JCExpression> nil());
                 String valueVarName = valueVariable.getIdentifier().getText();
@@ -2961,7 +2961,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             final Name attrName = names().fromString(naming.substitute(decl.getDeclarationModel()));
             
-            ProducedType t = actualType(decl);
+            ProducedType t = decl.getDeclarationModel().getType();
             
             JCExpression initialValue = null;
             SpecifierOrInitializerExpression initOrSpec = decl.getSpecifierOrInitializerExpression();
