@@ -501,16 +501,6 @@ public final class Integer
         return value + 1;
     }
 
-    // Probably not spec-conformant
-    public Integer complement() {
-        return instance(~value);
-    }
-
-    @Ignore
-    public static long complement(long value) {
-        return ~value;
-    }
-
     @Override
     public boolean equals(@Name("that") java.lang.Object that) {
         if (that instanceof Integer) {
