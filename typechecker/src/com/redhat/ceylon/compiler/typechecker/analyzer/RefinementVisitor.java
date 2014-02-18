@@ -61,21 +61,52 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class RefinementVisitor extends Visitor {
     
+    private void checkVisibility(Node that, Declaration td, 
+            ProducedType type) {
+        if (type!=null) {
+            Node typeNode = getTypeErrorNode(that);
+            if (!isCompletelyVisible(td, type)) {
+                typeNode.addError("type of declaration " + td.getName() +
+                        " is not visible everywhere declaration is visible: " + 
+                        type.getProducedTypeName(that.getUnit()) +
+                        " involves an unshared type declaration", 711);
+            }
+            if (!checkModuleVisibility(td, type)) {
+                typeNode.addError("type of declaration " + td.getName() + 
+                        " that is visible outside this module comes from an imported module that is not re-exported: " + 
+                        type.getProducedTypeName(that.getUnit()) +
+                        " involves an unexported type declaration", 712);
+            }
+        }
+    }
+
     private void checkParameterVisibility(Tree.Declaration that,
             Declaration td, Tree.Parameter tp, Parameter p) {
         ProducedType pt = p.getType();
-        Tree.Type typeNode = ((Tree.ParameterDeclaration) tp).getTypedDeclaration().getType();
-        if (!isCompletelyVisible(td, pt)) {
-            typeNode.addError("type of parameter " + p.getName() + " of " + td.getName() +
-                            " is not visible everywhere declaration is visible: " + 
-                            pt.getProducedTypeName(that.getUnit()) +
-                            " involves an unshared type declaration", 710);
+        if (pt!=null) {
+            if (!isCompletelyVisible(td, pt)) {
+                getParameterTypeErrorNode(tp)
+                    .addError("type of parameter " + p.getName() + " of " + td.getName() +
+                        " is not visible everywhere declaration is visible: " + 
+                        pt.getProducedTypeName(that.getUnit()) +
+                        " involves an unshared type declaration", 710);
+            }
+            if (!checkModuleVisibility(td, pt)) {
+                getParameterTypeErrorNode(tp)
+                    .addError("type of parameter " + p.getName() + " of " + td.getName() + 
+                        " that is visible outside this module comes from an imported module that is not re-exported: " +
+                        pt.getProducedTypeName(that.getUnit()) +
+                        " involves an unexported type declaration", 714);
+            }
         }
-        if (!checkModuleVisibility(td, pt)) {
-            typeNode.addError("type of parameter " + p.getName() + " of " + td.getName() + 
-                    " that is visible outside this module comes from an imported module that is not re-exported: " +
-                    pt.getProducedTypeName(that.getUnit()) +
-                    " involves an unexported type declaration", 714);
+    }
+
+    private Node getParameterTypeErrorNode(Tree.Parameter p) {
+        if (p instanceof Tree.ParameterDeclaration) {
+            return ((Tree.ParameterDeclaration) p).getTypedDeclaration().getType();
+        }
+        else {
+            return p;
         }
     }
     
@@ -326,25 +357,6 @@ public class RefinementVisitor extends Visitor {
         TypedDeclaration td = that.getDeclarationModel();
         checkVisibility(that, td, td.getType());
         super.visit(that);
-    }
-
-    private void checkVisibility(Node that, Declaration td, 
-            ProducedType type) {
-        if (type!=null) {
-            Node typeNode = getTypeErrorNode(that);
-            if (!isCompletelyVisible(td, type)) {
-                typeNode.addError("type of declaration " + td.getName() +
-                        " is not visible everywhere declaration is visible: " + 
-                        type.getProducedTypeName(that.getUnit()) +
-                        " involves an unshared type declaration", 711);
-            }
-            if (!checkModuleVisibility(td, type)) {
-                typeNode.addError("type of declaration " + td.getName() + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: " + 
-                        type.getProducedTypeName(that.getUnit()) +
-                        " involves an unexported type declaration", 712);
-            }
-        }
     }
 
     @Override public void visit(Tree.Declaration that) {
