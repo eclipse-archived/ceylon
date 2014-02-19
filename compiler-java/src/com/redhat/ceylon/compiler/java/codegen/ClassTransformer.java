@@ -479,7 +479,7 @@ public class ClassTransformer extends AbstractTransformer {
                 return makeAtAnnotationTarget(ElementType.TYPE);
             } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ValueDeclaration")).getType())
                     || programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("FunctionDeclaration")).getType())) {
-                return makeAtAnnotationTarget(ElementType.METHOD);
+                return makeAtAnnotationTarget(ElementType.METHOD, ElementType.PARAMETER);
             } else if (programElement.isSubtypeOf(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Import")).getType())) {
                 return makeAtAnnotationTarget(ElementType.FIELD);
             }
