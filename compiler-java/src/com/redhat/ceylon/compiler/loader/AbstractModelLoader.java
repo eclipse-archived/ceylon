@@ -1796,9 +1796,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                               "method '"+methodMirror.getName()+"'", klass);
         method.setType(type);
         method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
-        method.setDeclaredVoid(methodMirror.isDeclaredVoid());
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
-        
+        markDeclaredVoid(method, methodMirror);
         markUnboxed(method, methodMirror.getReturnType());
         markTypeErased(method, methodMirror, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
@@ -2407,6 +2406,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(hasTypeParameterWithConstraints(type))
             decl.setUntrustedType(true);
     }
+    
+    private void markDeclaredVoid(Method decl, MethodMirror methodMirror) {
+        if (methodMirror.isDeclaredVoid() || 
+                getAnnotationBooleanValue(methodMirror, CEYLON_TYPE_INFO_ANNOTATION, "declaredVoid") == Boolean.TRUE) {
+            decl.setDeclaredVoid(true);
+        }
+    }
 
     private boolean hasTypeParameterWithConstraints(TypeMirror type) {
         switch(type.getKind()){
@@ -2523,7 +2529,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setType(obtainType(meth.getReturnType(), meth, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
                                "toplevel method", method));
             method.setDeclaredVoid(meth.isDeclaredVoid());
-
+            markDeclaredVoid(method, meth);
             markUnboxed(method, meth.getReturnType());
             markTypeErased(method, meth, meth.getReturnType());
 

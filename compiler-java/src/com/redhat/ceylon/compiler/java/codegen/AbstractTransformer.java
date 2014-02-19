@@ -2635,21 +2635,29 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             type = decl.getType();
         }
-        return makeJavaTypeAnnotations(type, needsJavaTypeAnnotations(decl));
+        boolean declaredVoid = decl instanceof Method && Strategy.useBoxedVoid((Method)decl) && Decl.isUnboxedVoid(decl);
+        
+        return makeJavaTypeAnnotations(type, declaredVoid, needsJavaTypeAnnotations(decl));
     }
 
-    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean required) {
+    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean declaredVoid, boolean required) {
         if (!required)
             return List.nil();
         String name = serialiseTypeSignature(type);
         boolean erased = hasErasure(type);
         // Add the original type to the annotations
-        if (!erased) {
-            return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(make().Literal(name)));
-        } 
-        return makeModelAnnotation(syms().ceylonAtTypeInfoType, List.<JCExpression>of(
-                make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)),
-                make().Assign(naming.makeUnquotedIdent("erased"), make().Literal(erased))));
+        ListBuffer<JCExpression> annotationArgs = ListBuffer.<JCExpression>lb();
+        annotationArgs.add(
+                make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)));
+        if (erased) {
+            annotationArgs.add(
+                    make().Assign(naming.makeUnquotedIdent("erased"), make().Literal(erased)));
+        }
+        if (declaredVoid) {
+            annotationArgs.add(
+                    make().Assign(naming.makeUnquotedIdent("declaredVoid"), make().Literal(declaredVoid)));
+        }
+        return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }
     
     private String serialiseTypeSignature(ProducedType type){
