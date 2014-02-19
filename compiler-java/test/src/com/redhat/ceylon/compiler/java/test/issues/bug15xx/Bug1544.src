@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1544_ {
+    
+    private bug1544_() {
+    }
+    
+    static void bug1544() {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong num = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(3L);
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus(num.ref, $ceylontmp$other.longValue()));
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1544_.bug1544();
+    }
+}
