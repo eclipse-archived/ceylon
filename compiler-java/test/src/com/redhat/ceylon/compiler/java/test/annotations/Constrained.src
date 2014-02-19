@@ -292,7 +292,9 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
 @interface ConstrainedToFunction$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -366,7 +368,9 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
 @interface ConstrainedToFunctionSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation$[] value();
@@ -437,7 +441,9 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
 @interface ConstrainedToValue$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
@@ -511,7 +517,9 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
 @interface ConstrainedToValueSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation$[] value();

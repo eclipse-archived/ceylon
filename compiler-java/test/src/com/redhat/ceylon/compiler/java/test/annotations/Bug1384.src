@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
 public @interface Bug1384$annotation$ {
     
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
@@ -59,7 +61,9 @@ public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.m
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.class);
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
 public @interface Bug1384_sequence$annotation$ {
     
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
