@@ -19,6 +19,11 @@ public @interface TypeInfo {
     String value() default "";
     
     /**
+     * Whether the declared method type was {@code void}
+     */
+    boolean declaredVoid() default false;
+    
+    /**
      * Whether the Ceylon type has been erased.
      */
     boolean erased() default false;
