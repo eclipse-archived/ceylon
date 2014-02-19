@@ -161,14 +161,38 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         return false;
     }
     
+    boolean invocationPrimary;
+    
+    @Override
+    public void visit(Tree.InvocationExpression that) {
+        boolean pip = this.invocationPrimary;
+        this.invocationPrimary = true;
+        that.getPrimary().visit(this);
+        this.invocationPrimary = pip;
+        if (that.getPositionalArgumentList() != null) {
+            that.getPositionalArgumentList().visit(this);
+        }
+        if (that.getNamedArgumentList() != null) {
+            that.getNamedArgumentList().visit(this);
+        }
+    }
+    
     @Override
     public void visit(Tree.QualifiedMemberExpression that) {
+        boolean cs = false;
+        boolean isCallableReference = !invocationPrimary && that.getDeclaration() instanceof Functional;
+        if (isCallableReference) {
+            cs = enterCapturingScope();
+        }
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
         else {
             capture(that);
+        }
+        if (isCallableReference) {
+            exitCapturingScope(cs);
         }
     }
 
