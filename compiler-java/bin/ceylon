@@ -38,7 +38,7 @@ LIB="$CEYLON_HOME/lib"
 
 if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 	PREPEND_JAVA_OPTS="$JAVA_DEBUG_OPTS"
-	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$(tput cols)"
+	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$(tput 2>/dev/null cols)"
 	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)"
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
