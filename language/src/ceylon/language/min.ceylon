@@ -6,10 +6,10 @@ see (`interface Comparable`,
 shared Absent|Value min<Value,Absent>(Iterable<Value,Absent> values) 
         given Value satisfies Comparable<Value>
         given Absent satisfies Null {
-    value first=values.first;
-    if (exists first) {
+    value it = values.iterator();
+    if (is Value first = it.next()) {
         variable value min=first;
-        for (val in values.rest) {
+        while (is Value val = it.next()) {
             if (val<min) {
                 min=val;
             }
@@ -17,6 +17,8 @@ shared Absent|Value min<Value,Absent>(Iterable<Value,Absent> values)
         return min;
     }
     else {
-        return first;
+        "iterable must be empty"
+        assert (is Absent null);
+        return null;
     }
 }

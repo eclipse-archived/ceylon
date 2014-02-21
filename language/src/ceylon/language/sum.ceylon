@@ -3,8 +3,10 @@
 see (`function product`)
 shared Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value> {
-    variable value sum = values.first;
-    for (val in values.rest) {
+    value it = values.iterator();
+    assert (is Value first = it.next());
+    variable value sum = first;
+    while (is Value val = it.next()) {
         sum+=val;
     }
     return sum;
