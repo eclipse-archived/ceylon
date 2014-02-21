@@ -4235,7 +4235,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getUnit());
         if (type==null) {
             if (!dynamic) {
-                that.addError("type does not exist: " + name, 100);
+                that.addError("type does not exist: " + name, 102);
                 unit.getUnresolvedReferences().add(that.getIdentifier());
             }
         }
