@@ -1275,7 +1275,8 @@ public class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
-        if (that.getCatchClauses().isEmpty() && 
+        if (that.getTryClause().getBlock()!=null &&
+                that.getCatchClauses().isEmpty() && 
                 that.getFinallyClause()==null && 
                 that.getTryClause().getResourceList()==null) {
             that.addError("try must have a catch, finally, or resource expression");

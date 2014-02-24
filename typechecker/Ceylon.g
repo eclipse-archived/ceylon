@@ -2979,8 +2979,8 @@ forBlock returns [ForClause clause]
 failBlock returns [ElseClause clause]
     : ELSE_CLAUSE 
       { $clause = new ElseClause($ELSE_CLAUSE); }
-      block
-      { $clause.setBlock($block.block); }
+      controlBlock
+      { $clause.setBlock($controlBlock.block); }
     ;
 
 forIterator returns [ForIterator iterator]
@@ -3068,8 +3068,8 @@ catchBlock returns [CatchClause clause]
       { $clause = new CatchClause($CATCH_CLAUSE); }
       catchVariable
       { $clause.setCatchVariable($catchVariable.catchVariable); }
-      block
-      { $clause.setBlock($block.block); }
+      controlBlock
+      { $clause.setBlock($controlBlock.block); }
     ;
 
 catchVariable returns [CatchVariable catchVariable]
@@ -3087,8 +3087,8 @@ catchVariable returns [CatchVariable catchVariable]
 finallyBlock returns [FinallyClause clause]
     : FINALLY_CLAUSE 
       { $clause = new FinallyClause($FINALLY_CLAUSE); }
-      block
-      { $clause.setBlock($block.block); }
+      controlBlock
+      { $clause.setBlock($controlBlock.block); }
     ;
 
 resources returns [ResourceList resources]
