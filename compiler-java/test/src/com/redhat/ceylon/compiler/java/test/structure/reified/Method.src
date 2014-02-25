@@ -212,7 +212,9 @@ public interface MethodInterface {
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
     public abstract .java.lang.Object m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface.class);
@@ -363,7 +365,9 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$specifier$;
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
     public final .java.lang.Object m() {
         return m$specifier$.$call$();
     }
