@@ -982,8 +982,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         // Any Unions and Intersections erase to Object as well
         // except for the ones that erase to Sequential
-        return ((decl instanceof UnionType || decl instanceof IntersectionType)
-                && !typeFact().isSequentialType(type));
+        return ((decl instanceof UnionType || decl instanceof IntersectionType));
     }
     
     boolean willEraseToPrimitive(ProducedType type) {
@@ -1692,26 +1691,19 @@ public abstract class AbstractTransformer implements Transformation {
                 // - The Ceylon type Foo<U|V> results in the raw Java type Foo.
                 // For any other intersection type U&V:
                 // - The Ceylon type Foo<U&V> results in the raw Java type Foo.
-                ProducedType listType = typeFact().getDefiniteType(ta).getSupertype(typeFact().getSequentialDeclaration());
-                // don't break if the union type is erased to something better than Object
-                if(listType == null){
-                    // use raw types if:
-                    // - we're calling a constructor
-                    // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
-                    //   or we're in an extends or satisfies and the type parameter is a self type
-                    if((flags & JT_CLASS_NEW) != 0
-                            || ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
-                        // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                        typeArgs = null;
-                        break;
-                    } else if((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0) {
-                        onlyErasedUnions = false;
-                    }
-                    // otherwise just go on
-                }else{
-                    ta = listType;
+                // use raw types if:
+                // - we're calling a constructor
+                // - we're not in a type argument (when used as type arguments raw types have more constraint than at the toplevel)
+                //   or we're in an extends or satisfies and the type parameter is a self type
+                if((flags & JT_CLASS_NEW) != 0
+                        || ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0 && tp.getSelfTypedDeclaration() != null)){
+                    // A bit ugly, but we need to escape from the loop and create a raw type, no generics
+                    typeArgs = null;
+                    break;
+                } else if((flags & (__JT_TYPE_ARGUMENT | JT_EXTENDS | JT_SATISFIES)) != 0) {
                     onlyErasedUnions = false;
                 }
+                // otherwise just go on
             } else {
                 onlyErasedUnions = false;
             }
