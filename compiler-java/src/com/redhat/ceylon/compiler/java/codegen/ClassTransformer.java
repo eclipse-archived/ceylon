@@ -893,7 +893,7 @@ public class ClassTransformer extends AbstractTransformer {
         Assert.that(decl.getContainer() instanceof Class);
         JCExpression type;
         MethodOrValue attr = decl;
-        if (Decl.isValue(attr)) {
+        if (!Decl.isTransient(attr)) {
             ProducedTypedReference typedRef = getTypedReference(attr);
             ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             ProducedType paramType = nonWideningType(typedRef, nonWideningTypedRef);
