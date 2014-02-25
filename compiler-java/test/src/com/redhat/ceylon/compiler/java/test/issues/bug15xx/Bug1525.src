@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public interface TestListener {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$TestListener$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("default")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public .java.lang.Object mDefault();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public void mShared();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class TestListener$impl {
+    
+    public TestListener$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener $this;
+    
+    public .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                l$priv$();
+            }
+            returning null;
+        );
+    }
+    
+    public void mShared() {
+        l$priv$();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private void l$priv$() {
+    }
+}
