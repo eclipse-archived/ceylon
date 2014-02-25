@@ -1798,7 +1798,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
         markDeclaredVoid(method, methodMirror);
-        markUnboxed(method, methodMirror.getReturnType());
+        markUnboxed(method, methodMirror, methodMirror.getReturnType());
         markTypeErased(method, methodMirror, methodMirror.getReturnType());
         setAnnotations(method, methodMirror);
         
@@ -1968,7 +1968,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), fieldMirror.getType()));
 
-        markUnboxed(value, fieldMirror.getType());
+        markUnboxed(value, null, fieldMirror.getType());
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         setAnnotations(value, fieldMirror);
         klass.getMembers().add(value);
@@ -2074,7 +2074,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
 
-        markUnboxed(value, methodMirror.getReturnType());
+        markUnboxed(value, methodMirror, methodMirror.getReturnType());
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         setAnnotations(value, methodMirror);
         klass.getMembers().add(value);
@@ -2293,7 +2293,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 parameter.setAtLeastOne(true);
             }
             // if it's variadic, consider the array element type (T[] == T...) for boxing rules
-            markUnboxed(value, isVariadic ? 
+            markUnboxed(value, null, isVariadic ? 
                     paramMirror.getType().getComponentType()
                     : paramMirror.getType());
             parameter.setDeclaration((Declaration) decl);
@@ -2443,12 +2443,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private void markUnboxed(TypedDeclaration decl, TypeMirror type) {
+    private void markUnboxed(TypedDeclaration decl, MethodMirror methodMirror, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() 
                 || type.getKind() == TypeKind.ARRAY
                 || sameType(type, STRING_TYPE)
-                || Util.isUnboxedVoid(decl)) {
+                || (methodMirror != null && methodMirror.isDeclaredVoid())) {
             unboxed = true;
         }
         decl.setUnboxed(unboxed);
@@ -2483,7 +2483,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             setValueTransientLateFlags(value, meth, true);
             setAnnotations(value, meth);
-            markUnboxed(value, meth.getReturnType());
+            markUnboxed(value, meth, meth.getReturnType());
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
@@ -2530,7 +2530,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                "toplevel method", method));
             method.setDeclaredVoid(meth.isDeclaredVoid());
             markDeclaredVoid(method, meth);
-            markUnboxed(method, meth.getReturnType());
+            markUnboxed(method, meth, meth.getReturnType());
             markTypeErased(method, meth, meth.getReturnType());
 
             method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
