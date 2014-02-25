@@ -583,26 +583,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(eraseExprType)
             return true;
         
-        // special case for things that are erased to sequential, because for example Range|Empty does not have any super type
-        // but we know that if expectedType is a sequential we will erase it not to Object but to Sequential 
-        if(expectedType.getDeclaration() instanceof UnionType
-                && willEraseToSequential(expectedType)){
-            // consider the expected type to be Sequential then
-            expectedType = typeFact().getDefiniteType(expectedType.getSupertype(typeFact().getSequentialDeclaration()));
-        }
-
-        // same thing for expr type, because we know it's not erased to Object, we already checked, but if it
-        // will end up into a Sequential we need to know this
-        if(exprType.getDeclaration() instanceof UnionType
-                && willEraseToSequential(exprType)){
-            // consider the expression type to be Sequential then
-            ProducedType exprSequentialType = typeFact().getDefiniteType(exprType.getSupertype(typeFact().getSequentialDeclaration()));
-            // if we ended up with an expression that is a supertype of the expected type this turns into a downcast
-            if(!exprSequentialType.isSubtypeOf(expectedType))
-                downCast = true;
-            exprType = exprSequentialType;
-        }
-        
         // find their common type
         ProducedType commonType = exprType.getSupertype(expectedType.getDeclaration());
         
@@ -711,9 +691,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private boolean hasTypeParameters(ProducedType type) {
-        // if we will erase a type to Sequential, we know Sequential has type parameters
-        if(willEraseToSequential(type))
-            return true;
         if (!type.getTypeArgumentList().isEmpty()) {
             return true;
         }

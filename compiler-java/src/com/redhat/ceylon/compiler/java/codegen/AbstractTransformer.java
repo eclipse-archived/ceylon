@@ -844,8 +844,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(allowSubtypes){
             // if we don't erase to object and we refine something that does, we can't possibly be widening
-            if((willEraseToObject(refinedDeclType) || willEraseToSequential(refinedDeclType))
-                    && !willEraseToObject(declType) && !willEraseToSequential(declType))
+            if((willEraseToObject(refinedDeclType)) && !willEraseToObject(declType))
                 return false;
 
             // if we have exactly the same type don't bother finding a common ancestor
@@ -996,13 +995,6 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameTypeForCeylonTypes(syms().ceylonExceptionType, type));
     }
     
-    boolean willEraseToSequential(ProducedType type) {
-        type = simplifyType(type);
-        TypeDeclaration decl = type.getDeclaration();
-        return (decl instanceof UnionType || decl instanceof IntersectionType)
-                && typeFact().isSequentialType(type);
-    }
-
     // keep in sync with MethodDefinitionBuilder.paramType()
     public boolean willEraseToBestBounds(Parameter param) {
         ProducedType type = param.getType();
@@ -1141,8 +1133,8 @@ public abstract class AbstractTransformer implements Transformation {
                     return isErasedUnionOrIntersection(caseTypes.get(0));
                 }
             }
-            // it is erased unless we turn it into Sequential something
-            return !willEraseToSequential(producedType);
+            // it is erased
+            return true;
         }
         if(typeDeclaration instanceof IntersectionType){
             IntersectionType ut = (IntersectionType) typeDeclaration;
@@ -1155,8 +1147,8 @@ public abstract class AbstractTransformer implements Transformation {
                     return isErasedUnionOrIntersection(satisfiedTypes.get(0));
                 }
             }
-            // it is erased unless we turn it into Sequential something
-            return !willEraseToSequential(producedType);
+            // it is erased
+            return true;
         }
         // we found something which is not erased entirely
         return false;
@@ -1328,8 +1320,6 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().Type(syms().objectType);
             }
-        } else if (willEraseToSequential(type)) {
-            type = typeFact().getDefiniteType(type).getSupertype(typeFact().getSequentialDeclaration());
         } else if (willEraseToException(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
@@ -2096,15 +2086,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return elementType;
         }
-        // We must first check for that before we look at the type declaration, because it may have been simplified by
-        // the typechecker to something we think is a class, such as Empty when in reality the expected type will be Sequential
-        if (willEraseToSequential(declType)) {
-            // Erasure: If the declType would be Sequential<Element>
-            // treat the parameter type as Sequential<Element>, because that's all
-            // Java will see.
-            ProducedType erasedType = typeFact().getDefiniteType(declType).getSupertype(typeFact().getSequentialDeclaration());
-            return erasedType.substitute(producedReference.getTypeArguments());
-        } else if (declTypeDecl instanceof ClassOrInterface) {
+        if (declTypeDecl instanceof ClassOrInterface) {
             return type;
         } else if ((declTypeDecl instanceof TypeParameter)
                 && (flags & TP_TO_BOUND) != 0) {
