@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 class Bug843_1<Element, Rest> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug843_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .ceylon.language.Sequential<? extends Element> rest) {
+    Bug843_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .java.lang.Object rest) {
         this.$reified$Element = $reified$Element;
         this.$reified$Rest = $reified$Rest;
     }
@@ -16,7 +16,7 @@ class Bug843_1<Element, Rest> implements .com.redhat.ceylon.compiler.java.runtim
 }
 class Bug843_2<Rest> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Bug843_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> rest) {
+    Bug843_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .java.lang.Object rest) {
         this.$reified$Rest = $reified$Rest;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest;
@@ -32,8 +32,8 @@ final class bug843_test_ {
     }
     
     static void bug843_test() {
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
-        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_1<.ceylon.language.Integer, .ceylon.language.Empty>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug843_2<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
     }
     
     public static void main(.java.lang.String[] args) {

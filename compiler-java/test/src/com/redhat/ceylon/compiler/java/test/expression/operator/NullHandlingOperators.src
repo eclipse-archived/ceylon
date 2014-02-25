@@ -122,10 +122,10 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
             }
             returning $ceylontmp$12 != null ? $ceylontmp$12 : .ceylon.language.Float.instance(1.0);
         ).doubleValue();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$13 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.get_() : null);
+                .java.lang.Object $ceylontmp$13 = false ? .ceylon.language.empty_.get_() : null;
             }
             returning $ceylontmp$13 != null ? $ceylontmp$13 : new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L));
         );

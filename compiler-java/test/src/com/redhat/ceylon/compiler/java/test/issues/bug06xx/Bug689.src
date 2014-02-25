@@ -122,9 +122,9 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> getAttributeWithUnionWithinTypeArg$priv$() {
         return attributeWithUnionWithinTypeArg;
     }
-    private final .ceylon.language.Sequential attributeWithUnionErasedToIterable;
+    private final .java.lang.Object attributeWithUnionErasedToIterable;
     
-    private final .ceylon.language.Sequential getAttributeWithUnionErasedToIterable$priv$() {
+    private final .java.lang.Object getAttributeWithUnionErasedToIterable$priv$() {
         return attributeWithUnionErasedToIterable;
     }
     

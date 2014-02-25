@@ -99,13 +99,13 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = b.<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, c).<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, a);
     }
     
-    private final void testSetOperatorsWithErasedTypes$priv$(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> setOfIntersectionType, final .ceylon.language.Set<? extends .java.lang.Object> setOfNothing) {
+    private final void testSetOperatorsWithErasedTypes$priv$(final .ceylon.language.Set<? extends .ceylon.language.String> setOfString, final .ceylon.language.Set setOfUnionType, final .ceylon.language.Set setOfIntersectionType, final .ceylon.language.Set<? extends .java.lang.Object> setOfNothing) {
         .ceylon.language.Set x1 = setOfUnionType.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .ceylon.language.Integer> x2 = (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)setOfUnionType.<.ceylon.language.String>intersection(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set x4 = setOfUnionType.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set y1 = setOfIntersectionType.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> y2 = setOfIntersectionType.<.ceylon.language.String>intersection(.ceylon.language.String.$TypeDescriptor$, setOfString);
-        .ceylon.language.Set<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> y4 = setOfIntersectionType.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
+        .ceylon.language.Set y4 = setOfIntersectionType.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .ceylon.language.String> z1 = setOfNothing.<.ceylon.language.String>union(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> z2 = setOfNothing.<.ceylon.language.String>intersection(.ceylon.language.String.$TypeDescriptor$, setOfString);
         .ceylon.language.Set<? extends .java.lang.Object> z4 = setOfNothing.<.ceylon.language.String>complement(.ceylon.language.String.$TypeDescriptor$, setOfString);

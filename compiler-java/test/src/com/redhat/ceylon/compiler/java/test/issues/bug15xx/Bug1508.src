@@ -84,12 +84,12 @@ final class bug1508_ {
                     }
                 };
             }
-        }).$call$(fun), (.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .ceylon.language.Empty.$TypeDescriptor$), "<[]|[X]>(X?)", (short)-1){
+        }).$call$(fun), (.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$X, $reified$X, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, $reified$X), .ceylon.language.Empty.$TypeDescriptor$), "<[]|[X]>(X?)", (short)-1){
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $call$(final .java.lang.Object $param$0) {
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final X $ceylontmp$element = (X)$param$0;
-                return (.ceylon.language.Sequential<? extends X>)(.ceylon.language.Sequential).ceylon.language.emptyOrSingleton_.<X>emptyOrSingleton($reified$X, $ceylontmp$element);
+                return .ceylon.language.emptyOrSingleton_.<X>emptyOrSingleton($reified$X, $ceylontmp$element);
             }
         }));
     }
