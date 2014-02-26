@@ -35,8 +35,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -58,6 +57,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -77,6 +77,7 @@ import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
 
 public class ModelLoaderTest extends CompilerTest {
     
@@ -521,7 +522,320 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadFunctionalParameter(){
         verifyClassLoading("FunctionalParameter.ceylon");
     }
+    
+    @Test
+    public void functionalParameterParameterNames(){
+        compile("FunctionalParameterParameterNames.ceylon");
+        try {
+            verifyClassLoading("functionalparameterparameternamestest.ceylon", new RunnableTest() {
+                
+                @Override
+                public void test(ModelLoader loader) {
+                    Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
+                    Assert.assertNotNull(mod);
+                    Package p = mod.getDirectPackage(packageForJavaModelLoading());
+                    Assert.assertNotNull(p);
+                    Declaration fpClass = p.getDirectMember("FunctionalParameterParameterNames", Collections.<ProducedType>emptyList(), false);
+                    Assert.assertNotNull(fpClass);
+                    { // functionalParameter
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameter", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals("Anything(Anything(String))", typeName(fp));
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("Anything(String)", typeName(modelF));
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
+                        Parameter paramS = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("s", modelS.getName());
+                        Assert.assertEquals("String", typeName(modelS));
+                    }
+                    { // callableValueParameter
+                        Method fp = (Method)fpClass.getDirectMember("callableValueParameter", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals("Anything(Anything(String))", typeName(fp));
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Value);
+                        Value modelF = (Value)paramF.getModel();
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals("Anything(String)", typeName(modelF));
+                    }
+                    { // functionalParameterNested
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterNested", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals("Anything(Anything(Anything(String)))", typeName(fp));
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("Anything(Anything(String))", typeName(modelF));
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
+                        Parameter paramF2 = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f2", paramF2.getName());
+                        Assert.assertTrue(paramF2.getModel() instanceof Method);
+                        Method modelF2 = (Method)paramF2.getModel();
+                        Assert.assertEquals("Anything(String)", typeName(modelF2));
+                        Assert.assertEquals("f2", modelF2.getName());
+                        Assert.assertEquals(1, modelF2.getParameterLists().size());
+                        Assert.assertEquals(1, modelF2.getParameterLists().get(0).getParameters().size());
+                        Parameter paramS = modelF2.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("s", modelS.getName());
+                        Assert.assertEquals("String", typeName(modelS));
+                    }
+                    { // functionalParameterNested2
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterNested2", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals("Anything(Anything(Anything(String, Anything(Boolean, Integer))))", typeName(fp));
+                        
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals("Anything(Anything(String, Anything(Boolean, Integer)))", typeName(modelF));
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramF2 = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f2", paramF2.getName());
+                        Assert.assertTrue(paramF2.getModel() instanceof Method);
+                        Method modelF2 = (Method)paramF2.getModel();
+                        Assert.assertEquals("Anything(String, Anything(Boolean, Integer))", typeName(modelF2));
+                        Assert.assertEquals("f2", modelF2.getName());
+                        Assert.assertEquals(1, modelF2.getParameterLists().size());
+                        Assert.assertEquals(2, modelF2.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramS = modelF2.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("String", typeName(modelS));
+                        Assert.assertEquals("s", modelS.getName());
+                        
+                        Parameter paramF3 = modelF2.getParameterLists().get(0).getParameters().get(1);
+                        Assert.assertEquals("f3", paramF3.getName());
+                        Assert.assertTrue(paramF3.getModel() instanceof Method);
+                        Method modelF3 = (Method)paramF3.getModel();
+                        Assert.assertEquals("Anything(Boolean, Integer)", typeName(modelF3));
+                        Assert.assertEquals("f3", modelF3.getName());
+                        Assert.assertEquals(1, modelF3.getParameterLists().size());
+                        Assert.assertEquals(2, modelF3.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramB1 = modelF3.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("b1", paramB1.getName());
+                        Assert.assertTrue(paramB1.getModel() instanceof Value);
+                        Value modelB1 = (Value)paramB1.getModel();
+                        Assert.assertEquals("Boolean", typeName(modelB1));
+                        Assert.assertEquals("b1", modelB1.getName());
+                        
+                        Parameter paramI2 = modelF3.getParameterLists().get(0).getParameters().get(1);
+                        Assert.assertEquals("i2", paramI2.getName());
+                        Assert.assertTrue(paramI2.getModel() instanceof Value);
+                        Value modelI2 = (Value)paramI2.getModel();
+                        Assert.assertEquals("i2", modelI2.getName());
+                        Assert.assertEquals("Integer", typeName(modelI2));
+                    }
+                    { // functionalParameterMpl
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterMpl", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals("Anything(Anything(Integer)(String))", typeName(fp));
+                        
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("mpl", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("Anything(Integer)(String)", typeName(modelF));
+                        Assert.assertEquals("mpl", modelF.getName());
+                        Assert.assertEquals(2, modelF.getParameterLists().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(1).getParameters().size());
+                        
+                        Parameter paramS = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("s", modelS.getName());
+                        Assert.assertEquals("String", typeName(modelS));
+                        
+                        Parameter paramS2 = modelF.getParameterLists().get(1).getParameters().get(0);
+                        Assert.assertEquals("i2", paramS2.getName());
+                        Assert.assertTrue(paramS2.getModel() instanceof Value);
+                        Value modelS2 = (Value)paramS2.getModel();
+                        Assert.assertEquals("i2", modelS2.getName());
+                        Assert.assertEquals("Integer", typeName(modelS2));
+                    }
+                    { // functionalParameterMpl2
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterMpl2", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramMpl = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("mpl", paramMpl.getName());
+                        Assert.assertTrue(paramMpl.getModel() instanceof Method);
+                        Method modelMpl = (Method)paramMpl.getModel();
+                        Assert.assertEquals("mpl", modelMpl.getName());
+                        Assert.assertEquals(2, modelMpl.getParameterLists().size());
+                        Assert.assertEquals(1, modelMpl.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals(1, modelMpl.getParameterLists().get(1).getParameters().size());
+                        
+                        Parameter paramS = modelMpl.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("s", modelS.getName());
+                        Assert.assertEquals("String", typeName(modelS));
+                        
+                        Parameter paramF = modelMpl.getParameterLists().get(1).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(2, modelF.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramB1 = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("b1", paramB1.getName());
+                        Assert.assertTrue(paramB1.getModel() instanceof Value);
+                        Value modelB1 = (Value)paramB1.getModel();
+                        Assert.assertEquals("b1", modelB1.getName());
+                        Assert.assertEquals("Boolean", typeName(modelB1));
+                        
+                        Parameter paramI2 = modelF.getParameterLists().get(0).getParameters().get(1);
+                        Assert.assertEquals("i2", paramI2.getName());
+                        Assert.assertTrue(paramI2.getModel() instanceof Value);
+                        Value modelI2 = (Value)paramI2.getModel();
+                        Assert.assertEquals("i2", modelI2.getName());
+                        Assert.assertEquals("Integer", typeName(modelI2));
+                        
+                    }
+                    { // functionalParameterMpl3
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterMpl3", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramMpl = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("mpl", paramMpl.getName());
+                        Assert.assertTrue(paramMpl.getModel() instanceof Method);
+                        Method modelMpl = (Method)paramMpl.getModel();
+                        Assert.assertEquals("mpl", modelMpl.getName());
+                        Assert.assertEquals(2, modelMpl.getParameterLists().size());
+                        Assert.assertEquals(1, modelMpl.getParameterLists().get(0).getParameters().size());
+                        Assert.assertEquals(1, modelMpl.getParameterLists().get(1).getParameters().size());
+                        
+                        Parameter paramF = modelMpl.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(2, modelF.getParameterLists().get(0).getParameters().size());
+                        
+                        Parameter paramB1 = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("b1", paramB1.getName());
+                        Assert.assertTrue(paramB1.getModel() instanceof Value);
+                        Value modelB1 = (Value)paramB1.getModel();
+                        Assert.assertEquals("b1", modelB1.getName());
+                        Assert.assertEquals("Boolean", typeName(modelB1));
+                        
+                        Parameter paramI2 = modelF.getParameterLists().get(0).getParameters().get(1);
+                        Assert.assertEquals("i2", paramI2.getName());
+                        Assert.assertTrue(paramI2.getModel() instanceof Value);
+                        Value modelI2 = (Value)paramI2.getModel();
+                        Assert.assertEquals("i2", modelI2.getName());
+                        Assert.assertEquals("Integer", typeName(modelI2));
+                        
+                        Parameter paramS = modelMpl.getParameterLists().get(1).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("s", modelS.getName());
+                        Assert.assertEquals("String", typeName(modelS));
+                    }
+                    { // functionalParameterReturningCallable
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterReturningCallable", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals("Type[Anything()]", modelF.getType().toString());
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
+                        Parameter paramS = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("s", paramS.getName());
+                        Assert.assertTrue(paramS.getModel() instanceof Value);
+                        Value modelS = (Value)paramS.getModel();
+                        Assert.assertEquals("s", modelS.getName());
+                        Assert.assertEquals("Type[String]", modelS.getType().toString());
+                    }
+                    { // functionalParameterReturningCallable
+                        Method fp = (Method)fpClass.getDirectMember("functionalParameterTakingCallable", null, false);
+                        Assert.assertNotNull(fp);
+                        Assert.assertEquals(1, fp.getParameterLists().size());
+                        Assert.assertEquals(1, fp.getParameterLists().get(0).getParameters().size());
+                        Parameter paramF = fp.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f", paramF.getName());
+                        Assert.assertTrue(paramF.getModel() instanceof Method);
+                        Method modelF = (Method)paramF.getModel();
+                        Assert.assertEquals("f", modelF.getName());
+                        Assert.assertEquals("Type[Anything]", modelF.getType().toString());
+                        Assert.assertEquals(1, modelF.getParameterLists().size());
+                        Assert.assertEquals(1, modelF.getParameterLists().get(0).getParameters().size());
+                        Parameter paramF2 = modelF.getParameterLists().get(0).getParameters().get(0);
+                        Assert.assertEquals("f2", paramF2.getName());
+                        Assert.assertTrue(paramF2.getModel() instanceof Value);
+                        Value modelF2 = (Value)paramF2.getModel();
+                        Assert.assertEquals("f2", modelF2.getName());
+                        Assert.assertEquals("Type[Anything(String)]", modelF2.getType().toString());
+                    }
+                }
 
+                private String typeName(MethodOrValue fp) {
+                    if (fp instanceof Method) {
+                        return fp.getProducedTypedReference(null, Collections.<ProducedType>emptyList()).getFullType().getProducedTypeName();
+                    } else if (fp instanceof Value) {
+                        return fp.getType().getProducedTypeName();
+                    }
+                    return null;
+                }
+            });
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof org.junit.ComparisonFailure) {
+                throw (org.junit.ComparisonFailure)e.getCause();
+            } else if (e.getCause() instanceof java.lang.AssertionError) {
+                throw (java.lang.AssertionError)e.getCause();
+            }
+            throw e;
+        }
+    }
+    
     @Test
     public void loadInnerClass(){
         verifyClassLoading("InnerClass.ceylon");
