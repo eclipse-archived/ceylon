@@ -2247,7 +2247,7 @@ public class GenerateJsVisitor extends Visitor
         if (isMethod) {
             out(clAlias, "JsCallable(", lhsVar, ",");
         }
-        out(lhsVar, "!==null?", memberAccess(that, lhsVar), ":null)");
+        out(lhsVar, "!==null&&", lhsVar, "!==undefined","?", memberAccess(that, lhsVar), ":null)");
         if (isMethod) {
             out(")");
         }
@@ -4659,17 +4659,18 @@ public class GenerateJsVisitor extends Visitor
                 }
                 imported=true;
             }
-        } else {
-            qualify(that, d);
         }
         if (d instanceof Value) {
+            if (!d.isMember()) qualify(that, d);
             out("$prop$", names.getter(d), ")");
         } else {
             if (d.isAnonymous()) {
                 final boolean wasShared=d.isShared();
                 d.setShared(true);
                 ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(false);
-                out(names.getter(d), "().$$metamodel$$.$t.t");
+                out(clAlias, "getrtmm$$(");
+                if (!d.isMember()) qualify(that, d);
+                out(names.getter(d), ").$t.t");
                 ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(true);
                 d.setShared(wasShared);
             } else {
@@ -4729,10 +4730,18 @@ public class GenerateJsVisitor extends Visitor
             final com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
             final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
             final Declaration d = ref.getDeclaration();
+            final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
             if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
-                out(clAlias, d.isMember()?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
+                out(clAlias, d.isMember()&&anonClass==null?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
                 if (ltype == null) {
-                    qualify(that, d);
+                    if (anonClass != null) {
+                        qualify(that, anonClass);
+                        final String ancname = names.name(anonClass);
+                        final int dolpos = ancname.lastIndexOf('$');
+                        out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "().");
+                    } else {
+                        qualify(that, d);
+                    }
                 } else {
                     qualify(that, ltype.getDeclaration());
                     out(names.name(ltype.getDeclaration()));
@@ -4743,7 +4752,7 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     out(names.name(d),",");
                 }
-                if (d.isMember()) {
+                if (d.isMember()&&anonClass==null) {
                     if (that.getTypeArgumentList()!=null) {
                         out("[");
                         boolean first=true;
@@ -4761,22 +4770,47 @@ public class GenerateJsVisitor extends Visitor
                     TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
                 } else {
                     TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
+                    if (anonClass != null) {
+                        qualify(that, anonClass);
+                        final String ancname = names.name(anonClass);
+                        final int dolpos = ancname.lastIndexOf('$');
+                        out(",get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "()");
+                    }
                     if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
-                        out(",undefined,");//TODO pass the container
+                        if (anonClass == null) {
+                            out(",undefined");
+                        }
+                        out(",");
                         TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this, false);
                     }
                 }
                 out(")");
             } else if (that instanceof ValueLiteral || d instanceof Value) {
                 Value vd = (Value)d;
-                if (vd.isMember()) {
+                if (vd.isMember() && anonClass==null) {
                     out(clAlias, "$init$AppliedAttribute$meta$model()('");
                     out(d.getName(), "',");
                 } else {
-                    out(clAlias, "$init$AppliedValue$meta$model()(undefined,");
+                    out(clAlias, "$init$AppliedValue$meta$model()(");
+                    if (anonClass == null) {
+                        out("undefined");
+                    } else {
+                        qualify(that, anonClass);
+                        final String ancname = names.name(anonClass);
+                        final int dolpos = ancname.lastIndexOf('$');
+                        out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "()");
+                    }
+                    out(",");
                 }
                 if (ltype == null) {
-                    qualify(that, d);
+                    if (anonClass != null) {
+                        qualify(that, anonClass);
+                        final String ancname = names.name(anonClass);
+                        final int dolpos = ancname.lastIndexOf('$');
+                        out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "().");
+                    } else {
+                        qualify(that, d);
+                    }
                 } else {
                     qualify(that, ltype.getDeclaration());
                     out(names.name(ltype.getDeclaration()));
