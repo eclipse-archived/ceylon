@@ -190,7 +190,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             if (result != null) {
                 return (result.version() != null) ? result.version() : "";
             }
-            if ("default".equals(name)) {
+            if ("default".equals(name) && !allowCompilation) {
                 throw new ToolUsageError(Messages.msg(bundle, "module.not.found", name, repoMgr.getRepositoriesDisplayString()));
             }
         }
@@ -269,7 +269,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             err.append("\n");
             throw new ToolUsageError(err.toString());
         }
-        return versions.iterator().next().getVersion();
+        if ("default".equals(name)) {
+            return "";
+        } else {
+            return versions.iterator().next().getVersion();
+        }
     }
     
     private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
