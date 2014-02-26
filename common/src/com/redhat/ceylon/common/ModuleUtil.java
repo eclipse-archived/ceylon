@@ -23,4 +23,16 @@ public abstract class ModuleUtil {
         }
     }
 
+    public static boolean isDefaultModule(String moduleName) {
+        return "default".equals(moduleName);
+    }
+
+    public static String makeModuleName(String moduleName, String version) {
+        if (isDefaultModule(moduleName) || version == null) {
+            return moduleName;
+        } else {
+            return moduleName + "/" + version;
+        }
+    }
+
 }
