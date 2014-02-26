@@ -250,7 +250,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 func = fsb.toString();
             }
         }
-        final boolean isDefault = module.equals("default");
+        final boolean isDefault = ModuleUtil.isDefaultModule(module);
         String moduleString = isDefault ? module : module +"/"+version;
         //The timeout is to have enough time to start reading on the process streams
         final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method \"%s\" does not exist or is not shared in the %s module');else __entry_point__();",
@@ -358,7 +358,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         if (systemRepo == null) {
             systemRepo = getCeylonRepo();
         }
-        final boolean isDefault = "default".equals(module);
+        final boolean isDefault = ModuleUtil.isDefaultModule(module);
         String version;
         final String modname;
         if (isDefault) {
@@ -408,7 +408,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     private File getRepoDir(String modname, File file) {
         // A trippy way to get to the repo folder, but it works
         int count = modname.split("\\.").length + 1;
-        if (!"default".equals(modname)) {
+        if (!ModuleUtil.isDefaultModule(modname)) {
             count++;
         }
         for (int i=0; i < count; i++) {
