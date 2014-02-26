@@ -716,7 +716,6 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.aliasName(Naming.getAliasedParameterName(param));
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
-        pdb.functional(param.getModel() instanceof Method);
         pdb.type(type, makeJavaTypeAnnotations(param.getModel()));
         pdb.modifiers(transformClassParameterDeclFlags(param));
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {

@@ -265,6 +265,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected boolean binaryCompatibilityErrorRaised = false;
     protected Timer timer;
     private Map<String,LazyPackage> modulelessPackages = new HashMap<String,LazyPackage>();
+    private ParameterNameParser parameterNameParser = new ParameterNameParser(this);
     
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
@@ -2251,22 +2252,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 AnnotationMirror functionalParameterAnnotation = paramMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION);
                 if (functionalParameterAnnotation != null) {
                     // A functional parameter to a method
-                    Method method = new Method();
-                    method.setType(getSimpleCallableReturnType(type));
-                    // We need to set enough of a parameter list so that the method's full type is correct 
-                    ParameterList pl = new ParameterList();
-                    int count = 0;
-                    for (ProducedType pt : getSimpleCallableArgumentTypes(type)) {
-                        Parameter p = new Parameter();
-                        Value v = new Value();
-                        String name = "arg" + count++;
-                        p.setName(name);
-                        v.setName(name);
-                        v.setType(pt);
-                        p.setModel(v);
-                        pl.getParameters().add(p);
-                    }
-                    method.addParameterList(pl);
+                    Method method = loadFunctionalParameter((Declaration)decl, paramName, type, (String)functionalParameterAnnotation.getValue());
                     value = method;
                 } else {
                     // A value parameter to a method
@@ -2303,8 +2289,39 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameterIndex++;
         }
     }
+    private Method loadFunctionalParameter(Declaration decl, String paramName, ProducedType type, String parameterNames) {
+        Method method = new Method();
+        method.setName(paramName);
+        method.setUnit(decl.getUnit());
+        if (parameterNames == null || parameterNames.isEmpty()) {
+            // This branch is broken, but it deals with old code which lacked
+            // the encoding of parameter names of functional parameters, so we'll keep it until 1.2
+            method.setType(getSimpleCallableReturnType(type));
+            ParameterList pl = new ParameterList();
+            int count = 0;
+            for (ProducedType pt : getSimpleCallableArgumentTypes(type)) {
+                Parameter p = new Parameter();
+                Value v = new Value();
+                String name = "arg" + count++;
+                p.setName(name);
+                v.setName(name);
+                v.setType(pt);
+                p.setModel(v);
+                pl.getParameters().add(p);
+            }
+            method.addParameterList(pl);
+        } else {
+            try {
+                parameterNameParser.parse(parameterNames, type, method);
+            } catch(Exception x){
+                logError(x.getClass().getSimpleName() + " while parsing parameter names of "+decl+": " + x.getMessage());
+                return method;
+            }
+        }
+        return method;
+    }
 
-    private List<ProducedType> getSimpleCallableArgumentTypes(ProducedType type) {
+    List<ProducedType> getSimpleCallableArgumentTypes(ProducedType type) {
         if(type != null
                 && type.getDeclaration() instanceof ClassOrInterface
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)
@@ -2313,7 +2330,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return Collections.emptyList();
     }
 
-    private List<ProducedType> flattenCallableTupleType(ProducedType tupleType) {
+    List<ProducedType> flattenCallableTupleType(ProducedType tupleType) {
         if(tupleType != null
                 && tupleType.getDeclaration() instanceof ClassOrInterface){
             String declName = tupleType.getDeclaration().getQualifiedNameString();
@@ -2335,7 +2352,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return Collections.emptyList();
     }
     
-    private ProducedType getSimpleCallableReturnType(ProducedType type) {
+    ProducedType getSimpleCallableReturnType(ProducedType type) {
         if(type != null
                 && type.getDeclaration() instanceof ClassOrInterface
                 && type.getDeclaration().getQualifiedNameString().equals(CEYLON_LANGUAGE_CALLABLE_TYPE_NAME)

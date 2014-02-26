@@ -19,9 +19,14 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.Iterator;
+
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -56,7 +61,7 @@ public class ParameterDefinitionBuilder {
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> modelAnnotations;
 
-    private boolean functional;
+    private String functionalParameterName;
 
     private MethodOrValue boxedVariable;
 
@@ -92,8 +97,36 @@ public class ParameterDefinitionBuilder {
         if (isBoxedVariableParameter(parameter)) {
             pdb.boxedVariable = parameter.getModel();
         }
+        if (parameter.getModel() instanceof Method) {
+            pdb.functionalParameterName = functionalName((Method)parameter.getModel());
+        }
         
         return pdb;
+    }
+
+    private static String functionalName(Method model) {
+        StringBuilder sb = new StringBuilder();
+        functionalName(sb, model);
+        return sb.toString();
+    }
+    
+    private static void functionalName(StringBuilder sb, Method model) {
+        for (ParameterList pl : model.getParameterLists()) {
+            sb.append('(');
+            Iterator<Parameter> parameters = pl.getParameters().iterator();
+            while (parameters.hasNext()) {
+                Parameter p = parameters.next();
+                MethodOrValue pm = p.getModel();
+                sb.append(pm.getName());
+                if (pm instanceof Method) {
+                    functionalName(sb, (Method)pm);
+                }
+                if (parameters.hasNext()) {
+                    sb.append(',');
+                }
+            }
+            sb.append(')');
+        }
     }
 
     static boolean isBoxedVariableParameter(Parameter parameter) {
@@ -139,14 +172,6 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
-    /**
-     * Makes the parameter a functional parameter
-     */
-    public ParameterDefinitionBuilder functional(boolean functional) {
-        this.functional = functional;
-        return this;
-    }
-    
     public ParameterDefinitionBuilder aliasName(String aliasedName) {
         this.aliasedName = aliasedName;
         return this;
@@ -188,8 +213,8 @@ public class ParameterDefinitionBuilder {
         ListBuffer<JCAnnotation> annots = ListBuffer.lb();
         if (Annotations.includeModel(annotationFlags)) {
             annots.appendList(gen.makeAtName(name));
-            if (functional) {
-                annots.appendList(gen.makeAtFunctionalParameter());
+            if (functionalParameterName != null) {
+                annots.appendList(gen.makeAtFunctionalParameter(functionalParameterName));
             }
             if (sequenced) {
                 annots.appendList(gen.makeAtSequenced());
