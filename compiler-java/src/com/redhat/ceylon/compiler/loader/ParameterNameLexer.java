@@ -6,7 +6,10 @@ class ParameterNameLexer {
     public static final int LEFT_PAREN = COMMA+1;
     public static final int RIGHT_PAREN = LEFT_PAREN+1;
     public static final int IDENT = RIGHT_PAREN+1;
-    public static final int EOI = IDENT+1;
+    public static final int PLUS = IDENT+1;
+    public static final int STAR = PLUS+1;
+    public static final int BANG = STAR+1;
+    public static final int EOI = BANG+1;
     
     // type string to parse
     String  input;
@@ -39,6 +42,9 @@ class ParameterNameLexer {
         case '(': token = LEFT_PAREN; break;
         case ')': token = RIGHT_PAREN; break;
         case ',': token = COMMA; break;
+        case '+': token = PLUS; break;
+        case '*': token = STAR; break;
+        case '!': token = BANG; break;
         default:
             if (isIdentifierPart(c)) {
                 token = IDENT;
@@ -62,6 +68,9 @@ class ParameterNameLexer {
         case LEFT_PAREN:
         case RIGHT_PAREN:
         case COMMA:
+        case PLUS:
+        case STAR:
+        case BANG:
             index += 1;
             return;
         case IDENT:
@@ -102,6 +111,9 @@ class ParameterNameLexer {
         case LEFT_PAREN: return "LEFT_PAREN";
         case RIGHT_PAREN: return "RIGHT_PAREN";
         case EOI: return "EOI";
+        case PLUS: return "PLUS";
+        case STAR: return "STAR";
+        case BANG: return "BANG";
         }
         throw new ParameterNameParserException("Unknown token " + token);
     }

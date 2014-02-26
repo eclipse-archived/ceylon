@@ -111,6 +111,9 @@ public class ParameterDefinitionBuilder {
     }
     
     private static void functionalName(StringBuilder sb, Method model) {
+        if (model.isDeclaredVoid()) {
+            sb.append('!');
+        }
         for (ParameterList pl : model.getParameterLists()) {
             sb.append('(');
             Iterator<Parameter> parameters = pl.getParameters().iterator();
@@ -118,7 +121,15 @@ public class ParameterDefinitionBuilder {
                 Parameter p = parameters.next();
                 MethodOrValue pm = p.getModel();
                 sb.append(pm.getName());
+                if(p.isSequenced()) {
+                    if (p.isAtLeastOne()) {
+                        sb.append('+');
+                    } else {
+                        sb.append('*');
+                    }
+                }
                 if (pm instanceof Method) {
+                    Method meth = (Method)pm;
                     functionalName(sb, (Method)pm);
                 }
                 if (parameters.hasNext()) {

@@ -184,6 +184,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_CALLABLE_TYPE_NAME = "ceylon.language::Callable";
     private static final String CEYLON_LANGUAGE_TUPLE_TYPE_NAME = "ceylon.language::Tuple";
     private static final String CEYLON_LANGUAGE_SEQUENTIAL_TYPE_NAME = "ceylon.language::Sequential";
+    private static final String CEYLON_LANGUAGE_SEQUENCE_TYPE_NAME = "ceylon.language::Sequence";
     private static final String CEYLON_LANGUAGE_EMPTY_TYPE_NAME = "ceylon.language::Empty";
 
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
@@ -2254,6 +2255,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // A functional parameter to a method
                     Method method = loadFunctionalParameter((Declaration)decl, paramName, type, (String)functionalParameterAnnotation.getValue());
                     value = method;
+                    parameter.setDeclaredAnything(method.isDeclaredVoid());
                 } else {
                     // A value parameter to a method
                     value = new Value();
@@ -2344,6 +2346,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else if(declName.equals(CEYLON_LANGUAGE_EMPTY_TYPE_NAME)){
                 return new LinkedList<ProducedType>();
             }else if(declName.equals(CEYLON_LANGUAGE_SEQUENTIAL_TYPE_NAME)){
+                LinkedList<ProducedType> ret = new LinkedList<ProducedType>();
+                ret.add(tupleType);
+                return ret;
+            }else if(declName.equals(CEYLON_LANGUAGE_SEQUENCE_TYPE_NAME)){
                 LinkedList<ProducedType> ret = new LinkedList<ProducedType>();
                 ret.add(tupleType);
                 return ret;

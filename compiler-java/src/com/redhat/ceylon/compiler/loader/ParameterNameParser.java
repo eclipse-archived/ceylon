@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.loader;
 import static com.redhat.ceylon.compiler.loader.ParameterNameLexer.*;
 
 import java.util.Iterator;
-import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -16,10 +15,15 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 /**
  * Parser for {@link com.redhat.ceylon.compiler.java.metadata.FunctionalParameter#value()}.
  * <pre>
- * input     ::= nameList ( nameList )*
+ * input     ::= ( '!' )? nameList ( nameList )*
  * nameList  ::= '(' ( name ( ',' name )* )? ')'
- * name      ::= identifier ( nameList )*
+ * name      ::= identifier ( '+' | '*' )? ( '!' )? ( nameList )*
  * </pre>
+ * <ul>
+ *   <li>A {@code !} means that the {@code Method} model is declared {@code void}</li>
+ *   <li>A {@code +} means that the {@code Parameter} model is possibly-empty variadic</li>
+ *   <li>A {@code *} means that the {@code Parameter} model is nonempty variadic</li>
+ * </ul> 
  * @author tom
  */
 class ParameterNameParser {
@@ -33,6 +37,10 @@ class ParameterNameParser {
     
     public void parse(String input, ProducedType type, Method method) {
         lexer.setup(input);
+        if (lexer.lookingAt(BANG)) {
+            lexer.eat();
+            method.setDeclaredVoid(true);
+        }
         method.addParameterList(parseNameList(type, method.getUnit()));
         while (lexer.lookingAt(LEFT_PAREN)) {// mpl
             type = loader.getSimpleCallableReturnType(type);
@@ -69,9 +77,27 @@ class ParameterNameParser {
 
     private Parameter parseName(ProducedType type, Unit unit) {
         String identifier = lexer.eatIdentifier();
+        Parameter p = new Parameter();
+        p.setName(identifier);
+        if (lexer.lookingAt(STAR)) {
+            lexer.eat();
+            p.setSequenced(true);
+        } else if (lexer.lookingAt(PLUS)) {
+            lexer.eat();
+            p.setSequenced(true);
+            p.setAtLeastOne(true);
+        }
+        boolean declaredVoid = false;
+        if (lexer.lookingAt(BANG)) {
+            lexer.eat();
+            declaredVoid = true;
+            p.setDeclaredAnything(declaredVoid);
+        }
+        
         final MethodOrValue result;
         if (lexer.lookingAt(LEFT_PAREN)) {
             Method method = new Method();
+            method.setDeclaredVoid(declaredVoid);
             method.setType(loader.getSimpleCallableReturnType(type));
             while (lexer.lookingAt(LEFT_PAREN)) {
                 method.addParameterList(parseNameList(type, unit));
@@ -80,14 +106,17 @@ class ParameterNameParser {
             result = method;
         } else {
             Value value = new Value();
+            if (declaredVoid) {
+                throw new ParameterNameParserException("void Value");
+            }
             value.setType(type);
             result = value;
         }
         result.setName(identifier);
         result.setUnit(unit);
-        Parameter p = new Parameter();
+        
         p.setModel(result);
-        p.setName(identifier);
+        
         
         return p;
     }
