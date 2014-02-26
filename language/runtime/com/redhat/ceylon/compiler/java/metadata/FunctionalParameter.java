@@ -24,6 +24,11 @@ public @interface FunctionalParameter {
      * nameList  ::= '(' ( name ( ',' name )* )? ')'
      * name      ::= identifier ( nameList )*
      * </pre>
+     * <ul>
+     *   <li>A {@code !} means that the {@code Method} model is declared {@code void}</li>
+     *   <li>A {@code +} means that the {@code Parameter} model is possibly-empty variadic</li>
+     *   <li>A {@code *} means that the {@code Parameter} model is nonempty variadic</li>
+     * </ul> 
      */
     String value() default "";
 }
