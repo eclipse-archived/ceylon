@@ -43,6 +43,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.ModuleUtil;
 
 /**
  * Byte hacks / utils.
@@ -179,7 +180,7 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
     }
 
     private static String getVersionFromFilename(String moduleName, String name) {
-        if (!"default".equals(moduleName)) {
+        if (!ModuleUtil.isDefaultModule(moduleName)) {
             String type = ArtifactContext.getSuffixFromFilename(name);
             return name.substring(moduleName.length() + 1, name.length() - type.length());
         } else {

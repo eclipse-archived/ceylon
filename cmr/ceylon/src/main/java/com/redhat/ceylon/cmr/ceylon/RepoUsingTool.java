@@ -25,6 +25,7 @@ import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -181,7 +182,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         boolean checkCompilation = compileFlags.contains(COMPILE_CHECK);
         boolean allowCompilation = forceCompilation || checkCompilation || compileFlags.contains(COMPILE_ONCE);
         
-        if (!forceCompilation && ("default".equals(name) || version != null)) {
+        if (!forceCompilation && (ModuleUtil.isDefaultModule(name) || version != null)) {
             // If we have the default module or a version we first try it the quick way
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
             ac.setFetchSingleArtifact(true);
@@ -190,7 +191,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             if (result != null) {
                 return (result.version() != null) ? result.version() : "";
             }
-            if ("default".equals(name) && !allowCompilation) {
+            if (ModuleUtil.isDefaultModule(name) && !allowCompilation) {
                 throw new ToolUsageError(Messages.msg(bundle, "module.not.found", name, repoMgr.getRepositoriesDisplayString()));
             }
         }
@@ -269,7 +270,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             err.append("\n");
             throw new ToolUsageError(err.toString());
         }
-        if ("default".equals(name)) {
+        if (ModuleUtil.isDefaultModule(name)) {
             return "";
         } else {
             return versions.iterator().next().getVersion();
