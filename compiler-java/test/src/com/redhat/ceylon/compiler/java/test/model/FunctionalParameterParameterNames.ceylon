@@ -14,4 +14,7 @@ shared abstract class FunctionalParameterParameterNames() {
     shared formal void functionalParameterTakingCallable(void f(Anything(String) f2));
     
     shared formal void mpl(String s)(Integer i);
+    
+    shared formal void functionalParameterVariadicStar(void f(String* s));
+    shared formal void functionalParameterVariadicPlus(void f(String+ s));
 }
