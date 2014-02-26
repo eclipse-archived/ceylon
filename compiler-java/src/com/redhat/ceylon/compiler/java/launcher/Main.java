@@ -46,6 +46,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -696,7 +697,7 @@ public class Main extends com.sun.tools.javac.main.Main {
 
     private List<File> addModuleSources(List<File> filenames, Location location, Set<Kind> kinds, boolean check) throws IOException {
         for(String moduleName : classnames){
-            String path = moduleName.equals("default") ? "" : moduleName;
+            String path = ModuleUtil.isDefaultModule(moduleName) ? "" : moduleName;
             Iterable<JavaFileObject> files = fileManager.list(location, path, kinds, true);
             boolean gotOne = false;
             for(JavaFileObject file : files){

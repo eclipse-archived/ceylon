@@ -47,6 +47,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -144,7 +145,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         args.add(srcDir.getCanonicalPath());
         args.add("-out");
         args.add(outRepo.getAbsolutePath());
-        if (moduleName.equals("default")) {
+        if (ModuleUtil.isDefaultModule(moduleName)) {
             scan(srcDir.getCanonicalFile(), args, srcDir.getCanonicalFile());
         } else {
             args.add(moduleName);
@@ -208,7 +209,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             createFailingTest("No tests!", new Exception("contains no tests"));
         }
         Method failureCountGetter = null;
-        if(moduleName.equals("default")){
+        if(ModuleUtil.isDefaultModule(moduleName)){
             failureCountGetter = getFailureCountGetter(cl);
             // check if an error was produced
             if(failureCountGetter == null)

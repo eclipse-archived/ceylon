@@ -31,6 +31,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -239,7 +240,7 @@ public class CeylonImportJarTool extends CeylonBaseTool {
                 // missing dep is OK, it can be fixed later, but invalid module/dependency is not OK
                 if(name == null || name.isEmpty())
                     throw new ImportJarException("error.descriptorFile.invalid.module", new Object[]{name}, null);
-                if("default".equals(name))
+                if(ModuleUtil.isDefaultModule(name))
                     throw new ImportJarException("error.descriptorFile.invalid.module.default");
                 if(version == null || version.isEmpty())
                     throw new ImportJarException("error.descriptorFile.invalid.module.version", new Object[]{version}, null);
