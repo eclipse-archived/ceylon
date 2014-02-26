@@ -194,7 +194,7 @@ public class CeylonRunTool extends RepoUsingTool {
             return;
         }
         if (!version.isEmpty()) {
-            moduleNameOptVersion = module + "/" + version;
+            moduleNameOptVersion = ModuleUtil.makeModuleName(module, version);
         }
         
         argList.add(moduleNameOptVersion);
