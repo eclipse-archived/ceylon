@@ -571,39 +571,44 @@ public class CeylonEnter extends Enter {
         }
         
         protected Node getIdentifyingNode(Node node) {
+            Node result = null;
             if (node instanceof Tree.Declaration) {
-                return ((Tree.Declaration) node).getIdentifier();
+                result = ((Tree.Declaration) node).getIdentifier();
             }
             else if (node instanceof Tree.ModuleDescriptor) {
-                return ((Tree.ModuleDescriptor) node).getImportPath();
+                result = ((Tree.ModuleDescriptor) node).getImportPath();
             }
             else if (node instanceof Tree.PackageDescriptor) {
-                return ((Tree.PackageDescriptor) node).getImportPath();
+                result = ((Tree.PackageDescriptor) node).getImportPath();
             }
             else if (node instanceof Tree.NamedArgument) {
-                return ((Tree.NamedArgument) node).getIdentifier();
+                result = ((Tree.NamedArgument) node).getIdentifier();
             }
             else if (node instanceof Tree.StaticMemberOrTypeExpression) {
-                return ((Tree.StaticMemberOrTypeExpression) node).getIdentifier();
+                result = ((Tree.StaticMemberOrTypeExpression) node).getIdentifier();
             }
             else if (node instanceof Tree.ExtendedTypeExpression) {
                 //TODO: whoah! this is really ugly!
-                return ((Tree.SimpleType) ((Tree.ExtendedTypeExpression) node).getChildren().get(0))
+                result = ((Tree.SimpleType) ((Tree.ExtendedTypeExpression) node).getChildren().get(0))
                         .getIdentifier();
             }
             else if (node instanceof Tree.SimpleType) {
-                return ((Tree.SimpleType) node).getIdentifier();
+                result = ((Tree.SimpleType) node).getIdentifier();
             }
             else if (node instanceof Tree.ImportMemberOrType) {
-                return ((Tree.ImportMemberOrType) node).getIdentifier();
+                result = ((Tree.ImportMemberOrType) node).getIdentifier();
             }
-            else {    
-                return node;
+            else {
+                result = node;
             }
+            if (result == null) {
+                result = node;
+            }
+            return result;
         }
         protected int getPosition(Node node) {
             int pos;
-            if(node.getToken() != null)
+            if(node != null && node.getToken() != null)
                 pos = cpu.getLineMap().getStartPosition(node.getToken().getLine())
                 + node.getToken().getCharPositionInLine();
             else
