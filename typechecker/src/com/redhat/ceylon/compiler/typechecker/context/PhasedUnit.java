@@ -116,6 +116,10 @@ public class PhasedUnit {
         this(unitFile, srcDir, cu, p, moduleManager, context, null);
     }
     
+    protected boolean reuseExistingDescriptorModels() {
+        return false;
+    }
+    
     public Module visitSrcModulePhase() {
         if ( ModuleManager.MODULE_FILE.equals(fileName) ||
                 ModuleManager.PACKAGE_FILE.equals(fileName) ) {
@@ -123,6 +127,7 @@ public class PhasedUnit {
                 moduleVisited = true;
                 processLiterals();
                 moduleVisitor = new ModuleVisitor(moduleManager, pkg);
+                moduleVisitor.setCompleteOnlyAST(reuseExistingDescriptorModels());
                 moduleManager = null;
                 compilationUnit.visit(moduleVisitor);
                 return moduleVisitor.getMainModule();

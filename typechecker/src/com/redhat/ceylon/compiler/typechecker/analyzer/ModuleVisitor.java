@@ -44,6 +44,15 @@ public class ModuleVisitor extends Visitor {
     private final Package pkg;
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
+    private boolean completeOnlyAST = false;
+
+    public void setCompleteOnlyAST(boolean completeOnlyAST) {
+        this.completeOnlyAST = completeOnlyAST;
+    }
+
+    public boolean isCompleteOnlyAST() {
+        return completeOnlyAST;
+    }
 
     public ModuleVisitor(ModuleManager moduleManager, Package pkg) {
         this.moduleManager = moduleManager;
@@ -120,8 +129,10 @@ public class ModuleVisitor extends Visitor {
                 }
                 mainModule = moduleManager.getOrCreateModule(name, version);
                 importPath.setModel(mainModule);
-                mainModule.setUnit(unit.getUnit());
-                mainModule.setVersion(version);
+                if (!completeOnlyAST) {
+                    mainModule.setUnit(unit.getUnit());
+                    mainModule.setVersion(version);
+                }
                 String nameString = formatPath(importPath.getIdentifiers());
 				if ( !pkg.getNameAsString().equals(nameString) ) {
                     importPath
@@ -129,9 +140,11 @@ public class ModuleVisitor extends Visitor {
                         		nameString + " should be " + pkg.getNameAsString(), 
                         		8000);
                 }
-                moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
-                mainModule.setAvailable(true);
-                buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
+                if (!completeOnlyAST) {
+                    moduleManager.addLinkBetweenModuleAndNode(mainModule, that);
+                    mainModule.setAvailable(true);
+                    buildAnnotations(that.getAnnotationList(), mainModule.getAnnotations());
+                }
             }
             HashSet<String> set = new HashSet<String>();
             Tree.ImportModuleList iml = that.getImportModuleList();
@@ -175,7 +188,9 @@ public class ModuleVisitor extends Visitor {
                     importPath.addUsageWarning("discouraged package name: this namespace is used by Java platform modules");
                 }
                 importPath.setModel(pkg);
-                pkg.setUnit(unit.getUnit());
+                if (!completeOnlyAST) {
+                    pkg.setUnit(unit.getUnit());
+                }
                 String nameString = formatPath(importPath.getIdentifiers());
 				if ( !pkg.getNameAsString().equals(nameString) ) {
                     importPath
@@ -183,13 +198,15 @@ public class ModuleVisitor extends Visitor {
                         		nameString + " should be " + pkg.getNameAsString(), 
                                 8000);
                 }
-                if (hasAnnotation(that.getAnnotationList(), "shared", unit.getUnit())) {
-                    pkg.setShared(true);
+                if (!completeOnlyAST) {
+                    if (hasAnnotation(that.getAnnotationList(), "shared", unit.getUnit())) {
+                        pkg.setShared(true);
+                    }
+                    else {
+                        pkg.setShared(false);
+                    }
+                    buildAnnotations(that.getAnnotationList(), pkg.getAnnotations());
                 }
-                else {
-                    pkg.setShared(false);
-                }
-                buildAnnotations(that.getAnnotationList(), pkg.getAnnotations());
             }
         }
     }
@@ -241,20 +258,22 @@ public class ModuleVisitor extends Visitor {
                 if (that.getImportPath()!=null) {
                 	that.getImportPath().setModel(importedModule);
                 }
-                if (mainModule != null) {
-                    if (importedModule.getVersion() == null) {
-                        importedModule.setVersion(version);
+                if (!completeOnlyAST) {
+                    if (mainModule != null) {
+                        if (importedModule.getVersion() == null) {
+                            importedModule.setVersion(version);
+                        }
+                        ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
+                        if (moduleImport == null) {
+                            Tree.AnnotationList al = that.getAnnotationList();
+                            boolean optional = hasAnnotation(al, "optional", unit.getUnit());
+                            boolean export = hasAnnotation(al, "shared", unit.getUnit());
+                            moduleImport = new ModuleImport(importedModule, optional, export);
+                            buildAnnotations(al, moduleImport.getAnnotations());
+                            mainModule.getImports().add(moduleImport);
+                        }
+                        moduleManager.addModuleDependencyDefinition(moduleImport, that);
                     }
-                    ModuleImport moduleImport = moduleManager.findImport(mainModule, importedModule);
-                    if (moduleImport == null) {
-                        Tree.AnnotationList al = that.getAnnotationList();
-                        boolean optional = hasAnnotation(al, "optional", unit.getUnit());
-                        boolean export = hasAnnotation(al, "shared", unit.getUnit());
-                        moduleImport = new ModuleImport(importedModule, optional, export);
-                        buildAnnotations(al, moduleImport.getAnnotations());
-                        mainModule.getImports().add(moduleImport);
-                    }
-                    moduleManager.addModuleDependencyDefinition(moduleImport, that);
                 }
             }
         }
