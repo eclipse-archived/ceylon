@@ -41,7 +41,7 @@ final class bug1177_ {
                 return $calltyped$(s);
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.String s) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.String s) {
                 return .ceylon.language.String.instance("");
             }
         };

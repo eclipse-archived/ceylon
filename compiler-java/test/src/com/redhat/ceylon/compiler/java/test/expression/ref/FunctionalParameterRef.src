@@ -307,7 +307,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.nullarySequenced(s));
                     }
                 };
@@ -391,7 +391,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.unarySequenced(s1, s));
                     }
                 };
@@ -465,7 +465,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.binarySequenced(s1, s2, s));
                     }
                 };
@@ -529,7 +529,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         return $calltyped$(s1, s2, s3, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.ternarySequenced(s1, s2, s3, s));
                     }
                 };
@@ -578,7 +578,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
                         return $calltyped$(s1, s2, s3, s4, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 4, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.narySequenced(s1, s2, s3, s4, s));
                     }
                 };
@@ -883,7 +883,7 @@ final class functionalParameterRef_ {
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("nullarySequenced(").append(s.toString()).append(")").toString());
                     }
                 };
@@ -961,7 +961,7 @@ final class functionalParameterRef_ {
                         return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("unarySequenced(").append(s1).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
@@ -1027,7 +1027,7 @@ final class functionalParameterRef_ {
                         return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("binarySequenced(").append(s1).append(", ").append(s2).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
@@ -1081,7 +1081,7 @@ final class functionalParameterRef_ {
                         return $calltyped$(s1, s2, s3, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("ternarySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append("; ").append(s.toString()).append(")").toString());
                     }
                 };
@@ -1118,7 +1118,7 @@ final class functionalParameterRef_ {
                         return $calltyped$(s1, s2, s3, s4, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 4, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance(new .java.lang.StringBuilder().append("narySequenced(").append(s1).append(", ").append(s2).append(", ").append(s3).append(", ").append(s4).append("; ").append(s.toString()).append(")").toString());
                     }
                 };

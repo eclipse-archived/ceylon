@@ -119,7 +119,7 @@ public final class bug1132_ {
                 return $calltyped$(g, o);
             }
             
-            private .ceylon.language.String $calltyped$(.ceylon.language.Callable<? extends .ceylon.language.String> g, .java.lang.String o) {
+            private .ceylon.language.String $calltyped$(final .ceylon.language.Callable<? extends .ceylon.language.String> g, final .java.lang.String o) {
                 return g.$call$();
             }
         };

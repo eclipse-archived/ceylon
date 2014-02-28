@@ -81,7 +81,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$(a, b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .ceylon.language.Integer $calltyped$(long a, .java.lang.String b, .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+            private .ceylon.language.Integer $calltyped$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
                 return .ceylon.language.Integer.instance(a);
             }
         };
@@ -241,7 +241,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$(b, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 2, $param$0));
             }
             
-            private .ceylon.language.String $calltyped$(.java.lang.String b, .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
+            private .ceylon.language.String $calltyped$(final .java.lang.String b, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
                 return .ceylon.language.String.instance(b);
             }
         };
@@ -386,7 +386,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$(goto, b);
             }
             
-            private .ceylon.language.Integer $calltyped$(long goto, .java.lang.String b) {
+            private .ceylon.language.Integer $calltyped$(final long goto, final .java.lang.String b) {
                 return .ceylon.language.Integer.instance(goto);
             }
         };
@@ -474,7 +474,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$(goto, b, c, d, e, f);
             }
             
-            private .ceylon.language.Integer $calltyped$(long goto, .java.lang.String b, long c, .java.lang.String d, long e, .java.lang.String f) {
+            private .ceylon.language.Integer $calltyped$(final long goto, final .java.lang.String b, final long c, final .java.lang.String d, final long e, final .java.lang.String f) {
                 return .ceylon.language.Integer.instance(goto);
             }
         };
@@ -501,7 +501,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$(a, b);
             }
             
-            private .ceylon.language.Integer $calltyped$(long a, long b) {
+            private .ceylon.language.Integer $calltyped$(final long a, final long b) {
                 return .ceylon.language.Integer.instance(a);
             }
         };
@@ -573,7 +573,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$($spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
             }
             
-            private .ceylon.language.Sequential<? extends .ceylon.language.Integer> $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.Integer> a) {
+            private .ceylon.language.Sequential<? extends .ceylon.language.Integer> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a) {
                 return a;
             }
         };
@@ -638,7 +638,7 @@ final class callableWithDefaulted_ {
                 return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $calltyped$(.ceylon.language.Sequence<? extends .ceylon.language.Integer> a) {
+            private .ceylon.language.Sequence<? extends .ceylon.language.Integer> $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a) {
                 return a;
             }
         };
@@ -770,7 +770,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
                 return $calltyped$($ceylontmp$a, $ceylontmp$b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(long a, .java.lang.String b, .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+            private .java.lang.Object $calltyped$(final long a, final .java.lang.String b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
                 return (
                     let
                     {
@@ -831,7 +831,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
                 return $calltyped$($ceylontmp$a, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 2, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(long a, .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
+            private .java.lang.Object $calltyped$(final long a, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args) {
                 return (
                     let
                     {

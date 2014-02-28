@@ -116,7 +116,7 @@ final class callableArgumentSequenced_m_ {
                 return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                 return (
                     let
                     {
@@ -187,7 +187,7 @@ final class callableArgumentSequenced_m_ {
                 return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.Sequence<? extends .ceylon.language.String> s) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.String> s) {
                 return (
                     let
                     {

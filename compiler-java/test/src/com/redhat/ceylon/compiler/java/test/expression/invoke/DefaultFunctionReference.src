@@ -158,7 +158,7 @@ final class defaultFunctionReference2_ {
                 return $calltyped$($spreadVarargs$(.ceylon.language.Object.$TypeDescriptor$, 0, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.Sequential<? extends .java.lang.Object> o) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .java.lang.Object> o) {
                 return (
                     let
                     {
@@ -297,7 +297,7 @@ final class defaultFunctionReference3_ {
                 return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Object.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.Sequence<? extends .java.lang.Object> o) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .java.lang.Object> o) {
                 return (
                     let
                     {

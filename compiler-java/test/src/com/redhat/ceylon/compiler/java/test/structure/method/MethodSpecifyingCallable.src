@@ -99,7 +99,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                 return $calltyped$($spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
                 return .ceylon.language.nothing_.get_();
             }
         };
@@ -168,7 +168,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                 return $calltyped$(a, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(long a, .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+            private .java.lang.Object $calltyped$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
                 return .ceylon.language.nothing_.get_();
             }
         };

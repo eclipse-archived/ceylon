@@ -320,7 +320,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s);
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s) {
                         return .ceylon.language.String.instance($instance$.unaryDefaulted(s));
                     }
                 };
@@ -358,7 +358,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, s2);
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2) {
                         return .ceylon.language.String.instance($instance$.binaryDefaulted(s1, s2));
                     }
                 };
@@ -409,7 +409,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, s2, s3);
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
                         return .ceylon.language.String.instance($instance$.ternaryDefaulted(s1, s2, s3));
                     }
                 };
@@ -475,7 +475,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, s2, s3, s4);
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
                         return .ceylon.language.String.instance($instance$.naryDefaulted(s1, s2, s3, s4));
                     }
                 };
@@ -656,7 +656,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.nullarySequenced(s));
                     }
                 };
@@ -740,7 +740,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.unarySequenced(s1, s));
                     }
                 };
@@ -814,7 +814,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.binarySequenced(s1, s2, s));
                     }
                 };
@@ -878,7 +878,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, s2, s3, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.ternarySequenced(s1, s2, s3, s));
                     }
                 };
@@ -927,7 +927,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         return $calltyped$(s1, s2, s3, s4, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 4, $param$0));
                     }
                     
-                    private .ceylon.language.String $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return .ceylon.language.String.instance($instance$.narySequenced(s1, s2, s3, s4, s));
                     }
                 };

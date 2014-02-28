@@ -768,7 +768,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 return $calltyped$(a, b, $spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .ceylon.language.Integer $calltyped$(long a, long b, .ceylon.language.Sequential<? extends .ceylon.language.Integer> c) {
+            private .ceylon.language.Integer $calltyped$(final long a, final long b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c) {
                 return .ceylon.language.Integer.instance(1L);
             }
         };
@@ -811,7 +811,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                 return $calltyped$(a, b, (.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 3, $param$0));
             }
             
-            private .ceylon.language.Integer $calltyped$(long a, long b, .ceylon.language.Sequence<? extends .ceylon.language.Integer> c) {
+            private .ceylon.language.Integer $calltyped$(final long a, final long b, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> c) {
                 return .ceylon.language.Integer.instance(1L);
             }
         };

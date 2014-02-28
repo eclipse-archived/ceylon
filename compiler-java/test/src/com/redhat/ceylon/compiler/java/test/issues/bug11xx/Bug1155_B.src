@@ -141,7 +141,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return $calltyped$($ceylontmp$s, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.java.lang.String s, .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+            private .java.lang.Object $calltyped$(final .java.lang.String s, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
                 return (
                     let
                     {
@@ -216,7 +216,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return $calltyped$(s, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.java.lang.String s, .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+            private .java.lang.Object $calltyped$(final .java.lang.String s, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
                 return null;
             }
         });
@@ -281,7 +281,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
                 return (
                     let
                     {
@@ -363,7 +363,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 return $calltyped$($ceylontmp$s, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
             }
             
-            private .java.lang.Object $calltyped$(.java.lang.String s, .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
+            private .java.lang.Object $calltyped$(final .java.lang.String s, final .ceylon.language.Sequential<? extends .ceylon.language.String> seq) {
                 return (
                     let
                     {

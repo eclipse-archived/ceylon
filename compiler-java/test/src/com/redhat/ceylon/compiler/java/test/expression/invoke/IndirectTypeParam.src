@@ -146,7 +146,7 @@ final class indirectTypeParam_ {
                 return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0));
             }
             
-            private .ceylon.language.Sequential<? extends .java.lang.Object> $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
+            private .ceylon.language.Sequential<? extends .java.lang.Object> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
                 return .ceylon.language.concatenate_.<.java.lang.Object>concatenate(.ceylon.language.Object.$TypeDescriptor$, iterables);
             }
         };
@@ -217,7 +217,7 @@ final class indirectTypeParam_ {
                 return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0));
             }
             
-            private .ceylon.language.Sequential<? extends X> $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {
+            private .ceylon.language.Sequential<? extends X> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {
                 return .ceylon.language.concatenate_.<X>concatenate($reified$X, iterables);
             }
         };

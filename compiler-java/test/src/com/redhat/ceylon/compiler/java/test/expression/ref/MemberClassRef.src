@@ -568,7 +568,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryDefaulted $calltyped$(.java.lang.String s) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryDefaulted $calltyped$(final .java.lang.String s) {
                         return $instance$.UnaryDefaulted$new$(s);
                     }
                 };
@@ -606,7 +606,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, s2);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted $calltyped$(.java.lang.String s1, .java.lang.String s2) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted $calltyped$(final .java.lang.String s1, final .java.lang.String s2) {
                         return $instance$.BinaryDefaulted$new$(s1, s2);
                     }
                 };
@@ -657,7 +657,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, s2, s3);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
                         return $instance$.TernaryDefaulted$new$(s1, s2, s3);
                     }
                 };
@@ -723,7 +723,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, s2, s3, s4);
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
                         return $instance$.NaryDefaulted$new$(s1, s2, s3, s4);
                     }
                 };
@@ -1054,7 +1054,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$($spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 0, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced $calltyped$(.ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullarySequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return $instance$.NullarySequenced$new$(s);
                     }
                 };
@@ -1138,7 +1138,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 1, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced $calltyped$(.java.lang.String s1, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced $calltyped$(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return $instance$.UnarySequenced$new$(s1, s);
                     }
                 };
@@ -1212,7 +1212,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, s2, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 2, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced $calltyped$(.java.lang.String s1, .java.lang.String s2, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return $instance$.BinarySequenced$new$(s1, s2, s);
                     }
                 };
@@ -1276,7 +1276,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, s2, s3, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 3, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernarySequenced $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernarySequenced $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return $instance$.TernarySequenced$new$(s1, s2, s3, s);
                     }
                 };
@@ -1325,7 +1325,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         return $calltyped$(s1, s2, s3, s4, $spreadVarargs$(.ceylon.language.String.$TypeDescriptor$, 4, $param$0));
                     }
                     
-                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NarySequenced $calltyped$(.java.lang.String s1, .java.lang.String s2, .java.lang.String s3, .java.lang.String s4, .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+                    private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NarySequenced $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
                         return $instance$.NarySequenced$new$(s1, s2, s3, s4, s);
                     }
                 };
