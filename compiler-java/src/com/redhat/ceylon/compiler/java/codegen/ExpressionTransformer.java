@@ -3281,9 +3281,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             (TypedDeclaration)member, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
                 } else if (member instanceof Value) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
-                    callBuilder.invoke(naming.makeQualifiedName(makeJavaType(expr.getTypeModel(), JT_RAW | JT_NO_PRIMITIVES), 
-                            (TypedDeclaration)member, 
-                            Naming.NA_GETTER | Naming.NA_MEMBER));
+                    JCExpression qualExpr = naming.makeDeclName(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                     return callBuilder.build();
                 } else if (member instanceof Class) {
                     ProducedReference producedReference = expr.getTarget();
@@ -4299,7 +4298,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 expr = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
                 expr = transformSuperOf(qualified);
-            } else {
+            } else if (!qualified.getDeclaration().isStaticallyImportable()) {
                 expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
                     expr = makePrivateAccessUpcast(qualified, expr);
@@ -4342,6 +4341,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // must use the setter
                 if (Decl.isLocalNotInitializer(decl)) {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
+                } else if (decl.isStaticallyImportable()) {
+                    lhs = naming.makeDeclName(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
                 }
             }
         } else if (decl instanceof Method && Decl.isDeferred(decl)) {
