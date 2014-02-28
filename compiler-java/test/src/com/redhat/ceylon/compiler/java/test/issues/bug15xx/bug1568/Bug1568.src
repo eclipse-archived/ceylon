@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1568;
+
+final class bug1568_ {
+    
+    private bug1568_() {
+    }
+    
+    static void bug1568() {
+        final int x1 = .java.sql.DriverManager.getLoginTimeout();
+        .java.sql.DriverManager.setLoginTimeout((int)10L);
+        .java.sql.DriverManager.println("");
+        final .java.sql.Driver x2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.sql.DriverManager.getDriver(""));
+        final int x3 = .java.sql.DriverManager.getLoginTimeout();
+        .java.sql.DriverManager.setLoginTimeout((int)20L);
+        .java.sql.DriverManager.println("");
+        final .java.sql.Driver x4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.sql.DriverManager.getDriver(""));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1568.bug1568_.bug1568();
+    }
+}
