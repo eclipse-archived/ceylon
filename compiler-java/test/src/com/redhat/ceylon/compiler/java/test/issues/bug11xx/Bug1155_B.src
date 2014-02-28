@@ -303,7 +303,8 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
                 final .java.lang.String $ceylontmp$s = binaryOptStar$s();
-                return $calltyped$($ceylontmp$s, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+                final .ceylon.language.Sequential $ceylontmp$seq$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$($ceylontmp$s, $ceylontmp$seq$variadic$);
             }
             
             @.java.lang.Override

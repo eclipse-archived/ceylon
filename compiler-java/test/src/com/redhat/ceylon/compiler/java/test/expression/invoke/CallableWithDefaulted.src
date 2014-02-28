@@ -32,7 +32,8 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = $default$b(a);
-                return $calltyped$(a, b, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(a, b, args$variadic$);
             }
             
             @.java.lang.Override
@@ -720,7 +721,8 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
                 final long $ceylontmp$a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String $ceylontmp$b = defaultedVariadic$b($ceylontmp$a);
-                return $calltyped$($ceylontmp$a, $ceylontmp$b, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+                final .ceylon.language.Sequential $ceylontmp$args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$($ceylontmp$a, $ceylontmp$b, $ceylontmp$args$variadic$);
             }
             
             @.java.lang.Override

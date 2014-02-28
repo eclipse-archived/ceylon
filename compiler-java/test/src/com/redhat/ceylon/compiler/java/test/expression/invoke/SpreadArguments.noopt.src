@@ -719,7 +719,8 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
             public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final long b = $default$b(a);
-                return $calltyped$(a, b, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> c$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(a, b, c$variadic$);
             }
             
             @.java.lang.Override
