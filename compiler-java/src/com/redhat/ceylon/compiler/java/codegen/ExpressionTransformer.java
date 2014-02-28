@@ -3246,7 +3246,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformInvocation(invocation);
     }
 
-    public JCExpression transformFunctional(Tree.Term expr,
+    public JCExpression transformFunctional(Tree.StaticMemberOrTypeExpression expr,
             Functional functional) {
         return CallableBuilder.methodReference(gen(), expr, 
                     functional.getParameterLists().get(0))
