@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.expression.ref;
+
+class Bug1569 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1569() {
+    }
+    
+    private final void m$priv$() {
+    }
+    
+    private final void callsite$priv$() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> x = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything()(Bug1569)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569 $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return (
+                            let
+                            {
+                                $instance$.m$priv$();
+                            }
+                            returning null;
+                        );
+                    }
+                };
+            }
+        }.$call$(this);
+        final .java.lang.Object y = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything()(Bug1569)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569 $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return (
+                            let
+                            {
+                                $instance$.m$priv$();
+                            }
+                            returning null;
+                        );
+                    }
+                };
+            }
+        }.$call$(this).$call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug1569.class);
+}

@@ -73,5 +73,10 @@ public class StaticRefTest extends CompilerTest {
         run("com.redhat.ceylon.compiler.java.test.expression.ref.funrefs");
         
     }
+    
+    @Test
+    public void testRefBug1569() {
+        compareWithJavaSource("Bug1569");
+    }
 
 }
