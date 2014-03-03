@@ -211,7 +211,7 @@ abstract class Invocation {
         JCExpression actualPrimExpr;
         if (getPrimary() instanceof Tree.QualifiedTypeExpression
                 && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression) {
-            actualPrimExpr = gen.makeSelect(primaryExpr, "this");
+            actualPrimExpr = gen.naming.makeQualifiedThis(primaryExpr);
         } else {
             actualPrimExpr = primaryExpr;
         }
@@ -228,15 +228,22 @@ abstract class Invocation {
             }
         } else if (getPrimary() instanceof Tree.QualifiedTypeExpression) {
         } else {
-            if (isIndirect()
-                    && getPrimaryDeclaration() != null
-                    && (Decl.isGetter(getPrimaryDeclaration())
-                            || Decl.isToplevel(getPrimaryDeclaration())
-                            || (Decl.isValueOrSharedOrCapturedParam(getPrimaryDeclaration()) && Decl.isCaptured(getPrimaryDeclaration()))
-                            && !Decl.isLocalNotInitializer(getPrimaryDeclaration()))) {
-                actualPrimExpr = gen.make().Apply(null, 
-                        gen.naming.makeQualIdent(primaryExpr, selector), 
-                        List.<JCExpression>nil());
+            if (isIndirect()) {
+                if (getPrimaryDeclaration() != null
+                        && (Decl.isGetter(getPrimaryDeclaration())
+                                || Decl.isToplevel(getPrimaryDeclaration())
+                                || (Decl.isValueOrSharedOrCapturedParam(getPrimaryDeclaration()) 
+                                        && Decl.isCaptured(getPrimaryDeclaration()) 
+                                        && !Decl.isLocalNotInitializer(getPrimaryDeclaration())))) {
+                    // We need to invoke the getter to obtain the Callable
+                    actualPrimExpr = gen.make().Apply(null, 
+                            gen.naming.makeQualIdent(primaryExpr, selector), 
+                            List.<JCExpression>nil());
+                } else if (selector != null) {
+                    actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
+                } else {
+                    actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
+                }
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
                 if (gen.isVariadicCallable(getPrimary().getTypeModel())) {
                     selector = Naming.getCallableVariadicMethodName();
@@ -244,12 +251,11 @@ abstract class Invocation {
                     selector = Naming.getCallableMethodName();
                 }
             } else if ((getPrimaryDeclaration() instanceof Method
-                    && ((Method)getPrimaryDeclaration()).isParameter()
-                        && (!Strategy.createMethod((Method)getPrimaryDeclaration())
+                            && ((Method)getPrimaryDeclaration()).isParameter()// i.e. functional parameter
+                            && (!Strategy.createMethod((Method)getPrimaryDeclaration())) // not class member, or not shared/captured
                             // we may create a method, but if we're accessing it from a default parameter expression
                             // we need to access the Callable parameter, no the member method
-                            || gen.expressionGen().isWithinDefaultParameterExpression(getPrimaryDeclaration().getContainer())))
-                    || isIndirect()) {
+                        || gen.expressionGen().isWithinDefaultParameterExpression(getPrimaryDeclaration().getContainer()))) {
                 if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
                 } else {
