@@ -406,11 +406,13 @@ class CodegenUtil {
     }
     
     public static boolean isMemberReferenceInvocation(Tree.InvocationExpression expr) {
+        Tree.Term p = com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm(expr.getPrimary());
         if (com.redhat.ceylon.compiler.typechecker.analyzer.Util.isIndirectInvocation(expr)
-                && expr.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
-            Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)expr.getPrimary();
-            if (primary.getPrimary() instanceof Tree.BaseTypeExpression
-                    || primary.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                && p instanceof Tree.QualifiedMemberOrTypeExpression) {
+            Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)p;
+            Tree.Term q = com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm(primary.getPrimary());
+            if (q instanceof Tree.BaseTypeExpression
+                    || q instanceof Tree.QualifiedTypeExpression) {
                 return true;
             }
         }
