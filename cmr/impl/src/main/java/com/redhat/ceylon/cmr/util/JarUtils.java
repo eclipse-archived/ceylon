@@ -15,6 +15,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.FileUtil;
 
 public final class JarUtils {
 
@@ -84,35 +85,10 @@ public final class JarUtils {
     }
 
     public static String toPlatformIndependentPath(Iterable<? extends File> sourcePaths, String prefixedSourceFile) {
-        String sourceFile = getSourceFilePath(sourcePaths, prefixedSourceFile);
+        String sourceFile = FileUtil.relativeFile(sourcePaths, prefixedSourceFile);
         // zips are UNIX-friendly
         sourceFile = sourceFile.replace(File.separatorChar, '/');
         return sourceFile;
-    }
-
-    private static String getSourceFilePath(Iterable<? extends File> sourcePaths, String file){
-        // find the matching source prefix
-        int srcDirLength = 0;
-        for (File prefixFile : sourcePaths) {
-            String prefix = prefixFile.getPath();
-            if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
-                srcDirLength = prefix.length();
-            }
-            String absPrefix;
-            try {
-                absPrefix = prefixFile.getCanonicalPath();
-            } catch (IOException e) {
-                absPrefix = prefixFile.getAbsolutePath();
-            }
-            if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
-                srcDirLength = absPrefix.length();
-            }
-        }
-        
-        String path = file.substring(srcDirLength);
-        if(path.startsWith(File.separator))
-            path = path.substring(1);
-        return path;
     }
 
     public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
