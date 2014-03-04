@@ -264,10 +264,11 @@ class CodegenUtil {
                     return null;
                 decl = c.getParameterList().getParameters().get(index).getModel();
             }
-
-            Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
-            if(refinedDecl != null && refinedDecl != decl) {
-                return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
+            if (decl.isShared()) {
+                Declaration refinedDecl = c.getRefinedMember(decl.getName(), null, false);//?? elipses=false??
+                if(refinedDecl != null && refinedDecl != decl) {
+                    return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
+                }
             }
             return decl;
         } else if(decl instanceof MethodOrValue
