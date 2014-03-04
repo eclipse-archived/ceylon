@@ -201,4 +201,40 @@ public class FileUtil {
         }
         
     }
+    
+    /**
+     * Given an absolute file path and a list of "search paths"
+     * returns the relative path of the file (relative to the one
+     * search path that matched)
+     * @param paths A list of folders
+     * @param file An absolute path to a file 
+     * @return The relative file path or the original file path if no match was found
+     */
+    public static String relativeFile(Iterable<? extends File> paths, String file){
+        // find the matching path prefix
+        int srcDirLength = 0;
+        for (File prefixFile : paths) {
+            String prefix = prefixFile.getPath();
+            if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
+                srcDirLength = prefix.length();
+            }
+            String absPrefix;
+            try {
+                absPrefix = prefixFile.getCanonicalPath();
+            } catch (IOException e) {
+                absPrefix = prefixFile.getAbsolutePath();
+            }
+            if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
+                srcDirLength = absPrefix.length();
+            }
+        }
+        
+        String path = file.substring(srcDirLength);
+        if (path.startsWith(File.separator)) {
+            path = path.substring(1);
+        }
+        
+        return path;
+    }
+
 }
