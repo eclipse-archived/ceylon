@@ -2884,10 +2884,28 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else {
             ProducedType classType = (ProducedType)type.getTarget();
-            JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
             if(isJavaArray(classType)){
+                JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW | AbstractTransformer.JT_RAW);
                 callBuilder.javaArrayInstance(typeExpr);
+                if(isJavaObjectArray(classType)){
+                    ProducedType elementType = classType.getTypeArgumentList().get(0);
+                    MultidimensionalArray multiArray = getMultiDimensionalArrayInfo(elementType);
+                    if(multiArray != null)
+                        elementType = multiArray.type;
+                    // if it is an array of Foo<X> we need a raw instanciation and cast
+                    // array of Foo is fine, array of Nothing too
+                    if(elementType.getDeclaration() instanceof ClassOrInterface
+                            || elementType.getDeclaration() instanceof NothingType){
+                        if(!elementType.getTypeArgumentList().isEmpty())
+                            callBuilder.javaArrayInstanceNeedsCast(makeJavaType(classType, AbstractTransformer.JT_NO_PRIMITIVES));
+                    }else{
+                        // if it's an array of union, intersection or type param we need a runtime allocation
+                        callBuilder.javaArrayInstanceIsGeneric(makeReifiedTypeArgument(elementType), 
+                                multiArray != null ? multiArray.dimension + 1 : 1);
+                    }
+                }
             }else{
+                JCExpression typeExpr = makeJavaType(classType, AbstractTransformer.JT_CLASS_NEW);
                 callBuilder.instantiate(typeExpr);
             }
             if (stacksUninitializedOperand(invocation) 

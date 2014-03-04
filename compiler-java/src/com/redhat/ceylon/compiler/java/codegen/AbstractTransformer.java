@@ -1553,6 +1553,26 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
+    protected static final class MultidimensionalArray {
+        public final int dimension;
+        public final ProducedType type;
+        MultidimensionalArray(int dimension, ProducedType type){
+            this.dimension = dimension;
+            this.type = type;
+        }
+    }
+
+    protected MultidimensionalArray getMultiDimensionalArrayInfo(ProducedType type) {
+        int dimension = 0;
+        while(isJavaObjectArray(type)){
+            type = type.getTypeArgumentList().get(0);
+            dimension++;
+        }
+        if(dimension == 0)
+            return null;
+        return new MultidimensionalArray(dimension, type);
+    }
+
     public boolean isJavaArray(ProducedType type) {
         if(type == null)
             return false;

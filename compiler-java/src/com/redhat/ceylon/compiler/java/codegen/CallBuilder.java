@@ -48,6 +48,9 @@ public class CallBuilder {
     private boolean haveLocation = false;
     private Node location;
     private JCClassDecl classDefs;
+    private JCExpression arrayInstanceReifiedType;
+    private JCExpression arrayInstanceCast;
+    private int arrayInstanceDimensions;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -249,7 +252,22 @@ public class CallBuilder {
         case NEW_ARRAY:
             // methodOrClass must be a ArrayType, so we get the element type out
             JCExpression elementTypeExpr = ((JCTree.JCArrayTypeTree)this.methodOrClass).elemtype;
-            result = gen.make().NewArray(elementTypeExpr, List.of(arguments.head), null);
+            if(arrayInstanceReifiedType == null){
+                result = gen.make().NewArray(elementTypeExpr, List.of(arguments.head), null);
+                if(arrayInstanceCast != null){
+                    result = gen.make().TypeCast(arrayInstanceCast, result);
+                }
+            }else{
+                List<JCExpression> dimensions = List.nil();
+                if(arrayInstanceDimensions > 1){
+                    for(int i=1;i<arrayInstanceDimensions;i++){
+                        dimensions = dimensions.prepend(gen.makeInteger(0));
+                    }
+                }
+                dimensions = dimensions.prepend(arguments.head);
+                dimensions = dimensions.prepend(arrayInstanceReifiedType);
+                result = gen.makeUtilInvocation("makeArray", dimensions, null);
+            }
             if(arguments.tail.nonEmpty()){
                 // must fill it
                 result = gen.makeUtilInvocation("fillArray", List.of(result, arguments.tail.head), null);
@@ -285,5 +303,14 @@ public class CallBuilder {
 
     public void voidMethod(boolean voidMethod) {
         this.voidMethod = voidMethod;
+    }
+
+    public void javaArrayInstanceIsGeneric(JCExpression reifiedType, int dimensions) {
+        this.arrayInstanceReifiedType = reifiedType;
+        this.arrayInstanceDimensions = dimensions;
+    }
+
+    public void javaArrayInstanceNeedsCast(JCExpression requiredType) {
+        this.arrayInstanceCast = requiredType;
     }
 }
