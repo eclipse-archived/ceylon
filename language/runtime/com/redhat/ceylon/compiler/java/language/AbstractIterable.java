@@ -120,6 +120,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     	return $ceylon$language$Iterable$this.getRest();
     }
 
+    @Ignore
     @Override
     public <Result> Iterable<? extends Result, ? extends Absent> map(
             TypeDescriptor $reifiedResult,
@@ -127,6 +128,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
     }
 
+    @Ignore
     @Override
     public Iterable<? extends Element, ?> filter(
             Callable<? extends Boolean> selecting) {
