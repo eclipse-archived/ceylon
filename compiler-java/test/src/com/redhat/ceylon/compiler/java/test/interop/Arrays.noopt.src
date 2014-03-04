@@ -117,11 +117,11 @@ final class test_booleans_ {
             final boolean[] o$13 = (boolean[])o$12;
         }
         .java.lang.Object o$15;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$15 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.language.BooleanArray.$TypeDescriptor$))) {
+        if ((o$15 = o) instanceof boolean[][]) {
             final boolean[][] o$16 = (boolean[][])o$15;
         }
         .java.lang.Object o$18;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(o$18 = o, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Boolean.$TypeDescriptor$)))) {
+        if ((o$18 = o) instanceof .ceylon.language.Boolean[][]) {
             final .ceylon.language.Boolean[][] o$19 = (.ceylon.language.Boolean[][])o$18;
         }
     }
