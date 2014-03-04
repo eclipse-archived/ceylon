@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1563_ {
+    
+    private bug1563_() {
+    }
+    
+    static void bug1563() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563_helper_.<.ceylon.language.Integer, .ceylon.language.Integer>bug1563_helper(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563_.bug1563();
+    }
+}
+final class bug1563_helper_ {
+    
+    private bug1563_helper_() {
+    }
+    
+    static <T, U>void bug1563_helper(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        final T[] array1 = .com.redhat.ceylon.compiler.java.Util.makeArray($reified$T, (int)0L);
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$1 = array1;
+            }
+            returning $ceylontmp$1 instanceof .ceylon.language.Integer[];
+        )) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array1 is ObjectArray<Integer>"));
+        final T[][] array2 = .com.redhat.ceylon.compiler.java.Util.makeArray($reified$T, (int)0L, 0);
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$3 = array2;
+            }
+            returning $ceylontmp$3 instanceof .ceylon.language.Integer[][];
+        )) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array2 is ObjectArray<ObjectArray<Integer>>"));
+        final .ceylon.language.List<? extends T>[] array3 = (.ceylon.language.List<? extends T>[])new .ceylon.language.List[(int)0L];
+        final .java.lang.Object[] array4 = .com.redhat.ceylon.compiler.java.Util.makeArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$T, $reified$U), (int)0L);
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$5 = array4;
+            }
+            returning $ceylontmp$5 instanceof .ceylon.language.Integer[];
+        )) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array4 is ObjectArray<Integer>"));
+        final .java.lang.Object array5 = new int[(int)0L][];
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$7 = array5;
+            }
+            returning $ceylontmp$7 instanceof int[][];
+        )) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array5 is ObjectArray<IntArray>"));
+        final .java.lang.Object array6 = new int[(int)0L][][];
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$9 = array6;
+            }
+            returning $ceylontmp$9 instanceof int[][][];
+        )) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array6 is ObjectArray<ObjectArray<IntArray>>"));
+        final .java.lang.Object[] array7 = new .java.lang.Object[(int)0L];
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563_helper_.bug1563_helper(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}

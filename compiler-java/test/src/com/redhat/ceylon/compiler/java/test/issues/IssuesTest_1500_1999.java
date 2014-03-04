@@ -99,12 +99,18 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
-    public void testBug1568() {
-        compareWithJavaSource("bug15xx/bug1568/Bug1568.src", "bug15xx/bug1568/Bug1568.ceylon", "bug15xx/bug1568/module.ceylon");
+    public void testBug1563() {
+        compareWithJavaSource("bug15xx/Bug1563");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1563");
     }
 
     @Test
     public void testBug1564() {
         compareWithJavaSource("bug15xx/Bug1564");
+    }
+
+    @Test
+    public void testBug1568() {
+        compareWithJavaSource("bug15xx/bug1568/Bug1568.src", "bug15xx/bug1568/Bug1568.ceylon", "bug15xx/bug1568/module.ceylon");
     }
 }
