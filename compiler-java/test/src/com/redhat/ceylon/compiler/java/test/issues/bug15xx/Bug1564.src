@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1564_ {
+    
+    private bug1564_() {
+    }
+    
+    static void bug1564(final .java.nio.channels.SocketChannel channel, final .java.nio.channels.Selector selector, final .java.nio.file.Path path) {
+        channel.register(selector, (int)0L);
+        channel.register(selector, (int)0L, null);
+        final .java.lang.String n = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(path.getFileName()).toString());
+        final boolean b = .ceylon.language.Integer.set(0L, 2L) == 4L;
+    }
+}
