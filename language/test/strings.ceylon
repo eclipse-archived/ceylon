@@ -314,6 +314,10 @@ shared void strings() {
     check("hello world".replace("hello","goodbye")=="goodbye world", "string replace 1");
     check("hello hello world".replace("hello","goodbye")=="goodbye goodbye world", "string replace 1");
     check("hello hello world".replaceFirst("hello","goodbye")=="goodbye hello world", "string replace first");
+    check("sanitize.*me.*please".replace(".*", " ")=="sanitize me please", "string replace regex: [``"sanitize.*me.*please".replace(".*", " ")``]");
+    check("sanitize[0-9]me".replaceFirst("[0-9]", " ")=="sanitize me", "string replaceFirst regex: [``"sanitize[0-9]me".replaceFirst("[0-9]", " ")``]");
+    check("sanitize.*me".replace(".*", "$")=="sanitize$me", "string replace regex js: [``"sanitize.*me".replace(".*", "$")``]");
+    check("sanitize.*me".replaceFirst(".*", "$")=="sanitize$me", "string replaceFirst regex js: [``"sanitize.*me".replaceFirst(".*", "$")``]");
     
     value nlb = StringBuilder();
     nlb.appendNewline();
