@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 
@@ -62,6 +64,7 @@ public class ReflectionUtils {
     }
 
     /* Required to fix the distribution build, so that we can build the compiler before building the language module */
+    @SuppressWarnings("unchecked")
     static Class<? extends Annotation> getClass(String string) {
         try {
             return (Class<? extends Annotation>) Class.forName(string);
@@ -91,7 +94,19 @@ public class ReflectionUtils {
         }
     }
 
+    private enum OverXing {
+        Overloading, Overriding
+    }
+
     public static boolean isOverridingMethod(Method method) {
+        return isOverXingMethod(OverXing.Overriding, method);
+    }
+
+    public static boolean isOverloadingMethod(Method method) {
+        return isOverXingMethod(OverXing.Overloading, method);
+    }
+
+    private static boolean isOverXingMethod(OverXing searchType, Method method) {
         // fast exit
         if(Modifier.isPrivate(method.getModifiers()))
             return false;
@@ -104,53 +119,66 @@ public class ReflectionUtils {
         // try the superclass first
         Class<?> superclass = declaringClass.getSuperclass();
         if(superclass != null){
-            if(isOverridingMethodInClassRecursive(method, name, parameterTypes, declaringClass, superclass, visited))
+            if(isOverXingMethodInClassRecursive(searchType, method, name, parameterTypes, declaringClass, superclass, visited))
                 return true;
         }
         // now try the interfaces
         for(Class<?> interfce : declaringClass.getInterfaces()){
-            if(isOverridingMethodInClassRecursive(method, name, parameterTypes, declaringClass, interfce, visited))
+            if(isOverXingMethodInClassRecursive(searchType, method, name, parameterTypes, declaringClass, interfce, visited))
                 return true;
         }
         // not overriding anything
         return false;
     }
     
-    private static boolean isOverridingMethodInClassRecursive(Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> klass,
+    private static boolean isOverXingMethodInClassRecursive(OverXing searchType, Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> klass,
             Set<Class<?>> visited) {
         if(!visited.add(klass))
             return false;
-        if(isOverridingMethodInClass(method, name, parameterTypes, declaringClass, klass))
+        if(isOverXingMethodInClass(searchType, method, name, parameterTypes, declaringClass, klass))
             return true;
         // try the superclass first
         Class<?> superclass = klass.getSuperclass();
         if(superclass != null){
-            if(isOverridingMethodInClassRecursive(method, name, parameterTypes, declaringClass, superclass, visited))
+            if(isOverXingMethodInClassRecursive(searchType, method, name, parameterTypes, declaringClass, superclass, visited))
                 return true;
         }
         // now try the interfaces
         for(Class<?> interfce : klass.getInterfaces()){
-            if(isOverridingMethodInClassRecursive(method, name, parameterTypes, declaringClass, interfce, visited))
+            if(isOverXingMethodInClassRecursive(searchType, method, name, parameterTypes, declaringClass, interfce, visited))
                 return true;
         }
         // not overriding anything here
         return false;
     }
 
+    private static boolean isOverXingMethodInClass(OverXing searchType, Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> klass) {
+        switch(searchType){
+        case Overloading:
+            return isOverloadingMethodInClass(method, name, parameterTypes, declaringClass, klass);
+        case Overriding:
+            return isOverridingMethodInClass(method, name, parameterTypes, declaringClass, klass);
+        default:
+            throw new RuntimeException("Non-exhaustive switch");
+        }
+    }
+
     private static boolean isOverridingMethodInClass(Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> lookupClass) {
+        Class<? extends Annotation> ignoreAnnotationClass = ReflectionUtils.getClass(AbstractModelLoader.CEYLON_IGNORE_ANNOTATION);
         try {
             Method m = lookupClass.getDeclaredMethod(name, parameterTypes);
             // present
-            return !m.isBridge() && !m.isSynthetic() && !Modifier.isPrivate(m.getModifiers());
+            return !m.isBridge() && !m.isSynthetic() && !Modifier.isPrivate(m.getModifiers())
+                    && !m.isAnnotationPresent(ignoreAnnotationClass);
         } catch (Exception e) {
             // not present
         }
         NEXT_METHOD:
         for(Method m : lookupClass.getDeclaredMethods()){
-            // FIXME: skip ignored methods too?
             if(!m.getName().equals(name)
                     || m.isBridge()
                     || m.isSynthetic()
+                    || m.isAnnotationPresent(ignoreAnnotationClass)
                     || Modifier.isFinal(m.getModifiers())
                     || Modifier.isPrivate(m.getModifiers()))
                 continue;
@@ -161,26 +189,7 @@ public class ReflectionUtils {
             // FIXME: do we need to cache this?
             Map<TypeVariable<?>, Class<?>> typeArguments = getTypeArguments(declaringClass, m.getDeclaringClass(), Collections.<TypeVariable<?>, Class<?>>emptyMap());
             for(Type t : m.getGenericParameterTypes()){
-                Class<?> parameterErasure;
-                if(t instanceof Class){
-                    // non-parameterised, must be the same as the one we're looking up
-                    parameterErasure = (Class<?>) t;
-                }else if(t instanceof TypeVariable){
-                    parameterErasure = typeArguments.get(t);
-                    /*
-                     * Erasure bounds Note:
-                     * In practice it looks like we never need erasure bounds, because even if we implement a raw interface,
-                     * the overriding method will have its parameter types erased to the proper classes (apparently it can't
-                     * substitute new type variables for the parameters, if it implements a raw interface and overrides a
-                     * method whose arguments are generics, so it must be classes) and when we look up the method with the
-                     * parameter types we will find them directly with this method's parameter types in the direct lookup above.
-                     */
-                    if(parameterErasure == null)
-                        parameterErasure = Object.class;
-                }else if(t instanceof ParameterizedType){
-                    parameterErasure = (Class<?>) ((ParameterizedType) t).getRawType();
-                }else
-                    throw new RuntimeException("Unknown parameter type: "+t);
+                Class<?> parameterErasure = getParameterErasure(typeArguments, t);
                 if(parameterErasure != parameterTypes[i++])
                     continue NEXT_METHOD;
             }
@@ -188,6 +197,89 @@ public class ReflectionUtils {
             return true;
         }
         return false;
+    }
+
+    private static boolean isOverloadingMethodInClass(Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> lookupClass) {
+        Class<? extends Annotation> ignoreAnnotationClass = ReflectionUtils.getClass(AbstractModelLoader.CEYLON_IGNORE_ANNOTATION);
+        for(Method m : lookupClass.getDeclaredMethods()){
+            if(!m.getName().equals(name)
+                    || m.isBridge()
+                    || m.isSynthetic()
+                    || m.isAnnotationPresent(ignoreAnnotationClass)
+                    || Modifier.isPrivate(m.getModifiers()))
+                continue;
+            if(m.getParameterTypes().length != parameterTypes.length)
+                return true;
+            int i=0;
+            // get the type argument mappings for that method's container
+            // FIXME: do we need to cache this?
+            Map<TypeVariable<?>, Class<?>> typeArguments = getTypeArguments(declaringClass, m.getDeclaringClass(), Collections.<TypeVariable<?>, Class<?>>emptyMap());
+            for(Type t : m.getGenericParameterTypes()){
+                Class<?> parameterErasure = getParameterErasure(typeArguments, t);
+                if(parameterErasure != parameterTypes[i++])
+                    return true;
+            }
+            // must be the overriding, check the next one
+        }
+        // no overload here
+        return false;
+    }
+
+    private static Class<?> getParameterErasure(Map<TypeVariable<?>, Class<?>> typeArguments, Type t) {
+        if(t instanceof Class){
+            // non-parameterised, must be the same as the one we're looking up
+            return (Class<?>) t;
+        }else if(t instanceof TypeVariable){
+            Class<?> parameterErasure = typeArguments.get(t);
+            /*
+             * Erasure bounds Note:
+             * In practice it looks like we never need erasure bounds, because even if we implement a raw interface,
+             * the overriding method will have its parameter types erased to the proper classes (apparently it can't
+             * substitute new type variables for the parameters, if it implements a raw interface and overrides a
+             * method whose arguments are generics, so it must be classes) and when we look up the method with the
+             * parameter types we will find them directly with this method's parameter types in the direct lookup above.
+             */
+            if(parameterErasure == null)
+                parameterErasure = Object.class;
+            return parameterErasure;
+        }else if(t instanceof ParameterizedType){
+            return (Class<?>) ((ParameterizedType) t).getRawType();
+        }else if(t instanceof GenericArrayType){
+            GenericArrayType gt = (GenericArrayType) t;
+            Class<?> componentType = getParameterErasure(typeArguments, gt.getGenericComponentType());
+            try {
+                ClassLoader classLoader = componentType.getClassLoader();
+                String name;
+                if(componentType.isArray()){
+                    // just add a leading "["
+                    name = "["+componentType.getName();
+                }else if(componentType == boolean.class){
+                    name = "[Z";
+                }else if(componentType == byte.class){
+                    name = "[B";
+                }else if(componentType == char.class){
+                    name = "[C";
+                }else if(componentType == double.class){
+                    name = "[D";
+                }else if(componentType == float.class){
+                    name = "[F";
+                }else if(componentType == int.class){
+                    name = "[I";
+                }else if(componentType == long.class){
+                    name = "[J";
+                }else if(componentType == short.class){
+                    name = "[S";
+                }else{
+                    // must be an object non-array class
+                    name = "[L"+componentType.getName()+";";
+                }
+                return classLoader != null ? classLoader.loadClass(name) : Class.forName(name);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Could not find generic array type: "+t, e);
+            }
+        }else
+            throw new RuntimeException("Unknown parameter type: "+t);
     }
 
     private static Map<TypeVariable<?>, Class<?>> getTypeArguments(Class<?> base, Class<?> searchedSuperType, Map<TypeVariable<?>, Class<?>> baseTypeArguments){

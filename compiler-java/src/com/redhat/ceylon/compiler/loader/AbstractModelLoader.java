@@ -131,7 +131,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
-    private static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
+    public static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
     public static final String CEYLON_NAME_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Name";
     private static final String CEYLON_SEQUENCED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Sequenced";
@@ -382,6 +382,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * Returns true if the given method is overriding an inherited method (from super class or interfaces).
      */
     protected abstract boolean isOverridingMethod(MethodMirror methodMirror);
+
+    /**
+     * Returns true if the given method is overloading an inherited method (from super class or interfaces).
+     */
+    protected abstract boolean isOverloadingMethod(MethodMirror methodMirror);
 
     /**
      * Logs a warning.
@@ -1767,7 +1772,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setContainer(klass);
         method.setRealName(methodName);
         method.setUnit(klass.getUnit());
-        method.setOverloaded(isOverloaded);
+        method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
         ProducedType type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);

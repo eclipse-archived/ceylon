@@ -43,6 +43,7 @@ public class ReflectionMethod implements MethodMirror {
     private ArrayList<VariableMirror> parameters;
     private List<TypeParameterMirror> typeParameters;
     private Boolean overridingMethod;
+    private Boolean overloadingMethod;
     private ReflectionType returnType;
 
     public ReflectionMethod(Member method) {
@@ -186,6 +187,17 @@ public class ReflectionMethod implements MethodMirror {
         else
             overridingMethod = false;
         return overridingMethod;
+    }
+
+    public boolean isOverloadingMethod() {
+        if(overloadingMethod != null)
+            return overloadingMethod.booleanValue();
+        
+        if(method instanceof Method)
+            overloadingMethod = ReflectionUtils.isOverloadingMethod((Method) method);
+        else
+            overloadingMethod = false;
+        return overloadingMethod;
     }
 
     @Override

@@ -140,6 +140,11 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
     protected boolean isOverridingMethod(MethodMirror methodSymbol) {
         return ((ReflectionMethod)methodSymbol).isOverridingMethod();
     }
+    
+    @Override
+    protected boolean isOverloadingMethod(MethodMirror methodSymbol) {
+        return ((ReflectionMethod)methodSymbol).isOverloadingMethod();
+    }
 
     @Override
     protected void logError(String message) {

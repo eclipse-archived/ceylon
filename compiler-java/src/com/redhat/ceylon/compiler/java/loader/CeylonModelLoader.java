@@ -20,14 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.lang.model.element.NestingKind;
-import javax.tools.JavaFileObject.Kind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
@@ -47,13 +40,13 @@ import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.loader.TypeParser;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
-import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
+import com.sun.tools.javac.code.Attribute.Compound;
+import com.sun.tools.javac.code.Kinds;
+import com.sun.tools.javac.code.Scope;
 import com.sun.tools.javac.code.Scope.Entry;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
@@ -68,6 +61,7 @@ import com.sun.tools.javac.jvm.ClassReader;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Convert;
+import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Log;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
@@ -316,7 +310,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
             MethodSymbol impl = null;
             // interfaces have a different way to work
             if(method.owner.isInterface())
-                return (MethodSymbol) method.implemented(method.owner.type.tsym, types);
+                return (MethodSymbol) implemented(method, method.owner.type.tsym, types);
             for (Type superType = types.supertype(method.owner.type);
                     impl == null && superType.tsym != null;
                     superType = types.supertype(superType)) {
@@ -328,6 +322,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     for (Entry e = i.members().lookup(method.name);
                             impl == null && e.scope != null;
                             e = e.next()) {
+                        // ignore some methods
+                        if(isIgnored(e.sym))
+                            continue;
                         if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
                                 // FIXME: I suspect the following requires a
                                 // subst() for a parametric return type.
@@ -338,38 +335,62 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     }
                     // try in the interfaces
                     if(impl == null)
-                        impl = (MethodSymbol) method.implemented(i, types);
+                        impl = (MethodSymbol) implemented(method, i, types);
                 } catch (Symbol.CompletionFailure x) {
                     // just ignore unresolved interfaces, error will be logged when we try to add it
                 }
             }
             // try in the interfaces
             if(impl == null)
-                impl = (MethodSymbol) method.implemented(method.owner.type.tsym, types);
+                impl = (MethodSymbol) implemented(method, method.owner.type.tsym, types);
             return impl;
         }catch(CompletionFailure x){
-            if(method.owner != null){
-                PackageSymbol methodPackage = method.owner.packge();
-                if(methodPackage != null){
-                    String methodPackageName = methodPackage.getQualifiedName().toString();
-                    if(JDKUtils.isJDKAnyPackage(methodPackageName)){
-                        if(x.sym != null && x.sym instanceof ClassSymbol){
-                            PackageSymbol pkg = ((ClassSymbol)x.sym).packge();
-                            if(pkg != null){
-                                String pkgName = pkg.getQualifiedName().toString();
-                                if(JDKUtils.isOracleJDKAnyPackage(pkgName)){
-                                    // the JDK tried to use some Oracle JDK stuff, just log it
-                                    logMissingOracleType(x.getMessage());
-                                    return null;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            // in every other case, rethrow as a ModelLoaderExceptions
-            throw new ModelResolutionException("Failed to determine if "+method.name.toString()+" is overriding a super method", x);
+            handleCompletionFailure(method, x);
+            return null;
         }
+    }
+
+    /**
+     * Copied from MethodSymbol.implemented and adapted for ignoring methods
+     */
+    private Symbol implemented(MethodSymbol m, TypeSymbol c, Types types) {
+        Symbol impl = null;
+        for (List<Type> is = types.interfaces(c.type);
+             impl == null && is.nonEmpty();
+             is = is.tail) {
+            TypeSymbol i = is.head.tsym;
+            impl = implementedIn(m, i, types);
+            if (impl == null)
+                impl = implemented(m, i, types);
+        }
+        return impl;
+    }
+
+    /**
+     * Copied from MethodSymbol.implemented and adapted for ignoring methods
+     */
+    private Symbol implementedIn(MethodSymbol m, TypeSymbol c, Types types) {
+        Symbol impl = null;
+        for (Scope.Entry e = c.members().lookup(m.name);
+             impl == null && e.scope != null;
+             e = e.next()) {
+            // ignore some methods
+            if(isIgnored(e.sym))
+                continue;
+            if (m.overrides(e.sym, (TypeSymbol)m.owner, types, true)/* &&
+                // Ceylon (Stef): I disabled this because it failed to notice that "<T> T[] toArray(T[] ret)" would be implementing
+                // "<T> T[] Collection.toArray(T[] ret)", and because this.overrides has the last parameter set to "true", which means
+                // the return type is already checked and agrees with covariance and type parameter substitution, which types.isSameType
+                // does not do
+                
+                // FIXME: I suspect the following requires a
+                // subst() for a parametric return type.
+                types.isSameType(type.getReturnType(),
+                                 types.memberType(owner.type, e.sym).getReturnType())*/) {
+                impl = e.sym;
+            }
+        }
+        return impl;
     }
 
     public Symtab syms() {
@@ -402,6 +423,144 @@ public class CeylonModelLoader extends AbstractModelLoader {
             }
         }
         return getOverriddenMethod(method, types) != null;
+    }
+
+    @Override
+    protected boolean isOverloadingMethod(MethodMirror methodMirror) {
+        final MethodSymbol method = ((JavacMethod)methodMirror).methodSymbol;
+        return isOverloadingMethod(method);
+    }
+    
+    /*
+     * Copied from getOverriddenMethod and adapted for overloading
+     */
+    private boolean isOverloadingMethod(MethodSymbol method) {
+        try{
+            // interfaces have a different way to work
+            if(method.owner.isInterface())
+                return overloaded(method, method.owner.type.tsym, types);
+            // Exception has a pretend supertype of Object, unlike its Java supertype of java.lang.RuntimeException
+            // so we stop there for it, especially since it does not have any overloading
+            if(method.owner.type.tsym.getQualifiedName().toString().equals("ceylon.language.Exception"))
+                return false;
+            for (Type superType = types.supertype(method.owner.type);
+                    superType.tsym != null;
+                    superType = types.supertype(superType)) {
+                TypeSymbol i = superType.tsym;
+                String fqn = i.getQualifiedName().toString();
+                // never go above this type since it has no supertype in Ceylon (does in Java though)
+                if(fqn.equals("ceylon.language.Anything"))
+                    break;
+                try {
+                    for (Entry e = i.members().lookup(method.name);
+                            e.scope != null;
+                            e = e.next()) {
+                        // ignore some methods
+                        if(isIgnored(e.sym))
+                            continue;
+                        if (!(method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
+                                // FIXME: I suspect the following requires a
+                                // subst() for a parametric return type.
+                                types.isSameType(method.type.getReturnType(),
+                                        types.memberType(method.owner.type, e.sym).getReturnType()))) {
+                            return true;
+                        }
+                    }
+                    // try in the interfaces
+                    if(overloaded(method, i, types))
+                        return true;
+                } catch (Symbol.CompletionFailure x) {
+                    // just ignore unresolved interfaces, error will be logged when we try to add it
+                }
+                // Exception has a pretend supertype of Object, unlike its Java supertype of java.lang.RuntimeException
+                // so we stop there for it, especially since it does not have any overloading
+                if(fqn.equals("ceylon.language.Exception"))
+                    break;
+            }
+            // try in the interfaces
+            if(overloaded(method, method.owner.type.tsym, types))
+                return true;
+            return false;
+        }catch(CompletionFailure x){
+            handleCompletionFailure(method, x);
+            return false;
+        }
+    }
+
+    private boolean isIgnored(Symbol sym) {
+        if(sym.kind != Kinds.MTH)
+            return true;
+        for(Compound ann : sym.getAnnotationMirrors()){
+            if(ann.type.tsym.getQualifiedName().toString().equals(CEYLON_IGNORE_ANNOTATION))
+                return true;
+        }
+        return false;
+    }
+
+    private void handleCompletionFailure(MethodSymbol method, CompletionFailure x) {
+        if(method.owner != null){
+            PackageSymbol methodPackage = method.owner.packge();
+            if(methodPackage != null){
+                String methodPackageName = methodPackage.getQualifiedName().toString();
+                if(JDKUtils.isJDKAnyPackage(methodPackageName)){
+                    if(x.sym != null && x.sym instanceof ClassSymbol){
+                        PackageSymbol pkg = ((ClassSymbol)x.sym).packge();
+                        if(pkg != null){
+                            String pkgName = pkg.getQualifiedName().toString();
+                            if(JDKUtils.isOracleJDKAnyPackage(pkgName)){
+                                // the JDK tried to use some Oracle JDK stuff, just log it
+                                logMissingOracleType(x.getMessage());
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // in every other case, rethrow as a ModelLoaderExceptions
+        throw new ModelResolutionException("Failed to determine if "+method.name.toString()+" is overriding a super method", x);
+    }
+
+    /**
+     * Copied from MethodSymbol.implemented and adapted for overloading
+     */
+    private boolean overloaded(MethodSymbol m, TypeSymbol c, Types types) {
+        for (com.sun.tools.javac.util.List<Type> is = types.interfaces(c.type);
+             is.nonEmpty();
+             is = is.tail) {
+            TypeSymbol i = is.head.tsym;
+            if(overloadedIn(m, i, types))
+                return true;
+            if(overloaded(m, i, types))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Copied from MethodSymbol.implementedIn and adapted for overloading
+     */
+    private boolean overloadedIn(MethodSymbol m, TypeSymbol c, Types types) {
+        for (Scope.Entry e = c.members().lookup(m.name);
+             e.scope != null;
+             e = e.next()) {
+            // ignore some methods
+            if(isIgnored(e.sym))
+                continue;
+            if (!m.overrides(e.sym, (TypeSymbol)m.owner, types, true)/* &&
+                // Ceylon (Stef): I disabled this because it failed to notice that "<T> T[] toArray(T[] ret)" would be implementing
+                // "<T> T[] Collection.toArray(T[] ret)", and because this.overrides has the last parameter set to "true", which means
+                // the return type is already checked and agrees with covariance and type parameter substitution, which types.isSameType
+                // does not do
+                
+                // FIXME: I suspect the following requires a
+                // subst() for a parametric return type.
+                types.isSameType(type.getReturnType(),
+                                 types.memberType(owner.type, e.sym).getReturnType())*/) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
