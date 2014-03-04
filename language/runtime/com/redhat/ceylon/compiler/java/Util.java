@@ -864,6 +864,16 @@ public class Util {
         return array;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int size){
+        return (T[]) java.lang.reflect.Array.newInstance($reifiedElement.getArrayElementClass(), size);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] makeArray(TypeDescriptor $reifiedElement, int... dimensions){
+        return (T[]) java.lang.reflect.Array.newInstance($reifiedElement.getArrayElementClass(), dimensions);
+    }
+
     /**
      * Returns a runtime exception. To be used by implementors 
      * of Java array methods used to make sure they are never 
