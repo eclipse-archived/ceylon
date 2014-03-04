@@ -3155,6 +3155,16 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean canOptimiseReifiedTypeTest(ProducedType type) {
+        if(isJavaArray(type)){
+            if(isJavaObjectArray(type)){
+                MultidimensionalArray multiArray = getMultiDimensionalArrayInfo(type);
+                // we can test, even if not fully reified in Java
+                return multiArray.type.getDeclaration() instanceof ClassOrInterface;
+            }else{
+                // primitive array we can test
+                return true;
+            }
+        }
         // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
