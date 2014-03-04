@@ -275,6 +275,9 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                     if (opts.isVerbose()) {
                         append("Adding default module filter"); newline();
                     }
+                    for (File root : roots) {
+                        addFilesToCompilationSet(opts.isVerbose(), root, onlyFiles, true);
+                    }
                     modfilters.add("default");
                     f = null;
                 } else {
@@ -296,7 +299,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                             if (opts.isVerbose()) {
                                 append("Adding dir to module filters: " + f.getAbsolutePath()); newline();
                             }
-                            addFilesToCompilationSet(opts.isVerbose(), f, onlyFiles);
+                            addFilesToCompilationSet(opts.isVerbose(), f, onlyFiles, false);
                             modfilters.add(filedir);
                         }
                     }
@@ -390,7 +393,14 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         }
     }
 
-    private static void addFilesToCompilationSet(boolean verbose, File dir, List<String> onlyFiles) {
+    private static void addFilesToCompilationSet(boolean verbose, File dir, List<String> onlyFiles, boolean skipModules) {
+        if (skipModules) {
+            File module = new File(dir, "module.ceylon");
+            if (module.isFile()) {
+                // Seems this folder contains a module, so we skip it
+                return;
+            }
+        }
         for (File e : dir.listFiles()) {
             String n = e.getName().toLowerCase();
             if (e.isFile() && (n.endsWith(".ceylon") || n.endsWith(".js"))) {
@@ -402,7 +412,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
                     onlyFiles.add(path);
                 }
             } else if (e.isDirectory()) {
-                addFilesToCompilationSet(verbose, e, onlyFiles);
+                addFilesToCompilationSet(verbose, e, onlyFiles, skipModules);
             }
         }
     }
