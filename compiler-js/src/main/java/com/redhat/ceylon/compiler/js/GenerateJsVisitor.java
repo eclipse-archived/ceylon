@@ -2185,7 +2185,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(Tree.BaseMemberExpression that) {
+    public void visit(final Tree.BaseMemberExpression that) {
         BmeGenerator.generateBme(that, this, false);
     }
 
