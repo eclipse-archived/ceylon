@@ -1408,7 +1408,7 @@ public class ClassTransformer extends AbstractTransformer {
                         + model.getQualifiedNameString());
                 // if it's an interface we just qualify it properly
                 if(modelContainer instanceof Interface){
-                    JCExpression containerType = makeJavaType(modelContainer.getType(), JT_COMPANION | JT_SATISFIES);
+                    JCExpression containerType = makeJavaType(modelContainer.getType(), JT_COMPANION | JT_SATISFIES | JT_RAW);
                     containerInstance = makeSelect(containerType, "this");
                     ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_SATISFIES | JT_NON_QUALIFIED);
                 }else{

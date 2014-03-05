@@ -1664,7 +1664,8 @@ public abstract class AbstractTransformer implements Transformation {
             if (tdecl instanceof Interface
                     && qualifyingTypes != null
                     && qualifyingTypes.size() > 1
-                    && firstQualifyingTypeWithTypeParameters == 0) {
+                    && firstQualifyingTypeWithTypeParameters == 0
+                    && (flags & JT_NON_QUALIFIED) == 0) {
                 baseType = naming.makeCompanionClassName(tdecl);
             } else {
                 baseType = naming.makeDeclarationName(tdecl, jtFlagsToDeclNameOpts(flags));
