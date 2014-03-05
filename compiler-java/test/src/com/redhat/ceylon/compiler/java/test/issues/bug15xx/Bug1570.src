@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+public interface Bug1570$If<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.If$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$impl$If$impl();
+}
+interface Bug1570<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$();
+}
+final class Bug1570$impl<T> {
+    
+    Bug1570$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public final class If$impl {
+        
+        public If$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T> $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T> $this;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$() {
+        return new In();
+    }
+    
+    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T> {
+        
+        protected In() {
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$If$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl.this.new If$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.If$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$If$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.If$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$impl$If$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$If$this$;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570.class, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl.In.class));
+        }
+    }
+}
