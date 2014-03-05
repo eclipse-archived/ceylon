@@ -2269,7 +2269,14 @@ public class GenerateJsVisitor extends Visitor
         } else if (that.getStaticMethodReference()) {
             out("function($O$) {return ");
             if (that.getDeclaration() instanceof Method) {
-                out(clAlias, "JsCallable($O$,$O$.", names.name(that.getDeclaration()), ");}");
+                //TODO #326 if the method has type parameters, something extra needs to be done here
+                //probably only if the method has type params AND returns a Callable
+                if (BmeGenerator.hasTypeParameters(that)) {
+                    BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(that.getDeclaration()));
+                } else {
+                    out(clAlias, "JsCallable($O$,$O$.", names.name(that.getDeclaration()), ")");
+                }
+                out(";}");
             } else {
                 out("$O$.", names.name(that.getDeclaration()), ";}");
             }
@@ -2328,12 +2335,19 @@ public class GenerateJsVisitor extends Visitor
         out("())");
     }
 
-    private void generateCallable(QualifiedMemberOrTypeExpression that, String name) {
+    private void generateCallable(final QualifiedMemberOrTypeExpression that, String name) {
         if (that.getPrimary() instanceof Tree.BaseTypeExpression) {
             //it's a static method ref
+            if (name == null) {
+                name = memberAccess(that, "");
+            }
             out("function(x){return ");
-            that.getPrimary().visit(this);
-            out(".$$.prototype.", (name == null) ? memberAccess(that, "") :name,".bind(x);}");
+            if (BmeGenerator.hasTypeParameters(that)) {
+                BmeGenerator.printGenericMethodReference(this, that, "x", "x."+name);
+            } else {
+                out("x.", name, ".bind(x)");
+            }
+            out(";}");
             return;
         }
         String primaryVar = createRetainedTempVar("opt");
