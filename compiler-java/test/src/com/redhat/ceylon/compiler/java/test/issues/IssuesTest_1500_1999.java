@@ -72,6 +72,12 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1532() {
         compareWithJavaSource("bug15xx/Bug1532");
     }
+    
+    @Test
+    public void testBug1533() {
+        compareWithJavaSource("bug15xx/Bug1533");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1533_callsite");
+    }
 
     @Test
     public void testBug1536() {

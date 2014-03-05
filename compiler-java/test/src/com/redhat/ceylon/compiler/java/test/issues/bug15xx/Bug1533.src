@@ -1,0 +1,210 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>")
+final class X {
+    
+    private X() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>")
+final class Y {
+    
+    private Y() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Tuple<E,E,ceylon.language::Nothing>|Es")
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "E",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Es",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Tuple<E,E,ceylon.language::Sequential<E>>"},
+                caseTypes = {})})
+final class Z<E, Es extends .ceylon.language.Tuple<E, ? extends E, ? extends .ceylon.language.Sequential<? extends E>>> {
+    
+    private Z() {
+    }
+}
+class Bug1533 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1533() {
+    }
+    
+    public final <R, Es extends .ceylon.language.Tuple<E, ? extends E, ? extends .ceylon.language.Sequential<? extends E>>, E>R tupleOrTp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Es, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, final .ceylon.language.Callable<? extends R> callable, final Es es) {
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply(callable, (.ceylon.language.Sequential)es);
+    }
+    
+    public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>, B extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpUnionTp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final .ceylon.language.Callable<? extends R> callable, final A args) {
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply(callable, (.ceylon.language.Sequential)args);
+    }
+    
+    public final <R>R union2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .ceylon.language.Callable<? extends R> callable, final .java.lang.Object args) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential tuple$0 = (.ceylon.language.Sequential)args;
+            }
+            returning callable.$call$(tuple$0.get(.ceylon.language.Integer.instance(0L)));
+        );
+    }
+    
+    public final <R>R union3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .ceylon.language.Callable<? extends R> callable, final .java.lang.Object args) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential tuple$2 = (.ceylon.language.Sequential)args;
+            }
+            returning callable.$call$(tuple$2.get(.ceylon.language.Integer.instance(0L)));
+        );
+    }
+    
+    public final <R>R unionAlias(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .ceylon.language.Callable<? extends R> callable, final .java.lang.Object args) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential tuple$4 = (.ceylon.language.Sequential)args;
+            }
+            returning callable.$call$(tuple$4.get(.ceylon.language.Integer.instance(0L)));
+        );
+    }
+    
+    public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>, B extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpIntersectTp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final .ceylon.language.Callable<? extends R> callable, final .java.lang.Object args) {
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply(callable, (.ceylon.language.Sequential)args);
+    }
+    
+    public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>, B extends .ceylon.language.Sequential<? extends .java.lang.Object>, C extends .ceylon.language.Sequential<? extends .java.lang.Object>>R intersect3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, final .ceylon.language.Callable<? extends R> callable, final .java.lang.Object args) {
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply(callable, (.ceylon.language.Sequential)args);
+    }
+    
+    public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpIntersectNothing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .ceylon.language.Callable<? extends R> callable, final A args) {
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply(callable, (.ceylon.language.Sequential)args);
+    }
+    
+    public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpIntersectEmpty(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .ceylon.language.Callable<? extends R> callable, final A args) {
+        return callable.$callvariadic$((.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)args);
+    }
+    
+    public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpUnionEmpty(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .java.lang.Object callable, final .java.lang.Object args) {
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply((.ceylon.language.Callable<? extends R>)(.ceylon.language.Callable)callable, (.ceylon.language.Sequential)args);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533.class);
+}
+final class bug1533_callsite_ {
+    
+    private bug1533_callsite_() {
+    }
+    
+    static void bug1533_callsite() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533 inst = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533();
+        if (.ceylon.language.Integer.instance(1L).equals(inst.<.ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long x = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(x);
+            }
+        }, (.ceylon.language.Tuple)new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == inst.tupleOrTp((Integer x)=>x, [1])"));
+        if (.ceylon.language.Integer.instance(4L).equals(inst.<.ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Integer(Integer, Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long x = ((.ceylon.language.Integer)$param$0).longValue();
+                final long y = ((.ceylon.language.Integer)$param$1).longValue();
+                return .ceylon.language.Integer.instance(x + y);
+            }
+        }, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "4 == inst.tupleOrTp((Integer x, Integer y)=>x+y, [2, 2])"));
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> v2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Integer(Integer, Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long x = ((.ceylon.language.Integer)$param$0).longValue();
+                final long y = ((.ceylon.language.Integer)$param$1).longValue();
+                return .ceylon.language.Integer.instance(x + y);
+            }
+        };
+        if (.ceylon.language.Integer.instance(4L).equals(inst.<.ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Integer.$TypeDescriptor$, v2, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "4 == inst.tupleOrTp(v2, [2, 2])"));
+        
+        final class f2_ {
+            
+            private f2_() {
+            }
+            
+            long f2(final long x, final long y) {
+                return x + y;
+            }
+        }
+        final f2_ f2 = new f2_();
+        if (.ceylon.language.Integer.instance(4L).equals(inst.<.ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Integer(Integer, Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long $ceylontmp$x = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $ceylontmp$y = ((.ceylon.language.Integer)$param$1).longValue();
+                return .ceylon.language.Integer.instance(f2.f2($ceylontmp$x, $ceylontmp$y));
+            }
+        }, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "4 == inst.tupleOrTp(f2, [2, 2])"));
+        if (.ceylon.language.Integer.instance(4L).equals(inst.<.ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>, .ceylon.language.Sequential<? extends .java.lang.Object>>tpUnionTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, v2, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "4 == inst.tpUnionTp(v2, [2, 2])"));
+        if (.ceylon.language.Integer.instance(2L).equals(inst.<.java.lang.Object>union2(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "<Integer|String>(Integer|String)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object x = $param$0;
+                return x;
+            }
+        }, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == inst.union2((Integer|String x)=>x, [2])"));
+        if (.ceylon.language.Integer.instance(2L).equals(inst.<.java.lang.Object>union3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "<Integer|String|Boolean>(Integer|String|Boolean)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object x = $param$0;
+                return x;
+            }
+        }, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == inst.union3((Integer|String|Boolean x)=>x, [2])"));
+        if (.ceylon.language.Integer.instance(2L).equals(inst.<.java.lang.Object>unionAlias(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "<Integer|String>(Integer|String)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object x = $param$0;
+                return x;
+            }
+        }, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)})))) {
+        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == inst.unionAlias((Integer|String x)=>x, [2])"));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1533_callsite_.bug1533_callsite();
+    }
+}
