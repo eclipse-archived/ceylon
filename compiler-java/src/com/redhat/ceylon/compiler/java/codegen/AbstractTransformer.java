@@ -1643,11 +1643,17 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression baseType;
         TypeDeclaration tdecl = type.getDeclaration();
         ListBuffer<JCExpression> typeArgs = null;
-        if(index >= firstQualifyingTypeWithTypeParameters)
+        if(index >= firstQualifyingTypeWithTypeParameters) {
+            int taFlags = flags;
+            if (qualifyingTypes != null && index < qualifyingTypes.size()) {
+                // The qualifying types before the main one should
+                // have type parameters with proper variance
+                taFlags &= ~(JT_EXTENDS | JT_SATISFIES);
+            }
             typeArgs = makeTypeArgs( 
-                    type, 
-                    //tdecl, 
-                    flags);
+                    type,
+                    taFlags);
+        }
         if (isCeylonCallable(generalType) && 
                 (flags & JT_CLASS_NEW) != 0) {
             baseType = makeIdent(syms().ceylonAbstractCallableType);
