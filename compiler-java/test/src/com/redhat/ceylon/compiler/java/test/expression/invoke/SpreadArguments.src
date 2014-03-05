@@ -940,7 +940,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     private final <Arg, Args extends .ceylon.language.Sequential<? extends Arg>>void spreadParameterised$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arg, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final Arg arg, final Args args, final .ceylon.language.Callable<? extends .ceylon.language.Integer> f, final .ceylon.language.Callable<? extends .ceylon.language.Integer> f2) {
-        final long i1 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>apply(f, args).longValue();
+        final long i1 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>apply(f, (.ceylon.language.Sequential)args).longValue();
     }
     
     @.java.lang.Override
