@@ -131,7 +131,21 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 }
             }
         }
-        throw new CeylonRunJsException("Could not find 'node' executable. Please install node.js (from http://nodejs.org).");
+        //And why not, look for it in PATH
+        winpath = System.getenv("PATH");
+        if (winpath != null) {
+            paths = winpath.split(File.pathSeparator);
+            for (String p : paths) {
+                String np = p.endsWith(File.separator) ? p + "node" : p + File.separator + "node";
+                if (isExe(np)) {
+                    return np;
+                }
+            }
+        }
+        String errmsg = "Could not find 'node' executable. Please install node.js (from http://nodejs.org)."
+                + "\nIf you have node installed in a non-standard location, you can either set the environment variable"
+                + "\nNODE_EXE or the JVM system property node.exe with the full path to the node executable.";
+        throw new CeylonRunJsException(errmsg);
     }
 
     private static boolean isExe(String p) {
