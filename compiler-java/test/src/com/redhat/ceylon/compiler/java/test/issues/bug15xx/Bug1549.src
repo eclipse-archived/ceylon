@@ -1,0 +1,130 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+interface Bug1549In<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549In$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T>.In In$new$();
+}
+final class Bug1549In$impl<T> {
+    
+    Bug1549In$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In<? super T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In<? super T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T>.In In$new$() {
+        return new In();
+    }
+    
+    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected In() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In.class, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl.In.class));
+        }
+    }
+}
+interface Bug1549InSub extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In<.ceylon.language.Float> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549InSub$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In In$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub.class);
+}
+final class Bug1549InSub$impl {
+    
+    Bug1549InSub$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In In$new$() {
+        return new In();
+    }
+    
+    public class In extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super .ceylon.language.Float>.In {
+        
+        protected In() {
+            $this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549In$impl().super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In.class));
+        }
+    }
+}
+interface Bug1549Out<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549Out$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T>.Out Out$new$();
+}
+final class Bug1549Out$impl<T> {
+    
+    Bug1549Out$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out<? extends T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out<? extends T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T>.Out Out$new$() {
+        return new Out();
+    }
+    
+    public class Out implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Out() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out.class, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl.Out.class));
+        }
+    }
+}
+interface Bug1549OutSub extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out<.ceylon.language.Float> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549OutSub$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out Out$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub.class);
+}
+final class Bug1549OutSub$impl {
+    
+    Bug1549OutSub$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out Out$new$() {
+        return new Out();
+    }
+    
+    public class Out extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends .ceylon.language.Float>.Out {
+        
+        protected Out() {
+            $this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549Out$impl().super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out.class));
+        }
+    }
+}
