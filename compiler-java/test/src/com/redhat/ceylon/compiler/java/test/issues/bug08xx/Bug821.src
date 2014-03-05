@@ -27,7 +27,7 @@ final class bug821b_ {
     
     static void bug821b() {
         final .java.lang.Object n = .ceylon.language.Integer.instance(1L);
-        final .ceylon.language.Sequence ns = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{n});
+        final .ceylon.language.Sequence ns = new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Object, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{n});
         final .java.lang.Object num = ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)ns).get(.ceylon.language.Integer.instance(0L));
     }
     

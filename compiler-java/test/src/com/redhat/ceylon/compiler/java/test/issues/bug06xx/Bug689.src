@@ -5,18 +5,18 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     Bug689(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y, final .java.lang.Object xy) {
         this.$reified$X = $reified$X;
         this.$reified$Y = $reified$Y;
-        this.attributeWithUnion = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+        this.attributeWithUnion = new .ceylon.language.Tuple<.java.lang.Object, X, .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
                 x,
                 y});
-        this.attributeWithIntersection = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
-        this.variableWithUnion = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+        this.attributeWithIntersection = new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Object, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+        this.variableWithUnion = new .ceylon.language.Tuple<.java.lang.Object, X, .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
                 x,
                 y});
-        this.variableWithIntersection = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
-        this.attributeWithUnionWithinTypeArg = new .ceylon.language.Tuple<.ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>, .ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>, .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), $reified$X, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Y, $reified$Y, .ceylon.language.Empty.$TypeDescriptor$)), new .java.lang.Object[]{new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+        this.variableWithIntersection = new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Object, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+        this.attributeWithUnionWithinTypeArg = new .ceylon.language.Tuple<.ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>, .ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>, .ceylon.language.Sequential<? extends .ceylon.language.Tuple<.java.lang.Object, ? extends X, ? extends .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), $reified$X, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Y, $reified$Y, .ceylon.language.Empty.$TypeDescriptor$)), new .java.lang.Object[]{new .ceylon.language.Tuple<.java.lang.Object, X, .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
                 x,
                 y})});
-        this.attributeWithUnionErasedToIterable = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+        this.attributeWithUnionErasedToIterable = new .ceylon.language.Tuple<.java.lang.Object, X, .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
                 x,
                 y});
         .ceylon.language.Number sync = null;
@@ -71,23 +71,23 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithUnion$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y) {
-        return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+        return new .ceylon.language.Tuple<.java.lang.Object, X, .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
                 x,
                 y});
     }
     
     private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithIntersection$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .java.lang.Object xy) {
-        return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+        return new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Object, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
     }
     
     private final .ceylon.language.Sequence methodWithUnion$priv$(final X x, final Y y) {
-        return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+        return new .ceylon.language.Tuple<.java.lang.Object, X, .ceylon.language.Tuple<Y, ? extends Y, ? extends .ceylon.language.Sequential<? extends Y>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
                 x,
                 y});
     }
     
     private final .ceylon.language.Sequence methodWithIntersection$priv$(final .java.lang.Object xy) {
-        return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+        return new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Object, .ceylon.language.Empty>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
     }
     private final .ceylon.language.Sequence attributeWithUnion;
     

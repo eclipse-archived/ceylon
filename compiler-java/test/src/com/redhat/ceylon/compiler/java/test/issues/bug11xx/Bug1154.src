@@ -60,7 +60,7 @@ public class Bug1154<Element, First extends Element, Rest extends .ceylon.langua
     }
     
     public final <NewFirst>.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, NewFirst, .ceylon.language.Tuple<Element, ? extends First, ? extends Rest>> withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$NewFirst, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<NewFirst> newFirst) {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$NewFirst, $reified$Element), $reified$NewFirst, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$First, $reified$Rest), newFirst, (.ceylon.language.Tuple)getTuple());
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, NewFirst, .ceylon.language.Tuple<Element, ? extends First, ? extends Rest>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$NewFirst, $reified$Element), $reified$NewFirst, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Element, $reified$First, $reified$Rest), newFirst, (.ceylon.language.Tuple)getTuple());
     }
     
     public final void juu(final .ceylon.language.Callable<? extends .java.lang.Object> f) {

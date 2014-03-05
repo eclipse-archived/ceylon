@@ -73,7 +73,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>> $call$() {
-                return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{
+                return new .ceylon.language.Tuple<.java.lang.Object, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Float, ? extends .ceylon.language.Float, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Float>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{
                         .ceylon.language.Integer.instance(1L),
                         .ceylon.language.Float.instance(1.0)});
             }
@@ -147,7 +147,7 @@ final class anonFunctionNullary_ {
             
             @.java.lang.Override
             public .ceylon.language.Tuple<.java.lang.Object, ? extends T, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>> $call$() {
-                return new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$T, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                return new .ceylon.language.Tuple<.java.lang.Object, T, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$T, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
                         t,
                         .ceylon.language.Integer.instance(1L)});
             }
