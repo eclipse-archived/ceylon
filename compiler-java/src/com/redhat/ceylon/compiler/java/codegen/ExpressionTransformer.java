@@ -2606,8 +2606,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // Only evaluate the tuple expr once
         SyntheticName tupleAlias = naming.alias("tuple");
-        JCExpression tupleType = makeJavaType(tupleArgument.getTypeModel(), 0);
+        JCExpression tupleType;
         JCExpression tupleExpr = transformExpression(tupleArgument, BoxingStrategy.BOXED, null);
+        if (willEraseToObject(tupleArgument.getTypeModel())) {
+            tupleType = makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW);
+            tupleExpr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), tupleExpr);
+        } else {
+            tupleType = makeJavaType(tupleArgument.getTypeModel(), 0);
+        }
+        
         callBuilder.appendStatement(makeVar(tupleAlias, tupleType, tupleExpr));
         
         if (callBuilder.getArgumentHandling() == 0) {
