@@ -2269,8 +2269,6 @@ public class GenerateJsVisitor extends Visitor
         } else if (that.getStaticMethodReference()) {
             out("function($O$) {return ");
             if (that.getDeclaration() instanceof Method) {
-                //TODO #326 if the method has type parameters, something extra needs to be done here
-                //probably only if the method has type params AND returns a Callable
                 if (BmeGenerator.hasTypeParameters(that)) {
                     BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(that.getDeclaration()));
                 } else {

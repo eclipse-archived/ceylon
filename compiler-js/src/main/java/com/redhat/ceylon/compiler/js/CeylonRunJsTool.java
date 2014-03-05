@@ -143,6 +143,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
             }
         }
         String errmsg = "Could not find 'node' executable. Please install node.js (from http://nodejs.org)."
+                + "\nMake sure the path to the node executable is included in your PATH environment variable."
                 + "\nIf you have node installed in a non-standard location, you can either set the environment variable"
                 + "\nNODE_EXE or the JVM system property node.exe with the full path to the node executable.";
         throw new CeylonRunJsException(errmsg);
