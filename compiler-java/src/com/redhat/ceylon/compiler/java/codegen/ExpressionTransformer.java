@@ -2415,7 +2415,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ProducedType iteratedType = typeFact().getObjectDeclaration().getType();
         // the single spread argument which is allowed
         JCExpression expr = invocation.getTransformedArgumentExpression(0);
-        
+        expr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), expr);
         JCExpression type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
         return new ExpressionAndType(expr, type);
     }

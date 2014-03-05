@@ -61,6 +61,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -1940,50 +1941,55 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean isUnknownTuple(ProducedType args) {
-        // ATM we only allow a single type parameter
-        return args.getDeclaration() instanceof TypeParameter;
-        /*
-         * The following code does not correctly detect weirdo cases such as Callable<Ret,Args|[Integer]> that are
-         * valid and tested in https://github.com/ceylon/ceylon-compiler/issues/1113
-         * 
-        // can be a defaulted tuple of Empty|Tuple
         TypeDeclaration declaration = args.getDeclaration();
-        if(declaration instanceof UnionType){
+        if (declaration instanceof TypeParameter) {
+            return true;
+        } else if (declaration instanceof UnionType){
+            /* Callable<R,A>&Callable<R,B> is the same as Callable<R,A|B> so 
+             * for a union if either A or B is known then the union is known
+             */
             java.util.List<ProducedType> caseTypes = declaration.getCaseTypes();
-            if(caseTypes == null || caseTypes.size() != 2)
+            if(caseTypes == null || caseTypes.size() < 2)
                 return true;
-            ProducedType caseA = caseTypes.get(0);
-            TypeDeclaration caseADecl = caseA.getDeclaration();
-            ProducedType caseB = caseTypes.get(1);
-            TypeDeclaration caseBDecl = caseB.getDeclaration();
-            if(caseADecl instanceof ClassOrInterface == false
-                    || caseBDecl instanceof ClassOrInterface == false)
+            for (int ii = 0; ii < caseTypes.size(); ii++) {
+                if (!isUnknownTuple(caseTypes.get(ii))) {
+                    return false;
+                }
+            }// all unknown
+            return true;
+        } else if (declaration instanceof IntersectionType) {
+            /* Callable<R,A>|Callable<R,B> is the same as Callable<R,A&B> so 
+             * for an intersection if both A and B are known then the intersection is known
+             */
+            java.util.List<ProducedType> caseTypes = declaration.getSatisfiedTypes();
+            if(caseTypes == null || caseTypes.size() < 2)
                 return true;
-            if(caseADecl.getQualifiedNameString().equals("ceylon.language::Empty")
-                    && caseBDecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
-                return isUnknownTuple(caseB);
-            if(caseBDecl.getQualifiedNameString().equals("ceylon.language::Empty")
-                    && caseADecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
-                return isUnknownTuple(caseA);
-            return true;
-        }
-        // can be Tuple, Empty, Sequence or Sequential
-        if(declaration instanceof ClassOrInterface == false)
-            return true;
-        String name = declaration.getQualifiedNameString();
-        if(name.equals("ceylon.language::Tuple")){
-            ProducedType rest = args.getTypeArgumentList().get(2);
-            return isUnknownTuple(rest);
-        }
-        if(name.equals("ceylon.language::Empty")){
+            for (int ii = 0; ii < caseTypes.size(); ii++) {
+                if (isUnknownTuple(caseTypes.get(ii))) {
+                    return true;
+                }
+            }
             return false;
-        }
-        if(name.equals("ceylon.language::Sequential")
-           || name.equals("ceylon.language::Sequence")){
-            return false;
+        } else if (declaration instanceof NothingType) {
+            return true;
+        } else if(declaration instanceof ClassOrInterface) {
+            String name = declaration.getQualifiedNameString();
+            if(name.equals("ceylon.language::Tuple")){
+                ProducedType rest = args.getTypeArgumentList().get(2);
+                return isUnknownTuple(rest);
+            }
+            if(name.equals("ceylon.language::Empty")){
+                return false;
+            }
+            if(name.equals("ceylon.language::Sequential")
+               || name.equals("ceylon.language::Sequence")){
+                return false;
+            }
+        } else if (declaration instanceof TypeAlias) {
+            return isUnknownTuple(args.resolveAliases());
         }
         return true;
-        */
+        
     }
 
     int getNumParametersOfCallable(ProducedType callableType) {
