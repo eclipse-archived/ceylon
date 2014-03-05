@@ -70,10 +70,6 @@ public class InvocationGenerator {
         else {
             Tree.PositionalArgumentList argList = that.getPositionalArgumentList();
             Tree.Primary typeArgSource = that.getPrimary();
-            //In nested invocation expressions, use the first invocation as source for type arguments
-            while (typeArgSource instanceof Tree.InvocationExpression) {
-                typeArgSource = ((Tree.InvocationExpression)typeArgSource).getPrimary();
-            }
             Tree.TypeArguments targs = typeArgSource instanceof Tree.StaticMemberOrTypeExpression
                     ? ((Tree.StaticMemberOrTypeExpression)typeArgSource).getTypeArguments() : null;
             if (gen.isInDynamicBlock() && that.getPrimary() instanceof Tree.BaseTypeExpression
