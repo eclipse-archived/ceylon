@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 public class CompilerBoxingVisitor extends BoxingVisitor {
     private AbstractTransformer transformer;
@@ -58,5 +59,10 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     @Override
     protected boolean isRaw(ProducedType type) {
         return transformer.isTurnedToRaw(type);
+    }
+
+    @Override
+    protected boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type) {
+        return transformer.needsRawCastForMixinSuperCall(declaration, type);
     }
 }

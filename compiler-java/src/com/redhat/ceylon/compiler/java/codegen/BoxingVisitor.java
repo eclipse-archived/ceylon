@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticAssignmentOp;
@@ -74,6 +75,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean hasErasedTypeParameters(ProducedReference producedReference);
     protected abstract boolean isTypeParameter(ProducedType type);
     protected abstract boolean isRaw(ProducedType type);
+    protected abstract boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type);
 
     @Override
     public void visit(BaseMemberExpression that) {
@@ -129,9 +131,16 @@ public abstract class BoxingVisitor extends Visitor {
             ProducedReference target = that.getTarget();
             if(target != null
                     && target.getQualifyingType() != null
-                    && target.getQualifyingType().getDeclaration() instanceof Interface
-                    && isRaw(target.getQualifyingType())){
-                CodegenUtil.markTypeErased(that);
+                    && target.getQualifyingType().getDeclaration() instanceof Interface){
+                if(isRaw(target.getQualifyingType())){
+                    CodegenUtil.markTypeErased(that);
+                }
+                // See note in ClassTransformer.makeDelegateToCompanion for a similar test
+                else{
+                    TypeDeclaration declaration = target.getQualifyingType().getDeclaration();
+                    if(needsRawCastForMixinSuperCall(declaration, target.getType()))
+                        CodegenUtil.markTypeErased(that);
+                }
             }
         }
         if(that.getPrimary().getTypeModel() != null

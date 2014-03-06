@@ -3836,4 +3836,69 @@ public abstract class AbstractTransformer implements Transformation {
                 make().Binary(JCTree.USR, makeUnquotedIdent(tempName.asName()), makeInteger(32)));
         return make().TypeCast(syms().intType, makeLetExpr(tempName, null, type, value, combine));
     }
+
+    /**
+    * If we satisfy a Foo<T> and T is variant, we implement Foo<T> but our impl
+    * has type Foo<? extends T> or Foo<? super T> (to allow for refining it more than once).
+    * So if we call a method which includes this Foo type in an invariant location, we will
+    * think we get a Foo<? extends T> but in reality we get a Foo<? extends capture#X of ? extends T> which
+    * is not the same thing and does not work in invariant locations.
+    * Note that this can't happen for real invariant locations since the typechecker will prevent it, but it
+    * happens when we must fix variant locations due to type parameter dependences like in Tuple.
+    * 
+    * See https://github.com/ceylon/ceylon-compiler/issues/1550
+    * 
+    * @param declaration the type declaration which we should check has variant type parameters and appears in an invariant
+    *                    position in the given type.
+    * @param type the type in which to check for the given declaration, in an invariant position.
+    * @return true if all these conditions are met.
+    */
+    public boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, ProducedType type) {
+        return !declaration.getTypeParameters().isEmpty()
+                && hasVariantTypeParameters(declaration)
+                && declarationAppearsInInvariantPosition(declaration, type.resolveAliases());
+    }
+    
+    private boolean declarationAppearsInInvariantPosition(TypeDeclaration declaration, ProducedType type) {
+        TypeDeclaration typeDeclaration = type.getDeclaration();
+        if(typeDeclaration instanceof UnionType){
+            for(ProducedType pt : typeDeclaration.getCaseTypes()){
+                if(declarationAppearsInInvariantPosition(declaration, pt))
+                    return true;
+            }
+            return false;
+        }
+        if(typeDeclaration instanceof IntersectionType){
+            for(ProducedType pt : typeDeclaration.getSatisfiedTypes()){
+                if(declarationAppearsInInvariantPosition(declaration, pt))
+                    return true;
+            }
+            return false;
+        }
+        if(typeDeclaration instanceof ClassOrInterface){
+            java.util.List<TypeParameter> typeParameters = typeDeclaration.getTypeParameters();
+            Map<TypeParameter, ProducedType> typeArguments = type.getTypeArguments();
+            for(TypeParameter tp : typeParameters){
+                ProducedType typeArgument = typeArguments.get(tp);
+                if(tp.isInvariant()
+                        || hasDependentTypeParameters(typeParameters, tp)){
+                    if(typeArgument.getDeclaration() == declaration){
+                        return true;
+                    }
+                }
+                if(declarationAppearsInInvariantPosition(declaration, typeArgument))
+                    return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean hasVariantTypeParameters(TypeDeclaration declaration) {
+        for(TypeParameter tp : declaration.getTypeParameters()){
+            if(!tp.isInvariant())
+                return true;
+        }
+        return false;
+    }
+
 }

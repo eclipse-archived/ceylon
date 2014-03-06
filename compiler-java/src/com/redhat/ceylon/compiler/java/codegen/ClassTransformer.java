@@ -82,7 +82,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -1353,7 +1352,10 @@ public class ClassTransformer extends AbstractTransformer {
             }
             // if our interface impl is turned to raw, the whole call will be seen as raw by javac, so we may need
             // to force an additional cast
-            if(isTurnedToRaw(typedMember.getQualifyingType()))
+            if(isTurnedToRaw(typedMember.getQualifyingType())
+                    // see note in BoxingVisitor.visit(QualifiedMemberExpression) about mixin super calls and variant type args
+                    // in invariant locations
+                    || needsRawCastForMixinSuperCall(iface, methodType))
                 typeErased = true;
             expr = gen().expressionGen().applyErasureAndBoxing(expr, methodType, typeErased, 
                                                                exprBoxed, boxingStrategy,
