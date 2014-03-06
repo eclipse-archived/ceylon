@@ -53,7 +53,9 @@ shared void run() {
     print("Tuples");
     tuples();
     testCurries();
-    
+
+    print("Resources");
+    testResources();    
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
