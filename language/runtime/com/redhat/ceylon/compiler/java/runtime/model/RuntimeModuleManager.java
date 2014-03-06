@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class RuntimeModuleManager extends ReflectionModuleManager {
 
@@ -61,6 +62,10 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         modelLoader.addModuleToClassPath(module, artifact);
         modelLoader.addModuleClassLoader(module, classLoader);
         module.setAvailable(true);
+        Unit u = new Unit();
+        u.setFilename(artifact.name());
+        u.setFullPath(artifact.artifact().getAbsolutePath());
+        module.setUnit(u);
         
         if(!module.isDefault()){
             // FIXME: dependencies of Ceylon modules?
