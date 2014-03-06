@@ -122,7 +122,7 @@ function Modulo(meta, $$modulo){
     return null;
   }
   $$modulo.findImportedPackage=findImportedPackage;
-  findImportedPackage.$$metamodel$$={mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findImportedPackage']};
+  findImportedPackage.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:Package$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','findImportedPackage']};};
   function annotations($$$mptypes){
     var anns = this.meta.$mod$ans$;
     if (typeof(anns) === 'function') {
@@ -141,8 +141,42 @@ function Modulo(meta, $$modulo){
   $$modulo.annotations=annotations;
   defineAttr($$modulo,'string',function(){return String$("module " + this.name+"/" + this.version);},undefined,{$an:function(){return[shared(),actual()]},mod:$$METAMODEL$$,d:['ceylon.language','Object','$at','string']});
 
-    annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','annotations']};
-    return $$modulo;
+  annotations.$$metamodel$$={mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:'Annotation'}},$ps:[],$cont:Modulo,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','annotations']};
+
+  function resourceByPath(_path) {
+    var mpath;
+    var sep = getOperatingSystem().fileSeparator;
+    if ($$modulo.name === 'default' && $$modulo.version=='unversioned') {
+      mpath = $$modulo.name;
+    } else {
+      mpath = $$modulo.name.replace(/\./g,sep) + sep + $$modulo.version;
+    }
+    if (_path[0]===sep) {
+      mpath += _path;
+    } else {
+      mpath += sep + _path;
+    }
+    if (getRuntime().name === 'node.js') {
+      var pm = require('path');
+      var mods = process.env.NODE_PATH.split(getOperatingSystem().pathSeparator);
+      var fs = require('fs');
+      for (var i=0; i<mods.length; i++) {
+        var fp = pm.resolve(mods[i], mpath);
+        if (fs.existsSync(fp)) {
+          var f = fs.statSync(fp);
+          if (f && f.isFile()) {
+            return JsResource(fp);
+          }
+        }
+      }
+    } else {
+      print("Resources unsupported in this environment.");
+    }
+    return null;
+  }
+  $$modulo.resourceByPath=resourceByPath;
+  resourceByPath.$$metamodel$$=function(){return {mod:$$METAMODEL$$,$t:{t:'u',l:[{t:Null},{t:Resource}]},$ps:[{$nm:'path',$mt:'prm',$t:{t:String$}}],$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$m','resourceByPath']};};
+  return $$modulo;
 }
 Modulo.$$metamodel$$={mod:$$METAMODEL$$,'super':{t:Basic},satisfies:[{t:Module$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Module']};
 exports.Modulo=Modulo;
