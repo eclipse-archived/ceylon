@@ -6,9 +6,9 @@ shared interface Resource {
 
     "The name of the resource; usually the filename."
     shared default String name {
-        value pos = uri.lastOccurrence("/");
+        value pos = uri.lastOccurrence('/');
         if (exists pos) {
-            return uri[pos...];
+            return uri[pos+1...];
         }
         return uri;
     }
