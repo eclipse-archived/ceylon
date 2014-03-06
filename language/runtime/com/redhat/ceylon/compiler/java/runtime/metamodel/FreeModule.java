@@ -5,6 +5,7 @@ import java.util.List;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.Annotated$impl;
+import ceylon.language.Resource;
 import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
 import ceylon.language.meta.declaration.Declaration$impl;
 import ceylon.language.meta.declaration.Import;
@@ -117,6 +118,12 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
             this.dependencies = sb.getSequence();
         }
         return this.dependencies;
+    }
+
+    @Override
+    @TypeInfo("ceylon.language::Resource")
+    public Resource resourceByPath(@Name("path") String path) {
+        throw new RuntimeException("IMPLEMENT ME!");
     }
 
     @Override
