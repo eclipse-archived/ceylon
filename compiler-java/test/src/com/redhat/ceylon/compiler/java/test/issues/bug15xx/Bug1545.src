@@ -1,0 +1,72 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+public interface Bug1545ISignal$IListener<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<T>.IListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl$IListener$impl();
+}
+public interface Bug1545ISignal<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl();
+}
+public final class Bug1545ISignal$impl<T> {
+    
+    public Bug1545ISignal$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public final class IListener$impl {
+        
+        public IListener$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<T> $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<T> $this;
+    }
+}
+public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<.ceylon.language.Integer> {
+    
+    public Bug1545Signal() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$;
+    }
+    
+    class Listener implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<.ceylon.language.Integer> {
+        
+        Listener() {
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$IListener$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal.this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$.new IListener$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer>.IListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$IListener$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer>.IListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl$IListener$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$IListener$this$;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal.Listener.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal.class);
+}
