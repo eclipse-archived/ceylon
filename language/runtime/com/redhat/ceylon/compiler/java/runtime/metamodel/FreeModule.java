@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
@@ -13,6 +17,8 @@ import ceylon.language.meta.declaration.Module$impl;
 import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.FileResource;
+import com.redhat.ceylon.compiler.java.language.ZipResource;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -123,7 +129,23 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     @Override
     @TypeInfo("ceylon.language::Resource")
     public Resource resourceByPath(@Name("path") String path) {
-        throw new RuntimeException("IMPLEMENT ME!");
+        final File car = new File(declaration.getUnit().getFullPath());
+        //First let's look in the car's dir...
+        final File target = new File(car.getParentFile(), path);
+        if (target.exists() && target.isFile() && target.canRead()) {
+            return new FileResource(target);
+        }
+        //Then let's look inside the car
+        try (ZipFile zip = new ZipFile(car)) {
+            ZipEntry e = zip.getEntry(path);
+            if (e != null && !e.isDirectory()) {
+                return new ZipResource(car, path);
+            }
+        } catch (IOException ex) {
+            throw new ceylon.language.Exception(new ceylon.language.String(
+                    "Searching for resource " + path), ex);
+        }
+        return null;
     }
 
     @Override
