@@ -1,0 +1,154 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+interface Bug1550List {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List$impl();
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> m();
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> getA();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List.class);
+}
+final class Bug1550List$impl {
+    
+    Bug1550List$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List $this;
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> m() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> getA() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+}
+class Bug1550MyList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List {
+    
+    Bug1550MyList() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> m() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> getA() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public final void test() {
+        ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList>)(.ceylon.language.Correspondence)m()).get(.ceylon.language.Integer.instance(0L)).test();
+        ((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList>)(.ceylon.language.Correspondence)getA()).get(.ceylon.language.Integer.instance(0L)).test();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550MyList.class);
+}
+interface Bug1550List2<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$impl();
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> m1();
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> m2();
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> getA1();
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> getA2();
+}
+final class Bug1550List2$impl<Element> {
+    
+    Bug1550List2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> m1() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> m2() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> getA1() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>> getA2() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+}
+class Bug1550L<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<T> {
+    
+    Bug1550L(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<T>($reified$T, this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> m2() {
+        return (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.m2();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> getA2() {
+        return (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.getA2();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> m1() {
+        return (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.m1();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> getA1() {
+        return (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.getA1();
+    }
+    
+    private final void test$priv$() {
+        final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> l1 = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.m1();
+        final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>> l2 = (.ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>>)(.ceylon.language.Tuple)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.getA1();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550L(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550L.class, $reified$T);
+    }
+}
