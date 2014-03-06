@@ -19,6 +19,9 @@ shared interface Module
     "Finds a package by name in this module or in its dependencies. Note that all transitive `shared`
      dependencies are searched. Returns `null` if not found."
     shared formal Package? findImportedPackage(String name);
+
+    "Searches for a resource by its path inside the module."
+    shared formal Resource? resourceByPath(String path);
 }
 
 "Model of an `import` declaration 
