@@ -15,4 +15,15 @@ void testResources() {
     check(r2.size==r1.size, "resource size 2");
     value sha = r1.textContent();
     check(sha.size==40, "resource content");
+    //Now for something inside a CAR
+    if (runtime.name=="jvm") {
+        if (exists carr = mod.resourceByPath("META-INF/mapping.txt")) {
+            check(carr.name=="mapping.txt", "car resource name");
+            check(carr.uri.endsWith("!META-INF/mapping.txt"), "car resource uri");
+            check(carr.size>1000, "car resource size");
+            check(carr.textContent().size==carr.size, "car resource content");
+        } else {
+            fail("Couldn't find mapping.txt file in default.car");
+        }
+    }
 }
