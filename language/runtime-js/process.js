@@ -205,6 +205,9 @@ defineAttr(process$proto, 'string', function() {
 
 var process$ = processClass();
 function getProcess() { return process$; }
+getProcess.$$metamodel$$=function(){return{
+  mod:$$METAMODEL$$,$t:{t:processClass},$an:function(){return[shared(),native()];},d:['ceylon.language','process']};
+}
 exports.getProcess=getProcess;
 exports.$prop$getProcess={get:getProcess,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','process'],$t:{t:processClass}
 }}};
