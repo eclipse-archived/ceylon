@@ -558,6 +558,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                               boolean expectedTypeNotRaw, 
                               boolean expectedTypeHasConstrainedTypeParameters,
                               boolean downCast) {
+        // error handling
+        if(exprType == null)
+            return false;
         // make sure we work on definite types
         exprType = simplifyType(exprType);
         expectedType = simplifyType(expectedType);

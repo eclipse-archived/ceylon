@@ -1742,6 +1742,9 @@ public abstract class AbstractTransformer implements Transformation {
         
         for (TypeParameter tp : tps) {
             ProducedType ta = tas.get(tp);
+            // error handling
+            if(ta == null)
+                continue;
             
             boolean isDependedOn = hasDependentTypeParameters(tps, tp);
             
