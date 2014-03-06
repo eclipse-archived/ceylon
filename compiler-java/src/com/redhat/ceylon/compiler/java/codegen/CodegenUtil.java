@@ -284,6 +284,9 @@ class CodegenUtil {
             if(func == null)
                 return decl;
             Declaration kk = getTopmostRefinedDeclaration((Declaration)func, methodOverrides);
+            // error recovery
+            if(kk instanceof Functional == false)
+                return decl;
             Functional refinedFunc = (Functional) kk;
             // shortcut if the functional doesn't override anything
             if(refinedFunc == func)
