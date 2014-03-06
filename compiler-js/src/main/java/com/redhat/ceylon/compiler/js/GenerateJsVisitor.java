@@ -4686,6 +4686,7 @@ public class GenerateJsVisitor extends Visitor
                 ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(true);
                 d.setShared(wasShared);
             } else {
+                if (!d.isMember()) qualify(that, d);
                 out(names.name(d));
             }
             out(")");
