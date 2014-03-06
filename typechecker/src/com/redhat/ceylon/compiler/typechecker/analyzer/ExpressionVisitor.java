@@ -5786,8 +5786,9 @@ public class ExpressionVisitor extends Visitor {
             that.setWantsDeclaration(true);
             if (that instanceof Tree.ClassLiteral) {
                 if (!(d instanceof Class)) {
-                    type.addError("referenced declaration is not a class" +
-                            getDeclarationReferenceSuggestion(d));
+                    if(type != null)
+                        type.addError("referenced declaration is not a class" +
+                                getDeclarationReferenceSuggestion(d));
                 }
                 else {
 //                        checkNonlocal(that, d);
