@@ -690,6 +690,35 @@ public abstract class AbstractTransformer implements Transformation {
         return typedReference;
     }
 
+    public boolean isWideningTypeDecl(TypedDeclaration typedDeclaration) {
+        ProducedTypedReference typedReference = getTypedReference(typedDeclaration);
+        return isWideningTypeDecl(typedReference, typedReference.getQualifyingType());
+    }
+
+    public boolean isWideningTypeDecl(ProducedTypedReference typedReference, ProducedType currentType) {
+        ProducedTypedReference refinedTypedReference = getRefinedDeclaration(typedReference, currentType);
+        if(refinedTypedReference == null)
+            return false;
+        /*
+         * We are widening if the type:
+         * - is not object
+         * - is erased to object
+         * - refines a declaration that is not erased to object
+         */
+        ProducedType declType = typedReference.getType();
+        ProducedType refinedDeclType = refinedTypedReference.getType();
+        if(declType == null || refinedDeclType == null)
+            return false;
+        if(isWidening(declType, refinedDeclType))
+            return true;
+
+        // make sure we get the instantiated refined decl
+        if(refinedDeclType.getDeclaration() instanceof TypeParameter
+                && !(declType.getDeclaration() instanceof TypeParameter))
+            refinedDeclType = nonWideningType(typedReference, refinedTypedReference);
+        return isWideningTypeArguments(declType, refinedDeclType, true);
+    }
+
     /*
      * We have several special cases here to find the best non-widening refinement in case of multiple inheritace:
      * 
@@ -867,15 +896,24 @@ public abstract class AbstractTransformer implements Transformation {
         }
         Map<TypeParameter, ProducedType> typeArguments = declType.getTypeArguments();
         Map<TypeParameter, ProducedType> refinedTypeArguments = refinedDeclType.getTypeArguments();
-        for(Entry<TypeParameter, ProducedType> typeArgument : typeArguments.entrySet()){
-            ProducedType refinedTypeArgument = refinedTypeArguments.get(typeArgument.getKey());
+        java.util.List<TypeParameter> typeParameters = declType.getDeclaration().getTypeParameters();
+        for(TypeParameter tp : typeParameters){
+            ProducedType typeArgument = typeArguments.get(tp);
+            if(typeArgument == null)
+                return true; // something fishy here
+            ProducedType refinedTypeArgument = refinedTypeArguments.get(tp);
             if(refinedTypeArgument == null)
                 return true; // something fishy here
             // check if the type arg is widening due to erasure
-            if(isWidening(typeArgument.getValue(), refinedTypeArgument))
+            if(isWidening(typeArgument, refinedTypeArgument))
+                return true;
+            // check if we are refining a covariant param which we must "fix" because it is dependend on, like Tuple's first TP
+            if(tp.isCovariant()
+                    && hasDependentTypeParameters(typeParameters, tp)
+                    && !typeArgument.isExactly(refinedTypeArgument))
                 return true;
             // check if the type arg is a subtype, or if its type args are widening
-            if(isWideningTypeArguments(typeArgument.getValue(), refinedTypeArgument, false))
+            if(isWideningTypeArguments(typeArgument, refinedTypeArgument, false))
                 return true;
         }
         // so far so good

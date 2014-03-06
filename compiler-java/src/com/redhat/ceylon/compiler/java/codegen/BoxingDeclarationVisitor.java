@@ -24,12 +24,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -63,6 +65,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean hasErasure(ProducedType type);
     protected abstract boolean willEraseToObject(ProducedType type);
     protected abstract boolean isRaw(ProducedType type);
+    protected abstract boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration);
 
     /**
      * This is used to keep track of some optimisations we do, such as inlining the following shortcuts:
@@ -120,6 +123,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             if(hasTypeParameterWithConstraints(type)){
                 decl.setUntrustedType(true);
                 decl.setTypeErased(true);
+            }
+            if(decl.getTypeErased() != Boolean.TRUE
+                    && decl.isActual()
+                    && decl.getContainer() instanceof ClassOrInterface){
+                // make sure we did not lose type information due to non-widening
+                if(isWideningTypedDeclaration(decl))
+                    decl.setTypeErased(true);
             }
         }
     }

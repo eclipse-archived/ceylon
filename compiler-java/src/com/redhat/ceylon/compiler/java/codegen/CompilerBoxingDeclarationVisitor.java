@@ -20,6 +20,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     private AbstractTransformer transformer;
@@ -61,5 +63,10 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     @Override
     protected boolean isRaw(ProducedType type) {
         return transformer.isTurnedToRaw(type);
+    }
+
+    @Override
+    protected boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration) {
+        return transformer.isWideningTypeDecl(typedDeclaration);
     }
 }
