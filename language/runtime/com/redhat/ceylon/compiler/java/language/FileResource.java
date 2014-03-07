@@ -45,7 +45,7 @@ public class FileResource implements Resource {
 
     @Override
     public java.lang.String getUri() {
-        return file.getAbsolutePath();
+        return file.toURI().toString();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class ZipResource implements Resource {
         this.zipFile = zip;
         this.path = path;
         $ceylon$language$Resource$this = new ceylon.language.Resource$impl(this);
-        fullPath = zip.getAbsolutePath() + "!" + path;
+        fullPath = zip.toURI() + "!" + path;
     }
 
     @Ignore @Override
