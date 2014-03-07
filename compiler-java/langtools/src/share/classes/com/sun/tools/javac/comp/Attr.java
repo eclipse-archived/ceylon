@@ -2650,7 +2650,10 @@ public class Attr extends JCTree.Visitor {
                     log.error(pos, "type.var.cant.be.deref");
                     return syms.errSymbol;
                 } else {
-                    Symbol sym2 = (sym.flags() & Flags.PRIVATE) != 0 ?
+                    // Ceylon: relax the rules for private methods in wildcards, damnit, we want the private
+                    // method to be called, not any subtype's method we can't possibly know about, this is really
+                    // a lame Java decision.
+                    Symbol sym2 = (!Context.isCeylon() && (sym.flags() & Flags.PRIVATE) != 0) ?
                         rs.new AccessError(env, site, sym) :
                                 sym;
                     rs.access(sym2, pos, location, site, name, true);
