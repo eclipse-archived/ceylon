@@ -1,10 +1,15 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -33,14 +38,18 @@ import com.redhat.ceylon.common.tool.Summary;
         "\n\n" +
         "    ceylon test-js com.example.foobar/1.0.0")
 public class CeylonTestJsTool extends RepoUsingTool {
-    
-    private static final String CEYLON_TEST_MODULE = "com.redhat.ceylon.test/" + Versions.CEYLON_VERSION_NUMBER;
-    private static final String CEYLON_TEST_RUN_FUNCTION = "com.redhat.ceylon.test.run";
+	
+	private static final String TEST_MODULE_NAME = "com.redhat.ceylon.testjs";
+	private static final String TEST_MODULE_DEFAULT_VERSION = "1.0.0";
+    private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.testjs.run";
     
     private List<String> moduleNameOptVersionList;
     private List<String> testList;
     private List<String> argumentList;
+    private String version;
     private String compileFlags;
+	private String nodeExe;
+	private boolean debug = true;
 
     public CeylonTestJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE);
@@ -64,11 +73,28 @@ public class CeylonTestJsTool extends RepoUsingTool {
 
     @Option
     @OptionArgument(argumentName = "flags")
-    @Description("Determines if and how compilation should be handled. " +
-            "Allowed flags include: `never`, `once`, `force`, `check`.")
+    @Description("Determines if and how compilation should be handled. Allowed flags include: `never`, `once`, `force`, `check`.")
     public void setCompile(String compile) {
         this.compileFlags = compile;
     }
+    
+    @OptionArgument(argumentName = "version")
+    @Description("Specifies version of test module, which will be used, if no value is set, then the latest available version will be used.")
+    public void setVersion(String version) {
+    	this.version = version;
+    }
+    
+	@OptionArgument(argumentName = "node-exe")
+	@Description("The path to the node.js executable. Will be searched in standard locations if not specified.")
+	public void setNodeExe(String nodeExe) {
+		this.nodeExe = nodeExe;
+	}
+
+	@OptionArgument(argumentName = "debug")
+	@Description("Shows more detailed output in case of errors.")
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}    
 
     @Rest
     public void setArgs(List<String> argumentList) {
@@ -77,7 +103,25 @@ public class CeylonTestJsTool extends RepoUsingTool {
 
     @Override
     public void run() throws Exception {
-        List<String> args = new ArrayList<String>();
+        final List<String> args = new ArrayList<String>();
+        final List<String> moduleAndVersionList = new ArrayList<String>();
+        
+		if (version == null) {
+			Collection<ModuleVersionDetails> versions = getModuleVersions(
+			        getRepositoryManager(),
+			        TEST_MODULE_NAME,
+			        null,
+			        ModuleQuery.Type.JS,
+			        Versions.JS_BINARY_MAJOR_VERSION,
+			        Versions.JS_BINARY_MINOR_VERSION);
+
+			if (versions == null || versions.isEmpty()) {
+				version = TEST_MODULE_DEFAULT_VERSION;
+			} else {
+				ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
+				version = mdv.getVersion();
+			}
+		}
         
         if (moduleNameOptVersionList != null) {
             for (String moduleNameOptVersion : moduleNameOptVersionList) {
@@ -85,13 +129,14 @@ public class CeylonTestJsTool extends RepoUsingTool {
                 if (moduleAndVersion == null) {
                     return;
                 }
-                args.add("--module");
+                args.add("__module");
                 args.add(moduleAndVersion);
+                moduleAndVersionList.add(moduleAndVersion);
             }
         }
         if (testList != null) {
             for (String test : testList) {
-                args.add("--test");
+                args.add("__test");
                 args.add(test);
             }
         }
@@ -108,34 +153,69 @@ public class CeylonTestJsTool extends RepoUsingTool {
             compileFlags = COMPILE_ONCE;
         }
         
-        CeylonRunJsTool ceylonRunTool = new CeylonRunJsTool();
-        ceylonRunTool.setModuleVersion(CEYLON_TEST_MODULE);
-        ceylonRunTool.setRun(CEYLON_TEST_RUN_FUNCTION);
-        ceylonRunTool.setArgs(args);
-        ceylonRunTool.setRepository(repo);
-        ceylonRunTool.setSystemRepository(systemRepo);
-        ceylonRunTool.setCacheRepository(cacheRepo);
-        ceylonRunTool.setMavenOverrides(mavenOverrides);
-        ceylonRunTool.setNoDefRepos(noDefRepos);
-        ceylonRunTool.setOffline(offline);
-        ceylonRunTool.setVerbose(verbose);
-        ceylonRunTool.run();
+        CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
+			@Override
+			protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+				for (String moduleAndVersion : moduleAndVersionList) {
+					String modName = ModuleUtil.moduleName(moduleAndVersion);
+					String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);
+					File artifact = getArtifact(modName, modVersion, repoman);
+					localRepos.add(getRepoDir(modName, artifact));
+					loadDependencies(localRepos, repoman, artifact);
+				}
+			};
+        	@Override
+        	protected String customizeInitialization() {
+        		StringBuilder init = new StringBuilder();
+        		for(String moduleAndVersion : moduleAndVersionList) {
+					String modName = ModuleUtil.moduleName(moduleAndVersion);
+					String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);
+					
+					init.append("require('");
+					init.append(modName.replace(".", "/"));
+					init.append("/");
+					init.append(version);
+					init.append("/");
+					init.append(modName);
+					init.append("-");
+					init.append(modVersion);
+					init.append("');");
+        		}
+        		
+        	    return init.toString();
+        	}
+        };
+		ceylonRunJsTool.setModuleVersion(TEST_MODULE_NAME + "/" + version);
+        ceylonRunJsTool.setRun(TEST_RUN_FUNCTION);
+        ceylonRunJsTool.setArgs(args);
+        ceylonRunJsTool.setRepository(repo);
+        ceylonRunJsTool.setSystemRepository(systemRepo);
+        ceylonRunJsTool.setCacheRepository(cacheRepo);
+        ceylonRunJsTool.setMavenOverrides(mavenOverrides);
+        ceylonRunJsTool.setNoDefRepos(noDefRepos);
+        ceylonRunJsTool.setOffline(offline);
+        ceylonRunJsTool.setVerbose(verbose);
+        ceylonRunJsTool.setNodeExe(nodeExe);
+        ceylonRunJsTool.setDebug(debug);
+        ceylonRunJsTool.setDefine(defines);
+        ceylonRunJsTool.setCompile(compileFlags);
+        ceylonRunJsTool.setCwd(cwd);
+        ceylonRunJsTool.run();
     }
 
     private String resolveModuleAndVersion(String moduleNameOptVersion) throws IOException {
-        String moduleName = ModuleUtil.moduleName(moduleNameOptVersion);
-        String moduleVersion = ModuleUtil.moduleVersion(moduleNameOptVersion);
+        String modName = ModuleUtil.moduleName(moduleNameOptVersion);
+        String modVersion = ModuleUtil.moduleVersion(moduleNameOptVersion);
 
-        moduleVersion = checkModuleVersionsOrShowSuggestions(
+        modVersion = checkModuleVersionsOrShowSuggestions(
                 getRepositoryManager(),
-                moduleName,
-                moduleVersion,
-                ModuleQuery.Type.JVM,
-                Versions.JVM_BINARY_MAJOR_VERSION,
-                Versions.JVM_BINARY_MINOR_VERSION,
+                modName,
+                modVersion,
+                ModuleQuery.Type.JS,
+                Versions.JS_BINARY_MAJOR_VERSION,
+                Versions.JS_BINARY_MINOR_VERSION,
                 compileFlags);
 
-        return moduleVersion != null ? moduleName + "/" + moduleVersion : null;
+        return modVersion != null ? modName + "/" + modVersion : null;
     }
-
 }

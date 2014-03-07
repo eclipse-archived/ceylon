@@ -235,7 +235,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
      * @param exepath The full path to the node.js executable
      * @param repos The list of repository paths (used as module paths for node.js)
      * @param output An optional PrintStream to write the output of the node.js process to. */
-    static ProcessBuilder buildProcess(final String module, final String version, String func, List<String> args,
+    private ProcessBuilder buildProcess(final String module, final String version, String func, List<String> args,
             String exepath, Set<File> repos, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
@@ -268,7 +268,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
         final boolean isDefault = ModuleUtil.isDefaultModule(module);
         String moduleString = isDefault ? module : module +"/"+version;
         //The timeout is to have enough time to start reading on the process streams
-        final String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method \"%s\" does not exist or is not shared in the %s module');else __entry_point__();",
+        
+        String customInit = customizeInitialization(); 
+        String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};%s var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method \"%s\" does not exist or is not shared in the %s module');else __entry_point__();",
+        		customInit,
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
                 module,
@@ -334,7 +337,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return deps;
     }
 
-    private void loadDependencies(Set<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
+    protected void loadDependencies(Set<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
         final List<Object> deps = getDependencies(jsmod);
         if (deps == null) {
             return;
@@ -394,18 +397,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
             return;
         }
         
-        ArtifactContext ac = new ArtifactContext(modname, version, ".js");
-        ac.setFetchSingleArtifact(true);
-        ac.setThrowErrorIfMissing(false);
-        File jsmod = repoman.getArtifact(ac);
-        if (jsmod == null) {
-            throw new CeylonRunJsException("Cannot find module " + module + " in specified module repositories");
-        }
+        File jsmod = getArtifact(modname, version, repoman);
         // NB localRepos will contain a set of files pointing to the module repositories
         // where all the needed modules can be found
         Set<File> localRepos = new HashSet<File>();
         localRepos.add(getRepoDir(modname, jsmod));
         loadDependencies(localRepos, repoman, jsmod);
+        customizeDependencies(localRepos, repoman);
         
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         Process nodeProcess = proc.start();
@@ -420,7 +418,18 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
     }
 
-    private File getRepoDir(String modname, File file) {
+	protected File getArtifact(String modName, String modVersion, RepositoryManager repoman) {
+	    ArtifactContext ac = new ArtifactContext(modName, modVersion, ".js");
+        ac.setFetchSingleArtifact(true);
+        ac.setThrowErrorIfMissing(false);
+        File jsmod = repoman.getArtifact(ac);
+        if (jsmod == null) {
+            throw new CeylonRunJsException("Cannot find module " + ModuleUtil.makeModuleName(modName, modVersion) + " in specified module repositories");
+        }
+	    return jsmod;
+    }
+
+	protected File getRepoDir(String modname, File file) {
         // A trippy way to get to the repo folder, but it works
         int count = modname.split("\\.").length + 1;
         if (!ModuleUtil.isDefaultModule(modname)) {
@@ -432,6 +441,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return file;
     }
 
+	protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+	}
+	
+	protected String customizeInitialization() {
+		return "";
+	}
+	
     // use to test and debug:
 //    public static void main(String[] args) throws Exception{
 //    	CeylonRunJsTool tool = new CeylonRunJsTool();
