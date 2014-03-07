@@ -2737,14 +2737,15 @@ public abstract class AbstractTransformer implements Transformation {
         }
         boolean declaredVoid = decl instanceof Method && Strategy.useBoxedVoid((Method)decl) && Decl.isUnboxedVoid(decl);
         
-        return makeJavaTypeAnnotations(type, declaredVoid, needsJavaTypeAnnotations(decl));
+        return makeJavaTypeAnnotations(type, declaredVoid, CodegenUtil.hasTypeErased(decl), needsJavaTypeAnnotations(decl));
     }
 
-    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean declaredVoid, boolean required) {
+    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(ProducedType type, boolean declaredVoid, 
+                                                              boolean hasTypeErased, boolean required) {
         if (!required)
             return List.nil();
         String name = serialiseTypeSignature(type);
-        boolean erased = hasErasure(type);
+        boolean erased = hasTypeErased || hasErasure(type);
         // Add the original type to the annotations
         ListBuffer<JCExpression> annotationArgs = ListBuffer.<JCExpression>lb();
         annotationArgs.add(
