@@ -753,6 +753,9 @@ public abstract class AbstractTransformer implements Transformation {
         // quick exit
         if(decl == modelRefinedDecl && !forMixinMethod)
             return null;
+        // modelRefinedDecl exists, but perhaps it's the toplevel refinement and not the one Java will look at
+        if(!forMixinMethod)
+            modelRefinedDecl = getFirstRefinedDeclaration(decl);
         TypeDeclaration qualifyingDeclaration = currentType.getDeclaration();
         if(qualifyingDeclaration instanceof ClassOrInterface){
             // only try to find better if we're erasing to Object and we're not returning a type param
@@ -807,6 +810,44 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return getRefinedTypedReference(typedReference, modelRefinedDecl);
+    }
+
+    private TypedDeclaration getFirstRefinedDeclaration(TypedDeclaration decl) {
+        if(decl.getContainer() instanceof ClassOrInterface == false)
+            return decl;
+        java.util.List<ProducedType> signature = com.redhat.ceylon.compiler.typechecker.model.Util.getSignature(decl);
+        ClassOrInterface container = (ClassOrInterface) decl.getContainer();
+        HashSet<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
+        // start looking for it, but skip this type, only lookup upwards of it
+        TypedDeclaration firstRefinedDeclaration = getFirstRefinedDeclaration(container, decl, signature, visited, true);
+        return firstRefinedDeclaration != null ? firstRefinedDeclaration : decl;
+    }
+
+    private TypedDeclaration getFirstRefinedDeclaration(TypeDeclaration typeDecl, TypedDeclaration decl, 
+            java.util.List<ProducedType> signature, HashSet<TypeDeclaration> visited,
+            boolean skipType) {
+        if(!visited.add(typeDecl))
+            return null;
+        if(!skipType){
+            TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false);
+            if(member != null)
+                return member;
+        }
+        // look up
+        // first look in super types
+        if(typeDecl.getExtendedTypeDeclaration() != null){
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedTypeDeclaration(), decl, signature, visited, false);
+            if(refinedDecl != null)
+                return refinedDecl;
+        }
+        // look in interfaces
+        for(TypeDeclaration interf : typeDecl.getSatisfiedTypeDeclarations()){
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf, decl, signature, visited, false);
+            if(refinedDecl != null)
+                return refinedDecl;
+        }
+        // not found
+        return null;
     }
 
     // Finds all member declarations (original and refinements) with the
