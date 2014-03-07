@@ -456,6 +456,9 @@ public class MethodDefinitionBuilder
         ProducedTypedReference typedRef = gen.getTypedReference(method);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+        if(method.isActual()
+                && CodegenUtil.hasTypeErased(method))
+            flags |= AbstractTransformer.JT_RAW;
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     

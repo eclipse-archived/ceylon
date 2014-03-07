@@ -81,6 +81,9 @@ public class AttributeDefinitionBuilder {
         ProducedTypedReference typedRef = owner.getTypedReference(attrType);
         ProducedTypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
         ProducedType nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
+        if(attrType.isActual()
+                && CodegenUtil.hasTypeErased(attrType))
+            typeFlags |= AbstractTransformer.JT_RAW;
         if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
             typeFlags |= AbstractTransformer.JT_NO_PRIMITIVES;
         }
