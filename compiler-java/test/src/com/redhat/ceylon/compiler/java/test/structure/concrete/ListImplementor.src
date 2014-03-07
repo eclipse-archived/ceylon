@@ -46,12 +46,12 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public X getFirst() {
-        return $ceylon$language$List$this$.getFirst();
+        return (X)$ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
     public X getLast() {
-        return $ceylon$language$List$this$.getLast();
+        return (X)$ceylon$language$List$this$.getLast();
     }
     
     @.java.lang.Override

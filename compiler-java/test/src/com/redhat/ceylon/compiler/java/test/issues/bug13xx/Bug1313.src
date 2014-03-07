@@ -22,7 +22,9 @@ class Bug1313 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug13xx::Bug1313")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.issues.bug13xx::Bug1313",
+            erased = true)
     public final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug13xx::Bug1313")
     final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 other) {
@@ -80,13 +82,13 @@ final class bug1313_ {
                 return .ceylon.language.String.instance(.ceylon.language.String.replace("", $ceylontmp$substring, $ceylontmp$replacement));
             }
         };
-        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313> methodReference4 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313>(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1313(Bug1313)", (short)-1){
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313> methodReference4 = (.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313>(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Bug1313(Bug1313)", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 $call$(final .java.lang.Object $param$0) {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313)$param$0;
-                return new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313().plus($ceylontmp$other);
+                return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313)new .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313().plus($ceylontmp$other);
             }
         };
     }

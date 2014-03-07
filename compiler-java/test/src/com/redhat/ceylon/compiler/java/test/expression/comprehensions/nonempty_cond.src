@@ -51,7 +51,7 @@ final class nonemptyCond_ {
                         if (this.$next$1()) {
                             final .ceylon.language.Integer x = this.x;
                             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints$2 = this.ints$2;
-                            return ints$2.getFirst();
+                            return (.ceylon.language.Integer)ints$2.getFirst();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

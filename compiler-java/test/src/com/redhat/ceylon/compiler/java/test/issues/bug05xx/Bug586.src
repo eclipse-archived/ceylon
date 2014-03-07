@@ -7,7 +7,7 @@ final class bug586_ {
     
     static void bug586() {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
-        final .ceylon.language.String s = (
+        final .ceylon.language.String s = (.ceylon.language.String)(
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;

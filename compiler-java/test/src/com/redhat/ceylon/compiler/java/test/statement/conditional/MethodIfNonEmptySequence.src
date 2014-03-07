@@ -10,7 +10,7 @@ class MethodIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runti
         if ((x$1 = x) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)x$1;
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = x$2;
-            return x$2.getFirst().longValue();
+            return ((.ceylon.language.Integer)x$2.getFirst()).longValue();
         }
         return 0L;
     }
@@ -19,7 +19,7 @@ class MethodIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runti
         .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$4;
         if ((s$4 = x) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$4;
-            return s$5.getFirst().longValue();
+            return ((.ceylon.language.Integer)s$5.getFirst()).longValue();
         }
         return 0L;
     }

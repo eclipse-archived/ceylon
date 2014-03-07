@@ -45,7 +45,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                         if (this.$next$1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
                             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$2 = this.x$2;
-                            return x$2.getFirst();
+                            return (.ceylon.language.Integer)x$2.getFirst();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -93,7 +93,7 @@ class ForIfNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.
                         if (this.$next$1()) {
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
                             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5 = this.s$5;
-                            return s$5.getFirst();
+                            return (.ceylon.language.Integer)s$5.getFirst();
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

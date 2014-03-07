@@ -432,7 +432,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     private final .ceylon.language.Sequential<? extends Element> rest;
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> getRest() {
+    public final .ceylon.language.Sequential getRest() {
         return rest;
     }
     

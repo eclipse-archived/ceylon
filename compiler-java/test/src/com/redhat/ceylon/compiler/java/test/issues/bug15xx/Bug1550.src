@@ -37,12 +37,12 @@ class Bug1550MyList implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> m() {
+    public final .ceylon.language.Tuple m() {
         return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>> getA() {
+    public final .ceylon.language.Tuple getA() {
         return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
     }
     

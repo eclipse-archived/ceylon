@@ -89,7 +89,7 @@ class Bug627Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object> elements() {
+    public final .ceylon.language.Iterable elements() {
         return (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
     }
     

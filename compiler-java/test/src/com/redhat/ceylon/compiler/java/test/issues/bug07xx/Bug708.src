@@ -543,7 +543,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Iterator<ceylon.language::Entry<ceylon.language::Integer,ceylon.language::String|T>>",
             erased = true)
-    public final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> iterator() {
+    public final .ceylon.language.Iterator iterator() {
         return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     

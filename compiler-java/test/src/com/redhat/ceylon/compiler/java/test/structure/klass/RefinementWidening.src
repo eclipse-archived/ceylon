@@ -196,13 +196,13 @@ abstract class RWBottom<Z> extends .com.redhat.ceylon.compiler.java.test.structu
     public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParamExt<? extends .ceylon.language.Integer> m2();
     
     @.java.lang.Override
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam<? extends .ceylon.language.Number> m2_erasure();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam m2_erasure();
     
     @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParamExt<? super .ceylon.language.Number> m3();
     
     @.java.lang.Override
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam<? super .ceylon.language.Integer> m3_erasure();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam m3_erasure();
     
     @.java.lang.Override
     public abstract <S>S tParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);

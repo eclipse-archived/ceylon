@@ -23,7 +23,7 @@ class Bug111 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         .ceylon.language.Sequential<? extends .ceylon.language.Integer> nums$1;
         if ((nums$1 = nums) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nums$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)nums$1;
-            final .ceylon.language.Integer first = nums$2.getFirst();
+            final .ceylon.language.Integer first = (.ceylon.language.Integer)nums$2.getFirst();
         }
     }
     

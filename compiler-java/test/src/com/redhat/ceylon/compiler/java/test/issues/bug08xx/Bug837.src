@@ -385,42 +385,42 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> getRest() {
+    public final .ceylon.language.Sequential getRest() {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837<Element>($reified$Element, (Element)(.java.lang.Object)((.ceylon.language.Ordinal<? extends Element>)(.ceylon.language.Ordinal)getFirst()).getSuccessor(), getLength$priv$() - 1L);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequence<? extends Element> getReversed() {
+    public final .ceylon.language.Sequence getReversed() {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> segment(final .ceylon.language.Integer from, final long length) {
+    public final .ceylon.language.Sequential segment(final .ceylon.language.Integer from, final long length) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
+    public final .ceylon.language.Sequential spanFrom(final .ceylon.language.Integer from) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential spanTo(final .ceylon.language.Integer to) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequence<? extends Element> $clone() {
+    public final .ceylon.language.Sequence $clone() {
         return this;
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Iterator<? extends Element> iterator() {
+    public final .ceylon.language.Iterator iterator() {
         return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
     }
     
