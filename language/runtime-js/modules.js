@@ -166,7 +166,7 @@ function Modulo(meta, $$modulo){
         if (fs.existsSync(fp)) {
           var f = fs.statSync(fp);
           if (f && f.isFile()) {
-            return JsResource(fp);
+            return JsResource('file:'+fp);
           }
         }
       }

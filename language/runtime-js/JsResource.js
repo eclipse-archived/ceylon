@@ -20,7 +20,9 @@ function $init$JsResource(){
         var $elf=this;
         if (getRuntime().name === 'node.js') {
           var _fr=require;
-          return _fr('fs').statSync($elf.uri).size;
+          var _fp=$elf.uri;
+          if (_fp.substring(0,5)==='file:')_fp=_fp.substring(_fp.indexOf(':')+1);
+          return _fr('fs').statSync(_fp).size;
         } else if (getRuntime().name === 'Browser') {
           alert('Resource.size not implemented yet');
         } else {
@@ -37,7 +39,9 @@ function $init$JsResource(){
           var fs=_fr('fs');
           encoding$2=encoding$2.toLowerCase();
           if(encoding$2.initial(4)==="utf-")encoding$2='utf'+encoding$2.substring(4);
-          var t = fs.readFileSync($elf.uri, encoding$2);
+          var _fp=$elf.uri;
+          if (_fp.substring(0,5)==='file:')_fp=_fp.substring(_fp.indexOf(':')+1);
+          var t = fs.readFileSync(_fp, encoding$2);
           return String$(t);
         } else if (getRuntime().name === 'Browser') {
           alert("Resource.textContent() not implemented yet");
