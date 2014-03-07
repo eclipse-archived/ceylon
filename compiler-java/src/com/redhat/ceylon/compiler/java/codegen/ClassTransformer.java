@@ -1935,9 +1935,11 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-            .getter(this, attrName, decl.getDeclarationModel())
-            .userAnnotations(expressionGen()
-            .transform(decl.getAnnotationList()));
+            .getter(this, attrName, decl.getDeclarationModel());
+        if(!forCompanion)
+            getter.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
+        else
+            getter.noAnnotations();
         
         if (Decl.isIndirect(decl)) {
             getter.getterBlock(generateIndirectGetterBlock(decl.getDeclarationModel()));
