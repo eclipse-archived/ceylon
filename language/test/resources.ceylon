@@ -1,6 +1,7 @@
 import ceylon.language.meta { modules }
 
-void testResources() {
+@test
+shared void testResources() {
     assert(exists mod = modules.find("default","unversioned"));
     value res1 = mod.resourceByPath("default.src.sha1");
     value res2 = mod.resourceByPath("/default.src.sha1");
