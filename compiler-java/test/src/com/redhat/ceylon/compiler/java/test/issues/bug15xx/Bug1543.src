@@ -1,0 +1,270 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1543_ {
+    
+    private bug1543_() {
+    }
+    
+    static void bug1543() {
+        .ceylon.language.Sequence<? extends .ceylon.language.Integer> chain = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$2 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), 100000L);
+        final boolean isArraySequence$3 = iterable$2 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$4;
+        int i$5 = 0;
+        final int length$6;
+        if (isArraySequence$3) {
+            array$4 = ((.ceylon.language.ArraySequence)iterable$2).$getArray$();
+            i$5 = ((.ceylon.language.ArraySequence)iterable$2).$getFirst$();
+            length$6 = i$5 + ((.ceylon.language.ArraySequence)iterable$2).$getLength$();
+        } else {
+            array$4 = null;
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
+        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
+            final long i = ((.ceylon.language.Integer)elem$0).longValue();
+            chain = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)chain.<.ceylon.language.Integer>following(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(i));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1543_.bug1543();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::List<Element>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+        satisfies = {},
+        caseTypes = {})})
+public interface My1543Sequential<Element> extends .ceylon.language.List<Element> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$My1543Sequential$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequential<Element>>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Other",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public abstract <Other>.ceylon.language.Tuple following(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
+    final Other head);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequential<Element>>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Other",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public abstract <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequential<? extends Element>> following2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
+    final Other head);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<ceylon.language::Integer|Element,ceylon.language::Integer,ceylon.language::Sequential<Element>>",
+            erased = true)
+    public abstract .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>> getA();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<ceylon.language::Integer|Element,ceylon.language::Integer,ceylon.language::Sequential<Element>>",
+            erased = true)
+    public abstract .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>> m();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class My1543Sequential$impl<Element> {
+    
+    public My1543Sequential$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug15xx::My1543Sequential<Element>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+        satisfies = {},
+        caseTypes = {})})
+public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<Element> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$My1543Sequence$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<Other|Element,Other,ceylon.language::Sequence<Element>>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Other",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public abstract <Other>.ceylon.language.Tuple following(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
+    final Other head);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class My1543Sequence$impl<Element> {
+    
+    public My1543Sequence$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug15xx::My1543Sequential<ceylon.language::Nothing>"})
+public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<.java.lang.Object> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$My1543Empty$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<Other,Other,ceylon.language::Empty>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Other",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <Other>.ceylon.language.Tuple following(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
+    final Other head);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<Other,Other,ceylon.language::Empty>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Other",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <Other>.ceylon.language.Tuple following2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
+    final Other head);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public .ceylon.language.Tuple getA();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>",
+            erased = true)
+    public .ceylon.language.Tuple m();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class My1543Empty$impl {
+    
+    public My1543Empty$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty $this;
+    
+    public <Other>.ceylon.language.Tuple following(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public <Other>.ceylon.language.Tuple following2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public final .ceylon.language.Tuple getA() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+    
+    public .ceylon.language.Tuple m() {
+        return (.ceylon.language.Tuple).ceylon.language.nothing_.get_();
+    }
+}
