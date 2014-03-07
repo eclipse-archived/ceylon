@@ -157,9 +157,10 @@ function Modulo(meta, $$modulo){
       mpath += sep + _path;
     }
     if (getRuntime().name === 'node.js') {
-      var pm = require('path');
-      var mods = process.env.NODE_PATH.split(getOperatingSystem().pathSeparator);
-      var fs = require('fs');
+      var _fr=require;//this is so that requirejs leaves us the fuck alone
+      var pm=_fr('path');
+      var mods=process.env.NODE_PATH.split(getOperatingSystem().pathSeparator);
+      var fs=_fr('fs');
       for (var i=0; i<mods.length; i++) {
         var fp = pm.resolve(mods[i], mpath);
         if (fs.existsSync(fp)) {
@@ -169,6 +170,8 @@ function Modulo(meta, $$modulo){
           }
         }
       }
+    } else if (getRuntime().name === 'Browser') {
+      return JsResource(require.toUrl(mpath));
     } else {
       print("Resources unsupported in this environment.");
     }

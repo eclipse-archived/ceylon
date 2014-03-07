@@ -19,7 +19,10 @@ function $init$JsResource(){
       defineAttr($$jsResource,'size',function(){
         var $elf=this;
         if (getRuntime().name === 'node.js') {
-          return require('fs').statSync($elf.uri).size;
+          var _fr=require;
+          return _fr('fs').statSync($elf.uri).size;
+        } else if (getRuntime().name === 'Browser') {
+          alert('Resource.size not implemented yet');
         } else {
           print("Resource handling unsupported in this JS platform.");
         }
@@ -30,11 +33,14 @@ function $init$JsResource(){
         var $elf=this;
         if(encoding$2===undefined){encoding$2=$elf.textContent$defs$encoding(encoding$2);}
         if (getRuntime().name === 'node.js') {
-          var fs = require('fs');
+          var _fr=require;
+          var fs=_fr('fs');
           encoding$2=encoding$2.toLowerCase();
           if(encoding$2.initial(4)==="utf-")encoding$2='utf'+encoding$2.substring(4);
           var t = fs.readFileSync($elf.uri, encoding$2);
           return String$(t);
+        } else if (getRuntime().name === 'Browser') {
+          alert("Resource.textContent() not implemented yet");
         } else {
           throw Error("Resource handling unsupported in this JS platform");
         }
