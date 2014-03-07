@@ -249,5 +249,6 @@ shared void test() {
     check(C2().C2().f()=="2-11-22-11-13-222-2-11-11-222-13-2-11-11-13-13", "Several nested classes with same name (2)");
     testRefinement();
     testRefinement2();
+    testIssues();
     results();
 }
