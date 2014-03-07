@@ -683,6 +683,9 @@ public abstract class AbstractTransformer implements Transformation {
                     refinedDeclType = nonWideningType(typedReference, refinedTypedReference);
                 isWidening = isWideningTypeArguments(declType, refinedDeclType, true);
             }
+            // note that we don't use the type erased info to determine the refined decl, as we do
+            // in isWideningTypeDecl(), because we get around needing that by using raw types if
+            // required in actual implementations
             
             if(isWidening)
                 return refinedTypedReference;
@@ -716,7 +719,14 @@ public abstract class AbstractTransformer implements Transformation {
         if(refinedDeclType.getDeclaration() instanceof TypeParameter
                 && !(declType.getDeclaration() instanceof TypeParameter))
             refinedDeclType = nonWideningType(typedReference, refinedTypedReference);
-        return isWideningTypeArguments(declType, refinedDeclType, true);
+        if(isWideningTypeArguments(declType, refinedDeclType, true))
+            return true;
+        
+        if(CodegenUtil.hasTypeErased(refinedTypedReference.getDeclaration())
+                && !willEraseToObject(declType))
+           return true;
+
+        return false;
     }
 
     /*
