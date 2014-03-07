@@ -73,8 +73,7 @@ shared interface Sequential<out Element>
     
     "Produces a sequence with a given [[initial element|head]], 
      followed by the elements of this sequence."
-    //TODO: type should be [Other,Element*]
-    shared actual formal [Other|Element+] following<Other>(Other head);
+    shared actual formal [Other,Element*] following<Other>(Other head);
     
     "This sequence."
     shared actual default Element[] clone() => this;
