@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+class Bug1571 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1571() {
+    }
+    
+    private final void test$priv$() {
+        final .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571, ? extends .ceylon.language.Integer> e = new .ceylon.language.Entry<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, this, .ceylon.language.Integer.instance(1L));
+        e.getKey().test$priv$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.class);
+}
