@@ -679,6 +679,7 @@ public class GenerateJsVisitor extends Visitor
         out("$init$", names.name(d), "()");
         endLine(true);
         declareSelf(d);
+        referenceOuter(d);
         if (withTargs) {
             out(clAlias, "set_type_args(");
             self(d); out(",$$targs$$)"); endLine(true);
@@ -690,9 +691,17 @@ public class GenerateJsVisitor extends Visitor
                     Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
+                            if (d.isClassOrInterfaceMember()) {
+                                out("var ");
+                                self((TypeDeclaration)d.getContainer());
+                                out("=");
+                                self(d);
+                                out(".$$outer;"); endLine();
+                            }
                             self(d); out(".$$targs$$=");
                             TypeUtils.printTypeArguments(that, targs, this, false);
                             endLine(true);
+                            first = false;
                         } else {
                             out("/*TODO: more type arguments*/");
                             endLine();
@@ -701,7 +710,6 @@ public class GenerateJsVisitor extends Visitor
                 }
             }
         }
-        referenceOuter(d);
         initParameters(that.getParameterList(), d, null);
         
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
