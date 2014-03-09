@@ -1934,8 +1934,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs extends rhs</literal></entry>
             <entry>extends</entry>
             <entry></entry>
-            <entry><literal>Type&lt;Void&gt;</literal></entry>
-            <entry><literal>Class &lt;Void&gt;</literal></entry>
+            <entry><literal>Type&lt;Anything&gt;</literal></entry>
+            <entry><literal>Class &lt;Anything&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         
@@ -1943,8 +1943,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>satisfies Type rhs</literal></entry>
             <entry>satisfies</entry>
             <entry></entry>
-            <entry>literal <literal>Type&lt;Void&gt;</literal></entry>
-            <entry><literal>Type&lt;Void&gt;</literal></entry>
+            <entry>literal <literal>Type&lt;Anything&gt;</literal></entry>
+            <entry><literal>Type&lt;Anything&gt;</literal></entry>
             <entry><literal>Boolean</literal></entry>
         </row>
         -->
