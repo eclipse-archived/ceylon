@@ -1877,7 +1877,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
                 <listitem>
                     <para>if the function implementation is a block, and the function contains 
                     no <literal>return</literal> directive, then the return type of the method 
-                    is <literal>Bottom</literal> (this is the case where the method always 
+                    is <literal>Nothing</literal> (this is the case where the method always 
                     terminates in a <literal>throw</literal> directive), or,</para>
                 </listitem>
                 <listitem>
@@ -1902,7 +1902,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
     }
 }</programlisting>
             
-            <para>This function has inferred return type <literal>Bottom</literal>.</para>
+            <para>This function has inferred return type <literal>Nothing</literal>.</para>
             
             <programlisting>function die() {
     throw;
@@ -2412,7 +2412,7 @@ assign name {
                 <listitem>
                     <para>if the value is a getter, and the getter implementation is a block, 
                     and the getter contains no <literal>return</literal> directive, then the 
-                    type of the value is <literal>Bottom</literal> (this is the case where 
+                    type of the value is <literal>Nothing</literal> (this is the case where 
                     the getter always terminates in a <literal>throw</literal> directive), or</para>
                 </listitem>
                 <listitem>

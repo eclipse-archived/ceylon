@@ -328,7 +328,7 @@
                 </listitem-->
             </itemizedlist>
             
-            <!--comment><para>Note: intersections and <literal>Bottom</literal> don't satisfy the last of 
+            <!--comment><para>Note: intersections and <literal>Nothing</literal> don't satisfy the last of 
             these rules.</para></comment-->
             
             <para>Every interface type is a subtype of the class <literal>Object</literal> 
