@@ -1063,6 +1063,9 @@ public class Util {
         throw new ClassCastException(notArrayType(o));
     }
     
+    /**
+     * Used by the JVM backend to get unboxed items from an Array&lt;Integer> backing array
+     */
     public static long getIntegerArray(Object o, int index) {
         if (o instanceof byte[])
             return ((byte[])o)[index];
@@ -1075,6 +1078,9 @@ public class Util {
         throw new ClassCastException(notArrayType(o));
     }
     
+    /**
+     * Used by the JVM backend to get unboxed items from an Array&lt;Float> backing array
+     */
     public static double getDoubleArray(Object o, int index) {
         if (o instanceof float[])
             return ((float[])o)[index];
@@ -1083,18 +1089,28 @@ public class Util {
         throw new ClassCastException(notArrayType(o));
     }
     
+    /**
+     * Used by the JVM backend to get unboxed items from an Array&lt;Character> backing array
+     */
     public static int getCharacterArray(Object o, int index) {
         if (o instanceof char[])
             return ((char[])o)[index];
         throw new ClassCastException(notArrayType(o));
     }
     
+    /**
+     * Used by the JVM backend to get unboxed items from an Array&lt;Boolean> backing array
+     */
     public static boolean getBooleanArray(Object o, int index) {
         if (o instanceof boolean[])
             return ((boolean[])o)[index];
         throw new ClassCastException(notArrayType(o));
     }
     
+    /**
+     * Used by the JVM backend to get items from an ArraySequence object. Beware: do not use that
+     * for Array&lt;Object> as there's too much magic in there.
+     */
     public static Object getObjectArray(Object o, int index) {
         if (o instanceof Object[])
             return ((Object[])o)[index];
