@@ -193,7 +193,8 @@ initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic()
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 defineAttr(SequenceBuilder$proto, 'sequence', function() {
     return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : getEmpty();
-});
+},undefined,function(){return{
+  $t:{t:Sequential,a:{Element$Sequential:'Element$SequenceBuilder'}},mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder','$at','sequence']};});
 SequenceBuilder$proto.append=function(e){
   this.seq.push(e);
   return this;
@@ -206,7 +207,12 @@ SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     }
     return this;
 }
-defineAttr(SequenceBuilder$proto, 'size', function(){ return this.seq.length; });
+defineAttr(SequenceBuilder$proto, 'size', function(){ return this.seq.length; },undefined,function(){return{
+  $t:{t:Integer},mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder','$at','size']
+};});
+defineAttr(SequenceBuilder$proto, 'empty', function() { return this.seq.length===0 },function(){return{
+  $t:{t:Boolean$},mod:$$METAMODEL$$,d:['ceylon.language','SequenceBuilder','$at','empty']
+};});
 
 function SequenceAppender(other, $$targs$$,that) {
     if (that===undefined)that=new SequenceAppender.$$;
