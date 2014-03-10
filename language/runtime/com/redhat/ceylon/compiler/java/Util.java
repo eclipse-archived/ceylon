@@ -1081,7 +1081,7 @@ public class Util {
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Float> backing array
      */
-    public static double getDoubleArray(Object o, int index) {
+    public static double getFloatArray(Object o, int index) {
         if (o instanceof float[])
             return ((float[])o)[index];
         else if (o instanceof double[])
