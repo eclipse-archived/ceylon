@@ -14,5 +14,5 @@ AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mpty
   }
   return ans.length == 0 ? getEmpty() : ans.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
 };
-AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.$$metamodel$$=function(){return{mod:$$METAMODEL$$,
+AnnotatedDeclaration$meta$declaration.$$.prototype.annotations.$crtmm$=function(){return{mod:$CCMM$,
   $t:{t:Sequential,a:{Element$Iterable:'Annotation'}},$ps:[],$cont:AnnotatedDeclaration$meta$declaration,$tp:{Annotation$annotations:{'var':'out','satisfies':[{t:Annotation,a:{Value$Annotation:'Annotation'}}]}},$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','AnnotatedDeclaration','$m','annotations']};};

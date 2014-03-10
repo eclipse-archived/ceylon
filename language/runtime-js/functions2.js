@@ -11,8 +11,8 @@ function internalSort(comp, elems, $$$mptypes) {
     });
     return ArraySequence(arr, $$$mptypes);
 }
-internalSort.$$metamodel$$=function(){return{
-  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','internalSort'],
+internalSort.$crtmm$=function(){return{
+  $an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','internalSort'],
   $ps:[{$nm:'comparing',$t:{t:Callable,a:{Return$Callable:{t:Comparison},Arguments$Callable:{t:'T',l:['Element$internalSort','Element$internalSort']}}},$mt:'prm'},{$nm:'elements',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$internalSort'}},$mt:'prm'}],
   $tp:{Element$internalSort:{}}, $t:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$internalSort'}}
 }};
@@ -54,19 +54,19 @@ function flatten(tf, $$$mptypes) {
   rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
   return rf;
 }
-flatten.$$metamodel$$=function(){return{
-  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','flatten'],
+flatten.$crtmm$=function(){return{
+  $an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','flatten'],
   $tp:{Return$flatten:{},Args$flatten:{'satisfies':[{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}]}},
   $t:{t:Callable,a:{Return$Callable:'Return',Arguments$Callable:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}}},
   $p:[{$nm:'tupleFunction',$t:{t:Callable,a:{Return$Callable:'Return$flatten',Arguments$Callable:{t:'T',l:[{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}]}}},$mt:'prm'}]
 }};
 
 function unflatten(ff, $$$mptypes) {
-  if (typeof(ff.$$metamodel$$)==='function')ff.$$metamodel$$=ff.$$metamodel$$();
-  if (ff.$$metamodel$$ && ff.$$metamodel$$.$ps) {
+  if (typeof(ff.$crtmm$)==='function')ff.$crtmm$=ff.$crtmm$();
+  if (ff.$crtmm$ && ff.$crtmm$.$ps) {
     var ru=function ru(seq,$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
-      var pmeta = ff.$$metamodel$$.$ps;
+      var pmeta = ff.$crtmm$.$ps;
       var _lim=Math.max(pmeta.length,seq.size);
       var a = [];
       for (var i = 0; i < _lim; i++) {
@@ -77,7 +77,7 @@ function unflatten(ff, $$$mptypes) {
           a.push(seq.$get(i));
         }
       }
-      if ($mptypes && ff.$$metamodel$$.$tp)a.push($mptypes);
+      if ($mptypes && ff.$crtmm$.$tp)a.push($mptypes);
       return ff.apply(ru, a);
     }
   } else {
@@ -94,8 +94,8 @@ function unflatten(ff, $$$mptypes) {
   ru.$$targs$$={Return$Callable:$$$mptypes.Return$unflatten,Arguments$Callable:{t:'T',l:[$$$mptypes.Args$unflatten]}};
   return ru;
 }
-unflatten.$$metamodel$$=function(){return{
-  $an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','unflatten'],
+unflatten.$crtmm$=function(){return{
+  $an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','unflatten'],
   $tp:{Return$unflatten:{},Args$unflatten:{'satisfies':[{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}]}},
   $ps:[{$nm:'flatFunction',$t:{t:Callable,a:{Return$Callable:'Return$unflatten',Arguments$Callable:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}}},$mt:'prm'}],
   $t:{t:Callable,a:{Return$Callable:'Return$unflatten',Arguments$Callable:{t:'T',l:[{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}]}}}

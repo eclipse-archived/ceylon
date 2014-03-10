@@ -17,13 +17,13 @@ function type$meta(x,$$targs$$) {
   if (mm===undefined) {
     if (x.getT$name && x.getT$all) {
       var mmm=x.getT$all()[x.getT$name()];
-      if (mmm){mm=mmm.$$metamodel$$;_t=mmm;}
+      if (mmm){mm=mmm.$crtmm$;_t=mmm;}
       if (typeof(mm)==='function') {
-        mm=mm(); mmm.$$metamodel$$=mm;
+        mm=mm(); mmm.$crtmm$=mm;
       }
     }
   }
-  if (mm===undefined&&x.reifyCeylonType)mm=Array$.$$metamodel$$;
+  if (mm===undefined&&x.reifyCeylonType)mm=Array$.$crtmm$;
   if (mm===undefined)throw Error("Cannot retrieve metamodel for " + x);
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
@@ -54,16 +54,16 @@ function type$meta(x,$$targs$$) {
   if ($$targs$$.Type$type.a)c.$targs=$$targs$$.Type$type.a;
   return c;
 }
-type$meta.$$metamodel$$=function(){return{
+type$meta.$crtmm$=function(){return{
   $ps:[{$nm:'instance',$t:'Type'}],$an:function(){return[shared(),native()];},
   $t:{t:ClassModel$meta$model,a:{Type$Class:'Type', Arguments$Class:{t:Nothing}}}, $tp:{Type$type:{satisfies:{t:Anything}}},
-  mod:$$METAMODEL$$,d:['ceylon.language.meta','type']};}
+  mod:$CCMM$,d:['ceylon.language.meta','type']};}
 exports.type$meta=type$meta;
 
 function typeLiteral$meta($$targs$$) {
   if ($$targs$$ === undefined || $$targs$$.Type$typeLiteral === undefined) {
     throw Exception("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
-  } else if ($$targs$$.Type$typeLiteral.$$metamodel$$ == undefined) {
+  } else if ($$targs$$.Type$typeLiteral.$crtmm$ == undefined) {
     //closed type
     var t = $$targs$$.Type$typeLiteral.t
     if (t === undefined) {
@@ -74,7 +74,7 @@ function typeLiteral$meta($$targs$$) {
       //TODO arguments
       var _tt=$retuple($$targs$$.Type$typeLiteral);
       return AppliedClass(Tuple,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
-    } else if (t.$$metamodel$$ === undefined) {
+    } else if (t.$crtmm$ === undefined) {
       throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
       var mm = getrtmm$$(t);
@@ -120,7 +120,7 @@ function typeLiteral$meta($$targs$$) {
   }
   throw Exception("typeLiteral UNIMPLEMENTED for " + /*require('util').inspect(*/$$targs$$);
 }
-typeLiteral$meta.$$metamodel$$={$ps:[],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language.meta','typeLiteral']};
+typeLiteral$meta.$crtmm$={$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language.meta','typeLiteral']};
 exports.typeLiteral$meta=typeLiteral$meta;
 
 function pushTypes(list, types) {

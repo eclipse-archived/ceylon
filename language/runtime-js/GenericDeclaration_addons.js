@@ -14,7 +14,7 @@ defineAttr(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclar
   }
   console.log("TODO GenericDeclaration.typeParameterDeclarations");
   return getEmpty();
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Sequential,a:{Element:{t:TypeParameter$meta$declaration}}},$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$at','typeParameterDeclarations']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element:{t:TypeParameter$meta$declaration}}},$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$at','typeParameterDeclarations']};});
 GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=function (name$14){
   if (this.tipo) {
     var mm=getrtmm$$(this.tipo);
@@ -33,5 +33,5 @@ GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=fun
   console.log("TODO GenericDeclaration.getTypeParameterDeclaration(" + name$14 + ")");
   return null;
 };
-GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{ t:'u', l:[{t:Null},{t:TypeParameter$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$m','getTypeParameterDeclaration']};};
+GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:TypeParameter$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$m','getTypeParameterDeclaration']};};
  

@@ -9,8 +9,8 @@ exports.addSuppressedException=addSuppressedException;
 function suppressedExceptions(/*Exception*/e) {
     return e.$sups$===undefined?getEmpty():e.$sups$;
 }
-suppressedExceptions.$$metamodel$$=function(){
-  return {mod:$$METAMODEL$$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
+suppressedExceptions.$crtmm$=function(){
+  return {mod:$CCMM$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
 }
 exports.suppressedExceptions=suppressedExceptions;
 
@@ -95,7 +95,7 @@ function $qname(mm) {
   if (mm.t) {
     mm=mm.t;
   }
-  if (mm.$$metamodel$$)mm=getrtmm$$(mm);
+  if (mm.$crtmm$)mm=getrtmm$$(mm);
   if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
@@ -157,7 +157,7 @@ function convert$params(mm,a) {
 }
 
 function getrtmm$$(x) {
-  if (typeof(x.$$metamodel$$)==='function')x.$$metamodel$$=x.$$metamodel$$();
-  return x.$$metamodel$$;
+  if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
+  return x.$crtmm$;
 }
 exports.getrtmm$$=getrtmm$$;

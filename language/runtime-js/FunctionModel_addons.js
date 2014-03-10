@@ -1,5 +1,5 @@
 defineAttr(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
-  var ps=this.tipo.$$metamodel$$.$ps;
+  var ps=this.tipo.$crtmm$.$ps;
   if (!ps || ps.length==0)return getEmpty();
   var r=[];
   for (var i=0; i < ps.length; i++) {
@@ -12,9 +12,9 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
     r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
   return r.reifyCeylonType({Element$Iterable:{t:Type$meta$model,a:{t:Anything}},Absent$Iterable:{t:Null}});
-},undefined,function(){return{mod:$$METAMODEL$$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
+},undefined,function(){return{mod:$CCMM$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 defineAttr(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
-  var mm = this.tipo.$$metamodel$$;
+  var mm = this.tipo.$crtmm$;
   if (mm) {
     if (mm.$tp) {
       if (this.$targs===undefined)throw TypeApplicationException$meta$model("Missing type arguments for "+this.string);
@@ -34,17 +34,17 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
     return getEmpty();
   }
   throw Exception(String$("FunctionModel.typeArguments-we don't have a metamodel!"));
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
-  var mm=this.tipo.$$metamodel$$;
+  var mm=this.tipo.$crtmm$;
   var qn;
   if (mm.$cont) {
     qn=$qname(mm.$cont);
-    if (mm.$cont.$$metamodel$$.$tp) {
+    if (mm.$cont.$crtmm$.$tp) {
       var cnt=this.$$targs$$&&this.$$targs$$.Container$Function&&this.$$targs$$.Container$Function.a;
       if (!cnt)cnt=this.$$targs$$&&this.$$targs$$.Container$Method&&this.$$targs$$.Container$Method.a;
       qn+="<";var first=true;
-      for (var tp in mm.$cont.$$metamodel$$.$tp) {
+      for (var tp in mm.$cont.$crtmm$.$tp) {
         if (first)first=false;else qn+=",";
         var _ta=cnt&&cnt[tp];
         qn+=$qname(_ta||Anything);
@@ -71,4 +71,4 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'string',function(){
     qn+=">";
   }
   return String$(qn);
-},undefined,function(){return{mod:$$METAMODEL$$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:FunctionModel$meta$model};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:FunctionModel$meta$model};});

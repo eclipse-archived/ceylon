@@ -94,7 +94,7 @@ function inheritProto(type) {
 function defineAttr(obj, name, get, set, metamodel,setterAnns) {
   Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
   if (name[0]==='$')name=name.substring(1);//names matching reserved words are prefixed with $
-  obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $$metamodel$$:metamodel};
+  obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $crtmm$:metamodel};
   if (setterAnns)set.setter$anns=setterAnns;
 }
 // Create a copy of the given property. The name of the copied property is name+suffix.
@@ -134,32 +134,32 @@ function Anything(wat) {
     return wat;
 }
 initType(Anything, 'ceylon.language::Anything');
-Anything.$$metamodel$$=function(){return{$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Anything']};}
+Anything.$crtmm$=function(){return{$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Anything']};}
 function Null(wat) {
     return null;
 }
 initType(Null, 'ceylon.language::Null', Anything);
-Null.$$metamodel$$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Null']};}
+Null.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Null']};}
 function Nothing(wat) {
     throw "Nothing";
 }
 initType(Nothing, 'ceylon.language::Nothing');
 //This is quite a special case, since Nothing is not in the model, we need to insert it there
-$$METAMODEL$$['ceylon.language']["Nothing"]={"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"};
-Nothing.$$metamodel$$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Nothing']};}
+$CCMM$['ceylon.language']["Nothing"]={"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"};
+Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['ceylon.language','Nothing']};}
 
 function Object$(wat) {
     return wat;
 }
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
-Object$.$$metamodel$$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$$METAMODEL$$,d:['ceylon.language','Object']};}
+Object$.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Object']};}
 var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
-},undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$$METAMODEL$$,$cont:Object$,d:['ceylon.language','Object','$at','string']});
-Object$proto.$prop$getHash={$fml:1,$$metamodel$$:function(){return{mod:$$METAMODEL$$,$cont:Object$,d:['ceylon.language','Object','$at','hash'],$t:{t:Integer}};}};
+},undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','string']});
+Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','hash'],$t:{t:Integer}};}};
 Object$proto.toString=function() { return this.string.valueOf(); }
-Object$proto.equals={$fml:1,$$metamodel$$:function(){return{mod:$$METAMODEL$$,$cont:Object$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},
+Object$proto.equals={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},
   $ps:[{$nm:'other',$mt:'prm',$t:{t:Object$}}]};}};
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
@@ -173,17 +173,17 @@ function $identityHash(x) {
     return (hash !== undefined)
             ? hash : (x.BasicID = BasicID++);
 }
-$identityHash.$$metamodel$$=function(){return{mod:$$METAMODEL$$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['ceylon.language','identityHash']};}
+$identityHash.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['ceylon.language','identityHash']};}
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable", Object$);
-Identifiable.$$metamodel$$=function(){return{$an:function(){return[shared()]},mod:$$METAMODEL$$,d:['ceylon.language','Identifiable']};}
+Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['ceylon.language','Identifiable']};}
 function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return isOfType(that, {t:Identifiable}) && (that===this);
 }
 defineAttr(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
-    undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$$METAMODEL$$,d:['ceylon.language','Identifiable','$at','hash']};});
+    undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$CCMM$,d:['ceylon.language','Identifiable','$at','hash']};});
 
 //INTERFACES
 //Compiled from Ceylon sources
@@ -204,7 +204,7 @@ function NativeException(e) {
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-NativeException.$$metamodel$$=function(){return{$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','Exception']};}
+NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Exception']};}
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.$Object=Object$;

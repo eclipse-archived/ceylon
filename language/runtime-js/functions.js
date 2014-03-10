@@ -8,9 +8,9 @@ function getEqual() { return equal }
 exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
-exports.$prop$getLarger={get:getLarger,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','larger'],$t:{t:Comparison}};}};
-exports.$prop$getSmaller={get:getSmaller,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','smaller'],$t:{t:Comparison}};}};
-exports.$prop$getEqual={get:getEqual,$$metamodel$$:function(){return{mod:$$METAMODEL$$,d:['ceylon.language','equal'],$t:{t:Comparison}};}};
+exports.$prop$getLarger={get:getLarger,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','larger'],$t:{t:Comparison}};}};
+exports.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','smaller'],$t:{t:Comparison}};}};
+exports.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','equal'],$t:{t:Comparison}};}};
 
 //These are operators for handling nulls
 function exists(value) {
@@ -31,11 +31,11 @@ function isOfType(obj, type) {
       return type.t===Null || type.t===Anything;
     }
     if (obj.getT$all === undefined) {
-      if (obj.$$metamodel$$) {
-        var _mm = obj.$$metamodel$$;
+      if (obj.$crtmm$) {
+        var _mm = obj.$crtmm$;
         if (typeof(_mm)==='function') {
           _mm=_mm();
-          obj.$$metamodel$$=_mm;
+          obj.$crtmm$=_mm;
         }
         //We can navigate the metamodel
         if (_mm.d['$mt'] === 'mthd') {
@@ -72,10 +72,10 @@ function isOfType(obj, type) {
           var cmptype = type.a[i];
           var tmpobj = obj;
           var iance = null;
-          var _mm = type.t.$$metamodel$$;
+          var _mm = type.t.$crtmm$;
           if (typeof(_mm)==='function') {
             _mm = _mm();
-            type.t.$$metamodel$$=_mm;
+            type.t.$crtmm$=_mm;
           }
           if (_mm && _mm.$tp && _mm.$tp[i]) iance=_mm.$tp[i]['var'];
           if (iance===null) {//null means no i in _mm.$tp
@@ -83,7 +83,7 @@ function isOfType(obj, type) {
             while (iance===null && tmpobj.$$outer !== undefined) {
               tmpobj=tmpobj.$$outer;
               var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
-              var _mmf = typeof(_tmpf.$$metamodel$$)==='function'?_tmpf.$$metamodel$$():_tmpf.$$metamodel$$;
+              var _mmf = typeof(_tmpf.$crtmm$)==='function'?_tmpf.$crtmm$():_tmpf.$crtmm$;
               if (_mmf && _mmf.$tp && _mmf.$tp[i]) {
                 iance=_mmf.$tp[i]['var'];
               }
@@ -283,12 +283,12 @@ function className(obj) {
     }
     return String$(tn);
 }
-className.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','className']};
+className.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','className']};
 
 function identityHash(obj) {
     return obj.BasicID;
 }
-identityHash.$$metamodel$$={$an:function(){return[shared()];},mod:$$METAMODEL$$,d:['ceylon.language','identityHash']};
+identityHash.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','identityHash']};
 
 function set_type_args(obj, targs) {
     if (obj===undefined)return;

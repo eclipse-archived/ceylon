@@ -32,10 +32,10 @@ function printStackTrace(exc, _write) {
       _write(getOperatingSystem().newline);
       return;
     }
-    var mm = f.$$metamodel$$;
+    var mm = f.$crtmm$;
     if (typeof(mm)==='function') {
       mm = mm();
-      f.$$metamodel$$=mm;
+      f.$crtmm$=mm;
     }
     if (mm) {
       var _src = '';
@@ -46,8 +46,8 @@ function printStackTrace(exc, _write) {
     }
   }
 }
-printStackTrace.$$metamodel$$=function(){
-  return{mod:$$METAMODEL$$,d:['ceylon.language','printStackTrace'],$t:{t:Anything},$ps:[
+printStackTrace.$crtmm$=function(){
+  return{mod:$CCMM$,d:['ceylon.language','printStackTrace'],$t:{t:Anything},$ps:[
     {$nm:'exception',$t:{t:Exception},$mt:'prm'},{$nm:'write',$t:{t:Callable,a:{Return:{t:Anything},Arguments:{t:'T',l:[{t:String$}]}}},$mt:'prm','$def':1}
   ]};};
 exports.printStackTrace=printStackTrace;
