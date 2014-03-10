@@ -1093,8 +1093,8 @@ public class Util {
      * Used by the JVM backend to get unboxed items from an Array&lt;Character> backing array
      */
     public static int getCharacterArray(Object o, int index) {
-        if (o instanceof char[])
-            return ((char[])o)[index];
+        if (o instanceof int[])
+            return ((int[])o)[index];
         throw new ClassCastException(notArrayType(o));
     }
     
