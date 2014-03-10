@@ -1330,24 +1330,32 @@ public class StatementTransformer extends AbstractTransformer {
     class ArrayIterationOptimization extends IndexedAccessIterationOptimization {
         
         public static final String OPT_NAME = "ArrayIterationStatic";
+        private final boolean unboxed;
         
         ArrayIterationOptimization(Tree.ForStatement stmt,
                 ProducedType elementType) {
             super(stmt, elementType, "array");
+            unboxed = isCeylonBoolean(elementType)
+                    || isCeylonFloat(elementType)
+                    || isCeylonInteger(elementType)
+                    || isCeylonCharacter(elementType);
         }
         
         @Override
         protected JCExpression makeIndexableType() {
-            return make().Type(syms().objectType);
+            if(unboxed)
+                return make().Type(syms().objectType);
+            return makeJavaType(typeFact().getArrayType(elementType));
         }
         
         @Override
         protected JCExpression makeIndexable() {
             JCExpression iterableExpr = expressionGen().transformExpression(getIterable());
-            JCExpression arrayExpr = make().Apply(null,
-                    naming.makeQualIdent(iterableExpr, "toArray"),
-                    List.<JCExpression>nil());
-            return arrayExpr;
+            if(unboxed)
+                return make().Apply(null,
+                                    naming.makeQualIdent(iterableExpr, "toArray"),
+                                    List.<JCExpression>nil());
+            return iterableExpr;
         }
         
         protected JCExpression makeCondition() {
@@ -1356,35 +1364,50 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeLengthExpr() {
-            return make().Apply(null, 
-                    naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.arrayLength"), 
-                    List.<JCExpression>of(indexableName.makeIdent()));
+            if(unboxed)
+                return make().Apply(null, 
+                        naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.arrayLength"), 
+                        List.<JCExpression>of(indexableName.makeIdent()));
+            else
+                return make().TypeCast(make().Type(syms().intType), 
+                                       make().Apply(null, 
+                                                    naming.makeQualIdent(indexableName.makeIdent(), "getSize"), 
+                                                    List.<JCExpression>nil()));
         }
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            String methodName;
-            ProducedType gotType;
+            String methodName = null;
+            ProducedType gotType = null;
             if (isCeylonBoolean(elementType)) {
-                methodName = "com.redhat.ceylon.compiler.java.Util.getBooleanArray";
+                methodName = "getBooleanArray";
                 gotType = elementType;
             } else if (isCeylonFloat(elementType)) {
-                methodName = "com.redhat.ceylon.compiler.java.Util.getFloatArray";
+                methodName = "getFloatArray";
                 gotType = elementType;
             } else if (isCeylonInteger(elementType)) {
-                methodName = "com.redhat.ceylon.compiler.java.Util.getIntegerArray";
+                methodName = "getIntegerArray";
                 gotType = elementType;
             } else if (isCeylonCharacter(elementType)) {
-                methodName = "com.redhat.ceylon.compiler.java.Util.getCharacterArray";
+                methodName = "getCharacterArray";
                 gotType = elementType;
-            } else {
-                methodName = "com.redhat.ceylon.compiler.java.Util.getObjectArray";
-                gotType = typeFact().getObjectDeclaration().getType();
             }
-            JCExpression elementGet = make().Apply(null, 
-                    naming.makeQuotedFQIdent(methodName),
-                    List.<JCExpression>of(indexableName.makeIdent(), indexName.makeIdent()));
-            elementGet = expressionGen().applyErasureAndBoxing(elementGet, gotType, false, true, BoxingStrategy.BOXED, elementType, 0);
+            JCExpression elementGet;
+            boolean typeErased = false;
+            boolean exprBoxed = false;
+            if(methodName != null){
+                elementGet = makeUtilInvocation(methodName, 
+                                                List.<JCExpression>of(indexableName.makeIdent(), indexName.makeIdent()),
+                                                null);
+            }else{
+                elementGet = make().Apply(null, 
+                                          naming.makeQualIdent(indexableName.makeIdent(), "unsafeItem"),
+                                          List.<JCExpression>of(indexName.makeIdent()));
+                gotType = typeFact().getObjectDeclaration().getType();
+                typeErased = true;
+                exprBoxed = true;
+            }
+            elementGet = expressionGen().applyErasureAndBoxing(elementGet, gotType, typeErased, exprBoxed, BoxingStrategy.UNBOXED, elementType, 0);
             return elementGet;
         }
     }
