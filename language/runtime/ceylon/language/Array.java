@@ -722,8 +722,10 @@ public final class Array<Element>
                 null : unsafeItem(index);
     }
 
+    // Used by the jvm backend code to avoid boxing the index
     @SuppressWarnings("unchecked")
-    private Element unsafeItem(int index) {
+    @Ignore
+    public Element unsafeItem(int index) {
         if (array instanceof char[]) {
             char val = ((char[])array)[index];
             return (Element) new java.lang.Character(val);
