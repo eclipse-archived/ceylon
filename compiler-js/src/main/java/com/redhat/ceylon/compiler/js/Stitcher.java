@@ -152,10 +152,10 @@ public class Stitcher {
                             }
                             pu.getCompilationUnit().visit(mmg);
                         }
-                        writer.write("var $$METAMODEL$$=");
+                        writer.write("var $CCMM$=");
                         clModel = JSONObject.toJSONString(mmg.getModel());
                         writer.write(clModel);
-                        writer.write(";\nexports.$$METAMODEL$$=function(){return $$METAMODEL$$;};\n");
+                        writer.write(";\nexports.$CCMM$=function(){return $CCMM$;};\n");
                         writer.flush();
                     } else if (line.equals("//#COMPILED")) {
                         System.out.println("Compiling language module sources");

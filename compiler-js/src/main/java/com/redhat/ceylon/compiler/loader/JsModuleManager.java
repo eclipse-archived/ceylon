@@ -175,7 +175,7 @@ public class JsModuleManager extends ModuleManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("var $$METAMODEL$$=")) && line.endsWith("};")) {
+                if ((line.startsWith("var $CCMM$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
                     Map<String,Object> model = (Map<String,Object>)JSONValue.parse(line);
                     if (!model.containsKey("$mod-bin")) {
