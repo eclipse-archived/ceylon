@@ -491,7 +491,7 @@ public class GenerateJsVisitor extends Visitor
         String _tmp=names.createTempVariable();
         out(names.self(outer), ".", tname, "=function(){var ", _tmp, "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, true);
-        out(";", _tmp, ".$$metamodel$$=");
+        out(";", _tmp, ".$crtmm$=");
         TypeUtils.encodeForRuntime(that,d,this);
         out(";return ", _tmp, ";}");
         endLine(true);
@@ -558,7 +558,7 @@ public class GenerateJsVisitor extends Visitor
         //returnSelf(d);
         endBlockNewLine();
         //Add reference to metamodel
-        out(names.name(d), ".$$metamodel$$=");
+        out(names.name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         endLine(true);
         share(d);
@@ -604,7 +604,7 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out(");}");
         endLine();
-        out(aname,".$$metamodel$$=");
+        out(aname,".$crtmm$=");
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
@@ -651,7 +651,7 @@ public class GenerateJsVisitor extends Visitor
         qualify(that, aliased);
         out(names.name(aliased), ".$$");
         endLine(true);
-        out(aname,".$$metamodel$$=");
+        out(aname,".$crtmm$=");
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
@@ -691,13 +691,6 @@ public class GenerateJsVisitor extends Visitor
                     Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
-                            if (d.isClassOrInterfaceMember()) {
-                                out("var ");
-                                self((TypeDeclaration)d.getContainer());
-                                out("=");
-                                self(d);
-                                out(".$$outer;"); endLine();
-                            }
                             self(d); out(".$$targs$$=");
                             TypeUtils.printTypeArguments(that, targs, this, false);
                             endLine(true);
@@ -756,7 +749,7 @@ public class GenerateJsVisitor extends Visitor
         returnSelf(d);
         endBlockNewLine();
         //Add reference to metamodel
-        out(names.name(d), ".$$metamodel$$=");
+        out(names.name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         endLine(true);
         share(d);
@@ -774,7 +767,7 @@ public class GenerateJsVisitor extends Visitor
         final String tname=names.createTempVariable();
         out(function, names.name(d), "{var ", tname, "=");
         TypeUtils.typeNameOrList(that, that.getTypeSpecifier().getType().getTypeModel(), this, false);
-        out(";", tname, ".$$metamodel$$=");
+        out(";", tname, ".$crtmm$=");
         TypeUtils.encodeForRuntime(that, d, this);
         out(";return ", tname, ";}");
         endLine();
@@ -782,13 +775,20 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void referenceOuter(TypeDeclaration d) {
-        if (d.isClassOrInterfaceMember()) {
-            self(d);
-            out(".");
-            out("$$outer");
-            //outerSelf(d);
-            out("=this");
-            endLine(true);
+        if (!d.isToplevel()) {
+            final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
+            if (coi != null) {
+                self(d);
+                out(".");
+                out("$$outer");
+                if (d.isClassOrInterfaceMember()) {
+                    out("=this");
+                } else {
+                    out("=");
+                    self(coi);
+                }
+                endLine(true);
+            }
         }
     }
 
@@ -1140,10 +1140,9 @@ public class GenerateJsVisitor extends Visitor
             self(d);
             out("=new ");
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-                out("this.", names.name(d), ".$$;");
-            } else {
-                out(names.name(d), ".$$;");
+                out("this.");
             }
+            out(names.name(d), ".$$;");
         }
         endLine();
     }
@@ -1171,7 +1170,7 @@ public class GenerateJsVisitor extends Visitor
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
         out(names.self(type), ".", names.name(c), "=", names.name(c), ";",
-                names.self(type), ".", names.name(c), ".$$metamodel$$=");
+                names.self(type), ".", names.name(c), ".$crtmm$=");
         TypeUtils.encodeForRuntime(objDef, d, this);
         endLine(true);
     }
@@ -1231,7 +1230,7 @@ public class GenerateJsVisitor extends Visitor
         returnSelf(c);
         indentLevel--;
         endLine();
-        out("};", names.name(c), ".$$metamodel$$=");
+        out("};", names.name(c), ".$crtmm$=");
         TypeUtils.encodeForRuntime(that, c, this);
         endLine(true);
 
@@ -1259,7 +1258,7 @@ public class GenerateJsVisitor extends Visitor
             if (!targs.isEmpty()) {
                 TypeUtils.printTypeArguments(that, targs, this, false);
             }
-            out(");", objvar, ".$$metamodel$$=", names.getter(d), ".$$metamodel$$;}");
+            out(");", objvar, ".$crtmm$=", names.getter(d), ".$crtmm$;}");
             endLine();
             out("return ", objvar, ";");
             endBlockNewLine();            
@@ -1272,7 +1271,7 @@ public class GenerateJsVisitor extends Visitor
             if (!d.isToplevel()) {
                 if(outerSelf(d))out(".");
             }
-            out(names.getter(d), ".$$metamodel$$=");
+            out(names.getter(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             endLine(true);
             if (!d.isToplevel()) {
@@ -1282,11 +1281,11 @@ public class GenerateJsVisitor extends Visitor
             if (!d.isToplevel()) {
                 if (outerSelf(d))out(".");
             }
-            out(names.getter(d), ",$$metamodel$$:");
+            out(names.getter(d), ",$crtmm$:");
             if (!d.isToplevel()) {
                 if (outerSelf(d))out(".");
             }
-            out(names.getter(d), ".$$metamodel$$}");
+            out(names.getter(d), ".$crtmm$}");
             endLine(true);
             if (d.isToplevel()) {
                 out("exports.$prop$", names.getter(d), "=$prop$", names.getter(d));
@@ -1375,7 +1374,7 @@ public class GenerateJsVisitor extends Visitor
             if (outer != null) {
                 out(names.self(outer), ".");
             }
-            out(names.name(m), ".$$metamodel$$=");
+            out(names.name(m), ".$crtmm$=");
             TypeUtils.encodeForRuntime(m, that.getAnnotationList(), this);
             endLine(true);
             share(m);
@@ -1403,7 +1402,7 @@ public class GenerateJsVisitor extends Visitor
         } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
             if (m.getContainer() instanceof TypeDeclaration) {
                 self((TypeDeclaration)m.getContainer());
-                out(".", names.name(m),"={$fml:1,$$metamodel$$:");
+                out(".", names.name(m),"={$fml:1,$crtmm$:");
                 TypeUtils.encodeForRuntime(that, m, this);
                 out("};");
             }
@@ -1418,7 +1417,7 @@ public class GenerateJsVisitor extends Visitor
             initDefaultedParameters(that.getParameterLists().get(0), d);
             methodDefinition(that);
             //Add reference to metamodel
-            out(names.name(d), ".$$metamodel$$=");
+            out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             endLine(true);
         }
@@ -1577,7 +1576,7 @@ public class GenerateJsVisitor extends Visitor
         out(names.self(outer), ".", names.name(d), "=");
         methodDefinition(that);
         //Add reference to metamodel
-        out(names.self(outer), ".", names.name(d), ".$$metamodel$$=");
+        out(names.self(outer), ".", names.name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         endLine(true);
     }
@@ -1693,7 +1692,7 @@ public class GenerateJsVisitor extends Visitor
         }
         if (!shareSetter(d)) { out(";"); }
         if (!d.isToplevel())outerSelf(d);
-        out(names.setter(d.getGetter()), ".$$metamodel$$=");
+        out(names.setter(d.getGetter()), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
         endLine(true);
         generateAttributeMetamodel(that, false, true);
@@ -1842,7 +1841,7 @@ public class GenerateJsVisitor extends Visitor
                 out(".");
             }
             //issue 297 this is only needed in some cases
-            out("$prop$", pname, "={$$metamodel$$:");
+            out("$prop$", pname, "={$crtmm$:");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out("}"); endLine(true);
             if (d.isToplevel()) {
@@ -1859,7 +1858,7 @@ public class GenerateJsVisitor extends Visitor
             if (isCaptured(d) && !defineAsProperty(d)) {
                 out(pname);
                 endLine(true);
-                out(pname, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
+                out(pname, ".$crtmm$=$prop$", pname, ".$crtmm$");
             } else {
                 out("function(){return ", names.name(d), "}");
             }
@@ -1872,7 +1871,7 @@ public class GenerateJsVisitor extends Visitor
             }
             out("$prop$", pname, ".set=", pset);
             endLine(true);
-            out("if(", pset, ".$$metamodel$$===undefined)", pset, ".$$metamodel$$=$prop$", pname, ".$$metamodel$$");
+            out("if(", pset, ".$crtmm$===undefined)", pset, ".$crtmm$=$prop$", pname, ".$crtmm$");
             endLine(true);
         }
     }
@@ -2671,7 +2670,7 @@ public class GenerateJsVisitor extends Visitor
         out("}");
         endLine();
         //Add reference to metamodel
-        out(names.name(c), ".$$metamodel$$=");
+        out(names.name(c), ".$crtmm$=");
         TypeUtils.encodeForRuntime(c, null, this);
         endLine(true);
 

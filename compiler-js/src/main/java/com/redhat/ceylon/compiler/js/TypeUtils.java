@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -75,9 +76,7 @@ public class TypeUtils {
             final ProducedType pt = e.getValue();
             if (pt == null) {
                 gen.out("'", e.getKey().getName(), "'");
-                continue;
-            }
-            if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
+            } else if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
                 boolean hasParams = pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty();
                 boolean closeBracket = false;
                 final TypeDeclaration d = pt.getDeclaration();
@@ -200,13 +199,25 @@ public class TypeUtils {
     static void resolveTypeParameter(final Node node, final TypeParameter tp,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         Scope parent = node.getScope();
+        int outers = 0;
         while (parent != null && parent != tp.getContainer()) {
+            if (parent instanceof TypeDeclaration) {
+                outers++;
+            }
             parent = parent.getScope();
         }
         if (tp.getContainer() instanceof ClassOrInterface) {
             if (parent == tp.getContainer()) {
                 if (!skipSelfDecl) {
-                    gen.self((ClassOrInterface)tp.getContainer());
+                    ClassOrInterface ontoy = Util.getContainingClassOrInterface(node.getScope());
+                    if (((TypeDeclaration)ontoy).isAnonymous()) {
+                        gen.self((TypeDeclaration)parent);
+                    } else {
+                        gen.self((TypeDeclaration)ontoy);
+                        for (int i = 0; i < outers; i++) {
+                            gen.out(".$$outer");
+                        }
+                    }
                     gen.out(".");
                 }
                 gen.out("$$targs$$.", tp.getName(), "$", tp.getDeclaration().getName());
@@ -545,7 +556,7 @@ public class TypeUtils {
 
     static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
             final RuntimeMetamodelAnnotationGenerator annGen) {
-        gen.out("function(){return{mod:$$METAMODEL$$");
+        gen.out("function(){return{mod:$CCMM$");
         List<TypeParameter> tparms = d instanceof TypeDeclaration ? ((TypeDeclaration)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
         List<ProducedType> caseTypes = null;
