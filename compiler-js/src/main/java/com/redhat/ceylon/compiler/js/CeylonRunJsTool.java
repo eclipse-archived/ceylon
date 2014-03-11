@@ -416,18 +416,18 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
     }
 
-	protected File getArtifact(String modName, String modVersion, RepositoryManager repoman) {
-	    ArtifactContext ac = new ArtifactContext(modName, modVersion, ".js");
+    protected File getArtifact(String modName, String modVersion, RepositoryManager repoman) {
+        ArtifactContext ac = new ArtifactContext(modName, modVersion, ".js");
         ac.setFetchSingleArtifact(true);
         ac.setThrowErrorIfMissing(false);
         File jsmod = repoman.getArtifact(ac);
         if (jsmod == null) {
             throw new CeylonRunJsException("Cannot find module " + ModuleUtil.makeModuleName(modName, modVersion) + " in specified module repositories");
         }
-	    return jsmod;
+        return jsmod;
     }
 
-	protected File getRepoDir(String modname, File file) {
+    protected File getRepoDir(String modname, File file) {
         // A trippy way to get to the repo folder, but it works
         int count = modname.split("\\.").length + 1;
         if (!ModuleUtil.isDefaultModule(modname)) {
@@ -439,9 +439,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return file;
     }
 
-	protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
-	}
-	
+    protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
+    }
+
     // use to test and debug:
 //    public static void main(String[] args) throws Exception{
 //    	CeylonRunJsTool tool = new CeylonRunJsTool();
