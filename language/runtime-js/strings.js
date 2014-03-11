@@ -142,14 +142,29 @@ String$proto.iterator= function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
 String$proto.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Character}}},d:['ceylon.language','String','$m','iterator']};}
-String$proto.$get = function(index) {
-    if (index<0 || index>=this.length) {return null}
-    var i = 0;
-    for (var count=0; count<index; count++) {
-        if ((this.charCodeAt(i)&0xfc00) === 0xd800) {++i}
-        if (++i >= this.length) {return null}
+String$proto.$get=function(index){
+  if (index<0 || index>=this.length) {return null;}
+  if (this._bumps===undefined)this._bumps=[];
+  var cnt=0;
+  var mb=0;
+  for (var i=0;i<this._bumps.length;i++) {
+    mb=this._bumps[i];
+    if (mb<index)cnt++;
+  }
+  if (index<=this._maxidx) {
+    index+=cnt;
+    return Character(codepointFromString(this, index));
+  }
+  if (this._maxidx>mb)mb=this._maxidx;
+  for (cnt=mb; cnt<index; cnt++) {
+    if ((this.charCodeAt(mb)&0xfc00) === 0xd800) {
+      this._bumps.push(mb);
+      ++mb;
     }
-    return Character(codepointFromString(this, i));
+    if (++mb >= this.length) {return null;}
+  }
+  if (this._maxidx===undefined || mb>this._maxidx)this._maxidx=mb;
+  return Character(codepointFromString(this, mb));
 }
 String$proto.$get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','String','$m','get'],
   $ps:[{$nm:'index',$t:{t:Integer}}]};}
