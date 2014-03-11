@@ -269,9 +269,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         String moduleString = isDefault ? module : module +"/"+version;
         //The timeout is to have enough time to start reading on the process streams
         
-        String customInit = customizeInitialization(); 
-        String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};%s var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method \"%s\" does not exist or is not shared in the %s module');else __entry_point__();",
-        		customInit,
+        String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined)console.log('The specified method \"%s\" does not exist or is not shared in the %s module');else __entry_point__();",
                 module.replace(".", "/"),
                 isDefault ? "" : "/" + version,
                 module,
@@ -442,10 +440,6 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
 	protected void customizeDependencies(Set<File> localRepos, RepositoryManager repoman) throws IOException {
-	}
-	
-	protected String customizeInitialization() {
-		return "";
 	}
 	
     // use to test and debug:

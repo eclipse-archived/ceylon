@@ -164,26 +164,6 @@ public class CeylonTestJsTool extends RepoUsingTool {
 					loadDependencies(localRepos, repoman, artifact);
 				}
 			};
-        	@Override
-        	protected String customizeInitialization() {
-        		StringBuilder init = new StringBuilder();
-        		for(String moduleAndVersion : moduleAndVersionList) {
-					String modName = ModuleUtil.moduleName(moduleAndVersion);
-					String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);
-					
-					init.append("require('");
-					init.append(modName.replace(".", "/"));
-					init.append("/");
-					init.append(version);
-					init.append("/");
-					init.append(modName);
-					init.append("-");
-					init.append(modVersion);
-					init.append("');");
-        		}
-        		
-        	    return init.toString();
-        	}
         };
 		ceylonRunJsTool.setModuleVersion(TEST_MODULE_NAME + "/" + version);
         ceylonRunJsTool.setRun(TEST_RUN_FUNCTION);
