@@ -309,11 +309,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         private String getExportPackage() {
             boolean hasSharedPackages = false;
             StringBuilder exportPackage = new StringBuilder();
-            // XXX: Because of issue #1517, root package is returned more than once
-            // I wrap packages in the LinkedHashSet, that elliminates duplicates 
-            // while retaining the insertion order.  
-            // (see https://github.com/ceylon/ceylon-compiler/issues/1517)
-            for (Package pkg : new LinkedHashSet<>(module.getPackages())) {
+            for (Package pkg : module.getPackages()) {
                 if (pkg.isShared()) {
                     if (hasSharedPackages) {
                         exportPackage.append(";");
