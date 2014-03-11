@@ -766,9 +766,12 @@ Character$proto.distanceFrom = function(other) {
 
 function StringBuilder(/*String...*/comps) {
     var that = new StringBuilder.$$;
-    that.value = "";
-    if (comps !== undefined) {
-        that.appendAll(comps);
+    if (comps === undefined){
+      that.value="";
+    } else if (comps.length===1){
+      that.value=comps[0];
+    } else {
+      that.value=String.prototype.concat.apply("",comps);
     }
     return that;
 }
