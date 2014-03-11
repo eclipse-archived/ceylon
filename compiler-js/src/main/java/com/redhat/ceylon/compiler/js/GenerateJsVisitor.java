@@ -2120,7 +2120,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(StringTemplate that) {
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
-        out(clAlias, "StringBuilder().appendAll([");
+        out(clAlias, "StringBuilder([");
         boolean first = true;
         for (int i = 0; i < literals.size(); i++) {
             StringLiteral literal = literals.get(i);
