@@ -91,7 +91,7 @@ class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> spreadIter = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)iter.getSequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadIter2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)iter.getSequence();
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iter2 = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadIter3 = iter2.getSequence();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadIter3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)iter2.getSequence();
     }
     
     public static void main(.java.lang.String[] args) {
