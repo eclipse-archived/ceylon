@@ -108,7 +108,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
 
     private static Set<ModuleInfo> getDependencies(Object engine) {
         try {
-            return asModInfos(safeEval(engine, "exports.$$METAMODEL$$()['$mod-deps']"));
+            return asModInfos(safeEval(engine, "exports.$$CCMM$$()['$mod-deps']"));
         } catch (Exception ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
@@ -116,17 +116,17 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         ScriptEngine engine = (ScriptEngine)getEngine(moduleArchive);
-        Object name = safeEval(engine, "exports.$$METAMODEL$$()['$mod-name']");
+        Object name = safeEval(engine, "exports.$$CCMM$$()['$mod-name']");
         if (!moduleName.equals(name)) {
             throw new RuntimeException("Incorrect module");
         }
-        String version = asString(safeEval(engine, "exports.$$METAMODEL$$()['$mod-version']"));
+        String version = asString(safeEval(engine, "exports.$$CCMM$$()['$mod-version']"));
         Set<ModuleInfo> deps = getDependencies(engine);
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
         Integer mayor = null, minor = null;
-        String bin = asString(safeEval(engine, "exports.$$METAMODEL$$()['$mod-bin']"));
+        String bin = asString(safeEval(engine, "exports.$$CCMM$$()['$mod-bin']"));
         if (bin != null) {
             int p = bin.indexOf('.');
             if (p >= 0) {
