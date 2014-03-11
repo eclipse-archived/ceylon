@@ -1427,6 +1427,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     ProducedType expectedType = spreadExpr.getTypeModel();
                     if (typeFact().isNonemptyIterableType(spreadExpr.getTypeModel())) {
                         expectedType = typeFact().getSequenceType(elementType);
+                    } else if (typeFact().isIterableType(spreadExpr.getTypeModel())) {
+                        expectedType = typeFact().getSequenceType(elementType);
                     }
                     tail = sequentialEmptiness(tail, expectedType, sequentialType);
                 }
