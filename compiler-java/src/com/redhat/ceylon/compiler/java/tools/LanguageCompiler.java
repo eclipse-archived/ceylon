@@ -566,8 +566,12 @@ public class LanguageCompiler extends JavaCompiler {
                             if(mod.getUnit() == phasedUnit.getUnit()){
                                 // set the package's module
                                 Package pkg = phasedUnit.getPackage();
+                                if (!pkgName.equals(pkg.getQualifiedNameString())) {
+                                    // Caller will bind module and its root package
+                                    // So only do it here for non-root packages.
+                                    mod.getPackages().add(pkg);
+                                }
                                 pkg.setModule(mod);
-                                mod.getPackages().add(pkg);
                                 modulesLoadedFromSource.add(mod);
                                 break;
                             }
