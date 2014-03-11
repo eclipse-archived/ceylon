@@ -630,7 +630,17 @@ function codepointFromString(str, index) {
 }
 exports.codepointFromString=codepointFromString;
 
-function Character(value) {
+var _cacheChr={};
+function Character(value,cache) {
+    if (cache) {
+      var that = _cacheChr[value];
+      if (that === undefined) {
+        that = new Character.$$;
+        that.value = value;
+        _cacheChr[value] = that;
+      }
+      return that;
+    }
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Character') {
         return value;
     }
@@ -644,7 +654,12 @@ Character.$crtmm$=function(){return{'super':{t:Object$}, 'satisfies':[
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
-defineAttr(Character$proto, 'string', function(){ return String$(codepointToString(this.value)); },undefined,function(){return{
+defineAttr(Character$proto, 'string', function(){
+  if (this._str===undefined) {
+    this._str=String$(codepointToString(this.value));
+  }
+  return this._str;
+},undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Character','$at','string']}});
 Character$proto.equals = function(other) {
     return other.constructor===Character.$$ && other.value===this.value;
@@ -757,62 +772,76 @@ function StringBuilder(/*String...*/comps) {
     }
     return that;
 }
-StringBuilder.$crtmm$={'super':{t:Basic},$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','StringBuilder']};
+StringBuilder.$crtmm$=function(){return{'super':{t:Basic},$ps:[],
+  $an:function(){return[shared(),native()];},mod:$CCMM$,d:['ceylon.language','StringBuilder']};};
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
-defineAttr(StringBuilder$proto, 'string', function(){ return String$(this.value); },undefined,function(){return{
-  mod:$CCMM$,$t:{t:String$},d:['ceylon.language','StringBuilder','$at','string']}});
+defineAttr(StringBuilder$proto, 'string', function(){ return String$(this.value, this.size); },undefined,function(){return{
+  mod:$CCMM$,$t:{t:String$},d:['ceylon.language','StringBuilder','$at','string'],$cont:StringBuilder}});
 StringBuilder$proto.append = function(s) {
-    this.value = this.value + s;
+    this.value = this.value.concat(s);
     return this;
 }
+StringBuilder$proto.append.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','StringBuilder','$m','append'],
+  $t:{t:StringBuilder},$cont:StringBuilder,$ps:[{$nm:'string',$t:{t:String$},$mt:'prm'}]};};
 StringBuilder$proto.appendAll = function(strings) {
     var iter = strings.iterator();
     var _s; while ((_s = iter.next()) !== getFinished()) {
-        this.value += _s?_s:"null";
+        this.append(_s||"null");
     }
     return this;
 }
-StringBuilder$proto.appendCharacter = function(c) {
-    this.append(c.string);
-    return this;
-}
-StringBuilder$proto.appendNewline = function() {
-    this.value = this.value + "\n";
-    return this;
-}
-StringBuilder$proto.appendSpace = function() {
-    this.value = this.value + " ";
-    return this;
-}
+StringBuilder$proto.appendAll.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','StringBuilder','$m','appendAll'],
+  $t:{t:StringBuilder},$ps:[{$nm:'strings',$t:{t:Iterable,a:{Element$Iterable:{t:String$},Absent$Iterable:{t:Null}}},$mt:'prm'}],$cont:StringBuilder
+};};
+StringBuilder$proto.appendCharacter=function(c){return this.append(c.string);}
+StringBuilder$proto.appendCharacter.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','StringBuilder','$m','appendCharacter'],
+  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'character',$t:{t:Character},$mt:'prm'}]
+};};
+StringBuilder$proto.appendNewline=function(){return this.append("\n");}
+StringBuilder$proto.appendNewline.$crtmm$=function(){return{mod:$$CCMM$,d:['ceylon.language','StringBuilder','$m','appendNewline'],
+  $t:{t:StringBuilder},$ps:[],$cont:StringBuilder
+};};
+StringBuilder$proto.appendSpace=function(){return this.append(" ");}
+StringBuilder$proto.appendSpace.$crtmm$=function(){return{mod:$$CCMM$,d:['ceylon.language','StringBuilder','$m','appendSpace'],
+  $t:{t:StringBuilder},$ps:[],$cont:StringBuilder
+};};
 defineAttr(StringBuilder$proto, 'size', function() {
     return countCodepoints(this.value);
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','StringBuilder','$at','size']}});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','StringBuilder','$at','size'],$cont:StringBuilder}});
 StringBuilder$proto.reset = function() {
     this.value = "";
     return this;
 }
+StringBuilder$proto.reset.$crtmm$=function(){return{mod:$$CCMM$,d:['ceylon.language','StringBuilder','$m','reset'],
+  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[]};};
 StringBuilder$proto.insert = function(pos, content) {
     if (pos <= 0) {
         this.value = content + this.value;
     } else if (pos >= this.size) {
         this.value = this.value + content;
     } else {
-        this.value = this.value.slice(0, pos) + content + this.value.slice(pos);
+        this.value = this.value.slice(0, pos).concat(content,this.value.slice(pos));
     }
     return this;
 }
+StringBuilder$proto.insert.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','StringBuilder','$m','insert'],
+  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'content',$t:{t:String$},$mt:'prm'}]
+};};
 StringBuilder$proto.insertCharacter = function(pos, c) {
     if (pos <= 0) {
         this.value = c.string + this.value;
     } else if (pos >= this.size) {
         this.value = this.value + c.string;
     } else {
-        this.value = this.value.slice(0, pos) + c.string + this.value.slice(pos);
+        this.value = this.value.slice(0, pos).concat(c.string,this.value.slice(pos));
     }
     return this;
 }
+StringBuilder$proto.insertCharacter.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','StringBuilder','$m','insertCharacter'],
+  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'character',$t:{t:Character},$mt:'prm'}]
+};};
 StringBuilder$proto.$delete = function(pos, count) {
     if (pos < 0) pos=0; else if (pos>this.size) return this;
     if (count > 0) {
@@ -820,6 +849,9 @@ StringBuilder$proto.$delete = function(pos, count) {
     }
     return this;
 }
+StringBuilder$proto.$delete.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','StringBuilder','$m','delete'],
+  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'count',$t:{t:Integer},$mt:'prm'}]
+};};
 
 exports.String=String$;
 exports.Character=Character;
