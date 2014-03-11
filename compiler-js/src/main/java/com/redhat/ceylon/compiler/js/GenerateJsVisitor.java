@@ -2082,7 +2082,7 @@ public class GenerateJsVisitor extends Visitor
     public void visit(CharLiteral that) {
         out(clAlias, "Character(");
         out(String.valueOf(that.getText().codePointAt(1)));
-        out(")");
+        out(",true)");
     }
 
     /** Escapes a StringLiteral (needs to be quoted). */
