@@ -37,7 +37,6 @@ import com.redhat.ceylon.common.tool.Summary;
 public class CeylonTestTool extends RepoUsingTool {
     
 	private static final String TEST_MODULE_NAME = "com.redhat.ceylon.test";
-	private static final String TEST_MODULE_DEFAULT_VERSION = "1.0.0";
     private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.test.run";
     
     private List<String> moduleNameOptVersionList;
@@ -99,7 +98,7 @@ public class CeylonTestTool extends RepoUsingTool {
 			        Versions.JVM_BINARY_MINOR_VERSION);
 
 			if (versions == null || versions.isEmpty()) {
-				version = TEST_MODULE_DEFAULT_VERSION;
+                version = Versions.CEYLON_VERSION_NUMBER;
 			} else {
 				ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
 				version = mdv.getVersion();
@@ -146,6 +145,9 @@ public class CeylonTestTool extends RepoUsingTool {
         ceylonRunTool.setNoDefRepos(noDefRepos);
         ceylonRunTool.setOffline(offline);
         ceylonRunTool.setVerbose(verbose);
+        ceylonRunTool.setDefine(defines);
+        ceylonRunTool.setCompile(compileFlags);
+        ceylonRunTool.setCwd(cwd);
         ceylonRunTool.run();
     }
 
