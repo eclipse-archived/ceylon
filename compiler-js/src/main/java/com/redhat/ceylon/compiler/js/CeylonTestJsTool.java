@@ -11,7 +11,6 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
-import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -22,7 +21,6 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tool.ToolUsageError;
 
 @Summary("Executes tests")
 @Description(
@@ -117,11 +115,11 @@ public class CeylonTestJsTool extends RepoUsingTool {
                     Versions.JS_BINARY_MINOR_VERSION);
 
             if (versions == null || versions.isEmpty()) {
-                throw new ToolUsageError(Messages.msg(CeylonRunJsMessages.RESOURCE_BUNDLE, "none.version.found", TEST_MODULE_NAME));
+                version = Versions.CEYLON_VERSION_NUMBER;
+            } else {
+                ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
+                version = mdv.getVersion();
             }
-
-            ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
-            version = mdv.getVersion();
         }
 
         if (moduleNameOptVersionList != null) {
