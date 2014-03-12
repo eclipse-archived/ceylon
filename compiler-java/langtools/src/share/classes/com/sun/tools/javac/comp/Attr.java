@@ -36,6 +36,7 @@ import static com.sun.tools.javac.code.Flags.GENERATEDCONSTR;
 import static com.sun.tools.javac.code.Flags.HASINIT;
 import static com.sun.tools.javac.code.Flags.INTERFACE;
 import static com.sun.tools.javac.code.Flags.NATIVE;
+import static com.sun.tools.javac.code.Flags.CEYLON_NOOUTERTHIS;
 import static com.sun.tools.javac.code.Flags.NOOUTERTHIS;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
@@ -824,17 +825,22 @@ public class Attr extends JCTree.Visitor {
             // make sure class has been completed:
             c.complete();
 
-            // If this class appears as an anonymous class
-            // in a superclass constructor call where
-            // no explicit outer instance is given,
-            // disable implicit outer instance from being passed.
-            // (This would be an illegal access to "this before super").
-            if (env.info.isSelfCall &&
-                env.tree.getTag() == JCTree.NEWCLASS &&
-                ((JCNewClass) env.tree).encl == null)
-            {
-                c.flags_field |= NOOUTERTHIS;
+            // Ceylon: For Ceylon, this code moved to Enter.visitClassDef so that it is available to it,
+            // because that method is called before we set it here.
+            if(!Context.isCeylon()){
+                // If this class appears as an anonymous class
+                // in a superclass constructor call where
+                // no explicit outer instance is given,
+                // disable implicit outer instance from being passed.
+                // (This would be an illegal access to "this before super").
+                if (env.info.isSelfCall &&
+                        env.tree.getTag() == JCTree.NEWCLASS &&
+                        ((JCNewClass) env.tree).encl == null)
+                {
+                    c.flags_field |= NOOUTERTHIS;
+                }
             }
+
             attribClass(tree.pos(), c);
             result = tree.type = c.type;
         }

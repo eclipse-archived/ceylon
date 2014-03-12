@@ -403,6 +403,23 @@ public class Enter extends JCTree.Visitor {
         c.sourcefile = env.toplevel.sourcefile;
         c.members_field = new Scope(c);
 
+        // Ceylon: this is code that used to sit in Attr.visitClassDef() but it would be set
+        // after this method is called, and this method needs this flag further down to
+        // determine the enclosing type
+        if(Context.isCeylon()){
+            // If this class appears as an anonymous class
+            // in a superclass constructor call where
+            // no explicit outer instance is given,
+            // disable implicit outer instance from being passed.
+            // (This would be an illegal access to "this before super").
+            if (env.info.isSelfCall &&
+                    env.tree.getTag() == JCTree.NEWCLASS &&
+                    ((JCNewClass) env.tree).encl == null)
+            {
+                c.flags_field |= CEYLON_NOOUTERTHIS;
+            }
+        }
+
         ClassType ct = (ClassType)c.type;
         // Ceylon: make sure everything is reset if we Enter twice for bootstrap
         ct.interfaces_field = null;
@@ -416,8 +433,14 @@ public class Enter extends JCTree.Visitor {
             // which contains this class in a non-static context
             // (its "enclosing instance class"), provided such a class exists.
             Symbol owner1 = owner;
-            while ((owner1.kind & (VAR | MTH)) != 0 &&
-                   (owner1.flags_field & STATIC) == 0) {
+            // Ceylon: make sure we skip outer classes if required
+            boolean skip = c.skipOuterClass();
+            while (skip
+                    || ((owner1.kind & (VAR | MTH)) != 0 &&
+                        (owner1.flags_field & STATIC) == 0)) {
+                // Ceylon: we only take new outer class skip orders from types, never from methods/vars
+                if(owner1.kind == TYP)
+                    skip = owner1.skipOuterClass();
                 owner1 = owner1.owner;
             }
             if (owner1.kind == TYP) {

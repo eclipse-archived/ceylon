@@ -262,6 +262,13 @@ public class Flags {
      */
     public static final long CEYLON_METHOD_OVERRIDE_CHECKED = 1L<<44;
 
+    /**
+     * Flag for Ceylon to indicate that this class is an anonymous class defined in a super() or this()
+     * call, and whose immediate enclosing class is not accessible, but further enclosing classes may
+     * be.
+     */
+    public static final long CEYLON_NOOUTERTHIS  = 1L<<45;
+
     /** Modifier masks.
      */
     public static final int

@@ -281,6 +281,19 @@ public abstract class Symbol implements Element {
             type.getEnclosingType().tag == CLASS && (flags() & (INTERFACE | NOOUTERTHIS)) == 0;
     }
 
+    /**
+     * Returns true if this class is a member class whose direct enclosing class is not accessible,
+     * but whose enclosing type may exist and be accessible. This is for example the case for anonymous
+     * classes defined in this() or super() calls. Java uses NOOUTERTHIS to disable it entirely, but in
+     * Ceylon we use CEYLON_NOOUTERTHIS to allow access to the enclosing class's container, if any.
+     */
+    public boolean skipOuterClass(){
+        // Note: do not use flags() as that triggers complete(), which is not ready to be called
+        // yet when we need to call this method. We make sure that the flags are set anyways, since this
+        // is only relevant for source symbols, not compiled symbols.
+        return (flags_field & CEYLON_NOOUTERTHIS) != 0;
+    }
+    
     /** The closest enclosing class of this symbol's declaration.
      */
     public ClassSymbol enclClass() {
