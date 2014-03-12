@@ -526,12 +526,15 @@ public class CeylonDocToolTest {
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
                 "ceylon/net/http/server/internal/JavaHelper.java",
+                "ceylon/interop/java/javaBooleanArray_.java",
                 "ceylon/interop/java/javaByteArray_.java",
                 "ceylon/interop/java/javaShortArray_.java",
                 "ceylon/interop/java/javaIntArray_.java",
                 "ceylon/interop/java/javaLongArray_.java",
                 "ceylon/interop/java/javaFloatArray_.java",
                 "ceylon/interop/java/javaDoubleArray_.java",
+                "ceylon/interop/java/javaStringArray_.java",
+                "ceylon/interop/java/javaObjectArray_.java",
                 "ceylon/interop/java/javaString_.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
