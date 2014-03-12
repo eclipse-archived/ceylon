@@ -157,11 +157,15 @@ public class Util {
                         ProducedType pdt = pm.getType();
                         if (pdt==null) return false;
                         ProducedType sdt = signature.get(i);
-                        if (!matches(pdt, sdt, d)) return false;
+                        if (!matches(sdt, pdt, d.getUnit())) {
+                            return false;
+                        }
                     }
                     if (hasSeqParam) {
                         ProducedType pdt = params.get(size).getModel().getType();
-                        if (pdt==null || pdt.getTypeArgumentList().isEmpty()) return false;
+                        if (pdt==null || pdt.getTypeArgumentList().isEmpty()) {
+                            return false;
+                        }
                         //Note: don't use Unit.getIterableType() because this
                         //      gets called from model loader out-of-phase
                         ProducedType ipdt = pdt.getTypeArgumentList().get(0);  
@@ -169,11 +173,15 @@ public class Util {
                             if (spread && i==sigSize-1) {
                                 ProducedType sdt = signature.get(i);
                                 ProducedType isdt = unit.getIteratedType(sdt);
-                                if (!matches(ipdt, isdt, d)) return false;
+                                if (!matches(isdt, ipdt, d.getUnit())) {
+                                    return false;
+                                }
                             }
                             else {
                                 ProducedType sdt = signature.get(i);
-                                if (!matches(ipdt, sdt, d)) return false;
+                                if (!matches(sdt, ipdt, d.getUnit())) {
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -197,25 +205,29 @@ public class Util {
         }
     }
     
-    private static boolean matches(ProducedType pdt, ProducedType sdt, Declaration d) {
-        if (pdt==null || sdt==null) return false;
+    public static boolean matches(ProducedType argType, ProducedType paramType, 
+            Unit unit) {
+        if (paramType==null || argType==null) return false;
         //Ignore optionality for resolving overloads, since
         //all Java parameters are treated as optional
         //Except in the case of primitive parameters
-        Unit unit = d.getUnit();
         ProducedType nt = unit.getNullValueDeclaration().getType();
-        if (nt.isSubtypeOf(sdt) && !nt.isSubtypeOf(pdt)) return false; //only for primitives
-        ProducedType paramType = unit.getDefiniteType(pdt);
-        ProducedType sigType = unit.getDefiniteType(sdt);
-        ProducedType ast = sigType.getSupertype(unit.getArrayDeclaration());
-        if (ast!=null) sigType = ast;
-        if (sigType.isSubtypeOf(unit.getNullDeclaration().getType())) {
+        if (nt.isSubtypeOf(argType) && !nt.isSubtypeOf(paramType)) {
+            return false; //only for primitives
+        }
+        ProducedType defParamType = unit.getDefiniteType(paramType);
+        ProducedType defArgType = unit.getDefiniteType(argType);
+        ProducedType ast = defArgType.getSupertype(unit.getArrayDeclaration());
+        if (ast!=null) defArgType = ast;
+        if (defArgType.isSubtypeOf(unit.getNullDeclaration().getType())) {
             return true;
         }
-        if (isTypeUnknown(sigType) || isTypeUnknown(paramType)) return false;
-        if (!erase(sigType.getDeclaration())
-                .inherits(erase(paramType.getDeclaration())) &&
-                underlyingTypesUnequal(paramType, sigType)) {
+        if (isTypeUnknown(defArgType) || isTypeUnknown(defParamType)) {
+            return false;
+        }
+        if (!erase(defArgType.getDeclaration())
+                .inherits(erase(defParamType.getDeclaration())) &&
+                underlyingTypesUnequal(defParamType, defArgType)) {
             return false;
         }
         return true;

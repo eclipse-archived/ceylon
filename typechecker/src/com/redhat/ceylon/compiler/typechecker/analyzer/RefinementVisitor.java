@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getSignature;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isCompletelyVisible;
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
+import static com.redhat.ceylon.compiler.typechecker.model.Util.matches;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
 
@@ -523,7 +524,7 @@ public class RefinementVisitor extends Visitor {
             else {
             	ProducedType p2st = p2.getType()
             			.substitute(st.getTypeArguments());
-				if (!p1.getType().isExactly(p2st)) {
+				if (!matches(p1.getType(), p2st, dec.getUnit())) {
                     return false;
             	}
             }
