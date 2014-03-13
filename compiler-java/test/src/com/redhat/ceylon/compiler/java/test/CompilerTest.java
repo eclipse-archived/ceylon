@@ -552,10 +552,11 @@ public abstract class CompilerTest {
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
             // we set up the module system while another thread is setting it up for other modules we're toast
             Object result = null;
+            NonCachingURLClassLoader loader = null;
             try{
                 // make sure we load the stuff from the Car
 
-                NonCachingURLClassLoader loader = getClassLoader(main, modules);
+                loader = getClassLoader(main, modules);
                 String mainClass = main;
                 String mainMethod = main.replaceAll("^.*\\.", "");
                 if (Util.isInitialLowerCase(mainMethod)) {
@@ -577,10 +578,13 @@ public abstract class CompilerTest {
                     ctor.setAccessible(true);
                     result = ctor.newInstance();
                 }
-                loader.clearCache();
                 return result;
             }catch(Exception x){
                 throw new RuntimeException(x);
+            } finally {
+                if (loader != null) {
+                    loader.clearCache();
+                }
             }
         }
     }
