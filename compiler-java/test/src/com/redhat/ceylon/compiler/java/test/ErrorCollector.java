@@ -90,5 +90,15 @@ public class ErrorCollector implements DiagnosticListener<FileObject> {
         return "Compilation failed" + System.lineSeparator() + this;
     }
     
+    public int getNumBackendErrors() {
+        int num = 0;
+        for (CompilerError err : actualErrors) {
+            if ((err.classification == Classification.BACKEND && err.kind != Diagnostic.Kind.NOTE)
+                    || err.classification == Classification.CRASH) {
+                num++;
+            }
+        }
+        return num;
+    }
     
 }

@@ -39,17 +39,71 @@ import javax.tools.DiagnosticCollector;
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
-import junit.framework.Assert;
-
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 
+import ceylon.language.SequenceBuilder;
+
+import com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
 public class RecoveryTest extends CompilerTest {
+    
+    protected void compileAndRunWithUnresolvedCompilationError(
+            String ceylon,
+            String main, 
+            String expectedError,
+            int... sequence) {
+        compileIgnoringCeylonErrors(ceylon);
+        runWithUnresolvedCompilationError(main, expectedError, sequence);
+    }
+
+    protected void runWithUnresolvedCompilationError(String main,
+            String expectedError,
+            int... sequence) {
+        SequenceBuilder<ceylon.language.Integer> sb = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        try {
+            run(main, new Class[]{SequenceBuilder.class}, new Object[]{sb}, getDestModuleWithArtifact());
+            Assert.fail("Expected execution to throw " + UnresolvedCompilationError.class.getName());
+        } catch (RuntimeException e) {
+            Throwable e2 = e;
+            while (e2.getCause() != null) {
+                e2 = e2.getCause();
+            }
+            if (e2 instanceof UnresolvedCompilationError) {
+                Assert.assertEquals(expectedError, e2.getMessage());
+            } else {
+                throw e;
+            }
+            
+        }
+        SequenceBuilder<ceylon.language.Integer> expect = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        for (int ii : sequence) {
+            expect.append(ceylon.language.Integer.instance(ii));
+        }
+        Assert.assertEquals("Sequences differ", expect.getSequence(), sb.getSequence());
+    }
+    
+    protected void run(String main,
+            int... sequence) {
+        SequenceBuilder<ceylon.language.Integer> sb = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        run(main, new Class[]{SequenceBuilder.class}, new Object[]{sb}, getDestModuleWithArtifact());    
+        SequenceBuilder<ceylon.language.Integer> expect = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        for (int ii : sequence) {
+            expect.append(ceylon.language.Integer.instance(ii));
+        }
+        Assert.assertEquals("Sequences differ", expect.getSequence(), sb.getSequence());
+    }
+
+    private ErrorCollector compileIgnoringCeylonErrors(String... ceylon) {
+        ErrorCollector c = new ErrorCollector();
+        getCompilerTask(defaultOptions, c, ceylon).call2();
+        Assert.assertTrue("Expected only ceylon errors: " + c.getAssertionFailureMessage(), 0 == c.getNumBackendErrors());
+        return c;
+    }
     
     @Test
     public void testRcvBrokenClass(){
@@ -82,12 +136,334 @@ public class RecoveryTest extends CompilerTest {
         compile(1, "M3Features.ceylon");
     }
 
-    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1173")
     @Test
     public void testRcvIndirectUser(){
         compile(1, "BrokenIndirectUser.ceylon");
     }
+    
+        
+    @Test
+    public void testRcvDeclarationRecoveryAnnotationConstructor(){
+        compile(1,
+                "declaration/DeclarationRecoveryAnnotationConstructor.ceylon");
+        // TODO assert we didn't generate anything
+    }
+    
+    @Test
+    public void testRcvDeclarationRecoveryAnnotationConstructorArgument(){
+        compile(1,
+                "declaration/DeclarationRecoveryAnnotationConstructorArgument.ceylon");
+        // TODO assert we didn't generate anything
+    }
+    
+    @Test
+    public void testRcvDeclarationRecoveryClassExtends(){
+        // c.f. ExpressionRecoveryClassExtends: Error with the extended type is
+        // a declaration error, error with the arguments is an expression error
+        compile(1,
+                "declaration/DeclarationRecoveryClassExtends.ceylon");
+        // TODO assert we didn't generate anything
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassDp(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassDp.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassDp",
+                "function or value does not exist: asdfClassDp");
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassExtends(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassExtends.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtends",
+                "no matching parameter declared by Basic: Basic has 0 parameters");
+    }
+    @Test
+    public void testRcvExpressionRecoveryClassInitValueInit(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassInitValueInit.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueInit",
+                "function or value does not exist: asdfClassInitValueInit", 
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassInitVariableValueInit(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassInitVariableValueInit.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitVariableValueInit",
+                "function or value does not exist: asdfClassInitVariableValueInit", 
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassInitValueSpecifier(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassInitValueSpecifier.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifier",
+                "function or value does not exist: asdfClassInitValueSpecifier", 
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassInitValueSpecifierDeferred(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassInitValueSpecifierDeferred.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifierDeferred",
+                "function or value does not exist: asdfClassInitValueSpecifierDeferred", 
+                1, 2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassInitIf(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassInitIf.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitIf",
+                "function or value does not exist: asdfClassInitIf", 
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassMethodDp(){
+        compileIgnoringCeylonErrors(
+                "expression/ExpressionRecoveryClassMethodDp.ceylon");
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_throw",
+                "function or value does not exist: asdfClassMethodDp", 
+                1, 2);
+        run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_nothrow",
+                1, 2, 5, 10);
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_throw2",
+                "function or value does not exist: asdfClassMethodDp",
+                1, 2, 3);
+        run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_nothrow2",
+                1, 2, 3, 5, 10);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassMethodBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassMethodBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodBody_main",
+                "function or value does not exist: asdfClassMethodBody", 
+                1, 2, 3);
+    }
 
+    @Test
+    public void testRcvExpressionRecoveryClassMethodSpecifier(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassMethodSpecifier.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodSpecifier_main",
+                "function or value does not exist: asdfClassMethodSpecifier", 
+                1, 2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassMethodSpecifierDeferred(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassMethodSpecifierDeferred.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodSpecifierDeferred_main",
+                "function or value does not exist: asdfClassMethodSpecifierDeferred",
+                // in the deferred case we throw when an instance is initialized
+                // rather than when the method is called.
+                1);
+    }
+    @Test
+    public void testRcvExpressionRecoveryClassAttributeBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassAttributeBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassAttributeBody_main",
+                "function or value does not exist: asdfClassAttributeBody", 
+                1, 2, 3);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassSetterBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassSetterBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassSetterBody_main",
+                "value type could not be inferred", 
+                1, 2, 3, 4, 5);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryInterfaceMethodDp(){
+        compileIgnoringCeylonErrors(
+                "expression/ExpressionRecoveryInterfaceMethodDp.ceylon");
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_throw",
+                "function or value does not exist: asdfInterfaceMethodDp", 
+                1, 2);
+        run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_nothrow",
+                1, 2, 5, 10);
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_throw2",
+                "function or value does not exist: asdfInterfaceMethodDp",
+                1, 2, 3);
+        run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_nothrow2",
+                1, 2, 3, 5, 10);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryInterfaceMethodBody(){
+        compileIgnoringCeylonErrors(
+                "expression/ExpressionRecoveryInterfaceMethodBody.ceylon");
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodBody_main",
+                "function or value does not exist: asdfInterfaceMethodBody", 
+                1, 2, 3);
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodBody_main2",
+                "function or value does not exist: asdfInterfaceMethodBody", 
+                1, 2, 3);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryInterfaceAttributeBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryInterfaceAttributeBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceAttributeBody_main",
+                "function or value does not exist: asdfInterfaceAttributeBody", 
+                1, 2, 3);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryInterfaceSetterBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryInterfaceSetterBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceSetterBody_main",
+                "value type could not be inferred", 
+                1, 2, 3, 4, 5);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryFunctionDp(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryFunctionDp.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionDp",
+                "function or value does not exist: asdfFunctionDp");
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryFunctionBody(){
+        compileIgnoringCeylonErrors(
+                "expression/ExpressionRecoveryFunctionBody.ceylon");
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBody",
+                "function or value does not exist: asdfFunctionBody",
+                1);
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBodyMpl_main",
+                "function or value does not exist: asdfFunctionBodyMpl",
+                1,2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryFunctionSpecifier(){
+        compileIgnoringCeylonErrors(
+                "expression/ExpressionRecoveryFunctionSpecifier.ceylon");
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifier",
+                "function or value does not exist: asdfFunctionSpecifier");
+        runWithUnresolvedCompilationError(
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_main",
+                "function or value does not exist: asdfFunctionSpecifierMpl");
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryValueBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryValueBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueBody_main",
+                "function or value does not exist: asdfValueBody",
+                1,2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryValueSpecifier(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryValueSpecifier.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueSpecifier_main",
+                "function or value does not exist: asdfValueSpecifier",
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryValueInit(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryValueInit.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueInit_main",
+                "function or value does not exist: asdfValueInit",
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryVariableValueInit(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryVariableValueInit.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_main",
+                "function or value does not exist: asdfVariableValueInit", 
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoverySetterBody(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoverySetterBody.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterBody_main",
+                "function or value does not exist: asdfSetterBody",
+                1, 2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoverySetterSpecifier(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoverySetterSpecifier.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterSpecifier_main",
+                "function or value does not exist: asdfSetterSpecifier",
+                1,2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryIf(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryIf.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIf",
+                "function or value does not exist: asdfIf",
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryElseIf(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryElseIf.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryElseIf",
+                "function or value does not exist: asdfElseIf",
+                1);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryIfBlock(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryIfBlock.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIfBlock",
+                "function or value does not exist: asdfIfBlock",
+                1, 2);
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryForClause(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryForClause.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryForClause",
+                "function or value does not exist: asdfForClause",
+                1);
+    }
+    
+    
     private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
         // Stef: can't seem to be able to get this cast right no matter what I try

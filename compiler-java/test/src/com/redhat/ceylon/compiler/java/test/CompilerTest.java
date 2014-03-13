@@ -546,7 +546,12 @@ public abstract class CompilerTest {
         }
     }
     
+    
     protected Object run(String main, ModuleWithArtifact... modules) {
+        return run(main, new Class<?>[]{}, new Object[]{}, modules);
+    }
+    
+    protected Object run(String main, Class<?>[] sig, Object[] args, ModuleWithArtifact... modules) {
         synchronized(RUN_LOCK){
             // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
@@ -569,14 +574,14 @@ public abstract class CompilerTest {
                             || "finalize".equals(mainMethod)) {
                         mainMethod = "$" + mainMethod;
                     }
-                    Method m = klass.getDeclaredMethod(mainMethod);
+                    Method m = klass.getDeclaredMethod(mainMethod, sig);
                     m.setAccessible(true);
-                    result = m.invoke(null);
+                    result = m.invoke(null, args);
                 } else {
                     // A main class
-                    final Constructor<?> ctor = klass.getDeclaredConstructor();
+                    final Constructor<?> ctor = klass.getDeclaredConstructor(sig);
                     ctor.setAccessible(true);
-                    result = ctor.newInstance();
+                    result = ctor.newInstance(args);
                 }
                 return result;
             }catch(Exception x){
