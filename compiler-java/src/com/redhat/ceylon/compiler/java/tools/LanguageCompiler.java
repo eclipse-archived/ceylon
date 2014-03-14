@@ -527,7 +527,9 @@ public class LanguageCompiler extends JavaCompiler {
         }
         // bind module and package together
         pkg.setModule(module);
-        module.getPackages().add(pkg);
+        if (!module.getPackages().contains(pkg)) {
+            module.getPackages().add(pkg);
+        }
         // automatically add this module's jar to the classpath if it exists
         ceylonEnter.addOutputModuleToClassPath(module);
     }
