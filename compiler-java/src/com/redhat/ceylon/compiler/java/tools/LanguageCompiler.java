@@ -740,7 +740,7 @@ public class LanguageCompiler extends JavaCompiler {
         CeylonFileObject sourcefile = (CeylonFileObject) env.toplevel.sourcefile;
         try {
             // do not look at the global number of errors but only those for this file
-            if (super.gen.genClass(env, cdef) && !sourcefile.hasError(cdef.pos)){
+            if (super.gen.genClass(env, cdef)){
                 String packageName = cdef.sym.packge().getQualifiedName().toString();
                 Package pkg = modelLoader.findPackage(packageName);
                 if(pkg == null)
