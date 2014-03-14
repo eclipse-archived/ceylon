@@ -44,10 +44,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.sun.tools.javac.code.Flags;
@@ -143,8 +145,15 @@ public class StatementTransformer extends AbstractTransformer {
             v.defs = new ListBuffer<JCTree>();
             v.inInitializer = false;
             v.classBuilder = current();
-            for (Tree.Statement stmt : block.getStatements())
-                stmt.visit(v);
+            for (Tree.Statement stmt : block.getStatements()) {
+                HasErrorException error = errors().getFirstErrorBlock(stmt);
+                if (error == null) {
+                    stmt.visit(v);
+                } else {
+                    v.append(error.makeThrow(this));
+                    break;
+                }
+            }
             result = (List<JCStatement>)v.getResult().toList();
         } finally {
             v.classBuilder = prevClassBuilder;
@@ -2689,8 +2698,13 @@ public class StatementTransformer extends AbstractTransformer {
             ProducedType t = actualType(decl);
             
             JCExpression initialValue = null;
-            if (decl.getSpecifierOrInitializerExpression() != null) {
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
+            SpecifierOrInitializerExpression initOrSpec = decl.getSpecifierOrInitializerExpression();
+            if (initOrSpec != null) {
+                HasErrorException error = errors().getFirstExpressionError(initOrSpec.getExpression().getTerm());
+                if (error != null) {
+                    return List.<JCStatement>of(error.makeThrow(this));
+                }
+                initialValue = expressionGen().transformExpression(initOrSpec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 
                         decl.getDeclarationModel().getType());
             } else if (decl.getDeclarationModel().isVariable()) {
@@ -3493,4 +3507,5 @@ public class StatementTransformer extends AbstractTransformer {
     public Name getLabel(Tree.ForClause loop) {
         return getLabel(loop.getControlBlock());
     }
+    
 }

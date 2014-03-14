@@ -39,11 +39,12 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     private AnnotationTerm term;
     private boolean checkingInvocationPrimary;
     private CollectionLiteralAnnotationTerm elements;
+    private Errors errors;
     
-    public AnnotationModelVisitor() {
-        
+    public AnnotationModelVisitor(CeylonTransformer gen) {
+        this.errors = gen.errors();
     }
-    
+
     private void push(AnnotationFieldName parameter) {
         fieldNames.add(parameter);
     }
@@ -86,6 +87,9 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.MethodDefinition d) {
+        if (errors.hasDeclarationError(d)) {
+            return;
+        }
         if (isAnnotationConstructor(d)) {
             annotationConstructor = d;
             instantiation = new AnnotationInvocation();
@@ -101,6 +105,9 @@ public class AnnotationModelVisitor extends Visitor implements NaturalVisitor {
     
     @Override
     public void visit(Tree.MethodDeclaration d) {
+        if (errors.hasDeclarationError(d)) {
+            return;
+        }
         if (isAnnotationConstructor(d)
                 && d.getSpecifierExpression() != null) {
             annotationConstructor = d;

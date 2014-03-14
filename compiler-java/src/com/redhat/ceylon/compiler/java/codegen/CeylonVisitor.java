@@ -37,16 +37,18 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     ClassDefinitionBuilder classBuilder;
     boolean inInitializer = false;
     final LabelVisitor lv;
+    private final GetterSetterPairingVisitor getterSetterPairing;
     
     /** For compilation units 
      * @param lv */
-    public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder, LabelVisitor lv) {
+    public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder, LabelVisitor lv, GetterSetterPairingVisitor gspv) {
         this.gen = ceylonTransformer;
         this.gen.visitor = this;
         this.defs = new ListBuffer<JCTree>();
         this.topattrBuilder = topattrBuilder;
         this.classBuilder = null;
         this.lv = lv;
+        this.getterSetterPairing = gspv;
     }
     
     
@@ -60,7 +62,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
      */
     
     public void visit(Tree.TypeAliasDeclaration decl){
-        if(hasErrors(decl))
+        if(gen.errors().hasDeclarationError(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         
@@ -81,7 +83,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.ClassOrInterface decl) {
-        if(hasClassErrors(decl))
+        if(gen.errors().hasDeclarationError(decl))
             return;
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
@@ -98,19 +100,20 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         gen.resetCompilerAnnotations(annots);
     }
-
-    private boolean hasClassErrors(Tree.ClassOrInterface decl) {
-        ClassErrorVisitor errorVisitor = new ClassErrorVisitor(gen.getContext());
-        return errorVisitor.hasErrors(decl);
+    
+    public void visit(Tree.ClassBody that) {
+        for (Tree.Statement stmt : that.getStatements()) {
+            HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
+            if (error != null) {
+                append(error.makeThrow(gen));
+            } else {
+                stmt.visit(this);
+            }
+        }
     }
-
-    boolean hasClassInitialiserErrors(Tree.ClassOrInterface decl) {
-        ClassInitialiserErrorVisitor errorVisitor = new ClassInitialiserErrorVisitor(gen.getContext());
-        return errorVisitor.hasErrors(decl);
-    }
-
+    
     public void visit(Tree.ObjectDefinition decl) {
-        if(hasErrors(decl))
+        if(gen.errors().hasDeclarationError(decl))
             return;
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
@@ -124,8 +127,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
     
     public void visit(Tree.AttributeDeclaration decl){
-        if(hasErrors(decl))
+        if (gen.errors().hasDeclarationError(decl)) {
             return;
+        }
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             // Class attributes
@@ -148,7 +152,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AttributeGetterDefinition decl){
-        if(hasErrors(decl))
+        if(gen.errors().hasDeclarationError(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -171,8 +175,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(final Tree.AttributeSetterDefinition decl) {
-        if(hasErrors(decl))
+        if(gen.errors().hasDeclarationError(decl))
             return;
+        if (gen.errors().hasDeclarationError(getterSetterPairing.getGetter(decl))) {
+            // For setters we also give up if the getter has a declaration error
+            // because there's little chance we'll be able to generate a correct setter
+            return;
+        }
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
@@ -194,7 +203,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.AnyMethod decl) {
-        if(hasErrors(decl))
+        if(gen.errors().hasDeclarationError(decl))
             return;
     	if (Decl.isNative(decl) && Decl.isToplevel(decl))
     		return;
@@ -208,11 +217,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         gen.resetCompilerAnnotations(annots);
     }
     
-    private boolean hasErrors(Node decl) {
-        ErrorVisitor errorVisitor = new ErrorVisitor(gen.getContext());
-        return errorVisitor.hasErrors(decl);
-    }
-
     /*
      * Class or Interface
      */
@@ -317,10 +321,6 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExpressionStatement tree) {
-        // this is used for class initializer statements so we want to avoid having errors
-        // in them
-        if(hasErrors(tree))
-            return;
         append(gen.expressionGen().transform(tree));
     }
     
@@ -590,15 +590,24 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.Dynamic that) {
-        append(gen.makeError(that, "dynamic is not yet supported on this platform"));
+        // We should never get here since the error should have been 
+        // reported by the UnsupportedVisitor and the containing statement
+        // replaced with a throw.
+        append(gen.makeErroneous(that, "dynamic is not yet supported on this platform"));
     }
 
     public void visit(Tree.DynamicClause that) {
-        append(gen.at(that).Exec(gen.makeError(that, "dynamic is not yet supported on this platform")));
+        // We should never get here since the error should have been 
+        // reported by the UnsupportedVisitor and the containing statement
+        // replaced with a throw.
+        append(gen.at(that).Exec(gen.makeErroneous(that, "dynamic is not yet supported on this platform")));
     }
 
     public void visit(Tree.DynamicStatement that) {
-        append(gen.at(that).Exec(gen.makeError(that, "dynamic is not yet supported on this platform")));
+        // We should never get here since the error should have been 
+        // reported by the UnsupportedVisitor and the containing statement
+        // replaced with a throw.
+        append(gen.at(that).Exec(gen.makeErroneous(that, "dynamic is not yet supported on this platform")));
     }
     
     public void visit(Tree.CompilationUnit cu) {

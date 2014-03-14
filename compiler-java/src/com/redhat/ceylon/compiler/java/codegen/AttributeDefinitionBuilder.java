@@ -30,6 +30,7 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -59,6 +60,7 @@ public class AttributeDefinitionBuilder {
     private final MethodDefinitionBuilder getterBuilder;
 
     private JCTree.JCExpression variableInit;
+    private HasErrorException variableInitThrow;
 
     private boolean writable = true;
     private final MethodDefinitionBuilder setterBuilder;
@@ -74,6 +76,7 @@ public class AttributeDefinitionBuilder {
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> userAnnotationsSetter;
     private boolean isHash;
+    
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel, boolean indirect) {
@@ -218,12 +221,18 @@ public class AttributeDefinitionBuilder {
      */
     public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         if (hasField) {
-            defs.append(generateField());
-            if(variableInit != null)
-                defs.append(generateFieldInit());
+            if (variableInitThrow == null) {
+                defs.append(generateField());
+                if(variableInit != null) {
+                    defs.append(generateFieldInit());
+                }
+            }
         }
-
+        
         if (readable) {
+            if (variableInitThrow != null) {
+                getterBuilder.block(owner.make().Block(0, List.<JCStatement>of(variableInitThrow.makeThrow(owner))));
+            }
             getterBuilder.modifiers(getGetSetModifiers());
             getterBuilder.annotationFlags(annotationFlags);
             if (this.modelAnnotations != null) {
@@ -236,9 +245,12 @@ public class AttributeDefinitionBuilder {
         }
 
         if (writable) {
+            if (variableInitThrow != null) {
+                setterBuilder.block(owner.make().Block(0, List.<JCStatement>of(variableInitThrow.makeThrow(owner))));
+            }
             setterBuilder.modifiers(getGetSetModifiers());
             // mark it with @Ignore if it's late but not variable
-            setterBuilder.annotationFlags(annotationFlags | (late && !variable ? Annotations.IGNORE : 0));    
+            setterBuilder.annotationFlags(annotationFlags | (late && !variable ? Annotations.IGNORE : 0));
             if (this.userAnnotationsSetter != null) {
                 setterBuilder.userAnnotations(this.userAnnotationsSetter.toList());
             }
@@ -300,10 +312,10 @@ public class AttributeDefinitionBuilder {
                 null
         );
     }
-
+    
     private JCTree generateFieldInit() {
         long flags = (modifiers & Flags.STATIC);
-
+        
         JCTree.JCExpression varInit = variableInit;
         if (toplevel || late) {
             varInit = owner.make().NewArray(
@@ -313,8 +325,8 @@ public class AttributeDefinitionBuilder {
             );
         }
         JCTree.JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(fieldName), varInit);
-        return owner.make().Block(flags, 
-                List.<JCTree.JCStatement>of(owner.make().Exec(init)));
+        List<JCStatement> stmts = List.<JCTree.JCStatement>of(owner.make().Exec(init));
+        return owner.make().Block(flags, stmts);
     }
 
     private JCTree.JCBlock generateDefaultGetterBlock() {
@@ -483,6 +495,12 @@ public class AttributeDefinitionBuilder {
      */
     public AttributeDefinitionBuilder initialValue(JCTree.JCExpression initialValue) {
         this.variableInit = initialValue;
+        return this;
+    }
+    
+
+    public AttributeDefinitionBuilder initialValueError(HasErrorException variableInitThrow) {
+        this.variableInitThrow = variableInitThrow;
         return this;
     }
 

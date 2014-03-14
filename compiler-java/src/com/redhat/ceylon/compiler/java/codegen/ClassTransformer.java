@@ -76,6 +76,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
@@ -609,10 +610,6 @@ public class ClassTransformer extends AbstractTransformer {
         // Transform the class/interface members
         CeylonVisitor visitor = gen().visitor;
         
-        // don't visit if we have errors in the initialiser
-        if(def instanceof Tree.ClassOrInterface && visitor.hasClassInitialiserErrors((Tree.ClassOrInterface)def))
-            return List.nil();
-        
         final ListBuffer<JCTree> prevDefs = visitor.defs;
         final boolean prevInInitializer = visitor.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;
@@ -620,7 +617,6 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.defs = new ListBuffer<JCTree>();
             visitor.inInitializer = true;
             visitor.classBuilder = classBuilder;
-            
             def.visitChildren(visitor);
             return (List<JCStatement>)visitor.getResult().toList();
         } finally {
@@ -1890,17 +1886,23 @@ public class ClassTransformer extends AbstractTransformer {
                                                           AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
         if (forCompanion || lazy) {
-            if (decl.getSpecifierOrInitializerExpression() != null) {
-                Value declarationModel = decl.getDeclarationModel();
-                ProducedTypedReference typedRef = getTypedReference(declarationModel);
-                ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
-                ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
-                
-                JCExpression expr = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                        CodegenUtil.getBoxingStrategy(declarationModel), 
-                        nonWideningType);
-                expr = convertToIntIfHashAttribute(declarationModel, expr);
-                builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
+            SpecifierOrInitializerExpression specOrInit = decl.getSpecifierOrInitializerExpression();
+            if (specOrInit != null) {
+                HasErrorException error = errors().getFirstExpressionError(specOrInit.getExpression());
+                if (error != null) {
+                    builder.getterBlock(make().Block(0, List.<JCStatement>of(error.makeThrow(this))));
+                } else {
+                    Value declarationModel = decl.getDeclarationModel();
+                    ProducedTypedReference typedRef = getTypedReference(declarationModel);
+                    ProducedTypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+                    ProducedType nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+                    
+                    JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
+                            CodegenUtil.getBoxingStrategy(declarationModel), 
+                            nonWideningType);
+                    expr = convertToIntIfHashAttribute(declarationModel, expr);
+                    builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
+                }
             } else {
                 JCExpression accessor = naming.makeQualifiedName(
                         naming.makeQuotedThis(), 
@@ -2386,6 +2388,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (specifierExpression != null
                 && specifierExpression.getExpression() != null) {
             term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+        }
+        HasErrorException error = errors().getFirstExpressionError(term);
+        if (error != null) {
+            return List.<JCStatement>of(error.makeThrow(this));
         }
         if (!isLazy && term instanceof Tree.FunctionArgument) {
             // Method specified with lambda: Don't bother generating a 
@@ -3295,9 +3301,14 @@ public class ClassTransformer extends AbstractTransformer {
         if (noBody) {
             methodBuilder.noBody();
         } else {
-            JCExpression expr = expressionGen().transform(currentParam);
-            JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
-            methodBuilder.block(body);
+            HasErrorException error = errors().getFirstExpressionError(Decl.getDefaultArgument(currentParam).getExpression());
+            if (error != null) {
+                methodBuilder.body(error.makeThrow(this));
+            } else {
+                JCExpression expr = expressionGen().transform(currentParam);
+                JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
+                methodBuilder.block(body);
+            }
         }
 
         return methodBuilder;

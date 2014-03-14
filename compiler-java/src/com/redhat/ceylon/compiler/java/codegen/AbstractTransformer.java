@@ -113,6 +113,7 @@ public abstract class AbstractTransformer implements Transformation {
     private TypeFactory typeFact;
     protected Log log;
     final Naming naming;
+    private Errors errors;
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -127,6 +128,13 @@ public abstract class AbstractTransformer implements Transformation {
 
     Context getContext() {
         return context;
+    }
+    
+    Errors errors() {
+        if (this.errors == null) {
+            this.errors = Errors.instance(context);
+        }
+        return errors;
     }
 
     @Override
@@ -426,8 +434,14 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(declarationModel);
             ProducedType type = declarationModel.getType();
-            JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), boxing, type);
-            stats = List.<JCStatement>of(make().Return(transExpr));
+            JCStatement transStat;
+            HasErrorException error = errors().getFirstExpressionError(expression.getExpression());
+            if (error != null) {
+                transStat = error.makeThrow(this);
+            } else {
+                transStat = make().Return(expressionGen().transformExpression(expression.getExpression(), boxing, type));
+            }
+            stats = List.<JCStatement>of(transStat);
         }
         JCBlock getterBlock = make().Block(0, stats);
         return getterBlock;
@@ -447,8 +461,14 @@ public abstract class AbstractTransformer implements Transformation {
             stats = statementGen().transformBlock(block);
         } else {
             ProducedType type = declarationModel.getType();
-            JCExpression transExpr = expressionGen().transformExpression(expression.getExpression(), BoxingStrategy.INDIFFERENT, type);
-            stats = List.<JCStatement>of(make().Exec(transExpr));
+            JCStatement transStmt;
+            HasErrorException error = errors().getFirstExpressionError(expression.getExpression());
+            if (error != null) {
+                transStmt = error.makeThrow(this);
+            } else {
+                transStmt = make().Exec(expressionGen().transformExpression(expression.getExpression(), BoxingStrategy.INDIFFERENT, type));
+            }
+            stats = List.<JCStatement>of(transStmt);
         }
         JCBlock setterBlock = make().Block(0, stats);
         return setterBlock;
@@ -3353,17 +3373,6 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression makeErroneous(Node node, String message, List<? extends JCTree> errs) {
         return makeErr(node, "ceylon.codegen.erroneous", message, errs);
     }
-    
-    /**
-     * Makes an 'erroneous' AST node with a message to be logged as an error
-     * but which is <strong>not</strong> treated as a compiler bug
-     */
-    JCExpression makeError(Node node, String message) {
-        return makeError(node, message, List.<JCTree>nil());
-    }
-    JCExpression makeError(Node node, String message, List<? extends JCTree> errs) {
-        return makeErr(node, "ceylon.codegen.error", message, errs);
-    }
     private JCExpression makeErr(Node node, String key, String message, List<? extends JCTree> errs) {
         if (node != null) {
             at(node);
@@ -3378,10 +3387,6 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Erroneous(errs);
     }
     
-    void logError(Node node, String message) {
-        log.error(getPosition(node), "ceylon.codegen.error", message);
-    }
-
     List<JCExpression> makeTypeParameterBounds(java.util.List<ProducedType> satisfiedTypes){
         ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
         for (ProducedType t : satisfiedTypes) {

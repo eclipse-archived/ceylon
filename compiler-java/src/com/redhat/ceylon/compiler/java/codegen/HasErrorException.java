@@ -19,7 +19,37 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
+import com.sun.tools.javac.util.List;
+
 @SuppressWarnings("serial")
 public class HasErrorException extends RuntimeException {
+
+    private final Message message;
+    private final Node node;
+    
+    public HasErrorException(Node that, Message message) {
+        this.node = that;
+        this.message = message;
+    }
+    
+    public Message getErrorMessage() {
+        return message;
+    }
+    
+    public Node getErrorNode() {
+        return node;
+    }
+    
+    public JCThrow makeThrow(AbstractTransformer gen) {
+        String errorMessage = getErrorMessage().getMessage();
+        return gen.at(getErrorNode()).Throw(gen.make().NewClass(null, List.<JCExpression>nil(), 
+                gen.make().QualIdent(gen.syms().ceylonUnresolvedCompilationErrorType.tsym), 
+                List.<JCExpression>of(gen.make().Literal(errorMessage != null ? errorMessage : "compiler bug: error with unknown message")),
+                null));
+    }
 
 }

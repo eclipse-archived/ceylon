@@ -443,7 +443,7 @@ public class CeylonEnter extends Enter {
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
         DeferredVisitor deferredVisitor = new DeferredVisitor();
-        AnnotationModelVisitor amv = new AnnotationModelVisitor();
+        AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         // Extra phases for the compiler
         for (PhasedUnit pu : listOfUnits) {

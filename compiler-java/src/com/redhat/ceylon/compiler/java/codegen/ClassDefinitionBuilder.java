@@ -41,6 +41,7 @@ import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
+import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
@@ -224,7 +225,7 @@ public class ClassDefinitionBuilder
     private void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         if ((modifiers & INTERFACE) == 0) {
             if (superCall != null && !isAlias) {
-                init.prepend(superCall);    
+                init.prepend(superCall);
             }
             if (!isCompanion) {
                 createConstructor(init.toList());
@@ -280,6 +281,16 @@ public class ClassDefinitionBuilder
             // The modifiers were never explicitly set
             // so we try to come up with some good defaults
             mods = modifiers & (PUBLIC | PRIVATE | PROTECTED);
+        }
+        int index = 0;
+        for (JCStatement stmt : body) {
+            if (stmt instanceof JCThrow) {
+                ListBuffer<JCStatement> filtered = ListBuffer.<JCStatement>lb();
+                filtered.addAll(body.subList(0, index+1));
+                body = filtered.toList();
+                break;
+            }
+            index++;
         }
         addConstructor().modifiers(mods)
             .parameters(params.toList())
@@ -544,7 +555,7 @@ public class ClassDefinitionBuilder
     }
 
     /** Set the expression used to invoke {@code super()} */
-    public ClassDefinitionBuilder superCall(JCExpressionStatement superCall) {
+    public ClassDefinitionBuilder superCall(JCStatement superCall) {
         this.superCall = superCall;
         return this;
     }

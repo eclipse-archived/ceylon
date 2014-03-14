@@ -167,10 +167,12 @@ public class CeylonTransformer extends AbstractTransformer {
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableAnnotations = 0;
         
+        GetterSetterPairingVisitor gspv = new GetterSetterPairingVisitor();
+        t.visit(gspv);
         
         ToplevelAttributesDefinitionBuilder builder = new ToplevelAttributesDefinitionBuilder(this);
         LabelVisitor lv = new LabelVisitor();
-        CeylonVisitor visitor = new CeylonVisitor(this, builder, lv);
+        CeylonVisitor visitor = new CeylonVisitor(this, builder, lv, gspv);
         t.visit(lv);
         t.visit(visitor);
         
@@ -265,13 +267,31 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.SpecifierOrInitializerExpression expression, 
             final Tree.AttributeSetterDefinition setterDecl) {
         
-        JCTree.JCExpression initialValue = transformValueInit(
-                declarationModel, attrName, expression);
+        final JCExpression initialValue;
+        final HasErrorException expressionError;
+        if (expression != null) {
+            expressionError = errors().getFirstExpressionError(expression.getExpression());
+            if (expressionError != null) {
+                initialValue = makeErroneous(expression, expressionError.getErrorMessage().getMessage());
+            } else {
+                initialValue = transformValueInit(
+                        declarationModel, attrName, expression);
+            }
+        } else {
+            expressionError = null;
+            initialValue = transformValueInit(
+                    declarationModel, attrName, expression);
+        }
+        
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
-            return List.<JCTree>of(makeVariableBoxDecl(
-                    initialValue, declarationModel));
+            if (expressionError != null) {
+                return List.<JCTree>of(expressionError.makeThrow(this));
+            } else {
+                return List.<JCTree>of(makeVariableBoxDecl(
+                        initialValue, declarationModel));
+            }
         }
         
         // For late-bound getters we only generate a declaration
@@ -329,6 +349,9 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         if (Decl.isLocal(declarationModel)) {
+            if (expressionError != null) {
+                return List.<JCTree>of(expressionError.makeThrow(this));
+            }
             if(initialValue != null)
                 builder.valueConstructor();
             JCExpression typeExpr;
@@ -344,8 +367,11 @@ public class CeylonTransformer extends AbstractTransformer {
                     attrClassName, 
                     attrClassName, declarationModel.isShared(), initialValue));
         } else {
-            if(initialValue != null)
+            if (expressionError != null) {
+                builder.initialValueError(expressionError);
+            } else if(initialValue != null) {
                 builder.initialValue(initialValue);
+            }
             builder.is(Flags.STATIC, true);
             return builder.build();
         }

@@ -192,7 +192,7 @@ public class Symtab {
     public  Type ceylonInitializationExceptionType;
     public  Type ceylonEnumeratedTypeErrorType;
     public  Type ceylonUninitializedMethodErrorType;
-    public  Type ceylonUnresolvedCompilationProblemType;
+    public  Type ceylonUnresolvedCompilationErrorType;
     public  Type ceylonAbstractCallableType;
     public  Type ceylonVariableBoxType;
     public  Type ceylonVariableBoxLongType;
@@ -877,7 +877,7 @@ public class Symtab {
         ceylonInitializationExceptionType = enterClass("ceylon.language.InitializationException");
         ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
         ceylonUninitializedMethodErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UninitializedMethodError");
-        ceylonUnresolvedCompilationProblemType = enterClass("com.redhat.ceylon.compiler.java.language.UnresolvedCompilationProblem");
+        ceylonUnresolvedCompilationErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError");
         ceylonAbstractCallableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractCallable");
         ceylonVariableBoxType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBox");
         ceylonVariableBoxLongType = enterClass("com.redhat.ceylon.compiler.java.language.VariableBoxLong");

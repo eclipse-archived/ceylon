@@ -227,7 +227,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         // ExpressionStatements do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
         backwardBranchWithUninitialized = null;
-        JCStatement result = at(tree).Exec(transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
+        JCStatement result;
+        HasErrorException error = errors().getFirstExpressionError(tree.getExpression());
+        if (error != null) {
+            result = error.makeThrow(this);
+        } else {
+            result = at(tree).Exec(transformExpression(tree.getExpression(), BoxingStrategy.INDIFFERENT, null));
+        }
         inStatement = false;
         return result;
     }
@@ -236,7 +242,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         // SpecifierStatement do not return any value, therefore we don't care about the type of the expressions.
         inStatement = true;
         backwardBranchWithUninitialized = null;
-        JCStatement  result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+        JCStatement  result;
+        HasErrorException error = errors().getFirstExpressionError(op.getBaseMemberExpression());
+        if (error != null) {
+            result = error.makeThrow(this);
+        } else if ((error = errors().getFirstExpressionError(op.getSpecifierExpression().getExpression())) != null) {
+            result = error.makeThrow(this);
+        } else {
+            result = at(op).Exec(transformAssignment(op, op.getBaseMemberExpression(), op.getSpecifierExpression().getExpression()));
+        }
         inStatement = false;
         return result;
     }
@@ -1029,7 +1043,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         try {
             return make().Literal(literalValue(lit));
         } catch (ErroneousException e) {
-            return e.makeError(this);
+            // We should never get here since the error should have been 
+            // reported by the UnsupportedVisitor and the containing statement
+            // replaced with a throw.
+            return e.makeErroneous(this);
         }
     }
     
@@ -1038,7 +1055,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(lit);
             return make().Literal(literalValue(lit));
         } catch (ErroneousException e) {
-            return e.makeError(this);
+            // We should never get here since the error should have been 
+            // reported by the UnsupportedVisitor and the containing statement
+            // replaced with a throw.
+            return e.makeErroneous(this);
         }
     }
     
@@ -1548,7 +1568,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return make().Literal(l);
                 }
             } catch (ErroneousException e) {
-                return e.makeError(this);
+                // We should never get here since the error should have been 
+                // reported by the UnsupportedVisitor and the containing statement
+                // replaced with a throw.
+                return e.makeErroneous(this);
             }
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
@@ -3063,6 +3086,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Invocations
     public void transformSuperInvocation(Tree.ExtendedType extendedType, ClassDefinitionBuilder classBuilder) {
+        HasErrorException error = errors().getFirstExpressionError(extendedType.getInvocationExpression());
+        if (error != null) {
+            classBuilder.superCall(error.makeThrow(this));
+            return;
+        }
         if (extendedType.getInvocationExpression().getPositionalArgumentList() != null) {
             Tree.InvocationExpression invocation = extendedType.getInvocationExpression();
             Declaration primaryDeclaration = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration();
