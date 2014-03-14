@@ -191,36 +191,25 @@ class AnnotationInvocationVisitor extends Visitor {
     }
     
     public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
-        if (checkForBannedJavaAnnotation(exprGen, invocation)) {
-            return null;
-        }
         AnnotationInvocation ai = annoCtorModel(invocation);
         return transformConstructor(exprGen, invocation, ai, com.sun.tools.javac.util.List.<AnnotationFieldName>nil());
     }
 
-    private static boolean checkForBannedJavaAnnotation(
-            ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
-        if (invocation.getPrimary() instanceof Tree.BaseMemberExpression) {
+    static String checkForBannedJavaAnnotation(Tree.InvocationExpression invocation) {
+        if (invocation.getPrimary() instanceof Tree.BaseMemberExpression
+                && ((Tree.BaseMemberExpression)invocation.getPrimary()).getDeclaration() != null) {
             String name = ((Tree.BaseMemberExpression)invocation.getPrimary()).getDeclaration().getQualifiedNameString();
             if ("java.lang::deprecated".equals(name)) {
-                exprGen.logError(invocation, 
-                        "inappropiate java annotation: interoperation with @Deprecated is not supported: use deprecated");
-                return true;
+                return "inappropiate java annotation: interoperation with @Deprecated is not supported: use deprecated";
             } else if ("java.lang::override".equals(name)) {
-                exprGen.logError(invocation, 
-                        "inappropiate java annotation: interoperation with @Override is not supported: use actual");
-                return true;
+                return "inappropiate java annotation: interoperation with @Override is not supported: use actual";
             } else if ("java.lang.annotation::target".equals(name)) {
-                exprGen.logError(invocation, 
-                        "inappropiate java annotation: interoperation with @Target is not supported");
-                return true;
+                return "inappropiate java annotation: interoperation with @Target is not supported";
             } else if ("java.lang.annotation::retention".equals(name)) {
-                exprGen.logError(invocation, 
-                        "inappropiate java annotation: interoperation with @Retention is not supported");
-                return true;
+                return "inappropiate java annotation: interoperation with @Retention is not supported";
             }
         }
-        return false;
+        return null;
     }
     
     private static JCAnnotation transformConstructor(
