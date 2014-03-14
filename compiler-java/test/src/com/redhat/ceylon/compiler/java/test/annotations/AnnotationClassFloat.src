@@ -25,13 +25,13 @@ final class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.run
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
@@ -95,13 +95,13 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
     public static double $default$f() {
         return 3.141;
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {

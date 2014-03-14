@@ -178,7 +178,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Map$impl<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylon$language$Map$this$;
+    protected final .ceylon.language.Map$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Map$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -204,7 +204,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return $ceylon$language$Map$this$.mapItems($reified$Result, mapping);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Collection$impl<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this$;
+    protected final .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -218,7 +218,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return $ceylon$language$Collection$this$.toString();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -412,7 +412,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return $ceylon$language$Iterable$this$.repeat(times);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -432,7 +432,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return $ceylon$language$Category$this$.containsAny(elements);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Correspondence$impl<? super .java.lang.Object, ? extends .java.lang.Object> $ceylon$language$Correspondence$this$;
+    protected final .ceylon.language.Correspondence$impl<.java.lang.Object, .java.lang.Object> $ceylon$language$Correspondence$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

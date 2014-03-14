@@ -5,7 +5,7 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     ScaleOp() {
         this.$ceylon$language$Scalable$this$ = new .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor$, this);
     }
-    protected final .ceylon.language.Scalable$impl<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$this$;
+    protected final .ceylon.language.Scalable$impl<.ceylon.language.Float, .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Scalable$impl<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> $ceylon$language$Scalable$impl() {

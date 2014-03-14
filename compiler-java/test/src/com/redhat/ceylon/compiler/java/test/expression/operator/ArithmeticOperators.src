@@ -55,7 +55,7 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$impl() {
         return $ceylon$language$Summable$this$;
     }
-    protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$this$;
+    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$impl() {
@@ -87,13 +87,13 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public .ceylon.language.Number$impl $ceylon$language$Number$impl() {
         return $ceylon$language$Number$this$;
     }
-    protected final .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$this$;
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$impl() {
         return $ceylon$language$Enumerable$this$;
     }
-    protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$this$;
+    protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$this$;
     
     @.java.lang.Override
     public .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$impl() {

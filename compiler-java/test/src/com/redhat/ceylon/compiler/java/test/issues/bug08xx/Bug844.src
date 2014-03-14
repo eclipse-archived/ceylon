@@ -75,7 +75,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest;
-    protected final .ceylon.language.Sequence$impl<? extends Element> $ceylon$language$Sequence$this$;
+    protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this$;
     
     @.java.lang.Override
     public .ceylon.language.Sequence$impl<? extends Element> $ceylon$language$Sequence$impl() {
@@ -126,7 +126,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public <Other>.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequence<? extends Element>> following(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final Other head) {
         return (.ceylon.language.Tuple<.java.lang.Object, ? extends Other, ? extends .ceylon.language.Sequence<? extends Element>>)(.ceylon.language.Tuple)$ceylon$language$Sequence$this$.following($reified$Other, head);
     }
-    protected final .ceylon.language.Sequential$impl<? extends Element> $ceylon$language$Sequential$this$;
+    protected final .ceylon.language.Sequential$impl<Element> $ceylon$language$Sequential$this$;
     
     @.java.lang.Override
     public .ceylon.language.Sequential$impl<? extends Element> $ceylon$language$Sequential$impl() {
@@ -157,7 +157,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .ceylon.language.Sequential<? extends Element> trimTrailing(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> trimming) {
         return $ceylon$language$Sequential$this$.trimTrailing(trimming);
     }
-    protected final .ceylon.language.List$impl<? extends Element> $ceylon$language$List$this$;
+    protected final .ceylon.language.List$impl<Element> $ceylon$language$List$this$;
     
     @.java.lang.Override
     public .ceylon.language.List$impl<? extends Element> $ceylon$language$List$impl() {
@@ -253,13 +253,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexes(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$List$this$.indexes(selecting);
     }
-    protected final .ceylon.language.Collection$impl<? extends Element> $ceylon$language$Collection$this$;
+    protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends Element> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
     }
-    protected final .ceylon.language.Iterable$impl<? extends Element, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
+    protected final .ceylon.language.Iterable$impl<Element, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends Element, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
@@ -375,7 +375,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> cycle(final long times) {
         return $ceylon$language$Iterable$this$.cycle(times);
     }
-    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
     public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
@@ -391,7 +391,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public boolean containsAny(final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> elements) {
         return $ceylon$language$Category$this$.containsAny(elements);
     }
-    protected final .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends Element> $ceylon$language$Correspondence$this$;
+    protected final .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element> $ceylon$language$Correspondence$this$;
     
     @.java.lang.Override
     public .ceylon.language.Correspondence$impl<? super .ceylon.language.Integer, ? extends Element> $ceylon$language$Correspondence$impl() {
@@ -417,7 +417,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .ceylon.language.Sequential<? extends Element> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.items(keys);
     }
-    protected final .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$this$;
+    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$this$;
     
     @.java.lang.Override
     public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$impl() {

@@ -66,7 +66,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
         return 1L;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -74,7 +74,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -241,7 +241,7 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
         return b;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -249,7 +249,7 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

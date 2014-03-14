@@ -46,7 +46,7 @@ class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Empty$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<.ceylon.language.Integer, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged$impl<? super .ceylon.language.Integer, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug633Ranged$impl() {

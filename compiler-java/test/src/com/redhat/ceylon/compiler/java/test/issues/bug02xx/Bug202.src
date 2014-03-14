@@ -24,7 +24,7 @@ class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     Bug202_Tricky() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList.class, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.$TypeDescriptor$), this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Bug202_ReadList$impl() {

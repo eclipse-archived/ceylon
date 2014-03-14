@@ -19,13 +19,13 @@ public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? super .ceylon.language.Annotated> $ceylon$language$OptionalAnnotation$this$;
+    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? super .ceylon.language.Annotated> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? super .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, ? super .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$impl() {

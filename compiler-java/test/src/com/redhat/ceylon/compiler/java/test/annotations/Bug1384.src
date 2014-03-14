@@ -30,13 +30,13 @@ public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.m
     public final .ceylon.language.meta.declaration.ValueDeclaration getReference() {
         return reference;
     }
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
+    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
@@ -90,13 +90,13 @@ public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.
     public final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> getReferences() {
         return references;
     }
-    protected final .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
+    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
         return $ceylon$language$OptionalAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {

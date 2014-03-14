@@ -7,7 +7,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.hash = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
     }
-    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends .ceylon.language.Sequential<? extends .java.lang.Object>, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
@@ -188,7 +188,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public .ceylon.language.List<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
     public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {

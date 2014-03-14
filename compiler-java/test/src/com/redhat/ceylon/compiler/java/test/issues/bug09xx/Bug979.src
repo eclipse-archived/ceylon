@@ -12,7 +12,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getStrings$priv$() {
         return strings;
     }
-    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
@@ -193,7 +193,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public .ceylon.language.List<? extends .ceylon.language.String> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
     public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
@@ -236,7 +236,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getStrings$priv$() {
         return strings;
     }
-    protected final .ceylon.language.Set$impl<? extends .ceylon.language.String> $ceylon$language$Set$this$;
+    protected final .ceylon.language.Set$impl<.ceylon.language.String> $ceylon$language$Set$this$;
     
     @.java.lang.Override
     public .ceylon.language.Set$impl<? extends .ceylon.language.String> $ceylon$language$Set$impl() {
@@ -267,7 +267,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     public int hashCode() {
         return $ceylon$language$Set$this$.hashCode();
     }
-    protected final .ceylon.language.Collection$impl<? extends .ceylon.language.String> $ceylon$language$Collection$this$;
+    protected final .ceylon.language.Collection$impl<.ceylon.language.String> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends .ceylon.language.String> $ceylon$language$Collection$impl() {
@@ -283,7 +283,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     public .java.lang.String toString() {
         return $ceylon$language$Collection$this$.toString();
     }
-    protected final .ceylon.language.Iterable$impl<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylon$language$Iterable$this$;
+    protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Iterable$impl<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylon$language$Iterable$impl() {
@@ -449,7 +449,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     public .ceylon.language.List<? extends .ceylon.language.String> repeat(final long times) {
         return $ceylon$language$Iterable$this$.repeat(times);
     }
-    protected final .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$this$;
+    protected final .ceylon.language.Category$impl<.java.lang.Object> $ceylon$language$Category$this$;
     
     @.java.lang.Override
     public .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {

@@ -62,7 +62,7 @@ abstract class RIC_Middle implements .com.redhat.ceylon.compiler.java.runtime.mo
     RIC_Middle() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A>(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A.$TypeDescriptor$, this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$impl() {
@@ -154,7 +154,7 @@ class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.run
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$impl() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Left$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> $com$redhat$ceylon$compiler$java$test$structure$klass$RIC_Top$impl() {

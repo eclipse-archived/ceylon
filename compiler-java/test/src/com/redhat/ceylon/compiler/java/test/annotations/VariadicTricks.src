@@ -36,13 +36,13 @@ final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks.$TypeDescriptor$), .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {

@@ -37,7 +37,7 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
     private final long getI$priv$() {
         return i;
     }
-    protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Comparable$this$;
+    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Comparable$this$;
     
     @.java.lang.Override
     public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Comparable$impl() {
@@ -63,7 +63,7 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
     public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
         return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
-    protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Ordinal$this$;
+    protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Ordinal$this$;
     
     @.java.lang.Override
     public .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Ordinal$impl() {

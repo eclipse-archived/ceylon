@@ -97,19 +97,19 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
         this.fail2 = (.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893).ceylon.language.nothing_.get_();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequence893$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XSequential893$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$XIterable893$impl() {

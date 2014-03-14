@@ -122,13 +122,13 @@ class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$impl() {
@@ -176,13 +176,13 @@ class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$impl() {

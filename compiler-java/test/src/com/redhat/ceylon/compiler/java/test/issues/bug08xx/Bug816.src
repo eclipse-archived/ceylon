@@ -26,7 +26,7 @@ class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2;
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug816I$impl() {

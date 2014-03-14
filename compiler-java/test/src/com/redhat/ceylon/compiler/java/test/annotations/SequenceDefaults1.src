@@ -36,7 +36,7 @@ final class SequenceDefaults_String implements .com.redhat.ceylon.compiler.java.
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -44,7 +44,7 @@ final class SequenceDefaults_String implements .com.redhat.ceylon.compiler.java.
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -260,7 +260,7 @@ final class SequenceDefaults_Boolean implements .com.redhat.ceylon.compiler.java
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -268,7 +268,7 @@ final class SequenceDefaults_Boolean implements .com.redhat.ceylon.compiler.java
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -480,7 +480,7 @@ final class SequenceDefaults_Character implements .com.redhat.ceylon.compiler.ja
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -488,7 +488,7 @@ final class SequenceDefaults_Character implements .com.redhat.ceylon.compiler.ja
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -704,7 +704,7 @@ final class SequenceDefaults_Float implements .com.redhat.ceylon.compiler.java.r
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -712,7 +712,7 @@ final class SequenceDefaults_Float implements .com.redhat.ceylon.compiler.java.r
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -928,7 +928,7 @@ final class SequenceDefaults_Integer implements .com.redhat.ceylon.compiler.java
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -936,7 +936,7 @@ final class SequenceDefaults_Integer implements .com.redhat.ceylon.compiler.java
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1153,7 +1153,7 @@ final class SequenceDefaults_Object implements .com.redhat.ceylon.compiler.java.
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1161,7 +1161,7 @@ final class SequenceDefaults_Object implements .com.redhat.ceylon.compiler.java.
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1376,7 +1376,7 @@ final class SequenceDefaults_Declaration implements .com.redhat.ceylon.compiler.
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1384,7 +1384,7 @@ final class SequenceDefaults_Declaration implements .com.redhat.ceylon.compiler.
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

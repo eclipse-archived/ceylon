@@ -110,7 +110,7 @@ class Bug1550L<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<T>($reified$T, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$impl() {

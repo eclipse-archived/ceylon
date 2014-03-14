@@ -59,7 +59,7 @@ final class bug668_method_ {
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, this);
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$impl() {
@@ -70,7 +70,7 @@ final class bug668_method_ {
             public .java.lang.Object getFirst() {
                 return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$.getFirst();
             }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this$;
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this$;
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$impl() {

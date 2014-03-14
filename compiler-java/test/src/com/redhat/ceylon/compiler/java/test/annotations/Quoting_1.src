@@ -124,7 +124,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return hashCode;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -132,7 +132,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $ceylon$language$SequencedAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting>, ? super .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting>, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -154,7 +154,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return $ceylon$language$Annotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.annotations.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Quoting> $com$redhat$ceylon$compiler$java$test$annotations$Cloneable$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.annotations.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.annotations.Quoting> $com$redhat$ceylon$compiler$java$test$annotations$Cloneable$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

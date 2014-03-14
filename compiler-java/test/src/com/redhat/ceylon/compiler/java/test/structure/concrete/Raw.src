@@ -102,7 +102,7 @@ class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<? super .java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn$impl<? super .java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawIn$impl() {
@@ -205,7 +205,7 @@ class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtim
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<? extends .java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<.java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut$impl<? extends .java.lang.Object, Y> $com$redhat$ceylon$compiler$java$test$structure$concrete$RawOut$impl() {

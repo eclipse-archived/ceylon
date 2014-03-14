@@ -40,13 +40,13 @@ final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {
@@ -99,13 +99,13 @@ final class Bug1323_2 implements .com.redhat.ceylon.compiler.java.runtime.model.
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {

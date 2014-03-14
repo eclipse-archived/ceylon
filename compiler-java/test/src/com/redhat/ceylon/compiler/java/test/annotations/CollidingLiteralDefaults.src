@@ -43,13 +43,13 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
     public final long getI2() {
         return i2;
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
+    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
         return $ceylon$language$SequencedAnnotation$this$;
     }
-    protected final .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
+    protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
     public .ceylon.language.ConstrainedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$impl() {

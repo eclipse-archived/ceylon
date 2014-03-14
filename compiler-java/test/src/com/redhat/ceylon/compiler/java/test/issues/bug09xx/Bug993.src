@@ -40,7 +40,7 @@ class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.mode
     Bug993MiddleClass() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), this);
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$impl() {
@@ -75,7 +75,7 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$;
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$impl() {
