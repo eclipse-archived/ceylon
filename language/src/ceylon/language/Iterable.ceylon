@@ -665,7 +665,7 @@ shared interface Iterable<out Element, out Absent=Null>
      
      For example, the expression
      
-         {6, 9}.taking(5)
+         {6, 9}.cycled.taking(5)
      
      evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
     see (`function cycle`)
