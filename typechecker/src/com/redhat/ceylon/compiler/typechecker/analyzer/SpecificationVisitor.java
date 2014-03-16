@@ -629,7 +629,7 @@ public class SpecificationVisitor extends Visitor {
 	                    that.getDeclarationModel().getInitializerParameter()==null &&
 	                    declarationSection) {
 	                that.addError("forward declaration may not occur in declaration section: " +
-	                            declaration.getName());
+	                            declaration.getName(), 1450);
 	            }
 	            else if (declaration.isInterfaceMember() && 
 	                    !declaration.isNative() &&
@@ -726,7 +726,7 @@ public class SpecificationVisitor extends Visitor {
 	                    !that.getDeclarationModel().isLate() &&
 	                    declarationSection) {
 	                that.addError("forward declaration may not occur in declaration section: " +
-	                            declaration.getName());
+	                            declaration.getName(), 1450);
 	            }
             }
         }
