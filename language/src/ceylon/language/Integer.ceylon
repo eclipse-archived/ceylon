@@ -71,4 +71,6 @@ shared native final class Integer(integer)
     
     shared actual native Integer timesInteger(Integer integer);    
     shared actual native Integer plusInteger(Integer integer);
+    
+    shared actual native String string;
 }

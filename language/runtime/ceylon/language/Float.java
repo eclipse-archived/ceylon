@@ -80,6 +80,7 @@ public final class Float
         return new Float(d);
     }
     
+    @Ignore
     public double doubleValue() {
         return value;
     }
