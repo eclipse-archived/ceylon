@@ -40,7 +40,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     //This is for type parameters
     private final static Map<String,Object> voidclass = new HashMap<String, Object>();
     private Map<String,Object> model;
-    private final Unit unit = new Unit();
     private final String pkgname;
     private boolean loaded = false;
     private NothingType nothing;
@@ -59,14 +58,15 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     public JsonPackage(String pkgname) {
         this.pkgname = pkgname;
         setName(ModuleManager.splitModuleName(pkgname));
-        unit.setPackage(this);
-        unit.setFilename("package.ceylon");
-        addUnit(unit);
+        final Unit u = new Unit();
+        u.setPackage(this);
+        u.setFilename("package.ceylon");
+        setUnit(u);
     }
+
     public void setModule(com.redhat.ceylon.compiler.typechecker.model.Module module) {
         if (module instanceof JsonModule && model == null) {
             model = ((JsonModule)module).getModelForPackage(getNameAsString());
-            unit.setFullPath(module.getUnit().getFullPath() + "/" + pkgname);
         }
         super.setModule(module);
     };
@@ -80,9 +80,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             getModule().setAvailable(true);
         }
         //Ugly ass hack - add Nothing to the model
-        nothing = new NothingType(unit);
+        nothing = new NothingType(getUnit());
         nothing.setContainer(this);
-        nothing.setUnit(unit);
+        nothing.setUnit(getUnit());
         setShared(model.get("$pkg-shared") != null);
         for (Map.Entry<String,Object> e : model.entrySet()) {
             String k = e.getKey();
@@ -138,9 +138,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             cls.setAnonymous(m.remove("$anon") != null);
             cls.setContainer(parent);
             cls.setName(name);
-            cls.setUnit(unit);
+            cls.setUnit(getUnit());
             if (parent == this) {
-                unit.addDeclaration(cls);
+                getUnit().addDeclaration(cls);
             } else {
                 parent.getMembers().add(cls);
             }
@@ -274,7 +274,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 tp.put(MetamodelGenerator.KEY_METATYPE, maybe);
             } else {
                 TypeParameter tparm = new TypeParameter();
-                tparm.setUnit(unit);
+                tparm.setUnit(getUnit());
                 tparm.setDeclaration(container);
                 container.getMembers().add(tparm);
                 if (tp.containsKey(MetamodelGenerator.KEY_NAME)) {
@@ -295,8 +295,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 allparms.add(tparm);
                 tp.put(MetamodelGenerator.KEY_METATYPE, tparm);
                 if (tp.containsKey(MetamodelGenerator.KEY_DEFAULT)) {
-                    tparm.setDefaultTypeArgument(getTypeFromJson(
-                            (Map<String,Object>)tp.get(MetamodelGenerator.KEY_DEFAULT), container, existing));
+                    @SuppressWarnings("unchecked")
+                    final Map<String,Object> deftype = (Map<String,Object>)tp.get(MetamodelGenerator.KEY_DEFAULT);
+                    tparm.setDefaultTypeArgument(getTypeFromJson(deftype, container, existing));
                     tparm.setDefaulted(true);
                 }
             }
@@ -328,9 +329,13 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
             }
             if (tp.containsKey("satisfies")) {
-                tparm.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)tp.get("satisfies"), allparms));
+                @SuppressWarnings("unchecked")
+                final List<Map<String,Object>> stypes = (List<Map<String,Object>>)tp.get("satisfies");
+                tparm.setSatisfiedTypes(parseTypeList(stypes, allparms));
             } else if (tp.containsKey("of")) {
-                tparm.setCaseTypes(parseTypeList((List<Map<String,Object>>)tp.get("of"), allparms));
+                @SuppressWarnings("unchecked")
+                final List<Map<String,Object>> oftype = (List<Map<String,Object>>)tp.get("of");
+                tparm.setCaseTypes(parseTypeList(oftype, allparms));
             }
         }
         return tparms;
@@ -380,12 +385,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 if (param.getModel() != null) {
                     param.getModel().setInitializerParameter(param);
                     param.getModel().setName(param.getName());
-                    param.getModel().setUnit(unit);
+                    param.getModel().setUnit(getUnit());
                     if (owner instanceof Scope) {
                         param.getModel().setContainer((Scope)owner);
                     }
                     if (p.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
-                        param.getModel().setType(getTypeFromJson((Map<String,Object>)p.get(MetamodelGenerator.KEY_TYPE), owner, typeParameters));
+                        @SuppressWarnings("unchecked")
+                        final Map<String,Object> ktype = (Map<String,Object>)p.get(MetamodelGenerator.KEY_TYPE);
+                        param.getModel().setType(getTypeFromJson(ktype, owner, typeParameters));
                     } else {
                         //parameter type
                         for (TypeParameter tp : typeParameters) {
@@ -394,7 +401,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                             }
                         }
                     }
-                    setAnnotations(param.getModel(), (Map<String,List<String>>)p.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+                    @SuppressWarnings("unchecked")
+                    final Map<String,List<String>> _anns = (Map<String,List<String>>)p.remove(MetamodelGenerator.KEY_ANNOTATIONS);
+                    setAnnotations(param.getModel(), _anns);
                 }
                 //owner.getMembers().add(param);
                 plist.getParameters().add(param);
@@ -409,13 +418,13 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         md.setName(name);
         md.setContainer(parent);
         setAnnotations(md, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
-        md.setUnit(unit);
+        md.setUnit(getUnit());
         if (m.containsKey(MetamodelGenerator.KEY_IS_ANNOTATION)) {
             md.setAnnotation(true);
         }
         if (parent == this) {
             //Top-level declarations are directly added to the unit
-            unit.addDeclaration(md);
+            getUnit().addDeclaration(md);
         }
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), md, existing);
@@ -447,16 +456,19 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         d.setTransient(MetamodelGenerator.METATYPE_GETTER.equals(metatype));
         d.setName(name);
         d.setContainer(parent);
-        d.setUnit(unit);
+        d.setUnit(getUnit());
         if (parent == this) {
-            unit.addDeclaration(d);
+            getUnit().addDeclaration(d);
         }
-        setAnnotations(d, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+        @SuppressWarnings("unchecked")
+        final Map<String,List<String>> _anns = (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS);
+        setAnnotations(d, _anns);
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
-        d.setType(getTypeFromJson((Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE),
-                parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
+        @SuppressWarnings("unchecked")
+        final Map<String,Object> ktype = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
+        d.setType(getTypeFromJson(ktype, parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
         return d;
     }
 
@@ -494,9 +506,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             }
             t.setContainer(parent);
             t.setName(name);
-            t.setUnit(unit);
+            t.setUnit(getUnit());
             if (parent == this) {
-                unit.addDeclaration(t);
+                getUnit().addDeclaration(t);
             } else {
                 parent.getMembers().add(t);
             }
@@ -562,15 +574,15 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             m.put(MetamodelGenerator.KEY_METATYPE, obj);
             obj.setName(name);
             obj.setContainer(parent);
-            obj.setUnit(unit);
+            obj.setUnit(getUnit());
             com.redhat.ceylon.compiler.typechecker.model.Class type = new com.redhat.ceylon.compiler.typechecker.model.Class();
             type.setName(name);
             type.setAnonymous(true);
-            type.setUnit(unit);
+            type.setUnit(getUnit());
             type.setContainer(parent);
             if (parent == this) {
-                unit.addDeclaration(obj);
-                unit.addDeclaration(type);
+                getUnit().addDeclaration(obj);
+                getUnit().addDeclaration(type);
             }
             obj.setType(type.getType());
             setAnnotations(obj, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
@@ -608,10 +620,10 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 alias = new TypeAlias();
                 alias.setContainer(parent);
                 alias.setName(name);
-                alias.setUnit(unit);
+                alias.setUnit(getUnit());
                 setAnnotations(alias, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
                 if (parent == this) {
-                    unit.addDeclaration(alias);
+                    getUnit().addDeclaration(alias);
                 } else {
                     parent.getMembers().add(alias);
                 }
@@ -671,11 +683,11 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 types.add(getTypeFromJson(tmap, container, typeParams));
             }
             if ("u".equals(m.get("comp"))) {
-                UnionType ut = new UnionType(unit);
+                UnionType ut = new UnionType(getUnit());
                 ut.setCaseTypes(types);
                 td = ut;
             } else {
-                IntersectionType it = new IntersectionType(unit);
+                IntersectionType it = new IntersectionType(getUnit());
                 it.setSatisfiedTypes(types);
                 td = it;
             }
