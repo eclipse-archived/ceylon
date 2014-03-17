@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class printStackTrace_
 {
     public static void printStackTrace(
+            @TypeInfo("ceylon.language::Throwable")
             @Name("exception") final java.lang.Throwable throwable,
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
             @Defaulted @Name("write") final Callable<java.lang.Object> write) {
