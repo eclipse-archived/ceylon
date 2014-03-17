@@ -209,8 +209,18 @@ public class PhasedUnit {
             for (Unit u: unit.getPackage().getUnits()) {
                 if (!u.equals(unit) && 
                         u.getFilename().equalsIgnoreCase(unit.getFilename())) {
-                    compilationUnit.addUsageWarning("source file names differ only by case: " +
-                            unit.getFilename() + " and " + u.getFilename());
+                    if (u.getFilename().equals(unit.getFilename())) {
+                        String errorMessage = "identical source files: " +
+                                unit.getFullPath() + " and " + u.getFullPath();
+                        if (u.getFilename().equals(ModuleManager.MODULE_FILE) ||
+                                u.getFilename().equals(ModuleManager.PACKAGE_FILE)) {
+                            errorMessage += " (a module/package descriptor should be defined only once, even in case of multiple source directories)";
+                        }
+                        compilationUnit.addError(errorMessage);                        
+                    } else {
+                        compilationUnit.addUsageWarning("source file names differ only by case: " +
+                                unit.getFullPath() + " and " + u.getFullPath());
+                    }
                 }
             }
             compilationUnit.visit(new Validator());
