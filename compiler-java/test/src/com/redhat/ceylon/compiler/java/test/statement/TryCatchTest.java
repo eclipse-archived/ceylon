@@ -16,6 +16,11 @@ public class TryCatchTest extends CompilerTest {
     }
 
     @Test
+    public void testTryExceptionTypes(){
+        compareWithJavaSource("trycatch/ExceptionTypes");
+    }
+    
+    @Test
     public void testTryExceptionAttr(){
         compareWithJavaSource("trycatch/ExceptionAttr");
     }
