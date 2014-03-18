@@ -876,7 +876,9 @@ shared void run() {
     
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
-    
+
+    testBug378();
+        
     print("Annotation tests OK");
     results();
 }
