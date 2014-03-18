@@ -1546,8 +1546,8 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             ProducedType et = e.getTypeModel();
             if (!isTypeUnknown(et)) {
-                checkAssignable(et, unit.getType(unit.getExceptionDeclaration()), 
-                        e, "thrown expression must be an exception");
+                checkAssignable(et, unit.getType(unit.getThrowableDeclaration()), 
+                        e, "thrown expression must be a throwable");
 //                if (et.getDeclaration().isParameterized()) {
 //                    e.addUnsupportedError("parameterized types in throw not yet supported");
 //                }
@@ -4779,15 +4779,16 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Variable var = that.getVariable();
         if (var!=null) {
-            ProducedType et = unit.getType(unit.getExceptionDeclaration());
             Tree.Type vt = var.getType();
             if (vt instanceof Tree.LocalModifier) {
+                ProducedType et = unit.getType(unit.getExceptionDeclaration());
                 vt.setTypeModel(et);
                 var.getDeclarationModel().setType(et);
             }
             else {
-                checkAssignable(vt.getTypeModel(), et, vt, 
-                        "catch type must be an exception type");
+                ProducedType tt = unit.getType(unit.getThrowableDeclaration());
+                checkAssignable(vt.getTypeModel(), tt, vt, 
+                        "catch type must be a throwable type");
 //                TypeDeclaration d = vt.getTypeModel().getDeclaration();
 //                if (d instanceof IntersectionType) {
 //                    vt.addUnsupportedError("intersection types in catch not yet supported");

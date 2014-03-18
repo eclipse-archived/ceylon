@@ -79,7 +79,7 @@ class ControlStructures() {
     class Transaction() satisfies Closeable {
         shared void rollbackOnly() {}
         shared actual void open() {}
-        shared actual void close(Exception? e) {}
+        shared actual void close(Throwable? e) {}
     }
 
     try (Transaction()) {}
@@ -105,7 +105,7 @@ class ControlStructures() {
     }
     catch (e) {
         @type:"String" value msg = e.message;
-        @type:"Null|Exception" value cause = e.cause;
+        @type:"Null|Throwable" value cause = e.cause;
     }
 
     class Exception1() extends Exception() {}
@@ -116,7 +116,7 @@ class ControlStructures() {
     }
     catch (@type:"ControlStructures.Exception1|ControlStructures.Exception2" Exception1|Exception2 e) {
         @type:"String" value msg = e.message;
-        @type:"Null|Exception" value cause = e.cause;
+        @type:"Null|Throwable" value cause = e.cause;
     }
     catch (@error String s) {
         

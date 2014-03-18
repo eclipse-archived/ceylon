@@ -297,6 +297,14 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Identifiable");
     }
     
+    public Class getThrowableDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Throwable");
+    }
+    
+    public Class getErrorDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Error");
+    }
+    
     public Class getExceptionDeclaration() {
         return (Class) getLanguageModuleDeclaration("Exception");
     }
