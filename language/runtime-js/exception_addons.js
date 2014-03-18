@@ -1,4 +1,4 @@
-function $init$native$Exception$before(exc) {
+function $init$native$Throwable$before(exc) {
   var _caller=arguments.callee.caller.caller;
   exc.stack_trace=[];
   var ilc=0;
@@ -48,6 +48,6 @@ function printStackTrace(exc, _write) {
 }
 printStackTrace.$crtmm$=function(){
   return{mod:$CCMM$,d:['ceylon.language','printStackTrace'],$t:{t:Anything},$ps:[
-    {$nm:'exception',$t:{t:Exception},$mt:'prm'},{$nm:'write',$t:{t:Callable,a:{Return:{t:Anything},Arguments:{t:'T',l:[{t:String$}]}}},$mt:'prm','$def':1}
+    {$nm:'exception',$t:{t:Throwable},$mt:'prm'},{$nm:'write',$t:{t:Callable,a:{Return:{t:Anything},Arguments:{t:'T',l:[{t:String$}]}}},$mt:'prm','$def':1}
   ]};};
 exports.printStackTrace=printStackTrace;

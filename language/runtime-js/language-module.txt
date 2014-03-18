@@ -3,7 +3,7 @@
 #Identifiable is a problem because it can't extend itself
 #Identifiable
 callable.js,collections.js,Basic
-Exception,exception_addons.js
+Throwable,Error,Exception,exception_addons.js
 
 #Anything,Object,Null
 #Comparison
