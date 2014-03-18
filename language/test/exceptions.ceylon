@@ -1,5 +1,7 @@
 class MyException() extends Exception("my exception", null) {}
 class OtherException() extends Exception("other exception", null) {}
+class MyError() extends Error("my error", null) {}
+class OtherError() extends Error("other error", null) {}
 
 variable Integer sharedState = -1;
 
@@ -45,9 +47,35 @@ shared void exceptions() {
     catch (OtherException oe) {
         fail("other exception");
     }
+    catch (OtherError oe) {
+        fail("other error");
+    }
+    catch (MyError oe) {
+        fail("my error");
+    }
     catch (MyException me) {
         caught=true;
         check(me.message=="my exception", "exception message");
+        check(!me.cause exists, "exception cause");
+    }
+    check(caught, "caught");
+    
+    caught=false;
+    try {
+        throw MyError();
+    }
+    catch (MyException oe) {
+        fail("my exception");
+    }
+    catch (OtherException oe) {
+        fail("other exception");
+    }
+    catch (OtherError oe) {
+        fail("other error");
+    }
+    catch (MyError me) {
+        caught=true;
+        check(me.message=="my error", "exception message");
         check(!me.cause exists, "exception cause");
     }
     check(caught, "caught");
@@ -59,6 +87,9 @@ shared void exceptions() {
     catch (OtherException oe) {
         fail("other exception");
     }
+    catch (Error oe) {
+        fail("error");
+    }
     catch (Exception me) {
         caught=true;
         check(me.message=="my exception", "exception message");
@@ -69,6 +100,9 @@ shared void exceptions() {
     caught=false;
     try {
         throw MyException();
+    }
+    catch (OtherError|MyError e) {
+        fail("error");
     }
     catch (OtherException|MyException e) {
         caught=true;
@@ -86,6 +120,9 @@ shared void exceptions() {
     }
     catch (OtherException|MyException e) {
         fail("any exception");
+    }
+    catch (OtherError|MyError e) {
+        fail("any error");
     }
     catch (Exception me) {
         caught=true;
