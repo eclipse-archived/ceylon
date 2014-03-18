@@ -52,7 +52,7 @@ class MyContainerWithoutLastElement() satisfies Container<Integer,Null> {
 class MyCloseable() satisfies Closeable {
     shared variable Boolean opened = false;
     shared actual void open() { opened=true;}
-    shared actual void close(Exception? e) {opened=false;}
+    shared actual void close(Throwable? e) {opened=false;}
 }
 class MyContainer() satisfies EmptyContainer {
     shared actual Null first { return null; }

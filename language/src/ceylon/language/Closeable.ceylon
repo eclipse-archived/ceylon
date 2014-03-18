@@ -12,6 +12,6 @@ shared interface Closeable {
      is called as a result of execution of a `try` 
      statement, then it is guaranteed that `open()` was 
      previously called."
-    shared formal void close(Exception? exception);
+    shared formal void close(Throwable? exception);
     
 }

@@ -25,7 +25,7 @@ class MyResource(Integer err) satisfies Closeable {
         sharedState = state;
     }
 
-    shared actual void close(Exception? exception) {
+    shared actual void close(Throwable? exception) {
         state += 8;
         if (err == 3) {
             sharedState = state;
