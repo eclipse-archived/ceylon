@@ -26,32 +26,27 @@ Array$proto.reifyCeylonType = function(typeParameters) {
 }
 exports.$Array=Array$;
 
-function EmptyArray() {
-    return [];
-}
-EmptyArray.$crtmm$=$init$Empty().$crtmm$;
-initTypeProto(EmptyArray, 'ceylon.language::EmptyArray', Array$);
-function ArrayList(items) {
-    return items;
-}
-ArrayList.$crtmm$=Array$.$crtmm$;
-initTypeProto(ArrayList, 'ceylon.language::ArrayList', Array$, $init$List());
 function ArraySequence(/* js array */value, $$targs$$) {
+if (value.length===0)return getEmpty();
     value.$seq = true;
-    value.$$targs$$=$$targs$$;
-    this.$$targs$$=$$targs$$;
+var t=$$targs$$.Element$Iterable;
+if (t===undefined)t=$$targs$$.Element$ArraySequence;
+if (t===undefined)t=$$targs$$.Element$Array;
+if (t===undefined)t=$$targs$$.Element$Sequence;
+if (t===undefined)t=$$targs$$.Element$Sequential;
+if (t===undefined)t=$$targs$$.Element$List;
+if (t===undefined)throw new Error("Invalid type arguments for ArraySequence: "+require('util').inspect($$targs$$));
+    value.$$targs$$={Element$Iterable:t, Element$ArraySequence:t, Element$Sequence:t, Element$Sequential:t, Element$List:t, Element$Collection:t, Item$Correspondence:t, Key$Correspondence:{t:Integer},Absent$Iterable:{t:Nothing}, Element$Array:t};
     return value;
 }
 ArraySequence.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language','ArraySequence'],$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element$Sequence:'Element$ArraySequence'}}}],$tp:{Element$ArraySequence:{'var':'out'}},satisfies:[{t:Sequence,a:{Element$Sequence:'Element$ArraySequence'}}]};};
 initTypeProto(ArraySequence, 'ceylon.language::ArraySequence', $init$Basic(), $init$Sequence());
 Array$proto.getT$name = function() {
-    return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$name;
+    return (this.$seq ? ArraySequence : Array$).$$.T$name;
 }
 Array$proto.getT$all = function() {
-    return (this.$seq ? ArraySequence : (this.length>0?ArrayList:EmptyArray)).$$.T$all;
+    return (this.$seq ? ArraySequence : Array$).$$.T$all;
 }
-
-exports.EmptyArray=EmptyArray;
 
 defineAttr(Array$proto, 'size', function(){ return this.length; },undefined,function(){return{mod:$CCMM$,d:['ceylon.language','Iterable','$at','size'],$cont:Array$proto,$t:{t:Integer}};});
 defineAttr(Array$proto,'string',function(){
@@ -77,7 +72,7 @@ defineAttr(Array$proto, 'reversed', function() {
     if (this.length === 0) { return this; }
     var arr = this.slice(0);
     arr.reverse();
-    return this.$seq ? ArraySequence(arr,this.$$targs$$) : arr.reifyCeylonType(this.$$targs$$);
+    return this.$seq ? ArraySequence(arr,this.$$targs$$||{Element$Iterable:{t:Anything}}) : arr.reifyCeylonType(this.$$targs$$);
 },undefined,function(){return{mod:$CCMM$,d:['ceylon.language','List','$at','reversed'],$t:{t:List,a:{Element$List:'Element$Array'}}};});
 Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
@@ -91,7 +86,7 @@ Array$proto.segment = function(from, len) {
     if (len <= 0) { return getEmpty(); }
     var stop = from + len;
     var seq = this.slice((from>=0)?from:0, (stop>=0)?stop:0);
-    return (seq.length > 0) ? ArraySequence(seq,this.$$targs$$) : getEmpty();
+    return (seq.length > 0) ? ArraySequence(seq,this.$$targs$$||{Element$Iterable:{t:Anything}}) : getEmpty();
 }
 Array$proto.span = function(from, to) {
     if (from > to) {
@@ -108,7 +103,7 @@ Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
 defineAttr(Array$proto, 'rest', function() {
-    return this.length<=1 ? getEmpty() : ArraySequence(this.slice(1),this.$$targs$$);
+    return this.length<=1 ? getEmpty() : ArraySequence(this.slice(1),this.$$targs$$||{Element$Iterable:{t:Anything}});
 });
 Array$proto.items = function(keys) {
     if (keys === undefined) return getEmpty();
@@ -117,7 +112,7 @@ Array$proto.items = function(keys) {
         var key = keys.$get(i);
         seq.push(this.$get(key));
     }
-    return ArraySequence(seq,this.$$targs$$);
+    return ArraySequence(seq,this.$$targs$$||{Element$Iterable:{t:Anything}});
 }
 defineAttr(Array$proto, 'keys', function(){ return TypeCategory(this, {t:Integer}); });
 Array$proto.contains = function(elem) {
@@ -155,7 +150,6 @@ Array$proto.longerThan = function(len) {
 }
 Array$proto.longerThan.$crtmm$={mod:$CCMM$,d:['ceylon.language','Iterable','$m','longerThan']};
 
-exports.ArrayList=ArrayList;
 exports.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
         var elems = [];
@@ -192,7 +186,7 @@ SequenceBuilder.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
 defineAttr(SequenceBuilder$proto, 'sequence', function() {
-    return (this.seq.length > 0) ? ArraySequence(this.seq,this.$$targs$$) : getEmpty();
+    return (this.seq.length > 0) ? ArraySequence(this.seq,{Element$Iterable:this.$$targs$$.Element$SequenceBuilder}) : getEmpty();
 },undefined,function(){return{
   $t:{t:Sequential,a:{Element$Sequential:'Element$SequenceBuilder'}},mod:$CCMM$,d:['ceylon.language','SequenceBuilder','$at','sequence']};});
 SequenceBuilder$proto.append=function(e){
@@ -216,7 +210,7 @@ defineAttr(SequenceBuilder$proto, 'empty', function() { return this.seq.length==
 
 function SequenceAppender(other, $$targs$$,that) {
     if (that===undefined)that=new SequenceAppender.$$;
-    SequenceBuilder($$targs$$,that);
+    SequenceBuilder({Element$SequenceBuilder:$$targs$$.Element$SequenceAppender},that);
     that.appendAll(other);
     return that;
 }
