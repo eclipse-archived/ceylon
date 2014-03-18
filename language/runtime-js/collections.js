@@ -19,7 +19,7 @@ Comprehension$proto.iterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
 }
 defineAttr(Comprehension$proto, 'sequence', function() {
-    var sb = SequenceBuilder(this.$$targs$$);
+    var sb = SequenceBuilder({Element$SequenceBuilder:this.$$targs$$.Element$Iterable});
     sb.appendAll(this);
     return sb.sequence;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Iterable','$at','sequence']});
