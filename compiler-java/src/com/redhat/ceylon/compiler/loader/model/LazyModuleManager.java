@@ -163,7 +163,7 @@ public abstract class LazyModuleManager extends ModuleManager {
         Module languageModule = getContext().getModules().getLanguageModule();
         for(Module m : getContext().getModules().getListOfModules()){
             // Java modules don't depend on ceylon.language
-            if(m instanceof LazyModule == false || !((LazyModule)m).isJava()){
+            if((m instanceof LazyModule == false || !((LazyModule)m).isJava()) && !m.equals(languageModule)) {
                 // add ceylon.language if required
                 ModuleImport moduleImport = findImport(m, languageModule);
                 if (moduleImport == null) {
