@@ -23,7 +23,7 @@ class TryWithResource(Integer n) satisfies Closeable {
     shared actual void open() {
     }
     
-    shared actual void close(Exception? e) {
+    shared actual void close(Throwable? e) {
     }
 
     shared void m() {
