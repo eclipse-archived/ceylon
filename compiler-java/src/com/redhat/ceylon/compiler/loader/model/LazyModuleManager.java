@@ -107,7 +107,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                     ModuleImport depImport = findImport(module, dependency);
                     if (depImport == null) {
                         moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT);
-                        module.getImports().add(moduleImport);
+                        module.addImport(moduleImport);
                     }
                 }
             }
@@ -168,7 +168,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                 ModuleImport moduleImport = findImport(m, languageModule);
                 if (moduleImport == null) {
                     moduleImport = new ModuleImport(languageModule, false, true);
-                    m.getImports().add(moduleImport);
+                    m.addImport(moduleImport);
                 }
             }
         }

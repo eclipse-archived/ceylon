@@ -1285,7 +1285,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         boolean optional = optionalVal != null && optionalVal;
                         boolean export = exportVal != null && exportVal;
                         moduleImport = new ModuleImport(dependency, optional, export);
-                        module.getImports().add(moduleImport);
+                        module.addImport(moduleImport);
                     }
                 }
             }
@@ -1300,7 +1300,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
             if (moduleImport == null) {
                 moduleImport = new ModuleImport(languageModule, false, false);
-                module.getImports().add(moduleImport);
+                module.addImport(moduleImport);
             }
         }
         
