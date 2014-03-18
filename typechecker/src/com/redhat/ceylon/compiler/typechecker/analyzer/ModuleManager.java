@@ -88,7 +88,7 @@ public class ModuleManager {
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
-            defaultModule.getImports().add(new ModuleImport(languageModule, false, false));
+            defaultModule.addImport(new ModuleImport(languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
         }
         else {

@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVers
 import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,11 @@ public class Module
     }
 
     public List<ModuleImport> getImports() {
-        return imports;
+        return Collections.unmodifiableList(imports);
+    }
+    
+    public void addImport(ModuleImport modImport) {
+        imports.add(modImport);
     }
     
     public Module getLanguageModule() {

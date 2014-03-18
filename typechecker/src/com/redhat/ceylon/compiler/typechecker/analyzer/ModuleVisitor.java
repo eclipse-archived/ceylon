@@ -270,7 +270,7 @@ public class ModuleVisitor extends Visitor {
                             boolean export = hasAnnotation(al, "shared", unit.getUnit());
                             moduleImport = new ModuleImport(importedModule, optional, export);
                             buildAnnotations(al, moduleImport.getAnnotations());
-                            mainModule.getImports().add(moduleImport);
+                            mainModule.addImport(moduleImport);
                         }
                         moduleManager.addModuleDependencyDefinition(moduleImport, that);
                     }
