@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationClass(
         clas = .java.lang.String.class,
         classRaw = .java.lang.String.class,
-        classWithBound = .java.lang.Throwable.class,
+        classWithBound = .java.lang.Exception.class,
         classExact = .java.lang.String.class,
         classes = {
                 .java.lang.String.class,
@@ -34,7 +34,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
                 boolean.class,
                 .ceylon.language.Sequential.class},
         classesWithBound = {
-                .java.lang.Throwable.class,
+                .java.lang.Exception.class,
                 .ceylon.language.AssertionException.class},
         classesExact = {.java.lang.String.class})
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationEnum(

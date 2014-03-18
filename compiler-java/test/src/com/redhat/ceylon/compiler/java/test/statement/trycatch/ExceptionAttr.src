@@ -5,13 +5,13 @@ class ExceptionAttr implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     ExceptionAttr() {
         this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
     }
-    private .java.lang.Throwable e;
+    private .java.lang.Exception e;
     
-    public final .java.lang.Throwable getE() {
+    public final .java.lang.Exception getE() {
         return e;
     }
     
-    public final void setE(final .java.lang.Throwable e) {
+    public final void setE(final .java.lang.Exception e) {
         this.e = e;
     }
     

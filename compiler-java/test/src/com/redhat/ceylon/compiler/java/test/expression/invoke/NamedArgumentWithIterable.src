@@ -36,7 +36,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
         );
     }
     
-    private final void m2$priv$(final .java.lang.Throwable a, final .ceylon.language.Iterable<? extends .java.lang.Throwable, ? extends .java.lang.Object> b) {
+    private final void m2$priv$(final .java.lang.Exception a, final .ceylon.language.Iterable<? extends .java.lang.Exception, ? extends .java.lang.Object> b) {
     }
     
     private final void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable a, final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable, ? extends .java.lang.Object> b) {
@@ -196,12 +196,12 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             }
             returning null;
         );
-        final .java.lang.Throwable e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+        final .java.lang.Exception e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
         (
             let
             {
-                .java.lang.Throwable arg$12$0 = e;
-                .ceylon.language.Iterable arg$12$1 = .ceylon.language.ArraySequence.<.java.lang.Throwable>instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                .java.lang.Exception arg$12$0 = e;
+                .ceylon.language.Iterable arg$12$1 = .ceylon.language.ArraySequence.<.java.lang.Exception>instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
                         e,
                         e,
                         e});

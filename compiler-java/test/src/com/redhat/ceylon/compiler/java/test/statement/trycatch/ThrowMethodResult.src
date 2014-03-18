@@ -5,7 +5,7 @@ class ThrowMethodResult implements .com.redhat.ceylon.compiler.java.runtime.mode
     ThrowMethodResult() {
     }
     
-    private final .java.lang.Throwable e$priv$() {
+    private final .java.lang.Exception e$priv$() {
         return new .ceylon.language.Exception(.ceylon.language.String.instance("Bang!"), null);
     }
     

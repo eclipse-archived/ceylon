@@ -26,15 +26,15 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
         {
             .ceylon.language.Closeable $ceylontmp$try$0 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(0L);
             $ceylontmp$try$0.open();
-            .java.lang.Exception $ceylontmp$ex$1 = null;
+            .java.lang.Throwable $ceylontmp$ex$1 = null;
             try {
-            } catch (final .java.lang.Exception $ceylontmp$ex$2) {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$2) {
                 $ceylontmp$ex$1 = $ceylontmp$ex$2;
                 throw $ceylontmp$ex$2;
             } finally {
                 if ($ceylontmp$ex$1 != null) try {
                     $ceylontmp$try$0.close($ceylontmp$ex$1);
-                } catch (final .java.lang.Exception $ceylontmp$closex$3) {
+                } catch (final .java.lang.Throwable $ceylontmp$closex$3) {
                     $ceylontmp$ex$1.addSuppressed($ceylontmp$closex$3);
                 } else $ceylontmp$try$0.close($ceylontmp$ex$1);
             }
@@ -42,43 +42,43 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
         {
             .ceylon.language.Closeable $ceylontmp$try$12 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(1L);
             $ceylontmp$try$12.open();
-            .java.lang.Exception $ceylontmp$ex$13 = null;
+            .java.lang.Throwable $ceylontmp$ex$13 = null;
             try {
                 .ceylon.language.Closeable $ceylontmp$try$8 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(2L);
                 $ceylontmp$try$8.open();
-                .java.lang.Exception $ceylontmp$ex$9 = null;
+                .java.lang.Throwable $ceylontmp$ex$9 = null;
                 try {
                     .ceylon.language.Closeable $ceylontmp$try$4 = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource(3L);
                     $ceylontmp$try$4.open();
-                    .java.lang.Exception $ceylontmp$ex$5 = null;
+                    .java.lang.Throwable $ceylontmp$ex$5 = null;
                     try {
-                    } catch (final .java.lang.Exception $ceylontmp$ex$6) {
+                    } catch (final .java.lang.Throwable $ceylontmp$ex$6) {
                         $ceylontmp$ex$5 = $ceylontmp$ex$6;
                         throw $ceylontmp$ex$6;
                     } finally {
                         if ($ceylontmp$ex$5 != null) try {
                             $ceylontmp$try$4.close($ceylontmp$ex$5);
-                        } catch (final .java.lang.Exception $ceylontmp$closex$7) {
+                        } catch (final .java.lang.Throwable $ceylontmp$closex$7) {
                             $ceylontmp$ex$5.addSuppressed($ceylontmp$closex$7);
                         } else $ceylontmp$try$4.close($ceylontmp$ex$5);
                     }
-                } catch (final .java.lang.Exception $ceylontmp$ex$10) {
+                } catch (final .java.lang.Throwable $ceylontmp$ex$10) {
                     $ceylontmp$ex$9 = $ceylontmp$ex$10;
                     throw $ceylontmp$ex$10;
                 } finally {
                     if ($ceylontmp$ex$9 != null) try {
                         $ceylontmp$try$8.close($ceylontmp$ex$9);
-                    } catch (final .java.lang.Exception $ceylontmp$closex$11) {
+                    } catch (final .java.lang.Throwable $ceylontmp$closex$11) {
                         $ceylontmp$ex$9.addSuppressed($ceylontmp$closex$11);
                     } else $ceylontmp$try$8.close($ceylontmp$ex$9);
                 }
-            } catch (final .java.lang.Exception $ceylontmp$ex$14) {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$14) {
                 $ceylontmp$ex$13 = $ceylontmp$ex$14;
                 throw $ceylontmp$ex$14;
             } finally {
                 if ($ceylontmp$ex$13 != null) try {
                     $ceylontmp$try$12.close($ceylontmp$ex$13);
-                } catch (final .java.lang.Exception $ceylontmp$closex$15) {
+                } catch (final .java.lang.Throwable $ceylontmp$closex$15) {
                     $ceylontmp$ex$13.addSuppressed($ceylontmp$closex$15);
                 } else $ceylontmp$try$12.close($ceylontmp$ex$13);
             }

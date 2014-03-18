@@ -22,12 +22,12 @@ public final class testExceptions_ {
     private testExceptions_() {
     }
     
-    public static void testExceptions(final .java.lang.Throwable param) {
-        final .java.lang.Throwable x = new .com.redhat.ceylon.compiler.java.test.interop.MyException();
+    public static void testExceptions(final .java.lang.Exception param) {
+        final .java.lang.Exception x = new .com.redhat.ceylon.compiler.java.test.interop.MyException();
         final .java.lang.Object o = x;
         .java.lang.Object o$1;
-        if ((o$1 = o) instanceof .java.lang.Throwable) {
-            final .java.lang.Throwable o$2 = (.java.lang.Throwable)o$1;
+        if ((o$1 = o) instanceof .java.lang.Exception) {
+            final .java.lang.Exception o$2 = (.java.lang.Exception)o$1;
         }
         try {
         } catch (final .java.lang.Exception z) {

@@ -18,8 +18,8 @@ class SwitchIsExhaustive implements .com.redhat.ceylon.compiler.java.runtime.mod
             } else if (sel$0 == null) {
                 final .java.lang.Object b$2 = (.java.lang.Object)sel$0;
                 name = "Nothing";
-            } else if (sel$0 instanceof .java.lang.Throwable) {
-                final .java.lang.Throwable b$1 = (.java.lang.Throwable)sel$0;
+            } else if (sel$0 instanceof .java.lang.Exception) {
+                final .java.lang.Exception b$1 = (.java.lang.Exception)sel$0;
                 name = "Exception";
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }

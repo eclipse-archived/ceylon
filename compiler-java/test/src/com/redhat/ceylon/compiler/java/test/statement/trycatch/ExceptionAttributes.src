@@ -5,7 +5,7 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
     ExceptionAttributes() {
     }
     
-    private final void m$priv$(final .java.lang.Throwable e) {
+    private final void m$priv$(final .java.lang.Exception e) {
         final .java.lang.Throwable c = e.getCause();
         .java.lang.Throwable cause$1;
         if ((cause$1 = e.getCause()) != null) {

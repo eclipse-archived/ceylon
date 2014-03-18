@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 class E1 extends .ceylon.language.Exception {
     
-    E1(final .ceylon.language.String description, final .java.lang.Throwable cause) {
+    E1(final .ceylon.language.String description, final .java.lang.Exception cause) {
         super(description, cause);
     }
     
@@ -14,7 +14,7 @@ class E1 extends .ceylon.language.Exception {
 }
 class E2 extends .ceylon.language.Exception {
     
-    E2(final .ceylon.language.String description, final .java.lang.Throwable cause) {
+    E2(final .ceylon.language.String description, final .java.lang.Exception cause) {
         super(description, cause);
     }
     
@@ -32,14 +32,14 @@ class TryCatchUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final void t$priv$() {
     }
     
-    private final void c$priv$(final .java.lang.Throwable e) {
+    private final void c$priv$(final .java.lang.Exception e) {
     }
     
     private final void m$priv$() {
         try {
             t$priv$();
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.E1 | .com.redhat.ceylon.compiler.java.test.statement.trycatch.E2 e) {
-            c$priv$((.java.lang.Throwable)e);
+            c$priv$((.java.lang.Exception)e);
         }
     }
     

@@ -16,7 +16,7 @@ final class bug1380_ {
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0.toString() : null;
         ));
-        new .java.lang.Exception((.java.lang.Throwable)null);
+        new .java.lang.Exception((.java.lang.Exception)null);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

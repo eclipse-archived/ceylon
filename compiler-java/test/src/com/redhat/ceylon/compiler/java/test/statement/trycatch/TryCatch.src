@@ -8,7 +8,7 @@ class TryCatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final void t$priv$() {
     }
     
-    private final void c$priv$(final .java.lang.Throwable e) {
+    private final void c$priv$(final .java.lang.Exception e) {
     }
     
     private final void m$priv$() {

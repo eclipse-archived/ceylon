@@ -164,11 +164,11 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchIntersection(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
         } catch (final .java.lang.Exception exception$0) {
-            if (exception$0 instanceof .java.lang.Throwable && exception$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect) {
+            if (exception$0 instanceof .java.lang.Exception && exception$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect) {
                 final .java.lang.Object e = exception$0;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("Caught Exception&Intersect"));
             } else throw exception$0;
@@ -180,7 +180,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionSubIntersection(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub exception$1) {
@@ -196,7 +196,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericString(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric exception$2) {
@@ -212,7 +212,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrInteger(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric exception$3) {
@@ -231,7 +231,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrInteger2(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
         } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric exception$4) {
@@ -247,10 +247,10 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrIntegerOrExceptionSub(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
-        } catch (final .java.lang.Exception exception$5) {
+        } catch (final .java.lang.Throwable exception$5) {
             if (.com.redhat.ceylon.compiler.java.Util.isReified(exception$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$))) {
                 final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String> e = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$5;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>"));
@@ -269,10 +269,10 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
-    final .java.lang.Throwable exception) {
+    final .java.lang.Exception exception) {
         try {
             throw exception;
-        } catch (final .java.lang.Exception exception$6) {
+        } catch (final .java.lang.Throwable exception$6) {
             if (.com.redhat.ceylon.compiler.java.Util.isReified(exception$6, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$))) {
                 final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String> e = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$6;
                 .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>"));

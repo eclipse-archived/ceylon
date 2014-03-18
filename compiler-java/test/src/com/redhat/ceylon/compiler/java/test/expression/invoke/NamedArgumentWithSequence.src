@@ -29,21 +29,21 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         );
     }
     
-    private final void m2$priv$(final .java.lang.Throwable a) {
+    private final void m2$priv$(final .java.lang.Exception a) {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .java.lang.Exception> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m2$priv$$canonical$(a, $ceylontmp$b$1);
             }
             returning null;
         );
     }
     
-    private void m2$priv$$canonical$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
+    private void m2$priv$$canonical$(final .java.lang.Exception a, final .ceylon.language.Sequential<? extends .java.lang.Exception> b) {
     }
     
-    private final void m2$priv$(final .java.lang.Throwable a, final .ceylon.language.Sequential<? extends .java.lang.Throwable> b) {
+    private final void m2$priv$(final .java.lang.Exception a, final .ceylon.language.Sequential<? extends .java.lang.Exception> b) {
         (
             let
             {
@@ -90,12 +90,12 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
             }
             returning null;
         );
-        final .java.lang.Throwable e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+        final .java.lang.Exception e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
         (
             let
             {
-                .java.lang.Throwable arg$4$0 = e;
-                .ceylon.language.Sequential<? extends .java.lang.Throwable> arg$4$1 = new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Sequential<? extends .java.lang.Throwable>>>>(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                .java.lang.Exception arg$4$0 = e;
+                .ceylon.language.Sequential<? extends .java.lang.Exception> arg$4$1 = new .ceylon.language.Tuple<.java.lang.Exception, .java.lang.Exception, .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>>>(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
                         e,
                         e,
                         e});

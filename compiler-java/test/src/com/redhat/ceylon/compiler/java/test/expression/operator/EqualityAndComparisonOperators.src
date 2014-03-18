@@ -228,7 +228,7 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
             {
                 .java.lang.Object $ceylontmp$8 = foo;
             }
-            returning $ceylontmp$8 instanceof .java.lang.Throwable;
+            returning $ceylontmp$8 instanceof .java.lang.Exception;
         );
     }
     
