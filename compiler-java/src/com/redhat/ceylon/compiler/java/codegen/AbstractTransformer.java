@@ -1448,8 +1448,7 @@ public abstract class AbstractTransformer implements Transformation {
             } else if ((flags & JT_CATCH) != 0) {
                 return make().Type(syms().exceptionType);
             } else {
-                // TODO should be exception?
-                return make().Type(syms().throwableType);
+                return make().Type(syms().exceptionType);
             }
         } else if (willEraseToError(type)) {
             if ((flags & JT_CLASS_NEW) != 0

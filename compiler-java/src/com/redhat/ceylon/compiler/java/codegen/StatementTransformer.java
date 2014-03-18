@@ -2850,7 +2850,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // Exception $tpmex = null;
                 String innerExTmpVarName = naming.newTemp("ex");
-                JCExpression innerExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+                JCExpression innerExType = makeJavaType(typeFact().getThrowableDeclaration().getType(), JT_CATCH);
                 JCVariableDecl innerExTmpVar = makeVar(innerExTmpVarName, innerExType, makeNull());
                 stats = stats.append(innerExTmpVar);
                 
@@ -2872,7 +2872,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // try { $var.close() } catch (Exception closex) { $tmpex.addSuppressed(closex); }
                 Name closeCatchVarName = naming.tempName("closex");
-                JCExpression closeCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+                JCExpression closeCatchExType = makeJavaType(typeFact().getThrowableDeclaration().getType(), JT_CATCH);
                 JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
                 JCExpression addarg = make().Ident(closeCatchVarName);
                 JCMethodInvocation addSuppressedCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(innerExTmpVarName), "addSuppressed"), List.<JCExpression>of(addarg));
@@ -2889,7 +2889,7 @@ public class StatementTransformer extends AbstractTransformer {
     
                 // try { .... } catch (Exception ex) { $tmpex=ex; throw ex; }
                 // finally { try { $var.close() } catch (Exception closex) { } }
-                JCExpression innerCatchExType = makeJavaType(typeFact().getExceptionDeclaration().getType(), JT_CATCH);
+                JCExpression innerCatchExType = makeJavaType(typeFact().getThrowableDeclaration().getType(), JT_CATCH);
                 JCVariableDecl innerCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), innerCatchVarName, innerCatchExType, null);
                 JCCatch innerCatch = make().Catch(innerCatchVar, innerCatchBlock);
                 JCBlock innerFinallyBlock = make().Block(0, List.<JCStatement>of(closeCatchIf));
@@ -3042,7 +3042,7 @@ public class StatementTransformer extends AbstractTransformer {
             result = Util.unionType(result, exceptionSupertype(pt), typeFact());
         }
         if (typeFact().isUnion(result)) {
-            return result.getSupertype(typeFact().getExceptionDeclaration());
+            return result.getSupertype(typeFact().getThrowableDeclaration());
         }
         return result;
     }
@@ -3055,11 +3055,11 @@ public class StatementTransformer extends AbstractTransformer {
             }
         } else if (typeFact().isIntersection(pt)) {
             for (ProducedType t : pt.getSatisfiedTypes()) {
-                if (t.isSubtypeOf(typeFact().getExceptionDeclaration().getType())) {
+                if (t.isSubtypeOf(typeFact().getThrowableDeclaration().getType())) {
                     result = Util.unionType(result, exceptionSupertype(t), typeFact());
                 }
             }
-        } else if (pt.isSubtypeOf(typeFact().getExceptionDeclaration().getType())) {
+        } else if (pt.isSubtypeOf(typeFact().getThrowableDeclaration().getType())) {
             if (pt.getDeclaration().isParameterized()) {
                 // We do this to avoid ending up with a union ExG<Foo>|ExG<Bar>
                 // when we're actually going to go raw, so ExG would be fine
