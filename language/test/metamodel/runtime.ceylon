@@ -102,16 +102,55 @@ shared void checkConstructors(){
     
     // constructor that throws
     try {
-        `Throws`(true);
+        `ThrowsMyException`(true);
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
     }
     try {
-        `Throws`.apply(true);
+        `ThrowsMyException`.apply(true);
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
+    }
+    
+    try {
+        `ThrowsException`(true);
+        assert(false);
+    }catch(Exception x){
+        assert(!x is MyException);
+    }
+    try {
+        `ThrowsException`.apply(true);
+        assert(false);
+    }catch(Exception x){
+        assert(!x is MyException);
+    }
+    
+    try {
+        `ThrowsMyError`(true);
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    try {
+        `ThrowsMyError`.apply(true);
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    
+    try {
+        `ThrowsError`(true);
+        assert(false);
+    }catch(Error x){
+        assert(!x is MyError);
+    }
+    try {
+        `ThrowsError`.apply(true);
+        assert(false);
+    }catch(Error x){
+        assert(!x is MyError);
     }
     
     value variadicClass = `VariadicParams`;
@@ -228,30 +267,56 @@ shared void checkMemberAttributes(){
     assert(noParamsInstance.obj2 == 3);
 
     // getter that throws
-    Throws t = Throws(false);
+    ThrowsMyException tme = ThrowsMyException(false);
     try {
-        `Throws.getter`(t).get();
+        `ThrowsMyException.getter`(tme).get();
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
     }
     try {
-        `Throws.getter`(t).set(1);
+        `ThrowsMyException.getter`(tme).set(1);
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
     }
     try {
-        `Throws.getter`(t).setIfAssignable(1);
+        `ThrowsMyException.getter`(tme).setIfAssignable(1);
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
     }
     try {
-        `value Throws.getter`.memberSet(t, 1);
+        `value ThrowsMyException.getter`.memberSet(tme, 1);
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
+    }
+    
+    ThrowsMyError tmer = ThrowsMyError(false);
+    try {
+        `ThrowsMyError.getter`(tmer).get();
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    try {
+        `ThrowsMyError.getter`(tmer).set(1);
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    try {
+        `ThrowsMyError.getter`(tmer).setIfAssignable(1);
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    try {
+        `value ThrowsMyError.getter`.memberSet(tmer, 1);
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
     }
 }
 
@@ -314,22 +379,43 @@ shared void checkMemberFunctions(){
     assert(f8.bind(noParamsInstance).apply() == true);
     
     // method that throws
-    Throws t = Throws(false);
+    ThrowsMyException tme = ThrowsMyException(false);
     try {
-        `Throws.method`(t)();
+        `ThrowsMyException.method`(tme)();
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
     }
     try {
-        `Throws.method`.bind(t).apply();
+        `ThrowsMyException.method`.bind(tme).apply();
         assert(false);
     }catch(Exception x){
         assert(x is MyException);
     }
     // invalid container type
     try {
-        `Throws.method`.bind(1);
+        `ThrowsMyException.method`.bind(1);
+        assert(false);
+    }catch(Exception x){
+        assert(x is IncompatibleTypeException);
+    }
+    
+    ThrowsMyError tmer = ThrowsMyError(false);
+    try {
+        `ThrowsMyError.method`(tmer)();
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    try {
+        `ThrowsMyError.method`.bind(tmer).apply();
+        assert(false);
+    }catch(Error x){
+        assert(x is MyError);
+    }
+    // invalid container type
+    try {
+        `ThrowsMyError.method`.bind(1);
         assert(false);
     }catch(Exception x){
         assert(x is IncompatibleTypeException);
@@ -468,6 +554,23 @@ shared void checkHierarchy(){
     assert(anythingType.declaration.name == "Anything");
 
     assert(!anythingType.declaration.extendedType exists);
+    
+    assert(exists throwableSup=`class Throwable`.extendedType,
+            throwableSup.declaration.name == "Basic");
+    assert(`class Throwable`.caseTypes.size == 2);
+    assert(`class Throwable`.abstract);
+    assert(is OpenClassType[] throwableCases=`class Throwable`.caseTypes);
+    assert(`class Exception` in throwableCases*.declaration); 
+    assert(exists exceptionSup=`class Exception`.extendedType,
+            exceptionSup.declaration.name== "Throwable");
+    assert(exists myExceptionSup=`class MyException`.extendedType,
+            myExceptionSup.declaration.name == "Exception");
+    
+    assert(`class Error` in throwableCases*.declaration);
+    assert(exists errorSup=`class Error`.extendedType,
+            errorSup.declaration.name == "Throwable");
+    assert(exists myErrorSup=`class MyError`.extendedType,
+            myErrorSup.declaration.name == "Error");
 }
 
 @test

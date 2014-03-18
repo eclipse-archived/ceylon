@@ -279,9 +279,9 @@ shared abstract class SubModifiers() extends Modifiers() {
 
 shared final class Final(){}
 
-shared class MyException() extends Exception("Hello!"){}
+shared class MyException() extends Exception("my exception"){}
 
-shared class Throws(Boolean t){
+shared class ThrowsMyException(Boolean t){
     if(t){
         throw MyException();
     }
@@ -293,6 +293,53 @@ shared class Throws(Boolean t){
     }
     shared Integer method() {
         throw MyException();
+    }
+}
+
+shared class ThrowsException(Boolean t){
+    if(t){
+        throw Exception("exception");
+    }
+    shared Integer getter {
+        throw Exception("exception");
+    }
+    assign getter {
+        throw Exception("exception");
+    }
+    shared Integer method() {
+        throw Exception("exception");
+    }
+}
+
+shared class MyError() extends Error("my error"){}
+
+shared class ThrowsMyError(Boolean t){
+    if(t){
+        throw MyError();
+    }
+    shared Integer getter {
+        throw MyError();
+    }
+    assign getter {
+        throw MyError();
+    }
+    shared Integer method() {
+        throw MyError();
+    }
+}
+
+shared class ThrowsError(Boolean t){
+    if(t){
+        throw Error("error");
+    }
+    shared Integer getter {
+        throw Error("error");
+    }
+    assign getter {
+        throw Error("error");
+    }
+    shared Integer method() {
+        throw Error("error");
     }
 }
 
