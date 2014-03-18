@@ -106,6 +106,7 @@ public class JsIdentifierNames {
         reservedWords.add("Object");
         reservedWords.add("Array");
         reservedWords.add("Boolean");
+        reservedWords.add("Error");
 
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
