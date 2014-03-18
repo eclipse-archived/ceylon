@@ -102,10 +102,10 @@ public class JsModuleManager extends ModuleManager {
             //Add language module as a dependency
             //This will cause the dependency to be loaded later
             ModuleImport imp = new ModuleImport(dep, false, false);
-            module.getImports().add(imp);
+            module.addImport(imp);
             module.setLanguageModule(dep);
             //Fix 280 part 1
-            getContext().getModules().getDefaultModule().getImports().add(new ModuleImport(module, false, false));
+            getContext().getModules().getDefaultModule().addImport(new ModuleImport(module, false, false));
         }
         return module;
     }
@@ -150,7 +150,7 @@ public class JsModuleManager extends ModuleManager {
                 //This will cause the dependency to be loaded later
                 JsonModule dep = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
                 ModuleImport imp = new ModuleImport(dep, false, false);
-                module.getImports().add(imp);
+                module.addImport(imp);
             }
         }
         ((JsonModule)module).setModel(model);
