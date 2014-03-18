@@ -782,7 +782,7 @@ public class Metamodel {
         for (int ii = 0; ii < refs.length; ii++) {
             array[ii] = (T)parser.ref(refs[ii]);
         }
-        return ArraySequence.instance($reifiedElement, array);
+        return Util.<T>sequentialInstance($reifiedElement, (T[])array);
     }
     
     @SuppressWarnings("unchecked")
