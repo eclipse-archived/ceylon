@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { Error, JException = Exception, RuntimeException }
+import java.lang { JError = Error, JException = Exception, RuntimeException }
 
 @noanno
 shared class MyException() extends Exception(){}
@@ -35,13 +35,13 @@ shared void testExceptions(Exception param){
 
 @noanno
 shared void testThrowable(JavaExceptionsAndThrowable j){
-    Exception t = j.throwable();
+    Throwable t = j.throwable();
     if(2 > 1){
         throw Exception("error", j.throwable());
     }
     if(is MyException t){
     }
-    if(is Error t){
+    if(is JError t){
     }
     if(is RuntimeException t){
     }
@@ -51,8 +51,8 @@ shared void testThrowable(JavaExceptionsAndThrowable j){
 
 @noanno
 shared class ExceptionsAndThrowableRefinement() extends JavaExceptionsAndThrowable() {
-    shared actual Exception t(Exception? x){ if(exists x){ return x; } else { return nothing;} }
-    shared actual Error e(Error? x){ if(exists x){ return x; } else { return nothing;} }
+    shared actual Throwable t(Throwable? x){ if(exists x){ return x; } else { return nothing;} }
+    shared actual JError e(JError? x){ if(exists x){ return x; } else { return nothing;} }
     shared actual JException x(JException? x){ if(exists x){ return x; } else { return nothing;} }
     shared actual RuntimeException rtx(RuntimeException? x){ if(exists x){ return x; } else { return nothing;} }
 }
