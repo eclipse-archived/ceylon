@@ -2334,7 +2334,9 @@ public class GenerateJsVisitor extends Visitor
         if (isMethod) {
             out("JsCallableList(", tmplist, ");");
         } else {
-            out("ArraySequence(", tmplist, ");");
+            out("ArraySequence(", tmplist, ",");
+            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, true);
+            out(");");
         }
         endBlock();
         out("())");
