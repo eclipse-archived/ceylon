@@ -1104,6 +1104,18 @@ public abstract class AbstractTransformer implements Transformation {
         return (sameTypeForCeylonTypes(syms().ceylonExceptionType, type));
     }
     
+    boolean willEraseToError(ProducedType type) {
+        type = simplifyType(type);
+        TypeDeclaration decl = type.getDeclaration();
+        return decl == typeFact.getErrorDeclaration();
+    }
+    
+    boolean willEraseToThrowable(ProducedType type) {
+        type = simplifyType(type);
+        TypeDeclaration decl = type.getDeclaration();
+        return decl == typeFact.getThrowableDeclaration();
+    }
+    
     // keep in sync with MethodDefinitionBuilder.paramType()
     public boolean willEraseToBestBounds(Parameter param) {
         ProducedType type = param.getType();
@@ -1435,6 +1447,25 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeIdent(syms().ceylonExceptionType);
             } else if ((flags & JT_CATCH) != 0) {
                 return make().Type(syms().exceptionType);
+            } else {
+                // TODO should be exception?
+                return make().Type(syms().throwableType);
+            }
+        } else if (willEraseToError(type)) {
+            if ((flags & JT_CLASS_NEW) != 0
+                    || (flags & JT_EXTENDS) != 0) {
+                return makeIdent(syms().errorType);
+            } else if ((flags & JT_CATCH) != 0) {
+                return make().Type(syms().errorType);
+            } else {
+                return make().Type(syms().errorType);
+            }
+        } else if (willEraseToThrowable(type)) {
+            if ((flags & JT_CLASS_NEW) != 0
+                    || (flags & JT_EXTENDS) != 0) {
+                return makeIdent(syms().throwableType);
+            } else if ((flags & JT_CATCH) != 0) {
+                return make().Type(syms().throwableType);
             } else {
                 return make().Type(syms().throwableType);
             }
