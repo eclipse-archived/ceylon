@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 
@@ -169,8 +170,18 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     public void testBug1571() {
         compareWithJavaSource("bug15xx/Bug1571");
     }
+
     public void testBug1578() {
         compareWithJavaSource("bug15xx/Bug1578");
+    }
+
+    @Test
+    public void testBug1580() {
+        assertErrors(
+                new String[] { "bug15xx/bug1580/Bug1580.ceylon", "bug15xx/bug1580/module.ceylon" },
+                defaultOptions,
+                null,
+                new CompilerError(24, "could not determine type of method or attribute reference: instance of NioXnioProvider"));
     }
     
     @Test
