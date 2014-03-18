@@ -9,7 +9,7 @@ function internalSort(comp, elems, $$$mptypes) {
         var cmp = comp(a,b);
         return (cmp===larger) ? 1 : ((cmp===smaller) ? -1 : 0);
     });
-    return ArraySequence(arr, $$$mptypes);
+    return ArraySequence(arr, {Element$Iterable:$$$mptypes.Element$internalSort});
 }
 internalSort.$crtmm$=function(){return{
   $an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','internalSort'],
