@@ -65,4 +65,9 @@ void exceptionTypesUsage(Integer i, Throwable f()) {
     }
     else {
     }
+    // Because Error is erased to j.l.Error we need to check we're accessing its type descriptor OK
+    value errors = [Error(), Error()];
+    value exceptions = [Exception(), Exception()];
+    value errorsAndExceptions = [Error(), Exception()];
+    value subclasses = [ExceptionTypesException(), ExceptionTypesError()];
 }

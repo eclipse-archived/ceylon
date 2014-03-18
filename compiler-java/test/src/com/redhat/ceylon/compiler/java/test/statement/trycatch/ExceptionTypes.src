@@ -190,5 +190,17 @@ final class exceptionTypesUsage_ {
             } else {
             }
         }
+        final .ceylon.language.Tuple<.java.lang.Error, ? extends .java.lang.Error, ? extends .ceylon.language.Tuple<.java.lang.Error, ? extends .java.lang.Error, ? extends .ceylon.language.Sequential<? extends .java.lang.Error>>> errors = new .ceylon.language.Tuple<.java.lang.Error, .java.lang.Error, .ceylon.language.Tuple<.java.lang.Error, ? extends .java.lang.Error, ? extends .ceylon.language.Sequential<? extends .java.lang.Error>>>(.ceylon.language.Error.$TypeDescriptor$, new .java.lang.Object[]{
+                new .java.lang.Error(),
+                new .java.lang.Error()});
+        final .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Sequential<? extends .java.lang.Throwable>>> exceptions = new .ceylon.language.Tuple<.java.lang.Throwable, .java.lang.Throwable, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Sequential<? extends .java.lang.Throwable>>>(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                new .ceylon.language.Exception(),
+                new .ceylon.language.Exception()});
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Error, ? extends .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Sequential<? extends .java.lang.Throwable>>> errorsAndExceptions = new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Error, .ceylon.language.Tuple<.java.lang.Throwable, ? extends .java.lang.Throwable, ? extends .ceylon.language.Sequential<? extends .java.lang.Throwable>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Error.$TypeDescriptor$, .ceylon.language.Exception.$TypeDescriptor$), new .java.lang.Object[]{
+                new .java.lang.Error(),
+                new .ceylon.language.Exception()});
+        final .ceylon.language.Tuple<.java.lang.Object, ? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError>>> subclasses = new .ceylon.language.Tuple<.java.lang.Object, .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError.$TypeDescriptor$), new .java.lang.Object[]{
+                new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException(),
+                new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError()});
     }
 }
