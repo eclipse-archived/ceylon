@@ -12,8 +12,8 @@ defineAttr(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
-  return r.reifyCeylonType({Element$Iterable:{t:Type$meta$model,a:{t:Anything}},Absent$Iterable:{t:Null}});
-},undefined,function(){return{mod:$CCMM$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
+  return ArraySequence(r,{Element$Iterable:{t:Type$meta$model,a:{t:Anything}}});
+},undefined,function(){return{mod:$CCMM$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{ElementSequential:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 
 defineAttr(ClassModel$meta$model.$$.prototype,'declaration',function(){
   var $$clase=this;

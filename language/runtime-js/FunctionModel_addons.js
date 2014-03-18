@@ -11,8 +11,8 @@ defineAttr(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt}));
   }
-  return r.reifyCeylonType({Element$Iterable:{t:Type$meta$model,a:{t:Anything}},Absent$Iterable:{t:Null}});
-},undefined,function(){return{mod:$CCMM$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
+  return ArraySequence(r,{Element$Iterable:{t:Type$meta$model,a:{t:Anything}}});
+},undefined,function(){return{mod:$CCMM$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 defineAttr(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
   var mm = this.tipo.$crtmm$;
   if (mm) {

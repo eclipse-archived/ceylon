@@ -35,7 +35,7 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'extendedType'
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'declaration',function(){return this._decl;},undefined,function(){return{mod:$CCMM$,$t:{t:ClassDeclaration$meta$declaration},$cont:OpenClassOrInterfaceType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','declaration']};});
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'satisfiedTypes',function(){
   return this.declaration.satisfiedTypes;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClassOrInterfaceType$meta$declaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','satisfiedTypes']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClassOrInterfaceType$meta$declaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','satisfiedTypes']};});
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'string',function(){
   var s=this.declaration.string;
   var tps=this.declaration.tipo.$crtmm$.$tp;

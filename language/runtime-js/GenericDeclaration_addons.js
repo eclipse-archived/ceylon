@@ -8,13 +8,13 @@ defineAttr(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclar
       for (var tp in tps) {
         rv.push(OpenTypeParam(this.tipo,tp));
       }
-      return rv.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:TypeParameter$meta$declaration}});
+      return ArraySequence(rv,{Element$Iterable:{t:TypeParameter$meta$declaration}});
     }
     return getEmpty();
   }
   console.log("TODO GenericDeclaration.typeParameterDeclarations");
   return getEmpty();
-},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element:{t:TypeParameter$meta$declaration}}},$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$at','typeParameterDeclarations']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:TypeParameter$meta$declaration}}},$cont:GenericDeclaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','GenericDeclaration','$at','typeParameterDeclarations']};});
 GenericDeclaration$meta$declaration.$$.prototype.getTypeParameterDeclaration=function (name$14){
   if (this.tipo) {
     var mm=getrtmm$$(this.tipo);

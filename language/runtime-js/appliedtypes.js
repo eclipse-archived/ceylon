@@ -348,7 +348,7 @@ defineAttr($$appliedUnionType,'hash',function(){
             defineAttr($$appliedUnionType,'caseTypes',function(){
                 var $$appliedUnionType=this;
                 return $$appliedUnionType._types; //TODO type
-            },undefined,function(){return{mod:$CCMM$,$t:{t:List,a:{Element:{t:Type$meta$model,a:{Type$Type:'Union$UnionType'}}}},$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$at','caseTypes']};});
+            },undefined,function(){return{mod:$CCMM$,$t:{t:List,a:{Element$List:{t:Type$meta$model,a:{Type$Type:'Union$UnionType'}}}},$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$at','caseTypes']};});
 
       $$appliedUnionType.typeOf=function typeOf(instance$20){
         var tipos=[];
