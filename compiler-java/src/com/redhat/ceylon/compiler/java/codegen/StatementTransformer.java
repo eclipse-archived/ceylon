@@ -2803,7 +2803,7 @@ public class StatementTransformer extends AbstractTransformer {
                     null);
         } else {
             // we must unerase the exception to Throwable
-            ProducedType exceptionType = expr.getTypeModel().getSupertype(t.getUnit().getExceptionDeclaration());
+            ProducedType exceptionType = expr.getTypeModel().getSupertype(t.getUnit().getThrowableDeclaration());
             exception = gen().expressionGen().transformExpression(expr, BoxingStrategy.UNBOXED, exceptionType);
         }
         return make().Throw(exception);
