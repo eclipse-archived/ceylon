@@ -27,6 +27,7 @@ import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
+import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.NestableDeclaration;
 
@@ -300,10 +301,13 @@ public class Metamodel {
             return (Sequential<? extends ceylon.language.meta.declaration.OpenType>)(Sequential)empty_.get_();
         ceylon.language.meta.declaration.OpenType[] ret = new ceylon.language.meta.declaration.OpenType[types.size()];
         int i=0;
+        TypeDescriptor td = TypeDescriptor.NothingType;
         for(ProducedType pt : types){
-            ret[i++] = Metamodel.getMetamodel(pt);
+            OpenType mm = Metamodel.getMetamodel(pt);
+            td = td.union(((ReifiedType)mm).$getType$());
+            ret[i++] = mm;
         }
-        return Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, ret);
+        return Util.sequentialInstance(td, ret);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
