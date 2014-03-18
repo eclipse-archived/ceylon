@@ -3845,7 +3845,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(ModuleImport imp : moduleScope.getImports()){
             // only consider exported transitive deps
             if(!imp.isExport())
-                return false;
+                continue;
             if(imp.getModule() == importedModule)
                 return true;
             if(isImportedSpecialRules(imp.getModule(), importedModule))
