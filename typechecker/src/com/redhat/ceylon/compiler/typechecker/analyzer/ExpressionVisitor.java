@@ -4155,7 +4155,7 @@ public class ExpressionVisitor extends Visitor {
             else {*/
                 ProducedType t = ptr.getFullType(wrap(ptr.getType(), receivingType, that));
                 that.setTarget(ptr); //TODO: how do we wrap ptr???
-                if (!dynamic && !that.getStaticMethodReference() && isTypeUnknown(t)) {
+                if (!dynamic && isTypeUnknown(t)) {
                     //this occurs with an ambiguous reference
                     //to a member of an intersection type
                     that.addError("could not determine type of method or attribute reference: " +
