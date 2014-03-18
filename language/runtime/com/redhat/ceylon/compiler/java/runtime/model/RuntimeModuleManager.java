@@ -81,7 +81,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
                     ModuleImport depImport = findImport(module, dependency);
                     if (depImport == null) {
                         ModuleImport moduleImport = new ModuleImport(dependency, false, false);
-                        module.getImports().add(moduleImport);
+                        module.addImport(moduleImport);
                     }
                 }
             }
