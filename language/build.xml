@@ -209,6 +209,10 @@
                 <include name="ceylon/language/Character.java"/>
                 <exclude name="ceylon/language/className.ceylon"/>
                 <include name="ceylon/language/className_.java"/>
+                <exclude name="ceylon/language/Throwable.ceylon"/>
+                <include name="ceylon/language/Throwable.java"/>
+                <exclude name="ceylon/language/Error.ceylon"/>
+                <include name="ceylon/language/Error.java"/>
                 <exclude name="ceylon/language/Exception.ceylon"/>
                 <include name="ceylon/language/Exception.java"/>
                 <exclude name="ceylon/language/suppressedExceptions.ceylon"/>
