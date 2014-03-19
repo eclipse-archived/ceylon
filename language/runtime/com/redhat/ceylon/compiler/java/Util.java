@@ -20,6 +20,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.language.ArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -40,6 +41,8 @@ public class Util {
         // see https://github.com/ceylon/ceylon.language/issues/311
         ceylon.language.impl.rethrow_.class.toString();
     }
+    
+    private static final int INIT_ARRAY_SIZE = 10;
     
     public static String declClassName(String name) {
         return name.replace("::", ".");
@@ -197,6 +200,422 @@ public class Util {
     //
     // Java variadic conversions
     
+    /** Return the size of the given iterable if we know it can be computed 
+     * efficiently (typcially without iterating the iterable)
+     */
+    private static <T> int fastIterableSize(Iterable<? extends T, ?> iterable) {
+        if (iterable instanceof Sequential
+                || iterable instanceof ArrayIterable) {
+            return (int)iterable.getSize();
+        }
+        String[] o = null;
+        Object[] i;
+        i = o;
+        return -1;
+    }
+    
+    private static <T> void fillArray(T[] array, int offset, Iterable<? extends T, ?> iterable) {
+        Iterator<?> iterator = iterable.iterator();
+        Object o;
+        int index = offset;
+        while((o = iterator.next()) != finished_.get_()){
+            array[index] = (T)o;
+            index++;
+        }
+    }
+    
+    /**
+     * Base class for a family of builders for Java native arrays.
+     *  
+     * Encapsulation has been sacraficed for efficiency.
+     * 
+     * @param <A> an array type such as int[]
+     */
+    public static abstract class ArrayBuilder<A> {
+        private static final int MIN_CAPACITY = 5;
+        private static final int MAX_CAPACITY = java.lang.Integer.MAX_VALUE;
+        /** The number of elements in {@link #array}. This is always <= {@link #capacity} */
+        protected int size;
+        /** The length of {@link #array} */
+        protected int capacity;
+        /** The array */
+        protected A array;
+        ArrayBuilder(int initialSize) {
+            capacity = Math.max(initialSize, MIN_CAPACITY);
+            array = allocate(capacity);
+            size = 0;
+        }
+        /** Append all the elements in the given array */
+        final void appendArray(A elements) {
+            int increment = size(elements);
+            int newsize = this.size + increment;
+            ensure(newsize);
+            System.arraycopy(elements, 0, array, this.size, increment);
+            this.size = newsize;
+        }
+        /** Ensure the {@link #array} is as big, or bigger than the given capacity */
+        protected final void ensure(int requestedCapacity) {
+            if (this.capacity >= requestedCapacity) {
+                return;
+            }
+            
+            int newcapacity = requestedCapacity+(requestedCapacity>>1);
+            if (newcapacity < MIN_CAPACITY) {
+                newcapacity = MIN_CAPACITY;
+            } else if (newcapacity > MAX_CAPACITY) {
+                newcapacity = requestedCapacity;
+                if (newcapacity > MAX_CAPACITY) {
+                    throw new AssertionException("can't allocate array bigger than " + MAX_CAPACITY);
+                }
+            }
+            
+            A newArray = allocate(newcapacity);
+            System.arraycopy(this.array, 0, newArray, 0, this.size);
+            this.capacity = newcapacity;
+            this.array = newArray;
+        }
+        
+        /**
+         * Allocate and return an array of the given size
+         */
+        protected abstract A allocate(int size);
+        /**
+         * The size of the given array
+         */
+        protected abstract int size(A array);
+        
+        /**
+         * Returns an array of exactly the right size to contain all the 
+         * appended elements.
+         */
+        A build() {
+            if (this.capacity == this.size) {
+                return array;
+            }
+            A result = allocate(this.size);
+            System.arraycopy(this.array, 0, result, 0, this.size);
+            return result;
+        }
+    }
+    
+    /** 
+     * An array builder whose result is an {@code Object[]}.
+     * @see ReflectingObjectArrayBuilder
+     */
+    static final class ObjectArrayBuilder extends ArrayBuilder<Object[]> {
+        ObjectArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+        @Override
+        protected Object[] allocate(int size) {
+            return new Object[size];
+        }
+        @Override
+        protected int size(Object[] array) {
+            return array.length;
+        }
+        
+        void appendRef(Object t) {
+            ensure(size+1);
+            array[size] = t;
+            size++;
+        }
+    }
+    /** 
+     * An array builder whose result is an array of a given component type, that is, {@code T[]}.
+     * The intermediate arrays are {@code Object[]}.
+     * @see ObjectArrayBuilder
+     */
+    public static final class ReflectingObjectArrayBuilder<T> extends ArrayBuilder<T[]> {
+        private final java.lang.Class<T> klass;
+        public ReflectingObjectArrayBuilder(int initialSize, java.lang.Class<T> klass) {
+            super(initialSize);
+            this.klass = klass;
+        }
+        @SuppressWarnings("unchecked")
+        @Override
+        protected T[] allocate(int size) {
+            return (T[])new Object[size];
+        }
+        @Override
+        protected int size(T[] array) {
+            return array.length;
+        }
+        
+        public void appendRef(T t) {
+            ensure(size+1);
+            array[size] = t;
+            size++;
+        }
+        public T[] build() {
+            T[] result = (T[])java.lang.reflect.Array.newInstance(klass, this.size);
+            System.arraycopy(this.array, 0, result, 0, this.size);
+            return result;
+        }
+    }
+    /** 
+     * An array builder whose result is a {@code int[]}.
+     */
+    static final class IntArrayBuilder extends ArrayBuilder<int[]> {
+
+        IntArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected int[] allocate(int size) {
+            return new int[size];
+        }
+
+        @Override
+        protected int size(int[] array) {
+            return array.length;
+        }
+        
+        void appendInt(int i) {
+            ensure(size+1);
+            array[size] = i;
+            size++;
+        }
+        
+        void appendLong(long i) {
+            appendInt((int)i);
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code long[]}.
+     */
+    static final class LongArrayBuilder extends ArrayBuilder<long[]> {
+
+        LongArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected long[] allocate(int size) {
+            return new long[size];
+        }
+
+        @Override
+        protected int size(long[] array) {
+            return array.length;
+        }
+        
+        void appendLong(long i) {
+            ensure(size+1);
+            array[size] = i;
+            size++;
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@ocde boolean[]}.
+     */
+    static final class BooleanArrayBuilder extends ArrayBuilder<boolean[]> {
+
+        BooleanArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected boolean[] allocate(int size) {
+            return new boolean[size];
+        }
+
+        @Override
+        protected int size(boolean[] array) {
+            return array.length;
+        }
+        
+        void appendBoolean(boolean b) {
+            ensure(size+1);
+            array[size] = b;
+            size++;
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code byte[]}.
+     */
+    static final class ByteArrayBuilder extends ArrayBuilder<byte[]> {
+
+        ByteArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected byte[] allocate(int size) {
+            return new byte[size];
+        }
+
+        @Override
+        protected int size(byte[] array) {
+            return array.length;
+        }
+        
+        void appendByte(byte b) {
+            ensure(size+1);
+            array[size] = b;
+            size++;
+        }
+        
+        void appendLong(long b) {
+            appendByte((byte)b);
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code short[]}.
+     */
+    static final class ShortArrayBuilder extends ArrayBuilder<short[]> {
+
+        ShortArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected short[] allocate(int size) {
+            return new short[size];
+        }
+
+        @Override
+        protected int size(short[] array) {
+            return array.length;
+        }
+        
+        void appendShort(short b) {
+            ensure(size+1);
+            array[size] = b;
+            size++;
+        }
+        
+        void appendLong(long b) {
+            appendShort((short)b);
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code double[]}.
+     */
+    static final class DoubleArrayBuilder extends ArrayBuilder<double[]> {
+
+        DoubleArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected double[] allocate(int size) {
+            return new double[size];
+        }
+
+        @Override
+        protected int size(double[] array) {
+            return array.length;
+        }
+        
+        void appendDouble(double i) {
+            ensure(size+1);
+            array[size] = i;
+            size++;
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code float[]}.
+     */
+    static final class FloatArrayBuilder extends ArrayBuilder<float[]> {
+
+        FloatArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected float[] allocate(int size) {
+            return new float[size];
+        }
+
+        @Override
+        protected int size(float[] array) {
+            return array.length;
+        }
+        
+        void appendFloat(float i) {
+            ensure(size+1);
+            array[size] = i;
+            size++;
+        }
+        
+        void appendDouble(double d) {
+            appendFloat((float)d);
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code char[]}.
+     */
+    static final class CharArrayBuilder extends ArrayBuilder<char[]> {
+
+        CharArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected char[] allocate(int size) {
+            return new char[size];
+        }
+
+        @Override
+        protected int size(char[] array) {
+            return array.length;
+        }
+        
+        void appendChar(char b) {
+            ensure(size+1);
+            array[size] = b;
+            size++;
+        }
+        
+        void appendCodepoint(int codepoint) {
+            if (Character.charCount(codepoint) == 1) {
+                appendChar((char)codepoint);
+            } else {
+                appendChar(Character.highSurrogate(codepoint));
+                appendChar(Character.lowSurrogate(codepoint));
+            }
+        }
+    }
+    
+    /** 
+     * An array builder whose result is a {@code java.lang.String[]}.
+     */
+    static final class StringArrayBuilder extends ArrayBuilder<java.lang.String[]> {
+
+        StringArrayBuilder(int initialSize) {
+            super(initialSize);
+        }
+
+        @Override
+        protected java.lang.String[] allocate(int size) {
+            return new java.lang.String[size];
+        }
+
+        @Override
+        protected int size(java.lang.String[] array) {
+            return array.length;
+        }
+        
+        void appendString(java.lang.String b) {
+            ensure(size+1);
+            array[size] = b;
+            size++;
+        }
+        
+        void appendCeylonString(ceylon.language.String javaString) {
+            appendString(javaString.value);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     public static <T> List<T> collectIterable(Iterable<? extends T, ?> sequence) {
         List<T> list = new LinkedList<T>();
@@ -217,14 +636,14 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toBooleanArray((ceylon.language.List<? extends ceylon.language.Boolean>)sequence,
                     initialElements);
-        List<ceylon.language.Boolean> list = collectIterable(sequence);
-        int i=initialElements.length;
-        boolean[] ret = new boolean[list.size() + i];
-        System.arraycopy(initialElements, 0, ret, 0, i);
-        for(ceylon.language.Boolean e : list){
-            ret[i++] = e.booleanValue();
+        BooleanArrayBuilder builder = new BooleanArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        builder.appendArray(initialElements);
+        Iterator<? extends ceylon.language.Boolean> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendBoolean(((ceylon.language.Boolean)o).booleanValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -251,16 +670,17 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toByteArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
                     initialElements);
-        List<ceylon.language.Integer> list = collectIterable(sequence);
-        byte[] ret = new byte[list.size() + initialElements.length];
+        ByteArrayBuilder builder = new ByteArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (byte) initialElements[i];
+            builder.appendLong(initialElements[i]);
         }
-        for(ceylon.language.Integer e : list){
-            ret[i++] = (byte)e.longValue();
+        Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendLong(((ceylon.language.Integer)o).longValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -289,16 +709,17 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toShortArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
                     initialElements);
-        List<ceylon.language.Integer> list = collectIterable(sequence);
-        short[] ret = new short[list.size() + initialElements.length];
+        ShortArrayBuilder builder = new ShortArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (short) initialElements[i];
+            builder.appendLong(initialElements[i]);
         }
-        for(ceylon.language.Integer e : list){
-            ret[i++] = (short)e.longValue();
+        Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendLong(((ceylon.language.Integer)o).longValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -327,16 +748,17 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toIntArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
                     initialElements);
-        List<ceylon.language.Integer> list = collectIterable(sequence);
-        int[] ret = new int[list.size() + initialElements.length];
+        IntArrayBuilder builder = new IntArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (int) initialElements[i];
+            builder.appendLong(initialElements[i]);
         }
-        for(ceylon.language.Integer e : list){
-            ret[i++] = (int)e.longValue();
+        Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendLong(((ceylon.language.Integer)o).longValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -365,14 +787,14 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toLongArray((ceylon.language.List<? extends ceylon.language.Integer>)sequence,
                     initialElements);
-        List<ceylon.language.Integer> list = collectIterable(sequence);
-        int i=initialElements.length;
-        long[] ret = new long[list.size() + i];
-        System.arraycopy(initialElements, 0, ret, 0, i);
-        for(ceylon.language.Integer e : list){
-            ret[i++] = e.longValue();
+        LongArrayBuilder builder = new LongArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        builder.appendArray(initialElements);
+        Iterator<? extends ceylon.language.Integer> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendLong(((ceylon.language.Integer)o).longValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -399,16 +821,17 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toFloatArray((ceylon.language.List<? extends ceylon.language.Float>)sequence,
                     initialElements);
-        List<ceylon.language.Float> list = collectIterable(sequence);
-        float[] ret = new float[list.size() + initialElements.length];
+        FloatArrayBuilder builder = new FloatArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (float) initialElements[i];
+            builder.appendDouble(initialElements[i]);
         }
-        for(ceylon.language.Float e : list){
-            ret[i++] = (float)e.doubleValue();
+        Iterator<? extends ceylon.language.Float> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendDouble(((ceylon.language.Float)o).doubleValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -437,14 +860,14 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toDoubleArray((ceylon.language.List<? extends ceylon.language.Float>)sequence,
                     initialElements);
-        List<ceylon.language.Float> list = collectIterable(sequence);
-        int i=initialElements.length;
-        double[] ret = new double[list.size() + i];
-        System.arraycopy(initialElements, 0, ret, 0, i);
-        for(ceylon.language.Float e : list){
-            ret[i++] = e.doubleValue();
+        DoubleArrayBuilder builder = new DoubleArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        builder.appendArray(initialElements);
+        Iterator<? extends ceylon.language.Float> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendDouble(((ceylon.language.Float)o).doubleValue());
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -471,17 +894,19 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toCharArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, 
                     initialElements);
-        List<ceylon.language.Character> list = collectIterable(sequence);
-        char[] ret = new char[list.size() + initialElements.length];
+        CharArrayBuilder builder = new CharArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+     
         int i=0;
-        // FIXME: this is invalid and should yield a larger array by splitting chars > 16 bits in two
         for(;i<initialElements.length;i++){
-            ret[i] = (char) initialElements[i];
+            builder.appendCodepoint((char) initialElements[i]);
+            
         }
-        for(ceylon.language.Character e : list){
-            ret[i++] = (char)e.intValue();
+        Iterator<? extends ceylon.language.Character> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendCodepoint(((ceylon.language.Character)o).codePoint);
         }
-        return ret;
+        return builder.build();
     }
 
     public static char[] 
@@ -507,14 +932,14 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toCodepointArray((ceylon.language.List<? extends ceylon.language.Character>)sequence,
                     initialElements);
-        List<ceylon.language.Character> list = collectIterable(sequence);
-        int i=initialElements.length;
-        int[] ret = new int[list.size() + i];
-        System.arraycopy(initialElements, 0, ret, 0, i);
-        for(ceylon.language.Character e : list){
-            ret[i++] = e.intValue();
+        IntArrayBuilder builder = new IntArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        builder.appendArray(initialElements);
+        Iterator<? extends ceylon.language.Character> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendInt(((ceylon.language.Character)o).codePoint);
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -541,14 +966,14 @@ public class Util {
         if(sequence instanceof ceylon.language.List)
             return toJavaStringArray((ceylon.language.List<? extends ceylon.language.String>)sequence,
                     initialElements);
-        List<ceylon.language.String> list = collectIterable(sequence);
-        int i=initialElements.length;
-        java.lang.String[] ret = new java.lang.String[list.size() + i];
-        System.arraycopy(initialElements, 0, ret, 0, i);
-        for(ceylon.language.String e : list){
-            ret[i++] = e.toString();
+        StringArrayBuilder builder = new StringArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
+        builder.appendArray(initialElements);
+        Iterator<? extends ceylon.language.String> iterator = sequence.iterator();
+        Object o;
+        while (!((o = iterator.next()) instanceof Finished)) {
+            builder.appendString(((ceylon.language.String)o).value);
         }
-        return ret;
+        return builder.build();
     }
 
     @SuppressWarnings("unchecked")
@@ -583,23 +1008,32 @@ public class Util {
         return ret;
     }
 
+    
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(ceylon.language.Iterable<? extends T, ?> iterable,
             java.lang.Class<T> klass, T... initialElements){
-        List<T> list = collectIterable(iterable);
-        T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass, 
-        		list.size() + initialElements.length);
-        // fast path
-        if(initialElements.length == 0){
-            // fast copy of list
-            list.toArray(ret);
-        }else{
-            // fast copy of initialElements
-            System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
-            // slow iteration for list :(
-            int i = initialElements.length;
-            for(T o : list)
-                ret[i++] = o;
+        if (iterable == null) {
+            return initialElements;
+        }
+        T[] ret;
+        int size = fastIterableSize(iterable);
+        if (size != -1) {
+            ret = (T[]) java.lang.reflect.Array.newInstance(klass, 
+                    size + initialElements.length);
+            if(initialElements.length != 0){
+                // fast copy of list
+                System.arraycopy(initialElements, 0, ret, 0, initialElements.length);
+            }    
+            fillArray(ret, initialElements.length, iterable);
+        } else {
+            ReflectingObjectArrayBuilder<T> builder = new ReflectingObjectArrayBuilder<T>(initialElements.length+INIT_ARRAY_SIZE, klass);
+            builder.appendArray(initialElements);
+            Iterator<? extends T> iterator = iterable.iterator();
+            Object o;
+            while (!((o = iterator.next()) instanceof Finished)) {
+                builder.appendRef((T)o);
+            }
+            ret = builder.build();
         }
         return ret;
     }
