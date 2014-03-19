@@ -867,15 +867,12 @@ public class Util {
         return ret;
     }
 
-    @SuppressWarnings("unchecked")
     public static char[] 
 	toCharArray(ceylon.language.Iterable<? extends ceylon.language.Character, ?> sequence,
 	        int... initialElements){
-        if(sequence instanceof ceylon.language.List)
-            return toCharArray((ceylon.language.List<? extends ceylon.language.Character>)sequence, 
-                    initialElements);
+        // Note the List optimization doesn't work because the number of codepoints in the sequence
+        // doesn't equal the size of the result array.
         CharArrayBuilder builder = new CharArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
-     
         int i=0;
         for(;i<initialElements.length;i++){
             builder.appendCodepoint((char) initialElements[i]);
@@ -892,17 +889,7 @@ public class Util {
     public static char[] 
 	toCharArray(ceylon.language.List<? extends ceylon.language.Character> sequence,
 	        int... initialElements){
-        char[] ret = new char[(sequence == null ? 0 : (int) sequence.getSize()) + initialElements.length];
-        int i=0;
-        // FIXME: this is invalid and should yield a larger array by splitting chars > 16 bits in two
-        for(;i<initialElements.length;i++){
-            ret[i] = (char) initialElements[i];
-        }
-        while(sequence != null && !sequence.getEmpty()){
-            ret[i++] = (char) sequence.getFirst().intValue();
-            sequence = (ceylon.language.List<? extends ceylon.language.Character>)sequence.getRest();
-        }
-        return ret;
+        return toCharArray((ceylon.language.Iterable<? extends ceylon.language.Character, ?>)sequence, initialElements);
     }
 
     @SuppressWarnings("unchecked")
