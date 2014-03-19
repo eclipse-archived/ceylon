@@ -30,8 +30,8 @@ import com.sun.tools.javac.util.Context;
 
 public class CeylonClassReader extends ClassReader {
 
-    public static CeylonClassReader instance(Context context) {
-        CeylonClassReader instance = (CeylonClassReader) context.get(classReaderKey);
+    public static ClassReader instance(Context context) {
+        ClassReader instance = (ClassReader) context.get(classReaderKey);
         if (instance == null)
             instance = new CeylonClassReader(context, true);
         return instance;
