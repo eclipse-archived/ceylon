@@ -1172,7 +1172,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return findModule(moduleName, JDK_MODULE_VERSION);
         }
         if(packageName.startsWith("com.redhat.ceylon.compiler.java.runtime")
-                || packageName.startsWith("com.redhat.ceylon.compiler.java.language")){
+                || packageName.startsWith("com.redhat.ceylon.compiler.java.language")
+                || packageName.startsWith("com.redhat.ceylon.compiler.java.metadata")){
             return getLanguageModule();
         }
         return modules.getDefaultModule();
