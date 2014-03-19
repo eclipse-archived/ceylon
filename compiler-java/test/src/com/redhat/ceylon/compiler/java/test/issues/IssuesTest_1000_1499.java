@@ -637,15 +637,6 @@ public class IssuesTest_1000_1499 extends CompilerTest {
     }
 
     @Test
-    public void testBug1372() {
-        ErrorCollector c = new ErrorCollector();
-        String base = getPackagePath()+"/bug13xx/bug1372";
-        Boolean success = getCompilerTask(Arrays.asList("-src", base+"/testSrc"+File.pathSeparator+base+"/src"),
-                c, Arrays.asList("org.myapp")).call();
-        Assert.assertTrue(c.getAssertionFailureMessage(), success);
-    }
-
-    @Test
     @Ignore("For 1.1 - See https://github.com/ceylon/ceylon-compiler/issues/1375")
     public void testBug1375() {
         assertErrors("bug13xx/Bug1375",
