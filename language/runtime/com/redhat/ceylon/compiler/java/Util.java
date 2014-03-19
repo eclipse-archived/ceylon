@@ -617,19 +617,6 @@ public class Util {
     }
     
     @SuppressWarnings("unchecked")
-    public static <T> List<T> collectIterable(Iterable<? extends T, ?> sequence) {
-        List<T> list = new LinkedList<T>();
-        if (sequence != null) {
-            Iterator<? extends T> iterator = sequence.iterator();
-            Object o; 
-            while((o = iterator.next()) != finished_.get_()){
-                list.add((T)o);
-            }
-        }
-        return list;
-    }
-
-    @SuppressWarnings("unchecked")
     public static boolean[] 
     toBooleanArray(ceylon.language.Iterable<? extends ceylon.language.Boolean, ?> sequence,
             boolean... initialElements){
