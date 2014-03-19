@@ -20,8 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
-import junit.framework.AssertionFailedError;
-
 public class JavaType {
 
     public boolean booleanField = true;
@@ -188,7 +186,7 @@ public class JavaType {
     
     static void assertt(boolean test){
         if(!test)
-            throw new AssertionFailedError();
+            throw new AssertionError();
     }
     
     @Override
