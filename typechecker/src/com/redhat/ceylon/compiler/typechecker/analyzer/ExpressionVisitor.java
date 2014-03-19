@@ -2483,7 +2483,8 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             for (Parameter p: pl.getParameters()) {
-                if (p.getName().equals(name)) {
+                if (p.getName()!=null &&
+                        p.getName().equals(name)) {
                     return p;
                 }
             }
