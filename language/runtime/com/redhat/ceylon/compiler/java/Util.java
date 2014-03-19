@@ -9,10 +9,12 @@ import java.util.Set;
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionException;
 import ceylon.language.Callable;
+import ceylon.language.Finished;
 import ceylon.language.Integer;
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Ranged;
+import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
@@ -794,6 +796,35 @@ public class Util {
         }
     }
 
+    /** 
+     * Converts an Iterable to a Sequential without calling 
+     * Iterable.getSequence(). This is used for spread arguments in 
+     * tuple literals: {@code [*foo]}
+     * a 
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Sequential sequentialInstance(Iterable iterable) {
+        if (iterable instanceof Sequential) {
+            // since it's immutable
+            return (Sequential)iterable;
+        }
+        Iterator iterator = iterable.iterator();
+        Object e = iterator.next();
+        if (e instanceof Finished) {
+            return empty_.get_();
+        } else {
+            SequenceBuilder sb = new SequenceBuilder(Metamodel.getTypeDescriptor(iterable));
+            sb.append(e);
+            e = iterator.next();
+            while (!(e instanceof Finished)) {
+                sb.append(e);
+                e = iterator.next();
+            }
+            return sb.getSequence();
+        }
+    }
+    
+    
     /**
      * Returns a runtime exception. To be used by implementors 
      * of mixin methods used to access super-interfaces $impl fields
