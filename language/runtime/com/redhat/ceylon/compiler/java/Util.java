@@ -633,7 +633,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static boolean[]
     toBooleanArray(ceylon.language.List<? extends ceylon.language.Boolean> list,
             boolean... initialElements){
@@ -670,7 +669,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static byte[]
     toByteArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
@@ -709,7 +707,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static short[]
     toShortArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
@@ -748,7 +745,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static int[]
     toIntArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
@@ -784,7 +780,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static long[]
     toLongArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
@@ -821,7 +816,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static float[]
     toFloatArray(ceylon.language.List<? extends ceylon.language.Float> list,
             double... initialElements){
@@ -857,7 +851,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static double[]
     toDoubleArray(ceylon.language.List<? extends ceylon.language.Float> list,
             double... initialElements){
@@ -929,7 +922,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static int[]
     toCodepointArray(ceylon.language.List<? extends ceylon.language.Character> list,
             int... initialElements){
@@ -963,7 +955,6 @@ public class Util {
         return builder.build();
     }
 
-    @SuppressWarnings("unchecked")
     public static java.lang.String[]
     toJavaStringArray(ceylon.language.List<? extends ceylon.language.String> list,
             java.lang.String... initialElements){
