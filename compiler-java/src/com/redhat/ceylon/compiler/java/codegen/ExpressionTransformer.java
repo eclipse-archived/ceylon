@@ -1441,7 +1441,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Tree.SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
                 tail = transformExpression(spreadExpr.getExpression());
                 if (!typeFact().isSequentialType(spreadExpr.getTypeModel())) {
-                    tail = iterableToSequential(tail);
+                    tail = sequentialInstance(tail);
                     ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                     ProducedType sequentialType = typeFact().getSequentialType(elementType);
                     ProducedType expectedType = spreadExpr.getTypeModel();

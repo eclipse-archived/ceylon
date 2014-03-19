@@ -3000,6 +3000,10 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression iterableToSequential(JCExpression iterable){
         return make().Apply(null, makeSelect(iterable, "getSequence"), List.<JCExpression>nil());
     }
+    
+    JCExpression sequentialInstance(JCExpression iterable){
+        return makeUtilInvocation("sequentialInstance", List.of(iterable), null);
+    }
 
     /**
      * Casts a <tt>ceylon.language.Sequential</tt> type to a <tt>ceylon.language.Sequence</tt> type.
