@@ -52,12 +52,15 @@ shared void run() {
     testSystem();
     print("Tuples");
     tuples();
+    print("Curried");
     testCurries();
 
     print("Resources");
-    testResources();    
+    testResources();
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
+    print("Predicates");
+    testPredicates();
 
     results();
 }
