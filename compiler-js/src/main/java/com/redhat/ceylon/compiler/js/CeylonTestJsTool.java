@@ -49,6 +49,7 @@ public class CeylonTestJsTool extends RepoUsingTool {
     private String compileFlags;
     private String nodeExe;
     private boolean debug = true;
+    private boolean tap = false;
 
     public CeylonTestJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE);
@@ -93,6 +94,12 @@ public class CeylonTestJsTool extends RepoUsingTool {
     @Description("Shows more detailed output in case of errors.")
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+    
+    @Option(longName = "tap")
+    @Description("Enables the Test Anything Protocol v13.")
+    public void setTap(boolean tap) {
+        this.tap = tap;
     }
 
     @Rest
@@ -150,6 +157,10 @@ public class CeylonTestJsTool extends RepoUsingTool {
             }
         } else if (compileFlags.isEmpty()) {
             compileFlags = COMPILE_ONCE;
+        }
+        
+        if (tap) {
+            args.add("__tap");
         }
 
         CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
