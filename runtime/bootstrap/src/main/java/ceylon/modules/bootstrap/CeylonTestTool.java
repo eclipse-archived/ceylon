@@ -22,28 +22,29 @@ import com.redhat.ceylon.common.tool.Summary;
 @Summary("Executes tests")
 @Description(
         "Executes tests in specified `<modules>`. " +
-		"The `<modules>` arguments are the names of the modules to test with an optional version.")
+        "The `<modules>` arguments are the names of the modules to test with an optional version.")
 @RemainingSections(
         "## Configuration file" +
-        "\n\n" +
-        "The test tool accepts the following option from the Ceylon configuration file: " +
-        "`testtool.compile` " +
-        "(the equivalent option on the command line always has precedence)." +
-        "## EXAMPLE" +
-        "\n\n" +
-        "The following would execute tests in the `com.example.foobar` module:" +
-        "\n\n" +
+                "\n\n" +
+                "The test tool accepts the following option from the Ceylon configuration file: " +
+                "`testtool.compile` " +
+                "(the equivalent option on the command line always has precedence)." +
+                "## EXAMPLE" +
+                "\n\n" +
+                "The following would execute tests in the `com.example.foobar` module:" +
+                "\n\n" +
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends RepoUsingTool {
-    
-	private static final String TEST_MODULE_NAME = "com.redhat.ceylon.test";
+
+    private static final String TEST_MODULE_NAME = "com.redhat.ceylon.test";
     private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.test.run";
-    
+
     private List<String> moduleNameOptVersionList;
     private List<String> testList;
     private List<String> argumentList;
     private String compileFlags;
-	private String version;
+    private String version;
+    private boolean tap;
 
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -58,7 +59,7 @@ public class CeylonTestTool extends RepoUsingTool {
     public void setModules(List<String> moduleNameOptVersionList) {
         this.moduleNameOptVersionList = moduleNameOptVersionList;
     }
-    
+
     @OptionArgument(longName = "test", argumentName = "test")
     @Description("Specifies which tests will be run.")
     public void setTests(List<String> testList) {
@@ -72,11 +73,17 @@ public class CeylonTestTool extends RepoUsingTool {
     public void setCompile(String compile) {
         this.compileFlags = compile;
     }
-    
+
     @OptionArgument(argumentName = "version")
     @Description("Specifies which version of the test module to use, defaults to " + Versions.CEYLON_VERSION_NUMBER + ".")
     public void setVersion(String version) {
-    	this.version = version;
+        this.version = version;
+    }
+
+    @Option(longName = "tap")
+    @Description("Enables the Test Anything Protocol v13.")
+    public void setTap(boolean tap) {
+        this.tap = tap;
     }
 
     @Rest
@@ -87,24 +94,24 @@ public class CeylonTestTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         List<String> args = new ArrayList<String>();
-        
-		if (version == null) {
-			Collection<ModuleVersionDetails> versions = getModuleVersions(
-			        getRepositoryManager(),
-			        TEST_MODULE_NAME,
-			        null,
-			        ModuleQuery.Type.JVM,
-			        Versions.JVM_BINARY_MAJOR_VERSION,
-			        Versions.JVM_BINARY_MINOR_VERSION);
 
-			if (versions == null || versions.isEmpty()) {
+        if (version == null) {
+            Collection<ModuleVersionDetails> versions = getModuleVersions(
+                    getRepositoryManager(),
+                    TEST_MODULE_NAME,
+                    null,
+                    ModuleQuery.Type.JVM,
+                    Versions.JVM_BINARY_MAJOR_VERSION,
+                    Versions.JVM_BINARY_MINOR_VERSION);
+
+            if (versions == null || versions.isEmpty()) {
                 version = Versions.CEYLON_VERSION_NUMBER;
-			} else {
-				ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
-				version = mdv.getVersion();
-			}
-		}
-        
+            } else {
+                ModuleVersionDetails mdv = versions.toArray(new ModuleVersionDetails[] {})[versions.size() - 1];
+                version = mdv.getVersion();
+            }
+        }
+
         if (moduleNameOptVersionList != null) {
             for (String moduleNameOptVersion : moduleNameOptVersionList) {
                 String moduleAndVersion = resolveModuleAndVersion(moduleNameOptVersion);
@@ -124,7 +131,7 @@ public class CeylonTestTool extends RepoUsingTool {
         if (argumentList != null) {
             args.addAll(argumentList);
         }
-        
+
         if (compileFlags == null) {
             compileFlags = DefaultToolOptions.getTestToolCompileFlags();
             if (compileFlags.isEmpty()) {
@@ -133,9 +140,13 @@ public class CeylonTestTool extends RepoUsingTool {
         } else if (compileFlags.isEmpty()) {
             compileFlags = COMPILE_ONCE;
         }
-        
+
+        if (tap) {
+            args.add("--tap");
+        }
+
         CeylonRunTool ceylonRunTool = new CeylonRunTool();
-		ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
+        ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
         ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
         ceylonRunTool.setRepository(repo);
