@@ -1,0 +1,80 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+interface Buffer<X> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer$impl<X> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Buffer$impl();
+}
+final class Buffer$impl<X> {
+    
+    Buffer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<X> $this) {
+        this.$reified$X = $reified$X;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<X> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+    }
+}
+interface OutStream<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$impl();
+    
+    public <BT extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<T>>void writeFrom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT);
+}
+final class OutStream$impl<T> {
+    
+    OutStream$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public <BT extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<T>>void writeFrom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT) {
+    }
+}
+class OpenFileImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    OpenFileImpl() {
+    }
+    
+    class UnbufferedOutstreamImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream<.ceylon.language.Integer> {
+        
+        UnbufferedOutstreamImpl() {
+            this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$impl() {
+            return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$;
+        }
+        
+        @.java.lang.Override
+        public final <BT extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<.ceylon.language.Integer>>void writeFrom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT) {
+            $com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$.writeFrom($reified$BT);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.UnbufferedOutstreamImpl.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.class);
+}
