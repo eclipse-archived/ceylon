@@ -34,6 +34,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -782,7 +783,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 paramModel.getModel().getProducedTypedReference(cls.getType(), null),
                                 ((TypeDeclaration)cls.getContainer()).getType(),
                                 FINAL | transformClassDeclFlags(cls), 
-                                List.<TypeParameter>nil(), 
+                                List.<TypeParameter>nil(), Collections.<java.util.List<ProducedType>>emptyList(),
                                 paramModel.getType(), 
                                 Naming.getDefaultedParamMethodName(cls, paramModel),
                                 parameters.subList(0, parameters.indexOf(paramModel)), 
@@ -1052,6 +1053,8 @@ public class ClassTransformer extends AbstractTransformer {
                 Method method = (Method)member;
                 final ProducedTypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<ProducedType>emptyList());
                 Method subMethod = (Method)model.getMember(method.getName(), null, false);
+                java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds = producedTypeParameterBounds(
+                        typedMember, subMethod);
                 final ProducedTypedReference refinedTypedMember = model.getType().getTypedMember(subMethod, Collections.<ProducedType>emptyList());
                 final java.util.List<TypeParameter> typeParameters = subMethod.getTypeParameters();
                 final java.util.List<Parameter> parameters = subMethod.getParameterLists().get(0).getParameters();
@@ -1068,7 +1071,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     typedParameter,
                                     model.getType(),
                                     PUBLIC | FINAL, 
-                                    typeParameters, 
+                                    typeParameters, producedTypeParameterBounds,
                                     typedParameter.getType(), 
                                     Naming.getDefaultedParamMethodName(method, param), 
                                     parameters.subList(0, parameters.indexOf(param)),
@@ -1103,7 +1106,8 @@ public class ClassTransformer extends AbstractTransformer {
                             typedMember,
                             model.getType(),
                             PUBLIC | (method.isDefault() ? 0 : FINAL),
-                            method.getTypeParameters(), 
+                            typeParameters, 
+                            producedTypeParameterBounds, 
                             typedMember.getType(), 
                             naming.selector(method), 
                             method.getParameterLists().get(0).getParameters(),
@@ -1119,7 +1123,8 @@ public class ClassTransformer extends AbstractTransformer {
                             typedMember,
                             model.getType(),
                             PRIVATE,
-                            method.getTypeParameters(), 
+                            subMethod.getTypeParameters(), 
+                            producedTypeParameterBounds,
                             typedMember.getType(), 
                             Naming.selector(method, Naming.NA_CANONICAL_METHOD), 
                             method.getParameterLists().get(0).getParameters(),
@@ -1138,6 +1143,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 model.getType(),
                                 PUBLIC | (attr.isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
+                                Collections.<java.util.List<ProducedType>>emptyList(),
                                 typedMember.getType(), 
                                 Naming.getGetterName(attr), 
                                 Collections.<Parameter>emptyList(),
@@ -1151,6 +1157,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 model.getType(),
                                 PUBLIC | (((Setter)member).getGetter().isDefault() ? 0 : FINAL), 
                                 Collections.<TypeParameter>emptyList(), 
+                                Collections.<java.util.List<ProducedType>>emptyList(),
                                 typeFact().getAnythingDeclaration().getType(), 
                                 Naming.getSetterName(attr), 
                                 Collections.<Parameter>singletonList(((Setter)member).getParameter()),
@@ -1182,6 +1189,20 @@ public class ClassTransformer extends AbstractTransformer {
         
     }
 
+    private java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds(
+            final ProducedReference typedMember, Generic subMethod) {
+        java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds = new ArrayList<java.util.List<ProducedType>>(subMethod.getTypeParameters().size());
+        for (TypeParameter tp : subMethod.getTypeParameters()) {
+            java.util.List<ProducedType> satisfiedTypes = tp.getType().getSatisfiedTypes();
+            ArrayList<ProducedType> bounds = new ArrayList<>(satisfiedTypes.size());
+            for (ProducedType bound : satisfiedTypes) {
+                bounds.add(bound.getType().substitute(typedMember.getTypeArguments()));
+            }
+            producedTypeParameterBounds.add(bounds);
+        }
+        return producedTypeParameterBounds;
+    }
+
     private void generateInstantiatorDelegate(
             ClassDefinitionBuilder classBuilder, ProducedType satisfiedType,
             Interface iface, Class klass, ProducedType currentType) {
@@ -1201,6 +1222,7 @@ public class ClassTransformer extends AbstractTransformer {
                         currentType,
                         PUBLIC | FINAL, 
                         typeParameters, 
+                        producedTypeParameterBounds(typeMember, klass),
                         typedParameter.getType(),
                         Naming.getDefaultedParamMethodName(klass, param), 
                         parameters.subList(0, parameters.indexOf(param)),
@@ -1213,7 +1235,8 @@ public class ClassTransformer extends AbstractTransformer {
                         typeMember,
                         currentType,
                         PUBLIC | FINAL, 
-                        typeParameters,  
+                        typeParameters, 
+                        producedTypeParameterBounds(typeMember, klass),
                         typeMember.getType(), 
                         instantiatorMethodName, 
                         parameters.subList(0, parameters.indexOf(param)),
@@ -1226,7 +1249,8 @@ public class ClassTransformer extends AbstractTransformer {
                 typeMember,
                 currentType,
                 PUBLIC | FINAL, 
-                typeParameters,  
+                typeParameters, 
+                producedTypeParameterBounds(typeMember, klass),
                 typeMember.getType(), 
                 instantiatorMethodName, 
                 parameters,
@@ -1255,6 +1279,7 @@ public class ClassTransformer extends AbstractTransformer {
             ProducedType currentType,
             final long mods,
             final java.util.List<TypeParameter> typeParameters,
+            final java.util.List<java.util.List<ProducedType>> producedTypeParameterBounds,
             final ProducedType methodType,
             final String methodName,
             final java.util.List<Parameter> parameters, 
@@ -1268,8 +1293,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         if(typeParameters != null)
             concreteWrapper.reifiedTypeParametersFromModel(typeParameters);
+        Iterator<java.util.List<ProducedType>> iterator = producedTypeParameterBounds.iterator();
         for (TypeParameter tp : typeParameters) {
-            concreteWrapper.typeParameter(tp);
+            concreteWrapper.typeParameter(tp, iterator.next());
         }
         boolean explicitReturn = false;
         Declaration member = typedMember.getDeclaration();

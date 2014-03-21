@@ -3606,9 +3606,11 @@ public abstract class AbstractTransformer implements Transformation {
         return make().TypeParameter(names().fromString(name), makeTypeParameterBounds(satisfiedTypes));
     }
 
-    JCTypeParameter makeTypeParameter(TypeParameter declarationModel) {
+    JCTypeParameter makeTypeParameter(TypeParameter declarationModel, java.util.List<ProducedType> satisfiedTypesForBounds) {
         TypeParameter typeParameterForBounds = declarationModel;
-        java.util.List<ProducedType> satisfiedTypesForBounds = declarationModel.getSatisfiedTypes();
+        if (satisfiedTypesForBounds == null) {
+            satisfiedTypesForBounds = declarationModel.getSatisfiedTypes();
+        }
         // special case for method refinenement where Java doesn't let us refine the parameter bounds
         if(declarationModel.getContainer() instanceof Method){
             Method method = (Method) declarationModel.getContainer();
@@ -3645,7 +3647,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     JCTypeParameter makeTypeParameter(Tree.TypeParameterDeclaration param) {
         at(param);
-        return makeTypeParameter(param.getDeclarationModel());
+        return makeTypeParameter(param.getDeclarationModel(), null);
     }
 
     JCAnnotation makeAtTypeParameter(TypeParameter declarationModel) {

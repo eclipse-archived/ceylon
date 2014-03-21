@@ -283,8 +283,12 @@ public class MethodDefinitionBuilder
         return this;
     }
 
+    public MethodDefinitionBuilder typeParameter(TypeParameter param, java.util.List<ProducedType> producedBounds) {
+        return typeParameter(gen.makeTypeParameter(param, producedBounds), gen.makeAtTypeParameter(param));
+    }
+    
     public MethodDefinitionBuilder typeParameter(TypeParameter param) {
-        return typeParameter(gen.makeTypeParameter(param), gen.makeAtTypeParameter(param));
+        return typeParameter(param, null);
     }
     
     private MethodDefinitionBuilder typeParameter(JCTypeParameter tp, JCAnnotation tpAnno) {
