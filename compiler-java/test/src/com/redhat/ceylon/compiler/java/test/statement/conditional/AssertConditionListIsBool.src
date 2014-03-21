@@ -19,7 +19,7 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
             x$2 = null;
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "is String x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x.uppercased==\"S\"";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$2)));
     }
     
@@ -37,7 +37,7 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
             z$5 = null;
             $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z.uppercased==\"S\"";
         }
-        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$3);
+        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$3);
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5)));
     }
     

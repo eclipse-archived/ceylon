@@ -13,7 +13,7 @@ class Bug1024 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             .ceylon.language.String n$4 = null;
             if ((n$4 = n$2) != null) {
                 n$2$5 = n$4.toString();
-            } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists n"));
+            } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists n"));
         }
     }
     
@@ -26,7 +26,7 @@ class Bug1024 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 .ceylon.language.String n$9 = null;
                 if ((n$9 = n$7) != null) {
                     n$7$10 = n$9.toString();
-                } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists n"));
+                } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists n"));
             } else break loop_0;
         }
     }

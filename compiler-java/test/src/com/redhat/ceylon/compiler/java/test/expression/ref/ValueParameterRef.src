@@ -29,7 +29,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (.ceylon.language.String.instance("val").equals(valRef.$call$(this))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)"));
         final .ceylon.language.Callable<? extends .ceylon.language.String> valRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "String(ValueParameterRef<String>)", (short)-1){
             
             @.java.lang.Override
@@ -39,7 +39,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (.ceylon.language.String.instance("val").equals(valRef2.$call$(other))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef2(other)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef2(other)"));
         final .ceylon.language.Callable<? extends T> typeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>($reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, $reified$T), .ceylon.language.Empty.$TypeDescriptor$), "T(ValueParameterRef<T>)", (short)-1){
             
             @.java.lang.Override
@@ -49,7 +49,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (getTypeParam().equals(typeParamRef.$call$(this))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "typeParam == typeParamRef(this)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "typeParam == typeParamRef(this)"));
         final .ceylon.language.Callable<? extends .ceylon.language.String> stringTypeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), "String(ValueParameterRef<String>)", (short)-1){
             
             @.java.lang.Override
@@ -59,7 +59,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (.ceylon.language.String.instance("foo").equals(stringTypeParamRef.$call$(other))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == stringTypeParamRef(other)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == stringTypeParamRef(other)"));
     }
     
     public final void assortedLanguage() {
@@ -79,9 +79,9 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (objectEqualsRef.$call$(this).$call$(this).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
         if (!objectEqualsRef.$call$(this).$call$(.ceylon.language.String.instance("")).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> stringEqualsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)(String)", (short)-1){
             
             @.java.lang.Override
@@ -98,9 +98,9 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(.ceylon.language.String.instance("")).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
         if (!stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(this).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> integerPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
             
             @.java.lang.Override
@@ -117,9 +117,9 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(1L)).$call$(.ceylon.language.Integer.instance(1L)))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
         if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(0L)).$call$(.ceylon.language.Integer.instance(1L)))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> stringPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)(String)", (short)-1){
             
             @.java.lang.Override
@@ -136,9 +136,9 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
         if (stringEqualsRef.$call$(.ceylon.language.String.instance("foobar")).$call$(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar"))).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"foobar\")(stringPlus(\"foo\")(\"bar\"))"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"foobar\")(stringPlus(\"foo\")(\"bar\"))"));
     }
     
     public .com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef<T>.Inner Inner$new$(final .java.lang.String s) {
@@ -176,7 +176,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             }
         };
         if (.ceylon.language.String.instance("Inner(bar)").equals(innerRef.$call$(Inner$new$("bar")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(bar)\" == innerRef(Inner(\"bar\"))"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(bar)\" == innerRef(Inner(\"bar\"))"));
     }
     
     @.java.lang.Override

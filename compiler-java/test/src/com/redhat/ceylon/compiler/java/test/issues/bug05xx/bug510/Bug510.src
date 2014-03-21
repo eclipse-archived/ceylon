@@ -69,7 +69,7 @@ final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.mo
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     
@@ -96,7 +96,7 @@ final class volatile_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
 }

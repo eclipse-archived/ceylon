@@ -157,7 +157,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("nullary()").equals(nullaryRef.$call$(this).$call$())) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryRef(this)()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryRef(this)()"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -174,7 +174,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("unary(u)").equals(unaryRef.$call$(this).$call$(.ceylon.language.String.instance("u")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(u)\" == unaryRef(this)(\"u\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(u)\" == unaryRef(this)(\"u\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -192,7 +192,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("binary(b1, b2)").equals(binaryRef.$call$(this).$call$(.ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String, String)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -211,7 +211,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("ternary(t1, t2, t3)").equals(ternaryRef.$call$(this).$call$(.ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String, String, String)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -231,7 +231,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("nary(n1, n2, n3, n4)").equals(naryRef.$call$(this).$call$(.ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\")"));
     }
     
     public final void sequenced() {
@@ -314,13 +314,13 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("nullarySequenced([])").equals(nullaryRef.$call$(this).$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([])\" == nullaryRef(this)()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([])\" == nullaryRef(this)()"));
         if (.ceylon.language.String.instance("nullarySequenced([r1])").equals(nullaryRef.$call$(this).$callvariadic$(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\")"));
         if (.ceylon.language.String.instance("nullarySequenced([r1, r2])").equals(nullaryRef.$call$(this).$callvariadic$(.ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
                 .ceylon.language.String.instance("r2")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1, r2])\" == nullaryRef(this)(\"r1\", \"r2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1, r2])\" == nullaryRef(this)(\"r1\", \"r2\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String*)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -398,13 +398,13 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("unarySequenced(s; [])").equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [])\" == unaryRef(this)(\"s\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [])\" == unaryRef(this)(\"s\")"));
         if (.ceylon.language.String.instance("unarySequenced(s; [r1])").equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\")"));
         if (.ceylon.language.String.instance("unarySequenced(s; [r1, r2])").equals(unaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
                 .ceylon.language.String.instance("r2")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1, r2])\" == unaryRef(this)(\"s\", \"r1\", \"r2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1, r2])\" == unaryRef(this)(\"s\", \"r1\", \"r2\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$)))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String, String*)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -472,13 +472,13 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("binarySequenced(s1, s2; [])").equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [])\" == binaryRef(this)(\"s1\", \"s2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [])\" == binaryRef(this)(\"s1\", \"s2\")"));
         if (.ceylon.language.String.instance("binarySequenced(s1, s2; [r1])").equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\")"));
         if (.ceylon.language.String.instance("binarySequenced(s1, s2; [r1, r2])").equals(binaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
                 .ceylon.language.String.instance("r2")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1, r2])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\", \"r2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1, r2])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\", \"r2\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String, String, String*)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -536,13 +536,13 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [])").equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\")"));
         if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [r1])").equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\")"));
         if (.ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [r1, r2])").equals(ternaryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
                 .ceylon.language.String.instance("r2")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1, r2])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\", \"r2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1, r2])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\", \"r2\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$)))))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String, String, String, String, String*)(FunctionalParameterRef)", (short)-1){
             
             @.java.lang.Override
@@ -585,13 +585,13 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [])").equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\")"));
         if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [r1])").equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\")"));
         if (.ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [r1, r2])").equals(naryRef.$call$(this).$callvariadic$(.ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
                 .ceylon.language.String.instance("r2")})))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1, r2])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\", \"r2\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1, r2])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\", \"r2\")"));
     }
     
     public final void mpl() {
@@ -611,7 +611,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("unaryUnaryMpl(s, 1)").equals(unaryUnaryRef.$call$(this).$call$(.ceylon.language.String.instance("s")).$call$(.ceylon.language.Integer.instance(1L)))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryUnaryMpl(s, 1)\" == unaryUnaryRef(this)(\"s\")(1)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryUnaryMpl(s, 1)\" == unaryUnaryRef(this)(\"s\")(1)"));
     }
     
     public final void assortedLanguage() {
@@ -631,9 +631,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (objectEqualsRef.$call$(this).$call$(this).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
         if (!objectEqualsRef.$call$(this).$call$(.ceylon.language.String.instance("")).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> stringEqualsRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Object)(String)", (short)-1){
             
             @.java.lang.Override
@@ -650,9 +650,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(.ceylon.language.String.instance("")).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
         if (!stringEqualsRef.$call$(.ceylon.language.String.instance("")).$call$(this).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> integerPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
             
             @.java.lang.Override
@@ -669,9 +669,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(1L)).$call$(.ceylon.language.Integer.instance(1L)))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
         if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call$(.ceylon.language.Integer.instance(0L)).$call$(.ceylon.language.Integer.instance(1L)))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> stringPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)(String)", (short)-1){
             
             @.java.lang.Override
@@ -688,9 +688,9 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
         if (stringEqualsRef.$call$(.ceylon.language.String.instance("foobar")).$call$(stringPlus.$call$(.ceylon.language.String.instance("foo")).$call$(.ceylon.language.String.instance("bar"))).booleanValue()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"foobar\")(stringPlus(\"foo\")(\"bar\"))"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"foobar\")(stringPlus(\"foo\")(\"bar\"))"));
     }
     
     public .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef.Inner Inner$new$(final .java.lang.String s) {
@@ -735,7 +735,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
             }
         };
         if (.ceylon.language.String.instance("Inner(foo).m(bar)").equals(innerMRef.$call$(Inner$new$("foo")).$call$(.ceylon.language.String.instance("bar")))) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(foo).m(bar)\" == innerMRef(Inner(\"foo\"))(\"bar\")"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(foo).m(bar)\" == innerMRef(Inner(\"foo\"))(\"bar\")"));
     }
     
     @.java.lang.Override

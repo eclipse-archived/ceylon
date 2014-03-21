@@ -56,7 +56,7 @@ final class bug1242_yi_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
 }

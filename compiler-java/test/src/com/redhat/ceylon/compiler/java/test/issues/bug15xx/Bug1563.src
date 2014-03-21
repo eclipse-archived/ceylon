@@ -28,7 +28,7 @@ final class bug1563_helper_ {
             }
             returning $ceylontmp$1 instanceof .ceylon.language.Integer[];
         )) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array1 is ObjectArray<Integer>"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array1 is ObjectArray<Integer>"));
         final T[][] array2 = .com.redhat.ceylon.compiler.java.Util.makeArray($reified$T, (int)0L, 0);
         if ((
             let
@@ -37,7 +37,7 @@ final class bug1563_helper_ {
             }
             returning $ceylontmp$3 instanceof .ceylon.language.Integer[][];
         )) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array2 is ObjectArray<ObjectArray<Integer>>"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array2 is ObjectArray<ObjectArray<Integer>>"));
         final .ceylon.language.List<? extends T>[] array3 = (.ceylon.language.List<? extends T>[])new .ceylon.language.List[(int)0L];
         final .java.lang.Object[] array4 = .com.redhat.ceylon.compiler.java.Util.makeArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$T, $reified$U), (int)0L);
         if ((
@@ -47,7 +47,7 @@ final class bug1563_helper_ {
             }
             returning $ceylontmp$5 instanceof .ceylon.language.Integer[];
         )) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array4 is ObjectArray<Integer>"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array4 is ObjectArray<Integer>"));
         final .java.lang.Object array5 = new int[(int)0L][];
         if ((
             let
@@ -56,7 +56,7 @@ final class bug1563_helper_ {
             }
             returning $ceylontmp$7 instanceof int[][];
         )) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array5 is ObjectArray<IntArray>"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array5 is ObjectArray<IntArray>"));
         final .java.lang.Object array6 = new int[(int)0L][][];
         if ((
             let
@@ -65,7 +65,7 @@ final class bug1563_helper_ {
             }
             returning $ceylontmp$9 instanceof int[][][];
         )) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array6 is ObjectArray<ObjectArray<IntArray>>"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array6 is ObjectArray<ObjectArray<IntArray>>"));
         final .java.lang.Object[] array7 = new .java.lang.Object[(int)0L];
     }
     

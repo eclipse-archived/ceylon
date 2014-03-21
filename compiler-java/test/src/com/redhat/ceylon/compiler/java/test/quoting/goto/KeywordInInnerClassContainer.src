@@ -59,7 +59,7 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     

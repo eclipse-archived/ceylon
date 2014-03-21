@@ -7,12 +7,12 @@ final class assertionSimple_ {
     
     static void assertionSimple() {
         if (2L + 2L == 4L) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + ": should be 4" + (.java.lang.System.lineSeparator() + "\tviolated " + "2+2==4"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + ": should be 4" + (.java.lang.System.lineSeparator() + "\tviolated " + "2+2==4"));
         final long i = 5L;
         if (i < 10L) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + ": must be less than 10" + (.java.lang.System.lineSeparator() + "\tviolated " + "i<10"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + ": must be less than 10" + (.java.lang.System.lineSeparator() + "\tviolated " + "i<10"));
         if (i < 10L) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "i\n<\n        10"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "i\n<\n        10"));
     }
     
     public static void main(.java.lang.String[] args) {

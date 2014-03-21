@@ -13,7 +13,7 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     
@@ -35,7 +35,7 @@ public final class $module_ implements .com.redhat.ceylon.compiler.java.runtime.
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     
@@ -57,7 +57,7 @@ public final class $package_ implements .com.redhat.ceylon.compiler.java.runtime
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     

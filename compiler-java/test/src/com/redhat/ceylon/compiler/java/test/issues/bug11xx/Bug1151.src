@@ -231,10 +231,10 @@ final class bug1151_callsite_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C c = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C();
         final long ia3 = c.methodA().longValue();
         if (1L == ia3) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ia3"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ia3"));
         final long ib3 = c.methodB().longValue();
         if (1L == ib3) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ib3"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ib3"));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

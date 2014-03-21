@@ -15,7 +15,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
         } else {
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x < 10";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         return x == 1L;
     }
     
@@ -37,7 +37,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
             y$3 = 0L;
             $ceylontmp$assert$1 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z < 10";
         }
-        if ($ceylontmp$assert$1 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$1);
+        if ($ceylontmp$assert$1 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$1);
         return y$3 == 1L;
     }
     
@@ -60,7 +60,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
             y$6 = 0L;
             $ceylontmp$assert$4 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmp$assert$4 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$4);
+        if ($ceylontmp$assert$4 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$4);
         return y$6 == 1L;
     }
     
@@ -84,7 +84,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
             y$9 = 0L;
             $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
         }
-        if ($ceylontmp$assert$7 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$7);
+        if ($ceylontmp$assert$7 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$7);
         return y$9 == 1L;
     }
     
@@ -111,7 +111,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
             y$14 = 0L;
             $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmp$assert$10 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$10);
+        if ($ceylontmp$assert$10 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$10);
         return y$14 == 1L;
     }
     
@@ -134,7 +134,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
             y$17 = 0L;
             $ceylontmp$assert$15 = .java.lang.System.lineSeparator() + "\tviolated " + "x[0] exists" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmp$assert$15 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$15);
+        if ($ceylontmp$assert$15 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$15);
         return y$17 == 1L;
     }
     
@@ -157,7 +157,7 @@ class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime
             y1$22 = 0L;
             $ceylontmp$assert$18 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x1 = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y1 = y";
         }
-        if ($ceylontmp$assert$18 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$18);
+        if ($ceylontmp$assert$18 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$18);
         return x1$20 + y1$22 == 0L;
     }
     

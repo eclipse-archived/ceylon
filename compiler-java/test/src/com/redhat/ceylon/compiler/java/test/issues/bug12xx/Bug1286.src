@@ -167,7 +167,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     

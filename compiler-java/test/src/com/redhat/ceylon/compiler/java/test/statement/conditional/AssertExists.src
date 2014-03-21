@@ -10,7 +10,7 @@ class AssertExists implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         .ceylon.language.Integer x$1 = null;
         if ((x$1 = x) != null) {
             x$2 = x$1.longValue();
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists x"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists x"));
         return x$2;
     }
     
@@ -19,7 +19,7 @@ class AssertExists implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         .ceylon.language.Integer y$4 = null;
         if ((y$4 = x) != null) {
             y$5 = y$4.longValue();
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y = x"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y = x"));
         return y$5;
     }
     

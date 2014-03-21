@@ -123,7 +123,7 @@ final class bug1419_ {
             string3$6 = null;
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string3";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         final .ceylon.language.meta.model.Value a1 = (.ceylon.language.meta.model.Value)string1$2.$call$(t);
         final .ceylon.language.meta.model.Value a2 = (.ceylon.language.meta.model.Value)string2$4.$call$(t);
         final .ceylon.language.meta.model.Value<? extends .ceylon.language.String, ? super .ceylon.language.String> a3 = string3$6.$call$(t);
@@ -132,7 +132,7 @@ final class bug1419_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4$8 = null;
         if ((string4$8 = string4) != null) {
             string4$9 = string4$8;
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists string4"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists string4"));
         final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val a4 = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val)string4$9.bind(t);
     }
 }

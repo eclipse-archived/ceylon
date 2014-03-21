@@ -24,6 +24,6 @@ final class bug1532_ {
             something$2$4 = 0L;
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists something = something2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer something";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
     }
 }

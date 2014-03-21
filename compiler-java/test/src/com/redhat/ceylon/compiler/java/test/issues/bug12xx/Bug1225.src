@@ -32,7 +32,7 @@ public final class bug1225available_ implements .com.redhat.ceylon.compiler.java
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     
@@ -61,7 +61,7 @@ public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compile
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     
@@ -90,7 +90,7 @@ public final class bug1225unavailableBy_X_ implements .com.redhat.ceylon.compile
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Cyclic initialization");
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
         }
     }
     

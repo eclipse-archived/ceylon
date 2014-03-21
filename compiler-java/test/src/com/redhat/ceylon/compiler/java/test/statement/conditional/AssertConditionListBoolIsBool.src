@@ -24,7 +24,7 @@ class AssertConditionListBoolIsBool implements .com.redhat.ceylon.compiler.java.
             x$2 = 0L;
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x > 0";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         return x$2 == 1L;
     }
     
@@ -47,7 +47,7 @@ class AssertConditionListBoolIsBool implements .com.redhat.ceylon.compiler.java.
             y$5 = 0L;
             $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$3);
+        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$3);
         return y$5 == 1L;
     }
     

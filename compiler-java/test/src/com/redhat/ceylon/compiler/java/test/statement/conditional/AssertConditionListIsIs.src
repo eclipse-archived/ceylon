@@ -24,7 +24,7 @@ class AssertConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtim
             y1$4 = 0L;
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x1=x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y1=y";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         return x1$2 == y1$4;
     }
     
@@ -47,7 +47,7 @@ class AssertConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtim
             y$9 = 0L;
             $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y";
         }
-        if ($ceylontmp$assert$5 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$5);
+        if ($ceylontmp$assert$5 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$5);
         return x$7 == y$9;
     }
     

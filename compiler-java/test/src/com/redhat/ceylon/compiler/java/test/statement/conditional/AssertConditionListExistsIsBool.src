@@ -28,7 +28,7 @@ class AssertConditionListExistsIsBool implements .com.redhat.ceylon.compiler.jav
             y$4 = 0L;
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists z=x[0]" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = z" + (.java.lang.System.lineSeparator() + "\tuntested ") + "y > 0";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         return y$4 == 1L;
     }
     

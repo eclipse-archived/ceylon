@@ -10,12 +10,12 @@ class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.mod
         try {
             return lateAttr[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Accessing uninitialized \'late\' attribute");
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute");
         }
     }
     
     public final void setLateAttr(final long lateAttr) {
-        if (this.lateAttr != null) throw new .ceylon.language.InitializationException("Re-initialization of \'late\' attribute");
+        if (this.lateAttr != null) throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         this.lateAttr = new long[1];
         this.lateAttr[0] = lateAttr;
     }
@@ -25,7 +25,7 @@ class ClassAttributeLate implements .com.redhat.ceylon.compiler.java.runtime.mod
         try {
             return lateVariableAttr[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationException("Accessing uninitialized \'late\' attribute");
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute");
         }
     }
     

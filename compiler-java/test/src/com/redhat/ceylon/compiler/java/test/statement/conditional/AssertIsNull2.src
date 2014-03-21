@@ -7,7 +7,7 @@ class AssertIsNothing implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public final void m(final .java.lang.Object x) {
         if (x == null) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x"));
     }
     
     public static void main(.java.lang.String[] args) {

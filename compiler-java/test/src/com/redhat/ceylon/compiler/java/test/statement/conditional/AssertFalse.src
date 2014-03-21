@@ -6,7 +6,7 @@ final class assertFalse_ {
     }
     
     static .java.lang.String assertFalse() {
-        throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
     }
     
     public static void main(.java.lang.String[] args) {

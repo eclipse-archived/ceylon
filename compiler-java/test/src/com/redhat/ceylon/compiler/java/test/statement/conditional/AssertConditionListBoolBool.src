@@ -15,7 +15,7 @@ class AssertConditionListBoolBool implements .com.redhat.ceylon.compiler.java.ru
         } else {
             $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "x < 10";
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionException("Assertion failed" + $ceylontmp$assert$0);
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         return x == 1L;
     }
     
