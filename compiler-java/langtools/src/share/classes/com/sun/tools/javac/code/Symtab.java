@@ -188,8 +188,8 @@ public class Symtab {
     public  Type ceylonBooleanType;
     public  Type ceylonFinishedType;
     public  Type ceylonExceptionType;
-    public  Type ceylonAssertionExceptionType;
-    public  Type ceylonInitializationExceptionType;
+    public  Type ceylonAssertionErrorType;
+    public  Type ceylonInitializationErrorType;
     public  Type ceylonEnumeratedTypeErrorType;
     public  Type ceylonUninitializedMethodErrorType;
     public  Type ceylonUnresolvedCompilationErrorType;
@@ -873,8 +873,8 @@ public class Symtab {
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
         ceylonFinishedType = enterClass("ceylon.language.Finished");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
-        ceylonAssertionExceptionType = enterClass("ceylon.language.AssertionException");
-        ceylonInitializationExceptionType = enterClass("ceylon.language.InitializationException");
+        ceylonAssertionErrorType = enterClass("ceylon.language.AssertionError");
+        ceylonInitializationErrorType = enterClass("ceylon.language.InitializationError");
         ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
         ceylonUninitializedMethodErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UninitializedMethodError");
         ceylonUnresolvedCompilationErrorType = enterClass("com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError");

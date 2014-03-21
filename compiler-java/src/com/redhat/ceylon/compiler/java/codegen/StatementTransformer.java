@@ -171,7 +171,7 @@ public class StatementTransformer extends AbstractTransformer {
 
     private JCThrow makeThrowAssertionException(JCExpression messageExpr) {
         JCExpression exception = make().NewClass(null, null,
-                makeIdent(syms().ceylonAssertionExceptionType),
+                makeIdent(syms().ceylonAssertionErrorType),
                 List.<JCExpression>of(messageExpr),
                 null);
         return make().Throw(exception);
