@@ -60,12 +60,12 @@ shared class StubClass(
         void f() {
             throw OverflowException();
         }
-        throw AssertionException(""); 
+        throw AssertionError(""); 
     }
     
     "The stub method with undocumented throw, ceylondoc should print warning about it."
     shared void methodWithUndocumentedException2() { throw createException(); }
-    OverflowException|InitializationException createException() => OverflowException();
+    OverflowException|InitializationError createException() => OverflowException();
     
     "The stub method with `see`."
     see(`value attributeWithSee`, `class StubException`, `class A1`, `class AliasA2`)

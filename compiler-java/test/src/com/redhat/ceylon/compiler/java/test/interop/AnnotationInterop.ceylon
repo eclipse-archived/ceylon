@@ -48,7 +48,7 @@ javaAnnotationClass {
     classExact=`class String`;
     classes={`class String`, `class Boolean`, `interface Sequential`};
     classesRaw={`class String`, `class Boolean`, `interface Sequential`};
-    classesWithBound={`class Exception`, `class AssertionException`};
+    classesWithBound={`class Exception`, `class AssertionError`};
     classesExact={`class String`};
 }
 javaAnnotationEnum {

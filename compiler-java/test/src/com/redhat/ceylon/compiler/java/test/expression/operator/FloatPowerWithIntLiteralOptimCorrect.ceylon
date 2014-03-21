@@ -39,15 +39,15 @@ void floatPowerWithIntLiteralOptimCorrect() {
             try {
                 unopt = base.power(-3.0);
                 assert(identical(opt, unopt));
-            } catch (Exception e) {
+            } catch (Exception|AssertionError e) {
                 // one threw, the other not
             }
-        } catch (Exception e) {
+        } catch (Exception|AssertionError e) {
             try {
                 unopt = base.power(-3.0);
                 // one threw, the other not
                 assert(false);
-            } catch (Exception e2) {
+            } catch (Exception|AssertionError e2) {
                 // both threw
                 assert(e.message == e2.message);
             }
@@ -58,15 +58,15 @@ void floatPowerWithIntLiteralOptimCorrect() {
             try {
                 unopt = base.power(-2.0);
                 assert(opt == unopt);
-            } catch (Exception e) {
+            } catch (Exception|AssertionError e) {
                 // one threw, the other not
             }
-        } catch (Exception e) {
+        } catch (Exception|AssertionError e) {
             try {
                 unopt = base.power(-2.0);
                 // one threw, the other not
                 assert(false);
-            } catch (Exception e2) {
+            } catch (Exception|AssertionError e2) {
                 // both threw
                 assert(e.message == e2.message);
             }
@@ -77,15 +77,15 @@ void floatPowerWithIntLiteralOptimCorrect() {
             try {
                 unopt = base.power(-1.0);
                 assert(opt == unopt);
-            } catch (Exception e) {
+            } catch (Exception|AssertionError e) {
                 // one threw, the other not
             }
-        } catch (Exception e) {
+        } catch (Exception|AssertionError e) {
             try {
                 unopt = base.power(-1.0);
                 // one threw, the other not
                 assert(false);
-            } catch (Exception e2) {
+            } catch (Exception|AssertionError e2) {
                 // both threw
                 assert(e.message == e2.message);
             }

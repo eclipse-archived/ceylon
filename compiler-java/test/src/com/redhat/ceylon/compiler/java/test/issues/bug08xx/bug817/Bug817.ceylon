@@ -28,7 +28,7 @@ shared void bug817() {
 shared void bug817_1() {
     try {
         ObjectArray<JString> names = NullArray().names();
-    } catch (Exception ex) {
+    } catch (Exception|AssertionError ex) {
         return;
     }
     throw Exception("NullPointerException expected!");

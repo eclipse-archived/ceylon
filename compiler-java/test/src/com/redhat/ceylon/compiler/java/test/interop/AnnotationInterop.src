@@ -35,7 +35,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
                 .ceylon.language.Sequential.class},
         classesWithBound = {
                 .java.lang.Exception.class,
-                .ceylon.language.AssertionException.class},
+                .ceylon.language.AssertionError.class},
         classesExact = {.java.lang.String.class})
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationEnum(
         threadState = .java.lang.Thread.State.NEW,

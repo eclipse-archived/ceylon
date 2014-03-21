@@ -93,7 +93,7 @@ void tryCatchGenericIntersection() {
         t.catchIntersection(Exception());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { }
 
     // catchExceptionSubIntersection
@@ -102,13 +102,13 @@ void tryCatchGenericIntersection() {
         t.catchExceptionSubIntersection(ExceptionSub());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionSub e); }
     try {
         t.catchExceptionSubIntersection(ExceptionIntersection());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionIntersection e); }
     
     // catchExceptionGenericString
@@ -117,13 +117,13 @@ void tryCatchGenericIntersection() {
         t.catchExceptionGenericString(ExceptionGeneric<Integer>());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionGeneric<Integer> e); }
     try {
         t.catchExceptionGenericString(Exception());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { }
     
     // catchExceptionGenericStringOrInteger
@@ -133,7 +133,7 @@ void tryCatchGenericIntersection() {
         t.catchExceptionGenericStringOrInteger(ExceptionGeneric<Boolean>());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionGeneric<Boolean> e); }
     
     // catchExceptionGenericStringOrInteger2
@@ -143,7 +143,7 @@ void tryCatchGenericIntersection() {
         t.catchExceptionGenericStringOrInteger2(ExceptionGeneric<Boolean>());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionGeneric<Boolean> e); }
     
     // catchExceptionGenericStringOrIntegerOrExceptionSub
@@ -154,13 +154,13 @@ void tryCatchGenericIntersection() {
         t.catchExceptionGenericStringOrInteger2(ExceptionGeneric<Boolean>());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionGeneric<Boolean> e); }
     try {
         t.catchExceptionGenericStringOrInteger2(Exception());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { }
     
     // catchExceptionGenericStringOrIntegerOrExceptionSubIntersect
@@ -171,12 +171,12 @@ void tryCatchGenericIntersection() {
         t.catchExceptionGenericStringOrInteger2(ExceptionGeneric<Boolean>());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionGeneric<Boolean> e); }
     try {
         t.catchExceptionGenericStringOrInteger2(ExceptionSub());
         assert(false);
     }
-    catch (AssertionException e) { throw e;} 
+    catch (AssertionError e) { throw e;} 
     catch (Exception e) { assert(is ExceptionSub e); }
 }
