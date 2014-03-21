@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import ceylon.language.ArraySequence;
-import ceylon.language.AssertionException;
+import ceylon.language.AssertionError;
 import ceylon.language.Callable;
 import ceylon.language.Finished;
 import ceylon.language.Integer;
@@ -78,7 +78,7 @@ public class Util {
         if(o == null)
             return false;
         if(className == null)
-            throw new AssertionException("Type name cannot be null");
+            throw new AssertionError("Type name cannot be null");
         return classExtendsClass(o.getClass(), className);
     }
     
@@ -134,7 +134,7 @@ public class Util {
         if(o == null)
             return false;
         if(className == null)
-            throw new AssertionException("Type name cannot be null");
+            throw new AssertionError("Type name cannot be null");
         // we use a hash set to speed things up for interfaces, to avoid looking at them twice
         Set<java.lang.Class<?>> alreadyVisited = new HashSet<java.lang.Class<?>>();
         return classSatisfiesInterface(o.getClass(), className, alreadyVisited);
@@ -265,7 +265,7 @@ public class Util {
             } else if (newcapacity > MAX_CAPACITY) {
                 newcapacity = requestedCapacity;
                 if (newcapacity > MAX_CAPACITY) {
-                    throw new AssertionException("can't allocate array bigger than " + MAX_CAPACITY);
+                    throw new AssertionError("can't allocate array bigger than " + MAX_CAPACITY);
                 }
             }
             
@@ -1022,7 +1022,7 @@ public class Util {
     
     public static <T> T checkNull(T t) {
         if(t == null)
-            throw new AssertionException("null value returned from native call not assignable to Object");
+            throw new AssertionError("null value returned from native call not assignable to Object");
         return t;
     }
     

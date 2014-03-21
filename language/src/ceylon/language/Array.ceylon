@@ -15,7 +15,7 @@ shared final native class Array<Element>({Element*} elements)
 
     "Replace the existing element at the specified index 
      with the given element."
-    throws (`class AssertionException`, 
+    throws (`class AssertionError`, 
             "if the given index is out of bounds, that is, 
              if `index<0` or if `index>lastIndex`")
     shared native void set(

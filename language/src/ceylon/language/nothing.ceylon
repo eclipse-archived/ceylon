@@ -4,7 +4,7 @@
  
  (This is most useful for tool-generated implementations of
  `formal` members.)"
-throws (`class AssertionException`, 
+throws (`class AssertionError`, 
         "when evaluated")
 shared Nothing nothing {
     "nothing may not be evaluated"

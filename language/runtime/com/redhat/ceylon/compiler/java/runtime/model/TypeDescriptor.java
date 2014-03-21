@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ceylon.language.Anything;
-import ceylon.language.AssertionException;
+import ceylon.language.AssertionError;
 import ceylon.language.Basic;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
@@ -413,13 +413,13 @@ public abstract class TypeDescriptor {
     
     public static TypeDescriptor union(TypeDescriptor... members){
         if(members == null || members.length == 0)
-            throw new AssertionException("members can't be null or empty");
+            throw new AssertionError("members can't be null or empty");
         return new Union(members);
     }
     
     public static TypeDescriptor intersection(TypeDescriptor... members){
         if(members == null || members.length == 0)
-            throw new AssertionException("members can't be null or empty");
+            throw new AssertionError("members can't be null or empty");
         return new Intersection(members);
     }
 }

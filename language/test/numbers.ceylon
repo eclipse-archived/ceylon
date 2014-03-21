@@ -129,32 +129,32 @@ shared void numbers() {
     try { 
         exp(2,-1);
         fail("exp(2,-1) should throw");
-    } catch (Exception e) {}
+    } catch (AssertionError e) {}
     check(exp(1,-1)==1, "exp(1,-1)==1");
     try {
         exp(0,-1);
         fail("exp(0,-1) should throw");
-    } catch (Exception e) {}
+    } catch (AssertionError e) {}
     check(exp(-1,-1)==-1, "exp(-1,-1)==-1");
     try {
         exp(-2,-1);
         fail("exp(-2,-1) should throw");
-    } catch (Exception e) {}
+    } catch (AssertionError e) {}
     
     try {
         exp(2,-2);
         fail("exp(2,-2)==2 should throw");
-    } catch (Exception e) {}
+    } catch (AssertionError e) {}
     check(exp(1,-2)==1, "exp(1,-2)==1");
     try {
         exp(0,-2);
         fail("exp(2,-1) should throw");
-    } catch (Exception e) {}
+    } catch (AssertionError e) {}
     check(exp(-1,-2)==1, "exp(-1,-2)==1");
     try {
         exp(-2,-2);
         fail("exp(-2,-2) should throw");
-    } catch (Exception e) {}
+    } catch (AssertionError e) {}
     
     Integer twoToPowerTen = 2*2*2*2*2*2*2*2*2*2;
     check(exp(2,10)==twoToPowerTen, "exp(2,10)==twoToPowerTen");
@@ -497,13 +497,13 @@ void checkParseInteger() {
     try {
         parseInteger("0", 1);
         fail("parseInteger(0, 1) should throw");
-    } catch (AssertionException ex) {
+    } catch (AssertionError ex) {
         // OK
     }
     try {
         parseInteger("0", 37);
         fail("parseInteger(0, 37) should throw");
-    } catch (AssertionException ex) {
+    } catch (AssertionError ex) {
         // OK
     }
     
@@ -602,13 +602,13 @@ void checkFormatInteger() {
     try {
         formatInteger(0, 1);
         fail("formatInteger(0, 1) should throw");
-    } catch (AssertionException ex) {
+    } catch (AssertionError ex) {
         // OK
     }
     try {
         formatInteger(0, 37);
         fail("formatInteger(0, 37) should throw");
-    } catch (AssertionException ex) {
+    } catch (AssertionError ex) {
         // OK
     }
     if (0.size == 64) {

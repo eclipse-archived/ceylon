@@ -1,7 +1,7 @@
 "Create an array of the specified [[size]], populating every 
  index with the given [[element]]. The specified `size` must
  be in the range `0..runtime.maxArraySize`."
-throws (`class AssertionException`, 
+throws (`class AssertionError`, 
         "if `size<0` or `size>runtime.maxArraySize`")
 //see (`value runtime.maxArraySize`)
 shared native Array<Element> arrayOfSize<Element>(

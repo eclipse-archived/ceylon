@@ -1,4 +1,4 @@
-"[[Assertion failure|AssertionException]] that occurs when a 
+"[[Assertion failure|AssertionError]] that occurs when a 
  value reference could not be initialized, including when:
  
  - a toplevel value could not be initialized due to 
@@ -7,5 +7,5 @@
  - an initialized `late` but non-`variable` value is
    reassigned."
 see (`function late`)
-shared class InitializationException(String description)
-        extends AssertionException(description) {}
+shared class InitializationError(String description)
+        extends AssertionError(description) {}

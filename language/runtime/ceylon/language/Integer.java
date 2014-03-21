@@ -195,7 +195,7 @@ public final class Integer
             return 1L;
         }
         if (power < 0) {
-            throw new AssertionException(value + "^" + power + " cannot be represented as an Integer");
+            throw new AssertionError(value + "^" + power + " cannot be represented as an Integer");
         } else if (power == 0L) {
             return 1L;
         }

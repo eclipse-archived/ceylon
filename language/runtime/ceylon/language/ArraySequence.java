@@ -158,10 +158,10 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     	if (array.length==0 || 
     	        length == 0 ||
     	        array.length <= first) {
-    		throw new AssertionException("ArraySequence may not have zero elements");
+    		throw new AssertionError("ArraySequence may not have zero elements");
     	}
     	if (first + length > array.length) {
-    	    throw new AssertionException("Overflow :" + 
+    	    throw new AssertionError("Overflow :" + 
     	    		(first + length) + " > " + array.length);
     	}
     	this.$reifiedElement = $reifiedElement;

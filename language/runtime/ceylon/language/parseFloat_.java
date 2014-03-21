@@ -33,7 +33,7 @@ public final class parseFloat_
         case 'f':
             return -15;
         }
-        throw new AssertionException("illegal magnitude");
+        throw new AssertionError("illegal magnitude");
     }
     
     @TypeInfo("ceylon.language::Null|ceylon.language::Float")

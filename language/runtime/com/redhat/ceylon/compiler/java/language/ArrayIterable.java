@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.ArraySequence;
-import ceylon.language.AssertionException;
+import ceylon.language.AssertionError;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Category$impl;
@@ -52,7 +52,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
         this.$ceylon$language$Iterable$this = new ceylon.language.Iterable$impl<Element,Absent>($reifiedElement, $reifiedAbsent, this);
         this.$ceylon$language$Category$this = new ceylon.language.Category$impl<java.lang.Object>(ceylon.language.Object.$TypeDescriptor$,this);
     	if (array.length==0 || array.length<=first) {
-    		throw new AssertionException("ArrayIterable may not have zero elements (array)");
+    		throw new AssertionError("ArrayIterable may not have zero elements (array)");
     	}
         this.array = array;
         this.first = first;

@@ -27,10 +27,10 @@ public final class arrayOfSize_ {
             @TypeInfo("Element")
             final Element element) {
 		if (size>maxArraySize) {
-    		throw new AssertionException("array size must be smaller than " + maxArraySize);
+    		throw new AssertionError("array size must be smaller than " + maxArraySize);
     	}
 		if (size<0) {
-    		throw new AssertionException("array size must not be negative");
+    		throw new AssertionError("array size must not be negative");
     	}
         return new Array<Element>($reifiedElement, (int)size, element);
     }

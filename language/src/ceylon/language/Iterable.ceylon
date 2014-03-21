@@ -486,7 +486,7 @@ shared interface Iterable<out Element, out Absent=Null>
      results in the stream `{ 0, 3, 6, 9 }`.
      
      The step size must be greater than zero."
-    throws (`class AssertionException`, 
+    throws (`class AssertionError`, 
             "if the given step size is nonpositive, 
              i.e. `step<1`")
     shared default Iterable<Element,Absent> by(Integer step) {

@@ -36,7 +36,7 @@ public class ArraySequenceTest {
             ArraySequence.instance(ceylon.language.String.$TypeDescriptor$, 
                     cs());
             Assert.fail();
-        } catch (AssertionException e) {
+        } catch (AssertionError e) {
             // checking this is thrown
         }
         
@@ -44,7 +44,7 @@ public class ArraySequenceTest {
             ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor$, 
                     cs("a"), 1, 1);
             Assert.fail();
-        } catch (AssertionException e) {
+        } catch (AssertionError e) {
             // checking this is thrown
         }
         
@@ -52,7 +52,7 @@ public class ArraySequenceTest {
             ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor$, 
                     cs("a"), 0, 0);
             Assert.fail();
-        } catch (AssertionException e) {
+        } catch (AssertionError e) {
             // checking this is thrown
         }
         
@@ -64,7 +64,7 @@ public class ArraySequenceTest {
             ArraySequence.backedBy$hidden(ceylon.language.String.$TypeDescriptor$, 
                     cs("a"), 0, 2);
             Assert.fail();
-        } catch (AssertionException e) {
+        } catch (AssertionError e) {
             // checking this is thrown
         }
             

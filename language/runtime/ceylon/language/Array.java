@@ -796,11 +796,11 @@ public final class Array<Element>
             @Name("element") @TypeInfo("Element") Element element) {
     	long size = getSize();
 		if (index<0) {
-    		throw new AssertionException("array index " + index + 
+    		throw new AssertionError("array index " + index + 
     				" may not be negative");
     	}
     	else if (index>=size) {
-    		throw new AssertionException("array index " + index + 
+    		throw new AssertionError("array index " + index + 
     				" must be less than size of array " + size);
     	}
     	else {
@@ -1410,7 +1410,7 @@ public final class Array<Element>
                     	}
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof float[]) {
@@ -1420,7 +1420,7 @@ public final class Array<Element>
                         target[desti] = ((java.lang.Float) val).floatValue();
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof long[]) {
@@ -1435,7 +1435,7 @@ public final class Array<Element>
                     	}
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof int[]) {
@@ -1450,7 +1450,7 @@ public final class Array<Element>
                         }
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof short[]) {
@@ -1461,7 +1461,7 @@ public final class Array<Element>
                         target[desti] = ((java.lang.Short) val).shortValue();
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof byte[]) {
@@ -1471,7 +1471,7 @@ public final class Array<Element>
                         target[desti] = ((java.lang.Byte) val).byteValue();
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof boolean[]) {
@@ -1486,7 +1486,7 @@ public final class Array<Element>
                     	}
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof char[]) {
@@ -1496,7 +1496,7 @@ public final class Array<Element>
                         target[desti] = ((java.lang.Character) val).charValue();
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else if (destination.array instanceof java.lang.String[]) {
@@ -1512,7 +1512,7 @@ public final class Array<Element>
                     	}
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
                 else {
@@ -1570,7 +1570,7 @@ public final class Array<Element>
                     	}
                     }
                     else {
-                        throw new AssertionException("unexpected array types in copyTo()");
+                        throw new AssertionError("unexpected array types in copyTo()");
                     }
                 }
             }
