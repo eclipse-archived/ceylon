@@ -178,9 +178,9 @@ public abstract class FreeClassOrInterface
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({
             @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
-            @TypeParameter("Annotation")
+            @TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation")
     })
-    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends ceylon.language.Annotation> Sequential<? extends Kind> 
     annotatedMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
@@ -194,9 +194,9 @@ public abstract class FreeClassOrInterface
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({
             @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"),
-            @TypeParameter("Annotation")
+            @TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation")
     })
-    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends ceylon.language.Annotation> Sequential<? extends Kind> 
     annotatedDeclaredMemberDeclarations(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(

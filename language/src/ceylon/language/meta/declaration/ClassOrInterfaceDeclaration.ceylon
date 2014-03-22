@@ -1,3 +1,4 @@
+import ceylon.language { AnnotationType = Annotation }
 import ceylon.language.meta.model {
     ClassOrInterface,
     Member,
@@ -87,11 +88,13 @@ shared interface ClassOrInterfaceDeclaration
      that are annotated with the given `Annotation` type argument"
     shared formal Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
         given Kind satisfies NestableDeclaration;
+        given Annotation satisfies AnnotationType;
     
     "Returns the list of member declarations that satisfy the given `Kind` type argument and
      that are annotated with the given `Annotation` type argument"
     shared formal Kind[] annotatedDeclaredMemberDeclarations<Kind, Annotation>() 
             given Kind satisfies NestableDeclaration;
+        given Annotation satisfies AnnotationType;
     
     "Looks up a member declaration by name, provided it satisfies the given `Kind` type
      argument. Returns `null` if no such member matches."
