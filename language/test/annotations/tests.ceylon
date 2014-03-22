@@ -11,6 +11,7 @@ import ceylon.language.meta.declaration {
     ValueDeclaration,
     NestableDeclaration,
     FunctionDeclaration,
+    FunctionOrValueDeclaration,
     ClassDeclaration,
     ClassOrInterfaceDeclaration,
     InterfaceDeclaration,
@@ -707,7 +708,14 @@ shared void checkPackage() {
     check(aToplevelAttributeDecl in sharedDeclarations, "pkg 78");
     check(aToplevelGetterSetterDecl in sharedDeclarations, "pkg 79");
     check(aToplevelFunctionDecl in sharedDeclarations, "pkg 80");
-
+    
+    value sharedFunctionsOrValues = p.annotatedMembers<FunctionOrValueDeclaration, SharedAnnotation>();
+    check(! aClassDecl in sharedFunctionsOrValues, "pkg 81");
+    check(! aAbstractClassDecl in sharedFunctionsOrValues, "pkg 82");
+    check(! aInterfaceDecl in sharedFunctionsOrValues, "pkg 83");
+    check(aToplevelAttributeDecl in sharedFunctionsOrValues, "pkg 84");
+    check(aToplevelGetterSetterDecl in sharedFunctionsOrValues, "pkg 85");
+    check(aToplevelFunctionDecl in sharedFunctionsOrValues, "pkg 86");
 }
 
 @test
