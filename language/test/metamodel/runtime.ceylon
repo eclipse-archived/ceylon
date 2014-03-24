@@ -1634,117 +1634,117 @@ shared void run() {
         total++;
         visitStringHierarchy();
         pass++;
-    } catch (Exception e) { print("Failed visit string hierarchy"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed visit string hierarchy"); e.printStackTrace(); }
     try {
         total++;
         checkPackageAndModule();
         pass++;
-    } catch (Exception e) { print("Failed check package and module"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed check package and module"); e.printStackTrace(); }
     try {
         total++;
         checkHierarchy();
         pass++;
-    } catch (Exception e) { print("Failed hierarchy"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed hierarchy"); e.printStackTrace(); }
     try {
         total++;
         checkConstructors();    
         pass++;
-    } catch (Exception e) { print("Failed constructors"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed constructors"); e.printStackTrace(); }
     try {
         total++;
         checkMemberFunctions();
         pass++;
-    } catch (Exception e) { print("Failed member functions"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed member functions"); e.printStackTrace(); }
     try {
         total++;
         checkMemberAttributes();
         pass++;
-    } catch (Exception e) { print("Failed member attributes"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed member attributes"); e.printStackTrace(); }
     try {
         total++;
         checkMemberTypes();
         pass++;
-    } catch (Exception e) { print("Failed member types"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed member types"); e.printStackTrace(); }
     try {
         total++;
         checkToplevelAttributes();
         pass++;
-    } catch (Exception e) { print("Failed top level attributes"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed top level attributes"); e.printStackTrace(); }
     try {
         total++;
         checkToplevelFunctions();
         pass++;
-    } catch (Exception e) { print("Failed top level functions"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed top level functions"); e.printStackTrace(); }
     try {
         total++;
         checkUntypedFunctionToAppliedFunction();
         pass++;
-    } catch (Exception e) { print("Failed untyped to applied function"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed untyped to applied function"); e.printStackTrace(); }
     try {
         total++;
         checkModules();
         pass++;
-    } catch (Exception e) { print("Failed modules "); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed modules "); e.printStackTrace(); }
     try {
         total++;
         checkObjectDeclaration();
         pass++;
-    } catch (Exception e) { print("Failed object declaration"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed object declaration"); e.printStackTrace(); }
     try {
         total++;
         checkAliases();
         pass++;
-    } catch (Exception e) { print("Failed aliases"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed aliases"); e.printStackTrace(); }
     try {
         total++;
         checkTypeParameters();
         pass++;
-    } catch (Exception e) { print("Failed type parameters"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed type parameters"); e.printStackTrace(); }
     try {
         total++;
         checkClassOrInterfaceCaseTypes();
         pass++;
-    } catch (Exception e) { print("Failed class/interface case types"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed class/interface case types"); e.printStackTrace(); }
     try {
         total++;
         checkModifiers();
         pass++;
-    } catch (Exception e) { print("Failed modifiers"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed modifiers"); e.printStackTrace(); }
     try {
         total++;
         checkContainers();
         pass++;
-    } catch (Exception e) { print("Failed containers"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed containers"); e.printStackTrace(); }
     try {
         total++;
         checkLocalTypes();
         pass++;
-    } catch (Exception e) { print("Failed local types"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed local types"); e.printStackTrace(); }
     try {
         total++;
         checkEqualityAndHash();
         pass++;
-    } catch (Exception e) { print("Failed equals/hash"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed equals/hash"); e.printStackTrace(); }
     try {
         total++;
         checkApplyTypeConstraints();
         pass++;
-    } catch (Exception e) { print("Failed apply type constraints"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed apply type constraints"); e.printStackTrace(); }
     try {
         total++;
         checkApplications();
         pass++;
-    } catch (Exception e) { print("Failed applications"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed applications"); e.printStackTrace(); }
     try {
         total++;
         checkTests();
         pass++;
-    } catch (Exception e) { print("Failed tests"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed tests"); e.printStackTrace(); }
     try {
         total++;
         checkTypeArgumentChecks();
         pass++;
-    } catch (Exception e) { print("Failed type arguments"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) { print("Failed type arguments"); e.printStackTrace(); }
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
@@ -1756,7 +1756,7 @@ shared void run() {
         total++;
         t();
         pass++;
-      } catch (Exception e) {
+      } catch (Exception|AssertionError e) {
         print("Failed bug test ``total``");
         e.printStackTrace();
       }
