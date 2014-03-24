@@ -98,7 +98,7 @@ shared void test() {
             value iter = coalesce<Anything>{n,null,n2,null,n3};
             print(iter.first);
             fail("cannot create sequenced args with dynamic types");
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             check(true);
         }
         n = value{5};

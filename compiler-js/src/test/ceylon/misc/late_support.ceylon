@@ -17,7 +17,7 @@ void testLate() {
     try {
         LateTestParent(*kids);
         fail("reassigning to late attribute should fail");
-    } catch (InitializationException ex) {
+    } catch (InitializationError ex) {
         check(true);
     } catch (Exception ex) {
         fail("wrong exception thrown for late attribute");
@@ -25,7 +25,7 @@ void testLate() {
     try {
         print(LateTestChild().parent);
         fail("Reading uninitialized late attribute should fail");
-    } catch (InitializationException ex) {
+    } catch (InitializationError ex) {
         check(true);
     } catch (Exception ex) {
         fail("wrong exception thrown for late attribute");

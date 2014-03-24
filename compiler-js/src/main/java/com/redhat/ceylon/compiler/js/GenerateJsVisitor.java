@@ -1976,7 +1976,7 @@ public class GenerateJsVisitor extends Visitor
     void generateUnitializedAttributeReadCheck(String privname, String pubname) {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
-        out("if(", privname, "===undefined)throw ", clAlias, "InitializationException(");
+        out("if(", privname, "===undefined)throw ", clAlias, "InitializationError(");
         if (JsCompiler.compilingLanguageModule) {
             out("String$('");
         } else {
@@ -1985,7 +1985,7 @@ public class GenerateJsVisitor extends Visitor
         out("Attempt to read unitialized attribute «", pubname, "»'));");
     }
     void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
-        out("if(", privname, "!==undefined)throw ", clAlias, "InitializationException(");
+        out("if(", privname, "!==undefined)throw ", clAlias, "InitializationError(");
         if (JsCompiler.compilingLanguageModule) {
             out("String$('");
         } else {
@@ -4578,7 +4578,7 @@ public class GenerateJsVisitor extends Visitor
                 that.getConditionList().getLocation()).append(")");
         conds.specialConditionsAndBlock(that.getConditionList(), null, "if(!");
         //escape
-        out(") {throw ", clAlias, "wrapexc(", clAlias, "AssertionException(\"",
+        out(") {throw ", clAlias, "wrapexc(", clAlias, "AssertionError(\"",
                 escapeStringLiteral(sb.toString()), "\"),'",that.getLocation(), "','",
                 that.getUnit().getFilename(), "'); }");
         endLine();
