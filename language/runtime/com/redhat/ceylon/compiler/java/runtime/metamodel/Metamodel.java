@@ -544,6 +544,7 @@ public class Metamodel {
     
     @SuppressWarnings("unchecked")
     private static <A extends ceylon.language.Annotation> void addAnnotation(
+            Annotated annotated, 
             SequenceBuilder<A> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation,
             Predicates.Predicate<A> pred) {
@@ -553,7 +554,7 @@ public class Metamodel {
         }
         if (jAnnotationType.getAnnotation(Ceylon.class) == null) {
             // It's a Java annotation
-            addProxyCeylonAnnotation(ceylonAnnotations, jAnnotation);
+            addProxyCeylonAnnotation(annotated, ceylonAnnotations, jAnnotation);
             return;
         }
         if (jAnnotationType.getName().endsWith("$annotations$")) {
@@ -564,7 +565,7 @@ public class Metamodel {
                 throw new RuntimeException("While unwrapping a sequenced annotation", e);
             }
             for (java.lang.annotation.Annotation wrapped : jAnnotations) {
-                addAnnotation(ceylonAnnotations, wrapped, pred);
+                addAnnotation(annotated, ceylonAnnotations, wrapped, pred);
             }
         } else {
             // Find the annotation class
@@ -595,7 +596,7 @@ public class Metamodel {
     }
     
     private static void addProxyCeylonAnnotation(
-            SequenceBuilder<? extends ceylon.language.Annotation> ceylonAnnotations,
+            Annotated annotated, SequenceBuilder<? extends ceylon.language.Annotation> ceylonAnnotations,
             java.lang.annotation.Annotation jAnnotation) {
         Class<? extends java.lang.annotation.Annotation> jAnnotationType = jAnnotation.annotationType();
         InvocationHandler handler = new InvocationHandler() {
@@ -607,9 +608,20 @@ public class Metamodel {
                 return null;
             }
         };
-        java.lang.reflect.Proxy.newProxyInstance(jAnnotationType.getClassLoader(), 
-                new Class[]{jAnnotationType, ceylon.language.Annotation.class}, 
-                handler);
+        ClassLoader classLoader = jAnnotationType.getClassLoader();
+        if (classLoader == null) {
+            classLoader = ceylon.language.Annotation.class.getClassLoader();
+        }
+        try {
+            java.lang.reflect.Proxy.newProxyInstance(classLoader, 
+                    new Class[]{jAnnotationType, ceylon.language.Annotation.class}, 
+                    handler);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Element " + annotated 
+                    + " with Java annotation type " + jAnnotationType.getName() 
+                    + " (classloader: " + jAnnotationType.getClassLoader()
+                    + ") using classloader for proxy: " + classLoader, e);
+        }
     }
     
     public static <A extends ceylon.language.Annotation> Sequential<? extends A> annotations(
@@ -631,7 +643,7 @@ public class Metamodel {
         // TODO Fix initial size estimate when query for OptionalAnnotation
         SequenceBuilder<A> ceylonAnnotations = new SequenceBuilder<A>($reifiedValues, jAnnotations.length);
         for (java.lang.annotation.Annotation jAnnotation: jAnnotations) {
-            addAnnotation(ceylonAnnotations, jAnnotation, predicate);
+            addAnnotation(annotated, ceylonAnnotations, jAnnotation, predicate);
         }
         return ceylonAnnotations.getSequence();
     }
