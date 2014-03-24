@@ -280,7 +280,7 @@ class DeclarationParser {
     protected ClassOrInterfaceDeclaration makeClassOrInterface(Declaration packageOrType, String typeName) {
         final ClassOrInterfaceDeclaration result;
         if (packageOrType instanceof Package) {
-            result = ((Package)packageOrType).getClassOrInterface(typeName);
+            result = ((Package)packageOrType).getMember(ClassOrInterfaceDeclaration.$TypeDescriptor$, typeName);
         } else if (packageOrType instanceof ClassOrInterfaceDeclaration) {
             result = ((ClassOrInterfaceDeclaration)packageOrType).<ClassOrInterfaceDeclaration>getMemberDeclaration(ClassOrInterfaceDeclaration.$TypeDescriptor$, typeName);
         } else {
