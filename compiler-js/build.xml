@@ -164,15 +164,15 @@
 
     <target name="noderun">
         <echo message="Running tests on node.js (node must be installed)" />
-        <mkdir dir="${build.test}/modules/${jslangpath}" />
-        <mkdir dir="${build.test}/opt_modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/opt_modules/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/opt_modules/${jslangpath}" />
+        <mkdir dir="${build.test}/lexical/${jslangpath}" />
+        <mkdir dir="${build.test}/proto/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/lexical/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/lexical/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/proto/${jslangpath}" />
+        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/proto/${jslangpath}" />
         <java classname="NodeTest" classpathref="test.run.classpath">
-            <arg value="${build.test}/modules" />
-            <arg value="${build.test}/opt_modules" />
+            <arg value="${build.test}/lexical" />
+            <arg value="${build.test}/proto" />
         </java>
     </target>
 
