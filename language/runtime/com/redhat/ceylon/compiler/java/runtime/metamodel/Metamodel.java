@@ -562,7 +562,7 @@ public class Metamodel {
             try {
                 jAnnotations = (java.lang.annotation.Annotation[])jAnnotationType.getMethod("value").invoke(jAnnotation);
             } catch (ReflectiveOperationException e) {
-                throw new RuntimeException("While unwrapping a sequenced annotation", e);
+                throw new RuntimeException("While unwrapping a sequenced annotation of element " + annotated, e);
             }
             for (java.lang.annotation.Annotation wrapped : jAnnotations) {
                 addAnnotation(annotated, ceylonAnnotations, wrapped, pred);
@@ -578,7 +578,7 @@ public class Metamodel {
             try {
                 annotationClass = (java.lang.Class<A>)Class.forName(className, false, jAnnotationType.getClassLoader());
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to find annotation class " + className + " for annotation type " + annotationName, e);
+                throw new RuntimeException("Unable to find annotation class " + className + " for annotation type " + annotationName + " on element "+ annotated, e);
             }
             
             // Invoke it with the jAnnotation as the only argument
@@ -590,7 +590,7 @@ public class Metamodel {
                     ceylonAnnotations.append(cAnnotation);
                 }
             } catch (ReflectiveOperationException e) {
-                throw new RuntimeException("While reflectively instantiating " + annotationClass, e);
+                throw new RuntimeException("While reflectively instantiating " + annotationClass + " on element " + annotated, e);
             } 
         }
     }
