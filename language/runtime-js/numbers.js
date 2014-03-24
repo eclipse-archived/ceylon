@@ -79,7 +79,7 @@ JSNum$proto.remainder = function(other) { return this%other; }
 JSNum$proto.power = function(exp) {
     if (this.float$||exp.float$) { return Float(Math.pow(this, exp)); }
     if (exp<0 && this!=1 && this!=-1) {
-        throw Exception(String$("Negative exponent"));
+        throw AssertionError(String$("Negative exponent"));
     }
     return toInt(Math.pow(this, exp));
 }
