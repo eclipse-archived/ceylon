@@ -151,14 +151,7 @@ public abstract class FreeClassOrInterfaceType
 
     @Override
     public String toString() {
-        String prefix = "";
-        if(declaration instanceof ceylon.language.meta.declaration.ClassDeclaration)
-            prefix = "class ";
-        else if(declaration instanceof ceylon.language.meta.declaration.InterfaceDeclaration)
-            prefix = "interface ";
-        else if(declaration instanceof ceylon.language.meta.declaration.AliasDeclaration)
-            prefix = "alias ";
-        return prefix+Metamodel.toTypeString(getDeclaration(), getTypeArguments());
+        return Metamodel.toTypeString(getDeclaration(), getTypeArguments());
     }
     
     @Override

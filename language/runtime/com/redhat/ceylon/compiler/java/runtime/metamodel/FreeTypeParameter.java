@@ -89,8 +89,7 @@ public class FreeTypeParameter
 
     @Override
     public String getQualifiedName() {
-        ceylon.language.meta.declaration.AnnotatedDeclaration container = Metamodel.getContainer(declaration);
-        return container.getQualifiedName() + "." + getName();
+        return getContainer().getQualifiedName() + "." + getName();
     }
     
     @Override
@@ -161,6 +160,6 @@ public class FreeTypeParameter
 
     @Override
     public String toString() {
-        return "given " + getContainer().getQualifiedName() + "." + getName();
+        return "given " + getQualifiedName();
     }
 }

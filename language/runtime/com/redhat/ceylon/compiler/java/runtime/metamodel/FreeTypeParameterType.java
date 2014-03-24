@@ -104,7 +104,7 @@ public class FreeTypeParameterType
 
     @Override
     public String toString() {
-        return getDeclaration().toString();
+        return getDeclaration().getQualifiedName();
     }
     
     @Override

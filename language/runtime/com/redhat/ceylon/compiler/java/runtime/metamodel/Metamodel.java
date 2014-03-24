@@ -28,6 +28,7 @@ import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.OpenType;
+import ceylon.language.meta.declaration.OpenTypeVariable;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.NestableDeclaration;
 
@@ -907,8 +908,12 @@ public class Metamodel {
         return string.toString();
     }
     
-    private static void addTypeArguments(StringBuffer string, ceylon.language.meta.declaration.GenericDeclaration declaration,
-            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ?> typeArguments) {
+    /**
+     * @param <TypeOrOpenType> Either a Type (appending for a Model) or an 
+     * OpenType (appending for a Declaration)
+     */
+    private static <TypeOrOpenType> void addTypeArguments(StringBuffer string, ceylon.language.meta.declaration.GenericDeclaration declaration,
+            ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, TypeOrOpenType> typeArguments) {
         if(!declaration.getTypeParameterDeclarations().getEmpty()){
             string.append("<");
             Iterator<?> iterator = declaration.getTypeParameterDeclarations().iterator();
@@ -921,7 +926,17 @@ public class Metamodel {
                     string.append(",");
                 ceylon.language.meta.declaration.TypeParameter tpDecl = (ceylon.language.meta.declaration.TypeParameter) it;
                 Object val = typeArguments != null ? typeArguments.get(tpDecl) : null;
-                string.append(val != null ? val : "##Missing##");
+                if (val instanceof ceylon.language.meta.model.Type) {
+                    string.append(val);
+                } else if (val instanceof ceylon.language.meta.declaration.OpenTypeVariable) {
+                    string.append(((ceylon.language.meta.declaration.OpenTypeVariable)val).getDeclaration().getQualifiedName());
+                } else if (val instanceof ceylon.language.meta.declaration.OpenClassOrInterfaceType) {
+                    string.append(((ceylon.language.meta.declaration.OpenClassOrInterfaceType)val).getDeclaration().getQualifiedName());
+                } else if (val instanceof ceylon.language.meta.declaration.OpenType) {
+                    string.append(val);
+                } else {
+                    string.append("##Missing##");
+                }
             }
             string.append(">");
         }
