@@ -156,6 +156,7 @@
             <sysproperty key="file.encoding" value="UTF-8" />
             <arg value="src/test/ceylon"/>
             <arg value="../ceylon.language/test"/>
+            <arg value="X:../ceylon.language/test/jvm"/>
         </java>
     </target>
 

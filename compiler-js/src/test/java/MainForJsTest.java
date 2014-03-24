@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -7,6 +8,7 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 
 /**
  * Some hack before a proper unit test harness is put in place
@@ -27,11 +29,25 @@ public class MainForJsTest {
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
             .moduleManagerFactory(new JsModuleManagerFactory(null))
             .usageWarnings(false);
+        final ArrayList<File> excludes = new ArrayList<>();
         for (String dir : args) {
-            tcb.addSrcDirectory(new File(dir));
+            final File d = new File(dir.startsWith("X:")?dir.substring(2):dir);
+            if (dir.startsWith("X:")) {
+                excludes.add(d);
+            } else {
+                tcb.addSrcDirectory(d);
+            }
         }
         tcb.setRepositoryManager(repoman);
         TypeChecker typeChecker = tcb.getTypeChecker();
+        for (File x : excludes) {
+            final String ap = x.getPath();
+            for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
+                if (pu.getUnit().getFullPath().startsWith(ap)) {
+                    typeChecker.getPhasedUnits().removePhasedUnitForRelativePath(pu.getPathRelativeToSrcDir());
+                }
+            }
+        }
         typeChecker.process();
         if (typeChecker.getErrors() > 0) {
             System.exit(1);
