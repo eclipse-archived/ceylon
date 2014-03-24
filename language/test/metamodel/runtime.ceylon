@@ -10,10 +10,14 @@ import ceylon.language.meta.declaration {
     OpenClassType,
     OpenTypeVariable,
     OpenUnion,
+    OpenIntersection,
     Declaration,
     NestableDeclaration,
     AliasDeclaration,
-    covariant, contravariant, invariant, FunctionOrValueDeclaration
+    covariant, contravariant, invariant, FunctionOrValueDeclaration,
+    PackageDeclaration = Package,
+    ModuleDeclaration = Module,
+    TypeParameterDeclaration = TypeParameter
 }
 
 @test
@@ -1072,64 +1076,64 @@ shared void checkLocalTypes(){
 shared void checkEqualityAndHash(){
     // declarations
     
-    value noParamsDecl = `class NoParams`;
-    value fixedParamsDecl = `class FixedParams`;
+    ClassDeclaration noParamsDecl = `class NoParams`;
+    ClassDeclaration fixedParamsDecl = `class FixedParams`;
     assert(noParamsDecl == noParamsDecl);
     assert(noParamsDecl.hash == noParamsDecl.hash);
     assert(noParamsDecl != fixedParamsDecl);
     assert(noParamsDecl.hash != fixedParamsDecl.hash);
     assert(noParamsDecl.string == "class metamodel::NoParams");
     
-    value tpaDecl = `interface TPA`;
-    value tpbDecl = `interface TPB`;
+    InterfaceDeclaration tpaDecl = `interface TPA`;
+    InterfaceDeclaration tpbDecl = `interface TPB`;
     assert(tpaDecl == tpaDecl);
     assert(tpaDecl.hash == tpaDecl.hash);
     assert(tpaDecl != tpbDecl);
     assert(tpaDecl.hash != tpbDecl.hash);
     assert(tpaDecl.string == "interface metamodel::TPA");
     
-    value alias1Decl = `alias TypeAliasToClass`;
-    value alias2Decl = `alias TypeAliasToUnion`;
+    AliasDeclaration alias1Decl = `alias TypeAliasToClass`;
+    AliasDeclaration alias2Decl = `alias TypeAliasToUnion`;
     assert(alias1Decl == alias1Decl);
     assert(alias1Decl.hash == alias1Decl.hash);
     assert(alias1Decl != alias2Decl);
     assert(alias1Decl.hash != alias2Decl.hash);
     assert(alias1Decl.string == "alias metamodel::TypeAliasToClass");
     
-    value attr1Decl = `value NoParams.str`;
-    value attr2Decl = `value NoParams.integer`;
+    ValueDeclaration attr1Decl = `value NoParams.str`;
+    ValueDeclaration attr2Decl = `value NoParams.integer`;
     assert(attr1Decl == attr1Decl);
     assert(attr1Decl.hash == attr1Decl.hash);
     assert(attr1Decl != attr2Decl);
     assert(attr1Decl.hash != attr2Decl.hash);
     assert(attr1Decl.string == "value metamodel::NoParams.str");
     
-    value f1Decl = `function NoParams.noParams`;
-    value f2Decl = `function NoParams.fixedParams`;
+    FunctionDeclaration f1Decl = `function NoParams.noParams`;
+    FunctionDeclaration f2Decl = `function NoParams.fixedParams`;
     assert(f1Decl == f1Decl);
     assert(f1Decl.hash == f1Decl.hash);
     assert(f1Decl != f2Decl);
     assert(f1Decl.hash != f2Decl.hash);
     assert(f1Decl.string == "function metamodel::NoParams.noParams");
     
-    value p1Decl = `package ceylon.language.meta`;
-    value p2Decl = `package ceylon.language`;
+    PackageDeclaration p1Decl = `package ceylon.language.meta`;
+    PackageDeclaration p2Decl = `package ceylon.language`;
     assert(p1Decl == p1Decl);
     assert(p1Decl.hash == p1Decl.hash);
     assert(p1Decl != p2Decl);
     assert(p1Decl.hash != p2Decl.hash);
     assert(p1Decl.string == "package ceylon.language.meta");
     
-    value m1Decl = `module ceylon.language`;
-    value m2Decl = `module metamodel`;
+    ModuleDeclaration m1Decl = `module ceylon.language`;
+    ModuleDeclaration m2Decl = `module metamodel`;
     assert(m1Decl == m1Decl);
     assert(m1Decl.hash == m1Decl.hash);
     assert(m1Decl != m2Decl);
     assert(m1Decl.hash != m2Decl.hash);
     assert(m1Decl.string == "module ceylon.language/1.0.0");
     
-    assert(exists tp1Decl = `class TypeParams`.getTypeParameterDeclaration("T"));
-    assert(exists tp2Decl = `class ParameterisedContainerClass`.getTypeParameterDeclaration("Outer"));
+    assert(is TypeParameterDeclaration tp1Decl = `class TypeParams`.getTypeParameterDeclaration("T"));
+    assert(is TypeParameterDeclaration tp2Decl = `class ParameterisedContainerClass`.getTypeParameterDeclaration("Outer"));
     assert(tp1Decl == tp1Decl);
     assert(tp1Decl.hash == tp1Decl.hash);
     assert(tp1Decl != tp2Decl);
@@ -1140,46 +1144,46 @@ shared void checkEqualityAndHash(){
     
     // open types
     
-    assert(exists pt1OpenType = `class Sub1`.extendedType);
-    assert(exists pt2OpenType = `class Sub2`.extendedType);
+    assert(is OpenClassType pt1OpenType = `class Sub1`.extendedType);
+    assert(is OpenClassType pt2OpenType = `class Sub2`.extendedType);
     assert(pt1OpenType == pt1OpenType);
     assert(pt1OpenType.hash == pt1OpenType.hash);
     assert(pt1OpenType != pt2OpenType);
     assert(pt1OpenType.hash != pt2OpenType.hash);
-    assert(pt1OpenType.string == "class metamodel::TypeParams<class ceylon.language::Integer>");
+    assert(pt1OpenType.string == "metamodel::TypeParams<ceylon.language::Integer>");
 
-    value u1OpenType = `value NoParams.union1`.openType;
-    value u2OpenType = `value NoParams.union2`.openType;
-    value u3OpenType = `value NoParams.union3`.openType;
+    assert(is OpenUnion u1OpenType = `value NoParams.union1`.openType);
+    assert(is OpenUnion u2OpenType = `value NoParams.union2`.openType);
+    assert(is OpenUnion u3OpenType = `value NoParams.union3`.openType);
     assert(u1OpenType == u1OpenType);
     assert(u1OpenType.hash == u1OpenType.hash);
     assert(u1OpenType == u2OpenType);
     assert(u1OpenType.hash == u2OpenType.hash);
     assert(u1OpenType != u3OpenType);
     assert(u1OpenType.hash != u3OpenType.hash);
-    assert(u1OpenType.string == "interface metamodel::TPA|interface metamodel::TPB");
+    assert(u1OpenType.string == "metamodel::TPA|metamodel::TPB");
     
-    value i1OpenType = `value NoParams.intersection1`.openType;
-    value i2OpenType = `value NoParams.intersection2`.openType;
-    value i3OpenType = `value NoParams.intersection3`.openType;
+    assert(is OpenIntersection i1OpenType = `value NoParams.intersection1`.openType);
+    assert(is OpenIntersection i2OpenType = `value NoParams.intersection2`.openType);
+    assert(is OpenIntersection i3OpenType = `value NoParams.intersection3`.openType);
     assert(i1OpenType == i1OpenType);
     assert(i1OpenType.hash == i1OpenType.hash);
     assert(i1OpenType == i2OpenType);
     assert(i1OpenType.hash == i2OpenType.hash);
     assert(i1OpenType != i3OpenType);
     assert(i1OpenType.hash != i3OpenType.hash);
-    assert(i1OpenType.string == "interface metamodel::TPA&interface metamodel::TPB");
+    assert(i1OpenType.string == "metamodel::TPA&metamodel::TPB");
     
-    value tp1OpenType = `value TypeParams.t1`.openType;
-    value tp2OpenType = `value TypeParams.t2`.openType;
-    value tp3OpenType = `value TypeParams2.t1`.openType;
+    assert(is OpenTypeVariable tp1OpenType = `value TypeParams.t1`.openType);
+    assert(is OpenTypeVariable tp2OpenType = `value TypeParams.t2`.openType);
+    assert(is OpenTypeVariable tp3OpenType = `value TypeParams2.t1`.openType);
     assert(tp1OpenType == tp1OpenType);
     assert(tp1OpenType.hash == tp1OpenType.hash);
     assert(tp1OpenType == tp2OpenType);
     assert(tp1OpenType.hash == tp2OpenType.hash);
     assert(tp1OpenType != tp3OpenType);
     assert(tp1OpenType.hash != tp3OpenType.hash);
-    assert(tp1OpenType.string == "given metamodel::TypeParams.T");
+    assert(tp1OpenType.string == "metamodel::TypeParams.T");
     
     // models
     
@@ -1776,6 +1780,7 @@ shared void run() {
     sandbox(bug308);
     sandbox(bug318);
     sandbox(bug320);
+    sandbox(bug349);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);
