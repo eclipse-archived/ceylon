@@ -324,7 +324,12 @@ public abstract class Declaration
     
     @Override
     public int hashCode() {
-        return getName()==null ? 0 : getName().hashCode();
+        int ret = 17;
+        Scope container = getContainer();
+        ret = (37 * ret) + (container == null ? 0 : container.hashCode());
+        String name = getName();
+        ret = (37 * ret) + (name == null ? 0 : name.hashCode());
+        return ret;
     }
     
     /**
