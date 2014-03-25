@@ -1131,11 +1131,8 @@ public class GenerateJsVisitor extends Visitor
         self(d);
         out("===undefined)");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
-            out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(", clAlias, "String");
-            if (JsCompiler.isCompilingLanguageModule()) {
-                out("$");
-            }
-            out("(\"Cannot instantiate abstract class\")),'?','?')");
+            out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(");
+            out("\"Cannot instantiate abstract class\"),'?','?')");
         } else {
             self(d);
             out("=new ");
@@ -2108,12 +2105,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(StringLiteral that) {
-        final int slen = that.getText().codePointCount(0, that.getText().length());
-        if (JsCompiler.compilingLanguageModule) {
-            out("String$(\"", escapeStringLiteral(that.getText()), "\",", Integer.toString(slen), ")");
-        } else {
-            out(clAlias, "String(\"", escapeStringLiteral(that.getText()), "\",", Integer.toString(slen), ")");
-        }
+        out("\"", escapeStringLiteral(that.getText()), "\"");
     }
 
     @Override
@@ -4885,11 +4877,8 @@ public class GenerateJsVisitor extends Visitor
 
     /** Call internal function "throwexc" with the specified message and source location. */
     void generateThrow(String msg, Node node) {
-        out(clAlias, "throwexc(", clAlias, "Exception(", clAlias, "String");
-        if (JsCompiler.isCompilingLanguageModule()) {
-            out("$");
-        }
-        out("(\"", escapeStringLiteral(msg), "\")),'", node.getLocation(), "','",
+        out(clAlias, "throwexc(", clAlias, "Exception(");
+        out("\"", escapeStringLiteral(msg), "\"),'", node.getLocation(), "','",
                 node.getUnit().getFilename(), "')");
     }
 
