@@ -56,4 +56,14 @@ public class Setter extends MethodOrValue implements Scope {
     public boolean isSetter() {
         return true;
     }
+
+    @Override
+    public String getQualifier() {
+        Value getter = getGetter();
+        if(getter == null)
+            return null;
+        String getterQualifier = getter.getQualifier();
+        // use the same qualifier as the getter with a $setter$ prefix
+        return getterQualifier == null ? null : "$setter$"+getterQualifier;
+    }
 }

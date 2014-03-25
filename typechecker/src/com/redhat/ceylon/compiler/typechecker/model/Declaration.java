@@ -410,6 +410,7 @@ public abstract class Declaration
     }
     
     public String getPrefixedName(){
+        String qualifier = getQualifier();
         return qualifier == null ? name : qualifier + name;
     }
 }
