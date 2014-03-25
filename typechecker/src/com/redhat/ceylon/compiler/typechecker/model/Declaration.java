@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVers
 import static java.util.Collections.emptyList;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a named, annotated program element:
@@ -290,6 +291,8 @@ public abstract class Declaration
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
+            if(!Objects.equals(getQualifier(), that.getQualifier()))
+                return false;
             Scope thisContainer = getAbstraction(getContainer());
             Scope thatContainer = getAbstraction(that.getContainer());
             if (thisName==null || thatName==null || 
@@ -327,6 +330,8 @@ public abstract class Declaration
         int ret = 17;
         Scope container = getContainer();
         ret = (37 * ret) + (container == null ? 0 : container.hashCode());
+        String qualifier = getQualifier();
+        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
         String name = getName();
         ret = (37 * ret) + (name == null ? 0 : name.hashCode());
         // make sure we don't consider getter/setter or value/anonymous-type equal

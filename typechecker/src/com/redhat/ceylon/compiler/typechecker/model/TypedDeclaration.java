@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.getTypeArgumentM
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -172,6 +173,8 @@ public abstract class TypedDeclaration extends Declaration {
         }else if(container instanceof Package || container instanceof Scope){
             ret = (37 * ret) + container.hashCode();
         }
+        String qualifier = getQualifier();
+        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
         ret = (37 * ret) + getName().hashCode();
         return ret;
     }
@@ -189,6 +192,8 @@ public abstract class TypedDeclaration extends Declaration {
             if(!container.equals(b.getContainer()))
                 return false;
         }
+        if(!Objects.equals(getQualifier(), b.getQualifier()))
+            return false;
         return getName().equals(b.getName());
     }
 
