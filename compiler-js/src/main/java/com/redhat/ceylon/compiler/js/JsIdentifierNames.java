@@ -161,7 +161,7 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
-                name = String.format("%s$%d", decl.getName(), getUID(decl));
+                name = String.format("$%d", getUID(decl));
             }
         }
         return name;
@@ -204,7 +204,7 @@ public class JsIdentifierNames {
             //If we're compiling the language module, omit the package name
             return "";
         }
-        StringBuilder sb = new StringBuilder("$$$");
+        StringBuilder sb = new StringBuilder("$$");
         for (String s: pkg.getName()) {
             sb.append(s.substring(0,1));
         }
@@ -229,7 +229,7 @@ public class JsIdentifierNames {
         } else {
             name += nestingSuffix(decl);
         }
-        return String.format("$$%c%s", Character.toLowerCase(name.charAt(0)),
+        return String.format("$%c%s", Character.toLowerCase(name.charAt(0)),
                     name.substring(1));
     }
 
@@ -238,7 +238,7 @@ public class JsIdentifierNames {
      * the suffixes generated for two different scopes are different.
      */
     public String scopeSuffix(Scope scope) {
-        return String.format("$$%s", scope.getQualifiedNameString().replace("::","$").replace('.', '$'));
+        return String.format("$%s", scope.getQualifiedNameString().replace("::","$").replace('.', '$'));
     }
 
     /**
@@ -315,8 +315,7 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
-                name = String.format(priv ? "%s$%d_" : "%s$%d",
-                        decl.getName(), getUID(decl));
+                name = String.format(priv ? "$%d_" : "$%d", getUID(decl));
             }
         }
         //Fix #204 - same top-level declarations in different packages
