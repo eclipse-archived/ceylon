@@ -201,15 +201,18 @@ public class SpecificationVisitor extends Visitor {
     private void visitReference(Tree.Primary that) {
         Declaration member;
         boolean assigned;
+        boolean metamodel;
         if (that instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = (Tree.MemberOrTypeExpression) that;
             member = mte.getDeclaration();
             assigned = mte.getAssigned();
+            metamodel = false;
         }
         else if (that instanceof Tree.MetaLiteral) {
             Tree.MetaLiteral ml = (Tree.MetaLiteral) that;
             member = ml.getDeclaration();
             assigned = false;
+            metamodel = true;
         }
         else {
             return;
@@ -222,7 +225,7 @@ public class SpecificationVisitor extends Visitor {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
                 //section or interface
-                if (!isForwardReferenceable() && !hasParameter) {
+                if (!metamodel && !isForwardReferenceable() && !hasParameter) {
                     if (declaration.getContainer() instanceof Class) {
                         that.addError("forward reference to class member in initializer: " + 
                                 member.getName() + " is not yet declared (forward references must occur in declaration section)");
@@ -243,7 +246,7 @@ public class SpecificationVisitor extends Visitor {
                                 member.getName());                    
                     }
                 }
-                else if (!declaration.isNative()) {
+                else if (!declaration.isNative() && !metamodel) {
                     if (!isLate() || !isForwardReferenceable()) {
                         if (isVariable()) {
                             that.addError("not definitely initialized: " + 
