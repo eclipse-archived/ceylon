@@ -32,11 +32,7 @@ function printStackTrace(exc, _write) {
       _write(getOperatingSystem().newline);
       return;
     }
-    var mm = f.$crtmm$;
-    if (typeof(mm)==='function') {
-      mm = mm();
-      f.$crtmm$=mm;
-    }
+    var mm = getrtmm$$(f);
     if (mm) {
       var _src = '';
       if (i==0) {
