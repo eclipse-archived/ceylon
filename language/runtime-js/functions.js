@@ -32,11 +32,7 @@ function isOfType(obj, type) {
     }
     if (obj.getT$all === undefined) {
       if (obj.$crtmm$) {
-        var _mm = obj.$crtmm$;
-        if (typeof(_mm)==='function') {
-          _mm=_mm();
-          obj.$crtmm$=_mm;
-        }
+        var _mm = getrtmm$$(obj);
         //We can navigate the metamodel
         if (_mm.d['$mt'] === 'mthd') {
           if (type.t === Callable) { //It's a callable reference
@@ -67,23 +63,26 @@ function isOfType(obj, type) {
       return false;
     }
     if (type.t.$$.T$name in obj.getT$all()) {
+      if (type.t==Callable && !obj.$$targs$$ && getrtmm$$(obj) && obj.$crtmm$.$t && obj.$crtmm$.$ps!==undefined) {
+        //Callable with no $$targs$$, we can build them from metamodel
+        obj.$$targs$$={Return$Callable:obj.$crtmm$.$t,Arguments$Callable:{t:'T',l:[]}};
+        for (var i=0; i < obj.$crtmm$.$ps.length; i++) {
+          obj.$$targs$$.Arguments$Callable.l.push(obj.$crtmm$.$ps[i].$t);
+        }
+      }
       if (type.a && obj.$$targs$$) {
         for (var i in type.a) {
           var cmptype = type.a[i];
           var tmpobj = obj;
           var iance = null;
-          var _mm = type.t.$crtmm$;
-          if (typeof(_mm)==='function') {
-            _mm = _mm();
-            type.t.$crtmm$=_mm;
-          }
+          var _mm = getrtmm$$(type.t);
           if (_mm && _mm.$tp && _mm.$tp[i]) iance=_mm.$tp[i]['var'];
           if (iance===null) {//null means no i in _mm.$tp
             //Type parameter may be in the outer type
             while (iance===null && tmpobj.$$outer !== undefined) {
               tmpobj=tmpobj.$$outer;
               var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
-              var _mmf = typeof(_tmpf.$crtmm$)==='function'?_tmpf.$crtmm$():_tmpf.$crtmm$;
+              var _mmf = getrtmm$$(_tmpf);
               if (_mmf && _mmf.$tp && _mmf.$tp[i]) {
                 iance=_mmf.$tp[i]['var'];
               }
