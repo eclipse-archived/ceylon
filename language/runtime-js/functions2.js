@@ -62,8 +62,7 @@ flatten.$crtmm$=function(){return{
 }};
 
 function unflatten(ff, $$$mptypes) {
-  if (typeof(ff.$crtmm$)==='function')ff.$crtmm$=ff.$crtmm$();
-  if (ff.$crtmm$ && ff.$crtmm$.$ps) {
+  if (getrtmm$$(ff) && ff.$crtmm$.$ps) {
     var ru=function ru(seq,$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
       var pmeta = ff.$crtmm$.$ps;
