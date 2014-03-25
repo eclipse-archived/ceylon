@@ -1,8 +1,11 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 
 import org.junit.AfterClass;
@@ -14,6 +17,24 @@ public class RunJsTest {
 
     static File tmpModules;
 
+    static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+        try (FileInputStream fIn = new FileInputStream(sourceFile);
+                FileChannel source = fIn.getChannel();
+                FileOutputStream fOut = new FileOutputStream(destFile);
+                FileChannel destination = fOut.getChannel()) {
+            long transfered = 0;
+            long bytes = source.size();
+            while (transfered < bytes) {
+                transfered += destination.transferFrom(source, 0, source.size());
+                destination.position(transfered);
+            }
+        } finally {
+        }
+    }
+
     @BeforeClass
     public static void setup() throws IOException {
         tmpModules = File.createTempFile("ceylon", "runjstest");
@@ -23,7 +44,7 @@ public class RunJsTest {
         sub.mkdirs();
         File src = new File("build/test/modules/check/0.1");
         for (File f : src.listFiles()) {
-            Stitcher.copyFile(f, new File(sub, f.getName()));
+            copyFile(f, new File(sub, f.getName()));
         }
     }
 

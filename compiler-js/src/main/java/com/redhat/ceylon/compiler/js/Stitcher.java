@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,24 +32,6 @@ public class Stitcher {
 
     private static String VERSION="###";
 
-    public static void copyFile(File sourceFile, File destFile) throws IOException {
-        if (!destFile.exists()) {
-            destFile.createNewFile();
-        }
-        try (FileInputStream fIn = new FileInputStream(sourceFile);
-                FileChannel source = fIn.getChannel();
-                FileOutputStream fOut = new FileOutputStream(destFile);
-                FileChannel destination = fOut.getChannel()) {
-            long transfered = 0;
-            long bytes = source.size();
-            while (transfered < bytes) {
-                transfered += destination.transferFrom(source, 0, source.size());
-                destination.position(transfered);
-            }
-        } finally {
-        }
-    }
-
     private static String normalizePath(String path) {
     	return path.replace('\\', '/');
     }
@@ -68,7 +49,7 @@ public class Stitcher {
         tmpout.mkdir();
         tmpout.deleteOnExit();
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
-                .outDir(tmpout.getAbsolutePath()).modulify(false);
+                .outDir(tmpout.getAbsolutePath()).modulify(false).minify(true);
 
         //Typecheck the whole language module
         System.out.println("Compiling language module from Ceylon source");
