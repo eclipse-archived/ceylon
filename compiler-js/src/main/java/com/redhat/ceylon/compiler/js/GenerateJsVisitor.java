@@ -2597,6 +2597,12 @@ public class GenerateJsVisitor extends Visitor
                 // conversion from Ceylon String or Float to native value
                 return 2;
             } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
+                if (fromTerm instanceof Tree.MemberOrTypeExpression) {
+                    Declaration d = ((Tree.MemberOrTypeExpression)fromTerm).getDeclaration();
+                    if (!(d.isMember() || d.isAnonymous())) {
+                        return 0;
+                    }
+                }
                 out(clAlias, "$JsCallable(");
                 return 4;
             } else {
