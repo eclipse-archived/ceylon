@@ -260,6 +260,12 @@ public class JsCompiler {
                         try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
                             String line = null;
                             while ((line = reader.readLine()) != null) {
+                                if (!opts.isIndent() || opts.isMinify()) {
+                                    line = line.trim();
+                                    if (!opts.isComment() && line.startsWith("//") && !line.contains("*/")) {
+                                        continue;
+                                    }
+                                }
                                 lastOut.getWriter().write(line);
                                 lastOut.getWriter().write('\n');
                             }
