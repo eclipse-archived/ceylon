@@ -12,4 +12,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface Attribute {
+    /**
+     * Used by local attributes to point to the class holding the setter definition.
+     */
+    java.lang.Class<?> setterClass() default void.class;
 }
