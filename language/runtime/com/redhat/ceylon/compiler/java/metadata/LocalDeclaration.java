@@ -4,8 +4,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Annotation applied to local types
+ * Annotation applied to local declarations
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LocalContainer {
+public @interface LocalDeclaration {
+    String qualifier() default "";
 }
