@@ -18,6 +18,7 @@ public abstract class Declaration
         implements Referenceable, Annotated {
 
 	private String name;
+	private String qualifier;
 	private boolean shared;
 	private boolean formal;
 	private boolean actual;
@@ -386,4 +387,16 @@ public abstract class Declaration
     protected abstract int hashCodeForCache();
 
     protected abstract boolean equalsForCache(Object o);
+
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
+    }
+    
+    public String getPrefixedName(){
+        return qualifier == null ? name : qualifier + name;
+    }
 }
