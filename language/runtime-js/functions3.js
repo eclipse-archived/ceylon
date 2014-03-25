@@ -157,6 +157,7 @@ function convert$params(mm,a) {
 }
 
 function getrtmm$$(x) {
+  if (x===undefined||x===null)return undefined;
   if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
   return x.$crtmm$;
 }

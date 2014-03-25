@@ -180,9 +180,9 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclara
     var rv=[];
     for (var i=0; i < list.length; i++) {
       var mm = getrtmm$$(list[i].tipo);
-      var anns = mm.$an;
+      var anns = mm&&mm.$an;
       if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
-      for (var j=0; j<anns.length; j++) {
+      if (anns) for (var j=0; j<anns.length; j++) {
         if (isOfType(anns[j],$$$mptypes.Annotation$annotatedMemberDeclarations)) {
           rv.push(list[i]);
           break;

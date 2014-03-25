@@ -25,7 +25,10 @@ function _findTypeFromModel(pkg,mdl,cont) {
   var out=cont?cont.$$.prototype:mod.meta;
   var rv=out[nm];
   if (rv===undefined)rv=out['$'+nm];
-  if (rv===undefined)rv=out['$init$'+nm]();
+  if (rv===undefined){
+    rv=out['$init$'+nm];
+    if (typeof(rv)==='function')rv=rv();
+  }
   return rv;
 }
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
@@ -120,8 +123,8 @@ function OpenFunction(pkg, meta, that){
       that.tipo = meta;
       that.meta = get_model(_mm);
     }
-    that.name_=_mm.d[_mm.d.length-1];
-    that.toplevel_=_mm.$cont===undefined;
+    that.name_=(_mm&&_mm.d[_mm.d.length-1])||'?';
+    that.toplevel_=_mm===undefined||_mm.$cont===undefined;
     FunctionDeclaration$meta$declaration(that);
     return that;
 }
