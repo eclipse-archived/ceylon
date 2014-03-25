@@ -329,6 +329,9 @@ public abstract class Declaration
         ret = (37 * ret) + (container == null ? 0 : container.hashCode());
         String name = getName();
         ret = (37 * ret) + (name == null ? 0 : name.hashCode());
+        // make sure we don't consider getter/setter or value/anonymous-type equal
+        ret = (37 * ret) + (isSetter() ? 0 : 1);
+        ret = (37 * ret) + (isAnonymous() ? 0 : 1);
         return ret;
     }
     
