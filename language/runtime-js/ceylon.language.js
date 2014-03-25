@@ -157,10 +157,10 @@ var Object$proto = Object$.$$.prototype;
 defineAttr(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
 },undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','string']});
-Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','hash'],$t:{t:Integer}};}};
+Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','hash'],$t:{t:Integer},$an:function(){return[shared(),formal()]}};}};
 Object$proto.toString=function() { return this.string.valueOf(); }
 Object$proto.equals={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},
-  $ps:[{$nm:'other',$mt:'prm',$t:{t:Object$}}]};}};
+  $ps:[{$nm:'other',$mt:'prm',$t:{t:Object$}}],$an:function(){return[shared(),formal()];}};}};
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
 function $init$$Object() { return Object$; }
