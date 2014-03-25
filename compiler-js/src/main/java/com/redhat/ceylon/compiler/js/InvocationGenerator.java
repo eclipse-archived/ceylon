@@ -225,7 +225,7 @@ public class InvocationGenerator {
             } else {
                 paramName = arg.getParameter().getName();
             }
-            String varName = names.createTempVariable(paramName);
+            String varName = names.createTempVariable();
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
             gen.out(varName, "=");
@@ -235,7 +235,7 @@ public class InvocationGenerator {
         Tree.SequencedArgument sarg = argList.getSequencedArgument();
         if (sarg!=null) {
             String paramName = sarg.getParameter().getName();
-            String varName = names.createTempVariable(paramName);
+            String varName = names.createTempVariable();
             argVarNames.put(paramName, varName);
             retainedVars.add(varName);
             gen.out(varName, "=");

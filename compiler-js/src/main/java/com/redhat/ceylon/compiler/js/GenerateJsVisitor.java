@@ -1066,7 +1066,7 @@ public class GenerateJsVisitor extends Visitor
         }
         out("return this.", privname, ";}");
         if (p.getModel().isVariable() || p.getModel().isLate()) {
-            final String param = names.createTempVariable(d.getName());
+            final String param = names.createTempVariable();
             out(",function(", param, "){");
             if (p.getModel().isLate() && !p.getModel().isVariable()) {
                 generateImmutableAttributeReassignmentCheck("this."+privname, names.name(p));
@@ -1806,7 +1806,7 @@ public class GenerateJsVisitor extends Visitor
                 }
                 if (addSetter) {
                     final String varName = names.name(d);
-                    String paramVarName = names.createTempVariable(d.getName());
+                    String paramVarName = names.createTempVariable();
                     out(function, names.setter(d), "(", paramVarName, "){");
                     if (isLate) {
                         generateImmutableAttributeReassignmentCheck(varName, names.name(d));
@@ -1939,7 +1939,7 @@ public class GenerateJsVisitor extends Visitor
                         out("return ", varName, ";}");
                     }
                     if (decl.isVariable() || isLate) {
-                        final String par = names.createTempVariable(decl.getName());
+                        final String par = names.createTempVariable();
                         out(",function(", par, "){");
                         if (isLate && !decl.isVariable()) {
                             generateImmutableAttributeReassignmentCheck(varName, names.name(decl));
@@ -2059,7 +2059,7 @@ public class GenerateJsVisitor extends Visitor
                     }
                     out("return this.", privname, ";}");
                     if (d.isVariable() || isLate) {
-                        final String pname = names.createTempVariable(d.getName());
+                        final String pname = names.createTempVariable();
                         out(",function(", pname, "){");
                         if (isLate && !d.isVariable()) {
                             generateImmutableAttributeReassignmentCheck("this."+privname, atname);
@@ -2247,7 +2247,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void generateSafeOp(QualifiedMemberOrTypeExpression that) {
         boolean isMethod = that.getDeclaration() instanceof Method;
-        String lhsVar = createRetainedTempVar("opt");
+        String lhsVar = createRetainedTempVar();
         out("(", lhsVar, "=");
         super.visit(that);
         out(",");
@@ -2307,15 +2307,15 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         //Declare an array to store the values/references
-        String tmplist = names.createTempVariable("lst");
+        String tmplist = names.createTempVariable();
         out("var ", tmplist, "=[]"); endLine(true);
         //Get an iterator
-        String iter = names.createTempVariable("it");
+        String iter = names.createTempVariable();
         out("var ", iter, "=");
         super.visit(that);
         out(".iterator()"); endLine(true);
         //Iterate
-        String elem = names.createTempVariable("elem");
+        String elem = names.createTempVariable();
         out("var ", elem); endLine(true);
         out("while((", elem, "=", iter, ".next())!==", clAlias, "getFinished())");
         beginBlock();
@@ -2357,7 +2357,7 @@ public class GenerateJsVisitor extends Visitor
             out(";}");
             return;
         }
-        String primaryVar = createRetainedTempVar("opt");
+        String primaryVar = createRetainedTempVar();
         out("(", primaryVar, "=");
         that.getPrimary().visit(this);
         out(",", clAlias, "JsCallable(", primaryVar, ",", primaryVar, "!==null?",
@@ -3099,13 +3099,10 @@ public class GenerateJsVisitor extends Visitor
      * emitted after the current Ceylon statement has been completely processed.
      * The resulting code is valid because JavaScript variables may be used before
      * they are declared. */
-    private String createRetainedTempVar(String baseName) {
-        String varName = names.createTempVariable(baseName);
+    private String createRetainedTempVar() {
+        String varName = names.createTempVariable();
         retainedVars.add(varName);
         return varName;
-    }
-    private String createRetainedTempVar() {
-        return createRetainedTempVar("tmp");
     }
 
     @Override
@@ -3716,7 +3713,7 @@ public class GenerateJsVisitor extends Visitor
        binaryOp(that, new BinaryOpGenerator() {
            @Override
            public void generate(BinaryOpTermGenerator termgen) {
-               String lhsVar = createRetainedTempVar("opt");
+               String lhsVar = createRetainedTempVar();
                out("(", lhsVar, "=");
                termgen.left();
                out(",", lhsVar, "!==null&&",lhsVar,"!==undefined?", lhsVar, ":");
@@ -3794,7 +3791,7 @@ public class GenerateJsVisitor extends Visitor
                out(bme.getIdentifier().getText(), "successor".equals(functionName) ? "++" : "--");
                return;
            }
-           String oldValueVar = createRetainedTempVar("old" + bme.getDeclaration().getName());
+           String oldValueVar = createRetainedTempVar();
            String applyFunc = String.format("%s.%s", oldValueVar, functionName);
            out("(", oldValueVar, "=", memberAccess(bme, null), ",");
            generateMemberAccess(bme, applyFunc, null);
@@ -3807,7 +3804,7 @@ public class GenerateJsVisitor extends Visitor
                return;
            }
            String primaryVar = createRetainedTempVar();
-           String oldValueVar = createRetainedTempVar("old" + qme.getDeclaration().getName());
+           String oldValueVar = createRetainedTempVar();
            String applyFunc = String.format("%s.%s", oldValueVar, functionName);
            out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
@@ -4033,12 +4030,12 @@ public class GenerateJsVisitor extends Visitor
     /** Generates code for the beginning of a "for" loop, returning the name of the variable used for the item. */
     private String generateForLoop(ForIterator that) {
         SpecifierExpression iterable = that.getSpecifierExpression();
-        final String iterVar = names.createTempVariable("it");
+        final String iterVar = names.createTempVariable();
         final String itemVar;
         if (that instanceof ValueIterator) {
             itemVar = names.name(((ValueIterator)that).getVariable().getDeclarationModel());
         } else {
-            itemVar = names.createTempVariable("item");
+            itemVar = names.createTempVariable();
         }
         out("var ", iterVar, " = ");
         iterable.visit(this);
@@ -4082,18 +4079,19 @@ public class GenerateJsVisitor extends Visitor
         }
         List<String> resourceVars = null;
         String excVar = null;
-        if (resources != null) {
+        if (resources != null && !resources.isEmpty()) {
             resourceVars = new ArrayList<>(resources.size());
+            out("var ");
             for (Resource res : resources) {
-                final String resourceVar = names.createTempVariable(res.getVariable().getIdentifier().getText());
-                out("var ", resourceVar, "=null");
-                endLine(true);
-                out("var ", resourceVar, "$cls=false");
-                endLine(true);
+                if (!resourceVars.isEmpty()) {
+                    out(",");
+                }
+                final String resourceVar = names.createTempVariable();
+                out(resourceVar, "=null,", resourceVar, "$cls=false");
                 resourceVars.add(resourceVar);
             }
             excVar = names.createTempVariable();
-            out("var ", excVar, "$exc=null");
+            out(",", excVar, "$exc=null");
             endLine(true);
         }
         out("try");
@@ -4122,7 +4120,7 @@ public class GenerateJsVisitor extends Visitor
         }
 
         if (!that.getCatchClauses().isEmpty() || resources != null) {
-            String catchVarName = names.createTempVariable("ex");
+            String catchVarName = names.createTempVariable();
             out("catch(", catchVarName, ")");
             beginBlock();
             //Check if it's native and if so, wrap it
@@ -4283,7 +4281,7 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         //Put the expression in a tmp var
-        final String expvar = names.createTempVariable("case");
+        final String expvar = names.createTempVariable();
         out("var ", expvar, "=");
         Expression expr = that.getSwitchClause().getExpression();
         expr.visit(this);
@@ -4470,9 +4468,9 @@ public class GenerateJsVisitor extends Visitor
         private boolean cused, bused;
         public Continuation(Scope scope, JsIdentifierNames names) {
             this.scope=scope;
-            cvar = names.createTempVariable("cntvar");
-            rvar = names.createTempVariable("retvar");
-            bvar = names.createTempVariable("brkvar");
+            cvar = names.createTempVariable();
+            rvar = names.createTempVariable();
+            bvar = names.createTempVariable();
         }
         public Scope getScope() { return scope; }
         public String getContinueName() { return cvar; }

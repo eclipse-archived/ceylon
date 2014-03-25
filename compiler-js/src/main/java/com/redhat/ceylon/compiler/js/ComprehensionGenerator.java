@@ -63,7 +63,7 @@ class ComprehensionGenerator {
             	// record exhaustion state: return a function that
             	// * on first call, returns the expression,
             	// * on subsequent calls, returns finished.
-            	String exhaustionVarName = names.createTempVariable("exhausted"); 
+            	String exhaustionVarName = names.createTempVariable(); 
             	gen.out("var ", exhaustionVarName, "=false");
             	gen.endLine(true);
                 gen.out("return function()");
@@ -160,7 +160,7 @@ class ComprehensionGenerator {
                 // extra entry variable for key/value iterators
                 String elemVarName = loop.valueVarName;
                 if (loop.keyVarName != null) {
-                    elemVarName = names.createTempVariable("entry");
+                    elemVarName = names.createTempVariable();
                     gen.out("var ", elemVarName); gen.endLine(true);
                 }
 
@@ -259,11 +259,11 @@ class ComprehensionGenerator {
 
     private void declareExternalLoopVars(ComprehensionLoopInfo loop) {
         if (loop.keyVarName != null) {
-            String tk = names.createTempVariable(loop.keyVarName);
+            String tk = names.createTempVariable();
             gen.out("var ", tk, "=", loop.keyVarName); gen.endLine(true);
             names.forceName(loop.keyDecl, tk);
         }
-        String tv = names.createTempVariable(loop.valueVarName);
+        String tv = names.createTempVariable();
         gen.out("var ", tv, "=", loop.valueVarName); gen.endLine(true);
         names.forceName(loop.valDecl, tv);
     }
@@ -281,7 +281,7 @@ class ComprehensionGenerator {
 
         public ComprehensionLoopInfo(Tree.Comprehension that, Tree.ForIterator forIterator) {
             this.forIterator = forIterator;
-            itVarName = names.createTempVariable("it");
+            itVarName = names.createTempVariable();
             Tree.Variable valueVar = null;
             Tree.Variable keyVar = null;
             if (forIterator instanceof Tree.ValueIterator) {

@@ -212,18 +212,9 @@ public class JsIdentifierNames {
         return sb.toString();
     }
 
-    /**
-     * Creates a new unique identifier.
-     */
-    public String createTempVariable(String baseName) {
-        return String.format("%s$%d", baseName, nextUID());
-    }
-
-    /**
-     * Creates a new unique identifier.
-     */
+    /** Creates a new unique identifier. */
     public String createTempVariable() {
-        return createTempVariable("tmpvar");
+        return "$"+Long.toString(nextUID(),36);
     }
 
     /**
