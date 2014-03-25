@@ -184,7 +184,7 @@ public class TypeUtils {
         } else {
             return false;
         }
-        gen.out("', l:[");
+        gen.out("',l:[");
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");
@@ -740,7 +740,7 @@ public class TypeUtils {
         } else {
             return false;
         }
-        gen.out("', l:[");
+        gen.out("',l:[");
         boolean first = true;
         for (ProducedType t : subs) {
             if (!first) gen.out(",");

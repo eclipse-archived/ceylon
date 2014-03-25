@@ -1973,22 +1973,12 @@ public class GenerateJsVisitor extends Visitor
     void generateUnitializedAttributeReadCheck(String privname, String pubname) {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
-        out("if(", privname, "===undefined)throw ", clAlias, "InitializationError(");
-        if (JsCompiler.compilingLanguageModule) {
-            out("String$('");
-        } else {
-            out(clAlias, "String('");
-        }
-        out("Attempt to read unitialized attribute «", pubname, "»'));");
+        out("if(", privname, "===undefined)throw ", clAlias,
+                "InitializationError('Attempt to read unitialized attribute «", pubname, "»');");
     }
     void generateImmutableAttributeReassignmentCheck(String privname, String pubname) {
-        out("if(", privname, "!==undefined)throw ", clAlias, "InitializationError(");
-        if (JsCompiler.compilingLanguageModule) {
-            out("String$('");
-        } else {
-            out(clAlias, "String('");
-        }
-        out("Attempt to reassign immutable attribute «", pubname, "»'));");
+        out("if(", privname, "!==undefined)throw ", clAlias,
+                "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
     }
 
     private void addGetterAndSetterToPrototype(TypeDeclaration outer,
@@ -2587,13 +2577,7 @@ public class GenerateJsVisitor extends Visitor
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
-                if (fromTypeName.equals("ceylon.language::String")) {
-                    if (JsCompiler.compilingLanguageModule) {
-                        out("String$(");
-                    } else {
-                        out(clAlias, "String(");
-                    }
-                } else if (fromTypeName.equals("ceylon.language::Integer")) {
+                if (fromTypeName.equals("ceylon.language::Integer")) {
                     out("(");
                 } else if (fromTypeName.equals("ceylon.language::Float")) {
                     out(clAlias, "Float(");
