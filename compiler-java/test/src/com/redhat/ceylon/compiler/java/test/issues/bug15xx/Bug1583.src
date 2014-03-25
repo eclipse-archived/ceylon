@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Callable<ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Tuple<ceylon.language::Integer,ceylon.language::Integer,ceylon.language::Empty>>>")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public final class Bug1583Mixer {
+    
+    private Bug1583Mixer() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Name("mixers")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
+                value = "doc",
+                arguments = {"Nice stuff"}),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation(
+                value = "see",
+                arguments = {"Bug1583Mixer"}),
+        @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private mixers_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[] value;
+    static {
+        value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_()};
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.DocAnnotation$annotation$(description = "Nice stuff")
+    @.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1:com.redhat.ceylon.compiler.java.test.issues:bug15xx:ABug1583Mixer")})
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation(
+                    value = "doc",
+                    arguments = {"Nice stuff"}),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation(
+                    value = "see",
+                    arguments = {"Bug1583Mixer"}),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug15xx::mixers")
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_ get_() {
+        try {
+            return value[0];
+        } catch (.java.lang.NullPointerException ex) {
+            throw new .ceylon.language.InitializationError("Cyclic initialization");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_.class);
+    }
+}
