@@ -266,6 +266,9 @@ public class JsCompiler {
                                         continue;
                                     }
                                 }
+                                if (line.length()==0) {
+                                    continue;
+                                }
                                 lastOut.getWriter().write(line);
                                 lastOut.getWriter().write('\n');
                             }
