@@ -291,6 +291,13 @@ public class ProducedType extends ProducedReference {
                         //probably extraneous!
                         return false;
                     }
+                    else if (!type.getDeclaration().isMember()) {
+                        //local types with a qualifying typed declaration do not need to obtain the
+                        //qualifying type's supertype
+                        if (!stqt.isSubtypeOf(tqt)) {
+                            return false;
+                        }
+                    }
                     else {
                         //note that the qualifying type of the
                         //given type may be an invariant subtype
@@ -940,7 +947,11 @@ public class ProducedType extends ProducedReference {
         if (qt==null) {
             return this;
         }
-        else {
+        else if (!getDeclaration().isMember()) {
+            // local types can't have qualifying types that differ
+            return this;
+        }
+        else{
             ProducedType pt = new ProducedType();
             pt.setDeclaration(getDeclaration());
             pt.setTypeArguments(getTypeArguments());
