@@ -491,6 +491,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case DOUBLE:
             // all the autoboxing should already have been done
             throw new RuntimeException("Expected non-primitive type: "+type);
+        case ERROR:
+            return null;
         default:
             throw new RuntimeException("Failed to handle type "+type);
         }
