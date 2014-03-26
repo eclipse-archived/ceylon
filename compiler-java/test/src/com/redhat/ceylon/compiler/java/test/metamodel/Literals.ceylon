@@ -97,8 +97,8 @@ void literals<T>(){
     // Other types
     
     Type<Anything> parameterType = `T`;
-    UnionType<Number|Closeable> unionType = `Number|Closeable`;
-    IntersectionType<Number&Closeable> intersectionType = `Number&Closeable`;
+    UnionType<Number|Destroyable> unionType = `Number|Destroyable`;
+    IntersectionType<Number&Destroyable> intersectionType = `Number&Destroyable`;
     Type<Anything> nothingType = `String&Number`;
     
     Value<Integer> valueType1 = `litValue`;

@@ -18,12 +18,8 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class TryWithResource(Integer n) satisfies Closeable {
-    
-    shared actual void open() {
-    }
-    
-    shared actual void close(Throwable? e) {
+class TryWithResource(Integer n) satisfies Destroyable {
+    shared actual void destroy(Throwable? e) {
     }
 
     shared void m() {
@@ -34,14 +30,14 @@ class TryWithResource(Integer n) satisfies Closeable {
         }
         try(TryWithResource(1), TryWithResource(2), TryWithResource(3)) {
         }
-        //try(r = getResource()) {
-        //    r.m();
-        //} catch (Exception ex) {
-        //} finally {
-        //}
+        try(r = getResource()) {
+            r.equals(this);
+        } catch (Exception ex) {
+        } finally {
+        }
     }
     
-    Closeable getResource() {
-        return TryWithResource(4);
+    Obtainable getResource() {
+        return nothing;
     }
 }

@@ -25,7 +25,7 @@ class Bug626() satisfies Iterable<Nothing[]> {
 }
 
 @noanno
-void bug626f(Iterable<Iterable<Iterable<Nothing>|Closeable>> f, Iterable<Iterable<Iterable<Nothing>&Closeable>> f2, Iterable<Iterable<Nothing>> f3){
+void bug626f(Iterable<Iterable<Iterable<Nothing>|Destroyable>> f, Iterable<Iterable<Iterable<Nothing>&Destroyable>> f2, Iterable<Iterable<Nothing>> f3){
     Iterable<Iterable<Object>> i = f;
     Iterable<Iterable<Object>> i2 = f2;
     Iterable<Iterable<Object>> i3 = f3;

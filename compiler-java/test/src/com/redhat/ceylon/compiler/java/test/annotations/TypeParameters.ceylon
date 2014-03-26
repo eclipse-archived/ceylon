@@ -19,15 +19,15 @@
  */
 shared class TypeParameters<out A,in B,C=Number,D=Number|String>()
     given B of Number | String
-    given A satisfies Number & Closeable {
+    given A satisfies Number & Destroyable {
     
     shared void m<out A,in B,C=Number,D=Number|String>()
         given B of Number | String
-        given A satisfies Number & Closeable {
+        given A satisfies Number & Destroyable {
     }
 }
 
 shared void typeParameters<out A,in B,C=Number,D=Number|String>()
     given B of Number | String
-    given A satisfies Number & Closeable {
+    given A satisfies Number & Destroyable {
 }

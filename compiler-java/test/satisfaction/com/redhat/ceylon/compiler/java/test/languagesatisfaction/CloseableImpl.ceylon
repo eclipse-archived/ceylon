@@ -17,9 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-class CloseableImpl() satisfies Closeable {
-    shared actual void open() {
-    }
-    shared actual void close(Throwable? exception) {
+class DestroyableImpl() satisfies Destroyable {
+    shared actual void destroy(Throwable? exception) {
     }
 }
