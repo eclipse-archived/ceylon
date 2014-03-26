@@ -493,7 +493,7 @@ public class ExpressionVisitor extends Visitor {
         if (typedNode!=null) {
             if (!isTypeUnknown(t)) {
                 if (e != null) {
-                    if (isInstantiationExpression(e)) {
+                    if (Util.isInstantiationExpression(e)) {
                         checkAssignable(t, unit.getType(unit.getDestroyableDeclaration()), typedNode, 
                                 "resource must be destroyable");
                     } else {
@@ -503,19 +503,6 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
-    }
-
-    private boolean isInstantiationExpression(Tree.Expression e) {
-        Tree.Term term = e.getTerm();
-        if (term instanceof Tree.InvocationExpression) {
-            Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
-            Tree.Primary p = ie.getPrimary();
-            if (p instanceof Tree.BaseTypeExpression 
-                    || p instanceof Tree.QualifiedTypeExpression) {
-                return true;
-            }
-        }
-        return false;
     }
     
     @Override public void visit(Tree.ForIterator that) {

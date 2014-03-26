@@ -617,6 +617,19 @@ public class Util {
         }
     }
     
+    public static boolean isInstantiationExpression(Tree.Expression e) {
+        Tree.Term term = e.getTerm();
+        if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
+            Tree.Primary p = ie.getPrimary();
+            if (p instanceof Tree.BaseTypeExpression 
+                    || p instanceof Tree.QualifiedTypeExpression) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public static boolean hasErrors(Tree.Declaration d) {
         class DeclarationErrorVisitor extends Visitor {
             boolean foundError;
