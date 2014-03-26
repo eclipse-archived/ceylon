@@ -471,7 +471,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             t = e.getTypeModel();
             typedNode = e;
-            checkInstantiationExpression(e);
+            
         } 
         else if (v!=null) {
             t = v.getType().getTypeModel();
@@ -481,7 +481,7 @@ public class ExpressionVisitor extends Visitor {
                 v.addError("missing resource specifier");
             }
             else {
-                checkInstantiationExpression(se.getExpression());
+                e = se.getExpression();
                 if (typedNode instanceof Tree.ValueModifier) {
                     typedNode = se.getExpression();
                 }
@@ -492,25 +492,30 @@ public class ExpressionVisitor extends Visitor {
         }
         if (typedNode!=null) {
             if (!isTypeUnknown(t)) {
-                checkAssignable(t, unit.getType(unit.getCloseableDeclaration()), typedNode, 
-                        "resource must be closeable");
+                if (e != null) {
+                    if (isInstantiationExpression(e)) {
+                        checkAssignable(t, unit.getType(unit.getDestroyableDeclaration()), typedNode, 
+                                "resource must be destroyable");
+                    } else {
+                        checkAssignable(t, unit.getType(unit.getObtainableDeclaration()), typedNode, 
+                                "resource must be obtainable");
+                    }
+                }
             }
         }
     }
 
-    private void checkInstantiationExpression(Tree.Expression e) {
+    private boolean isInstantiationExpression(Tree.Expression e) {
         Tree.Term term = e.getTerm();
         if (term instanceof Tree.InvocationExpression) {
             Tree.InvocationExpression ie = (Tree.InvocationExpression) term;
             Tree.Primary p = ie.getPrimary();
-            if (!(p instanceof Tree.BaseTypeExpression 
-                    || p instanceof Tree.QualifiedTypeExpression)) {
-                e.addError("resource expression is not an instantiation");
+            if (p instanceof Tree.BaseTypeExpression 
+                    || p instanceof Tree.QualifiedTypeExpression) {
+                return true;
             }
         }
-        else {
-            e.addError("resource expression is not an instantiation");
-        }
+        return false;
     }
     
     @Override public void visit(Tree.ForIterator that) {

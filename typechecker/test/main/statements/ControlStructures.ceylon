@@ -76,29 +76,34 @@ class ControlStructures() {
         print(key + "->" + item);
     }*/
     
-    class Transaction() satisfies Closeable {
+    class Transaction() satisfies Obtainable {
         shared void rollbackOnly() {}
-        shared actual void open() {}
-        shared actual void close(Throwable? e) {}
+        shared actual void obtain() {}
+        shared actual void release(Throwable? e) {}
     }
+    Transaction transaction() => Transaction();
+    
+    try (transaction()) {}
 
-    try (Transaction()) {}
-
-    try (tx = Transaction()) {
+    try (tx = transaction()) {
         tx.rollbackOnly();
     }
     
-    Transaction tx = Transaction();
-    function trans() { return tx; }
-    try (@error tx) {}
-    try (@error t = tx) {}
-    try (@error Transaction t = tx) {}
-    try (Transaction()) {}
-    try (t = Transaction()) {}
-    try (Transaction t = Transaction()) {}
-    try (@error trans()) {}
-    try (@error t = trans()) {}
-    try (@error Transaction t = trans()) {}
+    class FileHandle() satisfies Destroyable {
+        shared Integer tell() => nothing;
+        shared actual void destroy(Throwable? e) {}
+    }
+    FileHandle fh = FileHandle();
+    function file() { return fh; }
+    try (@error fh) {}
+    try (@error f = fh) {}
+    try (@error FileHandle f = fh) {}
+    try (FileHandle()) {}
+    try (f = FileHandle()) {}
+    try (FileHandle f = FileHandle()) {}
+    try (@error file()) {}
+    try (@error f = file()) {}
+    try (@error FileHandle f = file()) {}
     
     try {
         print("hello");
@@ -151,9 +156,9 @@ class ControlStructures() {
     try (@error Object t = Transaction()) {}
     try (@error Transaction trx) {}
     
-    try (t = Transaction()) {
+    try (f = FileHandle()) {
     	//do something
-    	t.rollbackOnly();
+    	f.tell();
     }
     catch (Exception e) {
     	@error t.rollbackOnly();
@@ -167,11 +172,11 @@ class ControlStructures() {
     variable Transaction vtt = Transaction();
     try (@error vtt) {}
     
-    try (t1 = Transaction(), 
-         Transaction(), 
-         Transaction t2=Transaction()) {
-        Transaction t3 = t1;
-        Transaction t4 = t2;
+    try (t1 = FileHandle(), 
+        FileHandle(), 
+        FileHandle t2=FileHandle()) {
+        FileHandle t3 = t1;
+        FileHandle t4 = t2;
     }
     
     @error while ("hello") {}

@@ -401,6 +401,14 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Closeable");
     }
     
+    public Interface getDestroyableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Destroyable");
+    }
+    
+    public Interface getObtainableDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Obtainable");
+    }
+    
     public Interface getOrdinalDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Ordinal");
     }
