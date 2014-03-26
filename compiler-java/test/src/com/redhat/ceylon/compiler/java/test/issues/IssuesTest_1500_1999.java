@@ -190,9 +190,12 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new String[] { "bug15xx/bug1581/Bug1581Java.java", "bug15xx/bug1581/Bug1581.ceylon", "bug15xx/bug1581/module.ceylon" },
                 defaultOptions,
                 null,
-                new CompilerError(20, "Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n" +
-                        "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n" +
-                        "   Failed to find declaration for java.util.Properties"),
+                new CompilerError(3, "package not found in imported modules: java.util (add module import to module descriptor of com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581)"),
+                new CompilerError(6, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(8, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(10, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(13, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(20, "Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n   Failed to find declaration for Properties"),
                 new CompilerError(22, "parameter type could not be determined: props of Bug1581Java"),
                 new CompilerError(23, "could not determine type of method or attribute reference: props of Bug1581Java"),
                 new CompilerError(23, "value type could not be inferred"));
