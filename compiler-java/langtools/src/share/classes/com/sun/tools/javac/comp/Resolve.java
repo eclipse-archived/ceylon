@@ -2264,6 +2264,54 @@ public class Resolve {
     }
 
     /**
+     * An ImportError error class indicating that a symbol has not been
+     * properly declared in the module descriptor's imports 
+     */
+    class ImportError extends InvalidSymbolError {
+
+        private Module scopeModule;
+
+        ImportError(Symbol sym, Module scopeModule) {
+            super(HIDDEN, sym, "import error");
+            this.scopeModule = scopeModule;
+            if (debugResolve)
+                log.error("proc.messager", sym + " inaccessible from " + scopeModule.getNameAsString());
+        }
+
+        @Override
+        public boolean exists() {
+            return false;
+        }
+
+        @Override
+        JCDiagnostic getDiagnostic(JCDiagnostic.DiagnosticType dkind,
+                DiagnosticPosition pos,
+                Symbol location,
+                Type site,
+                Name name,
+                List<Type> argtypes,
+                List<Type> typeargtypes) {
+            if (sym.owner.type.tag == ERROR)
+                return null;
+
+            if (sym.name == names.init && sym.owner != site.tsym) {
+                return new SymbolNotFoundError(ABSENT_MTH).getDiagnostic(dkind,
+                        pos, location, site, name, argtypes, typeargtypes);
+            }
+            else {
+                if (scopeModule.isDefault()) {
+                    return diags.create(dkind, log.currentSource(),
+                            pos, "package.not.found.in.imports.default", pkgSymbol(sym));
+                } else {
+                    return diags.create(dkind, log.currentSource(),
+                            pos, "package.not.found.in.imports.nondefault", pkgSymbol(sym), scopeModule.getNameAsString());
+                }
+            }
+            
+        }
+    }
+
+    /**
      * InvalidSymbolError error class indicating that an instance member
      * has erroneously been accessed from a static context.
      */
