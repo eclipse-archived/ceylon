@@ -196,7 +196,12 @@ public class CeylonEnter extends Enter {
             }else{
                 timer.startTask("Enter on Ceylon trees");
                 // and complete their new trees
-                super.main(ceylonTrees);
+                try {
+                    Context.SourceLanguage.push(Language.CEYLON);
+                    super.main(ceylonTrees);                    
+                } finally {
+                    Context.SourceLanguage.pop();
+                }
                 timer.endTask();
             }
         }
