@@ -3799,7 +3799,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    protected boolean isImported(Module moduleScope, Module importedModule) {
+    public boolean isImported(Module moduleScope, Module importedModule) {
         if(moduleScope == importedModule)
             return true;
         if(isImportedSpecialRules(moduleScope, importedModule))
