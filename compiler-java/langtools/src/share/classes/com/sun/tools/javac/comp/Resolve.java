@@ -1059,11 +1059,11 @@ public class Resolve {
             if (modelLoader != null && !Context.isCeylon()) {
                 // Check if the class is accessible according to Ceylon's access rules
                 String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
-                Module scopeModule = modelLoader.lookupModuleInternal(scopePackageName);
+                Module scopeModule = modelLoader.lookupModuleByPackageName(scopePackageName);
                 // Ugly special case where we skip the test when we're compiling the language module itself
                 if (scopeModule != modelLoader.getLanguageModule()) {
                     String importedPackageName = pkgName(name.toString());
-                    Module importedModule = modelLoader.lookupModuleInternal(importedPackageName);
+                    Module importedModule = modelLoader.lookupModuleByPackageName(importedPackageName);
                     if (!modelLoader.isImported(scopeModule, importedModule)) {
                         return new ImportError(c, scopeModule);
                     }

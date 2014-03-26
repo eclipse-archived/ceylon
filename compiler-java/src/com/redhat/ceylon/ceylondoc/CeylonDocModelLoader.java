@@ -88,6 +88,6 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     @Override
     protected Module findModuleForClassMirror(ClassMirror classMirror) {
         String pkgName = getPackageNameForQualifiedClassName(classMirror);
-        return lookupModuleInternal(pkgName);
+        return lookupModuleByPackageName(pkgName);
     }
 }

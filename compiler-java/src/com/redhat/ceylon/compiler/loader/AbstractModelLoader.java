@@ -1152,7 +1152,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         pkg.setShared(shared);
     }
 
-    protected Module lookupModuleInternal(String packageName) {
+    public Module lookupModuleByPackageName(String packageName) {
         for(Module module : modules.getListOfModules()){
             // don't try the default module because it will always say yes
             if(module.isDefault())
