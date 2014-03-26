@@ -44,6 +44,18 @@ public class CeylonClassLoader extends URLClassLoader {
         return urls;
     }
 
+    public static String getClassPathAsString() throws URISyntaxException, FileNotFoundException {
+        List<File> cp = getClassPath();
+        StringBuilder classPath = new StringBuilder();
+        for (File f : cp) {
+            if (classPath.length() > 0) {
+                classPath.append(File.pathSeparatorChar);
+            }
+            classPath.append(f.getAbsolutePath());
+        }
+        return classPath.toString();
+    }
+    
     public static List<File> getClassPath() throws URISyntaxException, FileNotFoundException {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();

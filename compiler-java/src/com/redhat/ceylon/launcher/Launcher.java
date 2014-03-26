@@ -45,15 +45,8 @@ public class Launcher {
         // which doesn't use the actual class path used by the JVM but it constructs
         // it's own list looking at the arguments passed on the command line or
         // at the system property "env.class.path" which we will be using here.
-        List<File> cp = CeylonClassLoader.getClassPath();
-        StringBuilder classPath = new StringBuilder();
-        for (File f : cp) {
-            if (classPath.length() > 0) {
-                classPath.append(File.pathSeparatorChar);
-            }
-            classPath.append(f.getAbsolutePath());
-        }
-        System.setProperty("env.class.path", classPath.toString());
+        String cp = CeylonClassLoader.getClassPathAsString();
+        System.setProperty("env.class.path", cp);
 
         // Find the main tool class
         String verbose = null;
@@ -79,7 +72,7 @@ public class Launcher {
             if (hasVerboseFlag(verbose, "loader")) {
                 Logger log = Logger.getLogger("");
                 log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
-                for (File f : cp) {
+                for (File f : CeylonClassLoader.getClassPath()) {
                     log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
                 }
             }
