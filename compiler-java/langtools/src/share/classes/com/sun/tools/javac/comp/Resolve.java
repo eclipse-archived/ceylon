@@ -25,12 +25,17 @@
 
 package com.sun.tools.javac.comp;
 
+import com.redhat.ceylon.compiler.java.loader.CeylonClassReader;
+import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.util.*;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.sun.tools.javac.code.*;
 import com.sun.tools.javac.jvm.*;
 import com.sun.tools.javac.tree.*;
 import com.sun.tools.javac.api.Formattable.LocalizedString;
+
 import static com.sun.tools.javac.comp.Resolve.MethodResolutionPhase.*;
 
 import com.sun.tools.javac.code.Type.*;
@@ -40,8 +45,10 @@ import com.sun.tools.javac.tree.JCTree.*;
 import static com.sun.tools.javac.code.Flags.*;
 import static com.sun.tools.javac.code.Kinds.*;
 import static com.sun.tools.javac.code.TypeTags.*;
+
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticFlag;
 import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
+
 import javax.lang.model.element.ElementVisitor;
 
 import java.util.Map;
@@ -73,6 +80,7 @@ public class Resolve {
     public final boolean varargsEnabled; // = source.allowVarargs();
     public final boolean allowMethodHandles;
     private final boolean debugResolve;
+    private final AbstractModelLoader modelLoader;
 
     Scope polymorphicSignatureScope;
 
@@ -103,6 +111,7 @@ public class Resolve {
         chk = Check.instance(context);
         infer = Infer.instance(context);
         reader = ClassReader.instance(context);
+        modelLoader = (reader instanceof CeylonClassReader) ? CeylonModelLoader.instance(context) : null;
         treeinfo = TreeInfo.instance(context);
         types = Types.instance(context);
         diags = JCDiagnostic.Factory.instance(context);
@@ -1046,14 +1055,44 @@ public class Resolve {
     Symbol loadClass(Env<AttrContext> env, Name name) {
         try {
             ClassSymbol c = reader.loadClass(name);
-            return isAccessible(env, c) ? c : new AccessError(c);
+            if (!isAccessible(env, c)) return new AccessError(c);
+            if (modelLoader != null && !Context.isCeylon()) {
+                // Check if the class is accessible according to Ceylon's access rules
+                String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
+                Module scopeModule = modelLoader.lookupModuleInternal(scopePackageName);
+                // Ugly special case where we skip the test when we're compiling the language module itself
+                if (scopeModule != modelLoader.getLanguageModule()) {
+                    String importedPackageName = pkgName(name.toString());
+                    Module importedModule = modelLoader.lookupModuleInternal(importedPackageName);
+                    if (!modelLoader.isImported(scopeModule, importedModule)) {
+                        return new ImportError(c, scopeModule);
+                    }
+                }
+            }
+            return c;
         } catch (ClassReader.BadClassFile err) {
             throw err;
         } catch (CompletionFailure ex) {
             return typeNotFound;
         }
     }
-
+    
+    private Symbol pkgSymbol(Symbol sym) {
+        while (sym.kind != Kinds.PCK) {
+            sym = sym.owner;
+        }
+        return sym;
+    }
+    
+    private String pkgName(String fqn) {
+        int p = fqn.lastIndexOf('.');
+        if (p >= 0) {
+            return fqn.substring(0, p);
+        } else {
+            return "";
+        }
+    }
+    
     /** Find qualified member type.
      *  @param env       The current environment.
      *  @param site      The original type from where the selection takes
