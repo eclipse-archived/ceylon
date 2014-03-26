@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -2824,20 +2825,23 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 Tree.Expression resExpr;
                 String resVarName;
-                ProducedType resVarType;
                 if (res.getExpression() != null) {
                     resExpr = res.getExpression();
                     resVarName = naming.newTemp("try");
-                    resVarType = typeFact().getCloseableDeclaration().getType();
                 } else if (res.getVariable() != null) {
                     Tree.Variable var = res.getVariable();
                     resExpr = var.getSpecifierExpression().getExpression();
                     resVarName = var.getIdentifier().getText();
-                    resVarType = var.getType().getTypeModel();
                 } else {
                     throw new RuntimeException("Missing resource expression");
                 }
-                            
+                boolean isInstantiation = com.redhat.ceylon.compiler.typechecker.analyzer.Util.isInstantiationExpression(resExpr);
+                ProducedType resVarType;
+                if (isInstantiation) {
+                    resVarType = resExpr.getTypeModel();
+                } else {
+                    resVarType = resExpr.getTypeModel();
+                }
                 // CloseableType $var = resource-expression
                 JCExpression expr = expressionGen().transformExpression(resExpr);
                 JCExpression javaType = makeJavaType(resVarType);
@@ -2845,8 +2849,11 @@ public class StatementTransformer extends AbstractTransformer {
                 stats = stats.append(var);
                 
                 // $var.open() /// ((Closeable)$var).open()
-                JCMethodInvocation openCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "open"), List.<JCExpression>nil());
-                stats = stats.append(make().Exec(openCall));
+                
+                if (!isInstantiation) {
+                    JCMethodInvocation openCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "obtain"), List.<JCExpression>nil());
+                    stats = stats.append(make().Exec(openCall));
+                }
                 
                 // Exception $tpmex = null;
                 String innerExTmpVarName = naming.newTemp("ex");
@@ -2867,7 +2874,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // $var.close() /// ((Closeable)$var).close()
                 JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
-                JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "close"), List.<JCExpression>of(exarg));
+                JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), isInstantiation ? "destroy" : "release"), List.<JCExpression>of(exarg));
                 JCBlock closeTryBlock = make().Block(0, List.<JCStatement>of(make().Exec(closeCall)));
                 
                 // try { $var.close() } catch (Exception closex) { $tmpex.addSuppressed(closex); }
@@ -2881,7 +2888,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // $var.close() /// ((Closeable)$var).close()
                 JCExpression exarg2 = makeUnquotedIdent(innerExTmpVarName);
-                JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), "close"), List.<JCExpression>of(exarg2));
+                JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(makeUnquotedIdent(resVarName), isInstantiation ? "destroy" : "release"), List.<JCExpression>of(exarg2));
                 
                 // if ($tmpex != null) { ... } else { ... }
                 JCBinary closeCatchCond = make().Binary(JCTree.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());
@@ -2924,7 +2931,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         
     }
-    
+
     /**
      * Determines whether the {@code CatchClause}s contain any 
      * intersections or parameterised exception types. If so, the
