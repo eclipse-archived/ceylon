@@ -123,7 +123,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkgName);
             if(jdkModuleName != null)
                 return findModule(jdkModuleName, JDK_MODULE_VERSION);
-            return lookupModuleInternal(pkgName);
+            return lookupModuleByPackageName(pkgName);
         }
     }
     
