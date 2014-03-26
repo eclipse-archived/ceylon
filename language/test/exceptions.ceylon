@@ -7,33 +7,69 @@ variable Integer sharedState = -1;
 
 class ResourceException(String msg) extends Exception(msg, null) {}
 
-class MyResource(Integer err) satisfies Closeable {
-    shared variable Integer state = 0;
+Integer stateUninit = 0;
+Integer statePostInit = 1;
+Integer statePreObtain = 2;
+Integer statePostObtain = 4;
+Integer statePreRelease = 8;
+Integer statePostRelease = 16;
+Integer statePreDestroy = 8;
+Integer statePostDestroy = 16;
 
-    if (err == 1) {
+Integer errNone = 0;
+Integer errInInit = 1;
+Integer errInObtain = 2;
+Integer errInRelease = 3;
+Integer errInDestroy = 3;
+
+class MyDestroyableResource(Integer err) satisfies Destroyable {
+    shared variable Integer state = stateUninit;
+
+    if (err == errInInit) {
         sharedState=0;
         throw ResourceException("init resource");
     }
 
-    state += 1;
+    state += statePostInit;
     
-    shared actual void open() {
-        state += 2;
-        if (err == 2) {
+    shared actual void destroy(Throwable? exception) {
+        state += statePreDestroy;
+        if (err == errInDestroy) {
             sharedState = state;
-            throw ResourceException("open resource");
+            throw ResourceException("destroy resource");
         }
-        state += 4;
+        state += statePostDestroy;
         sharedState = state;
     }
+}
 
-    shared actual void close(Throwable? exception) {
-        state += 8;
-        if (err == 3) {
+class MyObtainableResource(Integer err) satisfies Obtainable {
+    shared variable Integer state = stateUninit;
+    
+    if (err == errInInit) {
+        sharedState=0;
+        throw ResourceException("init resource");
+    }
+    
+    state += statePostInit;
+    
+    shared actual void obtain() {
+        state += statePreObtain;
+        if (err == errInObtain) {
             sharedState = state;
-            throw ResourceException("close resource");
+            throw ResourceException("obtain resource");
         }
-        state += 16;
+        state += statePostObtain;
+        sharedState = state;
+    }
+    
+    shared actual void release(Throwable? exception) {
+        state += statePreRelease;
+        if (err == errInRelease) {
+            sharedState = state;
+            throw ResourceException("release resource");
+        }
+        state += statePostRelease;
         sharedState = state;
     }
 }
@@ -154,121 +190,245 @@ shared void exceptions() {
     check(!caught, "caught");
 
     variable Integer pass = 0;
-    try (r=MyResource(0)) {
+    // destroyable resources
+    try (r=MyDestroyableResource(errNone)) {
         pass++;
     } catch (Exception e) {
-        fail("try-with-resource 1 unexpected exception");
+        fail("try-with-destroyable-resource 1 unexpected exception");
     } finally {
         pass++;
     }
-    check(pass==2, "try-with-resource 1 pass check");
-    check(sharedState==31, "try-with-resource 1 resource state check");
+    check(pass==2, "try-with-destroyable-resource 1 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreDestroy + statePostDestroy, 
+        "try-with-destroyable-resource 1 resource state check");
 
     pass = 0;
-    try (r=MyResource(0)) {
+    try (r=MyDestroyableResource(errNone)) {
         pass++;
         throw MyException();
     } catch (Exception e) {
         pass++;
-        check(e.message=="my exception", "try-with-resource 2 exception message");
-        check(suppressedExceptions(e).empty, "try-with-resource 2 unexpected suppressed exceptions");
+        check(e.message=="my exception", "try-with-destroyable-resource 2 exception message");
+        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 2 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
-    check(pass==3, "try-with-resource 2 final check");
-    check(sharedState==31, "try-with-resource 2 resource state check");
+    check(pass==3, "try-with-destroyable-resource 2 final check");
+    check(sharedState==stateUninit + statePostInit + statePreDestroy + statePostDestroy, 
+        "try-with-destroyable-resource 2 resource state check");
     
     pass = 0;
-    try (r=MyResource(1)) {
-        fail("try-with-resource 3 unexpected try-block execution");
+    try (r=MyDestroyableResource(errInInit)) {
+        fail("try-with-destroyable-resource 3 unexpected try-block execution");
     } catch (Exception e) {
         pass++;
-        check(e.message=="init resource", "try-with-resource 3 exception message");
-        check(suppressedExceptions(e).empty, "try-with-resource 3 unexpected suppressed exceptions");
+        check(e.message=="init resource", "try-with-destroyable-resource 3 exception message");
+        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 3 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
-    check(pass==2, "try-with-resource 3 pass check");
+    check(pass==2, "try-with-destroyable-resource 3 pass check");
+    check(sharedState==stateUninit, 
+        "try-with-destroyable-resource 3 resource state check");
     
     pass = 0;
-    try (r=MyResource(2)) {
-        fail("try-with-resource 4 unexpected try-block execution");
-    } catch (Exception e) {
-        pass++;
-        check(e.message=="open resource", "try-with-resource 4 exception message");
-        check(suppressedExceptions(e).empty, "try-with-resource 4 unexpected suppressed exceptions");
-    } finally {
-        pass++;
-    }
-    check(pass==2, "try-with-resource 4 pass check");
-    check(sharedState==3, "try-with-resource 4 resource state check");
-    
-    pass = 0;
-    try (r=MyResource(3)) {
+    try (r=MyDestroyableResource(errInDestroy)) {
         pass++;
     } catch (Exception e) {
         pass++;
-        check(e.message=="close resource", "try-with-resource 5 exception message");
-        check(suppressedExceptions(e).empty, "try-with-resource 5 unexpected suppressed exceptions");
+        check(e.message=="destroy resource", "try-with-destroyable-resource 5 exception message");
+        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 5 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
-    check(pass==3, "try-with-resource 5 pass check");
-    check(sharedState==15, "try-with-resource 5 resource state check");
+    check(pass==3, "try-with-destroyable-resource 5 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreDestroy,
+        "try-with-destroyable-resource 5 resource state check");
     
     pass = 0;
-    try (r=MyResource(3)) {
+    try (r=MyDestroyableResource(errInDestroy)) {
         throw MyException();
     } catch (Exception e) {
         pass++;
-        check(e.message=="my exception", "try-with-resource 6 exception message");
+        check(e.message=="my exception", "try-with-destroyable-resource 6 exception message");
         value sups = suppressedExceptions(e);
         if (nonempty sups) {
-            check(sups.size==1, "try-with-resource 6 wrong suppressed exceptions count");
-            check(sups.first.message=="close resource", "try-with-resource 6 wrong suppressed exception message");
+            check(sups.size==1, "try-with-destroyable-resource 6 wrong suppressed exceptions count");
+            check(sups.first.message=="destroy resource", "try-with-destroyable-resource 6 wrong suppressed exception message");
         } else {
-            fail("try-with-resource 6 missing suppressed exceptions");
+            fail("try-with-destroyable-resource 6 missing suppressed exceptions");
         }
     } finally {
         pass++;
     }
-    check(pass==2, "try-with-resource 6 pass check");
-    check(sharedState==15, "try-with-resource 6 resource state check");
+    check(pass==2, "try-with-destroyable-resource 6 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreDestroy,
+        "try-with-destroyable-resource 6 resource state check");
 
     pass = 0;
-    try (r1=MyResource(0), r2=MyResource(2)) {
-        fail("try-with-resources 7 unexpected try-block execution");
+    try (r1=MyDestroyableResource(errNone), r2=MyDestroyableResource(errInDestroy)) {
+        pass++;//fail("try-with-destroyable-resources 7 unexpected try-block execution");
     } catch (ResourceException e) {
         pass++;
-        check(e.message=="open resource", "try-with-resource 7 exception message");
-        check(suppressedExceptions(e).empty, "try-with-resource 7 unexpected suppressed exceptions");
+        check(e.message=="destroy resource", "try-with-destroyable-resource 7 exception message");
+        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 7 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
-    check(pass==2, "try-with-resource 7 pass check");
-    check(sharedState==31, "try-with-resource 7 resource state check");
+    check(pass==3, "try-with-destroyable-resource 7 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreDestroy + statePostDestroy, 
+        "try-with-destroyable-resource 7 resource state check");
     
     pass = 0;
-    try (r1=MyResource(3), r2=MyResource(3)) {
+    try (r1=MyDestroyableResource(errInDestroy), r2=MyDestroyableResource(errInDestroy)) {
         throw MyException();
     } catch (Exception e) {
         pass++;
-        check(e.message=="my exception", "try-with-resource 8 exception message");
+        check(e.message=="my exception", "try-with-destroyable-resource 8 exception message");
         value sups = suppressedExceptions(e);
         if (nonempty sups) {
-            check(sups.size==2, "try-with-resource 8 wrong suppressed exceptions count");
-            check(sups.first.message=="close resource", "try-with-resource 8 wrong suppressed exception message");
+            check(sups.size==2, "try-with-destroyable-resource 8 wrong suppressed exceptions count");
+            check(sups.first.message=="destroy resource", "try-with-destroyable-resource 8 wrong suppressed exception message");
             if (nonempty r=sups.rest) {
-                check(r.first.message=="close resource", "try-with-resource 8 wrong suppressed exception message");
+                check(r.first.message=="destroy resource", "try-with-destroyable-resource 8 wrong suppressed exception message");
             } else {
-                fail("ry-with-resource 8 this should never happen");
+                fail("try-with-destroyable-resource 8 this should never happen");
             }
         } else {
-            fail("try-with-resource 8 missing suppressed exceptions");
+            fail("try-with-destroyable-resource 8 missing suppressed exceptions");
+        }
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-destroyable-resource 8 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreDestroy, 
+        "try-with-destroyable-resource 8 resource state check = ``sharedState``");
+    
+    // obtainable resources
+    MyObtainableResource obtainable(Integer i) => MyObtainableResource(i);
+    pass = 0;
+    try (r=obtainable(errNone)) {
+        pass++;
+    } catch (Exception e) {
+        fail("try-with-obtainable-resource 1 unexpected exception");
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-obtainable-resource 1 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreObtain + statePostObtain + statePreRelease + statePostRelease,
+        "try-with-obtainable-resource 1 resource state check");
+    
+    pass = 0;
+    try (r=obtainable(errNone)) {
+        pass++;
+        throw MyException();
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="my exception", "try-with-obtainable-resource 2 exception message");
+        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 2 unexpected suppressed exceptions");
+    } finally {
+        pass++;
+    }
+    check(pass==3, "try-with-obtainable-resource 2 final check");
+    check(sharedState==stateUninit + statePostInit + statePreObtain + statePostObtain + statePreRelease + statePostRelease,
+        "try-with-obtainable-resource 2 resource state check");
+    
+    pass = 0;
+    try (r=obtainable(errInInit)) {
+        fail("try-with-obtainable-resource 3 unexpected try-block execution");
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="init resource", "try-with-obtainable-resource 3 exception message");
+        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 3 unexpected suppressed exceptions");
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-obtainable-resource 3 pass check");
+    
+    pass = 0;
+    try (r=obtainable(errInObtain)) {
+        fail("try-with-obtainable-resource 4 unexpected try-block execution");
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="obtain resource", "try-with-obtainable-resource 4 exception message");
+        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 4 unexpected suppressed exceptions");
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-obtainable-resource 4 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreObtain,
+         "try-with-obtainable-resource 4 resource state check");
+    
+    pass = 0;
+    try (r=obtainable(errInRelease)) {
+        pass++;
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="release resource", "try-with-obtainable-resource 5 exception message");
+        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 5 unexpected suppressed exceptions");
+    } finally {
+        pass++;
+    }
+    check(pass==3, "try-with-obtainable-resource 5 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreObtain + statePostObtain + statePreRelease, 
+        "try-with-obtainable-resource 5 resource state check");
+    
+    pass = 0;
+    try (r=obtainable(errInRelease)) {
+        throw MyException();
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="my exception", "try-with-obtainable-resource 6 exception message");
+        value sups = suppressedExceptions(e);
+        if (nonempty sups) {
+            check(sups.size==1, "try-with-obtainable-resource 6 wrong suppressed exceptions count");
+            check(sups.first.message=="release resource", "try-with-obtainable-resource 6 wrong suppressed exception message");
+        } else {
+            fail("try-with-obtainable-resource 6 missing suppressed exceptions");
+        }
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-obtainable-resource 6 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreObtain + statePostObtain + statePreRelease,
+         "try-with-obtainable-resource 6 resource state check");
+    
+    pass = 0;
+    try (r1=obtainable(errNone), r2=obtainable(errInObtain)) {
+        fail("try-with-obtainable-resources 7 unexpected try-block execution");
+    } catch (ResourceException e) {
+        pass++;
+        check(e.message=="obtain resource", "try-with-obtainable-resource 7 exception message");
+        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 7 unexpected suppressed exceptions");
+    } finally {
+        pass++;
+    }
+    check(pass==2, "try-with-obtainable-resource 7 pass check");
+    check(sharedState==stateUninit + statePostInit + statePreObtain + statePostObtain + statePreRelease + statePostRelease,
+        "try-with-obtainable-resource 7 resource state check");
+    
+    pass = 0;
+    try (r1=obtainable(errInRelease), r2=obtainable(errInRelease)) {
+        throw MyException();
+    } catch (Exception e) {
+        pass++;
+        check(e.message=="my exception", "try-with-obtainable-resource 8 exception message");
+        value sups = suppressedExceptions(e);
+        if (nonempty sups) {
+            check(sups.size==2, "try-with-obtainable-resource 8 wrong suppressed exceptions count");
+            check(sups.first.message=="release resource", "try-with-obtainable-resource 8 wrong suppressed exception message");
+            if (nonempty r=sups.rest) {
+                check(r.first.message=="release resource", "try-with-obtainable-resource 8 wrong suppressed exception message");
+            } else {
+                fail("try-with-obtainable-resource 8 this should never happen");
+            }
+        } else {
+            fail("try-with-obtainable-resource 8 missing suppressed exceptions");
         }
     } finally {
         pass++;
     }
     check(pass==2, "try-with-resource 8 pass check");
-    check(sharedState==15, "try-with-resource 8 resource state check = ``sharedState``");
+    check(sharedState==stateUninit + statePostInit + statePreObtain + statePostObtain + statePreRelease,
+         "try-with-resource 8 resource state check = ``sharedState``");
 }

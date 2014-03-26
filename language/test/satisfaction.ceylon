@@ -49,10 +49,14 @@ class MyContainerWithoutLastElement() satisfies Container<Integer,Null> {
     shared actual Boolean empty { return false; }
     shared actual Boolean contains(Object element) => element == 1;
 }
-class MyCloseable() satisfies Closeable {
+class MyDestroyable() satisfies Destroyable {
+    shared variable Boolean opened = true;
+    shared actual void destroy(Throwable? e) {opened=false;}
+}
+class MyObtainable() satisfies Obtainable {
     shared variable Boolean opened = false;
-    shared actual void open() { opened=true;}
-    shared actual void close(Throwable? e) {opened=false;}
+    shared actual void obtain() {opened=true;}
+    shared actual void release(Throwable? e) {opened=false;}
 }
 class MyContainer() satisfies EmptyContainer {
     shared actual Null first { return null; }
@@ -211,12 +215,16 @@ shared void testSatisfaction() {
     cwfe = MyContainerWithoutLastElement();
     check(cwfe.first exists, "Container.first [1]");
     check(!cwfe.last exists, "Container.first [2]");
-    value clsbl = MyCloseable();
-    check(!clsbl.opened, "Closeable [1]");
-    clsbl.open();
-    check(clsbl.opened, "Closeable [2]");
-    clsbl.close(null);
-    check(!clsbl.opened, "Closeable [3]");
+    value dstrybl = MyDestroyable();
+    check(dstrybl.opened, "Destroyable [2]");
+    dstrybl.destroy(null);
+    check(!dstrybl.opened, "Destroyable [3]");
+    value obtnbl = MyObtainable();
+    check(!obtnbl.opened, "Obtainable [1]");
+    obtnbl.obtain();
+    check(obtnbl.opened, "Obtainable [2]");
+    obtnbl.release(null);
+    check(!obtnbl.opened, "Obtainable [3]");
     check(MyContainer().empty, "Container");
     variable Sequential<Integer> myfixed = {};//MyNone();
     check(!myfixed nonempty, "None");
