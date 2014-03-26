@@ -34,11 +34,13 @@ public class InteropTest extends CompilerTest {
     
     @Test
     public void testIopArrays(){
+        compile("TypesJava.java");
         compareWithJavaSource("Arrays");
     }
     
     @Test
     public void testIopArraysNoOpt(){
+        compile("TypesJava.java");
         compareWithJavaSourceNoOpt("Arrays");
     }
 
@@ -138,6 +140,7 @@ public class InteropTest extends CompilerTest {
 
     @Test
     public void testIopTypes(){
+        compile("TypesJava.java");
         compareWithJavaSource("Types");
     }
 

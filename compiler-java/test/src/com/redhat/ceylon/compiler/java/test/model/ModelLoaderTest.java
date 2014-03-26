@@ -1121,7 +1121,7 @@ public class ModelLoaderTest extends CompilerTest {
                 Assert.assertNotNull(ceylonListParam);
                 Assert.assertEquals("List<Object>?", ceylonListParam.getType().getProducedTypeName());
 }
-        }, Collections.EMPTY_LIST);
+        });
     }
     
     @Test
@@ -1189,7 +1189,7 @@ public class ModelLoaderTest extends CompilerTest {
 
     @Test
     public void bogusModelAnnotationsTopLevelMethod(){
-        compile("bogusTopLevelMethodNoMethod_.java", "bogusTopLevelMethodMissingType_.java", "bogusTopLevelMethodInvalidType_.java");
+        compile("bogusTopLevelMethodNoMethod_.java", "bogusTopLevelMethodMissingType_.java", "bogusTopLevelMethodInvalidType_.java", "bogusTopLevelMethodNotStatic_.java");
         assertErrors("bogusTopLevelMethodUser",
                 new CompilerError(1, "Error while loading the com.redhat.ceylon.compiler.java.test.model/1 module:\n"
                         +"   Error while resolving toplevel method com.redhat.ceylon.compiler.java.test.model::bogusTopLevelMethodNoMethod: static method missing"),

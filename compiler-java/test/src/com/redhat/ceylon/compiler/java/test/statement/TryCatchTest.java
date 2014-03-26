@@ -104,6 +104,7 @@ public class TryCatchTest extends CompilerTest {
     
     @Test
     public void testTryReplaceExceptionAtJavaCallSite(){
+        compile("trycatch/JavaThrower.java");
         compareWithJavaSource("trycatch/WrapExceptionAtJavaCallSite");
     }
 
