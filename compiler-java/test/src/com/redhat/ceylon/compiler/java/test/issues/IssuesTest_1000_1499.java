@@ -754,7 +754,7 @@ public class IssuesTest_1000_1499 extends CompilerTest {
 
     @Test
     public void testBug1469() {
-        compile("bug14xx/bug1469/bug1469modA/Bug1469Java.java", "bug14xx/bug1469/bug1469modA/module.ceylon");
+        compile("bug14xx/bug1469/bug1469modA/Bug1469Java.java", "bug14xx/bug1469/bug1469modA/package.ceylon", "bug14xx/bug1469/bug1469modA/module.ceylon");
         compile("bug14xx/bug1469/bug1469modB/Bug1469.ceylon", "bug14xx/bug1469/bug1469modB/module.ceylon");
     }
 
