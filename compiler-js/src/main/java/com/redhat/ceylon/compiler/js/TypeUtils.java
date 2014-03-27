@@ -517,7 +517,8 @@ public class TypeUtils {
     }
 
     static void outputModelPath(final Declaration d, GenerateJsVisitor gen) {
-        gen.out("['", d.getUnit().getPackage().getNameAsString(), "'");
+        final String pkgName = d.getUnit().getPackage().getNameAsString();
+        gen.out("['", "ceylon.language".equals(pkgName)?"$":pkgName, "'");
         if (d.isToplevel()) {
             gen.out(",'", d.getName(), "'");
         } else {
