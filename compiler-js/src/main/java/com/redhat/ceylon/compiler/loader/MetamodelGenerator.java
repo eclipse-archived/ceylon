@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.compiler.js.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
@@ -67,7 +66,6 @@ public class MetamodelGenerator {
 
     private final Map<String, Object> model = new HashMap<>();
     private final Module module;
-    public boolean encodeTuples = true;
 
     public MetamodelGenerator(Module module) {
         this.module = module;
@@ -156,15 +154,6 @@ public class MetamodelGenerator {
                 subs.add(typeMap(sub));
             }
             m.put("comp", d instanceof UnionType ? "u" : "i");
-            m.put(KEY_TYPES, subs);
-            return m;
-        } else if (encodeTuples && "ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
-            m.put("comp", "T");
-            List<ProducedType> subtipos = TypeUtils.getTupleTypes(pt);
-            List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
-            for (ProducedType t : subtipos) {
-                subs.add(typeMap(t));
-            }
             m.put(KEY_TYPES, subs);
             return m;
         }

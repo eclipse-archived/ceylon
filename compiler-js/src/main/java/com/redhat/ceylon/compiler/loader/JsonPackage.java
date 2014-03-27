@@ -687,10 +687,12 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 UnionType ut = new UnionType(u2);
                 ut.setCaseTypes(types);
                 td = ut;
-            } else {
+            } else if ("i".equals(m.get("comp"))) {
                 IntersectionType it = new IntersectionType(u2);
                 it.setSatisfiedTypes(types);
                 td = it;
+            } else {
+                throw new IllegalArgumentException("Invalid composite type '" + m.get("comp") + "'");
             }
         } else if (td == null) {
             final String tname = (String)m.get(MetamodelGenerator.KEY_NAME);
