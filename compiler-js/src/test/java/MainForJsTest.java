@@ -26,6 +26,7 @@ public class MainForJsTest {
                 .outRepo(opts.getOutDir())
                 .buildManager();
         System.out.println("Typechecking Ceylon test code...");
+        JsModuleManagerFactory.setVerbose(true);
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().verbose(false)
             .moduleManagerFactory(new JsModuleManagerFactory(null))
             .usageWarnings(false);
