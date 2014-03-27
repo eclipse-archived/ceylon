@@ -163,7 +163,7 @@ public class MetamodelGenerator {
             return m;
         }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        m.put(KEY_PACKAGE, pkg.getNameAsString());
+        addPackage(m, pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
             m.put(KEY_MODULE, pkg.getModule().getNameAsString());
         }
@@ -200,8 +200,8 @@ public class MetamodelGenerator {
      * type, in which case it will contain a "comp" key with an "i" or "u", and a list of the types
      * that compose it. */
     private Map<String, Object> typeParameterMap(ProducedType pt) {
-        Map<String, Object> m = new HashMap<>();
-        TypeDeclaration d = pt.getDeclaration();
+        final Map<String, Object> m = new HashMap<>();
+        final TypeDeclaration d = pt.getDeclaration();
         m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);
         if (d instanceof UnionType || d instanceof IntersectionType) {
             List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
@@ -219,7 +219,7 @@ public class MetamodelGenerator {
             return m;
         }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        m.put(KEY_PACKAGE, pkg.getNameAsString());
+        addPackage(m, pkg.getNameAsString());
         if (!pkg.getModule().equals(module)) {
             m.put(KEY_MODULE, d.getUnit().getPackage().getModule().getNameAsString());
         }
@@ -560,6 +560,14 @@ public class MetamodelGenerator {
         }
         if (!anns.isEmpty()) {
             m.put(KEY_ANNOTATIONS, anns);
+        }
+    }
+
+    private void addPackage(final Map<String,Object> map, final String pkgName) {
+        if (pkgName.equals("ceylon.language")) {
+            map.put(KEY_PACKAGE, "$");
+        } else {
+            map.put(KEY_PACKAGE, pkgName);
         }
     }
 
