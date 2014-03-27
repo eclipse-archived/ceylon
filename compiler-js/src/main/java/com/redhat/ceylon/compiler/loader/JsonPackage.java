@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Package {
@@ -187,7 +188,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             m.remove("of");
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            cls.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms));
+            for (ProducedType sat : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
+                Util.addToIntersection(cls.getSatisfiedTypes(), sat, u2);
+            }
         }
         if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
@@ -329,7 +332,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if (tp.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
                 @SuppressWarnings("unchecked")
                 final List<Map<String,Object>> stypes = (List<Map<String,Object>>)tp.get(MetamodelGenerator.KEY_SATISFIES);
-                tparm.setSatisfiedTypes(parseTypeList(stypes, allparms));
+                for (ProducedType sat : parseTypeList(stypes, allparms)) {
+                    Util.addToIntersection(tparm.getSatisfiedTypes(), sat, u2);
+                }
                 tparm.setConstrained(true);
             } else if (tp.containsKey("of")) {
                 @SuppressWarnings("unchecked")
@@ -546,7 +551,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             t.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.remove("of"), allparms));
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            t.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms));
+            for (ProducedType s : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
+                Util.addToIntersection(t.getSatisfiedTypes(), s, u2);
+            }
         }
         if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
@@ -598,7 +605,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
             }
             if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-                type.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), existing));
+                for (ProducedType sat : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), existing)) {
+                    Util.addToIntersection(type.getSatisfiedTypes(), sat, u2);
+                }
             }
             addAttributesAndMethods(m, type, existing);
         }
@@ -659,7 +668,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             alias.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.remove("of"), allparms));
         }
         if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            alias.setSatisfiedTypes(parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms));
+            for (ProducedType sat :parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
+                Util.addToIntersection(alias.getSatisfiedTypes(), sat, u2);
+            }
         }
         m.clear();
         m.put(MetamodelGenerator.KEY_METATYPE, alias);
@@ -678,17 +689,20 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         if (td == null && m.containsKey("comp")) {
             @SuppressWarnings("unchecked")
-            List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
-            ArrayList<ProducedType> types = new ArrayList<ProducedType>(tmaps.size());
-            for (Map<String, Object> tmap : tmaps) {
-                types.add(getTypeFromJson(tmap, container, typeParams));
-            }
+            final List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
+            final ArrayList<ProducedType> types = new ArrayList<ProducedType>(tmaps.size());
             if ("u".equals(m.get("comp"))) {
                 UnionType ut = new UnionType(u2);
+                for (Map<String, Object> tmap : tmaps) {
+                    Util.addToUnion(types, getTypeFromJson(tmap, container, typeParams));
+                }
                 ut.setCaseTypes(types);
                 td = ut;
             } else if ("i".equals(m.get("comp"))) {
                 IntersectionType it = new IntersectionType(u2);
+                for (Map<String, Object> tmap : tmaps) {
+                    Util.addToIntersection(types, getTypeFromJson(tmap, container, typeParams), u2);
+                }
                 it.setSatisfiedTypes(types);
                 td = it;
             } else {
@@ -845,6 +859,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 d.setDefault(true);
             } else if ("native".equals(name)) {
                 d.setNative(true);
+            } else if ("final".equals(name)) {
+                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setFinal(true);
             } else if ("late".equals(name) && d instanceof Value) {
                 ((Value)d).setLate(true);
             }
