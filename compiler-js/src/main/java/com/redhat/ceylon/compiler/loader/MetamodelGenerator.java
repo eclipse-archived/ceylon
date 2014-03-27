@@ -141,7 +141,7 @@ public class MetamodelGenerator {
      * Includes name, package, module and type parameters, unless it's a union or intersection
      * type, in which case it contains a "comp" key with an "i" or "u" and a key "types" with
      * the list of types that compose it. */
-    private Map<String, Object> typeMap(ProducedType pt) {
+    private Map<String, Object> typeMap(ProducedType pt, Declaration from) {
         if (pt==null) {
             pt = new UnknownType(module.getUnit()).getType();
         }
@@ -151,7 +151,7 @@ public class MetamodelGenerator {
             List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
             List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
             for (ProducedType sub : subtipos) {
-                subs.add(typeMap(sub));
+                subs.add(typeMap(sub, from));
             }
             m.put("comp", d instanceof UnionType ? "u" : "i");
             m.put(KEY_TYPES, subs);
@@ -163,17 +163,21 @@ public class MetamodelGenerator {
             return m;
         }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        addPackage(m, pkg.getNameAsString());
+        if (pkg.equals(from.getUnit().getPackage())) {
+            addPackage(m, ".");
+        } else {
+            addPackage(m, pkg.getNameAsString());
+        }
         if (!pkg.getModule().equals(module)) {
             m.put(KEY_MODULE, pkg.getModule().getNameAsString());
         }
-        putTypeParameters(m, pt);
+        putTypeParameters(m, pt, from);
         return m;
     }
 
     /** Returns a map with the same info as {@link #typeParameterMap(ProducedType)} but with
      * an additional key "variance" if it's covariant ("out") or contravariant ("in"). */
-    private Map<String, Object> typeParameterMap(TypeParameter tp) {
+    private Map<String, Object> typeParameterMap(TypeParameter tp, Declaration from) {
         Map<String, Object> map = new HashMap<>();
         map.put(MetamodelGenerator.KEY_NAME, tp.getName());
         if (tp.isCovariant()) {
@@ -182,15 +186,15 @@ public class MetamodelGenerator {
             map.put("variance", "in");
         }
         if (tp.getSelfType() != null) {
-            map.put(KEY_SELF_TYPE, typeMap(tp.getSelfType()));
+            map.put(KEY_SELF_TYPE, typeMap(tp.getSelfType(), from));
         }
         if (tp.getSatisfiedTypes() != null && !tp.getSatisfiedTypes().isEmpty()) {
-            encodeTypes(tp.getSatisfiedTypes(), map, KEY_SATISFIES);
+            encodeTypes(tp.getSatisfiedTypes(), map, KEY_SATISFIES, from);
         } else if (tp.getCaseTypes() != null && !tp.getCaseTypes().isEmpty()) {
-            encodeTypes(tp.getCaseTypes(), map, "of");
+            encodeTypes(tp.getCaseTypes(), map, "of", from);
         }
         if (tp.getDefaultTypeArgument() != null) {
-            map.put(KEY_DEFAULT, typeMap(tp.getDefaultTypeArgument()));
+            map.put(KEY_DEFAULT, typeMap(tp.getDefaultTypeArgument(), from));
         }
         return map;
     }
@@ -199,7 +203,7 @@ public class MetamodelGenerator {
      * Includes name, package, module and type parameters, unless it's a union or intersection
      * type, in which case it will contain a "comp" key with an "i" or "u", and a list of the types
      * that compose it. */
-    private Map<String, Object> typeParameterMap(ProducedType pt) {
+    private Map<String, Object> typeParameterMap(ProducedType pt, Declaration from) {
         final Map<String, Object> m = new HashMap<>();
         final TypeDeclaration d = pt.getDeclaration();
         m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);
@@ -207,7 +211,7 @@ public class MetamodelGenerator {
             List<ProducedType> subtipos = d instanceof UnionType ? d.getCaseTypes() : d.getSatisfiedTypes();
             List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
             for (ProducedType sub : subtipos) {
-                subs.add(typeMap(sub));
+                subs.add(typeMap(sub, from));
             }
             m.put("comp", d instanceof UnionType ? "u" : "i");
             m.put(KEY_TYPES, subs);
@@ -219,19 +223,23 @@ public class MetamodelGenerator {
             return m;
         }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        addPackage(m, pkg.getNameAsString());
+        if (pkg.equals(from.getUnit().getPackage())) {
+            addPackage(m, ".");
+        } else {
+            addPackage(m, pkg.getNameAsString());
+        }
         if (!pkg.getModule().equals(module)) {
             m.put(KEY_MODULE, d.getUnit().getPackage().getModule().getNameAsString());
         }
-        putTypeParameters(m, pt);
+        putTypeParameters(m, pt, from);
         return m;
     }
 
-    private void putTypeParameters(Map<String, Object> container, ProducedType pt) {
+    private void putTypeParameters(Map<String, Object> container, ProducedType pt, Declaration from) {
         if (pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty()) {
             List<Map<String, Object>> list = new ArrayList<>(pt.getTypeArgumentList().size());
             for (ProducedType tparm : pt.getTypeArgumentList()) {
-                list.add(typeParameterMap(tparm));
+                list.add(typeParameterMap(tparm, from));
             }
             container.put(KEY_TYPE_PARAMS, list);
         }
@@ -239,11 +247,11 @@ public class MetamodelGenerator {
 
     /** Create a list of maps from the list of type parameters.
      * @see #typeParameterMap(TypeParameter) */
-    private List<Map<String, Object>> typeParameters(List<TypeParameter> tpl) {
+    private List<Map<String, Object>> typeParameters(List<TypeParameter> tpl, Declaration from) {
         if (tpl != null && !tpl.isEmpty()) {
             List<Map<String, Object>> l = new ArrayList<>(tpl.size());
             for (TypeParameter tp : tpl) {
-                l.add(typeParameterMap(tp));
+                l.add(typeParameterMap(tp, from));
             }
             return l;
         }
@@ -252,7 +260,7 @@ public class MetamodelGenerator {
 
     /** Create a list of maps for the parameter list. Each map will be a parameter, including
      * name, type, default value (if any), and whether it's sequenced. */
-    private List<Map<String,Object>> parameterListMap(ParameterList plist) {
+    private List<Map<String,Object>> parameterListMap(ParameterList plist, Declaration from) {
         List<Parameter> parms = plist.getParameters();
         if (parms.size() > 0) {
             List<Map<String,Object>> p = new ArrayList<>(parms.size());
@@ -273,10 +281,11 @@ public class MetamodelGenerator {
                 if (parmtype != null && parmtype.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
                     pm.put(KEY_TYPE, parmtype.getName());
                 } else if (parm.getType() != null) {
-                    pm.put(KEY_TYPE, typeMap(parm.getType()));
+                    pm.put(KEY_TYPE, typeMap(parm.getType(), from));
                 } else {
                     //Most likely a dynamic type, set it to Anything
-                    pm.put(KEY_TYPE, typeMap(((TypeDeclaration)module.getLanguageModule().getDirectPackage("ceylon.language").getDirectMember("Anything", null, false)).getType()));
+                    pm.put(KEY_TYPE, typeMap(((TypeDeclaration)module.getLanguageModule().getDirectPackage(
+                            "ceylon.language").getDirectMember("Anything", null, false)).getType(), from));
                 }
                 if (parm.isHidden()) {
                     pm.put("$hdn", 1);
@@ -286,7 +295,7 @@ public class MetamodelGenerator {
                     List<List<Map<String, Object>>> _paramLists = new ArrayList<>(
                             ((Method)parmtype).getParameterLists().size());
                     for (ParameterList subplist : ((Method)parmtype).getParameterLists()) {
-                        List<Map<String,Object>> params = parameterListMap(subplist);
+                        List<Map<String,Object>> params = parameterListMap(subplist, from);
                         if (params == null) {
                             params = Collections.emptyList();
                         }
@@ -314,14 +323,14 @@ public class MetamodelGenerator {
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
         m.put(KEY_NAME, d.getName());
-        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters());
+        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
         }
-        m.put(KEY_TYPE, typeMap(d.getType()));
+        m.put(KEY_TYPE, typeMap(d.getType(), d));
         List<List<Map<String, Object>>> paramLists = new ArrayList<>(d.getParameterLists().size());
         for (ParameterList plist : d.getParameterLists()) {
-            List<Map<String,Object>> params = parameterListMap(plist);
+            List<Map<String,Object>> params = parameterListMap(plist, d);
             if (params == null) {
                 params = Collections.emptyList();
             }
@@ -363,29 +372,29 @@ public class MetamodelGenerator {
         m.put(KEY_NAME, d.getName());
 
         //Type parameters
-        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters());
+        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
         }
         //self type
         if (d.getSelfType() != null) {
-            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType()));
+            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType(), d));
         }
 
         //Extends
         if (d.getExtendedType() != null) {
-            m.put("super", typeMap(d.getExtendedType()));
+            m.put("super", typeMap(d.getExtendedType(), d));
         }
         //Satisfies
-        encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES);
+        encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
 
         //Initializer parameters
-        final List<Map<String,Object>> inits = parameterListMap(d.getParameterList());
+        final List<Map<String,Object>> inits = parameterListMap(d.getParameterList(), d);
         if (inits != null && !inits.isEmpty()) {
             m.put(KEY_PARAMS, inits);
         }
         //Case types
-        encodeTypes(d.getCaseTypes(), m, "of");
+        encodeTypes(d.getCaseTypes(), m, "of", d);
 
         //Annotations
         encodeAnnotations(d, m);
@@ -418,7 +427,7 @@ public class MetamodelGenerator {
         m.put(KEY_NAME, d.getName());
 
         //Type parameters
-        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters());
+        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
         }
@@ -427,13 +436,13 @@ public class MetamodelGenerator {
             m.put(KEY_SELF_TYPE, d.getSelfType().getDeclaration().getName());
         }
         //satisfies
-        encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES);
+        encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
         //Case types
-        encodeTypes(d.getCaseTypes(), m, "of");
+        encodeTypes(d.getCaseTypes(), m, "of", d);
         //Annotations
         encodeAnnotations(d, m);
         if (d.isAlias()) {
-            m.put("$alias", typeMap(d.getExtendedType()));
+            m.put("$alias", typeMap(d.getExtendedType(), d));
         }
         Map<String, Object> parent = findParent(d);
         if (parent != null) {
@@ -461,9 +470,9 @@ public class MetamodelGenerator {
         m.put(KEY_METATYPE, METATYPE_OBJECT);
         m.put(KEY_NAME, d.getName());
         //Extends
-        m.put("super", typeMap(d.getTypeDeclaration().getExtendedType()));
+        m.put("super", typeMap(d.getTypeDeclaration().getExtendedType(), d));
         //Satisfies
-        encodeTypes(d.getTypeDeclaration().getSatisfiedTypes(), m, KEY_SATISFIES);
+        encodeTypes(d.getTypeDeclaration().getSatisfiedTypes(), m, KEY_SATISFIES, d);
 
         //Certain annotations
         encodeAnnotations(d, m);
@@ -491,7 +500,7 @@ public class MetamodelGenerator {
         }
         m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
-        m.put(KEY_TYPE, typeMap(d.getType()));
+        m.put(KEY_TYPE, typeMap(d.getType(), d));
         encodeAnnotations(d, m);
         parent.put(d.getName(), m);
         return m;
@@ -518,27 +527,27 @@ public class MetamodelGenerator {
         Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_ALIAS);
         m.put(KEY_NAME, d.getName());
-        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters());
+        List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
         }
         if (d.getSelfType() != null) {
-            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType()));
+            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType(), d));
         }
-        m.put("$alias", typeMap(d.getExtendedType()));
-        encodeTypes(d.getCaseTypes(), m, "of");
-        encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES);
+        m.put("$alias", typeMap(d.getExtendedType(), d));
+        encodeTypes(d.getCaseTypes(), m, "of", d);
+        encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
         encodeAnnotations(d, m);
         parent.put(d.getName(), m);
         return m;
     }
 
     /** Encodes the list of types and puts them under the specified key in the map. */
-    private void encodeTypes(List<ProducedType> types, Map<String,Object> m, String key) {
+    private void encodeTypes(List<ProducedType> types, Map<String,Object> m, String key, Declaration from) {
         if (types == null || types.isEmpty()) return;
         List<Map<String, Object>> sats = new ArrayList<>(types.size());
         for (ProducedType st : types) {
-            sats.add(typeMap(st));
+            sats.add(typeMap(st, from));
         }
         m.put(key, sats);
     }
