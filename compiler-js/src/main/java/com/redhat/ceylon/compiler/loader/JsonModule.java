@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.loader;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -9,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 public class JsonModule extends Module {
 
     private Map<String,Object> model;
+    private boolean loaded = false;
 
     public void setModel(Map<String, Object> value) {
         if (model != null) {
@@ -28,10 +30,21 @@ public class JsonModule extends Module {
     }
 
     void loadDeclarations() {
+        if (loaded)return;
         if (model != null) {
-            for (com.redhat.ceylon.compiler.typechecker.model.Package pkg : getPackages()) {
-                if (pkg instanceof JsonPackage) {
-                    ((JsonPackage) pkg).loadDeclarations();
+            if (!loaded) {
+                loaded=true;
+                ArrayList<JsonPackage> pks = new ArrayList<>(model.size());
+                for (Map.Entry<String, Object> e : model.entrySet()) {
+                    if (!e.getKey().startsWith("$mod-")) {
+                        JsonPackage p = new JsonPackage(e.getKey());
+                        p.setModule(this);
+                        pks.add(p);
+                        getPackages().add(p);
+                    }
+                }
+                for (JsonPackage p : pks) {
+                    p.loadDeclarations();
                 }
             }
         }
