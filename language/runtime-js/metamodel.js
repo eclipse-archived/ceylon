@@ -3,7 +3,9 @@ function get_model(mm) {
   var map=mm.mod;
   var path=mm.d;
   for (var i=0; i < path.length; i++) {
-    map = map[path[i]];
+    var _p=path[i];
+    if (i===0 && _p==='$')_p='ceylon.language';
+    map = map[_p];
   }
   return map;
 }

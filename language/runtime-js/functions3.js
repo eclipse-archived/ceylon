@@ -98,6 +98,7 @@ function $qname(mm) {
   if (mm.$crtmm$)mm=getrtmm$$(mm);
   if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];
+  if (qn==='$')qn='ceylon.language';
   for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
   return qn;
 }

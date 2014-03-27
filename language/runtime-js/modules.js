@@ -102,6 +102,7 @@ function Modulo(meta, $$modulo){
   },undefined,{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Import$meta$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','dependencies']});
   function findPackage(pknm){
     if (mm['$pks$'] === undefined) this.members;
+    if (pknm==='$')pknm='ceylon.language';
     var pk = mm['$pks$'][pknm];
     return pk===undefined ? null : pk;
   }
