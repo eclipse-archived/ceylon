@@ -413,7 +413,7 @@ public class JsCompiler {
     }
 
     protected boolean nonCeylonUnit(Unit u) {
-        return (u.getFilename() != null && !u.getFilename().endsWith(".ceylon"))
+        return (u.getFilename() != null && !(u.getFilename().isEmpty()||u.getFilename().endsWith(".ceylon")))
                 || (u.getPackage() != null && u.getPackage().getModule() != null && u.getPackage().getModule().isJava());
     }
 
