@@ -38,4 +38,12 @@ shared native abstract class Throwable(description=null, cause=null)
      virtual machine process."
     see (`function printTrace`)
     shared void printStackTrace() => printTrace(this);
+    
+    "The given exception was suppressed in order to 
+     propagate this exception."
+    shared native void addSuppressed(Throwable suppressed);
+    
+    "The exceptions that were suppressed in order to 
+     propagate this exception."
+    shared native Throwable[] suppressed;
 }

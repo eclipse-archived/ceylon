@@ -1,10 +1,10 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
 @Method
@@ -19,12 +19,7 @@ public final class suppressedExceptions_ {
             @Name("exception")
             @TypeInfo("ceylon.language::Exception")
             final java.lang.Throwable exception) {
-        java.lang.Throwable[] sup = exception.getSuppressed();
-        if (sup.length > 0) {
-            return ArraySequence.backedBy$hidden(TypeDescriptor.klass(java.lang.Throwable.class), sup, 0, sup.length);
-        } else {
-            return (ceylon.language.Sequential)empty_.get_();
-        }
+        return Util.suppressedExceptions(exception);
     }
 
 }

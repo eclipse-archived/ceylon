@@ -80,4 +80,16 @@ public abstract class Throwable extends java.lang.Object {
     public static java.lang.Throwable $default$cause(java.lang.String description){
         return null;
     }
+    
+    @TypeInfo("ceylon.language::Sequential<ceylon.language::Throwable>")
+    public final Sequential<Throwable> getSuppressed() {
+        return null;
+    }
+    
+    public final void addSuppressed(
+            @Name("suppressed")
+            @TypeInfo("ceylon.language::Throwable")
+            java.lang.Throwable suppressed) {
+        
+    }
 }

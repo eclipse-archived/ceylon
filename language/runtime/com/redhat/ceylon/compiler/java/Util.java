@@ -23,7 +23,9 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.language.ArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -1586,6 +1588,18 @@ public class Util {
     
     private static String notArrayType(Object o) {
         return (o == null ? "null" : o.getClass().getName()) + " is not an array type";
+    }
+    
+    public static ceylon.language.Sequential<? extends java.lang.Throwable> suppressedExceptions(
+            @Name("exception")
+            @TypeInfo("ceylon.language::Exception")
+            final java.lang.Throwable exception) {
+        java.lang.Throwable[] sup = exception.getSuppressed();
+        if (sup.length > 0) {
+            return new ArraySequence(TypeDescriptor.klass(java.lang.Throwable.class), sup, 0, sup.length, false);
+        } else {
+            return (ceylon.language.Sequential)empty_.get_();
+        }
     }
     
 }
