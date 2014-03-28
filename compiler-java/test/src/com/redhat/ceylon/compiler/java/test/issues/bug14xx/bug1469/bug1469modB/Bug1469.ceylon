@@ -24,5 +24,5 @@ import com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1469.bug1469modA {
 void bug1469() {
     value b = Bug1469Java(null);
     value p = b.props;
-    value q = b.prov;
+    //value q = b.prov;
 }
