@@ -209,7 +209,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-destroyable-resource 2 exception message");
-        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 2 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-destroyable-resource 2 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -223,7 +223,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="init resource", "try-with-destroyable-resource 3 exception message");
-        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 3 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-destroyable-resource 3 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -237,7 +237,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="destroy resource", "try-with-destroyable-resource 5 exception message");
-        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 5 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-destroyable-resource 5 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -251,8 +251,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-destroyable-resource 6 exception message");
-        value sups = suppressedExceptions(e);
-        if (nonempty sups) {
+        if (nonempty sups = e.suppressed) {
             check(sups.size==1, "try-with-destroyable-resource 6 wrong suppressed exceptions count");
             check(sups.first.message=="destroy resource", "try-with-destroyable-resource 6 wrong suppressed exception message");
         } else {
@@ -271,7 +270,7 @@ shared void exceptions() {
     } catch (ResourceException e) {
         pass++;
         check(e.message=="destroy resource", "try-with-destroyable-resource 7 exception message");
-        check(suppressedExceptions(e).empty, "try-with-destroyable-resource 7 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-destroyable-resource 7 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -285,8 +284,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-destroyable-resource 8 exception message");
-        value sups = suppressedExceptions(e);
-        if (nonempty sups) {
+        if (nonempty sups = e.suppressed) {
             check(sups.size==2, "try-with-destroyable-resource 8 wrong suppressed exceptions count");
             check(sups.first.message=="destroy resource", "try-with-destroyable-resource 8 wrong suppressed exception message");
             if (nonempty r=sups.rest) {
@@ -325,7 +323,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-obtainable-resource 2 exception message");
-        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 2 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-obtainable-resource 2 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -339,7 +337,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="init resource", "try-with-obtainable-resource 3 exception message");
-        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 3 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-obtainable-resource 3 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -351,7 +349,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="obtain resource", "try-with-obtainable-resource 4 exception message");
-        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 4 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-obtainable-resource 4 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -365,7 +363,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="release resource", "try-with-obtainable-resource 5 exception message");
-        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 5 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-obtainable-resource 5 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -379,8 +377,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-obtainable-resource 6 exception message");
-        value sups = suppressedExceptions(e);
-        if (nonempty sups) {
+        if (nonempty sups = e.suppressed) {
             check(sups.size==1, "try-with-obtainable-resource 6 wrong suppressed exceptions count");
             check(sups.first.message=="release resource", "try-with-obtainable-resource 6 wrong suppressed exception message");
         } else {
@@ -399,7 +396,7 @@ shared void exceptions() {
     } catch (ResourceException e) {
         pass++;
         check(e.message=="obtain resource", "try-with-obtainable-resource 7 exception message");
-        check(suppressedExceptions(e).empty, "try-with-obtainable-resource 7 unexpected suppressed exceptions");
+        check(e.suppressed.empty, "try-with-obtainable-resource 7 unexpected suppressed exceptions");
     } finally {
         pass++;
     }
@@ -413,8 +410,7 @@ shared void exceptions() {
     } catch (Exception e) {
         pass++;
         check(e.message=="my exception", "try-with-obtainable-resource 8 exception message");
-        value sups = suppressedExceptions(e);
-        if (nonempty sups) {
+        if (nonempty sups = e.suppressed) {
             check(sups.size==2, "try-with-obtainable-resource 8 wrong suppressed exceptions count");
             check(sups.first.message=="release resource", "try-with-obtainable-resource 8 wrong suppressed exception message");
             if (nonempty r=sups.rest) {
