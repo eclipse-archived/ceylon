@@ -71,5 +71,6 @@ shared void test() {
     literals<String>();
     typeTests();
     modulesTests();
+    testModelLoader();
     results();
 }

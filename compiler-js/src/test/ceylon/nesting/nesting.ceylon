@@ -192,7 +192,19 @@ shared object nameTest {
             return outer.x + x + nameTest.f();
         }
     }
+    shared interface IfaceInObject satisfies Closeable {}
+    shared class ClassInObject<out T>(shared T t) extends Singleton<T>(t)
+            given T satisfies Object {}
     shared String f() { return this.nameTest.f(); }
+    shared Object mltest1<T>(T t)
+        given T satisfies Object => ClassInObject(t);
+    shared Object mltest2() {
+        object rval satisfies IfaceInObject {
+            shared actual void open() {}
+            shared actual void close(Throwable? e) {}
+        }
+        return rval;
+    }
 }
 
 shared class C1() {
