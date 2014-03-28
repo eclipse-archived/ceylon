@@ -157,7 +157,13 @@ public class MetamodelGenerator {
             m.put(KEY_TYPES, subs);
             return m;
         }
-        m.put(KEY_NAME, d.getName());
+        if (d.isToplevel() || d instanceof TypeParameter) {
+            m.put(KEY_NAME, d.getName());
+        } else {
+            final String qn = d.getQualifiedNameString();
+            int p0 = qn.indexOf("::");
+            m.put(KEY_NAME, p0>=0 ? qn.substring(p0+2) : qn);
+        }
         if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
             //For types that reference type parameters, we're done
             return m;

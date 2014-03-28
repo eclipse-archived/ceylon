@@ -119,7 +119,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     /** Loads a class from the specified map. To avoid circularities, when the class is being created it is
      * added to the map, and once it's been fully loaded, all other keys are removed. */
     @SuppressWarnings("unchecked")
-    private com.redhat.ceylon.compiler.typechecker.model.Class loadClass(String name, Map<String, Object> m,
+    com.redhat.ceylon.compiler.typechecker.model.Class loadClass(String name, Map<String, Object> m,
             Scope parent, final List<TypeParameter> existing) {
         com.redhat.ceylon.compiler.typechecker.model.Class cls;
         m.remove(MetamodelGenerator.KEY_NAME);
@@ -418,7 +418,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     }
 
     @SuppressWarnings("unchecked")
-    private Method loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
+    Method loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
         Method md = new Method();
         md.setName(name);
         md.setContainer(parent);
@@ -455,7 +455,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         return md;
     }
 
-    private MethodOrValue loadAttribute(String name, Map<String, Object> m, Scope parent,
+    MethodOrValue loadAttribute(String name, Map<String, Object> m, Scope parent,
             List<TypeParameter> typeParameters) {
         String metatype = (String)m.get(MetamodelGenerator.KEY_METATYPE);
         Value d = new Value();
@@ -494,7 +494,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     }
 
     @SuppressWarnings("unchecked")
-    private Interface loadInterface(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
+    Interface loadInterface(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
         //Check if it's been loaded first
         //It hasn't been loaded, so create it
         Interface t;
@@ -573,7 +573,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
 
     /** Loads an object declaration, creating it if necessary, and returns its type declaration. */
     @SuppressWarnings("unchecked")
-    private TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
+    TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
         Value obj;
         if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof Value) {
             obj = (Value)m.get(MetamodelGenerator.KEY_METATYPE);
@@ -591,8 +591,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if (parent == this) {
                 u2.addDeclaration(obj);
                 u2.addDeclaration(type);
-                addMember(null);
             }
+            parent.addMember(obj);
             obj.setType(type.getType());
             setAnnotations(obj, (Map<String,List<String>>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
             setAnnotations(obj.getTypeDeclaration(), (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
@@ -607,6 +607,21 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
                 for (ProducedType sat : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), existing)) {
                     Util.addToIntersection(type.getSatisfiedTypes(), sat, u2);
+                }
+            }
+            if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
+                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
+                    loadInterface(inner.getKey(), inner.getValue(), type, existing);
+                }
+            }
+            if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
+                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES)).entrySet()) {
+                    loadClass(inner.getKey(), inner.getValue(), type, existing);
+                }
+            }
+            if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
+                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
+                    loadObject(inner.getKey(), inner.getValue(), type, existing);
                 }
             }
             addAttributesAndMethods(m, type, existing);
@@ -712,7 +727,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             final String tname = (String)m.get(MetamodelGenerator.KEY_NAME);
             final String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
             if (pname == null) {
-                //Maybe it's a ref to a type parameter
+                //It's a ref to a type parameter
                 for (TypeParameter typeParam : typeParams) {
                     if (typeParam.getName().equals(tname)) {
                         td = typeParam;
@@ -721,42 +736,44 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             } else {
                 final String mname = (String)m.get(MetamodelGenerator.KEY_MODULE);
                 com.redhat.ceylon.compiler.typechecker.model.Package rp;
-                if (container != null) {
-                    //First look in the nested declarations
-                    Declaration d = container.getMember(tname, null, false);
-                    if (d instanceof TypeDeclaration && d instanceof TypeParameter == false) {
+                if ("$".equals(pname)) {
+                    //Language module package
+                    rp = "ceylon.language".equals(getNameAsString())? this :
+                        getModule().getLanguageModule().getDirectPackage("ceylon.language");
+                } else if (mname == null) {
+                    //local type
+                    if (".".equals(pname)) {
+                        rp = this;
+                        if (container instanceof TypeDeclaration && tname.equals(container.getName())) {
+                            td = (TypeDeclaration)container;
+                        }
+                    } else {
+                        rp = getModule().getDirectPackage(pname);
+                    }
+                } else {
+                    rp = getModule().getPackage(pname);
+                }
+                if (rp == null) {
+                    throw new CompilerErrorException("Package not found: " + pname);
+                }
+                if (rp != this && rp instanceof JsonPackage && !((JsonPackage)rp).loaded) {
+                    ((JsonPackage) rp).loadDeclarations();
+                }
+                final boolean nested = tname.indexOf('.') > 0;
+                final String level1 = nested ? tname.substring(0, tname.indexOf('.')) : tname;
+                //Then look in the top-level declarations
+                for (Declaration d : rp.getMembers()) {
+                    if (d instanceof TypeDeclaration && level1.equals(d.getName())) {
                         td = (TypeDeclaration)d;
                     }
                 }
-                if (td == null) {
-                    if ("$".equals(pname)) {
-                        //Language module package
-                        rp = "ceylon.language".equals(getNameAsString())? this :
-                            getModule().getLanguageModule().getDirectPackage("ceylon.language");
-                    } else if (mname == null) {
-                        //local type
-                        if (".".equals(pname)) {
-                            rp = this;
-                        } else {
-                            rp = getModule().getDirectPackage(pname);
-                        }
-                    } else {
-                        rp = getModule().getPackage(pname);
-                    }
-                    if (rp == null) {
-                        throw new CompilerErrorException("Package not found: " + pname);
-                    }
-                    if (rp != this && rp instanceof JsonPackage && !((JsonPackage)rp).loaded) {
-                        ((JsonPackage) rp).loadDeclarations();
-                    }
-                    //Then look in the top-level declarations
-                    for (Declaration d : rp.getMembers()) {
-                        if (d instanceof TypeDeclaration && tname.equals(d.getName())) {
-                            td = (TypeDeclaration)d;
-                        }
-                    }
-                    if (td == null && rp instanceof JsonPackage) {
-                        td = (TypeDeclaration)((JsonPackage)rp).load(tname, typeParams);
+                if (td == null && rp instanceof JsonPackage) {
+                    td = (TypeDeclaration)((JsonPackage)rp).load(level1, typeParams);
+                }
+                if (nested && td != null) {
+                    final String[] path = tname.split("\\.");
+                    for (int i = 1; i < path.length; i++) {
+                        td = (TypeDeclaration)td.getDirectMember(path[i], null, false);
                     }
                 }
             }
