@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -24,8 +25,9 @@ public class TryCatchGenerator {
             resources = null;
         }
         List<Res> resourceVars = null;
-        String excVar = null;
+        String tvar = null;
         if (resources != null && !resources.isEmpty()) {
+            //Declare the resource variables
             resourceVars = new ArrayList<>(resources.size());
             gen.out("var ");
             for (Tree.Resource res : resources) {
@@ -33,32 +35,43 @@ public class TryCatchGenerator {
                     gen.out(",");
                 }
                 final Res r = new Res(res);
-                gen.out(r.var, "=null,", r.var, "$cls=false");
+                gen.out(r.var, "=null");
                 resourceVars.add(r);
             }
-            excVar = gen.getNames().createTempVariable();
-            gen.out(",", excVar, "=null");
+            tvar = gen.getNames().createTempVariable();
+            gen.out(",", tvar, "=null");
+            if (tvar != null) {
+            }
             gen.endLine(true);
         }
         gen.out("try");
         if (resources != null) {
             gen.out("{");
+            //Initialize the resources
             for (Res resourceVar : resourceVars) {
-                gen.out(resourceVar.var, "=");
-                resourceVar.r.visit(gen);
-                gen.endLine(true);
-                if (!resourceVar.destroy) {
-                    gen.out(resourceVar.var, ".obtain();");
+                if (resourceVar.destroy) {
+                    gen.out(resourceVar.var, "=");
+                    resourceVar.r.visit(gen);
+                } else {
+                    gen.out(tvar, "=");
+                    resourceVar.r.visit(gen);
+                    gen.out(";", tvar, ".obtain();", resourceVar.var, "=", tvar);
                 }
-                gen.out(resourceVar.var, "$cls=true");
                 gen.endLine(true);
             }
         }
         gen.encloseBlockInFunction(that.getTryClause().getBlock());
         if (resources != null) {
-            for (Res resourceVar : resourceVars) {
-                gen.out(resourceVar.var, "$cls=false;", resourceVar.var, resourceVar.destroy?".destroy(null)":".release(null)");
-                gen.endLine(true);
+            //Destroy/release resources
+            Collections.reverse(resourceVars);
+            for (Res r : resourceVars) {
+                gen.out(tvar,"=",r.var,";", r.var, "=null;", tvar);
+                if (r.destroy) {
+                    gen.out(".destroy(null);");
+                } else {
+                    gen.out(".release(null);");
+                }
+                gen.endLine();
             }
             gen.out("}");
         }
@@ -71,17 +84,13 @@ public class TryCatchGenerator {
             gen.out("if(", catchVarName, ".getT$name===undefined)", catchVarName, "=",
                     GenerateJsVisitor.getClAlias(), "NativeException(", catchVarName, ")");
             gen.endLine(true);
-            if (excVar != null) {
-                gen.out(excVar, "=", catchVarName);
-                gen.endLine(true);
-            }
             if (resources != null) {
-                for (Res resourceVar : resourceVars) {
-                    gen.out("try{if(",resourceVar.var, "$cls)", resourceVar.var,
-                            resourceVar.destroy?".destroy(":".release(",
-                            excVar, ");}catch(",resourceVar.var,"$e){",
+                for (Res r : resourceVars) {
+                    gen.out("try{if(", r.var, "!==null)", r.var,
+                            r.destroy?".destroy(":".release(",
+                            catchVarName, ");}catch(", r.var,"$e){",
                             GenerateJsVisitor.getClAlias(),
-                            "addSuppressedException(", resourceVar.var, "$e,", catchVarName, ");}");
+                            "addSuppressedException(", r.var, "$e,", catchVarName, ");}");
                     gen.endLine();
                 }
             }
