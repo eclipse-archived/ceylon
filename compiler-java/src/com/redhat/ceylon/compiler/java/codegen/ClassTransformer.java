@@ -205,7 +205,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(!model.isAlias()){
             // only classes get a $getType method
             if(model instanceof Class)
-                classBuilder.addGetTypeMethod(model.getType(), model.getExtendedTypeDeclaration() != typeFact().getErrorDeclaration());
+                classBuilder.addGetTypeMethod(model.getType());
             if(supportsReifiedAlias(model))
                 classBuilder.reifiedAlias(model.getType());
         }
@@ -3410,7 +3410,7 @@ public class ClassTransformer extends AbstractTransformer {
             .constructorModifiers(PRIVATE)
             .satisfies(decl.getSatisfiedTypes())
             .init(childDefs)
-            .addGetTypeMethod(model.getType(), klass.getExtendedTypeDeclaration() != typeFact().getErrorDeclaration())
+            .addGetTypeMethod(model.getType())
             .build();
         
         if (makeLocalInstance) {

@@ -1453,7 +1453,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (willEraseToError(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
-                return makeIdent(syms().errorType);
+                return makeIdent(syms().ceylonErrorType);
             } else if ((flags & JT_CATCH) != 0) {
                 return make().Type(syms().errorType);
             } else {

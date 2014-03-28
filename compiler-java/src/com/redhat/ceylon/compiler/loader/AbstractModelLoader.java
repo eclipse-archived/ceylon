@@ -193,10 +193,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
     private static final TypeMirror CEYLON_TYPE_DESCRIPTOR_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
     
-    private static final TypeMirror THROWABLE_TYPE = simpleJDKObjectType("java.lang.Throwable");
-    private static final TypeMirror ERROR_TYPE = simpleJDKObjectType("java.lang.Error");
+    private static final TypeMirror THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
+    private static final TypeMirror ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
+    private static final TypeMirror EXCEPTION_TYPE = simpleCeylonObjectType("java.lang.Exception");
     private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
-    private static final TypeMirror CEYLON_ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
+    private static final TypeMirror CEYLON_ERROR_TYPE = simpleCeylonObjectType("ceylon.language.Error");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
     
     private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
@@ -954,6 +955,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             } else if ("java.lang.Throwable".equals(typeName)) {
                 // FIXME: this being here is highly dubious
                 return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Throwable", declarationType);
+            } else if ("java.lang.Error".equals(typeName)) {
+                // FIXME: this being here is highly dubious
+                return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Error", declarationType);
+            } else if ("java.lang.Exception".equals(typeName)) {
+                // FIXME: this being here is highly dubious
+                return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
             }
             ClassMirror classMirror = lookupClassMirror(module, typeName);
             if (classMirror == null) {
@@ -2185,10 +2192,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // now deal with type erasure, avoid having Object as superclass
                     if("java.lang.Object".equals(superClassName)){
                         extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
-                    }else if ("java.lang.Exception".equals(superClassName)) {
-                        // Pretend that c.l.Exception is the superclass of subclasses of j.l.Exception
-                        extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_EXCEPTION_TYPE, klass, VarianceLocation.INVARIANT);
-                    }else if(superClass != null){
+                    } else if(superClass != null){
                         try{
                             extendedType = getNonPrimitiveType(Decl.getModule(klass), superClass, klass, VarianceLocation.INVARIANT);
                         }catch(ModelResolutionException x){
@@ -3333,6 +3337,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
         } else if (sameType(type, OBJECT_TYPE)) {
             return CEYLON_OBJECT_TYPE;
+            
+        } else if (sameType(type, ERROR_TYPE)) {
+            return CEYLON_ERROR_TYPE;
+            
+        } else if (sameType(type, EXCEPTION_TYPE)) {
+            return CEYLON_EXCEPTION_TYPE;
             
         } else if (type.getKind() == TypeKind.ARRAY) {
 

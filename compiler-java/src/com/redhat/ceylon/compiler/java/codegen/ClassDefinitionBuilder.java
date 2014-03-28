@@ -601,14 +601,14 @@ public class ClassDefinitionBuilder
     }
 
 
-    public ClassDefinitionBuilder addGetTypeMethod(ProducedType type, boolean isOverride){
+    public ClassDefinitionBuilder addGetTypeMethod(ProducedType type){
         if ((modifiers & INTERFACE) != 0) {
             // interfaces don't have that one
         }else{
             MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
             method.modifiers(PUBLIC);
             method.resultType(List.<JCAnnotation>nil(), gen.makeTypeDescriptorType());
-            method.isOverride(isOverride);
+            method.isOverride(true);
 
             List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeReifiedTypeArgument(type)));
 
