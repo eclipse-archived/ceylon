@@ -383,7 +383,7 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    private void visitStatements(List<? extends Statement> statements) {
+    void visitStatements(List<? extends Statement> statements) {
         List<String> oldRetainedVars = retainedVars.reset(null);
         final List<? extends Statement> prevStatements = currentStatements;
         currentStatements = statements;
@@ -4054,104 +4054,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(TryCatchStatement that) {
         if (errVisitor.hasErrors(that))return;
-        List<Resource> resources = that.getTryClause().getResourceList() == null ? null :
-            that.getTryClause().getResourceList().getResources();
-        if (resources != null && resources.isEmpty()) {
-            resources = null;
-        }
-        List<String> resourceVars = null;
-        String excVar = null;
-        if (resources != null && !resources.isEmpty()) {
-            resourceVars = new ArrayList<>(resources.size());
-            out("var ");
-            for (Resource res : resources) {
-                if (!resourceVars.isEmpty()) {
-                    out(",");
-                }
-                final String resourceVar = names.createTempVariable();
-                out(resourceVar, "=null,", resourceVar, "$cls=false");
-                resourceVars.add(resourceVar);
-            }
-            excVar = names.createTempVariable();
-            out(",", excVar, "$exc=null");
-            endLine(true);
-        }
-        out("try");
-        if (resources != null) {
-            int pos = 0;
-            out("{");
-            for (String resourceVar : resourceVars) {
-                out(resourceVar, "=");
-                resources.get(pos++).visit(this);
-                endLine(true);
-                out(resourceVar, ".open()");
-                endLine(true);
-                out(resourceVar, "$cls=true");
-                endLine(true);
-            }
-        }
-        encloseBlockInFunction(that.getTryClause().getBlock());
-        if (resources != null) {
-            for (String resourceVar : resourceVars) {
-                out(resourceVar, "$cls=false");
-                endLine(true);
-                out(resourceVar, ".close()");
-                endLine(true);
-            }
-            out("}");
-        }
-
-        if (!that.getCatchClauses().isEmpty() || resources != null) {
-            String catchVarName = names.createTempVariable();
-            out("catch(", catchVarName, ")");
-            beginBlock();
-            //Check if it's native and if so, wrap it
-            out("if(", catchVarName, ".getT$name===undefined)", catchVarName, "=",
-                    clAlias, "NativeException(", catchVarName, ")");
-            endLine(true);
-            if (excVar != null) {
-                out(excVar, "$exc=", catchVarName);
-                endLine(true);
-            }
-            if (resources != null) {
-                for (String resourceVar : resourceVars) {
-                    out("try{if(",resourceVar, "$cls)", resourceVar, ".close(",
-                            excVar, "$exc);}catch(",resourceVar,"$swallow){",
-                            clAlias, "addSuppressedException(", resourceVar, "$swallow,", catchVarName, ");}");
-                }
-            }
-            boolean firstCatch = true;
-            for (CatchClause catchClause : that.getCatchClauses()) {
-                Variable variable = catchClause.getCatchVariable().getVariable();
-                if (!firstCatch) {
-                    out("else ");
-                }
-                firstCatch = false;
-                out("if(");
-                generateIsOfType(variable, catchVarName, variable.getType(), null, false);
-                out(")");
-
-                if (catchClause.getBlock().getStatements().isEmpty()) {
-                    out("{}");
-                } else {
-                    beginBlock();
-                    directAccess.add(variable.getDeclarationModel());
-                    names.forceName(variable.getDeclarationModel(), catchVarName);
-
-                    visitStatements(catchClause.getBlock().getStatements());
-                    endBlock();
-                }
-            }
-            if (!that.getCatchClauses().isEmpty()) {
-                out("else{throw ", catchVarName, "}");
-            }
-            endBlockNewLine();
-        }
-
-        if (that.getFinallyClause() != null) {
-            out("finally");
-            encloseBlockInFunction(that.getFinallyClause().getBlock());
-        }
+        new TryCatchGenerator(this, directAccess).generate(that);
     }
 
     @Override public void visit(Throw that) {
