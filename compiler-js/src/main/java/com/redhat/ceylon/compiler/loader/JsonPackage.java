@@ -421,6 +421,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     Method loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
         Method md = new Method();
         md.setName(name);
+        m.remove(MetamodelGenerator.KEY_NAME);
         md.setContainer(parent);
         setAnnotations(md, (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
         md.setUnit(u2);
