@@ -47,4 +47,55 @@ public class JavaThrower {
         return false;
     }
     
+    public java.lang.Throwable getGiveThrowable() {
+        return new java.lang.Exception();
+    }
+    
+    public void takeThrowable(java.lang.Throwable e) {
+    }
+    
+    public java.lang.Error getGiveError() {
+        return new java.lang.Error();
+    }
+    
+    public void takeError(java.lang.Error e) {
+    }
+    
+    public java.lang.OutOfMemoryError getGiveOome() {
+        return new java.lang.OutOfMemoryError();
+    }
+    
+    public void takeOome(java.lang.OutOfMemoryError e) {
+    }
+    
+    public java.lang.Exception getGiveException() {
+        return new java.lang.Exception();
+    }
+    
+    public void takeException(java.lang.Exception e) {
+    }
+    
+    public java.io.IOException getGiveIoException() {
+        return new java.io.IOException();
+    }
+    
+    public void takeIoException(java.io.IOException e) {
+    }
+    
+    public java.lang.RuntimeException getGiveRuntimeException() {
+        return new java.lang.RuntimeException();
+    }
+    
+    public void takeRuntimeException(java.lang.RuntimeException e) {
+    }
+    
+    public java.lang.NullPointerException getGiveNpe() {
+        return new java.lang.NullPointerException();
+    }
+    
+    public void takeNpe(java.lang.NullPointerException e) {
+    }
+    
+    
+    
 }

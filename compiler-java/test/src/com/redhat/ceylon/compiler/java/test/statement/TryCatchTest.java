@@ -17,7 +17,14 @@ public class TryCatchTest extends CompilerTest {
 
     @Test
     public void testTryExceptionTypes(){
+        compile("trycatch/JavaThrower.java");
         compareWithJavaSource("trycatch/ExceptionTypes");
+    }
+    
+    @Test
+    public void testTryExceptionStrings(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.trycatch.exceptionStrings",
+                "trycatch/ExceptionStrings.ceylon");
     }
     
     @Test

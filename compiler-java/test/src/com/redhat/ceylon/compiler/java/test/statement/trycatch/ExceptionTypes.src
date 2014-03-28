@@ -65,7 +65,7 @@ class ExceptionTypesException extends .ceylon.language.Exception {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Error")
-class ExceptionTypesError extends .java.lang.Error {
+class ExceptionTypesError extends .ceylon.language.Error {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ExceptionTypesError() {
@@ -99,13 +99,7 @@ class ExceptionTypesError extends .java.lang.Error {
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
     final .java.lang.Throwable cause) {
-        super((
-            let
-            {
-                .ceylon.language.String $ceylontmp$6 = description;
-            }
-            returning $ceylontmp$6 != null ? $ceylontmp$6.toString() : null;
-        ), cause);
+        super(description, cause);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -124,6 +118,7 @@ class ExceptionTypesError extends .java.lang.Error {
         new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError();
     }
     
+    @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError.$TypeDescriptor$;
@@ -146,43 +141,43 @@ final class exceptionTypesUsage_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Throwable,ceylon.language::Empty>")
     final .ceylon.language.Callable<? extends .java.lang.Throwable> f) {
         {
-            long sel$7 = i;
-            if (sel$7 == 0L) {
+            long sel$6 = i;
+            if (sel$6 == 0L) {
                 throw f.$call$();
-            } else if (sel$7 == 1L) {
+            } else if (sel$6 == 1L) {
                 throw new .ceylon.language.Exception();
-            } else if (sel$7 == 2L) {
-                throw new .java.lang.Error();
-            } else if (sel$7 == 3L) {
+            } else if (sel$6 == 2L) {
+                throw new .ceylon.language.Error();
+            } else if (sel$6 == 3L) {
                 throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException();
-            } else if (sel$7 == 4L) {
+            } else if (sel$6 == 4L) {
                 throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError();
             } else {
             }
         }
         {
-            long sel$8 = i;
-            if (sel$8 == 10L) {
+            long sel$7 = i;
+            if (sel$7 == 10L) {
                 try {
                     f.$call$();
                 } catch (final .java.lang.Throwable t) {
                 }
-            } else if (sel$8 == 11L) {
+            } else if (sel$7 == 11L) {
                 try {
                     f.$call$();
                 } catch (final .java.lang.Exception t) {
                 }
-            } else if (sel$8 == 12L) {
+            } else if (sel$7 == 12L) {
                 try {
                     f.$call$();
                 } catch (final .java.lang.Error t) {
                 }
-            } else if (sel$8 == 13L) {
+            } else if (sel$7 == 13L) {
                 try {
                     f.$call$();
                 } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException t) {
                 }
-            } else if (sel$8 == 14L) {
+            } else if (sel$7 == 14L) {
                 try {
                     f.$call$();
                 } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError t) {
@@ -191,16 +186,58 @@ final class exceptionTypesUsage_ {
             }
         }
         final .ceylon.language.Tuple<.java.lang.Error, ? extends .java.lang.Error, ? extends .ceylon.language.Tuple<.java.lang.Error, ? extends .java.lang.Error, ? extends .ceylon.language.Sequential<? extends .java.lang.Error>>> errors = new .ceylon.language.Tuple<.java.lang.Error, .java.lang.Error, .ceylon.language.Tuple<.java.lang.Error, ? extends .java.lang.Error, ? extends .ceylon.language.Sequential<? extends .java.lang.Error>>>(.ceylon.language.Error.$TypeDescriptor$, new .java.lang.Object[]{
-                new .java.lang.Error(),
-                new .java.lang.Error()});
+                new .ceylon.language.Error(),
+                new .ceylon.language.Error()});
         final .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>> exceptions = new .ceylon.language.Tuple<.java.lang.Exception, .java.lang.Exception, .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>>(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
                 new .ceylon.language.Exception(),
                 new .ceylon.language.Exception()});
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .java.lang.Error, ? extends .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>> errorsAndExceptions = new .ceylon.language.Tuple<.java.lang.Object, .java.lang.Error, .ceylon.language.Tuple<.java.lang.Exception, ? extends .java.lang.Exception, ? extends .ceylon.language.Sequential<? extends .java.lang.Exception>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Error.$TypeDescriptor$, .ceylon.language.Exception.$TypeDescriptor$), new .java.lang.Object[]{
-                new .java.lang.Error(),
+                new .ceylon.language.Error(),
                 new .ceylon.language.Exception()});
         final .ceylon.language.Tuple<.java.lang.Object, ? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException, ? extends .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError>>> subclasses = new .ceylon.language.Tuple<.java.lang.Object, .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError.$TypeDescriptor$), new .java.lang.Object[]{
                 new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException(),
                 new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError()});
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class exceptionTypeAssignment_ {
+    
+    private exceptionTypeAssignment_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void exceptionTypeAssignment() {
+        final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
+        .java.lang.Throwable t = null;
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveThrowable());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveError());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveOome());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveException());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveIoException());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveRuntimeException());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveNpe());
+        .java.lang.Error er = null;
+        er = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveError());
+        er = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveOome());
+        .java.lang.Exception ex = null;
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveException());
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveIoException());
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveRuntimeException());
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveNpe());
+        jt.takeThrowable(new .ceylon.language.Error());
+        jt.takeThrowable(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError());
+        jt.takeThrowable(new .ceylon.language.Exception());
+        jt.takeThrowable(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
+        jt.takeError(new .ceylon.language.Error());
+        jt.takeError(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesError());
+        jt.takeException(new .ceylon.language.Exception());
+        jt.takeException(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.trycatch.exceptionTypeAssignment_.exceptionTypeAssignment();
     }
 }
