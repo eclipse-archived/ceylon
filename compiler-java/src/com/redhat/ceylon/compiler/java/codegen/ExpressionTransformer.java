@@ -70,6 +70,8 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -5065,6 +5067,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = checkForCharacterAsInteger(expr);
         if(ret != null)
             return ret;
+        ret = checkForThrowableSuppressed(expr);
+        if(ret != null)
+            return ret;
         /*ret = checkForArrayOnJavaArray(expr);
         if(ret != null)
             return ret;*/
@@ -5081,6 +5086,27 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return null;
     }*/
+
+    private JCExpression checkForThrowableSuppressed(
+            Tree.QualifiedMemberExpression expr) {
+        if (typeFact().getThrowableDeclaration().getDirectMember("suppressed", null, false).equals(
+                expr.getDeclaration().getRefinedDeclaration())) {
+            // the refined declaration bit above is strictly not needed, but it prevents
+            // a backend error cascaded from a broken ceylon declaration
+            Tree.Primary primary = expr.getPrimary();
+            JCExpression throwable;
+            if (isSuperOrSuperOf(primary)) {
+                // super.suppressed is valid, but suppressed is non-default so can't be 
+                // overridden, so it must be the same as `this.getSupressed()`
+                throwable = naming.makeThis();
+            } else {
+                throwable = transformExpression(primary);
+            }
+            return makeUtilInvocation("suppressedExceptions", 
+                    List.<JCExpression>of(throwable), null);
+        }
+        return null;
+    }
 
     private JCExpression checkForInvocationExpressionOptimisation(Tree.InvocationExpression ce) {
         // FIXME: temporary hack for bitwise operators literals
