@@ -26,5 +26,22 @@ class ExceptionAttributes() {
             String? message = cause.message;
         }
         String message = e.message;
+        
+        variable Throwable[] s = e.suppressed;
+        e.addSuppressed(Error());
+        MyError me = MyError();
+        me.addSuppressed(Error());
+        s = me.suppressed;
+    }
+    
+    class MyError() extends Error() {
+        class MyInnerError() extends Error() {
+            void m() {
+                value x = this.suppressed;
+                value y = super.suppressed;
+                value y2 = (super of Error).suppressed;
+                value z = outer.suppressed;
+            }
+        }
     }
 }
