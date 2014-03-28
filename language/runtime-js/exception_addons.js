@@ -47,3 +47,7 @@ printStackTrace.$crtmm$=function(){
     {$nm:'exception',$t:{t:Throwable},$mt:'prm'},{$nm:'write',$t:{t:Callable,a:{Return:{t:Anything},Arguments:{t:'T',l:[{t:String$}]}}},$mt:'prm','$def':1}
   ]};};
 exports.printStackTrace=printStackTrace;
+
+defineAttr(Throwable.$$.prototype, 'suppressed', function(){
+  return this.$sups$||getEmpty();
+},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Throwable}}},$an:function(){return[shared(),native()];},d:['$','Throwable','$at','suppressed']};});
