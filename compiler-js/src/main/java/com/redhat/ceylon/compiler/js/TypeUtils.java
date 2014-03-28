@@ -43,22 +43,24 @@ public class TypeUtils {
     final TypeDeclaration callable;
     final TypeDeclaration empty;
     final TypeDeclaration metaClass;
+    final TypeDeclaration destroyable;
 
     TypeUtils(Module languageModule) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
-        tuple = (TypeDeclaration)pkg.getMember("Tuple", null, false);
-        iterable = (TypeDeclaration)pkg.getMember("Iterable", null, false);
-        sequential = (TypeDeclaration)pkg.getMember("Sequential", null, false);
-        numeric = (TypeDeclaration)pkg.getMember("Numeric", null, false);
-        _integer = (TypeDeclaration)pkg.getMember("Integer", null, false);
-        _boolean = (TypeDeclaration)pkg.getMember("Boolean", null, false);
-        _float = (TypeDeclaration)pkg.getMember("Float", null, false);
-        _null = (TypeDeclaration)pkg.getMember("Null", null, false);
-        anything = (TypeDeclaration)pkg.getMember("Anything", null, false);
-        callable = (TypeDeclaration)pkg.getMember("Callable", null, false);
-        empty = (TypeDeclaration)pkg.getMember("Empty", null, false);
+        tuple = (TypeDeclaration)pkg.getDirectMember("Tuple", null, false);
+        iterable = (TypeDeclaration)pkg.getDirectMember("Iterable", null, false);
+        sequential = (TypeDeclaration)pkg.getDirectMember("Sequential", null, false);
+        numeric = (TypeDeclaration)pkg.getDirectMember("Numeric", null, false);
+        _integer = (TypeDeclaration)pkg.getDirectMember("Integer", null, false);
+        _boolean = (TypeDeclaration)pkg.getDirectMember("Boolean", null, false);
+        _float = (TypeDeclaration)pkg.getDirectMember("Float", null, false);
+        _null = (TypeDeclaration)pkg.getDirectMember("Null", null, false);
+        anything = (TypeDeclaration)pkg.getDirectMember("Anything", null, false);
+        callable = (TypeDeclaration)pkg.getDirectMember("Callable", null, false);
+        empty = (TypeDeclaration)pkg.getDirectMember("Empty", null, false);
+        destroyable = (TypeDeclaration)pkg.getDirectMember("Destroyable", null, false);
         pkg = languageModule.getPackage("ceylon.language.meta.model");
-        metaClass = (TypeDeclaration)pkg.getMember("Class", null, false);
+        metaClass = (TypeDeclaration)pkg.getDirectMember("Class", null, false);
     }
 
     /** Prints the type arguments, usually for their reification. */
