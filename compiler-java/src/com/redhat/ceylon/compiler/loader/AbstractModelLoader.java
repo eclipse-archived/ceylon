@@ -1667,6 +1667,35 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(isCeylon)
             checkReifiedGenericsForMethods(klass, classMirror);
         setAnnotations(klass, classMirror);
+        
+        if (!isCeylon 
+                && typeFactory.getThrowableDeclaration().getType().isSupertypeOf(klass.getType())) {
+            addMessageValueForJavaThrowable(klass);
+        }
+    }
+    
+    /**
+     * The {@code getMessage()} result from a Java Exception type can be 
+     * null, so we need to 
+     * call {@code setUncheckedNullType()} on the equivalent value, but 
+     * when such classes haven't overridden {@code getMessage()} there's no 
+     * direct member on which to call that. 
+     * So we need to add one in such cases.
+     * @param klass
+     */
+    private void addMessageValueForJavaThrowable(ClassOrInterface klass) {
+        Value messageValue = (Value)klass.getDirectMember("message", Collections.<ProducedType>emptyList(), false);
+        if (messageValue == null) {
+            for (MethodMirror method : lookupNewClassMirror(getJDKBaseModule(), "java.lang.Throwable").getDirectMethods()) {
+                if ("getMessage".equals(method.getName())
+                        && method.getParameters().isEmpty()) {
+                    addValue(klass, method, "message", false);
+                    messageValue = (Value)klass.getDirectMember("message", Collections.<ProducedType>emptyList(), false);
+                    break;
+                }
+            }
+        } 
+        messageValue.setUncheckedNullType(true);
     }
 
     private boolean isInstantiator(MethodMirror methodMirror) {
