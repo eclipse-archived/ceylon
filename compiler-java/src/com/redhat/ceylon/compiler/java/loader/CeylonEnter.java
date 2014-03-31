@@ -172,42 +172,35 @@ public class CeylonEnter extends Enter {
         timer.endTask();
         List<JCCompilationUnit> javaTrees = List.nil();
         List<JCCompilationUnit> ceylonTrees = List.nil();
-        if (modelLoader instanceof CeylonModelLoader) {
-            // split them in two sets: java and ceylon
-            for(JCCompilationUnit tree : trees){
-                if(tree instanceof CeylonCompilationUnit)
-                    ceylonTrees = ceylonTrees.prepend(tree);
-                else
-                    javaTrees = javaTrees.prepend(tree);
-            }
-            timer.startTask("Enter on Java trees");
-            // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
-            if(isBootstrap){
-                super.main(trees);
-            }else if(!javaTrees.isEmpty()){
-                super.main(javaTrees);
-            }
-            // now we can type-check the Ceylon code
-            completeCeylonTrees(trees);
-            
-            if(isBootstrap){
-                // bootstrapping the language module is a bit more complex
-                resetAndRunEnterAgain(trees);
-            }else{
-                timer.startTask("Enter on Ceylon trees");
-                // and complete their new trees
-                try {
-                    Context.SourceLanguage.push(Language.CEYLON);
-                    super.main(ceylonTrees);                    
-                } finally {
-                    Context.SourceLanguage.pop();
-                }
-                timer.endTask();
-            }
+        // split them in two sets: java and ceylon
+        for(JCCompilationUnit tree : trees){
+            if(tree instanceof CeylonCompilationUnit)
+                ceylonTrees = ceylonTrees.prepend(tree);
+            else
+                javaTrees = javaTrees.prepend(tree);
         }
-        else {
-            completeCeylonTrees(trees);
+        timer.startTask("Enter on Java trees");
+        // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
+        if(isBootstrap){
             super.main(trees);
+        }else if(!javaTrees.isEmpty()){
+            super.main(javaTrees);
+        }
+        // now we can type-check the Ceylon code
+        completeCeylonTrees(trees);
+        if(isBootstrap){
+            // bootstrapping the language module is a bit more complex
+            resetAndRunEnterAgain(trees);
+        }else{
+            timer.startTask("Enter on Ceylon trees");
+            // and complete their new trees
+            try {
+                Context.SourceLanguage.push(Language.CEYLON);
+                super.main(ceylonTrees);                    
+            } finally {
+                Context.SourceLanguage.pop();
+            }
+            timer.endTask();
         }
     }
 
