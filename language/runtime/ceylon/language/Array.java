@@ -329,7 +329,8 @@ public final class Array<Element>
 		if (element!=null) Arrays.fill(array, element);
 		return array;
     }
-    
+
+    @Ignore
     private Array(@Ignore TypeDescriptor $reifiedElement, java.lang.Object array) {
         assert(array.getClass().isArray());
         this.$ceylon$language$Category$this = 
