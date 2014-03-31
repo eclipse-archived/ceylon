@@ -83,11 +83,7 @@ public class FreeInterface
 
     @Override
     public int hashCode() {
-        int result = 1;
-        java.lang.Object container = getContainer();
-        result = 37 * result + (container == null ? 0 : container.hashCode());
-        result = 37 * result + getName().hashCode();
-        return result;
+        return Metamodel.hashCode(this, "interface");
     }
     
     @Override
@@ -96,12 +92,9 @@ public class FreeInterface
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.meta.declaration.InterfaceDeclaration == false)
+        if(obj instanceof FreeInterface == false)
             return false;
-        ceylon.language.meta.declaration.InterfaceDeclaration other = (ceylon.language.meta.declaration.InterfaceDeclaration) obj;
-        if(!Util.eq(other.getContainer(), getContainer()))
-            return false;
-        return getName().equals(other.getName());
+        return Metamodel.equalsForSameType(this, (FreeInterface)obj);
     }
 
     @Override

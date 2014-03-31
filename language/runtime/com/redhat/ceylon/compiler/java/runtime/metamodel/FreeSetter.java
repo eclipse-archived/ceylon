@@ -59,9 +59,7 @@ public class FreeSetter
 
     @Override
     public int hashCode() {
-        int result = 1;
-        result = 37 * result + getVariable().hashCode();
-        return result;
+        return Metamodel.hashCode(this, "setter");
     }
     
     @Override
@@ -70,10 +68,9 @@ public class FreeSetter
             return false;
         if(obj == this)
             return true;
-        if(obj instanceof ceylon.language.meta.declaration.SetterDeclaration == false)
+        if(obj instanceof FreeSetter == false)
             return false;
-        ceylon.language.meta.declaration.SetterDeclaration other = (ceylon.language.meta.declaration.SetterDeclaration) obj;
-        return getVariable().equals(other.getVariable());
+        return Metamodel.equalsForSameType(this, (FreeSetter)obj);
     }
 
     @Ignore

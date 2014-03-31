@@ -127,6 +127,10 @@ public abstract class FreeNestableDeclaration
         return Metamodel.annotations($reifiedAnnotation, this);
     }
 
+    String getQualifier() {
+        return declaration.getQualifier();
+    }
+
     @Override
     public String toString() {
         return getQualifiedName();

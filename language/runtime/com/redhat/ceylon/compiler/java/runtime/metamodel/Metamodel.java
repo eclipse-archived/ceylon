@@ -1144,4 +1144,22 @@ public class Metamodel {
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
         return member.$call$(container);
     }
+
+    public static int hashCode(FreeNestableDeclaration decl, String type) {
+        int result = 1;
+        java.lang.Object container = decl.getContainer();
+        result = 37 * result + type.hashCode();
+        result = 37 * result + (container == null ? 0 : container.hashCode());
+        result = 37 * result + (decl.getQualifier() == null ? 0 : decl.getQualifier().hashCode());
+        result = 37 * result + decl.getName().hashCode();
+        return result;
+    }
+
+    public static boolean equalsForSameType(FreeNestableDeclaration a, FreeNestableDeclaration b) {
+        if(!Util.eq(a.getContainer(), b.getContainer()))
+            return false;
+        if(!Util.eq(a.getQualifier(), b.getQualifier()))
+            return false;
+        return a.getName().equals(b.getName());
+    }
 }
