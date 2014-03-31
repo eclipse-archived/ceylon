@@ -78,15 +78,16 @@ public class ZipResource implements Resource {
     public java.lang.String textContent(java.lang.String enc) {
         try (ZipFile zip = new ZipFile(zipFile)) {
             final ZipEntry e = zip.getEntry(path);
-            final InputStream stream = zip.getInputStream(e);
-            final InputStreamReader reader = new InputStreamReader(stream, enc);
-            final char[] buf = new char[16384];
-            final StringBuilder sb = new StringBuilder();
-            while (reader.ready()) {
-                int read = reader.read(buf);
-                sb.append(buf, 0, read);
+            try (final InputStream stream = zip.getInputStream(e);
+                    final InputStreamReader reader = new InputStreamReader(stream, enc)){
+                final char[] buf = new char[16384];
+                final StringBuilder sb = new StringBuilder();
+                while (reader.ready()) {
+                    int read = reader.read(buf);
+                    sb.append(buf, 0, read);
+                }
+                return sb.toString();
             }
-            return sb.toString();
         } catch (IOException ex) {
             throw new ceylon.language.Exception(new ceylon.language.String(
                     "Reading text content of CAR resource " + getUri()), ex);
