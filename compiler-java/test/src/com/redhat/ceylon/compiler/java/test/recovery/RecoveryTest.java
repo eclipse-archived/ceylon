@@ -463,6 +463,15 @@ public class RecoveryTest extends CompilerTest {
                 1);
     }
     
+    @Test
+    public void testRcvExpressionRecoveryAssertVariable(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryAssertVariable.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryAssertVariable",
+                "function or value does not exist: baz", 
+                1);
+    }
+    
     
     private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
