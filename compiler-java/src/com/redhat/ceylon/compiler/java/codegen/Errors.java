@@ -179,7 +179,7 @@ public class Errors {
         public void visit(Tree.Variable that) {
             // unlike other declarations, Variables are part of the 
             // statement, and if they have a pb we're screwed, so we
-            // do want *do* visit them.
+            // *do* want to visit them.
             visitAny(that);
         }
     }
