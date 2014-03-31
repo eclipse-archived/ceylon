@@ -247,9 +247,9 @@ shared interface Iterable<out Element, out Absent=Null>
              intermediate result, and the next element."
             Result accumulating(Result|Element partial, Element elem)) {
         value it = iterator();
-        if (is Element initial = it.next()) {
+        if (!is Finished initial = it.next()) {
             variable Result|Element partial = initial;
-            while (is Element next = it.next()) {
+            while (!is Finished next = it.next()) {
                 partial = accumulating(partial, next);
             }
             return partial;

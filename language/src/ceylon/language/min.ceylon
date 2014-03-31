@@ -7,9 +7,9 @@ shared Absent|Value min<Value,Absent>(Iterable<Value,Absent> values)
         given Value satisfies Comparable<Value>
         given Absent satisfies Null {
     value it = values.iterator();
-    if (is Value first = it.next()) {
+    if (!is Finished first = it.next()) {
         variable value min=first;
-        while (is Value val = it.next()) {
+        while (!is Finished val = it.next()) {
             if (val<min) {
                 min=val;
             }

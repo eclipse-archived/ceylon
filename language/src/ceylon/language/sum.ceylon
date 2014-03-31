@@ -4,9 +4,9 @@ see (`function product`)
 shared Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value> {
     value it = values.iterator();
-    assert (is Value first = it.next());
+    assert (!is Finished first = it.next());
     variable value sum = first;
-    while (is Value val = it.next()) {
+    while (!is Finished val = it.next()) {
         sum+=val;
     }
     return sum;
