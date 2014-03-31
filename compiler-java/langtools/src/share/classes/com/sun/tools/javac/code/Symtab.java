@@ -188,6 +188,7 @@ public class Symtab {
     public  Type ceylonBooleanType;
     public  Type ceylonFinishedType;
     public  Type ceylonExceptionType;
+    public  Type ceylonErrorType;
     public  Type ceylonAssertionErrorType;
     public  Type ceylonInitializationErrorType;
     public  Type ceylonEnumeratedTypeErrorType;
@@ -873,6 +874,7 @@ public class Symtab {
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
         ceylonFinishedType = enterClass("ceylon.language.Finished");
         ceylonExceptionType = enterClass("ceylon.language.Exception");
+        ceylonErrorType = enterClass("ceylon.language.Error");
         ceylonAssertionErrorType = enterClass("ceylon.language.AssertionError");
         ceylonInitializationErrorType = enterClass("ceylon.language.InitializationError");
         ceylonEnumeratedTypeErrorType = enterClass("com.redhat.ceylon.compiler.java.language.EnumeratedTypeError");
