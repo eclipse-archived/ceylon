@@ -30,13 +30,25 @@ public class FreeSetter
     
     private Method declaredSetter;
 
-    public FreeSetter(FreeValue freeValue) {
-        this.value = freeValue;
-        java.lang.Class<?> javaClass = Metamodel.getJavaClass(value.declaration);
-        String setterName = Naming.getSetterName(value.declaration);
-        this.declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
+    public FreeSetter(com.redhat.ceylon.compiler.typechecker.model.Setter setter) {
+        super(setter);
     }
 
+    private void checkInit(){
+        // must be deferred because getter/setter refer to one another
+        if(value == null){
+            synchronized(Metamodel.getLock()){
+                if(value == null){
+                    com.redhat.ceylon.compiler.typechecker.model.Setter setter = ((com.redhat.ceylon.compiler.typechecker.model.Setter)declaration);
+                    this.value = (FreeValue) Metamodel.getOrCreateMetamodel(setter.getGetter());
+                    java.lang.Class<?> javaClass = Metamodel.getJavaClass(value.declaration);
+                    String setterName = Naming.getSetterName(value.declaration);
+                    this.declaredSetter = Reflection.getDeclaredSetter(javaClass, setterName);
+                }
+            }
+        }
+    }
+    
     @Override
     public Annotated$impl $ceylon$language$Annotated$impl() {
         return null;

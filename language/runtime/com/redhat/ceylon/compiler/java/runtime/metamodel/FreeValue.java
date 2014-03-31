@@ -9,7 +9,6 @@ import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration$impl;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -34,7 +33,9 @@ public class FreeValue
     
     private OpenType type;
 
-    protected FreeValue(com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration declaration) {
+    private FreeSetter setter;
+
+    protected FreeValue(com.redhat.ceylon.compiler.typechecker.model.Value declaration) {
         super(declaration);
 
         this.type = Metamodel.getMetamodel(declaration.getType());
@@ -168,11 +169,20 @@ public class FreeValue
         return "value "+super.toString();
     }
 
-    @TypeInfo("ceylon.language.meta.declaration::SetterDeclaration")
+    @TypeInfo("ceylon.language.meta.declaration::SetterDeclaration|ceylon.language::Null")
     @Override
     public SetterDeclaration getSetter() {
-        // FIXME: let's not allocate all the time
-        return new FreeSetter(this);
+        if(setter == null && ((com.redhat.ceylon.compiler.typechecker.model.Value)declaration).getSetter() != null){
+            synchronized(Metamodel.getLock()){
+                if(setter == null){
+                    // must be deferred because getter/setter refer to one another
+                    com.redhat.ceylon.compiler.typechecker.model.Setter setterModel = ((com.redhat.ceylon.compiler.typechecker.model.Value)declaration).getSetter();
+                    if(setterModel != null)
+                        this.setter = (FreeSetter) Metamodel.getOrCreateMetamodel(setterModel);
+                }
+            }
+        }
+        return setter;
     }
     
     @Ignore
