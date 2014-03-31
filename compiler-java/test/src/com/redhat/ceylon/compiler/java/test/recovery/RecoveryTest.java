@@ -180,6 +180,15 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtends",
                 "no matching parameter declared by Basic: Basic has 0 parameters");
     }
+    
+    @Test
+    public void testRcvExpressionRecoveryClassExtendsMissingParens(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryClassExtendsMissingParens.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtendsMissingParens",
+                "missing invocation expression");
+    }
+    
     @Test
     public void testRcvExpressionRecoveryClassInitValueInit(){
         compileAndRunWithUnresolvedCompilationError(
