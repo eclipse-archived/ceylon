@@ -29,7 +29,7 @@ class Complex(Float re, Float im)
 
 @test
 shared void complex() {
-    check(Complex(0.0,1.0)+Complex(1.0,0.0)==Complex(1.0,1.0), "");
-    check(Complex(0.0,1.0)+Complex(1.0,0.0)!=Complex(0.0,0.0), "");
-    check(Complex(0.0,1.0)==OrderedPair(0.0,1.0), "");
+    check(Complex(0.0,1.0)+Complex(1.0,0.0)==Complex(1.0,1.0), "Complex equals");
+    check(Complex(0.0,1.0)+Complex(1.0,0.0)!=Complex(0.0,0.0), "Complex not equals");
+    check(Complex(0.0,1.0)==OrderedPair(0.0,1.0), "Complex equals OrderedPair");
 }
