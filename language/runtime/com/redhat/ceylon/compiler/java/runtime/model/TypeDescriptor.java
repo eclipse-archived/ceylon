@@ -19,11 +19,14 @@ import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.compiler.loader.model.LocalDeclarationContainer;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
@@ -45,22 +48,55 @@ public abstract class TypeDescriptor {
 
     //
     // Subtypes
+
+    public static interface QualifiableTypeDescriptor {
+        public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager);
+    }
     
-    public static class Class extends TypeDescriptor {
-        private java.lang.Class<?> klass;
-        private TypeDescriptor[] typeArguments;
+    public static abstract class Generic extends TypeDescriptor {
+        protected TypeDescriptor[] typeArguments;
 
-        public Class(java.lang.Class<?> klass, TypeDescriptor[] typeArguments){
-            this.klass = klass;
+        public Generic(TypeDescriptor[] typeArguments){
             this.typeArguments = typeArguments;
-        }
-
-        public java.lang.Class<?> getKlass() {
-            return klass;
         }
 
         public TypeDescriptor[] getTypeArguments() {
             return typeArguments;
+        }
+
+        protected boolean equals(Generic other) {
+            if(typeArguments.length != other.typeArguments.length)
+                return false;
+            for(int i=0;i<typeArguments.length;i++){
+                if(!typeArguments[i].equals(other.typeArguments[i]))
+                    return false;
+            }
+            return true;
+        }
+        
+        protected void toString(StringBuilder b) {
+            if(typeArguments.length > 0){
+                b.append("<");
+                for(int i=0;i<typeArguments.length;i++){
+                    if(i>0)
+                        b.append(",");
+                    b.append(typeArguments[i]);
+                }
+                b.append(">");
+            }
+        }
+    }
+
+    public static class Class extends Generic implements QualifiableTypeDescriptor {
+        private java.lang.Class<?> klass;
+
+        public Class(java.lang.Class<?> klass, TypeDescriptor[] typeArguments){
+            super(typeArguments);
+            this.klass = klass;
+        }
+
+        public java.lang.Class<?> getKlass() {
+            return klass;
         }
 
         @Override
@@ -72,28 +108,16 @@ public abstract class TypeDescriptor {
             Class other = (Class) obj;
             if(klass != other.klass)
                 return false;
-            if(typeArguments.length != other.typeArguments.length)
-                return false;
-            for(int i=0;i<typeArguments.length;i++){
-                if(!typeArguments[i].equals(other.typeArguments[i]))
-                    return false;
-            }
-            return true;
+            // now compare type arguments
+            return super.equals(other);
         }
         
         @Override
         public String toString() {
             StringBuilder b = new StringBuilder();
             b.append(klass);
-            if(typeArguments.length > 0){
-                b.append("<");
-                for(int i=0;i<typeArguments.length;i++){
-                    if(i>0)
-                        b.append(",");
-                    b.append(typeArguments[i]);
-                }
-                b.append(">");
-            }
+            // add type arguments
+            super.toString(b);
             return b.toString();
         }
 
@@ -102,6 +126,7 @@ public abstract class TypeDescriptor {
             return toProducedType(null, moduleManager);
         }
         
+        @Override
         public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager){
             // FIXME: is this really enough?
             String typeName = klass.getName();
@@ -114,54 +139,154 @@ public abstract class TypeDescriptor {
             return decl.getProducedType(qualifyingType, typeArgs);
         }
 
-		@Override
+        @Override
         public java.lang.Class<?> getArrayElementClass() {
-			if (klass==Null.class ||
-				klass==Object.class ||
-				klass==Anything.class ||
-				klass==Basic.class ||
-				klass==Identifiable.class) {
-				return java.lang.Object.class;
-			}
-			if (klass==Exception.class) {
-				return java.lang.Throwable.class;
-			}
-			if (klass==ObjectArray.class) {
-				return java.lang.Object[].class;
-			}
-			if (klass==BooleanArray.class) {
-				return boolean[].class;
-			}
-			if (klass==LongArray.class) {
-				return long[].class;
-			}
-			if (klass==IntArray.class) {
-				return int[].class;
-			}
-			if (klass==ShortArray.class) {
-				return short[].class;
-			}
-			if (klass==ByteArray.class) {
-				return byte[].class;
-			}
-			if (klass==DoubleArray.class) {
-				return double[].class;
-			}
-			if (klass==FloatArray.class) {
-				return float[].class;
-			}
-			if (klass==CharArray.class) {
-				return char[].class;
-			}
-	        return klass;
+            if (klass==Null.class ||
+                klass==Object.class ||
+                klass==Anything.class ||
+                klass==Basic.class ||
+                klass==Identifiable.class) {
+                return java.lang.Object.class;
+            }
+            if (klass==Exception.class) {
+                return java.lang.Throwable.class;
+            }
+            if (klass==ObjectArray.class) {
+                return java.lang.Object[].class;
+            }
+            if (klass==BooleanArray.class) {
+                return boolean[].class;
+            }
+            if (klass==LongArray.class) {
+                return long[].class;
+            }
+            if (klass==IntArray.class) {
+                return int[].class;
+            }
+            if (klass==ShortArray.class) {
+                return short[].class;
+            }
+            if (klass==ByteArray.class) {
+                return byte[].class;
+            }
+            if (klass==DoubleArray.class) {
+                return double[].class;
+            }
+            if (klass==FloatArray.class) {
+                return float[].class;
+            }
+            if (klass==CharArray.class) {
+                return char[].class;
+            }
+            return klass;
         }
 
-		@Override
+        @Override
         public boolean containsNull() {
-	        return klass==Null.class;
+            return klass==Null.class;
         }
     }
 
+    public static class FunctionOrValue extends Generic implements QualifiableTypeDescriptor {
+
+        private final String name;
+        private final java.lang.Class<?> klass;
+        private final boolean local;
+        
+        /**
+         * For members
+         */
+        public FunctionOrValue(String name, TypeDescriptor[] typeArguments) {
+            super(typeArguments);
+            this.klass = null;
+            this.name = name;
+            if(name.isEmpty())
+                local = false;
+            else
+                local = Character.isDigit(name.charAt(0));
+        }
+
+        /**
+         * For toplevels
+         */
+        public FunctionOrValue(java.lang.Class<?> klass, TypeDescriptor[] typeArguments) {
+            super(typeArguments);
+            this.klass = klass;
+            this.name = null;
+            this.local = false;
+        }
+
+        @Override
+        public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
+            // FIXME: is this really enough?
+            String typeName = klass.getName();
+            // use the toplevel wrapper declaration
+            Module module = moduleManager.findModuleForClass(klass);
+            // FIXME: this is confuses setters and getters, but this should not matter since we only care about container 
+            // functions and their type arguments
+            TypedDeclaration declaration = (TypedDeclaration) moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
+            return makeProducedType(null, declaration, moduleManager);
+        }
+
+        @Override
+        public ProducedType toProducedType(ProducedType qualifyingType, RuntimeModuleManager moduleManager) {
+            // need to find the local Declaration in its container
+            Declaration qualifyingDeclaration = qualifyingType.getDeclaration();
+            if(qualifyingDeclaration instanceof FunctionOrValueInterface)
+                qualifyingDeclaration = ((FunctionOrValueInterface) qualifyingDeclaration).getUnderlyingDeclaration();
+            // FIXME: this is confuses setters and getters, but this should not matter since we only care about container 
+            // functions and their type arguments
+            TypedDeclaration declaration;
+            if(local)
+                declaration = (TypedDeclaration) ((LocalDeclarationContainer)qualifyingDeclaration).getLocalDeclaration(name);
+            else
+                declaration = (TypedDeclaration) qualifyingDeclaration.getDirectMember(name, null, false);
+            return makeProducedType(qualifyingType, declaration, moduleManager);
+        }
+
+        private ProducedType makeProducedType(ProducedType qualifyingType, TypedDeclaration declaration, RuntimeModuleManager moduleManager) {
+            // add the type args
+            List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
+            for(TypeDescriptor typeArg : typeArguments){
+                typeArgs.add(typeArg.toProducedType(moduleManager));
+            }
+            // wrap it
+            return new FunctionOrValueInterface(declaration).getProducedType(qualifyingType, typeArgs);
+        }
+
+        @Override
+        public java.lang.Class<?> getArrayElementClass() {
+            throw new AssertionException("Should never be called");
+        }
+
+        @Override
+        public boolean containsNull() {
+            throw new AssertionException("Should never be called");
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(this == obj)
+                return true;
+            if(obj == null || obj instanceof FunctionOrValue == false)
+                return false;
+            FunctionOrValue other = (FunctionOrValue) obj;
+            if(name.equals(other.name))
+                return false;
+            // now compare type arguments
+            return super.equals(other);
+        }
+        
+        @Override
+        public String toString() {
+            StringBuilder b = new StringBuilder();
+            b.append(name);
+            // add type arguments
+            super.toString(b);
+            return b.toString();
+        }
+    }
+    
     public static class Member extends TypeDescriptor {
 
         private TypeDescriptor container;
@@ -202,7 +327,8 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            return ((Class)member).toProducedType(container.toProducedType(moduleManager), moduleManager);
+            ProducedType qualifyingType = container.toProducedType(moduleManager);
+            return ((QualifiableTypeDescriptor)member).toProducedType(qualifyingType, moduleManager);
         }
 
 		@Override
@@ -410,7 +536,21 @@ public abstract class TypeDescriptor {
     public static TypeDescriptor klass(java.lang.Class<?> klass, TypeDescriptor... typeArguments) {
         return new Class(klass, typeArguments);
     }
-    
+
+    /**
+     * For members
+     */
+    public static TypeDescriptor functionOrValue(String name, TypeDescriptor... typeArguments) {
+        return new FunctionOrValue(name, typeArguments);
+    }
+
+    /**
+     * For toplevel method/attributes
+     */
+    public static TypeDescriptor functionOrValue(java.lang.Class<?> klass, TypeDescriptor... typeArguments) {
+        return new FunctionOrValue(klass, typeArguments);
+    }
+
     public static TypeDescriptor union(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionError("members can't be null or empty");

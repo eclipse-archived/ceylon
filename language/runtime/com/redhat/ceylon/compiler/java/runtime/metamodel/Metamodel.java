@@ -460,6 +460,30 @@ public class Metamodel {
             TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getSatisfiedTypes());
             return TypeDescriptor.intersection(tdArgs);
         }
+        if(declaration instanceof FunctionOrValueInterface){
+            TypedDeclaration underlyingDeclaration = ((FunctionOrValueInterface) declaration).getUnderlyingDeclaration();
+            TypeDescriptor[] tdArgs = getTypeDescriptorsForProducedTypes(type.getTypeArgumentList());
+            TypeDescriptor ret;
+            if(underlyingDeclaration.isToplevel()){
+                ReflectionClass classMirror;
+                // FIXME: this is not really true, but reflects what's in TypeDescriptor.functionOrValue where we do not
+                // make any different, but this should not matter since we only care about container functions and their
+                // type arguments
+                if(underlyingDeclaration instanceof Setter)
+                    underlyingDeclaration = ((Setter) underlyingDeclaration).getGetter();
+                if(underlyingDeclaration instanceof LazyValue)
+                    classMirror = (ReflectionClass) ((LazyValue) underlyingDeclaration).classMirror;
+                else if(underlyingDeclaration instanceof LazyMethod)
+                    classMirror = (ReflectionClass) ((LazyMethod) underlyingDeclaration).classMirror;
+                else
+                    throw new RuntimeException("Unsupported underlying declaration type: " + underlyingDeclaration);
+                ret = TypeDescriptor.functionOrValue(classMirror.klass, tdArgs);
+            }else
+                ret = TypeDescriptor.functionOrValue(underlyingDeclaration.getName(), tdArgs);
+            if(type.getQualifyingType() != null)
+                return TypeDescriptor.member(getTypeDescriptorForProducedType(type.getQualifyingType()), ret);
+            return ret;
+        }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
     }
 
