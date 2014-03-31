@@ -174,6 +174,14 @@ public class Errors {
         public void visit(Tree.Declaration that) {
             // don't go there
         }
+        
+        @Override
+        public void visit(Tree.Variable that) {
+            // unlike other declarations, Variables are part of the 
+            // statement, and if they have a pb we're screwed, so we
+            // do want *do* visit them.
+            visitAny(that);
+        }
     }
     
     /** Visit the given declaration (but not it's body, specifier or 
