@@ -262,6 +262,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Map<String, Declaration> typeDeclarationsByName = new HashMap<String, Declaration>();
     protected Map<Package, Unit> unitsByPackage = new HashMap<Package, Unit>();
     protected TypeParser typeParser;
+    /** 
+     * The type factory 
+     * (<strong>should not be used while completing a declaration</strong>)
+     */
     protected Unit typeFactory;
     protected final Set<String> loadedPackages = new HashSet<String>();
     protected final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
@@ -1669,9 +1673,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setAnnotations(klass, classMirror);
         
         if (!isCeylon 
-                && typeFactory.getThrowableDeclaration().getType().isSupertypeOf(klass.getType())) {
+                && isThrowableSubtype(classMirror)) {
             addMessageValueForJavaThrowable(klass);
         }
+    }
+    
+    private boolean isThrowableSubtype(ClassMirror classMirror) {
+        TypeMirror superclassType = classMirror.getSuperclass();
+        while(superclassType != null) {
+            classMirror =  superclassType.getDeclaredClass();
+            if ("java.lang.Throwable".equals(classMirror.getQualifiedName())) {
+                return true;
+            }
+            superclassType = classMirror.getSuperclass();
+        }
+        return false;
     }
     
     /**
@@ -1686,7 +1702,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void addMessageValueForJavaThrowable(ClassOrInterface klass) {
         Value messageValue = (Value)klass.getDirectMember("message", Collections.<ProducedType>emptyList(), false);
         if (messageValue == null) {
-            for (MethodMirror method : lookupNewClassMirror(getJDKBaseModule(), "java.lang.Throwable").getDirectMethods()) {
+            for (MethodMirror method : lookupClassMirror(getJDKBaseModule(), "java.lang.Throwable").getDirectMethods()) {
                 if ("getMessage".equals(method.getName())
                         && method.getParameters().isEmpty()) {
                     addValue(klass, method, "message", false);
