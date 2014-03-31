@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { JEx=Exception }
+import java.lang { JEx=RuntimeException }
 
 void bug1380() {
     JEx(null of String?);

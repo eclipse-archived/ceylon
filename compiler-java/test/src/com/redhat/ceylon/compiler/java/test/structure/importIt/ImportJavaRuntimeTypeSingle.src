@@ -6,7 +6,7 @@ class ImportJavaRuntimeTypeSingle implements .com.redhat.ceylon.compiler.java.ru
     }
     
     private final void m$priv$(final .java.util.List<.ceylon.language.Integer> l) {
-        new .java.lang.Exception();
+        new .java.lang.RuntimeException();
     }
     
     public static void main(.java.lang.String[] args) {

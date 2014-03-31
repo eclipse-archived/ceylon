@@ -9,14 +9,14 @@ final class bug1380_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1380() {
-        new .java.lang.Exception((
+        new .java.lang.RuntimeException((
             let
             {
                 .ceylon.language.String $ceylontmp$0 = (.ceylon.language.String)null;
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0.toString() : null;
         ));
-        new .java.lang.Exception((.java.lang.Exception)null);
+        new .java.lang.RuntimeException((.java.lang.Exception)null);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

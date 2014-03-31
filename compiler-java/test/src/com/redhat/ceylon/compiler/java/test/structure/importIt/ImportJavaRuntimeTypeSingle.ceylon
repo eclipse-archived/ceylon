@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang{Exception}
+import java.lang{RuntimeException}
 import java.util{List}
 
 @noanno
 class ImportJavaRuntimeTypeSingle() {
     void m(@error List<Integer> l) {
         @error
-        Exception();
+        RuntimeException();
     }
 }
