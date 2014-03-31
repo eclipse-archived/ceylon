@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import ceylon.language.Annotated$impl;
+import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.SetterDeclaration$impl;
 import ceylon.language.meta.declaration.ValueDeclaration;
@@ -13,15 +14,14 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
 @Class
 @SatisfiedTypes({"ceylon.language.meta.declaration::SetterDeclaration"})
 public class FreeSetter 
-        implements SetterDeclaration, AnnotationBearing, ReifiedType {
+        extends FreeNestableDeclaration
+        implements SetterDeclaration, AnnotationBearing {
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeSetter.class);
@@ -49,12 +49,20 @@ public class FreeSetter
 
     @Override
     public Annotation[] $getJavaAnnotations$() {
+        checkInit();
         return declaredSetter != null ? declaredSetter.getDeclaredAnnotations() : AnnotationBearing.NONE;
     }
     
     @Override
     public ValueDeclaration getVariable() {
+        checkInit();
         return value;
+    }
+
+    @Override
+    public OpenType getOpenType() {
+        checkInit();
+        return value.getOpenType();
     }
 
     @Override

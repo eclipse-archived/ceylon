@@ -3,6 +3,7 @@
  Functions, values, classes, interfaes and aliases are such declarations."
 shared interface NestableDeclaration of FunctionOrValueDeclaration |
                                         ClassOrInterfaceDeclaration |
+                                        SetterDeclaration |
                                         AliasDeclaration
         satisfies AnnotatedDeclaration & TypedDeclaration {
 

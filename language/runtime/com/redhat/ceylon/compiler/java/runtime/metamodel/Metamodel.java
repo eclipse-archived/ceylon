@@ -10,20 +10,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ceylon.language.Annotated;
 import ceylon.language.Anything;
 import ceylon.language.ArraySequence;
 import ceylon.language.Callable;
+import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.Annotated;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.Module;
+import ceylon.language.meta.declaration.NestableDeclaration;
+import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
-import ceylon.language.ConstrainedAnnotation;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
@@ -50,6 +54,7 @@ import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
+import com.redhat.ceylon.compiler.java.runtime.model.FunctionOrValueInterface;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -76,8 +81,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 
 public class Metamodel {
 
@@ -222,8 +229,11 @@ public class Metamodel {
                     com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration method = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeFunction(method);
                 }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Value){
-                    com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration value = (com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration;
+                    com.redhat.ceylon.compiler.typechecker.model.Value value = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
                     ret = new FreeValue(value);
+                }else if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Setter){
+                    com.redhat.ceylon.compiler.typechecker.model.Setter value = (com.redhat.ceylon.compiler.typechecker.model.Setter)declaration;
+                    ret = new FreeSetter(value);
                 }else{
                     throw new RuntimeException("Declaration type not supported yet: "+declaration);
                 }

@@ -147,6 +147,9 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
         case(is ValueDeclaration){
             visitValue(m);
         }
+        case(is SetterDeclaration){
+            // FIXME: implement
+        }
         case(is ClassDeclaration){
             visitClass(m);
         }

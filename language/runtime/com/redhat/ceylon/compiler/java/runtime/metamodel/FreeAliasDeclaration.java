@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import java.lang.annotation.Annotation;
-
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.AliasDeclaration$impl;
 import ceylon.language.meta.declaration.GenericDeclaration$impl;
