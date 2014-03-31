@@ -172,7 +172,8 @@ shared void checkAToplevelGetterSetterAnnotations() {
         seq2.first.seq == "aToplevelGetter 1");
     
     // setter
-    assert(exists docsetter = optionalAnnotation(docAnnotation, aToplevelGetterSetterDecl.setter), 
+    assert(exists setter = aToplevelGetterSetterDecl.setter,
+        exists docsetter = optionalAnnotation(docAnnotation, setter), 
         docsetter.description == "aToplevelSetter");
     
     assert(nonempty see = annotations(seeAnnotation, aToplevelGetterSetterDecl));
@@ -334,7 +335,8 @@ shared void checkAAbstractClass() {
     check(annotations(actualAnnotation, fa) exists, "abstract class 8");
     assert(exists fadoc = annotations(docAnnotation, fa),
             fadoc.description == "AAbstractClass.formalAttributeGetter");
-    assert(exists fasdoc = annotations(docAnnotation, fa.setter),
+    assert(exists fasetter = fa.setter,
+            exists fasdoc = annotations(docAnnotation, fasetter),
             fasdoc.description == "AAbstractClass.formalAttributeSetter");
     
     // formalMethod
@@ -436,7 +438,8 @@ shared void checkAInterface() {
     check(annotations(defaultAnnotation, dgs) exists, "iface 7");
     assert(exists dgdoc = annotations(docAnnotation, dgs),
             dgdoc.description == "AInterface.defaultGetter");
-    assert(exists dsdoc = annotations(docAnnotation, dgs.setter),
+    assert(exists dgssetter = dgs.setter,
+            exists dsdoc = annotations(docAnnotation, dgssetter),
             dsdoc.description == "AInterface.defaultSetter");
     
     // getterSetter
@@ -446,7 +449,8 @@ shared void checkAInterface() {
     assert(exists gsdoc = annotations(docAnnotation, gs),
             gsdoc.description == "AInterface.getter");
     // setter annotations
-    assert(exists gssdoc = annotations(docAnnotation, gs.setter),
+    assert(exists gssetter = gs.setter,
+            exists gssdoc = annotations(docAnnotation, gssetter),
             gssdoc.description == "AInterface.setter");
     
     // TODO nonsharedGetterSetter

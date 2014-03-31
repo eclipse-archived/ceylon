@@ -77,6 +77,6 @@ shared interface ValueDeclaration
      For modelling purposes `variable` reference 
      values have a SetterDeclaration even though there is no 
      such setter explicit in the source code."
-    shared formal SetterDeclaration setter;
+    shared formal SetterDeclaration? setter;
 
 }
