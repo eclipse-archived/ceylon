@@ -199,6 +199,11 @@ public class Errors {
     public HasErrorException getFirstExpressionError(Tree.Term node) {
         return expressionVisitor.getFirstErrorMessage(node);
     }
+    
+    public HasErrorException getFirstExpressionError(Tree.ExtendedType node) {
+        return expressionVisitor.getFirstErrorMessage(node);
+    }
+    
     /**
      * Visit the given statement returning the first error found, 
      * or null if the tree is free of errors. Does not visit the 

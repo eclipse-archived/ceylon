@@ -3088,7 +3088,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Invocations
     public void transformSuperInvocation(Tree.ExtendedType extendedType, ClassDefinitionBuilder classBuilder) {
-        HasErrorException error = errors().getFirstExpressionError(extendedType.getInvocationExpression());
+        HasErrorException error = errors().getFirstExpressionError(extendedType);
         if (error != null) {
             classBuilder.superCall(error.makeThrow(this));
             return;
