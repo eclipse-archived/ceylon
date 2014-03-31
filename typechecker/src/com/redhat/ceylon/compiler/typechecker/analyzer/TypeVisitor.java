@@ -506,8 +506,9 @@ public class TypeVisitor extends Visitor {
     private boolean isNonimportable(Package pkg, String name) {
         return pkg.getQualifiedNameString().equals("java.lang") &&
         		("Object".equals(name) ||
-                 "Throwable".equals(name) /*||
-                 "Exception".equals(name)*/);
+                 "Throwable".equals(name) ||
+                 "Exception".equals(name) ||
+                 "Error".equals(name));
     }
     
     @Override 
