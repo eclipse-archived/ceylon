@@ -205,6 +205,7 @@
                 <include name="ceylon/language/false_.java"/>
                 <exclude name="ceylon/language/Callable.ceylon"/>
                 <include name="ceylon/language/Callable.java"/>
+                <include name="ceylon/language/Callable$impl.java"/>
                 <exclude name="ceylon/language/Character.ceylon"/>
                 <include name="ceylon/language/Character.java"/>
                 <exclude name="ceylon/language/className.ceylon"/>
