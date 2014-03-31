@@ -199,6 +199,12 @@ public class InteropTest extends CompilerTest {
         compile("JavaExceptionsAndThrowable.java");
         compareWithJavaSource("ExceptionsAndThrowable");
     }
+    
+    @Test
+    public void testIopJavaExceptionMessage(){
+        compile("JavaExceptionMessage.java");
+        compareWithJavaSource("JavaExceptionMessage");
+    }
 
     @Test
     public void testIopRefinesProtectedAccessMethod(){
