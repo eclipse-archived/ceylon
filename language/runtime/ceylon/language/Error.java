@@ -10,42 +10,79 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 6)
-@Class(extendsType="ceylon.language::Throwable")
-public class Error extends ceylon.language.Throwable /*implements ReifiedType*/ {
-    @Ignore
-    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Error.class);
+@Class(extendsType = "ceylon.language::Throwable")
+public class Error extends java.lang.Error implements ReifiedType {
 
     @Ignore
-    public Error() {
-        super();
-    }
+    public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Exception.class);
 
+	private static final long serialVersionUID = -1790691559137471641L;
+
+	private String description;
+    
     public Error(
             @TypeInfo("ceylon.language::String|ceylon.language::Null")
             @Name("description")
             @Defaulted
-            java.lang.String description,
+            String description,
             @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
             @Name("cause")
             @Defaulted
             java.lang.Throwable cause) {
-        super(description, cause);
+        super(description==null ? null : description.toString(), cause);
+        this.description = description;
+    }
+    
+    @Ignore
+    public Error(String description) {
+        this(description, $default$cause(description));
+    }
+    
+    @Ignore
+    public Error() {
+        this($default$description());
+    }
+        
+    @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
+    public java.lang.Throwable getCause() {
+        return super.getCause();
+    }
+    
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String getMessage() {
+        if (description != null
+                && description != null) {
+            return description.toString();
+        } 
+        else if (getCause() != null 
+                && getCause().getMessage() != null) {
+            return getCause().getMessage();
+        }
+        return "";
+    }
+
+    @TypeInfo("ceylon.language::String")
+    public java.lang.String toString() {
+        return className_.className(this) + " \"" + getMessage() +"\""; 
+    }
+    
+    @Override
+    public void printStackTrace() {
+    	super.printStackTrace();
     }
 
     @Ignore
-    public Error(@TypeInfo("ceylon.language::String|ceylon.language::Null")
-            @Name("description")
-            @Defaulted
-            java.lang.String description) {
-        super(description);
-    }
-    @Ignore
-    public static java.lang.String $default$description(){
+    public static String $default$description(){
         return null;
     }
     @Ignore
     public static java.lang.Throwable $default$cause(String description){
         return null;
     }
-    
+
+    @Override
+    @Ignore
+    public TypeDescriptor $getType$() {
+        return $TypeDescriptor$;
+    }
 }
