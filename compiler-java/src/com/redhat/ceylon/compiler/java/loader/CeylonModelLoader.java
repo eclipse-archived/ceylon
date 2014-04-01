@@ -110,6 +110,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
+    protected boolean needsLocalDeclarations(){
+        return false;
+    }
+
+    @Override
     public void addModuleToClassPath(Module module, ArtifactResult artifact){
         if(artifact != null)
             ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().addModuleToClassPath(module, true, artifact);

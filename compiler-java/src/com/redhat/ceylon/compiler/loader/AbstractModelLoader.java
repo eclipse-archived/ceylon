@@ -294,7 +294,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @return 
      */
     public abstract boolean loadPackage(Module module, String packageName, boolean loadDeclarations);
-    
+
+    /**
+     * To be redefined by subclasses if they don't need local declarations.
+     */
+    protected boolean needsLocalDeclarations(){
+        return true;
+    }
+
     public boolean searchAgain(Module module, String name) {
         return false;
     }
@@ -532,6 +539,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Declaration convertToDeclaration(ClassMirror classMirror, DeclarationType declarationType) {
         // avoid ignored classes
         if(classMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+            return null;
+        // avoid local interfaces that were pulled to the toplevel if required
+        if(classMirror.getAnnotation(CEYLON_LOCAL_CONTAINER_ANNOTATION) != null
+                && !needsLocalDeclarations())
             return null;
         // avoid module and package descriptors too
         if(classMirror.getAnnotation(CEYLON_MODULE_ANNOTATION) != null
