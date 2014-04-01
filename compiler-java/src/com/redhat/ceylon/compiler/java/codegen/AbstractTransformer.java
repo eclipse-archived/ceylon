@@ -25,7 +25,6 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -87,6 +86,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -2536,6 +2536,24 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtDefaultedType);
     }
 
+    List<JCAnnotation> makeAtAttribute(JCExpression setterClass) {
+        List<JCExpression> attributes = List.nil();
+        if (setterClass != null) {
+            JCExpression setterClassAttribute = make().Assign(naming.makeUnquotedIdent("setterClass"), setterClass);
+            attributes = attributes.prepend(setterClassAttribute);
+        }
+        return makeModelAnnotation(syms().ceylonAtAttributeType, attributes);
+    }
+
+    List<JCAnnotation> makeAtSetter(JCExpression setterClass) {
+        List<JCExpression> attributes = List.nil();
+        if (setterClass != null) {
+            JCExpression setterClassAttribute = make().Assign(naming.makeUnquotedIdent("getterClass"), setterClass);
+            attributes = attributes.prepend(setterClassAttribute);
+        }
+        return makeModelAnnotation(syms().ceylonAtSetterType, attributes);
+    }
+
     List<JCAnnotation> makeAtAttribute() {
         return makeModelAnnotation(syms().ceylonAtAttributeType);
     }
@@ -2676,8 +2694,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtContainerType, attributes);
     }
 
-    List<JCAnnotation> makeAtLocalContainer() {
-        return makeModelAnnotation(syms().ceylonAtLocalContainerType);
+    List<JCAnnotation> makeAtLocalDeclaration(String qualifier) {
+        List<JCExpression> attributes = List.nil();
+        if(qualifier != null && !qualifier.isEmpty()){
+            JCExpression scopeAttribute = make().Assign(naming.makeUnquotedIdent("qualifier"), 
+                                                        make().Literal(qualifier));
+            attributes = List.of(scopeAttribute);
+        }
+        return makeModelAnnotation(syms().ceylonAtLocalDeclarationType, attributes);
     }
 
     JCAnnotation makeAtMember(ProducedType type) {
@@ -2697,6 +2721,53 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtMembersType, List.of(attr));
     }
     
+    private List<JCAnnotation> makeAtLocalDeclarations(Set<String> localDeclarations, Set<Interface> localInterfaces) {
+        if(localDeclarations.isEmpty() && localInterfaces.isEmpty())
+            return List.nil();
+        ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
+        for(String val : localDeclarations)
+            array.add(make().Literal(val));
+        for(Interface iface : localInterfaces){
+            // FIXME: we need to get a better API for this
+            JCExpression nameExpr = naming.makeDeclarationName(iface);
+            String name = ((JCIdent)nameExpr).name.toString();
+            array.add(make().Literal("::"+name));
+        }
+        JCExpression attr = make().Assign(naming.makeUnquotedIdent("value"), 
+                                          make().NewArray(null, null, array.toList()));
+
+        return makeModelAnnotation(syms().ceylonAtLocalDeclarationsType, List.of(attr));
+    }
+
+    protected List<JCAnnotation> makeAtLocalContainer(List<String> path, String companionClassName) {
+        if(path.isEmpty())
+            return List.nil();
+        ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
+        for(String val : path)
+            array.add(make().Literal(val));
+
+        JCExpression pathAttr = make().Assign(naming.makeUnquotedIdent("path"), 
+                                          make().NewArray(null, null, array.toList()));
+        JCExpression companionAttr = make().Assign(naming.makeUnquotedIdent("companionClassName"), 
+                                                   make().Literal(companionClassName));
+
+        return makeModelAnnotation(syms().ceylonAtLocalContainerType, List.of(pathAttr, companionAttr));
+    }
+
+    protected List<JCAnnotation> makeAtLocalDeclarations(Node tree) {
+        return makeAtLocalDeclarations(tree, null);
+    }
+
+    protected List<JCAnnotation> makeAtLocalDeclarations(Node tree1, Node tree2) {
+        LocalTypeVisitor visitor = new LocalTypeVisitor();
+        tree1.visitChildren(visitor);
+        if(tree2 != null)
+            tree2.visitChildren(visitor);
+        java.util.Set<String> locals = visitor.getLocals();
+        java.util.Set<Interface> localInterfaces = visitor.getLocalInterfaces();
+        return makeAtLocalDeclarations(locals, localInterfaces);
+    }
+
     private List<JCAnnotation> makeAtAnnotationValue(Type annotationType, String name, JCExpression values) {
         if (name == null) {
             return makeAnnoAnnotation(annotationType, List.<JCExpression>of(values));
