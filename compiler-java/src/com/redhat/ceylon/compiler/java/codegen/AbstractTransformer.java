@@ -3839,12 +3839,21 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    private Collection<ProducedType> getTypeArguments(
+    private java.util.List<ProducedType> getTypeArguments(
             ProducedReference producedReference) {
         java.util.List<TypeParameter> typeParameters = getTypeParameters(producedReference);
         java.util.List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
         for(TypeParameter tp : typeParameters)
             typeArguments.add(producedReference.getTypeArguments().get(tp));
+        return typeArguments;
+    }
+
+    private java.util.List<ProducedType> getTypeArguments(
+            Method method) {
+        java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
+        java.util.List<ProducedType> typeArguments = new ArrayList<ProducedType>(typeParameters.size());
+        for(TypeParameter tp : typeParameters)
+            typeArguments.add(tp.getType());
         return typeArguments;
     }
 
@@ -3857,11 +3866,16 @@ public abstract class AbstractTransformer implements Transformation {
             return ((Method)declaration).getTypeParameters();
     }
 
-    public java.util.List<JCExpression> makeReifiedTypeArguments(
-            Collection<ProducedType> typeArguments) {
-        java.util.List<JCExpression> ret = new ArrayList<JCExpression>(typeArguments.size());
-        for(ProducedType pt : typeArguments){
-            ret.add(makeReifiedTypeArgument(pt));
+    public List<JCExpression> makeReifiedTypeArguments(
+            java.util.List<ProducedType> typeArguments) {
+        return makeReifiedTypeArguments(typeArguments, false);
+    }
+    
+    private List<JCExpression> makeReifiedTypeArguments(
+            java.util.List<ProducedType> typeArguments, boolean qualified) {
+        List<JCExpression> ret = List.nil();
+        for(int i=typeArguments.size()-1;i>=0;i--){
+            ret = ret.prepend(makeReifiedTypeArgument(typeArguments.get(i), qualified));
         }
         return ret;
     }
@@ -3879,19 +3893,28 @@ public abstract class AbstractTransformer implements Transformation {
                 return makeSelect(qualifier, naming.getTypeDescriptorAliasName());
             }
             // no alias, must build it
-            List<JCExpression> typeTestArguments = List.nil();
+            List<JCExpression> typeTestArguments = makeReifiedTypeArguments(pt.getTypeArgumentList(), qualified);
             JCExpression thisType = makeUnerasedClassLiteral(declaration);
-            java.util.List<ProducedType> typeParameters = pt.getTypeArgumentList();
-            for(int i=typeParameters.size()-1;i>=0;i--){
-                typeTestArguments = typeTestArguments.prepend(makeReifiedTypeArgument(typeParameters.get(i), qualified));
-            }
             typeTestArguments = typeTestArguments.prepend(thisType);
             JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
-            if(pt.getQualifyingType() == null)
+            ProducedType qualifyingType = pt.getQualifyingType();
+            JCExpression containerType = null;
+            if(qualifyingType == null){
+                // it may be contained in a function or value, and we want its type
+                Declaration enclosingDeclaration = getDeclarationContainer(declaration);
+                if(enclosingDeclaration instanceof TypedDeclaration)
+                    containerType = makeTypedDeclarationTypeDescriptor((TypedDeclaration) enclosingDeclaration);
+                else if(enclosingDeclaration instanceof TypeDeclaration)
+                    qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
+            }
+            if(qualifyingType != null){
+                containerType = makeReifiedTypeArgument(qualifyingType, true);
+            }
+            if(containerType == null){
                 return classDescriptor;
-            else{
+            }else{
                 return make().Apply(null, makeSelect(makeTypeDescriptorType(), "member"), 
-                                                     List.of(makeReifiedTypeArgument(pt.getQualifyingType(), true), classDescriptor));
+                                                     List.of(containerType, classDescriptor));
             }
         }
         if(declaration instanceof TypeParameter){
@@ -3936,6 +3959,59 @@ public abstract class AbstractTransformer implements Transformation {
         throw new RuntimeException("Unsupported type: " + declaration);
     }
     
+    private JCExpression makeTypedDeclarationTypeDescriptor(TypedDeclaration declaration) {
+        // figure out the method name
+        String methodName = declaration.getPrefixedName();
+        List<JCExpression> arguments;
+        if(declaration instanceof Method)
+            arguments = makeReifiedTypeArguments(getTypeArguments((Method)declaration), true);
+        else
+            arguments = List.nil();
+        if(declaration.isToplevel()){
+            JCExpression getterClassNameExpr;
+            if(declaration instanceof Method){
+                getterClassNameExpr = naming.makeName(declaration, Naming.NA_FQ | Naming.NA_WRAPPER);
+            }else{
+                String getterClassName = Naming.getAttrClassName(declaration, 0);
+                getterClassNameExpr = naming.makeUnquotedIdent(getterClassName);
+            }
+            arguments = arguments.prepend(makeSelect(getterClassNameExpr, "class"));
+        }else
+            arguments = arguments.prepend(make().Literal(methodName));
+
+        JCMethodInvocation typedDeclarationDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "functionOrValue"), 
+                                                                     arguments);
+        // see if the declaration has a container too
+        Declaration enclosingDeclaration = getDeclarationContainer(declaration);
+        JCExpression containerType = null;
+        if(enclosingDeclaration instanceof TypedDeclaration)
+            containerType = makeTypedDeclarationTypeDescriptor((TypedDeclaration) enclosingDeclaration);
+        else if(enclosingDeclaration instanceof TypeDeclaration){
+            ProducedType qualifyingType = ((TypeDeclaration) enclosingDeclaration).getType();
+            containerType = makeReifiedTypeArgument(qualifyingType, true);
+        }
+        if(containerType == null){
+            return typedDeclarationDescriptor;
+        }else{
+            return make().Apply(null, makeSelect(makeTypeDescriptorType(), "member"), 
+                                                 List.of(containerType, typedDeclarationDescriptor));
+        }
+    }
+
+    private Declaration getDeclarationContainer(Declaration declaration) {
+        // Here we can use getContainer, we don't care about scopes
+        Scope container = declaration.getContainer();
+        while(container != null){
+            if(container instanceof Package)
+                return null;
+            if(container instanceof Declaration)
+                return (Declaration) container;
+            container = container.getContainer();
+        }
+        // did not find anything
+        return null;
+    }
+
     public boolean supportsReifiedAlias(ClassOrInterface decl){
         return !decl.isAlias() 
                 && !decl.isAnonymous()
