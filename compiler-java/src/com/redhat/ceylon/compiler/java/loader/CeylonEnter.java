@@ -444,23 +444,21 @@ public class CeylonEnter extends Enter {
         AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         // Extra phases for the compiler
+        
+        // boxing visitor depends on boxing decl
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(uv);
         }
         for (PhasedUnit pu : listOfUnits) {
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
         }
+        // the others can run at the same time
         for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(boxingVisitor);
-        }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(deferredVisitor);
-        }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(amv);
-        }
-        for (PhasedUnit pu : listOfUnits) {
-            pu.getCompilationUnit().visit(dav);
+            CompilationUnit compilationUnit = pu.getCompilationUnit();
+            compilationUnit.visit(boxingVisitor);
+            compilationUnit.visit(deferredVisitor);
+            compilationUnit.visit(amv);
+            compilationUnit.visit(dav);
         }
         
         collectTreeErrors(true);
