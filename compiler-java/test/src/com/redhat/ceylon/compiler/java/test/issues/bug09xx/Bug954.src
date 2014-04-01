@@ -124,6 +124,7 @@ final class bug954_ {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class x_ {
             
             private x_() {
@@ -149,6 +150,7 @@ final class bug954_ {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class y_ {
             
             private y_() {

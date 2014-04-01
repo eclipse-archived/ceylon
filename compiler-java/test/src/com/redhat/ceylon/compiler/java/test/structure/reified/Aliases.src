@@ -65,9 +65,11 @@ public interface TargetInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class TargetInterface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public TargetInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)

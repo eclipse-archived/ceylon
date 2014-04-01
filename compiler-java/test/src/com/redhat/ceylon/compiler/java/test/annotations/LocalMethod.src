@@ -13,6 +13,7 @@ public class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class m2_ {
             
             private m2_() {

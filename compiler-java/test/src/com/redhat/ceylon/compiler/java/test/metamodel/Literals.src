@@ -353,17 +353,21 @@ interface LitInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class LitInterface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     LitInterface$impl(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final class Member$impl {
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public Member$impl(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member $this) {
             this.$this = $this;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member $this;
     }
 }
@@ -397,13 +401,17 @@ interface LitParameterisedInterface<T> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class LitParameterisedInterface$impl<T> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     LitParameterisedInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface<T> $this) {
         this.$reified$T = $reified$T;
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface<T> $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
     }
@@ -411,13 +419,17 @@ final class LitParameterisedInterface$impl<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final class Member$impl<X> {
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public Member$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member<T, X> $this) {
             this.$reified$X = $reified$X;
             this.$this = $this;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member<T, X> $this;
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
             this.$reified$X = $reified$X;
         }
@@ -670,6 +682,7 @@ final class casting_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("litValue")
 final class litValue_ {
     
     private litValue_() {
@@ -691,6 +704,7 @@ final class litValue_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
 final class litVariable_ {
     
     private litVariable_() {

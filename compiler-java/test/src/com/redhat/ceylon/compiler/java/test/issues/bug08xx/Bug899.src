@@ -24,7 +24,7 @@ public final class bug899_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug899_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
             }
         }
         final o_ o = new o_();

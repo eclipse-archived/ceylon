@@ -126,7 +126,7 @@ final class bug667Method_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(x_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug667Method_.class, $reified$Nada), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(x_.class));
             }
         }
         final x_ x = new x_();

@@ -727,6 +727,7 @@ final class bug708extra4_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug708_cache")
 final class bug708_cache_ {
     
     private bug708_cache_() {

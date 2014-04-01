@@ -19,7 +19,7 @@ class MethodWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(y_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithLocalObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(y_.class));
             }
         }
         final y_ y = new y_();

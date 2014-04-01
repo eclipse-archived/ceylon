@@ -29,7 +29,7 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass_1.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("goto")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass_1.class));
             }
         }
         final InnerClass_1 x = new InnerClass_1();
@@ -45,7 +45,7 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass_2.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("strictfp")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass_2.class));
             }
         }
         final InnerClass_2 x = new InnerClass_2();

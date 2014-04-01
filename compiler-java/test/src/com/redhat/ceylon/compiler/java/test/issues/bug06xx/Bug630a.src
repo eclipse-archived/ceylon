@@ -36,11 +36,14 @@ interface Bug630 {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Bug630$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug630$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final int hashCode() {
         return (int)(
             let
@@ -51,6 +54,7 @@ final class Bug630$impl {
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public boolean equals(final .java.lang.Object other) {
         return false;
     }

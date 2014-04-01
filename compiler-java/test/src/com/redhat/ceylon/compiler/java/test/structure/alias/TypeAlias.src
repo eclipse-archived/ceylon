@@ -35,9 +35,11 @@ public interface TypeAliasInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class TypeAliasInterface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)

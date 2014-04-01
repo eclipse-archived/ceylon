@@ -22,6 +22,7 @@ class LocalClassAlias_Toplevel implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1ClassAlias_Foo"})
 final class localClassAliasMethod_ {
     
     private localClassAliasMethod_() {
@@ -31,7 +32,7 @@ final class localClassAliasMethod_ {
     static void localClassAliasMethod() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             ClassAlias_Foo() {
@@ -40,7 +41,7 @@ final class localClassAliasMethod_ {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(ClassAlias_Foo.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.alias.localClassAliasMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(ClassAlias_Foo.class));
             }
         }
         final ClassAlias_Foo foo1 = new ClassAlias_Foo();

@@ -11,9 +11,11 @@ interface Intersect {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class Intersect$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Intersect$impl(.com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)

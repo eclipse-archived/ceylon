@@ -25,7 +25,7 @@ class ObjectInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         
                         @.java.lang.Override
                         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(bar_.class);
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInGetter.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("foo")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(bar_.class));
                         }
                     }
                     final bar_ bar = new bar_();

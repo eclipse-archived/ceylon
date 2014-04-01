@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("attr1")
 final class attr1_ {
     
     private attr1_() {
@@ -23,6 +24,7 @@ final class attr1_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
 final class attr2_ {
     
     private attr2_() {
@@ -53,6 +55,7 @@ final class attr2_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("attr3")
 final class attr3_ {
     
     private attr3_() {
@@ -67,6 +70,7 @@ final class attr3_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
 final class attr4_ {
     
     private attr4_() {

@@ -222,9 +222,11 @@ public interface MethodInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class MethodInterface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public MethodInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -266,6 +268,7 @@ public final class MethodInterface$impl {
     private <T>void methodWithOverloads$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long a, final long b) {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long a, final long b) {
         (

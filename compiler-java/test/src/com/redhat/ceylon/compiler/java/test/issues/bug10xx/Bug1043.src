@@ -16,7 +16,7 @@ final class bug1043_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Delegate.class, $reified$T);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1043_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Delegate.class, $reified$T));
             }
         }
         
@@ -40,7 +40,7 @@ final class bug1043_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Consumer.class, $reified$T);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1043_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Consumer.class, $reified$T));
             }
         }
     }

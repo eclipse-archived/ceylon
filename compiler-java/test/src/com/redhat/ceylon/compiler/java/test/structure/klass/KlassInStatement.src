@@ -21,7 +21,7 @@ class KlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(KlassInStatement1.class);
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(KlassInStatement1.class));
                 }
             }
             final .java.lang.String s = new KlassInStatement1().toString();

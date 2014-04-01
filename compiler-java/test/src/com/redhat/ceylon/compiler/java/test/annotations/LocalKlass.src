@@ -2,6 +2,12 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "4Local",
+        "5Local",
+        "2Local",
+        "3Local",
+        "1Local"})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -10,7 +16,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
             @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = Local.Inner.class)})
-            @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 Local() {
@@ -26,20 +32,20 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.Inner.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.Inner.class));
                     }
                 }
                 
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class);
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
                 }
             }
         } else {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-            @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 Local() {
@@ -48,14 +54,17 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 @.java.lang.Override
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class);
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
                 }
             }
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.Attribute
+        @.com.redhat.ceylon.compiler.java.metadata.Attribute(setterClass = getter$setter$_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("getter")
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<java.lang::String>"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
             
             private getter$getter$_() {
@@ -65,7 +74,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             public .java.lang.String get_() {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-                @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     Local() {
@@ -74,7 +83,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("getter")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
                     }
                 }
                 return "";
@@ -83,7 +92,10 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> getter$getter$_ = new getter$getter$_();
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.Attribute
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.compiler.java.metadata.Setter(getterClass = getter$getter$_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         final class getter$setter$_ {
             
             private getter$setter$_() {
@@ -94,7 +106,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             final .java.lang.String getter) {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-                @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     Local() {
@@ -103,7 +115,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("getter")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
                     }
                 }
             }
@@ -115,8 +127,8 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final void m$priv$() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
-        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>>"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>>"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "T",
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -127,7 +139,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
             final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
                 this.$reified$T = $reified$T;
-                this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<Local<T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T), this);
+                this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<Local<T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T)), this);
                 this.i1 = 1L;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -204,10 +216,10 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                     @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-                    value = "com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>",
+                    value = "com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>",
                     erased = true)
             public final Local plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.Local<T>")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>")
             final Local<T> other) {
                 return (Local).ceylon.language.nothing_.get_();
             }
@@ -215,7 +227,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T));
             }
         }
     }

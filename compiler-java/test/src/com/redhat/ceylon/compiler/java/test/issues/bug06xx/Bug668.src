@@ -79,7 +79,7 @@ final class bug668_method_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug668_method_.class, $reified$Nada), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class));
             }
         }
         final obj_ obj = new obj_();

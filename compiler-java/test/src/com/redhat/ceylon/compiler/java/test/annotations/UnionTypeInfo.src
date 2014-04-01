@@ -56,8 +56,10 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         this.sharedAttr = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.Attribute
+        @.com.redhat.ceylon.compiler.java.metadata.Attribute(setterClass = getter$setter$_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("getter")
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar>"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
             
             private getter$getter$_() {
@@ -71,7 +73,9 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         final .com.redhat.ceylon.compiler.java.language.Getter getter$getter$_ = new getter$getter$_();
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.Attribute
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.compiler.java.metadata.Setter(getterClass = getter$getter$_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         final class getter$setter$_ {
             
             private getter$setter$_() {
@@ -207,6 +211,7 @@ public final class sharedToplevelMethod_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelAttribute")
 final class toplevelAttribute_ {
     
     private toplevelAttribute_() {
@@ -230,6 +235,7 @@ final class toplevelAttribute_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("sharedToplevelAttribute")
 public final class sharedToplevelAttribute_ {
     
     private sharedToplevelAttribute_() {
@@ -255,6 +261,7 @@ public final class sharedToplevelAttribute_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelGetter")
 final class toplevelGetter_ {
     
     private toplevelGetter_() {
@@ -279,6 +286,7 @@ final class toplevelGetter_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("toplevelSharedGetter")
 public final class toplevelSharedGetter_ {
     
     private toplevelSharedGetter_() {

@@ -22,7 +22,7 @@ class ObjectInMethod implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInMethod.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
             }
         }
         final foo_ foo = new foo_();

@@ -27,7 +27,7 @@ public final class Bug904$impl {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("inverse")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class));
             }
         }
         final inverse_ inverse = new inverse_();

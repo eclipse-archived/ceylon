@@ -49,7 +49,7 @@ final class bug1108_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bug1108Inner.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1108_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bug1108Inner.class));
             }
         }
         final .java.lang.String f1 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
@@ -107,7 +107,7 @@ final class bug1108_ {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bug1108Local.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1108_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bug1108Local.class));
                     }
                 }
                 final .java.lang.String f3 = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1108("", new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){

@@ -24,7 +24,7 @@ class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.mo
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.transient_.class));
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInInnerClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.transient_.class));
                 }
             }
             
@@ -34,7 +34,7 @@ class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.mo
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInInnerClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class));
             }
         }
         new Inner().getTransient().$enum();

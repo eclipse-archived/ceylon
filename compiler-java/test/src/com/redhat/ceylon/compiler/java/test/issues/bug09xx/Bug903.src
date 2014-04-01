@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-interface Bug903$foo$0$I {
+interface Bug903$foo$I {
     
     public .java.lang.Object I$impl();
     
@@ -51,7 +51,7 @@ public final class Bug903$impl {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("foo")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class));
             }
         }
         final obj_ obj = new obj_();
@@ -75,16 +75,16 @@ public final class Bug903$impl {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("foo")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
             }
         }
         
         final class I$impl {
             
-            I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$0$I $this) {
+            I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$I $this) {
                 this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$0$I $this;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$I $this;
             
             public .java.lang.Object m() {
                 (

@@ -146,7 +146,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("local")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o_.class));
             }
         }
         final local_o_ local_o = new local_o_();
@@ -160,7 +160,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o2_.class);
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("local")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o2_.class));
                 }
             }
             final local_o2_ local_o2 = new local_o2_();

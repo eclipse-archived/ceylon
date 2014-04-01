@@ -18,7 +18,7 @@ class KeywordInGetterObject implements .com.redhat.ceylon.compiler.java.runtime.
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInGetterObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("i")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class));
                     }
                 }
                 final goto_ goto = new goto_();

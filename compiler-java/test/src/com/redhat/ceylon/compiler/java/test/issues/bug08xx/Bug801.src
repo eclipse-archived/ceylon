@@ -56,7 +56,7 @@ public interface Bug801_ImplClass$MemberInterface2 extends .com.redhat.ceylon.co
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_ImplClass$MemberInterface2$impl();
 }
-interface Bug801_ImplClass$method$0$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+interface Bug801_ImplClass$method$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
     
     public .java.lang.Object MemberInterface2$impl();
 }
@@ -199,16 +199,16 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class));
             }
         }
         
         final class MemberInterface2$impl {
             
-            MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$method$0$MemberInterface2 $this) {
+            MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$method$MemberInterface2 $this) {
                 this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$method$0$MemberInterface2 $this;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$method$MemberInterface2 $this;
         }
     }
     
@@ -227,7 +227,7 @@ public interface Bug801_ImplClass2$MemberInterface2 extends .com.redhat.ceylon.c
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterface2$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_ImplClass2$MemberInterface2$impl();
 }
-interface Bug801_ImplClass2$method$0$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+interface Bug801_ImplClass2$method$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
     
     public .java.lang.Object MemberInterface2$impl();
 }
@@ -364,16 +364,16 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class));
             }
         }
         
         final class MemberInterface2$impl {
             
-            MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$method$0$MemberInterface2 $this) {
+            MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$method$MemberInterface2 $this) {
                 this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$method$0$MemberInterface2 $this;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$method$MemberInterface2 $this;
         }
     }
     

@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Name("c")
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.cc_.class)})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1mc"})
 class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     c_() {
@@ -35,7 +36,7 @@ class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Name("mc")
-        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class mc_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             mc_() {
@@ -44,7 +45,7 @@ class c_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(mc_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.c_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(mc_.class));
             }
         }
     }

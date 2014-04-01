@@ -11,21 +11,30 @@ interface LocalInterfaceAlias_Toplevel {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class LocalInterfaceAlias_Toplevel$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     LocalInterfaceAlias_Toplevel$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
-@.com.redhat.ceylon.compiler.java.metadata.LocalContainer
-interface localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"localInterfaceAliasMethod"},
+        companionClassName = "1InterfaceAlias_Foo$impl")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface localInterfaceAliasMethod$InterfaceAlias_Foo_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .java.lang.Object InterfaceAlias_Foo$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1Class1",
+        "1Class2",
+        "::localInterfaceAliasMethod$InterfaceAlias_Foo_"})
 final class localInterfaceAliasMethod_ {
     
     private localInterfaceAliasMethod_() {
@@ -37,16 +46,18 @@ final class localInterfaceAliasMethod_ {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         final class InterfaceAlias_Foo$impl {
             
-            InterfaceAlias_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo_ $this) {
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            InterfaceAlias_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_ $this) {
                 this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo_ $this;
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_ $this;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
-        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.InterfaceAlias_Foo"})
-        class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$0$InterfaceAlias_Foo_ {
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.1InterfaceAlias_Foo"})
+        class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_ {
             
             Class1() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$alias$localInterfaceAliasMethod$InterfaceAlias_Foo$this$ = new InterfaceAlias_Foo$impl(this);
@@ -63,12 +74,12 @@ final class localInterfaceAliasMethod_ {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Class1.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Class1.class));
             }
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-        @.com.redhat.ceylon.compiler.java.metadata.LocalContainer
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::LocalInterfaceAlias_Toplevel"})
         class Class2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel {
             
@@ -87,7 +98,7 @@ final class localInterfaceAliasMethod_ {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Class2.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Class2.class));
             }
         }
         final Class1 foo1 = new Class1();

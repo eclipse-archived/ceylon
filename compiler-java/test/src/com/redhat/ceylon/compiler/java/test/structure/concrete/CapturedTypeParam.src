@@ -69,7 +69,7 @@ public final class I1$impl<T1A, T1B> {
         }
     }
 }
-interface CapturedTypeParam$foo$0$bar$1$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> {
+interface CapturedTypeParam$foo$1bar$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> {
     
     public .java.lang.Object I$impl();
     
@@ -89,7 +89,7 @@ interface CapturedTypeParam$foo$0$bar$1$I<OuterT1, OuterT2, MethodFooT1, MethodF
     
     public InnerT2 innerT2();
 }
-interface CapturedTypeParam$bar$2$I<OuterT2, OuterT1> {
+interface CapturedTypeParam$bar$I<OuterT2, OuterT1> {
     
     public .java.lang.Object I$impl();
     
@@ -115,25 +115,25 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> {
         this.$reified$OuterT1 = $reified$OuterT1;
     }
     
-    private <MethodFooT1, MethodFooT2>void foo$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$MethodFooT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$MethodFooT2) {
+    private <MethodFooT1, MethodFooT2>void foo$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$foo$MethodFooT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$foo$MethodFooT2) {
         
         final class bar_ {
             
             private bar_() {
             }
             
-            <MethodBarT1, MethodBarT2>void bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$MethodBarT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$MethodBarT2) {
+            <MethodBarT1, MethodBarT2>void bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$foo$bar$MethodBarT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$foo$bar$MethodBarT2) {
                 
                 final class I$impl<InnerT1, InnerT2> {
                     
-                    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT2, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$foo$0$bar$1$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> $this) {
+                    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT2, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$foo$1bar$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> $this) {
                         this.$reified$InnerT1 = $reified$InnerT1;
                         this.$reified$InnerT2 = $reified$InnerT2;
                         this.$this = $this;
                     }
                     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT1;
                     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT2;
-                    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$foo$0$bar$1$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> $this;
+                    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$foo$1bar$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> $this;
                     
                     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$InnerT2) {
                         this.$reified$InnerT2 = $reified$InnerT2;
@@ -173,7 +173,7 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> {
                     }
                 }
                 
-                class C<CT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$foo$0$bar$1$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, CT, CT> {
+                class C<CT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$foo$1bar$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, CT, CT> {
                     
                     C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CT) {
                         this.$reified$CT = $reified$CT;
@@ -229,25 +229,25 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class, $reified$CT);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam.class, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$impl.this.$reified$OuterT1, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$impl.this.$reified$OuterT2), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("foo", $reified$CapturedTypeParam$foo$MethodFooT1, $reified$CapturedTypeParam$foo$MethodFooT2)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1bar", $reified$CapturedTypeParam$foo$bar$MethodBarT1, $reified$CapturedTypeParam$foo$bar$MethodBarT2)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class, $reified$CT));
                     }
                 }
-                new C<MethodBarT1>($reified$MethodBarT1);
+                new C<MethodBarT1>($reified$CapturedTypeParam$foo$bar$MethodBarT1);
             }
         }
         final bar_ bar = new bar_();
     }
     
-    private <OuterT1>void bar$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OuterT1) {
+    private <OuterT1>void bar$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$bar$OuterT1) {
         
         final class I$impl<OuterT1> {
             
-            I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OuterT1, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$bar$2$I<OuterT2, OuterT1> $this) {
+            I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OuterT1, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$bar$I<OuterT2, OuterT1> $this) {
                 this.$reified$OuterT1 = $reified$OuterT1;
                 this.$this = $this;
             }
             private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OuterT1;
-            private final .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$bar$2$I<OuterT2, OuterT1> $this;
+            private final .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$bar$I<OuterT2, OuterT1> $this;
             
             public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$OuterT1) {
                 this.$reified$OuterT1 = $reified$OuterT1;
@@ -258,7 +258,7 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> {
             }
         }
         
-        class C<CT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$bar$2$I<OuterT2, CT> {
+        class C<CT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$bar$I<OuterT2, CT> {
             
             C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CT) {
                 this.$reified$CT = $reified$CT;
@@ -279,9 +279,9 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class, $reified$CT);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam.class, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$impl.this.$reified$OuterT1, .com.redhat.ceylon.compiler.java.test.structure.concrete.CapturedTypeParam$impl.this.$reified$OuterT2), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("bar", $reified$CapturedTypeParam$bar$OuterT1)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class, $reified$CT));
             }
         }
-        new C<OuterT1>($reified$OuterT1);
+        new C<OuterT1>($reified$CapturedTypeParam$bar$OuterT1);
     }
 }

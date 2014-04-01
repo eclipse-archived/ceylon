@@ -30,7 +30,7 @@ class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SetterLocalInstantiation.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("i")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
                     }
                 }
                 final LocalClass l = new LocalClass();

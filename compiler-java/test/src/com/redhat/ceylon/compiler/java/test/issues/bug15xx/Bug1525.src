@@ -28,11 +28,14 @@ public interface TestListener {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class TestListener$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public TestListener$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .java.lang.Object mDefault() {
         return (
             let
@@ -43,6 +46,7 @@ public final class TestListener$impl {
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void mShared() {
         l$priv$();
     }

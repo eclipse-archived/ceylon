@@ -31,7 +31,7 @@ public final class BaseOuter$impl {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("inverse")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class));
             }
         }
         final inverse_ inverse = new inverse_();
@@ -60,7 +60,7 @@ public abstract class BaseOuterClass implements .com.redhat.ceylon.compiler.java
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("inverse")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class));
             }
         }
         final inverse_ inverse = new inverse_();

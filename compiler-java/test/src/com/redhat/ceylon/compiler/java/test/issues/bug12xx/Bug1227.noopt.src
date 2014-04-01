@@ -179,7 +179,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_ {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifBreak_elseBreak_specifiedElse_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
                     }
                 }
                 doforelse$27 = false;
@@ -236,7 +236,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1227_ifBreak_elseBreak_specifiedElse_opt_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
                     }
                 }
                 doforelse$35 = false;

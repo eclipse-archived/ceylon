@@ -50,15 +50,19 @@ public interface TopInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class TopInterface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public TopInterface$impl(.com.redhat.ceylon.compiler.java.test.annotations.TopInterface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.annotations.TopInterface $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final long getConcreteDefaultAttr() {
         return 1L;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public long concreteDefaultMethod(final long p1) {
         return p1;
     }
@@ -145,23 +149,29 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Interface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Interface$impl(.com.redhat.ceylon.compiler.java.test.annotations.Interface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.annotations.Interface $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final long getTopFormalAttr() {
         return 1L;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final long getConcreteAttr() {
         return 1L;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public long topFormalMethod(final long p1) {
         return p1;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public long concreteMethod(final long p1) {
         return p1;
     }

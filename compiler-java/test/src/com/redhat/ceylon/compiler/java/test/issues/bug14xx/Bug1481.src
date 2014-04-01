@@ -46,15 +46,20 @@ public interface Bug1481Heap<Key, Item> {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Bug1481Heap$impl<Key, Item> {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Bug1481Heap$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this) {
         this.$reified$Key = $reified$Key;
         this.$reified$Item = $reified$Item;
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
         this.$reified$Item = $reified$Item;
         this.$reified$Key = $reified$Key;

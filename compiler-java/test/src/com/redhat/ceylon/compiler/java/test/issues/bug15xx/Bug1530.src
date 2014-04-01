@@ -22,7 +22,7 @@ final class bug1530_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
             }
         }
         foo.ref.t();
@@ -34,7 +34,7 @@ final class bug1530_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(capturedNotSelfCaptured_.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(capturedNotSelfCaptured_.class));
             }
         }
         final capturedNotSelfCaptured_ capturedNotSelfCaptured = new capturedNotSelfCaptured_();
@@ -47,7 +47,7 @@ final class bug1530_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(T.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(T.class));
             }
         }
         new T();

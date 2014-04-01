@@ -109,7 +109,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
+                                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocationChained_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
                             }
                         }
                         final o_ arg$1$0 = new o_();
@@ -177,7 +177,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocationChained_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
                     }
                 }
                 final o_ arg$0$0 = new o_();

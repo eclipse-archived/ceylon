@@ -16,11 +16,14 @@ interface ConcreteString {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class ConcreteString$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConcreteString$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void presentYourself() {
         if ($this.equals($this)) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
@@ -124,11 +127,14 @@ interface ConcreteString2 {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 final class ConcreteString2$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConcreteString2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void presentYourself() {
         if ($this.equals($this)) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
@@ -138,10 +144,12 @@ final class ConcreteString2$impl {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string"));
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final .java.lang.String toString() {
         return "bar";
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final int hashCode() {
         return (int)(
             let

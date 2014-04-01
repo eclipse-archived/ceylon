@@ -14,7 +14,7 @@ final class bug1165_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class));
             }
         }
         
@@ -25,7 +25,7 @@ final class bug1165_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(P.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(P.class));
             }
         }
         
@@ -36,7 +36,7 @@ final class bug1165_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Body.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Body.class));
             }
         }
         
@@ -47,7 +47,7 @@ final class bug1165_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Html.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Html.class));
             }
         }
         
@@ -58,7 +58,7 @@ final class bug1165_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Head.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Head.class));
             }
         }
         final Html html = (
@@ -77,7 +77,7 @@ final class bug1165_ {
                         P arg$2$0 = (
                             let
                             {
-                                .ceylon.language.Iterable arg$3$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class)), new .java.lang.Object[]{
+                                .ceylon.language.Iterable arg$3$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class))), new .java.lang.Object[]{
                                         .ceylon.language.String.instance("Hello "),
                                         (
                                             let

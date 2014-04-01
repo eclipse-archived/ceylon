@@ -18,7 +18,7 @@ class InitializerKlassInStatement implements .com.redhat.ceylon.compiler.java.ru
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(KlassInStatement1.class);
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerKlassInStatement.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(KlassInStatement1.class));
                 }
             }
             final .java.lang.String s = new KlassInStatement1().toString();

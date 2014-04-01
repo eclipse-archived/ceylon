@@ -36,7 +36,7 @@ final class bug261_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class);
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug261_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class));
             }
         }
         final Inner inner = new Inner();

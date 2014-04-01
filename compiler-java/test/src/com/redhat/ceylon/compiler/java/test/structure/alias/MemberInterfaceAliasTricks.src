@@ -33,9 +33,11 @@ public interface MemberInterfaceAliasTricks_Foo {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class MemberInterfaceAliasTricks_Foo$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public MemberInterfaceAliasTricks_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -62,9 +64,11 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final class MemberInterface$impl {
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public MemberInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface $this) {
             this.$this = $this;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface $this;
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -194,9 +198,11 @@ public interface A {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class A$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public A$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.A $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.A $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

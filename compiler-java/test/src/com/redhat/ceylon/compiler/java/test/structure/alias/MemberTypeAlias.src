@@ -49,9 +49,11 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final class TypeAliasInterface$impl {
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface $this) {
             this.$this = $this;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface $this;
     }
     
@@ -182,9 +184,11 @@ public interface MemberTypeAliasInterface {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class MemberTypeAliasInterface$impl {
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public MemberTypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface $this) {
         this.$this = $this;
     }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -211,9 +215,11 @@ public final class MemberTypeAliasInterface$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final class TypeAliasInterface$impl {
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface $this) {
             this.$this = $this;
         }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface $this;
     }
     

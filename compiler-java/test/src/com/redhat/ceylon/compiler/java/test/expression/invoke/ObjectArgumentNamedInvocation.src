@@ -47,7 +47,7 @@ public final class objectArgumentNamedInvocation_ {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class);
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
                     }
                 }
                 final o_ arg$0$0 = new o_();

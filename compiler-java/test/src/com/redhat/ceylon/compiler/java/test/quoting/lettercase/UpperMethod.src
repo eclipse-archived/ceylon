@@ -30,6 +30,7 @@ class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
         @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class LocalUpperMethod {
             
             private LocalUpperMethod() {
