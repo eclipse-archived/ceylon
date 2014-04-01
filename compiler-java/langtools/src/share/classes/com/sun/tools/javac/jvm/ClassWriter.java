@@ -388,7 +388,11 @@ public class ClassWriter extends ClassFile {
             assembleClassSig(rawOuter
                              ? types.erasure(outer)
                              : outer);
-            sigbuf.appendByte('.');
+            // Ceylon: rawOuter represents local/anonymous types
+            // If we generate member types with '$' we get exceptions at runtime in reflection in 
+            // sun.reflect.generics.parser.SignatureParser.parsePackageNameAndSimpleClassTypeSignature()
+            // And if we generate local types with '.' we get the same exception, so be careful 
+            sigbuf.appendByte(rawOuter ? '$' : '.');
             Assert.check(c.flatname.startsWith(c.owner.enclClass().flatname));
             sigbuf.appendName(rawOuter
                               ? c.flatname.subName(c.owner.enclClass().flatname.getByteLength()+1,c.flatname.getByteLength())
