@@ -224,7 +224,7 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isLocalClass() {
-        return klass.isLocalClass() || klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.LocalContainer"));
+        return klass.isLocalClass() || klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.LocalDeclaration"));
     }
 
     @Override

@@ -234,7 +234,7 @@ public class JavacClass implements ClassMirror {
 
     @Override
     public boolean isLocalClass() {
-        return getAnnotation(AbstractModelLoader.CEYLON_LOCAL_CONTAINER_ANNOTATION) != null 
+        return getAnnotation(AbstractModelLoader.CEYLON_LOCAL_DECLARATION_ANNOTATION) != null 
                 || classSymbol.owner instanceof MethodSymbol;
     }
 
