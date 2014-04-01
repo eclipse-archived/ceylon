@@ -107,7 +107,7 @@ public abstract class CompilerTest {
         } else {
             cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir);
+        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g");
     }
 
     // for subclassers 
