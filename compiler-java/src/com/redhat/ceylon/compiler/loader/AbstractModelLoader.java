@@ -1239,9 +1239,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (classMirror == null) {
                 // special case when bootstrapping because we may need to pull the decl from the typechecked model
                 if(isBootstrap && typeName.startsWith(CEYLON_LANGUAGE+".")){
-                    ProducedType languageType = findLanguageModuleDeclarationForBootstrap(typeName);
-                    if(languageType != null)
-                        return languageType.getDeclaration();
+                    Declaration languageDeclaration = findLanguageModuleDeclarationForBootstrap(typeName);
+                    if(languageDeclaration != null)
+                        return languageDeclaration;
                 }
                 
                 throw new ModelResolutionException("Failed to resolve "+typeName);
@@ -3852,10 +3852,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     @Override
     public synchronized ProducedType getType(Module module, String pkgName, String name, Scope scope) {
+        Declaration decl = getDeclaration(module, pkgName, name, scope);
+        if(decl == null)
+            return null;
+        if(decl instanceof TypeDeclaration)
+            return ((TypeDeclaration) decl).getType();
+        // it's a method or non-object value, but it's not a type
+        return null;
+    }
+
+    @Override
+    public synchronized Declaration getDeclaration(Module module, String pkgName, String name, Scope scope) {
         if(scope != null){
             TypeParameter typeParameter = lookupTypeParameter(scope, name);
             if(typeParameter != null)
-                return typeParameter.getType();
+                return typeParameter;
         }
         if(!isBootstrap || !name.startsWith(CEYLON_LANGUAGE)) {
             if(scope != null && pkgName != null){
@@ -3875,26 +3886,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if(Decl.isValue(declaration)
                             && ((Value)declaration).getTypeDeclaration().getName().equals(relativeName))
                         declaration = ((Value)declaration).getTypeDeclaration();
-                    if(declaration instanceof TypeDeclaration)
-                        return ((TypeDeclaration)declaration).getType();
-                    // if we have something but it's not a type decl, it's a:
-                    // - value that's not an object (why would we get its type here?)
-                    // - method (doesn't have a type of the same name)
                     if(declaration != null)
-                        return null;
+                        return declaration;
                 }
             }
-            Declaration declaration = convertToDeclaration(module, name, DeclarationType.TYPE);
-            if(declaration instanceof TypeDeclaration)
-                return ((TypeDeclaration)declaration).getType();
-            // we're looking for type declarations, so anything else doesn't work for us
-            return null;
+            return convertToDeclaration(module, name, DeclarationType.TYPE);
         }
 
         return findLanguageModuleDeclarationForBootstrap(name);
     }
 
-    private ProducedType findLanguageModuleDeclarationForBootstrap(String name) {
+    private Declaration findLanguageModuleDeclarationForBootstrap(String name) {
         // make sure we don't return anything for ceylon.language
         if(name.equals(CEYLON_LANGUAGE))
             return null;
@@ -3920,8 +3922,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     && ((Value)member).getTypeDeclaration().getName().equals(simpleName)){
                 member = ((Value)member).getTypeDeclaration();
             }
-            if(member instanceof TypeDeclaration)
-                return ((TypeDeclaration)member).getType();
+            if(member != null)
+                return member;
         }
         throw new ModelResolutionException("Failed to look up given type in language module while bootstrapping: "+name);
     }

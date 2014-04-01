@@ -71,6 +71,17 @@ public interface ModelLoader {
     public ProducedType getType(Module module, String pkg, String name, Scope scope);
 
     /**
+     * Returns the Declaration of a name in a given scope
+
+     * @param module the module to load it from
+     * @param pkg the package name
+     * @param name the fully-qualified name of the type
+     * @param scope the scope in which to find it
+     * @return the ProducedType found
+     */
+    public Declaration getDeclaration(Module module, String pkg, String name, Scope scope);
+
+    /**
      * Returns a loaded module by name
      * @return null if module is not already loaded
      */

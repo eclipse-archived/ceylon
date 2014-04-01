@@ -72,12 +72,18 @@ public class TypeParserTest {
         
         @Override
         public ProducedType getType(Module module, String pkg, String name, Scope scope) {
-            Class klass = classes.get(name);
-            if(klass == null)
-                throw new ModelResolutionException("Unknown type: "+name);
+            Class klass = (Class)getDeclaration(module, pkg, name, scope);
             return klass.getType();
         }
 
+        @Override
+        public Declaration getDeclaration(Module module, String pkg, String name, Scope scope) {
+            Class klass = classes.get(name);
+            if(klass == null)
+                throw new ModelResolutionException("Unknown type: "+name);
+            return klass;
+        }
+        
         private Class makeParameterisedClass(String name) {
             return makeParameterisedClass(name, null);
         }
