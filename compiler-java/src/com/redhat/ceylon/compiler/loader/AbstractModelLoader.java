@@ -1256,10 +1256,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private ProducedType newNothingType() {
-        return typeFactory.getNothingDeclaration().getType();
-    }
-
     private ProducedType newUnknownType() {
         return new UnknownType(typeFactory).getType();
     }
@@ -3911,7 +3907,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String simpleName = name.substring(lastDot+1);
         // Nothing is a special case with no real decl
         if(name.equals("ceylon.language.Nothing"))
-            return newNothingType();
+            return typeFactory.getNothingDeclaration();
 
         // find the right package
         Package pkg = languageModule.getDirectPackage(pkgName);
