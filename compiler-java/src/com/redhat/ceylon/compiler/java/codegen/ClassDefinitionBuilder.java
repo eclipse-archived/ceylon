@@ -424,13 +424,15 @@ public class ClassDefinitionBuilder
     }
     
     private List<JCAnnotation> getAnnotations() {
+        List<JCAnnotation> ret = List.nil();
         if (noAnnotations) {
-            return List.nil();
+            // nothing
+        }else if (ignoreAnnotations) {
+            ret = ret.prependList(gen.makeAtIgnore());
+        }else{
+            ret = ret.prependList(this.annotations.toList());
         }
-        if (ignoreAnnotations) {
-            return gen.makeAtIgnore();
-        }
-        return this.annotations.toList();
+        return ret;
     }
 
     // Create a parameter for the constructor
