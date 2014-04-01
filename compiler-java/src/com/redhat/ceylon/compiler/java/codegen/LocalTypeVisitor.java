@@ -65,14 +65,14 @@ public class LocalTypeVisitor extends Visitor {
             // FIXME: better name processing
             if(model instanceof Value
                     && !model.isToplevel())
-                name += Naming.Suffix.$getter$.name();
+                name = Naming.suffixName(Naming.Suffix.$getter$, name);
             if(model instanceof TypedDeclaration || model.isAnonymous())
                 name += "_";
             else if(model instanceof Interface){
                 // for interfaces we point to the toplevel interface prefixed with ::
                 // no need to find the local java class
                 localInterfaces.add((Interface) model);
-                name += "$impl";
+                name = Naming.suffixName(Naming.Suffix.$impl, name);
                 locals = localCompanionClasses;
             }
             // find an unused name

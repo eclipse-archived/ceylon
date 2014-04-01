@@ -78,7 +78,7 @@ public class Naming implements LocalId {
      * An internally used identifier (not used as a prefix or suffix).
      * Should start and end with a {@code $} and contain no {@code $}
      */
-    enum Unfix implements Affix {
+    public enum Unfix implements Affix {
         ref,
         set_,
         get_,
@@ -170,7 +170,7 @@ public class Naming implements LocalId {
         return sb.toString();
     }
     
-    static String suffixName(Suffix suffix, String s) {
+    public static String suffixName(Suffix suffix, String s) {
         return s + suffix.toString();
     }
     

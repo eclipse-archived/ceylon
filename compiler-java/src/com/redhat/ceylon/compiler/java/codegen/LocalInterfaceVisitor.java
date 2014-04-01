@@ -43,8 +43,7 @@ public class LocalInterfaceVisitor extends Visitor {
     
     private void collect(Node that, Interface model) {
         if(model != null && !model.isMember()){
-            String name = model.getName();
-            name += "$impl";
+            String name = Naming.suffixName(Naming.Suffix.$impl, model.getName());
             // find an unused name
             int i;
             String prefixedName;
