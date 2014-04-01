@@ -1310,7 +1310,7 @@ class NamedArgumentInvocation extends Invocation {
         final Value model = attrArg.getDeclarationModel();
         final String name = model.getName();
         final Naming.SyntheticName alias = gen.naming.alias(name);
-        final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), null, attrArg.getBlock(), attrArg.getSpecifierExpression(), null);
+        final List<JCTree> attrClass = gen.gen().transformAttribute(model, alias.getName(), alias.getName(), null, attrArg.getBlock(), attrArg.getSpecifierExpression(), null, null);
         ProducedTypedReference typedRef = gen.getTypedReference(model);
         ProducedTypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
         ProducedType nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);

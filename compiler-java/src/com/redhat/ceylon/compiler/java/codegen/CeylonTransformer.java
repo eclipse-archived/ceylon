@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
@@ -256,7 +257,7 @@ public class CeylonTransformer extends AbstractTransformer {
             throw new RuntimeException();
         }
         return transformAttribute(declarationModel, attrName, attrClassName,
-                annotationList, block, expression, setterDecl);
+                annotationList, block, expression, decl, setterDecl);
     }
 
     public List<JCTree> transformAttribute(
@@ -265,6 +266,7 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.AnnotationList annotations,
             final Tree.Block block,
             final Tree.SpecifierOrInitializerExpression expression, 
+            final Tree.TypedDeclaration decl,
             final Tree.AttributeSetterDefinition setterDecl) {
         
         final JCExpression initialValue;
@@ -305,6 +307,30 @@ public class CeylonTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
+
+        // Set the local declarations annotation
+        if(decl != null){
+            List<JCAnnotation> scopeAnnotations;
+            if(Decl.isToplevel(declarationModel) && setterDecl != null){
+                scopeAnnotations = makeAtLocalDeclarations(decl, setterDecl);
+            }else{
+                scopeAnnotations = makeAtLocalDeclarations(decl);
+            }
+            builder.classAnnotations(scopeAnnotations);
+        }
+
+        // Remember the setter class if we generate a getter
+        if(Decl.isGetter(declarationModel)
+                && declarationModel.isVariable()
+                && Decl.isLocal(declarationModel)){
+            // we must have a setter class
+            Setter setter = ((Value)declarationModel).getSetter();
+            if(setter != null){
+                String setterClassName = Naming.getAttrClassName(setter, 0);
+                JCExpression setterClassNameExpr = naming.makeUnquotedIdent(setterClassName);
+                builder.setterClass(makeSelect(setterClassNameExpr, "class"));
+            }
+        }
         
         if (declarationModel instanceof Setter
                 || (declarationModel instanceof MethodOrValue 
@@ -313,6 +339,15 @@ public class CeylonTransformer extends AbstractTransformer {
             JCBlock setterBlock = makeSetterBlock(declarationModel, block, expression);
             builder.setterBlock(setterBlock);
             builder.skipGetter();
+            if(Decl.isLocal(decl)){
+                // we need to find back the Setter model for local setters, because 
+                // in transformAttribute(Tree.TypedDeclaration decl, Tree.AttributeSetterDefinition setterDecl)
+                // we turn the declaration model from the Setter to its single parameter
+                Setter setter = (Setter) declarationModel.getContainer();
+                String getterClassName = Naming.getAttrClassName(setter.getGetter(), 0);
+                JCExpression getterClassNameExpr = naming.makeUnquotedIdent(getterClassName);
+                builder.isSetter(makeSelect(getterClassNameExpr, "class"));
+            }
         } else {
             if (Decl.isValue(declarationModel)) {
                 // For local and toplevel value attributes
@@ -352,6 +387,7 @@ public class CeylonTransformer extends AbstractTransformer {
             if (expressionError != null) {
                 return List.<JCTree>of(expressionError.makeThrow(this));
             }
+            builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier()));
             if(initialValue != null)
                 builder.valueConstructor();
             JCExpression typeExpr;

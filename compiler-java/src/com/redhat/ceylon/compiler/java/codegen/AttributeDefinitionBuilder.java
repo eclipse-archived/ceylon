@@ -72,11 +72,14 @@ public class AttributeDefinitionBuilder {
     // do we need a constructor that takes the initial value? 
     private boolean valueConstructor;
     
+    private ListBuffer<JCAnnotation> classAnnotations;
     private ListBuffer<JCAnnotation> modelAnnotations;
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> userAnnotationsSetter;
     private boolean isHash;
     
+    private JCExpression setterClass;
+    private JCExpression getterClass;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
             String javaClassName, String attrName, String fieldName, boolean toplevel, boolean indirect) {
@@ -172,7 +175,17 @@ public class AttributeDefinitionBuilder {
         }
         return this;
     }
-    
+
+    public AttributeDefinitionBuilder classAnnotations(List<JCAnnotation> annotations) {
+        if (annotations != null) {
+            if (this.classAnnotations == null) {
+                this.classAnnotations = ListBuffer.lb();
+            }
+            this.classAnnotations.appendList(annotations);
+        }
+        return this;
+    }
+
     public AttributeDefinitionBuilder userAnnotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.userAnnotations == null) {
@@ -204,9 +217,18 @@ public class AttributeDefinitionBuilder {
             classBuilder
                     .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
                     .constructorModifiers(Flags.PRIVATE)
-                    .annotations(owner.makeAtAttribute())
-                    .satisfies(getSatisfies())
                     .defs(defs.toList());
+            if(getterClass == null){
+                classBuilder.annotations(owner.makeAtAttribute(setterClass))
+                    .annotations(owner.makeAtName(attrName))
+                    .satisfies(getSatisfies());
+            }else{
+                classBuilder.annotations(owner.makeAtIgnore());
+                classBuilder.annotations(owner.makeAtSetter(getterClass));
+            }
+
+            if(classAnnotations != null)
+                classBuilder.annotations(classAnnotations.toList());
             if(valueConstructor && hasField)
                 generateValueConstructor(classBuilder.addConstructor());
             return classBuilder.build();
@@ -426,6 +448,11 @@ public class AttributeDefinitionBuilder {
         return this;
     }
     
+    public AttributeDefinitionBuilder ignoreAnnotations() {
+        this.annotationFlags = Annotations.noUserOrModel(Annotations.ignore(annotationFlags));
+        return this;
+    }
+
     public AttributeDefinitionBuilder noAnnotations() {
         this.annotationFlags = 0;
         return this;
@@ -523,5 +550,20 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder valueConstructor(){
         valueConstructor = true;
         return this;
+    }
+
+    /**
+     * Makes a reference to the setter class for this setter
+     */
+    public void setterClass(JCExpression setterClass) {
+        this.setterClass = setterClass;
+    }
+
+    /**
+     * Marks this attribute as a setter and skip generating an @Attribute annotation for it,
+     * use a @Setter(getterClass) instead
+     */
+    public void isSetter(JCExpression getterClass) {
+        this.getterClass = getterClass;
     }
 }
