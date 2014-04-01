@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -994,7 +995,9 @@ public class ClassTransformer extends AbstractTransformer {
     private void collectInterfaces(Interface interfaceDecl, Set<Interface> satisfiedInterfaces) {
         if(satisfiedInterfaces.add(interfaceDecl)){
             for(TypeDeclaration newInterfaceDecl : interfaceDecl.getSatisfiedTypeDeclarations()){
-                collectInterfaces((Interface) newInterfaceDecl, satisfiedInterfaces);
+                if (!(newInterfaceDecl instanceof UnknownType)) {
+                    collectInterfaces((Interface) newInterfaceDecl, satisfiedInterfaces);
+                }
             }
         }
     }
