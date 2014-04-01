@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+class SwitchIsNonExhaustiveCheapestFirst<TP1 extends .ceylon.language.Float, TP2 extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    SwitchIsNonExhaustiveCheapestFirst(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TP1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TP2) {
+        this.$reified$TP1 = $reified$TP1;
+        this.$reified$TP2 = $reified$TP2;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TP1;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TP2;
+    
+    private final .java.lang.String m$priv$(final .java.lang.Object b) {
+        final .java.lang.String name;
+        {
+            .java.lang.Object sel$0 = b;
+            if (sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.String b$3 = ((.ceylon.language.String)sel$0).toString();
+                name = "String";
+            } else if (sel$0 instanceof .ceylon.language.Integer) {
+                final long b$2 = ((.ceylon.language.Integer)sel$0).longValue();
+                name = "Integer";
+            } else if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP1)) {
+                final TP1 b$1 = (TP1)sel$0;
+                name = "TP1";
+            } else {
+                name = "Other";
+            }
+        }
+        return name;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustiveCheapestFirst(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustiveCheapestFirst.class, $reified$TP1, $reified$TP2);
+    }
+}
