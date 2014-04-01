@@ -739,6 +739,12 @@ public class StructureTest extends CompilerTest {
     }
 
     @Test
+    public void testRfdLocals(){
+        compareWithJavaSource("reified/Locals");
+        run("com.redhat.ceylon.compiler.java.test.structure.reified.locals");
+    }
+
+    @Test
     public void testRfdInterop(){
         compile("reified/JavaClass.java", "reified/JavaInterface.java");
         compareWithJavaSource("reified/Interop");
