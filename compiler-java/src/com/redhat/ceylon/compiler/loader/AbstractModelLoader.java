@@ -1837,7 +1837,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else if(!methodMirror.getName().equals("hash")
                         && !methodMirror.getName().equals("string")){
                     // normal method
-                    Method m = addMethod(klass, methodMirror, isCeylon, isOverloaded);
+                    Method m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded);
                     if (isOverloaded) {
                         overloads.add(m);
                     }
@@ -1846,7 +1846,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             if (overloads != null && !overloads.isEmpty()) {
                 // We create an extra "abstraction" method for overloaded methods
-                Method abstractionMethod = addMethod(klass, methodMirrors.get(0), false, false);
+                Method abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, false, false);
                 abstractionMethod.setAbstraction(true);
                 abstractionMethod.setOverloads(overloads);
                 abstractionMethod.setType(newUnknownType());
@@ -1919,7 +1919,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             if(!foundGetter){
                 // it was not a setter, it was a method, let's add it as such
-                addMethod(klass, setter, isCeylon, false);
+                addMethod(klass, setter, classMirror, isCeylon, false);
             }
         }
 
@@ -1943,6 +1943,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (!isCeylon 
                 && isThrowableSubtype(classMirror)) {
             addMessageValueForJavaThrowable(klass);
+        }
+
+        // local declarations come last, because they need all members to be completed first
+        if(!klass.isAlias()){
+            ClassMirror containerMirror = classMirror;
+            if(klass instanceof LazyInterface){
+                ClassMirror companionClass = ((LazyInterface) klass).companionClass;
+                if(companionClass != null)
+                    containerMirror = companionClass;
+            }
+            addLocalDeclarations((LazyContainer) klass, containerMirror, classMirror);
         }
     }
     
@@ -2003,6 +2014,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 methods.put(methodName, homonyms);
             }
             homonyms.add(methodMirror);
+        }
+    }
+    
+    private void addLocalDeclarations(LocalDeclarationContainer container, ClassMirror classContainerMirror, AnnotatedMirror annotatedMirror) {
+        if(!needsLocalDeclarations())
+            return;
+        AnnotationMirror annotation = annotatedMirror.getAnnotation(CEYLON_LOCAL_DECLARATIONS_ANNOTATION);
+        if(annotation == null)
+            return;
+        List<String> values = getAnnotationStringValues(annotation, "value");
+        String parentClassName = classContainerMirror.getQualifiedName();
+        Package pkg = Decl.getPackageContainer(container);
+        Module module = pkg.getModule();
+        for(String scope : values){
+            // assemble the name with the parent
+            String name;
+            if(scope.startsWith("::")){
+                // interface pulled to toplevel
+                name = pkg.getNameAsString() + "." + scope.substring(2);
+            }else{
+                name = parentClassName;
+                name += "$" + scope;
+            }
+            Declaration innerDecl = convertToDeclaration(module, name, DeclarationType.TYPE);
+            if(innerDecl == null)
+                throw new ModelResolutionException("Failed to load local type " + name
+                        + " for outer type " + container.getQualifiedNameString());
         }
     }
 
@@ -2118,7 +2156,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, boolean isCeylon, boolean isOverloaded) {
+    private Method addMethod(ClassOrInterface klass, MethodMirror methodMirror, ClassMirror classMirror, 
+                             boolean isCeylon, boolean isOverloaded) {
+        
         JavaMethod method = new JavaMethod(methodMirror);
         String methodName = methodMirror.getName();
         
@@ -2164,6 +2204,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         klass.getMembers().add(method);
         DeclarationVisitor.setVisibleScope(method);
+        
+        addLocalDeclarations(method, classMirror, methodMirror);
 
         return method;
     }
@@ -2872,8 +2914,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 ClassMirror setterClassMirror = setterClass.getDeclaredClass();
                 value.setVariable(true);
                 SetterWithLocalDeclarations setter = makeSetter(value, setterClassMirror);
+                // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
+                addLocalDeclarations(value, value.classMirror, value.classMirror);
+                addLocalDeclarations(setter, setterClassMirror, setterClassMirror);
             }else if(value.isToplevel() && value.isTransient() && value.isVariable()){
                 makeSetter(value, value.classMirror);
+                // all local scopes for getter/setter are declared in the same class
+                // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
+                addLocalDeclarations(value, value.classMirror, value.classMirror);
+            }else{
+                // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
+                addLocalDeclarations(value, value.classMirror, value.classMirror);
             }
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
@@ -2938,6 +2989,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setAnnotations(method, meth);
             
             setAnnotationConstructor(method, meth);
+            
+            addLocalDeclarations(method, method.classMirror, method.classMirror);
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
