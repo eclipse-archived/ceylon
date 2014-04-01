@@ -58,7 +58,6 @@ public class LazyMethod extends Method implements LazyElement, LocalDeclarationC
     
     private boolean isLoaded = false;
     private boolean isLoaded2 = false;
-    private boolean defaultedAnnotation;
     
     private Map<String,Declaration> localDeclarations;
     
