@@ -83,6 +83,8 @@ import com.redhat.ceylon.compiler.loader.model.LazyModule;
 import com.redhat.ceylon.compiler.loader.model.LazyPackage;
 import com.redhat.ceylon.compiler.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.compiler.loader.model.LazyValue;
+import com.redhat.ceylon.compiler.loader.model.LocalDeclarationContainer;
+import com.redhat.ceylon.compiler.loader.model.SetterWithLocalDeclarations;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
@@ -103,6 +105,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -1274,6 +1277,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(param.getName().equals(name))
                     return param;
             }
+            if (!decl.isToplevel()) {
+                // look it up in its container
+                return lookupTypeParameter(scope.getContainer(), name);
+            } else {
+                // not found
+                return null;
+            }
+        }else if(scope instanceof Value
+                || scope instanceof Setter){
+            Declaration decl = (Declaration) scope;
             if (!decl.isToplevel()) {
                 // look it up in its container
                 return lookupTypeParameter(scope.getContainer(), name);
