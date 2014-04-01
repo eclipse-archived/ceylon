@@ -3229,7 +3229,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ListBuffer<JCExpression> argMethodArgs = ListBuffer.<JCExpression>lb();
                 if(subclass.getTypeParameters() != null){
                     for(TypeParameter tp : subclass.getTypeParameters()){
-                        argMethodArgs.append(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getName())));
+                        argMethodArgs.append(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
                     }
                 }
                 for (Parameter parameter : classParameters) {

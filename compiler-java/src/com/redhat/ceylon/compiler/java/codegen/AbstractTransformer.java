@@ -3896,7 +3896,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         if(declaration instanceof TypeParameter){
             TypeParameter tp = (TypeParameter) declaration;
-            String name = naming.getTypeArgumentDescriptorName(tp.getName());
+            String name = naming.getTypeArgumentDescriptorName(tp);
             if(!qualified)
                 return makeUnquotedIdent(name);
             Scope container = tp.getContainer();
@@ -3905,6 +3905,9 @@ public abstract class AbstractTransformer implements Transformation {
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
             }else if(container instanceof Interface){
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Interface)container).getType(), JT_COMPANION | JT_RAW));
+            }else if(container instanceof Method){
+                // name must be a unique name, as returned by getTypeArgumentDescriptorName
+                return makeUnquotedIdent(name);
             }else{
                 throw new RuntimeException("Type parameter container not supported yet: " + container);
             }

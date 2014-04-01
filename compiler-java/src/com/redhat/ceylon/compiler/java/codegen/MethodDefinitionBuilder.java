@@ -517,11 +517,7 @@ public class MethodDefinitionBuilder
     }
 
     public MethodDefinitionBuilder reifiedTypeParameter(TypeParameter param) {
-        return reifiedTypeParameter(param.getName());
-    }
-    
-    private MethodDefinitionBuilder reifiedTypeParameter(String name) {
-        String descriptorName = gen.naming.getTypeArgumentDescriptorName(name);
+        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
         pdb.modifiers(FINAL);
@@ -536,7 +532,7 @@ public class MethodDefinitionBuilder
 
     public MethodDefinitionBuilder reifiedTypeParametersFromModel(java.util.List<TypeParameter> typeParameters) {
         for(TypeParameter typeParam : typeParameters)
-            reifiedTypeParameter(typeParam.getName());
+            reifiedTypeParameter(typeParam);
         return this;
     }
 

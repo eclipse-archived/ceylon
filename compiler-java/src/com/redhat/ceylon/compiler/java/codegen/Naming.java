@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
@@ -2075,7 +2076,28 @@ public class Naming implements LocalId {
         return suffixName(Suffix.$impl, name);
     }
     
-    public String getTypeArgumentDescriptorName(String name) {
+    public String getTypeArgumentDescriptorName(TypeParameter tp) {
+        String name;
+        if(tp.isCaptured()){
+            // must build unique name
+            StringBuilder sb = new StringBuilder();
+            LinkedList<Declaration> decls = new LinkedList<Declaration>();
+            Scope scope = tp;
+            while(scope != null && scope instanceof Package == false){
+                if(scope instanceof Declaration)
+                    decls.add((Declaration) scope);
+                scope = scope.getContainer();
+            }
+            Iterator<Declaration> iterator = decls.descendingIterator();
+            while(iterator.hasNext()){
+                sb.append(iterator.next().getName());
+                if(iterator.hasNext())
+                    sb.append("$");
+            }
+            name = sb.toString();
+        }else{
+            name = tp.getName();
+        }
         return prefixName(Prefix.$reified$, name);
     }
     

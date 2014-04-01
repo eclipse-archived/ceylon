@@ -572,7 +572,7 @@ public class ClassDefinitionBuilder
     }
 
     public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
-        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getIdentifier().getText());
+        String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getDeclarationModel());
         parameter(makeReifiedParameter(descriptorName));
         long flags = PRIVATE;
         if(!isCompanion)
@@ -633,7 +633,7 @@ public class ClassDefinitionBuilder
 
         List<JCStatement> body = List.nil();
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
-            String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getIdentifier().getText());
+            String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getDeclarationModel());
             method.parameter(makeReifiedParameter(descriptorName));
             body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
                                                                   gen.naming.makeQualIdent(null, descriptorName))));

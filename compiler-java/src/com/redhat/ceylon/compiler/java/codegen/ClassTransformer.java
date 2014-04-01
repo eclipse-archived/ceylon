@@ -1326,7 +1326,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
         if(typeParameters != null){
             for(TypeParameter tp : typeParameters){
-                arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getName())));
+                arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
             }
         }
         for (Parameter param : parameters) {
@@ -2882,7 +2882,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(typeParameterList != null){
                 // we pass the reified type parameters along
                 for(TypeParameter tp : typeParameterList){
-                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getName())));
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
                 }
             }
         }
@@ -3117,7 +3117,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(typeParameterList != null){
                 // we pass the reified type parameters along
                 for(TypeParameter tp : typeParameterList){
-                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp.getName())));
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
                 }
             }
         }
