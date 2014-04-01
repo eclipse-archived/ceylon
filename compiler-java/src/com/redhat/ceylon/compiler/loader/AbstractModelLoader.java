@@ -1895,6 +1895,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(Entry<MethodMirror, List<MethodMirror>> setterEntry : variables.entrySet()){
             MethodMirror setter = setterEntry.getKey();
             String name = getJavaAttributeName(setter.getName());
+            // make sure we handle private postfixes
+            name = Util.strip(name, isCeylon, setter.isPublic());
             Declaration decl = klass.getMember(name, null, false);
             boolean foundGetter = false;
             // skip Java fields, which we only get if there is no getter method, in that case just add the setter method
