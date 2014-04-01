@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -31,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
@@ -156,17 +156,20 @@ public class TypeParser {
         // then the type itself
         Part part = parseTypeNameWithArguments();
         String fullName = (pkg.isEmpty()) ? part.name : pkg + "." + part.name;
-        ProducedType qualifyingType = loadType(pkg, fullName, part, null);
+        Object qualifyingType = loadTypeOrDeclaration(pkg, fullName, part, null);
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
             fullName = fullName + '.' + part.name;
-            qualifyingType = loadType(pkg, fullName, part, qualifyingType);
+            qualifyingType = loadTypeOrDeclaration(pkg, fullName, part, qualifyingType);
         }
         if(qualifyingType == null){
             throw new ModelResolutionException("Could not find type '"+fullName+"'");
         }
-        return qualifyingType;
+        if(qualifyingType instanceof ProducedType == false){
+            throw new ModelResolutionException("Type is a declaration (should be a ProducedType): '"+fullName+"'");
+        }
+        return (ProducedType) qualifyingType;
     }
 
     private boolean hasPackage() {
@@ -180,55 +183,53 @@ public class TypeParser {
         return result;
     }
     
-    private ProducedType loadType(String pkg, String fullName, Part part, ProducedType qualifyingType) {
+    private Object loadTypeOrDeclaration(String pkg, String fullName, Part part, Object qualifyingTypeOrDeclaration) {
         // try to find a qualified type
         try{
-            ProducedType newType;
-            if(qualifyingType == null){
+            Declaration newDeclaration;
+            if(qualifyingTypeOrDeclaration == null){
                 // FIXME: this only works for packages not contained in multiple modules
                 Package foundPackage = moduleScope.getPackage(pkg);
                 if(foundPackage != null)
-                    newType = loader.getType(foundPackage.getModule(), pkg, fullName, scope);
+                    newDeclaration = loader.getDeclaration(foundPackage.getModule(), pkg, fullName, scope);
                 else if(scope != null){
                     // if we did not find any package and the scope is null, chances are we're after a type variable
                     // or a relative type, so use the module scope
-                    newType = loader.getType(moduleScope, pkg, fullName, scope);
+                    newDeclaration = loader.getDeclaration(moduleScope, pkg, fullName, scope);
                 }else
-                    newType = null;
+                    newDeclaration = null;
             }else{
-                // look it up via its qualifying type
-                TypeDeclaration qualifyingDeclaration = qualifyingType.getDeclaration();
-                Declaration member = getDirectMember(qualifyingDeclaration, part.name);
-                if(!(member instanceof TypeDeclaration))
-                    throw new ModelResolutionException("Failed to resolve inner type "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
-                newType = ((TypeDeclaration)member).getType();
+                // look it up via its qualifying type or decl
+                Declaration qualifyingDeclaration;
+                if(qualifyingTypeOrDeclaration instanceof ProducedType)
+                    qualifyingDeclaration = ((ProducedType)qualifyingTypeOrDeclaration).getDeclaration();
+                else
+                    qualifyingDeclaration = (Declaration)qualifyingTypeOrDeclaration;
+                newDeclaration = AbstractModelLoader.getDirectMember((Scope) qualifyingDeclaration, part.name);
+                if(newDeclaration == null)
+                    throw new ModelResolutionException("Failed to resolve inner type or declaration "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
             }
-            return newType == null ? null : newType.getDeclaration().getProducedType(qualifyingType, part.getParameters());
+            if(newDeclaration == null)
+                return null;
+            else if(newDeclaration instanceof TypedDeclaration)
+                return newDeclaration;
+            // must be a TypeDeclaration
+            ProducedType qualifyingType;
+            if(qualifyingTypeOrDeclaration instanceof ProducedType)
+                qualifyingType = (ProducedType) qualifyingTypeOrDeclaration;
+            else
+                qualifyingType = null; // ignore qualifying TypedDeclarations
+            return ((TypeDeclaration)newDeclaration).getProducedType(qualifyingType, part.getParameters());
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:
             // - if we have no qualifying type we may be adding package name parts
             // - if we have a qualifying type then the inner type must exist
             // - if we have type parameters we must have a type
-            if(qualifyingType != null
+            if(qualifyingTypeOrDeclaration != null
                     || (part.parameters != null && !part.parameters.isEmpty()))
                 throw x;
             return null;
         }
-    }
-
-    /**
-     * Looks for a direct member of type ClassOrInterface. We're not using Class.getDirectMember()
-     * because it skips object types and we want them.
-     */
-    private Declaration getDirectMember(TypeDeclaration container, String name) {
-        for (Declaration member : container.getMembers()) {
-            if (member instanceof ClassOrInterface
-                    && member.getName() != null
-                    && member.getName().equals(name)) {
-                return member;
-            }
-        }
-        return null;
     }
 
     /*
