@@ -115,8 +115,9 @@ public class Util {
 
     public static String strip(String name, boolean isCeylon, boolean isShared) {
         String stripped = strip(name);
-        if(isCeylon && !isShared && name.endsWith("$priv"))
-            return stripped.substring(0, stripped.length() - 5);
+        String privSuffix = Naming.Suffix.$priv$.name();
+        if(isCeylon && !isShared && name.endsWith(privSuffix))
+            return stripped.substring(0, stripped.length() - privSuffix.length());
         return stripped;
     }
 
