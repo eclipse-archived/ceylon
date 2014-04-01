@@ -72,6 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter;
 import com.sun.tools.javac.code.BoundKind;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Symtab;
@@ -104,7 +105,16 @@ import com.sun.tools.javac.util.Position.LineMap;
  * Base class for all delegating transformers
  */
 public abstract class AbstractTransformer implements Transformation {
-    
+
+    private final static ProducedTypeNamePrinter typeSerialiser = new ProducedTypeNamePrinter(false){
+        protected boolean printFullyQualified() {
+            return true;
+        }
+        protected boolean printQualifier() {
+            return true;
+        }
+    };
+
     private Context context;
     private TreeMaker make;
     private Names names;
@@ -2814,8 +2824,7 @@ public abstract class AbstractTransformer implements Transformation {
     private String serialiseTypeSignature(ProducedType type){
         // resolve aliases
         type = type.resolveAliases();
-        return type.getProducedTypeQualifiedName();
-
+        return typeSerialiser.getProducedTypeName(type, typeFact);
     }
     
     /*
