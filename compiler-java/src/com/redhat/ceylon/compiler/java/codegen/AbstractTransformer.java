@@ -3328,9 +3328,163 @@ public abstract class AbstractTransformer implements Transformation {
         return makeLetExpr(seqName, List.<JCStatement>nil(), seqTypeExpr1, expr, sequenceToArrayExpr);
     }
 
-    // Creates comparisons of expressions against types
+    /** 
+     * Abstraction over how we transform a {@code is} type test 
+     */
+    interface TypeTestTransformation<R> {
+        /** 
+         * Combine the results of two other type tests using AND or OR, 
+         * depending on the {@code op} parameter 
+         */
+        public R andOr(R a, R b, int op);
+        /** Make a type test using that just evaluates as the given result */
+        public R eval(JCExpression varExpr, boolean result);
+        /** 
+         * Make a type test using {@code == null} or {@code != null}, 
+         * depending on the {@code op} parameter 
+         */
+        public R nullTest(JCExpression varExpr, int op);
+        /** Make a type test using {@code Util.isIdentifiable()} */
+        public R isIdentifiable(JCExpression varExpr);
+        /** Make a type test using {@code Util.isBasic()} */
+        public R isBasic(JCExpression varExpr);
+        /** Make a type test using {@code instanceof} */
+        public R isInstanceof(JCExpression varExpr, ProducedType testedType);
+        /** Make a type test using {@code Util.isReified()} */
+        public R isReified(JCExpression varExpr, ProducedType testedType);
+        
+    }
+    /**
+     * A type test transformation that builds a tree for evaluating the type test
+     * @see PerfTypeTestTransformation
+     */
+    class JavacTypeTestTransformation implements TypeTestTransformation<JCExpression> {
+
+        @Override
+        public JCExpression andOr(JCExpression a, JCExpression b, int op) {
+            return make().Binary(op, a, b);
+        }
+
+        @Override
+        public JCExpression eval(JCExpression varExpr, boolean result) {
+            return makeIgnoredEvalAndReturn(varExpr, makeBoolean(result));
+        }
+
+        @Override
+        public JCExpression nullTest(JCExpression varExpr, int op) {
+            return make().Binary(op, varExpr, makeNull());
+        }
+
+        @Override
+        public JCExpression isIdentifiable(JCExpression varExpr) {
+            return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
+        }
+
+        @Override
+        public JCExpression isBasic(JCExpression varExpr) {
+            return makeUtilInvocation("isBasic", List.of(varExpr), null);
+        }
+
+        @Override
+        public JCExpression isInstanceof(JCExpression varExpr,
+                ProducedType testedType) {
+            JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW);
+            return make().TypeTest(varExpr, rawTypeExpr);
+        }
+
+        @Override
+        public JCExpression isReified(JCExpression varExpr,
+                ProducedType testedType) {
+            return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(testedType)), null);
+        }
+    }
+    JavacTypeTestTransformation javacTypeTester = null;
+    JavacTypeTestTransformation javacTypeTester() {
+        if (this.javacTypeTester == null) {
+            this.javacTypeTester = new JavacTypeTestTransformation();
+        }
+        return this.javacTypeTester;
+    }
+    /**
+     * A type test transformation that estimates whether the real type test 
+     * transformation (@link JavacTypeTester} produce a test which is 
+     * expensive (anything involving reification of inspecting annotations)
+     * or cheap (just involving instanceof, != null, == null, and similar). 
+     */
+    class PerfTypeTestTransformation implements TypeTestTransformation<Boolean> {
+
+        @Override
+        public Boolean andOr(Boolean aIsCheap, Boolean bIsCheap, int op) {
+            // cheap only if both halves are cheap
+            return aIsCheap.booleanValue() && bIsCheap.booleanValue() ? Boolean.TRUE : Boolean.FALSE;
+        }
+
+        @Override
+        public Boolean eval(JCExpression varExpr, boolean result) {
+            return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean nullTest(JCExpression varExpr, int op) {
+            // != null and == null are always cheap
+            return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean isIdentifiable(JCExpression varExpr) {
+            // Util.isIdentifiable() is expensive
+            return Boolean.FALSE;
+        }
+
+        @Override
+        public Boolean isBasic(JCExpression varExpr) {
+            // Util.isBasic() is expensive
+            return Boolean.FALSE;
+        }
+
+        @Override
+        public Boolean isInstanceof(JCExpression varExpr,
+                ProducedType testedType) {
+            // instanceof is cheap
+            return Boolean.TRUE;
+        }
+
+        @Override
+        public Boolean isReified(JCExpression varExpr, ProducedType testedType) {
+            // Util.isReified() is expensive
+            return Boolean.FALSE;
+        }
+        
+    }
+    PerfTypeTestTransformation perfTypeTester = null;
+    PerfTypeTestTransformation perfTypeTester() {
+        if (this.perfTypeTester == null) {
+            this.perfTypeTester = new PerfTypeTestTransformation();
+        }
+        return this.perfTypeTester;
+    }
+    
+    /** 
+     * Creates comparisons of expressions against types, used for {@code is} 
+     * conditions ({@code is X e}), the {@code is} operator ({@code e is X})
+     * and {@code is} cases ({@code case (is X)})
+     */
     JCExpression makeTypeTest(JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
-        JCExpression result = null;
+        return makeTypeTest(javacTypeTester(), firstTimeExpr, varName, testedType, expressionType);
+    }
+    /**
+     * Determines whether the given type test generated by 
+     * {@link #makeTypeTest(JCExpression, com.redhat.ceylon.compiler.java.codegen.Naming.CName, ProducedType, ProducedType)} 
+     * will be "cheap" or "expensive"
+     */
+    boolean isTypeTestCheap(JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
+        return makeTypeTest(perfTypeTester(), firstTimeExpr, varName, testedType, expressionType);
+    }
+    
+    private <R> R makeTypeTest(TypeTestTransformation<R> typeTester, 
+            JCExpression firstTimeExpr, Naming.CName varName, 
+            ProducedType testedType, ProducedType expressionType) {
+        R result = null;
         // make sure aliases are resolved
         testedType = testedType.resolveAliases();
         // optimisation when all we're doing is making sure it is not null
@@ -3338,57 +3492,57 @@ public abstract class AbstractTransformer implements Transformation {
                 && testedType.getSupertype(typeFact().getObjectDeclaration()) != null
                 && expressionType.isExactly(typeFact().getOptionalType(testedType))){
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
-            return make().Binary(JCTree.NE, varExpr, makeNull());
+            return typeTester.nullTest(varExpr, JCTree.NE);
         }
         if (typeFact().isUnion(testedType)) {
             UnionType union = (UnionType)testedType.getDeclaration();
             for (ProducedType pt : union.getCaseTypes()) {
-                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt, expressionType);
+                R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
                     result = partExpr;
                 } else {
-                    result = make().Binary(JCTree.OR, result, partExpr);
+                    result = typeTester.andOr(result, partExpr, JCTree.OR);
                 }
             }
         } else if (typeFact().isIntersection(testedType)) {
             IntersectionType union = (IntersectionType)testedType.getDeclaration();
             for (ProducedType pt : union.getSatisfiedTypes()) {
-                JCExpression partExpr = makeTypeTest(firstTimeExpr, varName, pt, expressionType);
+                R partExpr = makeTypeTest(typeTester, firstTimeExpr, varName, pt, expressionType);
                 firstTimeExpr = null;
                 if (result == null) {
                     result = partExpr;
                 } else {
-                    result = make().Binary(JCTree.AND, result, partExpr);
+                    result = typeTester.andOr(result, partExpr, JCTree.AND);
                 }
             }
         } else {
             JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
             if (isAnything(testedType)){
                 // everything is Void, it's the root of the hierarchy
-                return makeIgnoredEvalAndReturn(varExpr, makeBoolean(true));
+                return typeTester.eval(varExpr, true);
             } else if (testedType.isExactly(typeFact().getNullDeclaration().getType())){
                 // is Null => is null
-                return make().Binary(JCTree.EQ, varExpr, makeNull());
+                return typeTester.nullTest(varExpr, JCTree.EQ);
             } else if (testedType.isExactly(typeFact().getObjectDeclaration().getType())){
                 // is Object => is not null
-                return make().Binary(JCTree.NE, varExpr, makeNull());
+                return typeTester.nullTest(varExpr, JCTree.NE);
             } else if (testedType.isExactly(typeFact().getIdentifiableDeclaration().getType())){
                 // it's erased
-                return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
+                return typeTester.isIdentifiable(varExpr);
             } else if (testedType.isExactly(typeFact().getBasicDeclaration().getType())){
                 // it's erased
-                return makeUtilInvocation("isBasic", List.of(varExpr), null);
+                return typeTester.isBasic(varExpr);
             } else if (testedType.getDeclaration() instanceof NothingType){
                 // nothing is Bottom
-                return makeIgnoredEvalAndReturn(varExpr, makeBoolean(false));
+                return typeTester.eval(varExpr, false);
             } else if ((!testedType.getTypeArguments().isEmpty() || isTypeParameter(testedType))
                         && !canOptimiseReifiedTypeTest(testedType)){
                 // requires a little magic
-                return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(testedType)), null);
+                return typeTester.isReified(varExpr, testedType);
             } else {
-                JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW);
-                result = make().TypeTest(varExpr, rawTypeExpr);
+                // Use an instanceof
+                result = typeTester.isInstanceof(varExpr, testedType);
             }
         }
         return result;

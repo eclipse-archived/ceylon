@@ -871,6 +871,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     class IsCond extends SpecialFormCond<Tree.IsCondition> {
+        /** Is this a negated is: {@code !is X} */
         private final boolean negate;
         private IsCond(Tree.IsCondition isdecl) {
             super(isdecl, 
@@ -3227,6 +3228,41 @@ public class StatementTransformer extends AbstractTransformer {
      */
     class IfElseChain extends SwitchTransformation {
 
+        protected java.util.List<Tree.CaseClause> getCaseClauses(Tree.SwitchStatement stmt) {
+            // If all the cases are "case (is ...)" we can try to avoid 
+            // the expense of testing reified is by putting all the cheap tests first
+            // We respect the relative order of all the cheap cases and all 
+            // the expensive cases though on the basis that that might be a 
+            // hint
+            // about which are more common
+            java.util.List<CaseClause> list = super.getCaseClauses(stmt);
+            java.util.ArrayList<CaseClause> cheap = new ArrayList<CaseClause>(list.size());
+            int lastCheap = 0;
+            // The dummy isn't actually used for anything, it just has to be non-null
+            SyntheticName dummy = naming.synthetic(Naming.Unfix.$annotationSequence$);
+            for (Tree.CaseClause clause : list) {
+                Tree.CaseItem item = clause.getCaseItem();
+                boolean isCheap;
+                if (item instanceof Tree.IsCase) {
+                    isCheap = isTypeTestCheap(null, dummy, 
+                            ((Tree.IsCase) item).getType().getTypeModel(), 
+                            getSwitchExpressionType(stmt));
+                } else if (item instanceof Tree.MatchCase) {
+                    // will be primitive equality test
+                    isCheap = true;
+                } else {
+                    // should never get here, but we can just return the unsorted list
+                    return list;
+                }
+                int index = isCheap ? lastCheap : cheap.size();
+                cheap.add(index, clause);
+                if (isCheap) {
+                    lastCheap = index+1;
+                }
+            }
+            return cheap;
+        }
+        
         @Override
         public JCStatement transformSwitch(SwitchStatement stmt) {
             JCStatement last = transformElse(stmt.getSwitchCaseList());
