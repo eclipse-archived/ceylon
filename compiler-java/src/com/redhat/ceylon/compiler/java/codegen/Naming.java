@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -102,7 +104,7 @@ public class Naming implements LocalId {
      * 
      * Should start and end with a {@code $} and contain no {@code $}
      */
-    enum Suffix implements Affix {
+    public enum Suffix implements Affix {
         $aliased$,
         $annotation$,
         $annotations$,
