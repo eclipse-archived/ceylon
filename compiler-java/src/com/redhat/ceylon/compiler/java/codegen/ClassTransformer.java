@@ -829,8 +829,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         satisfaction(model, classBuilder);
         at(def);
+        
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
+        addAtLocalDeclarations(classBuilder, def);
+        
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(classBuilder, model);
     }
@@ -914,6 +917,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
+        addAtLocalDeclarations(classBuilder, def);
     }
 
     private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
@@ -931,6 +935,10 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.annotations(makeAtMembers(members));
     }
 
+    private void addAtLocalDeclarations(ClassDefinitionBuilder classBuilder, Tree.ClassOrInterface tree) {
+        classBuilder.annotations(makeAtLocalDeclarations(tree));
+    }
+
     private void addAtContainer(ClassDefinitionBuilder classBuilder, TypeDeclaration model) {
         Package pkg = Decl.getPackageContainer(model);
         Scope scope = model.getContainer();
@@ -941,7 +949,9 @@ public class ClassTransformer extends AbstractTransformer {
             List<JCAnnotation> atContainer = makeAtContainer(container.getType());
             classBuilder.annotations(atContainer);
         }else{
-            classBuilder.annotations(makeAtLocalContainer());
+            if(model instanceof Interface)
+                classBuilder.annotations(makeLocalContainerPath((Interface) model));
+            classBuilder.annotations(makeAtLocalDeclaration(model.getQualifier()));
         }
         
     }
@@ -1566,6 +1576,18 @@ public class ClassTransformer extends AbstractTransformer {
             companionBuilder.addRefineReifiedTypeParametersMethod(typeParameterList);
     }
 
+    private List<JCAnnotation> makeLocalContainerPath(Interface model) {
+        List<String> path = List.nil();
+        Scope container = model.getContainer();
+        while(container != null
+                && container instanceof Package == false){
+            if(container instanceof Declaration)
+                path = path.prepend(((Declaration) container).getPrefixedName());
+            container = container.getContainer();
+        }
+        return makeAtLocalContainer(path, model.getJavaCompanionClassName());
+    }
+
     public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
         List<JCStatement> result = List.<JCStatement>nil();
         // Check if this is a shortcut form of formal attribute refinement
@@ -2018,6 +2040,13 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.generateMain(def)) {
             // Add a main() method
             builder.method(makeMainForFunction(model));
+        }
+        
+        if(Decl.isLocal(model) || Decl.isToplevel(model)){
+            builder.annotations(makeAtLocalDeclarations(def));
+        }
+        if(Decl.isLocal(model)){
+            builder.annotations(makeAtLocalDeclaration(model.getQualifier()));
         }
         
         List<JCTree> result = builder.build();
