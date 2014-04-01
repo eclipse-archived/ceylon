@@ -243,18 +243,18 @@ public class NamingTest {
     @Test
     public void testfCI() throws Exception {
         final TypeDeclaration decl = findDecl("fCI.ceylon", "fCI.CI.I");
-        Assert.assertEquals("fCI$0$CI$I_", naming.declName(decl));
+        Assert.assertEquals("fCI$CI$I_", naming.declName(decl));
         Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "fCI$0$CI$I_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "fCI$CI$I_", naming.declName(decl, QUALIFIED));
         Assert.assertEquals("CI.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testfI() throws Exception {
         final TypeDeclaration decl = findDecl("fI.ceylon", "fI.I");
-        Assert.assertEquals("fI$0$I_", naming.declName(decl));
+        Assert.assertEquals("fI$I_", naming.declName(decl));
         Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "fI$0$I_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "fI$I_", naming.declName(decl, QUALIFIED));
         Assert.assertEquals("I$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
@@ -268,9 +268,9 @@ public class NamingTest {
     @Test
     public void testfII() throws Exception {
         final TypeDeclaration decl = findDecl("fII.ceylon", "fII.II.I");
-        Assert.assertEquals("fII$0$II$I_", naming.declName(decl));
+        Assert.assertEquals("fII$II$I_", naming.declName(decl));
         Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "fII$0$II$I_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "fII$II$I_", naming.declName(decl, QUALIFIED));
         Assert.assertEquals("II$impl.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
     }
     
