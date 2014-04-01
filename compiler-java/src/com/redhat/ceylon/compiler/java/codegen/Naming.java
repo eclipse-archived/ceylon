@@ -624,7 +624,9 @@ public class Naming implements LocalId {
                 while (!(nonLocal instanceof Declaration)) {
                     nonLocal = nonLocal.getContainer();
                 }
-                helper.append(((Declaration)nonLocal).getName()).append('$').append(getLocalId(scope));
+                helper.append(((Declaration)nonLocal).getPrefixedName());
+                if(scope != nonLocal)
+                    helper.append('$').append(getLocalId(scope));
                 if (decl instanceof Interface) {
                     helper.append('$');
                 } else {
@@ -636,6 +638,8 @@ public class Naming implements LocalId {
                 }
             }
             return;
+        } else if (scope instanceof TypedDeclaration && ((Declaration) scope).isToplevel()) {
+            // nothing? that's just weird
         }
         if (!last) {
             if (decl instanceof Interface 
