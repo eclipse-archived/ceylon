@@ -595,7 +595,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             DeclarationVisitor.setVisibleScope(d);
         }else if(classMirror.isLocalClass()){
             // set its container to the package for now, but don't add it to the package as a member because it's not
-            d.setContainer(pkg);
+            Scope localContainer = getLocalContainer(pkg, classMirror, d);
+            if(localContainer != null){
+                d.setContainer(localContainer);
+                // do not add it as member, it has already been registered by getLocalContainer
+            }else{
+                d.setContainer(pkg);
+            }
             ((LazyElement)d).setLocal(true);
         }else if(d instanceof ClassOrInterface || d instanceof TypeAlias){
             // do overloads later, since their container is their abstract superclass's container and
@@ -619,6 +625,186 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private Scope getLocalContainer(Package pkg, ClassMirror classMirror, Declaration declaration) {
+        AnnotationMirror localContainerAnnotation = classMirror.getAnnotation(CEYLON_LOCAL_CONTAINER_ANNOTATION);
+        LocalDeclarationContainer methodDecl = null;
+        // we get a @LocalContainer annotation for local interfaces
+        if(localContainerAnnotation != null){
+            methodDecl = (LocalDeclarationContainer) findLocalContainerFromAnnotationAndSetCompanionClass(pkg, (Interface) declaration, localContainerAnnotation);
+        }else{
+            // all the other cases stay where they belong
+            MethodMirror method = classMirror.getEnclosingMethod();
+            if(method == null)
+                return null;
+            
+            // see where that method belongs
+            ClassMirror enclosingClass = method.getEnclosingClass();
+            
+            // if we are in a setter class, the attribute is declared in the getter class, so look for its declaration there
+            TypeMirror getterClass = (TypeMirror) getAnnotationValue(enclosingClass, CEYLON_SETTER_ANNOTATION, "getterClass");
+            boolean isSetter = false;
+            // we use void.class as default value
+            if(getterClass != null && !getterClass.isPrimitive()){
+                enclosingClass = getterClass.getDeclaredClass();
+                isSetter = true;
+            }
+            
+            String javaClassName = enclosingClass.getQualifiedName();
+            
+            // make sure we don't go looking in companion classes
+            if(javaClassName.endsWith(Naming.Suffix.$impl.name()))
+                javaClassName = javaClassName.substring(0, javaClassName.length() - 5);
+            
+            // find the enclosing declaration
+            Declaration enclosingClassDeclaration = convertToDeclaration(pkg.getModule(), javaClassName, DeclarationType.TYPE);
+            if(enclosingClassDeclaration instanceof ClassOrInterface){
+                ClassOrInterface containerDecl = (ClassOrInterface) enclosingClassDeclaration;
+                // now find the method's declaration 
+                // FIXME: find the proper overload if any
+                if(method.isConstructor()){
+                    methodDecl = (LocalDeclarationContainer) containerDecl;
+                }else{
+                    String name = method.getName();
+                    // this is only for error messages
+                    String type;
+                    // lots of special cases
+                    if(isStringAttribute(method)){
+                        name = "string";
+                        type = "attribute";
+                    }else if(isHashAttribute(method)){
+                        name = "hash";
+                        type = "attribute";
+                    }else if(isGetter(method)) {
+                        // simple attribute
+                        name = getJavaAttributeName(name);
+                        type = "attribute";
+                    }else if(isSetter(method)) {
+                        // simple attribute
+                        name = getJavaAttributeName(name);
+                        type = "attribute setter";
+                        isSetter = true;
+                    }else{
+                        type = "method";
+                    }
+                    // strip any escaping or private suffix
+                    name = Util.strip(name, true, method.isPublic() || method.isProtected() || method.isDefaultAccess());
+
+                    methodDecl = (LocalDeclarationContainer) containerDecl.getDirectMember(name, null, false);
+
+                    if(methodDecl == null)
+                        throw new ModelResolutionException("Failed to load outer "+type+" " + name 
+                                + " for local type " + classMirror.getQualifiedName().toString());
+
+                    // if it's a setter we wanted, let's get it
+                    if(isSetter){
+                        LocalDeclarationContainer setter = (LocalDeclarationContainer) ((Value)methodDecl).getSetter();
+                        if(setter == null)
+                            throw new ModelResolutionException("Failed to load outer "+type+" " + name 
+                                    + " for local type " + classMirror.getQualifiedName().toString());
+                        methodDecl = setter;
+                    }
+                }
+            }else if(enclosingClassDeclaration instanceof LazyMethod){
+                // local and toplevel methods
+                methodDecl = (LazyMethod)enclosingClassDeclaration;
+            }else if(enclosingClassDeclaration instanceof LazyValue){
+                // local and toplevel attributes
+                if(enclosingClassDeclaration.isToplevel() && method.getName().equals(Naming.Unfix.set_.name()))
+                    isSetter = true;
+                if(isSetter){
+                    LocalDeclarationContainer setter = (LocalDeclarationContainer) ((LazyValue)enclosingClassDeclaration).getSetter();
+                    if(setter == null)
+                        throw new ModelResolutionException("Failed to toplevel attribute setter " + enclosingClassDeclaration.getName() 
+                                + " for local type " + classMirror.getQualifiedName().toString());
+                    methodDecl = setter;
+                }else
+                    methodDecl = (LazyValue)enclosingClassDeclaration;
+            }else{
+                throw new ModelResolutionException("Unknown container type " + enclosingClassDeclaration 
+                        + " for local type " + classMirror.getQualifiedName().toString());
+            }
+        }
+
+        // we have the method, now find the proper local qualifier if any
+        String qualifier = getAnnotationStringValue(classMirror, CEYLON_LOCAL_DECLARATION_ANNOTATION, "qualifier");
+        if(qualifier == null)
+            return null;
+        declaration.setQualifier(qualifier);
+        methodDecl.addLocalDeclaration(declaration);
+        return methodDecl;
+    }
+    
+    private Scope findLocalContainerFromAnnotationAndSetCompanionClass(Package pkg, Interface declaration, AnnotationMirror localContainerAnnotation) {
+        @SuppressWarnings("unchecked")
+        List<String> path = (List<String>) localContainerAnnotation.getValue("path");
+        // we start at the package
+        Scope scope = pkg;
+        for(String name : path){
+            scope = (Scope) getDirectMember(scope, name);
+        }
+        return scope;
+    }
+    
+    /**
+     * Looks for a direct member of type ClassOrInterface. We're not using Class.getDirectMember()
+     * because it skips object types and we want them.
+     */
+    public static Declaration getDirectMember(Scope container, String name) {
+        if(name.isEmpty())
+            return null;
+        boolean wantsSetter = false;
+        if(name.startsWith(Naming.Suffix.$setter$.name())){
+            wantsSetter = true;
+            name = name.substring(8);
+        }
+            
+        if(Character.isDigit(name.charAt(0))){
+            // this is a local type we have a different accessor for it
+            return ((LocalDeclarationContainer)container).getLocalDeclaration(name);
+        }
+        // don't even try using getDirectMember except on Package,
+        // because it will fail miserably during completion, since we
+        // will for instance have only anonymous types first, before we load their anonymous values, and
+        // when we go looking for them we won't be able to find them until we add their anonymous values,
+        // which is too late
+        if(container instanceof Package){
+            // don't use Package.getMembers() as it loads the whole package
+            Declaration result = container.getDirectMember(name, null, false);
+            return selectTypeOrSetter(result, wantsSetter);
+        }else{
+            // must be a Declaration
+            for(Declaration member : container.getMembers()){
+                if(!member.getName().equals(name))
+                    continue;
+                Declaration result = selectTypeOrSetter(member, wantsSetter);
+                if(result != null)
+                    return result;
+            }
+        }
+        // not found
+        return null;
+    }
+    
+    private static Declaration selectTypeOrSetter(Declaration member, boolean wantsSetter) {
+        // if we found a type or a method/value we're good to go
+        if (member instanceof ClassOrInterface
+                || member instanceof Method) {
+            return member;
+        }
+        // if it's a Value return its object type by preference, the member otherwise
+        if (member instanceof Value){
+            TypeDeclaration typeDeclaration = ((Value) member).getTypeDeclaration();
+            if(typeDeclaration != null && typeDeclaration.isAnonymous())
+                return typeDeclaration;
+            // did we want the setter?
+            if(wantsSetter)
+                return ((Value)member).getSetter();
+            // must be a non-object value
+            return member;
+        }
+        return null;
+    }
+    
     private ClassOrInterface getContainer(Module module, ClassMirror classMirror) {
         AnnotationMirror containerAnnotation = classMirror.getAnnotation(CEYLON_CONTAINER_ANNOTATION);
         if(containerAnnotation != null){
