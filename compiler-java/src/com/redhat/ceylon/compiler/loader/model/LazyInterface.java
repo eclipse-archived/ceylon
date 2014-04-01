@@ -59,6 +59,7 @@ public class LazyInterface extends Interface implements LazyContainer {
     private boolean isTypeParamsLoaded2 = false;
     private boolean isAnnotationType = false;
     private boolean local;
+    public ClassMirror companionClass;
 
     @Override
     protected Class<?> getModelClass() {

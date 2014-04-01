@@ -592,6 +592,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(!classMirror.isInnerClass() && !classMirror.isLocalClass()){
             d.setContainer(pkg);
             pkg.addCompiledMember(d);
+            if(d instanceof LazyInterface && ((LazyInterface) d).isCeylon()){
+                setInterfaceCompanionClass(d, null, pkg);
+            }
             DeclarationVisitor.setVisibleScope(d);
         }else if(classMirror.isLocalClass()){
             // set its container to the package for now, but don't add it to the package as a member because it's not
@@ -609,6 +612,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(d instanceof Class == false || !((Class)d).isOverloaded()){
                 ClassOrInterface container = getContainer(pkg.getModule(), classMirror);
                 d.setContainer(container);
+                if(d instanceof LazyInterface && ((LazyInterface) d).isCeylon()){
+                    setInterfaceCompanionClass(d, container, pkg);
+                }
                 // let's not trigger lazy-loading
                 ((LazyContainer)container).addMember(d);
                 DeclarationVisitor.setVisibleScope(d);
@@ -625,6 +631,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private void setInterfaceCompanionClass(Declaration d, ClassOrInterface container, LazyPackage pkg) {
+        // find its companion class in its real container
+        ClassMirror containerMirror = null;
+        if(container instanceof LazyClass){
+            containerMirror = ((LazyClass) container).classMirror;
+        }else if(container instanceof LazyInterface){
+            // container must be a LazyInterface, as TypeAlias doesn't contain anything
+            containerMirror = ((LazyInterface)container).companionClass;
+            if(containerMirror == null){
+                throw new ModelResolutionException("Interface companion class for "+container.getQualifiedNameString()+" not set up");
+            }
+        }
+        String companionName;
+        if(containerMirror != null)
+            companionName = containerMirror.getFlatName() + "$" + Naming.suffixName(Naming.Suffix.$impl, d.getName());
+        else{
+            // toplevel
+            String p = pkg.getNameAsString();
+            companionName = "";
+            if(!p.isEmpty())
+                companionName =  p + ".";
+            companionName +=  Naming.suffixName(Naming.Suffix.$impl, d.getName());
+        }
+        ClassMirror companionClass = lookupClassMirror(pkg.getModule(), companionName);
+        if(companionClass == null){
+            throw new ModelResolutionException("Could not find interface companion class "+companionName+" for "+d.getQualifiedNameString());
+        }
+        ((LazyInterface)d).companionClass = companionClass;
+    }
+    
     private Scope getLocalContainer(Package pkg, ClassMirror classMirror, Declaration declaration) {
         AnnotationMirror localContainerAnnotation = classMirror.getAnnotation(CEYLON_LOCAL_CONTAINER_ANNOTATION);
         LocalDeclarationContainer methodDecl = null;
@@ -742,6 +778,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         for(String name : path){
             scope = (Scope) getDirectMember(scope, name);
         }
+        String companionClassName = (String) localContainerAnnotation.getValue("companionClassName");
+        ClassMirror container;
+        Scope javaClassScope;
+        if(scope instanceof TypedDeclaration && ((TypedDeclaration) scope).isMember())
+            javaClassScope = scope.getContainer();
+        else
+            javaClassScope = scope;
+        
+        if(javaClassScope instanceof LazyInterface){
+            container = ((LazyInterface)javaClassScope).companionClass;
+        }else if(javaClassScope instanceof LazyClass){
+            container = ((LazyClass) javaClassScope).classMirror;
+        }else if(javaClassScope instanceof LazyValue){
+            container = ((LazyValue) javaClassScope).classMirror;
+        }else if(javaClassScope instanceof LazyMethod){
+            container = ((LazyMethod) javaClassScope).classMirror;
+        }else if(javaClassScope instanceof SetterWithLocalDeclarations){
+            container = ((SetterWithLocalDeclarations) javaClassScope).classMirror;
+        }else{
+            throw new ModelResolutionException("Unknown scope class: "+javaClassScope);
+        }
+        String qualifiedCompanionClassName = container.getQualifiedName() + "$" + companionClassName;
+        ClassMirror companionClassMirror = lookupClassMirror(pkg.getModule(), qualifiedCompanionClassName);
+        if(companionClassMirror == null)
+            throw new ModelResolutionException("Could not find companion class mirror: "+qualifiedCompanionClassName);
+        ((LazyInterface)declaration).companionClass = companionClassMirror;
         return scope;
     }
     
