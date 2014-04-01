@@ -89,6 +89,12 @@ public class ReflectionClass implements ClassMirror {
     }
 
     @Override
+    public String getFlatName() {
+        // FIXME: is this really the same?
+        return klass.getName();
+    }
+
+    @Override
     public String getName() {
         return klass.getSimpleName();
     }

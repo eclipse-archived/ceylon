@@ -99,6 +99,11 @@ public class JavacClass implements ClassMirror {
     }
 
     @Override
+    public String getFlatName() {
+        return classSymbol.flatname.toString();
+    }
+    
+    @Override
     public PackageMirror getPackage() {
         if (pkg == null) {
             pkg = new JavacPackage(classSymbol.packge());

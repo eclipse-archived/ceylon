@@ -76,6 +76,12 @@ public interface ClassMirror extends AnnotatedMirror, AccessibleMirror {
     String getQualifiedName();
     
     /**
+     * Returns the fully-qualified class name in flat form: dots to separate package parts, and dollars
+     * to separate inner members.
+     */
+    String getFlatName();
+    
+    /**
      * Returns this class's package
      */
     PackageMirror getPackage();
