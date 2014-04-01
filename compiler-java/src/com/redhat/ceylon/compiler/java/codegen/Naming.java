@@ -418,7 +418,7 @@ public class Naming implements LocalId {
     private final java.util.Map<Scope, Integer> locals = new java.util.HashMap<Scope, Integer>();
     
     /**
-     * A Visitor which assigns ids sometimes neede by Naming.getLocalId() for 
+     * A Visitor which assigns ids sometimes needed by Naming.getLocalId() for 
      * determining the name munging necessary for "hoisting" interface declarations 
      * to top level.
      */
