@@ -1545,9 +1545,9 @@ public class ClassTransformer extends AbstractTransformer {
         companionBuilder.field(PRIVATE | FINAL, 
                 "$this", 
                 makeJavaType(thisType), 
-                null, false);
+                null, false, makeAtIgnore());
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
-        ctor.noModelAnnotations();
+        ctor.ignoreModelAnnotations();
         if(typeParameterList != null)
             ctor.reifiedTypeParameters(typeParameterListModel(typeParameterList));
         ctor.modifiers(model.isShared() ? PUBLIC : 0);
@@ -1970,7 +1970,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(!forCompanion)
             getter.userAnnotations(expressionGen().transform(decl.getAnnotationList()));
         else
-            getter.noAnnotations();
+            getter.ignoreAnnotations();
         
         if (Decl.isIndirect(decl)) {
             getter.getterBlock(generateIndirectGetterBlock(decl.getDeclarationModel()));
@@ -2273,7 +2273,7 @@ public class ClassTransformer extends AbstractTransformer {
                 methodBuilder.userAnnotations(expressionGen().transform(annotationList));
                 methodBuilder.modelAnnotations(methodModel.getAnnotations());
             } else {
-                methodBuilder.noAnnotations();
+                methodBuilder.ignoreModelAnnotations();
             }
             methodBuilder.resultType(methodModel, 0);
             copyTypeParameters(methodModel, methodBuilder);

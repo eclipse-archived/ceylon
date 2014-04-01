@@ -577,11 +577,7 @@ public class ClassDefinitionBuilder
         long flags = PRIVATE;
         if(!isCompanion)
             flags |= FINAL;
-        List<JCAnnotation> annotations;
-        if(!isCompanion)
-            annotations = gen.makeAtIgnore();
-        else
-            annotations = List.nil();
+        List<JCAnnotation> annotations = gen.makeAtIgnore();
         JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
                 gen.makeTypeDescriptorType(), null);
         defs(localVar);
@@ -629,7 +625,7 @@ public class ClassDefinitionBuilder
     public ClassDefinitionBuilder addRefineReifiedTypeParametersMethod(TypeParameterList typeParameterList) {
         MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getRefineTypeParametersMethodName());
         method.modifiers(PUBLIC);
-        method.noAnnotations();
+        method.ignoreModelAnnotations();
 
         List<JCStatement> body = List.nil();
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){

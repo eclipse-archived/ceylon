@@ -161,7 +161,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
             if (decl.getDeclarationModel().isShared()) {
-                adb.noAnnotations();
+                adb.ignoreAnnotations();
             }
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
@@ -189,7 +189,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
             if (decl.getDeclarationModel().isShared()) {
-                adb.noAnnotations();
+                adb.ignoreAnnotations();
             }
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
