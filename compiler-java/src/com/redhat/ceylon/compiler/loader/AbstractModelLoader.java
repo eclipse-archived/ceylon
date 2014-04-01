@@ -1909,6 +1909,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     value.setVariable(true);
                     if(decl instanceof JavaBeanValue)
                         ((JavaBeanValue)decl).setSetterName(setter.getName());
+                    if(value.isTransient()){
+                        // must be a real setter
+                        makeSetter(value, null);
+                    }
                 }else
                     logVerbose("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
             } 
@@ -2861,9 +2865,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setValueTransientLateFlags(value, meth, true);
             setAnnotations(value, meth);
             markUnboxed(value, meth, meth.getReturnType());
+
+            TypeMirror setterClass = (TypeMirror) getAnnotationValue(value.classMirror, CEYLON_ATTRIBUTE_ANNOTATION, "setterClass");
+            // void.class is the default value, I guess it's a primitive?
+            if(setterClass != null && !setterClass.isPrimitive()){
+                ClassMirror setterClassMirror = setterClass.getDeclaredClass();
+                value.setVariable(true);
+                SetterWithLocalDeclarations setter = makeSetter(value, setterClassMirror);
+            }else if(value.isToplevel() && value.isTransient() && value.isVariable()){
+                makeSetter(value, value.classMirror);
+            }
         }finally{
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
         }
+    }
+
+    private SetterWithLocalDeclarations makeSetter(Value value, ClassMirror classMirror) {
+        SetterWithLocalDeclarations setter = new SetterWithLocalDeclarations(classMirror);
+        setter.setContainer(value.getContainer());
+        setter.setType(value.getType());
+        setter.setName(value.getName());
+        value.setSetter(setter);
+        setter.setGetter(value);
+        return setter;
     }
 
     @Override
