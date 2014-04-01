@@ -544,6 +544,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(classMirror.getAnnotation(CEYLON_LOCAL_CONTAINER_ANNOTATION) != null
                 && !needsLocalDeclarations())
             return null;
+        // avoid Ceylon annotations
+        if(classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null
+                && classMirror.isAnnotationType())
+            return null;
         // avoid module and package descriptors too
         if(classMirror.getAnnotation(CEYLON_MODULE_ANNOTATION) != null
                 || classMirror.getAnnotation(CEYLON_PACKAGE_ANNOTATION) != null)
