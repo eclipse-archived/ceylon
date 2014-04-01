@@ -2249,8 +2249,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private boolean isStartOfJavaBeanPropertyName(char c){
         return Character.isUpperCase(c) || c == '_'; 
     }
+
+    private boolean isNonGenericMethod(MethodMirror methodMirror){
+        return !methodMirror.isConstructor() 
+                && methodMirror.getTypeParameters().isEmpty();
+    }
     
     private boolean isGetter(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror))
+            return false;
         String name = methodMirror.getName();
         boolean matchesGet = name.length() > 3 && name.startsWith("get") 
                 && isStartOfJavaBeanPropertyName(name.charAt(3)) 
@@ -2264,6 +2271,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private boolean isSetter(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror))
+            return false;
         String name = methodMirror.getName();
         boolean matchesSet = name.length() > 3 && name.startsWith("set") 
                 && isStartOfJavaBeanPropertyName(name.charAt(3))
@@ -2274,6 +2283,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private boolean isHashAttribute(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror)
+                || methodMirror.isStatic())
+            return false;
         String name = methodMirror.getName();
         boolean matchesName = "hashCode".equals(name);
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
@@ -2281,6 +2293,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private boolean isStringAttribute(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror)
+                || methodMirror.isStatic())
+            return false;
         String name = methodMirror.getName();
         boolean matchesName = "toString".equals(name);
         boolean hasNoParams = methodMirror.getParameters().size() == 0;
@@ -2288,6 +2303,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private boolean isEqualsMethod(MethodMirror methodMirror) {
+        if(!isNonGenericMethod(methodMirror)
+                || methodMirror.isStatic())
+            return false;
         String name = methodMirror.getName();
         if(!"equals".equals(name)
                 || methodMirror.getParameters().size() != 1)
