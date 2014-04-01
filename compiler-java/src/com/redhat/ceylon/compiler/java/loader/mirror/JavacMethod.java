@@ -28,6 +28,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
@@ -46,8 +47,11 @@ public class JavacMethod implements MethodMirror {
     private Map<String, AnnotationMirror> annotations;
     private List<TypeParameterMirror> typeParams;
 
-    public JavacMethod(MethodSymbol sym) {
+    private ClassMirror enclosingClass;
+
+    public JavacMethod(ClassMirror enclosingClass, MethodSymbol sym) {
         this.methodSymbol = sym;
+        this.enclosingClass = enclosingClass;
     }
 
     @Override
@@ -152,6 +156,11 @@ public class JavacMethod implements MethodMirror {
     @Override
     public boolean isDefault() {
         return methodSymbol.getDefaultValue() != null;
+    }
+
+    @Override
+    public ClassMirror getEnclosingClass() {
+        return enclosingClass;
     }
     
 }

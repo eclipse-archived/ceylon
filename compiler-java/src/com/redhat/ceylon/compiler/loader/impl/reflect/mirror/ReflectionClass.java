@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -51,6 +52,8 @@ public class ReflectionClass implements ClassMirror {
     private ReflectionType superClass;
     private boolean enclosingClassSet;
     private ClassMirror enclosingClass;
+    private boolean enclosingMethodSet;
+    private MethodMirror enclosingMethod;
     private LinkedList<ClassMirror> innerClasses;
     private String cacheKey;
 
@@ -248,6 +251,22 @@ public class ReflectionClass implements ClassMirror {
             enclosingClass = new ReflectionClass(encl);
         enclosingClassSet = true;
         return enclosingClass;
+    }
+
+    @Override
+    public MethodMirror getEnclosingMethod() {
+        if(enclosingMethodSet)
+            return enclosingMethod;
+        Member encl = klass.getEnclosingMethod();
+        if(encl == null)
+            encl = klass.getEnclosingConstructor();
+        if(encl != null){
+            Class<?> declaringClass = encl.getDeclaringClass();
+            ReflectionClass declaringClassMirror = new ReflectionClass(declaringClass);
+            enclosingMethod = new ReflectionMethod(declaringClassMirror, encl);
+        }
+        enclosingMethodSet = true;
+        return enclosingMethod;
     }
 
     @Override

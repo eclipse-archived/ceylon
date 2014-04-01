@@ -80,4 +80,9 @@ public interface MethodMirror extends AnnotatedMirror, AccessibleMirror {
      * {@code default} expression;
      */
     boolean isDefault();
+
+    /**
+     * Return this method's enclosing class.
+     */
+    ClassMirror getEnclosingClass();
 }

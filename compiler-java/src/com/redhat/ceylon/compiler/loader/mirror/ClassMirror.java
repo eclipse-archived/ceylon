@@ -21,7 +21,6 @@ package com.redhat.ceylon.compiler.loader.mirror;
 
 import java.util.List;
 
-import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /**
@@ -113,6 +112,11 @@ public interface ClassMirror extends AnnotatedMirror, AccessibleMirror {
      * Returns this class's containing class, if any
      */
     ClassMirror getEnclosingClass();
+
+    /**
+     * Returns this class's enclosing method, if any
+     */
+    MethodMirror getEnclosingMethod();
 
     /**
      * Returns the list of interfaces implemented by this class

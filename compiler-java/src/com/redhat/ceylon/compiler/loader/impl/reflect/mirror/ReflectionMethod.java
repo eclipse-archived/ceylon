@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
@@ -45,9 +46,11 @@ public class ReflectionMethod implements MethodMirror {
     private Boolean overridingMethod;
     private Boolean overloadingMethod;
     private ReflectionType returnType;
+    private ClassMirror enclosingClass;
 
-    public ReflectionMethod(Member method) {
+    public ReflectionMethod(ClassMirror enclosingClass, Member method) {
         this.method = method;
+        this.enclosingClass = enclosingClass;
     }
 
     @Override
@@ -208,5 +211,10 @@ public class ReflectionMethod implements MethodMirror {
     @Override
     public boolean isDefault() {
         return ((Method)method).getDefaultValue() != null;
+    }
+
+    @Override
+    public ClassMirror getEnclosingClass() {
+        return enclosingClass;
     }
 }

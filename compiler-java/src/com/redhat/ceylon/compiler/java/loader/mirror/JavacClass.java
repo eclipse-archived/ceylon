@@ -56,7 +56,10 @@ public class JavacClass implements ClassMirror {
 
     private ClassMirror enclosingClass;
     private boolean enclosingClassSet;
-    
+
+    private MethodMirror enclosingMethod;
+    private boolean enclosingMethodSet;
+
     private List<FieldMirror> fields;
 
     private LinkedList<ClassMirror> innerClasses;
@@ -167,7 +170,7 @@ public class JavacClass implements ClassMirror {
             List<MethodMirror> ret = new LinkedList<MethodMirror>();
             for(Symbol sym : classSymbol.getEnclosedElements()){
                 if(sym instanceof MethodSymbol && (sym.flags() & Flags.PRIVATE) == 0){
-                    ret.add(new JavacMethod((MethodSymbol)sym));
+                    ret.add(new JavacMethod(this, (MethodSymbol)sym));
                 }
             }
             methods = Collections.unmodifiableList(ret);
@@ -262,6 +265,21 @@ public class JavacClass implements ClassMirror {
             enclosingClassSet = true;
         }
         return enclosingClass;
+    }
+
+    @Override
+    public MethodMirror getEnclosingMethod() {
+        if (!enclosingMethodSet) {
+            Symbol encl = classSymbol.getEnclosingElement();
+            if (encl != null && encl instanceof MethodSymbol) {
+                // it's a method, it must be in a Class
+                ClassSymbol enclosingClass = (ClassSymbol) encl.getEnclosingElement();
+                JavacClass enclosingClassMirror = new JavacClass(enclosingClass);
+                enclosingMethod = new JavacMethod(enclosingClassMirror, (MethodSymbol)encl);
+            }
+            enclosingMethodSet = true;
+        }
+        return enclosingMethod;
     }
 
     @Override
