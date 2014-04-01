@@ -1004,7 +1004,7 @@ public class CMRTest extends CompilerTest {
         // ceylon module imports JavaA/2 and JavaB/1
         // JavaB/1 imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
-                Arrays.asList("-rep", jarOutputFolder.getPath()), null,
+                Arrays.asList("-rep", jarOutputFolder.getPath(), "-cp", getClasspath()), null,
                 new CompilerError(5, "could not determine type of method or attribute reference: method of JavaB"),
                 new CompilerError(5, "parameter type could not be determined: arg0 of method")
                 );

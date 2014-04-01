@@ -177,7 +177,10 @@ public class MiscTest extends CompilerTest {
             fileManager.getJavaFileObjectsFromFiles(sourceFiles);
         String compilerSourcePath = ceylonSourcePath + File.pathSeparator + javaSourcePath;
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
-                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "build/classes-runtime", "-Xbootstrapceylon"/*, "-verbose"*/), 
+                Arrays.asList("-sourcepath", compilerSourcePath, 
+                              "-d", "build/classes-runtime", "-Xbootstrapceylon",
+                              "-cp", getClasspath()
+                              /*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
@@ -301,7 +304,7 @@ public class MiscTest extends CompilerTest {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk"), 
+                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk", "-cp", getClasspath()), 
                 moduleNames, null);
         Boolean result = task.call();
         Assert.assertEquals("Compilation of SDK itself failed: " + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
@@ -330,7 +333,7 @@ public class MiscTest extends CompilerTest {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk"), 
+                Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClasspath()), 
                 moduleNames, null);
         
         Boolean result = task.call();

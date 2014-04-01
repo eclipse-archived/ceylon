@@ -107,7 +107,17 @@ public abstract class CompilerTest {
         } else {
             cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g");
+        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", "-cp", getClasspath());
+    }
+
+    public static String getClasspath() {
+        return "../ceylon-spec/build/classes"
+                +File.pathSeparator+"./build/classes"
+                +File.pathSeparator+"./../ceylon-module-resolver/build/classes"
+                +File.pathSeparator+"./../ceylon-common/build/classes"
+                +File.pathSeparator+"./../ceylon-runtime/build/classes"
+                +File.pathSeparator+"./../ceylon-runtime/lib/jboss-modules-1.1.3.GA.jar"
+                +File.pathSeparator+LANGUAGE_MODULE_CAR;
     }
 
     // for subclassers 

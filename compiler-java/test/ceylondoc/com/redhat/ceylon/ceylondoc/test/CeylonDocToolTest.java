@@ -67,6 +67,7 @@ import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -1239,7 +1240,7 @@ public class CeylonDocToolTest {
 
     private void compile(String pathname, String moduleName) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-cp", CompilerTest.getClasspath());
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
