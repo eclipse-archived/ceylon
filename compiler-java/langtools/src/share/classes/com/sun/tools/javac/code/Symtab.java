@@ -215,6 +215,7 @@ public class Symtab {
     public final Type ceylonAtDefaultedType;
     public final Type ceylonAtTypeInfoType;
     public final Type ceylonAtAttributeType;
+    public final Type ceylonAtSetterType;
     public final Type ceylonAtMethodType;
     public final Type ceylonAtFunctionalParameterType;
     public final Type ceylonAtObjectType;
@@ -233,6 +234,8 @@ public class Symtab {
     public final Type ceylonAtEnumerationReferenceType;
     public final Type ceylonAtContainerType;
     public final Type ceylonAtLocalContainerType;
+    public final Type ceylonAtLocalDeclarationType;
+    public final Type ceylonAtLocalDeclarationsType;
     public final Type ceylonAtMemberType;
     public final Type ceylonAtMembersType;
     public final Type ceylonAtNamedArgumentType;
@@ -629,6 +632,8 @@ public class Symtab {
         ceylonAtEnumerationReferenceType  = enterClass("com.redhat.ceylon.compiler.java.metadata.EnumerationReference");
         ceylonAtContainerType = enterClass("com.redhat.ceylon.compiler.java.metadata.Container");
         ceylonAtLocalContainerType = enterClass("com.redhat.ceylon.compiler.java.metadata.LocalContainer");
+        ceylonAtLocalDeclarationType = enterClass("com.redhat.ceylon.compiler.java.metadata.LocalDeclaration");
+        ceylonAtLocalDeclarationsType = enterClass("com.redhat.ceylon.compiler.java.metadata.LocalDeclarations");
         ceylonAtMemberType = enterClass("com.redhat.ceylon.compiler.java.metadata.Member");
         ceylonAtMembersType = enterClass("com.redhat.ceylon.compiler.java.metadata.Members");
         ceylonAtNamedArgumentType = enterClass("com.redhat.ceylon.compiler.java.metadata.NamedArgument");
@@ -636,6 +641,7 @@ public class Symtab {
         ceylonAtAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.Alias");
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
         ceylonAtTransientType = enterClass("com.redhat.ceylon.compiler.java.metadata.Transient");
+        ceylonAtSetterType = enterClass("com.redhat.ceylon.compiler.java.metadata.Setter");
         
         ceylonAtBooleanValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.BooleanValue");
         ceylonAtBooleanExprsType = enterClass("com.redhat.ceylon.compiler.java.metadata.BooleanExprs");
