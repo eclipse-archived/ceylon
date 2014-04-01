@@ -121,12 +121,6 @@ public class ReflectionMethod implements MethodMirror {
             parameterCount = ((Constructor<?>)method).getParameterTypes().length;
         }
         parameters = new ArrayList<VariableMirror>(parameterCount);
-        // some compilers will only include non-synthetic parameters in getGenericParameterTypes(), so we need to know if
-        // we have less, we should substract synthetic parameters
-        int parametersOffset = javaParameters.length - parameterCount;
-        // if at least one parameter is annotated, java reflection will only include non-synthetic parameters in 
-        // getParameterAnnotations(), so we need to know if we have less, we should substract synthetic parameters
-        int annotationsOffset = annotations.length - parameterCount;
         int start = 0;
         if(method instanceof Constructor){
             // enums will always add two synthetic parameters (string and int) and always be static so none more
@@ -137,16 +131,42 @@ public class ReflectionMethod implements MethodMirror {
             // FIXME: local and anonymous classes may add more but we don't know how to find out
             else if((declaringClass.isMemberClass()
                         || declaringClass.isAnonymousClass()
-                        || declaringClass.isLocalClass())
+                        // if it's a local class its container method must not be static
+                        || (declaringClass.isLocalClass() && !isStaticLocalContainer(declaringClass)))
                     && !Modifier.isStatic(declaringClass.getModifiers()))
                 start = 1;
         }
+        
+        // some compilers will only include non-synthetic parameters in getGenericParameterTypes(), so we need to know if
+        // we have less, we should subtract synthetic parameters
+        int parametersOffset = javaParameters.length != parameterCount ? -start : 0;
+        // if at least one parameter is annotated, java reflection will only include non-synthetic parameters in 
+        // getParameterAnnotations(), so we need to know if we have less, we should subtract synthetic parameters
+        int annotationsOffset = annotations.length != parameterCount ? -start : 0;
+        
+        // we have synthetic parameters first (skipped with start), then regular params, then synthetic captured params
+        
+        // if we have any synthetic params, remove them from the count, except the ones from the start
+        // this makes sure we don't consider synthetic captured params
+        if(javaParameters.length != parameterCount)
+            parameterCount = javaParameters.length + start;
+        else if(annotations.length != parameterCount) // better luck with annotations?
+            parameterCount = annotations.length + start;
+
         // skip synthetic parameters
         for(int i=start;i<parameterCount;i++){
             // apply offsets for parameters and annotations if synthetic parameters are not included
             parameters.add(new ReflectionVariable(javaParameters[i+parametersOffset], annotations[i+annotationsOffset]));
         }
         return parameters;
+    }
+
+    private boolean isStaticLocalContainer(Class<?> klass) {
+        Constructor<?> enclosingConstructor = klass.getEnclosingConstructor();
+        if(enclosingConstructor != null)
+            return Modifier.isStatic(enclosingConstructor.getModifiers());
+        Method enclosingMethod = klass.getEnclosingMethod();
+        return Modifier.isStatic(enclosingMethod.getModifiers());
     }
 
     @Override
