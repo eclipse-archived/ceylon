@@ -4399,7 +4399,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER), attr);
             } else {
                 // must use the setter
-                if (Decl.isLocalNotInitializer(decl)) {
+                if (Decl.isLocal(decl)) {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
                 } else if (decl.isStaticallyImportable()) {
                     lhs = naming.makeDeclName(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);

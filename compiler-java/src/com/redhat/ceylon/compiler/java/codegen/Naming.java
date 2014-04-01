@@ -1243,8 +1243,7 @@ public class Naming implements LocalId {
         } else if ((namingOptions & NA_WRAPPER_UNQUOTED) != 0) {
             expr = makeQualIdent(expr, getRealName(decl, namingOptions & (NA_GETTER | NA_SETTER | NA_WRAPPER_UNQUOTED)));
         } else if ((namingOptions & NA_Q_LOCAL_INSTANCE) != 0) {
-            if ((decl.isCaptured() && decl.isVariable())
-                    || decl.isSelfCaptured()) {
+            if (Decl.isBoxedVariable(decl)) {
                 expr = makeQualIdent(expr, getVariableBoxName(decl));
             } else {
                 expr = makeQualIdent(expr, getAttrClassName(decl, namingOptions & (NA_GETTER | NA_SETTER)));
