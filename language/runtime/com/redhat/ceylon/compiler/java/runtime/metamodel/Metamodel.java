@@ -24,17 +24,12 @@ import ceylon.language.finished_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
+import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
-import ceylon.language.meta.declaration.AnnotatedDeclaration;
-import ceylon.language.meta.declaration.Module;
-import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.OpenTypeVariable;
-import ceylon.language.meta.declaration.Package;
-import ceylon.language.meta.declaration.NestableDeclaration;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.Logger;
