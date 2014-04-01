@@ -172,19 +172,6 @@ public class Naming implements LocalId {
         return s + suffix.toString();
     }
     
-    private static String suffixName(Suffix suffix, String... rest) {
-        if (rest.length == 0) {
-            throw new RuntimeException();
-        }
-        StringBuilder sb = new StringBuilder();
-        for (String s : rest) {
-            sb.append(s).append('$');
-        }
-        sb.setLength(sb.length()-1);// remove last $
-        sb.append(suffix);
-        return sb.toString();
-    }
-    
     static String compoundName(String name, String name2) {
         return name + "$" + name2;
     }

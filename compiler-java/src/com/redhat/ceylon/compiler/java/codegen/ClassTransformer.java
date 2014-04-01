@@ -922,7 +922,6 @@ public class ClassTransformer extends AbstractTransformer {
 
     private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
         List<JCExpression> members = List.nil();
-        Package pkg = Decl.getPackageContainer(model);
         for(Declaration member : model.getMembers()){
             if(member instanceof ClassOrInterface == false
                     && member instanceof TypeAlias == false){
@@ -940,7 +939,6 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     private void addAtContainer(ClassDefinitionBuilder classBuilder, TypeDeclaration model) {
-        Package pkg = Decl.getPackageContainer(model);
         Scope scope = model.getContainer();
         if(scope == null || scope instanceof Package)
             return;
@@ -1697,12 +1695,6 @@ public class ClassTransformer extends AbstractTransformer {
         return false;
     }
 
-    private Tree.Identifier makeIdentifier(String name) {
-        Tree.Identifier id = new Tree.Identifier(null);
-        id.setText(name);
-        return id;
-    }
-    
     public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         final Value model = decl.getDeclarationModel();
         boolean lazy = decl.getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression;

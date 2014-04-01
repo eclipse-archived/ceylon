@@ -394,7 +394,6 @@ public class Decl {
     public static boolean isLocalNotInitializerScope(Scope scope) {
         return scope instanceof MethodOrValue 
                 || scope instanceof ControlBlock
-                || scope instanceof Setter
                 || scope instanceof NamedArgumentList
                 || scope instanceof Specification;
     }
