@@ -1801,27 +1801,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Turn a list of possibly overloaded methods into a map
         // of lists that contain methods with the same name
         Map<String, List<MethodMirror>> methods = new LinkedHashMap<String, List<MethodMirror>>();
-        for(MethodMirror methodMirror : classMirror.getDirectMethods()){
-            // We skip members marked with @Ignore
-            if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            if(methodMirror.isStaticInit())
-                continue;
-            if(isCeylon && methodMirror.isStatic())
-                continue;
-            // FIXME: temporary, because some private classes from the jdk are
-            // referenced in private methods but not available
-            if(isFromJDK && !methodMirror.isPublic())
-                continue;
-            String methodName = methodMirror.getName();
-            List<MethodMirror> homonyms = methods.get(methodName);
-            if (homonyms == null) {
-                homonyms = new LinkedList<MethodMirror>();
-                methods.put(methodName, homonyms);
-            }
-            homonyms.add(methodMirror);
+        collectMethods(classMirror.getDirectMethods(), methods, isCeylon, isFromJDK);
+
+        if(isCeylon && klass instanceof LazyInterface){
+            ClassMirror companionClass = ((LazyInterface)klass).companionClass;
+            if(companionClass != null)
+                collectMethods(companionClass.getDirectMethods(), methods, isCeylon, isFromJDK);
+            else
+                logWarning("CompanionClass missing for "+klass);
         }
-        
+
         // Add the methods
         for(List<MethodMirror> methodMirrors : methods.values()){
             boolean isOverloaded = methodMirrors.size() > 1;
@@ -1987,6 +1976,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         } 
         messageValue.setUncheckedNullType(true);
+    }
+
+    private void collectMethods(List<MethodMirror> methodMirrors, Map<String,List<MethodMirror>> methods,
+                                boolean isCeylon, boolean isFromJDK) {
+        for(MethodMirror methodMirror : methodMirrors){
+            // We skip members marked with @Ignore
+            if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+                continue;
+            if(methodMirror.isStaticInit())
+                continue;
+            if(isCeylon && methodMirror.isStatic())
+                continue;
+            // FIXME: temporary, because some private classes from the jdk are
+            // referenced in private methods but not available
+            if(isFromJDK && !methodMirror.isPublic())
+                continue;
+            String methodName = methodMirror.getName();
+            List<MethodMirror> homonyms = methods.get(methodName);
+            if (homonyms == null) {
+                homonyms = new LinkedList<MethodMirror>();
+                methods.put(methodName, homonyms);
+            }
+            homonyms.add(methodMirror);
+        }
     }
 
     private boolean isInstantiator(MethodMirror methodMirror) {
