@@ -19,7 +19,11 @@
  */
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.redhat.ceylon.compiler.loader.mirror.MethodMirror;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 
 /**
@@ -27,11 +31,12 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class JavaMethod extends Method {
+public class JavaMethod extends Method implements LocalDeclarationContainer {
 
     private String realName;
     private boolean defaultedAnnotation;
     public final MethodMirror mirror;
+    private Map<String,Declaration> localDeclarations;
     
     @Override
     protected Class<?> getModelClass() {
@@ -60,5 +65,19 @@ public class JavaMethod extends Method {
     
     public void setDefaultedAnnotation(boolean defaultedAnnotation) {
         this.defaultedAnnotation = defaultedAnnotation;
+    }
+
+    @Override
+    public Declaration getLocalDeclaration(String name) {
+        if(localDeclarations == null)
+            return null;
+        return localDeclarations.get(name);
+    }
+
+    @Override
+    public void addLocalDeclaration(Declaration declaration) {
+        if(localDeclarations == null)
+            localDeclarations = new HashMap<String, Declaration>();
+        localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
 }

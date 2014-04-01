@@ -19,6 +19,10 @@
  */
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /**
@@ -26,9 +30,11 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class JavaBeanValue extends Value {
+public class JavaBeanValue extends Value implements LocalDeclarationContainer {
     private String getterName;
     private String setterName;
+    
+    private Map<String,Declaration> localDeclarations;
 
     @Override
     protected Class<?> getModelClass() {
@@ -51,4 +57,17 @@ public class JavaBeanValue extends Value {
         return getterName;
     }
     
+    @Override
+    public Declaration getLocalDeclaration(String name) {
+        if(localDeclarations == null)
+            return null;
+        return localDeclarations.get(name);
+    }
+
+    @Override
+    public void addLocalDeclaration(Declaration declaration) {
+        if(localDeclarations == null)
+            localDeclarations = new HashMap<String, Declaration>();
+        localDeclarations.put(declaration.getPrefixedName(), declaration);
+    }
 }

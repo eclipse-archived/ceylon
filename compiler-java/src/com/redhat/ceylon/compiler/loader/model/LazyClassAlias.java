@@ -365,4 +365,14 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     public boolean isLocal(){
         return this.local ;
     }
+
+    @Override
+    public Declaration getLocalDeclaration(String name) {
+        return null;
+    }
+
+    @Override
+    public void addLocalDeclaration(Declaration declaration) {
+        throw new RuntimeException("type aliases do not contain any local declarations");
+    }
 }

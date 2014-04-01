@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,12 +45,14 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LazyValue extends Value implements LazyElement {
+public class LazyValue extends Value implements LazyElement, LocalDeclarationContainer {
     
     public ClassMirror classMirror;
     private ModelCompleter completer;
     private String realName;
-    
+
+    private Map<String,Declaration> localDeclarations;
+
     private boolean isLoaded = false;
     private boolean isLoaded2 = false;
 
@@ -276,37 +279,37 @@ public class LazyValue extends Value implements LazyElement {
 
     @Override
     public boolean isToplevel() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isToplevel();
     }
 
     @Override
     public boolean isClassMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassMember();
     }
 
     @Override
     public boolean isInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isInterfaceMember();
     }
 
     @Override
     public boolean isClassOrInterfaceMember() {
-        load();
+        // NO lazy-loading since this uses getContainer() which is set before lazy-loading
         return super.isClassOrInterfaceMember();
     }
 
     @Override
     public boolean equals(Object object) {
-        load();
+        // NO lazy-loading since this uses only things set before lazy-loading
         return super.equals(object);
     }
 
     @Override
     public int hashCode() {
-        load();
+        // NO lazy-loading since this uses only things set before lazy-loading
         return super.hashCode();
     }
 
@@ -372,10 +375,26 @@ public class LazyValue extends Value implements LazyElement {
 
     @Override
     public boolean isLocal() {
+        // FIXME: this may be wrong now, but is it used?
         return false;
     }
 
     @Override
     public void setLocal(boolean local) {
+    }
+
+    @Override
+    public Declaration getLocalDeclaration(String name) {
+        load();
+        if(localDeclarations == null)
+            return null;
+        return localDeclarations.get(name);
+    }
+
+    @Override
+    public void addLocalDeclaration(Declaration declaration) {
+        if(localDeclarations == null)
+            localDeclarations = new HashMap<String, Declaration>();
+        localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
 }

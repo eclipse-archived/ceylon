@@ -17,11 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
 package com.redhat.ceylon.compiler.loader.model;
 
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 
-public interface LazyContainer extends LazyElement, LocalDeclarationContainer {
-    public void addMember(Declaration decl);
-
+/**
+ * Scope used to contain local declarations.
+ * 
+ * @author Stéphane Épardaud <stef@epardaud.fr>
+ */
+public interface LocalDeclarationContainer extends Scope {
+    
+    /**
+     * Gets a local declaration by (prefixed) name
+     */
+    Declaration getLocalDeclaration(String name);
+    
+    /**
+     * Adds a new local declaration. Its prefixed name must be unique.
+     */
+    void addLocalDeclaration(Declaration decl);
 }

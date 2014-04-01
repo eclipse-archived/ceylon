@@ -20,7 +20,9 @@
 
 package com.redhat.ceylon.compiler.loader.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
@@ -55,6 +57,7 @@ public class LazyClass extends Class implements LazyContainer {
     private boolean isStatic;
     private boolean isCeylon;
     private boolean isValueType;
+    private Map<String,Declaration> localDeclarations;
     
     private boolean isLoaded = false;
     private boolean isLoaded2 = false;
@@ -414,5 +417,20 @@ public class LazyClass extends Class implements LazyContainer {
     @Override
     public boolean isLocal(){
         return this.local ;
+    }
+
+    @Override
+    public Declaration getLocalDeclaration(String name) {
+        load();
+        if(localDeclarations == null)
+            return null;
+        return localDeclarations.get(name);
+    }
+
+    @Override
+    public void addLocalDeclaration(Declaration declaration) {
+        if(localDeclarations == null)
+            localDeclarations = new HashMap<String, Declaration>();
+        localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
 }
