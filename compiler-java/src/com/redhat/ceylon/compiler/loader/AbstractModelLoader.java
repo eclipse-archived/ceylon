@@ -2902,17 +2902,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
         try{
             MethodMirror meth = null;
+            String getterName = Naming.getGetterName(value);
+            String setterName = Naming.getSetterName(value);
+            boolean toplevel = value.isToplevel();
             for (MethodMirror m : value.classMirror.getDirectMethods()) {
                 // Do not skip members marked with @Ignore, because the getter is supposed to be ignored
 
-                if (m.getName().equals(
-                        Naming.getGetterName(value))
-                        && m.isStatic() && m.getParameters().size() == 0) {
+                if (m.getName().equals(getterName)
+                        && (!toplevel || m.isStatic()) 
+                        && m.getParameters().size() == 0) {
                     meth = m;
                 }
-                if (m.getName().equals(
-                        Naming.getSetterName(value))
-                        && m.isStatic() && m.getParameters().size() == 1) {
+                if (m.getName().equals(setterName)
+                        && (!toplevel || m.isStatic()) 
+                        && m.getParameters().size() == 1) {
                     value.setVariable(true);
                 }
             }
@@ -2981,7 +2984,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": static method missing"));
                 return;
             }
-            if(!meth.isStatic()){
+            // only check the static mod for toplevel classes
+            if(!method.classMirror.isLocalClass() && !meth.isStatic()){
                 method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": method is not static"));
                 return;
             }
