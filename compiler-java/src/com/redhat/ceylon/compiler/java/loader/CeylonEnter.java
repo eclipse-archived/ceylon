@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DeferredVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DefiniteAssignmentVisitor;
 import com.redhat.ceylon.compiler.java.codegen.UnsupportedVisitor;
+import com.redhat.ceylon.compiler.java.codegen.LocalInterfaceVisitor;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -443,6 +444,7 @@ public class CeylonEnter extends Enter {
         DeferredVisitor deferredVisitor = new DeferredVisitor();
         AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
+        LocalInterfaceVisitor localInterfaceVisitor = new LocalInterfaceVisitor();
         // Extra phases for the compiler
         
         // boxing visitor depends on boxing decl
@@ -459,6 +461,7 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(deferredVisitor);
             compilationUnit.visit(amv);
             compilationUnit.visit(dav);
+            compilationUnit.visit(localInterfaceVisitor);
         }
         
         collectTreeErrors(true);
