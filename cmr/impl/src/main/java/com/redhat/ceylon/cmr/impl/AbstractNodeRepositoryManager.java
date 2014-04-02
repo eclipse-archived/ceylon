@@ -100,6 +100,23 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return adapter.getArtifactResult(this, node);
     }
 
+    @Override
+    public List<Repository> getRepositories() {
+        final List<Repository> repos = new ArrayList<>();
+        boolean cacheAdded = false;
+        for (Repository root : roots) {
+            if (!addCacheAsRoot && !cacheAdded && root.getRoot().isRemote()) {
+                repos.add(cache);
+                cacheAdded = true;
+            }
+            repos.add(root);
+        }
+        if (!addCacheAsRoot) {
+            repos.add(cache);
+        }
+        return repos;
+    }
+    
     public List<String> getRepositoriesDisplayString() {
         final List<String> displayStrings = new ArrayList<>();
         boolean cacheAdded = false;

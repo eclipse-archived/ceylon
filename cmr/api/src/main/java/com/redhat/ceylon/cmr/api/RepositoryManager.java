@@ -155,6 +155,13 @@ public interface RepositoryManager {
     void removeArtifact(ArtifactContext context) throws RepositoryException;
 
     /**
+     * Returns the list of repositories for this manager.
+     *
+     * @return the repositories
+     */
+    List<Repository> getRepositories();
+
+    /**
      * Gather repositories display strings.
      *
      * @return the display strings

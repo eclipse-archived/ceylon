@@ -57,6 +57,14 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
         this.manager = manager;
     }
 
+    @Override
+    public List<Repository> getRepositories() {
+        List<Repository> repos = new ArrayList<>();
+        repos.addAll(output.getRepositories());
+        repos.addAll(manager.getRepositories());
+        return repos;
+    }
+
     public List<String> getRepositoriesDisplayString() {
         List<String> displayStrings = new ArrayList<String>();
         displayStrings.addAll(output.getRepositoriesDisplayString());
