@@ -86,6 +86,11 @@ public class JDKRepository extends AbstractRepository {
         }
 
         @Override
+        public boolean isSearchable() {
+            return true;
+        }
+
+        @Override
         public void completeModules(ModuleQuery query, ModuleSearchResult result) {
             // abort if not JVM
             if (query.getType() != ModuleQuery.Type.JVM)

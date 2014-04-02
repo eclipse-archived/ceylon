@@ -292,6 +292,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     @Override
+    public boolean isSearchable() {
+        return connectionAllowed() && isHerd();
+    }
+
+    @Override
     public void completeModules(final ModuleQuery query, final ModuleSearchResult result) {
         if(connectionAllowed() && isHerd() && herdCompleteModulesURL != null){
             // let's try Herd

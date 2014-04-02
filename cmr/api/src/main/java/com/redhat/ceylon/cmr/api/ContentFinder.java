@@ -24,6 +24,8 @@ package com.redhat.ceylon.cmr.api;
  * @author Stef Epardaud
  */
 public interface ContentFinder {
+    boolean isSearchable();
+    
     void completeModules(ModuleQuery query, ModuleSearchResult result);
 
     void completeVersions(ModuleVersionQuery query, ModuleVersionResult result);

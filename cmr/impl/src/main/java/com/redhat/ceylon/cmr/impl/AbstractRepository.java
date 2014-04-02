@@ -487,6 +487,16 @@ public abstract class AbstractRepository implements Repository {
     }
 
     @Override
+    public boolean isSearchable() {
+        // check for delegate
+        ContentFinder delegate = root.getService(ContentFinder.class);
+        if (delegate != null) {
+            return delegate.isSearchable();
+        }
+        return true;
+    }
+    
+    @Override
     public void searchModules(ModuleQuery query, ModuleSearchResult result) {
         // check for delegate
         ContentFinder delegate = root.getService(ContentFinder.class);

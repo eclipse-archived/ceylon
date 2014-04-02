@@ -56,6 +56,12 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
 
 
     @Override
+    public boolean isSearchable() {
+        // remote content stores do not participate in completion for speed reasons
+        return false;
+    }
+
+    @Override
     public void completeModules(ModuleQuery lookup, ModuleSearchResult result) {
         // remote content stores do not participate in completion for speed reasons
     }
