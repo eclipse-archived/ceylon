@@ -3559,6 +3559,10 @@ public abstract class AbstractTransformer implements Transformation {
         return result;
     }
 
+    /**
+     * Determine whether we can use a plain {@code instanceof} instead of 
+     * a full {@code Util.isReified()} for a {@code is} test
+     */
     private boolean canOptimiseReifiedTypeTest(ProducedType type) {
         if(isJavaArray(type)){
             if(isJavaObjectArray(type)){
@@ -3573,11 +3577,23 @@ public abstract class AbstractTransformer implements Transformation {
         // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
-        for(Entry<TypeParameter, ProducedType> ta : type.getTypeArguments().entrySet()){
-            if(!ta.getKey().isCovariant() || !isAnything(ta.getValue()))
+        for(Entry<TypeParameter, ProducedType> entry : type.getTypeArguments().entrySet()){
+            TypeParameter tp = entry.getKey();
+            java.util.List<ProducedType> bounds = tp.getSatisfiedTypes();
+            ProducedType ta = entry.getValue();
+            if(!tp.isCovariant()) {
                 return false;
+            }
+            if ((bounds == null || bounds.isEmpty()) && !isAnything(ta)) {
+                return false;
+            }
+            for (ProducedType bound : bounds) {
+                if (!ta.isSupertypeOf(bound)) {
+                    return false;
+                }
+            }
         }
-        // they're all void we can optimise
+        // they're all Anything (or supertypes of their upper bound) we can optimise
         return true;
     }
 
