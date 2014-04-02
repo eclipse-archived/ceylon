@@ -49,7 +49,7 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
             } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
             return (Element)result$4;
         }
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(x, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+        if (x instanceof .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo && .com.redhat.ceylon.compiler.java.Util.isReified(x, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
             final long result = ((.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x).foo(.ceylon.language.Boolean.instance(true)).longValue();
             final .java.lang.Object result$9;
             .java.lang.Object result$8 = null;

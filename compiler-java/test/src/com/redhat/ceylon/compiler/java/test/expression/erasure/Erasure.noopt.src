@@ -416,14 +416,14 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             }
             returning ((.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)container).contains($ceylontmp$14);
         );
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(p1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Category.class, .ceylon.language.Object.$TypeDescriptor$))) {
+        if (p1 instanceof .ceylon.language.Category && .com.redhat.ceylon.compiler.java.Util.isReified(p1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Category.class, .ceylon.language.Object.$TypeDescriptor$))) {
         }
         sync = (
             let
             {
                 .java.lang.Object $ceylontmp$17 = p1;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$17, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Category.class, .ceylon.language.Object.$TypeDescriptor$));
+            returning $ceylontmp$17 instanceof .ceylon.language.Category && .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$17, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Category.class, .ceylon.language.Object.$TypeDescriptor$));
         );
     }
     
