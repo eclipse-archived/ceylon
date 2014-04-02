@@ -256,12 +256,12 @@ public abstract class TypeDescriptor {
 
         @Override
         public java.lang.Class<?> getArrayElementClass() {
-            throw new AssertionException("Should never be called");
+            throw new AssertionError("Should never be called");
         }
 
         @Override
         public boolean containsNull() {
-            throw new AssertionException("Should never be called");
+            throw new AssertionError("Should never be called");
         }
 
         @Override
