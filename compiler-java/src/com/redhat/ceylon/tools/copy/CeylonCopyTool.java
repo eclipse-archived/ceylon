@@ -148,7 +148,9 @@ public class CeylonCopyTool extends RepoUsingTool {
                     }
                 }
             } else {
-                errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
+                String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                errorAppend(err);
+                errorNewline();
             }
         }
     }

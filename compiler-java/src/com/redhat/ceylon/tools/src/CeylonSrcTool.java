@@ -95,7 +95,9 @@ public class CeylonSrcTool extends RepoUsingTool {
             }
             ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(new ArtifactContext(module.getName(), version, ArtifactContext.SRC));
             if (srcArchive == null) {
-                errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
+                String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                errorAppend(err);
+                errorNewline();
                 continue;
             }
             extractArchive(srcArchive, new File(src));

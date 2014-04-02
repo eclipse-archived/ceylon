@@ -137,14 +137,18 @@ public class CeylonInfoTool extends RepoUsingTool {
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
                 Collection<ModuleDetails> modules = getModules(name, queryType, binaryMajor, binaryMinor);
                 if (modules.isEmpty()) {
-                    errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
+                    String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                    errorAppend(err);
+                    errorNewline();
                     continue;
                 }
                 outputModules(module, modules);
             } else {
                 Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), queryType, binaryMajor, binaryMinor);
                 if (versions.isEmpty()) {
-                    errorMsg("module.not.found", module, getRepositoryManager().getRepositoriesDisplayString());
+                    String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                    errorAppend(err);
+                    errorNewline();
                     continue;
                 }
                 if (module.getVersion() == null || module.getVersion().isEmpty()) {
