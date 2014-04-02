@@ -27,6 +27,8 @@ interface Bug1594ProducerWithBound<out T>
     shared formal T t;
 }
 @noanno
+interface Bug1594ProducerAlias => Bug1594Producer<String>;
+@noanno
 interface Bug1594Consumer<in T> {
     shared formal void m(T t);
 }
@@ -35,16 +37,24 @@ interface Bug1594ConsumerWithBound<in T>
         given T satisfies Number {
     shared formal void m(T t);
 }
+interface Bug1594Alias => List<Character>;
 @noanno
-void optimizedIs(Anything o) {
+class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o) 
+        given X satisfies List<Anything> 
+        given Y satisfies String
+        given Y2 satisfies Bug1594Alias
+        given Z satisfies Y {
     if (is Bug1594Producer<Anything> o) {
         print("Bug1594Producer<Anything>");
     }
-    if (is Bug1594Producer<Object> o, 1==o.t) {
+    if (is Bug1594Producer<Object> o) {
         print("Bug1594Producer<Object>");
     }
-    if (is Bug1594Producer<Number> o, 1==o.t) {
+    if (is Bug1594Producer<Number> o) {
         print("Bug1594Producer<Number>");
+    }
+    if (is Bug1594ProducerAlias o) {
+        print("Bug1594ProducerAlias");
     }
     if (is Bug1594ProducerWithBound<Number> o) {
         print("Bug1594ProducerWithBound<Number>");
@@ -66,5 +76,17 @@ void optimizedIs(Anything o) {
     }
     if (is List<Anything> o) {
         print("List<Anything>");
+    }
+    if (is X o) {
+        print("X");
+    }
+    if (is Y o) {
+        print("Y");
+    }
+    if (is Y2 o) {
+        print("Y2");
+    }
+    if (is Z o) {
+        print("Z");
     }
 }
