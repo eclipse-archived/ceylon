@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -3546,6 +3547,20 @@ public abstract class AbstractTransformer implements Transformation {
                     result = typeTester.andOr(
                             typeTester.isInstanceof(varExpr, testedType),
                             typeTester.isReified(varName.makeIdent(), testedType), JCTree.AND);
+                } else if (testedType.getDeclaration() instanceof TypeParameter
+                        && !nonObjectClassesAndInterfacesOnly(testedType.getDeclaration().getSatisfiedTypes()).isEmpty()) {
+                    // If we're testing against a type parameter with only 
+                    // class or interface upper bounds we can again shortcut the 
+                    // Util.isReified() using instanceof against the bounds
+                    result = typeTester.isReified(varName.makeIdent(), testedType);
+                    Iterator<ProducedType> iterator = nonObjectClassesAndInterfacesOnly(testedType.getDeclaration().getSatisfiedTypes()).iterator();
+                    while (iterator.hasNext()) {
+                        ProducedType type = iterator.next();
+                        ClassOrInterface c = ((ClassOrInterface)type.resolveAliases().getDeclaration());
+                        result = typeTester.andOr(
+                                typeTester.isInstanceof(iterator.hasNext() ? varName.makeIdent() : varExpr, c.getType()),
+                                result, JCTree.AND);
+                    }
                 } else {
                     result = typeTester.isReified(varExpr, testedType);
                 }
@@ -3554,6 +3569,19 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 // Use an instanceof
                 result = typeTester.isInstanceof(varExpr, testedType);
+            }
+        }
+        return result;
+    }
+
+
+    private java.util.List<ProducedType> nonObjectClassesAndInterfacesOnly(
+            Iterable<ProducedType> satisfiedTypes) {
+        ArrayList<ProducedType> result = new ArrayList<ProducedType>();
+        for (ProducedType type: satisfiedTypes) {
+            if (type.getDeclaration() instanceof ClassOrInterface
+                    && !willEraseToObject(type)) {
+                result.add(type);
             }
         }
         return result;
