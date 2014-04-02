@@ -20,6 +20,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
+import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
@@ -192,7 +193,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 return (result.version() != null) ? result.version() : "";
             }
             if (ModuleUtil.isDefaultModule(name) && !allowCompilation) {
-                throw new ToolUsageError(Messages.msg(bundle, "module.not.found", name, repoMgr.getRepositoriesDisplayString()));
+                String err = getModuleNotFoundErrorMessage(repoMgr, name, version);
+                throw new ToolUsageError(err);
             }
         }
         
@@ -245,12 +247,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             }
         }
         if (versions.isEmpty()) {
-            throw new ToolUsageError(Messages.msg(bundle, "module.not.found", name, repoMgr.getRepositoriesDisplayString()));
+            String err = getModuleNotFoundErrorMessage(repoMgr, name, version);
+            throw new ToolUsageError(err);
         }
         if (versions.size() > 1 || suggested) {
             StringBuilder err = new StringBuilder();
             if (version == null) {
-                err.append(Messages.msg(bundle, "missing.version", name, repoMgr.getRepositoriesDisplayString()));
+                err.append(Messages.msg(bundle, "missing.version", name));
             } else {
                 err.append(Messages.msg(bundle, "version.not.found", version, name));
             }
@@ -277,6 +280,26 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
     }
     
+    protected String getModuleNotFoundErrorMessage(RepositoryManager repoMgr, String name, String version) {
+        StringBuilder err = new StringBuilder();
+        err.append(Messages.msg(bundle, "module.not.found", name));
+        err.append("\n");
+        boolean fullySearchable = true;
+        for (Repository repo : repoMgr.getRepositories()) {
+            if (version != null || repo.isSearchable()) {
+                err.append("    ");
+                err.append(repo.getDisplayString());
+                err.append("\n");
+            } else {
+                fullySearchable = false;
+            }
+        }
+        if (version == null && !fullySearchable) {
+            err.append(Messages.msg(bundle, "missing.version.suggestion"));
+        }
+        return err.toString();
+    }
+
     private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
         if (checkCompilation) {
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
@@ -426,6 +449,10 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return append(out, s);
     }
     
+    public RepoUsingTool errorAppend(Object s) throws IOException {
+        return append(error, s);
+    }
+    
     public RepoUsingTool newline(Appendable out) throws IOException {
         out.append(System.lineSeparator());
         return this;
@@ -433,5 +460,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     public RepoUsingTool newline() throws IOException {
         return newline(out);
+    }
+    
+    public RepoUsingTool errorNewline() throws IOException {
+        return newline(error);
     }
 }
