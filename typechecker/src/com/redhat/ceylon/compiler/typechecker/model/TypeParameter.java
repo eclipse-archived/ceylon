@@ -16,6 +16,7 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     private boolean constrained;
     private Boolean hasNonErasedBounds;
     private List<Declaration> members = new ArrayList<Declaration>(0);
+    private boolean captured;
 
     @Override
     public List<Declaration> getMembers() {
@@ -183,5 +184,14 @@ public class TypeParameter extends TypeDeclaration implements Functional {
     @Override
     public void clearProducedTypeCache() {
         Util.clearProducedTypeCache(this);
+    }
+
+    public void setCaptured(boolean captured) {
+        this.captured = captured;
+    }
+    
+    @Override
+    public boolean isCaptured() {
+        return captured;
     }
 }

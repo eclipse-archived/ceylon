@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVers
 import static java.util.Collections.emptyList;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a named, annotated program element:
@@ -18,6 +19,7 @@ public abstract class Declaration
         implements Referenceable, Annotated {
 
 	private String name;
+	private String qualifier;
 	private boolean shared;
 	private boolean formal;
 	private boolean actual;
@@ -289,6 +291,8 @@ public abstract class Declaration
             Declaration that = (Declaration) object;
             String thisName = getName();
             String thatName = that.getName();
+            if(!Objects.equals(getQualifier(), that.getQualifier()))
+                return false;
             Scope thisContainer = getAbstraction(getContainer());
             Scope thatContainer = getAbstraction(that.getContainer());
             if (thisName==null || thatName==null || 
@@ -323,7 +327,17 @@ public abstract class Declaration
     
     @Override
     public int hashCode() {
-        return getName()==null ? 0 : getName().hashCode();
+        int ret = 17;
+        Scope container = getContainer();
+        ret = (37 * ret) + (container == null ? 0 : container.hashCode());
+        String qualifier = getQualifier();
+        ret = (37 * ret) + (qualifier == null ? 0 : qualifier.hashCode());
+        String name = getName();
+        ret = (37 * ret) + (name == null ? 0 : name.hashCode());
+        // make sure we don't consider getter/setter or value/anonymous-type equal
+        ret = (37 * ret) + (isSetter() ? 0 : 1);
+        ret = (37 * ret) + (isAnonymous() ? 0 : 1);
+        return ret;
     }
     
     /**
@@ -386,4 +400,17 @@ public abstract class Declaration
     protected abstract int hashCodeForCache();
 
     protected abstract boolean equalsForCache(Object o);
+
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
+    }
+    
+    public String getPrefixedName(){
+        String qualifier = getQualifier();
+        return qualifier == null ? name : qualifier + name;
+    }
 }

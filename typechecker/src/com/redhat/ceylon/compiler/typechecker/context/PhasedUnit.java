@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ControlFlowVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.LiteralVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.LocalDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.RefinementVisitor;
@@ -243,6 +244,10 @@ public class PhasedUnit {
             		unitFile.getPath(), pathRelativeToSrcDir, unitFactory);
             compilationUnit.visit(dv);
             unit = dv.getCompilationUnit();
+            
+            LocalDeclarationVisitor ldv = new LocalDeclarationVisitor();
+            compilationUnit.visit(ldv);
+            
             declarationsScanned = true;
             scanningDeclarations = false;
         }

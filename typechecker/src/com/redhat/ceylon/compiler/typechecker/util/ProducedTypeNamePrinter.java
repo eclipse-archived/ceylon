@@ -10,7 +10,9 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
@@ -24,6 +26,8 @@ public class ProducedTypeNamePrinter {
     private boolean printTypeParameters;
     private boolean printTypeParameterDetail;
     private boolean printQualifyingType;
+    private boolean printQualifier;
+    private boolean printFullyQualified;
     
     public ProducedTypeNamePrinter() {
     }
@@ -53,6 +57,14 @@ public class ProducedTypeNamePrinter {
 
     protected boolean printQualifyingType() {
         return printQualifyingType;
+    }
+
+    protected boolean printQualifier() {
+        return printQualifier;
+    }
+
+    protected boolean printFullyQualified() {
+        return printFullyQualified;
     }
 
     public String getProducedTypeName(ProducedType pt, Unit unit) {
@@ -375,6 +387,7 @@ public class ProducedTypeNamePrinter {
     protected String getSimpleProducedTypeName(ProducedType pt, Unit unit) {
         StringBuilder ptn = new StringBuilder();
 
+        boolean fullyQualified = printFullyQualified();
         if (printQualifyingType()) {
             ProducedType qt = pt.getQualifyingType();
             if (qt != null) {
@@ -389,10 +402,11 @@ public class ProducedTypeNamePrinter {
 					ptn.append(">");
 	            }
     			ptn.append(".");
+    			fullyQualified = false;
             }
         }
 
-        ptn.append(getSimpleDeclarationName(pt.getDeclaration(), unit));
+        printDeclaration(ptn, pt.getDeclaration(), fullyQualified, unit);
 
         if (printTypeParameters() && !pt.getTypeArgumentList().isEmpty()) {
             ptn.append("<");
@@ -414,6 +428,34 @@ public class ProducedTypeNamePrinter {
             ptn.append(">");
         }
         return ptn.toString();
+    }
+
+    private void printDeclaration(StringBuilder ptn, Declaration declaration, boolean fullyQualified, Unit unit) {
+        // type parameters are not fully qualified
+        if(fullyQualified && declaration instanceof TypeParameter == false){
+            Scope container = declaration.getContainer();
+            while(container != null
+                    && container instanceof Package == false
+                    && container instanceof Declaration == false){
+                container = container.getContainer();
+            }
+            if(container != null){
+                if(container instanceof Package){
+                    String q = container.getQualifiedNameString();
+                    if(!q.isEmpty())
+                        ptn.append(q).append("::");
+                }else{
+                    printDeclaration(ptn, (Declaration) container, fullyQualified, unit);
+                    ptn.append(".");
+                }
+            }
+        }
+        if(printQualifier()){
+            String qualifier = declaration.getQualifier();
+            if(qualifier != null)
+                ptn.append(qualifier);
+        }
+        ptn.append(getSimpleDeclarationName(declaration, unit));
     }
 
     protected String getSimpleDeclarationName(Declaration declaration, Unit unit) {
