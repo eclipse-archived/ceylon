@@ -3538,8 +3538,19 @@ public abstract class AbstractTransformer implements Transformation {
                 return typeTester.eval(varExpr, false);
             } else if ((!testedType.getTypeArguments().isEmpty() || isTypeParameter(testedType))
                         && !canOptimiseReifiedTypeTest(testedType)){
-                // requires a little magic
-                return typeTester.isReified(varExpr, testedType);
+                // requires we use Util.isReified()
+                if (testedType.getDeclaration() instanceof ClassOrInterface
+                        && testedType.getDeclaration() != expressionType.getDeclaration()) {
+                    // do a cheap instanceof test to try to shortcut the expensive
+                    // Util.isReified()
+                    result = typeTester.andOr(
+                            typeTester.isInstanceof(varExpr, testedType),
+                            typeTester.isReified(varName.makeIdent(), testedType), JCTree.AND);
+                } else {
+                    result = typeTester.isReified(varExpr, testedType);
+                }
+                return result;
+                
             } else {
                 // Use an instanceof
                 result = typeTester.isInstanceof(varExpr, testedType);
