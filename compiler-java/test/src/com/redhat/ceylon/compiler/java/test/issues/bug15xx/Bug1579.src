@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("number")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long number) {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class do_ {
+    
+    private do_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void $do() {
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> iterable = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>instance(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .java.lang.Object[]{
+                new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(1L),
+                new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L),
+                new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(3L)});
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>following(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.do_.$do();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1579_ {
+    
+    private bug1579_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1579() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")}).<.ceylon.language.String>following(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1579_.bug1579();
+    }
+}
