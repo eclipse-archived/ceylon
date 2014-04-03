@@ -24,11 +24,7 @@ shared interface Invertable<Other> of Other
     given Other satisfies Invertable<Other> {
     
     "The additive inverse of this value."
-    shared formal Other negativeValue;
-    
-    "This value."
-    deprecated
-    shared formal Other positiveValue;
+    shared formal Other negated;
     
     "The difference between this number and the given 
      number. Must produce the value `x + -y`."

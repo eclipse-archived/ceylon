@@ -345,22 +345,12 @@ public final class Integer
     }
 
     @Override
-    public Integer getPositiveValue() {
-        return this;
-    }
-
-    @Ignore
-    public static long getPositiveValue(long value) {
-        return value;
-    }
-
-    @Override
-    public Integer getNegativeValue() {
+    public Integer getNegated() {
         return instance(-value);
     }
 
     @Ignore
-    public static long getNegativeValue(long value) {
+    public static long getNegated(long value) {
         return -value;
     }
 

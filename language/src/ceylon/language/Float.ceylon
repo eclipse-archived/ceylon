@@ -87,8 +87,7 @@ shared native final class Float(float)
     
     shared actual native Float magnitude;
     
-    shared actual native Float negativeValue;
-    shared actual native Float positiveValue;
+    shared actual native Float negated;
     
     shared actual Float float;
     shared actual native Integer integer;

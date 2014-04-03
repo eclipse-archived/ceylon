@@ -66,8 +66,7 @@ shared native final class Integer(integer)
     shared actual native Integer wholePart;
     shared actual native Integer fractionalPart;
     
-    shared actual native Integer positiveValue;
-    shared actual native Integer negativeValue;
+    shared actual native Integer negated;
     
     shared actual native Integer timesInteger(Integer integer);    
     shared actual native Integer plusInteger(Integer integer);

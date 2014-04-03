@@ -276,22 +276,12 @@ public final class Float
     }   
     
     @Override
-    public Float getPositiveValue() {
-        return this;
-    }
-    
-    @Ignore
-    public static double getPositiveValue(double value) {
-        return value;
-    }
-    
-    @Override
-    public Float getNegativeValue() {
+    public Float getNegated() {
         return instance(-value);
     }
     
     @Ignore
-    public static double getNegativeValue(double value) {
+    public static double getNegated(double value) {
         return -value;
     }
     
