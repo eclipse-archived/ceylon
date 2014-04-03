@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
@@ -156,12 +157,12 @@ public class TypeParser {
         // then the type itself
         Part part = parseTypeNameWithArguments();
         String fullName = (pkg.isEmpty()) ? part.name : pkg + "." + part.name;
-        Object qualifyingType = loadTypeOrDeclaration(pkg, fullName, part, null);
+        ProducedType qualifyingType = loadType(pkg, fullName, part, null);
         while(lexer.lookingAt(TypeLexer.DOT)){
             lexer.eat();
             part = parseTypeNameWithArguments();
             fullName = fullName + '.' + part.name;
-            qualifyingType = loadTypeOrDeclaration(pkg, fullName, part, qualifyingType);
+            qualifyingType = loadType(pkg, fullName, part, qualifyingType);
         }
         if(qualifyingType == null){
             throw new ModelResolutionException("Could not find type '"+fullName+"'");
@@ -183,11 +184,11 @@ public class TypeParser {
         return result;
     }
     
-    private Object loadTypeOrDeclaration(String pkg, String fullName, Part part, Object qualifyingTypeOrDeclaration) {
+    private ProducedType loadType(String pkg, String fullName, Part part, ProducedType qualifyingType) {
         // try to find a qualified type
         try{
             Declaration newDeclaration;
-            if(qualifyingTypeOrDeclaration == null){
+            if(qualifyingType == null){
                 // FIXME: this only works for packages not contained in multiple modules
                 Package foundPackage = moduleScope.getPackage(pkg);
                 if(foundPackage != null)
@@ -200,32 +201,27 @@ public class TypeParser {
                     newDeclaration = null;
             }else{
                 // look it up via its qualifying type or decl
-                Declaration qualifyingDeclaration;
-                if(qualifyingTypeOrDeclaration instanceof ProducedType)
-                    qualifyingDeclaration = ((ProducedType)qualifyingTypeOrDeclaration).getDeclaration();
-                else
-                    qualifyingDeclaration = (Declaration)qualifyingTypeOrDeclaration;
+                Declaration qualifyingDeclaration = qualifyingType.getDeclaration();
+                if(qualifyingDeclaration instanceof FunctionOrValueInterface)
+                    qualifyingDeclaration = ((FunctionOrValueInterface)qualifyingDeclaration).getUnderlyingDeclaration();
                 newDeclaration = AbstractModelLoader.getDirectMember((Scope) qualifyingDeclaration, part.name);
                 if(newDeclaration == null)
                     throw new ModelResolutionException("Failed to resolve inner type or declaration "+part.name+" in "+qualifyingDeclaration.getQualifiedNameString());
             }
             if(newDeclaration == null)
                 return null;
-            else if(newDeclaration instanceof TypedDeclaration)
-                return newDeclaration;
-            // must be a TypeDeclaration
-            ProducedType qualifyingType;
-            if(qualifyingTypeOrDeclaration instanceof ProducedType)
-                qualifyingType = (ProducedType) qualifyingTypeOrDeclaration;
+            TypeDeclaration newTypeDeclaration;
+            if(newDeclaration instanceof TypeDeclaration)
+                newTypeDeclaration = (TypeDeclaration) newDeclaration;
             else
-                qualifyingType = null; // ignore qualifying TypedDeclarations
-            return ((TypeDeclaration)newDeclaration).getProducedType(qualifyingType, part.getParameters());
+                newTypeDeclaration = new FunctionOrValueInterface((TypedDeclaration) newDeclaration);
+            return newTypeDeclaration.getProducedType(qualifyingType, part.getParameters());
         }catch(ModelResolutionException x){
             // allow this only if we don't have any qualifying type or parameters:
             // - if we have no qualifying type we may be adding package name parts
             // - if we have a qualifying type then the inner type must exist
             // - if we have type parameters we must have a type
-            if(qualifyingTypeOrDeclaration != null
+            if(qualifyingType != null
                     || (part.parameters != null && !part.parameters.isEmpty()))
                 throw x;
             return null;
