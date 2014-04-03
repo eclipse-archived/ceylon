@@ -135,152 +135,152 @@ public class NamingTest {
     @Test
     public void testC() throws Exception {
         final TypeDeclaration decl = findDecl("C.ceylon", "C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals(QUAL + "C", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "C", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testCC() throws Exception {
         final TypeDeclaration decl = findDecl("CC.ceylon", "CC.C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals(QUAL + "CC.C", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "CC.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testCI() throws Exception {
         final TypeDeclaration decl = findDecl("CI.ceylon", "CI.I");
-        Assert.assertEquals("CI$I", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "CI$I", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "CI.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("CI$I", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "CI$I", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "CI.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testCo() throws Exception {
         final TypeDeclaration decl = findDecl("Co.ceylon", "Co.o");
-        Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals(QUAL + "Co.o_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "Co.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testI() throws Exception {
         final TypeDeclaration decl = findDecl("I.ceylon", "I");
-        Assert.assertEquals("I", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "I", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("I", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "I", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testIC() throws Exception {
         final TypeDeclaration decl = findDecl("IC.ceylon", "IC.C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals(QUAL + "IC$impl.C", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "IC$impl.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testII() throws Exception {
         final TypeDeclaration decl = findDecl("II.ceylon", "II.I");
-        Assert.assertEquals("II$I", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "II$I", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "II$impl.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("II$I", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "II$I", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "II$impl.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testIo() throws Exception {
         final TypeDeclaration decl = findDecl("Io.ceylon", "Io.o");
-        Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals(QUAL + "Io$impl.o_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "Io$impl.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testo() throws Exception {
         final TypeDeclaration decl = findDecl("o.ceylon", "o");
-        Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals(QUAL + "o_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testoC() throws Exception {
         final TypeDeclaration decl = findDecl("oC.ceylon", "oC.C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals(QUAL + "oC_.C", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "oC_.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testoI() throws Exception {
         final TypeDeclaration decl = findDecl("oI.ceylon", "oI.I");
-        Assert.assertEquals("oI$I_", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "oI$I_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals(QUAL + "oI_.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("oI$I_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "oI$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals(QUAL + "oI_.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testoo() throws Exception {
         final TypeDeclaration decl = findDecl("oo.ceylon", "oo.o");
-        Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals(QUAL + "oo_.o_", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals(QUAL + "oo_.o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testfC() throws Exception {
         final TypeDeclaration decl = findDecl("fC.ceylon", "fC.C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals("C", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("C$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("C$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals("C$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testfCC() throws Exception {
         final TypeDeclaration decl = findDecl("fCC.ceylon", "fCC.CC.C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("CC.C", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("CC.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testfCI() throws Exception {
         final TypeDeclaration decl = findDecl("fCI.ceylon", "fCI.CI.I");
-        Assert.assertEquals("fCI$CI$I_", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "fCI$CI$I_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("CI.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("fCI$CI$I_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "fCI$CI$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals("CI.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testfI() throws Exception {
         final TypeDeclaration decl = findDecl("fI.ceylon", "fI.I");
-        Assert.assertEquals("fI$I_", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "fI$I_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("fI$I_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "fI$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testfIC() throws Exception {
         final TypeDeclaration decl = findDecl("fIC.ceylon", "fIC.IC.C");
-        Assert.assertEquals("C", naming.declName(decl));
-        Assert.assertEquals("IC$impl.C", naming.declName(decl, QUALIFIED));
+        Assert.assertEquals("C", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("IC$impl.C", naming.makeTypeDeclarationName(decl, QUALIFIED));
     }
     
     @Test
     public void testfII() throws Exception {
         final TypeDeclaration decl = findDecl("fII.ceylon", "fII.II.I");
-        Assert.assertEquals("fII$II$I_", naming.declName(decl));
-        Assert.assertEquals("I$impl", naming.declName(decl, COMPANION));
-        Assert.assertEquals(QUAL + "fII$II$I_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("II$impl.I$impl", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("fII$II$I_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("I$impl", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals(QUAL + "fII$II$I_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals("II$impl.I$impl", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
     
     @Test
     public void testfo() throws Exception {
         final TypeDeclaration decl = findDecl("fo.ceylon", "fo.o");
-        Assert.assertEquals("o_", naming.declName(decl));
-        Assert.assertEquals("o$impl_", naming.declName(decl, COMPANION));
-        Assert.assertEquals("o_", naming.declName(decl, QUALIFIED));
-        Assert.assertEquals("o$impl_", naming.declName(decl, COMPANION, QUALIFIED));
+        Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl));
+        Assert.assertEquals("o$impl_", naming.makeTypeDeclarationName(decl, COMPANION));
+        Assert.assertEquals("o_", naming.makeTypeDeclarationName(decl, QUALIFIED));
+        Assert.assertEquals("o$impl_", naming.makeTypeDeclarationName(decl, COMPANION, QUALIFIED));
     }
 
 }

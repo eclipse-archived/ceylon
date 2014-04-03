@@ -3341,7 +3341,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             (TypedDeclaration)member, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
                 } else if (member instanceof Value) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
-                    JCExpression qualExpr = naming.makeDeclName(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
                     callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                     return callBuilder.build();
                 } else if (member instanceof Class) {
@@ -3942,7 +3942,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             
             if (qualExpr == null && decl.isStaticallyImportable()) {
-                qualExpr = naming.makeDeclName(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
+                qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
             }
             if (Decl.isPrivateAccessRequiringUpcast(expr)) {
                 qualExpr = makePrivateAccessUpcast(expr, qualExpr);
@@ -4402,7 +4402,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (Decl.isLocal(decl)) {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
                 } else if (decl.isStaticallyImportable()) {
-                    lhs = naming.makeDeclName(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
+                    lhs = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
                 }
             }
         } else if (decl instanceof Method && Decl.isDeferred(decl)) {

@@ -502,54 +502,94 @@ public class Naming implements LocalId {
     }
     
     /** 
-     * Helper class for {@link #makeDeclName(JCExpression, TypeDeclaration, DeclNameFlag...)}
+     * Helper class for {@link #makeTypeDeclarationExpression(JCExpression, TypeDeclaration, DeclNameFlag...)}
      */
-    class DeclName {
+    abstract class TypeDeclarationBuilder<R> {
         private final StringBuilder sb = new StringBuilder();
-        private final TypeDeclaration decl;
+        protected final TypeDeclaration decl;
+        TypeDeclarationBuilder(TypeDeclaration decl) {
+            this.decl = decl;
+        }
+        abstract void select(String s);
+        final void append(String s) {
+            sb.append(s);
+        }
+        final void append(char ch) {
+            sb.append(ch);
+        }
+        final void selectAppended() {
+            String name = sb.toString();
+            select(Decl.isCeylon(decl) ? quoteClassName(name) : name);
+            sb.setLength(0);
+        }
+        abstract R result();
+        public void clear() {
+            sb.setLength(0);
+        }
+        public final String toString() {
+            return result().toString() + " plus, maybe " + (Decl.isCeylon(decl) ? quoteClassName(sb.toString()) : sb.toString());
+        }
+    }
+    /**
+     * Implementation of DeclName which constructs a JCExpression
+     */
+    class TreeDeclName extends TypeDeclarationBuilder<JCExpression>{
         private final JCExpression qualifying;
         private JCExpression expr;
-        DeclName(TypeDeclaration decl, JCExpression expr) {
-            this.decl = decl;
+        TreeDeclName(TypeDeclaration decl, JCExpression expr) {
+            super(decl);
             this.qualifying = expr;
             this.expr = expr;
         }
         void select(String s) {
             expr = makeQualIdent(expr, s);
         }
-        DeclName append(String s) {
-            sb.append(s);
-            return this;
-        }
-        DeclName append(char ch) {
-            sb.append(ch);
-            return this;
-        }
-        void selectAppended() {
-            String name = sb.toString();
-            select(Decl.isCeylon(decl) ? quoteClassName(name) : name);
-            sb.setLength(0);
-        }
         JCExpression result() {
             return expr;
         }
         public void clear() {
+            super.clear();
             expr = qualifying;
-            sb.setLength(0);
         }
-        public String toString() {
-            return result().toString() + " plus, maybe " + (Decl.isCeylon(decl) ? quoteClassName(sb.toString()) : sb.toString());
+    }
+    /**
+     * Implementation of DeclName which constructs a String
+     */
+    class StringDeclName extends TypeDeclarationBuilder<String>{
+        private final String qualifying;
+        private StringBuffer expr;
+        StringDeclName(TypeDeclaration decl, String expr) {
+            super(decl);
+            this.qualifying = expr;
+            this.expr = expr != null ? new StringBuffer(expr) : null;
+        }
+        void select(String s) {
+            if (expr == null  && s != null) {
+                expr = new StringBuffer(s);
+            } else if (s == null && expr != null ) {
+            } else {
+                expr.append(".").append(s);
+            }
+        }
+        String result() {
+            return expr.toString();
+        }
+        public void clear() {
+            super.clear();
+            expr = qualifying != null ? new StringBuffer(qualifying) : null;
         }
     }
     
-    JCExpression makeDeclName(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
+    JCExpression makeTypeDeclarationExpression(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
         // be more resilient to errors
         if(decl == null)
             return make().Erroneous();
-         
-        // TODO This should probably be generating a JCExpression, not
-        // a String (which will inevitable end up being split up to produce a
-        // JCExpression by the caller
+        TreeDeclName helper = new TreeDeclName(decl, qualifyingExpr); 
+        return makeTypeDeclaration(helper, decl, options);
+    }
+
+    private <R> R makeTypeDeclaration(TypeDeclarationBuilder<R> declarationBuilder,
+            final TypeDeclaration decl, DeclNameFlag... options) {
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
         
@@ -559,7 +599,7 @@ public class Naming implements LocalId {
                     && decl instanceof Class 
                     && gen().isSequencedAnnotation((Class)decl), decl.toString());
         
-        DeclName helper = new DeclName(decl, qualifyingExpr);
+        
         java.util.List<Scope> l = new java.util.ArrayList<Scope>();
         Scope s = decl;
         do {
@@ -575,65 +615,68 @@ public class Naming implements LocalId {
             else
                 packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;
             if (packageName.isEmpty() || !packageName.get(0).isEmpty()) {
-                helper.select("");
+                declarationBuilder.select("");
             }
             for (int ii = 0; ii < packageName.size(); ii++) {
-                helper.select(quoteIfJavaKeyword(packageName.get(ii)));
+                declarationBuilder.select(quoteIfJavaKeyword(packageName.get(ii)));
             }
         }
         for (int ii = 0; ii < l.size(); ii++) {
             Scope scope = l.get(ii);
             final boolean last = ii == l.size() - 1;
-            appendDeclName2(decl, flags, helper, scope, last);
+            appendTypeDeclaration(decl, flags, declarationBuilder, scope, last);
         }
-        return helper.result();
+        return declarationBuilder.result();
     }
 
-    private void appendDeclName2(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, DeclName helper, Scope scope, final boolean last) {
+    private void appendTypeDeclaration(final TypeDeclaration decl, EnumSet<DeclNameFlag> flags, 
+            TypeDeclarationBuilder<?> typeDeclarationBuilder, Scope scope, final boolean last) {
         if (scope instanceof Class || scope instanceof TypeAlias) {
             TypeDeclaration klass = (TypeDeclaration)scope;
-            helper.append(klass.getName());
+            typeDeclarationBuilder.append(klass.getName());
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
                     && Decl.isLocalNotInitializer(klass)
                     && last) {
-                    helper.append(IMPL_POSTFIX);
+                    typeDeclarationBuilder.append(IMPL_POSTFIX);
                 } else if (flags.contains(DeclNameFlag.ANNOTATION)
                         && last) {
-                    helper.append(ANNO_POSTFIX);
+                    typeDeclarationBuilder.append(ANNO_POSTFIX);
                 } else if (flags.contains(DeclNameFlag.ANNOTATIONS)
                         && last) {
-                    helper.append(ANNOS_POSTFIX);
+                    typeDeclarationBuilder.append(ANNOS_POSTFIX);
                 }
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
-            helper.append(iface.getName());
+            typeDeclarationBuilder.append(iface.getName());
             if (Decl.isCeylon(iface)
                 && ((decl instanceof Class || decl instanceof TypeAlias) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
-                helper.append(IMPL_POSTFIX);
+                typeDeclarationBuilder.append(IMPL_POSTFIX);
             }
         } else if (Decl.isLocalNotInitializerScope(scope)) {
             if (flags.contains(DeclNameFlag.COMPANION)
                 || !(decl instanceof Interface)) {
-                helper.clear();
+                typeDeclarationBuilder.clear();
             } else if (flags.contains(DeclNameFlag.QUALIFIED)
                     || (decl instanceof Interface)) {
                 Scope nonLocal = scope;
                 while (!(nonLocal instanceof Declaration)) {
                     nonLocal = nonLocal.getContainer();
                 }
-                helper.append(((Declaration)nonLocal).getPrefixedName());
-                if(scope != nonLocal)
-                    helper.append('$').append(getLocalId(scope));
+                typeDeclarationBuilder.append(((Declaration)nonLocal).getPrefixedName());
+                if(scope != nonLocal) {
+                    typeDeclarationBuilder.append('$');
+                    typeDeclarationBuilder.append(getLocalId(scope));
+                }
                 if (decl instanceof Interface) {
-                    helper.append('$');
+                    typeDeclarationBuilder.append('$');
                 } else {
                     if (flags.contains(DeclNameFlag.QUALIFIED)) {
-                        helper.selectAppended();
+                        typeDeclarationBuilder.selectAppended();
                     } else {
-                        helper.clear();
+                        typeDeclarationBuilder.clear();
                     }
                 }
             }
@@ -645,16 +688,16 @@ public class Naming implements LocalId {
             if (decl instanceof Interface 
                     && Decl.isCeylon((Interface)decl)
                     && !flags.contains(DeclNameFlag.COMPANION)) {
-                helper.append('$');
+                typeDeclarationBuilder.append('$');
             } else {
                 if (flags.contains(DeclNameFlag.QUALIFIED)) {
-                    helper.selectAppended();
+                    typeDeclarationBuilder.selectAppended();
                 } else {
-                    helper.clear();
+                    typeDeclarationBuilder.clear();
                 }
             }
         } else {
-            helper.selectAppended();
+            typeDeclarationBuilder.selectAppended();
         }
         return;
     }
@@ -702,24 +745,28 @@ public class Naming implements LocalId {
 
     /**
      * Generates a Java type name for the given declaration
-     * @param gen Something which knows about local declarations
      * @param decl The declaration
      * @param options Option flags
      */
-    String declName(final TypeDeclaration decl, DeclNameFlag... options) {
-        return makeDeclName(null, decl, options).toString();
+    String makeTypeDeclarationName(final TypeDeclaration decl, DeclNameFlag... options) {
+        StringDeclName helper = new StringDeclName(decl, null);
+        return makeTypeDeclaration(helper, decl, options);
     }
 
     JCExpression makeDeclarationName(TypeDeclaration decl, DeclNameFlag... flags) {
-        return makeDeclName(null, decl, flags);
+        return makeTypeDeclarationExpression(null, decl, flags);
     }
     
-    String getCompanionClassName(TypeDeclaration decl) {
-        return declName(decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+    String getCompanionClassName(TypeDeclaration decl, boolean qualified) {
+        if (qualified) {
+            return makeTypeDeclarationName(decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+        } else {
+            return makeTypeDeclarationName(decl, DeclNameFlag.COMPANION);
+        }
     }
     
     JCExpression makeCompanionClassName(TypeDeclaration decl) {
-        return makeDeclName(null, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
+        return makeTypeDeclarationExpression(null, decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
     }
     
     private static String quoteMethodNameIfProperty(Method method) {
@@ -1059,7 +1106,7 @@ public class Naming implements LocalId {
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();
             }
-            JCExpression className = makeDeclName(qualifier, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
+            JCExpression className = makeTypeDeclarationExpression(qualifier, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
             return makeSelect(className, methodName);
         } else if (Strategy.defaultParameterMethodOnOuter(param.getModel())) {
             return makeQuotedQualIdent(qualifier, methodName);
@@ -1431,7 +1478,7 @@ public class Naming implements LocalId {
      * the companion instance.
      */
     final String getCompanionAccessorName(Interface def) {
-        return getCompanionClassName(def).replace('.', '$');
+        return getCompanionClassName(def, true).replace('.', '$');
     }
     
     JCExpression makeCompanionAccessorName(JCExpression qualExpr, Interface def) {

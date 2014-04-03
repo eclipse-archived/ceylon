@@ -510,7 +510,7 @@ public class ClassDefinitionBuilder
 
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
         if (concreteInterfaceMemberDefs == null) {
-            String className = gen.naming.getCompanionClassName(decl).replaceFirst(".*\\.", "");
+            String className = gen.naming.getCompanionClassName(decl, false);//.replaceFirst(".*\\.", "");
             concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName())
                 .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;

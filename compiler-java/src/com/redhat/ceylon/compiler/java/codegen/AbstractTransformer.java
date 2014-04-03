@@ -1822,7 +1822,7 @@ public abstract class AbstractTransformer implements Transformation {
             }
             
         } else {
-            baseType = naming.makeDeclName(qualifyingExpression, tdecl, 
+            baseType = naming.makeTypeDeclarationExpression(qualifyingExpression, tdecl, 
                     jtFlagsToDeclNameOpts(flags 
                             | JT_NON_QUALIFIED 
                             | (type.getDeclaration() instanceof Interface ? JT_COMPANION : 0)));
@@ -2729,10 +2729,7 @@ public abstract class AbstractTransformer implements Transformation {
         for(String val : localDeclarations)
             array.add(make().Literal(val));
         for(Interface iface : localInterfaces){
-            // FIXME: we need to get a better API for this
-            JCExpression nameExpr = naming.makeDeclarationName(iface);
-            String name = ((JCIdent)nameExpr).name.toString();
-            array.add(make().Literal("::"+name));
+            array.add(make().Literal("::"+naming.makeTypeDeclarationName(iface)));
         }
         JCExpression attr = make().Assign(naming.makeUnquotedIdent("value"), 
                                           make().NewArray(null, null, array.toList()));

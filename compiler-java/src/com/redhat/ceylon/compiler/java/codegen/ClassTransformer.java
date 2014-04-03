@@ -131,7 +131,7 @@ public class ClassTransformer extends AbstractTransformer {
         final String javaClassName;
         String ceylonClassName = def.getIdentifier().getText();
         if (def instanceof Tree.AnyInterface) {
-            javaClassName = naming.declName(model, QUALIFIED).replaceFirst(".*\\.", "");
+            javaClassName = naming.makeTypeDeclarationName(model, QUALIFIED).replaceFirst(".*\\.", "");
         } else {
             javaClassName = Naming.quoteClassName(def.getIdentifier().getText());
         }
