@@ -38,7 +38,9 @@ function printStackTrace(exc, _write) {
       if (i==0) {
         if (exc.$loc && exc.$file) _src = ' (' + exc.$file + " " + exc.$loc + ')';
       }
-      _write("    at " + mm.d[0] + "::" + mm.d[mm.d.length-1] + _src);_write(getOperatingSystem().newline);
+      var pkn=mm.d[0];
+      if (pkn==='$')pkn='ceylon.language';
+      _write("    at " + pkn + "::" + mm.d[mm.d.length-1] + _src);_write(getOperatingSystem().newline);
     }
   }
 }
