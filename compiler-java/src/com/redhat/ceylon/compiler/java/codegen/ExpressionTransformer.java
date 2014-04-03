@@ -1532,7 +1532,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression expression = transformExpression(op.getTerm());
         at(op);
         Naming.SyntheticName varName = naming.temp();
-        JCExpression test = makeTypeTest(null, varName, op.getType().getTypeModel(), op.getTerm().getTypeModel());
+        JCExpression test = makeOptimizedTypeTest(null, varName, op.getType().getTypeModel(), op.getTerm().getTypeModel());
         return makeLetExpr(varName, List.<JCStatement>nil(), make().Type(syms().objectType), expression, test);
     }
 

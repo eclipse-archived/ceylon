@@ -3024,7 +3024,7 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(caughtType), 
                         expressionGen().applyErasureAndBoxing(exceptionVar.makeIdent(), 
                                 supertype, true, true, BoxingStrategy.BOXED, caughtType, 0)));
-            elsePart = make().If(makeTypeTest(null, exceptionVar, caughtType, caughtType), 
+            elsePart = make().If(makeOptimizedTypeTest(null, exceptionVar, caughtType, caughtType), 
                     make().Block(0, catchBlock), 
                     elsePart);
         }
@@ -3459,6 +3459,8 @@ public class StatementTransformer extends AbstractTransformer {
             JCStatement last, ProducedType expressionType) {
         at(isCase);
         ProducedType type = isCase.getType().getTypeModel();
+        // note: There's no point using makeOptimizedTypeTest() because cases are disjoint
+        // anyway and the cheap cases get evaluated first.
         JCExpression cond = makeTypeTest(null, selectorAlias, type, expressionType);
         
         String name = isCase.getVariable().getIdentifier().getText();
