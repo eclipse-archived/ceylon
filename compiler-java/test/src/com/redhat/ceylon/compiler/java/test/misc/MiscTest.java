@@ -179,7 +179,7 @@ public class MiscTest extends CompilerTest {
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
                 Arrays.asList("-sourcepath", compilerSourcePath, 
                               "-d", "build/classes-runtime", "-Xbootstrapceylon",
-                              "-cp", getClasspath()
+                              "-cp", getClassPathAsPath()
                               /*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
@@ -304,7 +304,7 @@ public class MiscTest extends CompilerTest {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk", "-cp", getClasspath()), 
+                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
                 moduleNames, null);
         Boolean result = task.call();
         Assert.assertEquals("Compilation of SDK itself failed: " + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
@@ -333,7 +333,7 @@ public class MiscTest extends CompilerTest {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClasspath()), 
+                Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
                 moduleNames, null);
         
         Boolean result = task.call();

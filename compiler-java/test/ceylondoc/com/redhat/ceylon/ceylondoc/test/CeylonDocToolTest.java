@@ -1240,7 +1240,7 @@ public class CeylonDocToolTest {
 
     private void compile(String pathname, String moduleName) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-cp", CompilerTest.getClasspath());
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-cp", CompilerTest.getClassPathAsPath());
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);

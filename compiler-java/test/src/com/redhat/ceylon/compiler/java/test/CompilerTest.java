@@ -84,6 +84,27 @@ public abstract class CompilerTest {
     protected final String cacheDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
+
+    public static final String[] CLASS_PATH = new String[] {
+        "../ceylon-spec/build/classes",
+        "./build/classes",
+        "./../ceylon-module-resolver/build/classes",
+        "./../ceylon-common/build/classes",
+        "./../ceylon-runtime/build/classes",
+        "./../ceylon-runtime/lib/jboss-modules-1.1.3.GA.jar",
+        LANGUAGE_MODULE_CAR,
+    };
+
+    public static final String CLASS_PATH_AS_PATH;
+    static{
+        StringBuilder b = new StringBuilder();
+        for(int i=0;i<CLASS_PATH.length;i++){
+            if(i > 0)
+                b.append(File.pathSeparator);
+            b.append(CLASS_PATH[i]);
+        }
+        CLASS_PATH_AS_PATH = b.toString();
+    }
     
     /**
      * See run() for why this is needed.
@@ -107,17 +128,15 @@ public abstract class CompilerTest {
         } else {
             cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", "-cp", getClasspath());
+        defaultOptions = Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", "-cp", getClassPathAsPath());
     }
 
-    public static String getClasspath() {
-        return "../ceylon-spec/build/classes"
-                +File.pathSeparator+"./build/classes"
-                +File.pathSeparator+"./../ceylon-module-resolver/build/classes"
-                +File.pathSeparator+"./../ceylon-common/build/classes"
-                +File.pathSeparator+"./../ceylon-runtime/build/classes"
-                +File.pathSeparator+"./../ceylon-runtime/lib/jboss-modules-1.1.3.GA.jar"
-                +File.pathSeparator+LANGUAGE_MODULE_CAR;
+    public static String getClassPathAsPath() {
+        return CLASS_PATH_AS_PATH;
+    }
+
+    public static String[] getClassPath() {
+        return CLASS_PATH;
     }
 
     // for subclassers 
