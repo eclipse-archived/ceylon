@@ -37,7 +37,7 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'satisfiedType
   return this.declaration.satisfiedTypes;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenInterfaceType$meta$declaration}}},$cont:OpenClassOrInterfaceType$meta$declaration,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenClassOrInterfaceType','$at','satisfiedTypes']};});
 defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'string',function(){
-  var s=this.declaration.string;
+  var s=this.declaration.qualifiedName;
   var tps=this.declaration.tipo.$crtmm$.$tp;
   if (tps) {
     var rtps=this.declaration._targs;
