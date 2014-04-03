@@ -75,8 +75,8 @@ public class Operators {
     public enum OperatorTranslation {
         
         // Unary operators
-        UNARY_POSITIVE(Tree.PositiveOp.class, 1, "positiveValue", JCTree.POS, IntegerFloat),
-        UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negativeValue", JCTree.NEG, IntegerFloat),
+        UNARY_POSITIVE(Tree.PositiveOp.class, 1, "TODO!!!", JCTree.POS, IntegerFloat),
+        UNARY_NEGATIVE(Tree.NegativeOp.class, 1, "negated", JCTree.NEG, IntegerFloat),
         
         UNARY_BITWISE_NOT("ceylon.language.Integer", 1, "not", JCTree.COMPL, PrimitiveType.INTEGER),
 
