@@ -22,6 +22,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Class;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
@@ -46,7 +48,16 @@ public class FreeClass
         super.init();
         // anonymous classes don't have parameter lists
         if(!declaration.isAnonymous()){
-            ParameterList parameterList = ((com.redhat.ceylon.compiler.typechecker.model.Class)declaration).getParameterList();
+            com.redhat.ceylon.compiler.typechecker.model.Class classDeclaration = (com.redhat.ceylon.compiler.typechecker.model.Class)declaration;
+            if(classDeclaration.isAbstraction()){
+                List<Declaration> overloads = classDeclaration.getOverloads();
+                if(overloads.size() == 1){
+                    classDeclaration = (com.redhat.ceylon.compiler.typechecker.model.Class) overloads.get(0);
+                }else{
+                    throw new ceylon.language.AssertionError("Class has more than one overloaded constructor");
+                }
+            }
+            ParameterList parameterList = classDeclaration.getParameterList();
             List<Parameter> modelParameters = parameterList.getParameters();
             ceylon.language.meta.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.meta.declaration.FunctionOrValueDeclaration[modelParameters.size()];
             int i=0;
