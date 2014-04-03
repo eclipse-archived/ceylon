@@ -17,7 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+class Foo(){
+    shared interface I{}
+    shared class Bar() satisfies I{}
+}
+
 shared void bug706() {
+    Anything x1 = Foo().Bar();
+    if (is Identifiable x1) {}
     class C() {}
     object obj extends C() {}        
     Anything x = obj;

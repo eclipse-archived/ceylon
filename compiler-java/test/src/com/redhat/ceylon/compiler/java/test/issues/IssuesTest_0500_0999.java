@@ -371,7 +371,7 @@ public class IssuesTest_0500_0999 extends CompilerTest {
         compile("bug07xx/Bug702.ceylon");
     }
 
-    @Ignore("M6: https://github.com/ceylon/ceylon-compiler/issues/706")
+    @Ignore("1.1: https://github.com/ceylon/ceylon-compiler/issues/706")
     @Test
     public void testBug706_fail() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug706", "bug07xx/Bug706.ceylon");
