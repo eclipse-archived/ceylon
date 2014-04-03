@@ -20,6 +20,13 @@
 
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
+class C0 {}
+class C1 extends C0 {
+    public C1() {
+        super();
+    }
+}
+
 public class JavaType {
 
     public boolean booleanField = true;

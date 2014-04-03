@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
+import java.io.File;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -57,6 +59,19 @@ public class MetamodelTest extends CompilerTest {
     @Test
     public void testBug1205() {
         compareWithJavaSource("bug1205");
+    }
+
+    @Test
+    public void testBugCL426() {
+        // this sucks, but is the only way to remove these from the Eclipse classpath that the 
+        // run() ClassLoader delegates to. If we don't they will be loaded from a different classloader
+        // than the Ceylon files and since C1 is package-private we get a runtime access exception.
+        // If we make the run() ClassLoader have no parent ClassLoader and load everything itself
+        // then we can't initialise the Metamodel. This is quicker.
+        new File("build/classes/com/redhat/ceylon/compiler/java/test/metamodel/C0.class").delete();
+        new File("build/classes/com/redhat/ceylon/compiler/java/test/metamodel/C1.class").delete();
+        compile("JavaType.java");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.metamodel.bugCL426", "bugCL426.ceylon");
     }
 }
 
