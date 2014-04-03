@@ -211,6 +211,7 @@ getProcess.$crtmm$=function(){return{
 exports.getProcess=getProcess;
 exports.$prop$getProcess={get:getProcess,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','process'],$t:{t:processClass}
 }}};
+getProcess.$crtmm$=exports.$prop$getProcess.$crtmm$;
 // system
 
 function systemClass() {
@@ -245,6 +246,7 @@ exports.getSystem=getSystem;
 exports.$prop$getSystem={get:getSystem,$crtmm$:function(){return{
   mod:$CCMM$,d:['ceylon.language','system'],$t:{t:systemClass}
 };}};
+getSystem.$crtmm$=exports.$prop$getSystem.$crtmm$;
 // runtime
 
 function runtimeClass() {
@@ -295,6 +297,7 @@ function getRuntime() { return runtime$; }
 exports.getRuntime=getRuntime;
 exports.$prop$getRuntime={get:getRuntime,$crtmm$:function(){
   return{mod:$CCMM$,d:['ceylon.language','runtime'],$t:{t:runtimeClass}};}};
+getRuntime.$crtmm$=exports.$prop$getRuntime.$crtmm$;
 // operatingSystem
 
 function operatingSystemClass() {
@@ -332,3 +335,4 @@ exports.getOperatingSystem=getOperatingSystem;
 exports.$prop$getOperatingSystem={get:getOperatingSystem,$crtmm$:function(){
   return {mod:$CCMM$,d:['ceylon.language','operatingSystem'],$t:{t:operatingSystemClass}};
 }};
+getOperatingSystem.$crtmm$=exports.$prop$getOperatingSystem.$crtmm$;
