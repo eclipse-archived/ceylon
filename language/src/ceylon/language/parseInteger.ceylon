@@ -46,7 +46,9 @@ shared Integer? parseInteger(String string, Integer radix = 10) {
     } else {
         return null;
     }
-    Integer limit = negative then runtime.minIntegerValue else -runtime.maxIntegerValue;
+    Integer limit = negative 
+            then runtime.minIntegerValue 
+            else -runtime.maxIntegerValue;
     Integer length = string.size;
     variable Integer result = 0;
     variable Integer sep = -1;
@@ -83,7 +85,8 @@ shared Integer? parseInteger(String string, Integer radix = 10) {
                     radix == 10 && 
                     ch in "kMGTP") {
                 // The magnitude
-                if (exists magnitude = computeMagnitude(radix, string[ii++])) {
+                if (exists magnitude = 
+                        computeMagnitude(radix, string[ii++])) {
                     if ((limit / magnitude) < result) {
                         result *= magnitude;
                         break;
