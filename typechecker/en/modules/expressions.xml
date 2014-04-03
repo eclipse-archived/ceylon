@@ -2514,7 +2514,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>+rhs</literal></entry>
             <entry></entry>
-            <entry><literal>rhs.positiveValue</literal></entry>
+            <entry><literal>rhs</literal></entry>
             <entry></entry>
             <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
@@ -2523,7 +2523,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>-rhs</literal></entry>
             <entry>negation</entry>
-            <entry><literal>rhs.negativeValue</literal></entry>
+            <entry><literal>rhs.negated</literal></entry>
             <entry></entry>
             <entry><literal>Invertable &lt;I&gt;</literal></entry>
             <entry><literal>I</literal></entry>
