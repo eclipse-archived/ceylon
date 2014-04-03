@@ -335,13 +335,13 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
             // anonymous classes don't have parameter lists
             TypeDescriptor reifiedArguments;
-            if(!declaration.isAnonymous() && !isLocalType((com.redhat.ceylon.compiler.typechecker.model.Class)declaration))
+            if(!declaration.isAnonymous() && !isLocalType(declaration))
                 reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration, pt);
             else
                 reifiedArguments = TypeDescriptor.NothingType;
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
-            if(declaration.isToplevel())
+            if(declaration.isToplevel() || isLocalType(declaration))
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass(reifiedType, reifiedArguments, pt, null, null);
             
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
@@ -349,7 +349,7 @@ public class Metamodel {
         }
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            if(declaration.isToplevel())
+            if(declaration.isToplevel() || isLocalType(declaration))
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedInterface<T>(reifiedType, pt, null, null);
 
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
@@ -891,7 +891,7 @@ public class Metamodel {
         throw new RuntimeException("Illegal container type: "+container);
     }
 
-    public static boolean isLocalType(com.redhat.ceylon.compiler.typechecker.model.Class decl) {
+    public static boolean isLocalType(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration decl) {
         return ((LazyElement)decl).isLocal();
     }
 
