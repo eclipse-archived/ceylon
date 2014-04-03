@@ -943,12 +943,7 @@ public class GenerateJsVisitor extends Visitor
         beginBlock();
         out("if(", names.name(d), ".$$===undefined)");
         beginBlock();
-        String qns = d.getQualifiedNameString();
-        if (JsCompiler.compilingLanguageModule && qns.indexOf("::") < 0) {
-            //Language module files get compiled in default module
-            //so they need to have this added to their qualified name
-            qns = "ceylon.language::" + qns;
-        }
+        final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
         out(clAlias, initFuncName, "(", names.name(d), ",'", qns, "'");
 
         if (extendedType != null) {
@@ -1822,6 +1817,7 @@ public class GenerateJsVisitor extends Visitor
         //No need to define all this for local values
         Scope _scope = that.getScope();
         while (_scope != null) {
+            //TODO this is bound to change for local decl metamodel
             if (_scope instanceof Declaration) {
                 if (_scope instanceof Method)return;
                 else break;
@@ -4594,7 +4590,7 @@ public class GenerateJsVisitor extends Visitor
             final ProducedType ltype = that.getType().getTypeModel();
             final TypeDeclaration td = ltype.getDeclaration();
             if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                if (td.isToplevel()) {
+                if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
                     out(clAlias, "$init$AppliedClass$meta$model()(");
                 } else {
                     out(clAlias, "$init$AppliedMemberClass$meta$model()(");
