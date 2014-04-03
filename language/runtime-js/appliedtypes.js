@@ -151,7 +151,7 @@ function AppliedMemberClass(tipo,$$targs$$,that){
         return String$($qname(mm));
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     } else {
-      throw IncompatibleTypeException("Invalid metamodel data for MemberClass");
+      throw IncompatibleTypeException$meta$model("Invalid metamodel data for MemberClass");
     }
   }
   set_type_args(that,$$targs$$);
