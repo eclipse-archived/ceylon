@@ -37,16 +37,33 @@ interface Bug1594ConsumerWithBound<in T>
         given T satisfies Number {
     shared formal void m(T t);
 }
+@noanno
 interface Bug1594Alias => List<Character>;
+
+class Bug1594Class<T>() {
+    
+}
 @noanno
 class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o) 
         given X satisfies List<Anything> 
         given Y satisfies String
         given Y2 satisfies Bug1594Alias
         given Z satisfies Y {
+    // cases we can optimize completely to an instanceof
     if (is Bug1594Producer<Anything> o) {
         print("Bug1594Producer<Anything>");
     }
+    if (is Bug1594ProducerWithBound<Number> o) {
+        print("Bug1594ProducerWithBound<Number>");
+    }
+    if (is Bug1594ProducerWithBound<Anything> o) {
+        print("Bug1594ProducerWithBound<Anything>");
+    }
+    if (is List<Anything> o) {
+        print("List<Anything>");
+    }
+    
+    // cases we can do a short-circuit instanceof against the type itself
     if (is Bug1594Producer<Object> o) {
         print("Bug1594Producer<Object>");
     }
@@ -55,12 +72,6 @@ class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o)
     }
     if (is Bug1594ProducerAlias o) {
         print("Bug1594ProducerAlias");
-    }
-    if (is Bug1594ProducerWithBound<Number> o) {
-        print("Bug1594ProducerWithBound<Number>");
-    }
-    if (is Bug1594ProducerWithBound<Anything> o) {
-        print("Bug1594ProducerWithBound<Anything>");
     }
     if (is Bug1594Consumer<Nothing> o) {
         print("Bug1594Consumer<Nothing>");
@@ -74,9 +85,8 @@ class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o)
     if (is Bug1594ConsumerWithBound<Number> o) {
         print("Bug1594ConsumerWithBound<Number>");
     }
-    if (is List<Anything> o) {
-        print("List<Anything>");
-    }
+    
+    // cases where can can do a short-circuit instanceof against the type parameter bounds
     if (is X o) {
         print("X");
     }
@@ -88,5 +98,20 @@ class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o)
     }
     if (is Z o) {
         print("Z");
+    }
+    // ... but we don't in this case because there's no point
+    String s = nothing;
+    if (is X s) {
+        print("X");
+    }
+    // cases where we can optimize the test by doing an instanceof 
+    // against the complement type instead of a Util.isReified() on the given type
+    String|Bug1594Class<Integer> o2 = nothing;
+    if (is Bug1594Class<Integer> o2) {
+        
+    }
+    String|Bug1594Producer<Integer> o3 = nothing;
+    if (is Bug1594Producer<Integer> o3) {
+        
     }
 }

@@ -78,9 +78,34 @@ final class Bug1594ConsumerWithBound$impl<T extends .ceylon.language.Number> {
         this.$reified$T = $reified$T;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
-@.com.redhat.ceylon.compiler.java.metadata.Alias("ceylon.language::List<ceylon.language::Character>")
 interface Bug1594Alias {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug1594Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1594Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Class(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Class.class, $reified$T);
+    }
 }
 class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Object>, Y extends .ceylon.language.String, Y2 extends .ceylon.language.List<? extends .ceylon.language.Character>, Z extends Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -95,54 +120,54 @@ class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Ob
             .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Producer<Anything>"));
         }
         .java.lang.Object o$4;
-        if ((o$4 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer && .com.redhat.ceylon.compiler.java.Util.isReified(o$4, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer.class, .ceylon.language.Object.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .java.lang.Object> o$5 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o$4;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Producer<Object>"));
-        }
-        .java.lang.Object o$7;
-        if ((o$7 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer && .com.redhat.ceylon.compiler.java.Util.isReified(o$7, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer.class, .ceylon.language.Number.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .ceylon.language.Number> o$8 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o$7;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Producer<Number>"));
-        }
-        .java.lang.Object o$10;
-        if ((o$10 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer && .com.redhat.ceylon.compiler.java.Util.isReified(o$10, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer.class, .ceylon.language.String.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .ceylon.language.String> o$11 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o$10;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ProducerAlias"));
-        }
-        .java.lang.Object o$13;
-        if ((o$13 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound<? extends .ceylon.language.Number> o$14 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound)o$13;
+        if ((o$4 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound<? extends .ceylon.language.Number> o$5 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound)o$4;
             .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ProducerWithBound<Number>"));
         }
-        .java.lang.Object o$16;
-        if ((o$16 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound<? extends .ceylon.language.Number> o$17 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound)o$16;
+        .java.lang.Object o$7;
+        if ((o$7 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound<? extends .ceylon.language.Number> o$8 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound)o$7;
             .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ProducerWithBound<Anything>"));
         }
+        .java.lang.Object o$10;
+        if ((o$10 = o) instanceof .ceylon.language.List) {
+            final .ceylon.language.List<? extends .java.lang.Object> o$11 = (.ceylon.language.List)o$10;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("List<Anything>"));
+        }
+        .java.lang.Object o$13;
+        if ((o$13 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer && .com.redhat.ceylon.compiler.java.Util.isReified(o$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer.class, .ceylon.language.Object.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .java.lang.Object> o$14 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o$13;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Producer<Object>"));
+        }
+        .java.lang.Object o$16;
+        if ((o$16 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer && .com.redhat.ceylon.compiler.java.Util.isReified(o$16, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer.class, .ceylon.language.Number.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .ceylon.language.Number> o$17 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o$16;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Producer<Number>"));
+        }
         .java.lang.Object o$19;
-        if ((o$19 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer && .com.redhat.ceylon.compiler.java.Util.isReified(o$19, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer o$20 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer)o$19;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Consumer<Nothing>"));
+        if ((o$19 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer && .com.redhat.ceylon.compiler.java.Util.isReified(o$19, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer.class, .ceylon.language.String.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .ceylon.language.String> o$20 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o$19;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ProducerAlias"));
         }
         .java.lang.Object o$22;
-        if ((o$22 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer && .com.redhat.ceylon.compiler.java.Util.isReified(o$22, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer.class, .ceylon.language.Anything.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer<? super .java.lang.Object> o$23 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer)o$22;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Consumer<Anything>"));
+        if ((o$22 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer && .com.redhat.ceylon.compiler.java.Util.isReified(o$22, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer o$23 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer)o$22;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Consumer<Nothing>"));
         }
         .java.lang.Object o$25;
-        if ((o$25 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound && .com.redhat.ceylon.compiler.java.Util.isReified(o$25, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound.class, .ceylon.language.Anything.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound o$26 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound)o$25;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ConsumerWithBound<Anything>"));
+        if ((o$25 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer && .com.redhat.ceylon.compiler.java.Util.isReified(o$25, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer.class, .ceylon.language.Anything.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer<? super .java.lang.Object> o$26 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer)o$25;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594Consumer<Anything>"));
         }
         .java.lang.Object o$28;
-        if ((o$28 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound && .com.redhat.ceylon.compiler.java.Util.isReified(o$28, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound.class, .ceylon.language.Number.$TypeDescriptor$))) {
-            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound<? super .ceylon.language.Number> o$29 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound)o$28;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ConsumerWithBound<Number>"));
+        if ((o$28 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound && .com.redhat.ceylon.compiler.java.Util.isReified(o$28, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound.class, .ceylon.language.Anything.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound o$29 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound)o$28;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ConsumerWithBound<Anything>"));
         }
         .java.lang.Object o$31;
-        if ((o$31 = o) instanceof .ceylon.language.List) {
-            final .ceylon.language.List<? extends .java.lang.Object> o$32 = (.ceylon.language.List)o$31;
-            .ceylon.language.print_.print(.ceylon.language.String.instance("List<Anything>"));
+        if ((o$31 = o) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound && .com.redhat.ceylon.compiler.java.Util.isReified(o$31, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound.class, .ceylon.language.Number.$TypeDescriptor$))) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound<? super .ceylon.language.Number> o$32 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound)o$31;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("Bug1594ConsumerWithBound<Number>"));
         }
         .java.lang.Object o$34;
         if ((o$34 = o) instanceof .ceylon.language.List && .com.redhat.ceylon.compiler.java.Util.isReified(o$34, $reified$X)) {
@@ -163,6 +188,22 @@ class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Ob
         if (.com.redhat.ceylon.compiler.java.Util.isReified(o$43 = o, $reified$Z)) {
             final Z o$44 = (Z)o$43;
             .ceylon.language.print_.print(.ceylon.language.String.instance("Z"));
+        }
+        final .java.lang.String s = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+        .java.lang.Object s$46;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(s$46 = .ceylon.language.String.instance(s), $reified$X)) {
+            final .java.lang.Object s$47 = s$46;
+            .ceylon.language.print_.print(.ceylon.language.String.instance("X"));
+        }
+        final .java.lang.Object o2 = .ceylon.language.nothing_.get_();
+        .java.lang.Object o2$49;
+        if (!((o2$49 = o2) instanceof .ceylon.language.String)) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Class<.ceylon.language.Integer> o2$50 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Class)o2$49;
+        }
+        final .java.lang.Object o3 = .ceylon.language.nothing_.get_();
+        .java.lang.Object o3$52;
+        if (!((o3$52 = o3) instanceof .ceylon.language.String)) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends .ceylon.language.Integer> o3$53 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer)o3$52;
         }
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
