@@ -3542,18 +3542,22 @@ public abstract class AbstractTransformer implements Transformation {
                 // requires we use Util.isReified()
                 if (testedType.getDeclaration() instanceof ClassOrInterface
                         && testedType.getDeclaration() != expressionType.getDeclaration()) {
-                    // do a cheap instanceof test to try to shortcut the expensive
+                    // do a cheap instanceof test to try to shortcircuit the expensive
                     // Util.isReified()
+                    
+                    // XXX Possible future optimization: When the `is` is a condition 
+                    // in an `assert` we expect the result to be true, so 
+                    // instanceof shortcircuit doesn't achieve anything
                     result = typeTester.andOr(
                             typeTester.isInstanceof(varExpr, testedType),
                             typeTester.isReified(varName.makeIdent(), testedType), JCTree.AND);
                 } else if (testedType.getDeclaration() instanceof TypeParameter
-                        && !nonObjectClassesAndInterfacesOnly(testedType.getDeclaration().getSatisfiedTypes()).isEmpty()) {
-                    // If we're testing against a type parameter with only 
-                    // class or interface upper bounds we can again shortcut the 
+                        && !reifiableUpperBounds((TypeParameter)testedType.getDeclaration(), expressionType).isEmpty()) {
+                    // If we're testing against a type parameter with  
+                    // class or interface upper bounds we can again shortcircuit the 
                     // Util.isReified() using instanceof against the bounds
                     result = typeTester.isReified(varName.makeIdent(), testedType);
-                    Iterator<ProducedType> iterator = nonObjectClassesAndInterfacesOnly(testedType.getDeclaration().getSatisfiedTypes()).iterator();
+                    Iterator<ProducedType> iterator = reifiableUpperBounds((TypeParameter)testedType.getDeclaration(), expressionType).iterator();
                     while (iterator.hasNext()) {
                         ProducedType type = iterator.next();
                         ClassOrInterface c = ((ClassOrInterface)type.resolveAliases().getDeclaration());
@@ -3573,14 +3577,18 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return result;
     }
-
-
-    private java.util.List<ProducedType> nonObjectClassesAndInterfacesOnly(
-            Iterable<ProducedType> satisfiedTypes) {
+    
+    /**
+     * Returns the upper bounds of the given type parameter which are 
+     * java reifiable types (and can thus be used in an {@code instanceof})
+     */
+    private java.util.List<ProducedType> reifiableUpperBounds(
+            TypeParameter testedType, ProducedType expressionType) {
         ArrayList<ProducedType> result = new ArrayList<ProducedType>();
-        for (ProducedType type: satisfiedTypes) {
-            if (type.getDeclaration() instanceof ClassOrInterface
-                    && !willEraseToObject(type)) {
+        for (ProducedType type: testedType.getSatisfiedTypes()) {
+            if (type.getDeclaration() instanceof ClassOrInterface // reified, so we can use instanceof
+                    && !willEraseToObject(type) // no point doing instanceof Object
+                    && !type.isSupertypeOf(expressionType)) { // no point doing instanceof 
                 result.add(type);
             }
         }
