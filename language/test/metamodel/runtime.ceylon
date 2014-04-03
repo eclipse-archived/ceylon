@@ -1765,6 +1765,7 @@ shared void run() {
         e.printStackTrace();
       }
     }
+    sandbox(bug237);
     sandbox(bug238);
     sandbox(bug245);
     sandbox(bug257);
