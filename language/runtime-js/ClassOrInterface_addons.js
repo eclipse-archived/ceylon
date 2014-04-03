@@ -232,7 +232,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
 defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     var mm = getrtmm$$(this.tipo);
-    var qn=$qname(mm);
+    var qn=this.tipo.$$ && this.tipo.$$.prototype && this.tipo.$$.prototype.getT$name ? this.tipo.$$.prototype.getT$name() : $qname(mm);
     if (mm.$tp) {
       qn+="<";
       var first=true;
