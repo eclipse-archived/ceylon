@@ -184,10 +184,9 @@
     <!-- Rule to build compiler test classes from their Java sources -->
     <target name="test.classes" depends="compiler.classes">
         <mkdir dir="${build.classes}" />
-        <javac srcdir="${test.ceylond.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
-            <include name="com/redhat/ceylon/ceylondoc/test/**" />
-        </javac>
-        <javac srcdir="${test.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
+        <javac destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" includeantruntime="false">
+        	<src path="${test.ceylond.src}"/>
+            <src path="${test.src}"/>
             <include name="com/redhat/ceylon/compiler/java/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
