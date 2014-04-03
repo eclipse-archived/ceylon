@@ -46,7 +46,9 @@ defineAttr(OpenClassOrInterfaceType$meta$declaration.$$.prototype,'string',funct
     for (var t in tps) {
       var rtp=rtps&&rtps[t];
       if (first)first=false;else s+=",";
-      if (rtp===undefined) {
+      if (rtp===undefined||typeof(rtp)==='string') {
+        if(typeof(rtp)==='string')t=rtp;
+        if (t.indexOf('$')>0)t=t.substring(0,t.indexOf('$'));
         s+=t;
       } else {
         s+=_openTypeFromTarg(rtp).string;
