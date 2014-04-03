@@ -346,6 +346,9 @@ abstract class SimpleInvocation extends Invocation {
     /** Gets the number of arguments actually being supplied */
     protected abstract int getNumArguments();
 
+    /** Gets the number of parameters that are available */
+    protected abstract int getNumParameters();
+
     /**
      * Gets the transformed expression supplying the argument value for the 
      * given argument index
@@ -729,6 +732,10 @@ class PositionalInvocation extends DirectInvocation {
         return getPositional().getPositionalArguments().size();
     }
     @Override
+    protected int getNumParameters() {
+        return parameters.size();
+    }
+    @Override
     protected boolean isSpread() {
         java.util.List<PositionalArgument> args = getPositional().getPositionalArguments();
         if(args.isEmpty())
@@ -861,6 +868,10 @@ class CallableInvocation extends DirectInvocation {
         return parameterCount;
     }
     @Override
+    protected int getNumParameters() {
+        return functionalParameters.size();
+    }
+    @Override
     protected boolean isSpread() {
         return isParameterSequenced(getNumArguments() - 1);
     }
@@ -921,6 +932,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
 
     @Override
     protected int getNumArguments() {
+        return method.getParameterLists().get(0).getParameters().size();
+    }
+    
+    @Override
+    protected int getNumParameters() {
         return method.getParameterLists().get(0).getParameters().size();
     }
     

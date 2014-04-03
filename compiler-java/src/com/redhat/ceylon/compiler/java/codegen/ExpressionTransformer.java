@@ -1427,7 +1427,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression makeTuple(ProducedType tupleType, java.util.List<Tree.PositionalArgument> expressions) {
-        if (expressions.isEmpty()) {
+        if (typeFact().isEmptyType(tupleType)) {
             return makeEmpty();// A tuple terminated by empty
         }
         
@@ -2462,6 +2462,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation, CallBuilder callBuilder) {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int numArguments = invocation.getNumArguments();
+        if (invocation.getNumParameters() == 0) {
+            // skip transforming arguments
+            // (Usually, numArguments would already be null, but it's possible to call a
+            //  parameterless function with a *[] argument - see #1593.)
+            numArguments = 0;
+        }
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
