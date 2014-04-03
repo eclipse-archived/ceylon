@@ -543,11 +543,7 @@ public class TypeUtils {
                         path.add(0, (td!=null&&td.isAnonymous())?"$o":"$at");
                     }
                 }
-                Scope s = p.getContainer();
-                while (s != null && s instanceof Declaration == false) {
-                    s = s.getContainer();
-                }
-                p = (Declaration)s;
+                p = Util.getContainingDeclaration(p);
             }
             //Output path
             for (String part : path) {
@@ -595,8 +591,9 @@ public class TypeUtils {
             }
 
         }
-        if (d.isMember()) {
-            gen.out(",$cont:", gen.getNames().name((Declaration)d.getContainer()));
+        if (!d.isToplevel()) {
+            //Find the first container that is a Declaration
+            gen.out(",$cont:", gen.getNames().name(Util.getContainingDeclaration(d)));
         }
         if (tparms != null && !tparms.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
@@ -937,6 +934,26 @@ public class TypeUtils {
         }
         targs.put(mtp, otherType);
         return targs;
+    }
+
+    /** Returns the qualified name of a declaration, skipping any containing methods. */
+    public static String qualifiedNameSkippingMethods(Declaration d) {
+        final StringBuilder p = new StringBuilder(d.getName());
+        Scope s = d.getContainer();
+        while (s != null) {
+            if (s instanceof com.redhat.ceylon.compiler.typechecker.model.Package) {
+                final String pkname = ((com.redhat.ceylon.compiler.typechecker.model.Package)s).getNameAsString();
+                if (!pkname.isEmpty()) {
+                    p.insert(0, "::");
+                    p.insert(0, pkname);
+                }
+            } else if (s instanceof TypeDeclaration) {
+                p.insert(0, '.');
+                p.insert(0, ((TypeDeclaration)s).getName());
+            }
+            s = s.getContainer();
+        }
+        return p.toString();
     }
 
 }
