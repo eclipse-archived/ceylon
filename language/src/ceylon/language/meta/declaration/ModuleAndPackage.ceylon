@@ -1,3 +1,4 @@
+import ceylon.language { AnnotationType = Annotation }
 
 "A `module` declaration
  from a `module.ceylon` compilation unit"
@@ -63,7 +64,8 @@ shared interface Package
     "Returns the list of member declarations that satisfy the given `Kind` type argument and
      that are annotated with the given `Annotation` type argument"
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
-            given Kind satisfies NestableDeclaration;
+            given Kind satisfies NestableDeclaration
+            given Annotation satisfies AnnotationType;
 
     "Looks up a member declaration by name, provided it satisfies the given `Kind` type
      argument. Returns `null` if no such member matches."

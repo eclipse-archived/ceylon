@@ -126,9 +126,9 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
     @TypeInfo("ceylon.language::Sequential<Kind>")
     @TypeParameters({ 
         @TypeParameter(value = "Kind", satisfies = "ceylon.language.meta.declaration::NestableDeclaration"), 
-        @TypeParameter(value = "Annotation") 
+        @TypeParameter(value = "Annotation", satisfies = "ceylon.language::Annotation") 
     })
-    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation> Sequential<? extends Kind> 
+    public <Kind extends ceylon.language.meta.declaration.NestableDeclaration, Annotation extends ceylon.language.Annotation> Sequential<? extends Kind> 
     annotatedMembers(@Ignore TypeDescriptor $reifiedKind, @Ignore TypeDescriptor $reifiedAnnotation) {
         
         Predicates.Predicate<?> predicate = Predicates.and(
