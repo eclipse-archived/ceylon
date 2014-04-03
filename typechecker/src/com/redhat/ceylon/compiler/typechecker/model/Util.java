@@ -56,6 +56,21 @@ public class Util {
     }
     
     /**
+     * Get the declaration that contains the specified declaration, if any.
+     */
+    public static Declaration getContainingDeclaration(Declaration d) {
+        if (d.isToplevel())return null;
+        Scope scope = d.getContainer();
+        while (!(scope instanceof Package)) {
+            if (scope instanceof Declaration) {
+                return (Declaration) scope;
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+
+    /**
      * Get the class or interface that "outer" refers to. 
      */
     public static ProducedType getOuterClassOrInterface(Scope scope) {
@@ -769,8 +784,9 @@ public class Util {
             return null;
         TypeDeclaration aDecl = a.getDeclaration();
         TypeDeclaration bDecl = b.getDeclaration();
-        if(aDecl == null || bDecl == null)
+        if(aDecl == null || bDecl == null) {
             return null;
+        }
         if(aDecl instanceof ClassOrInterface == false){
             if(aDecl instanceof UnionType && bDecl instanceof ClassOrInterface){
                 return getSimpleIntersection(b, (ClassOrInterface) bDecl, a, (UnionType)aDecl);
@@ -801,29 +817,33 @@ public class Util {
         if(aName.equals("ceylon.language::Object")){
             // every ClassOrInterface is an object except Null
             if(bName.equals("ceylon.language::Null")
-                    || bName.equals("ceylon.language::null"))
+                    || bName.equals("ceylon.language::null")) {
                 return new NothingType(aDecl.getUnit()).getType();
+            }
             return b;
         }
         if(bName.equals("ceylon.language::Object")){
             // every ClassOrInterface is an object except Null
             if(aName.equals("ceylon.language::Null")
-                    || aName.equals("ceylon.language::null"))
+                    || aName.equals("ceylon.language::null")) {
                 return new NothingType(aDecl.getUnit()).getType();
+            }
             return a;
         }
         if(aName.equals("ceylon.language::Null")){
             // only null is null
             if(bName.equals("ceylon.language::Null")
-                    || bName.equals("ceylon.language::null"))
+                    || bName.equals("ceylon.language::null")) {
                 return b;
+            }
             return new NothingType(aDecl.getUnit()).getType();
         }
         if(bName.equals("ceylon.language::Null")){
             // only null is null
             if(aName.equals("ceylon.language::Null")
-                    || aName.equals("ceylon.language::null"))
+                    || aName.equals("ceylon.language::null")) {
                 return a;
+            }
             return new NothingType(aDecl.getUnit()).getType();
         }
         // not simple
@@ -832,14 +852,16 @@ public class Util {
 
     private static ProducedType getSimpleIntersection(ProducedType a, ClassOrInterface aDecl, ProducedType b, UnionType bDecl) {
         // we only handle Foo|Null
-        if(bDecl.getCaseTypes().size() != 2)
+        if(bDecl.getCaseTypes().size() != 2) {
             return null;
+        }
 
         String aName = aDecl.getQualifiedNameString();
         // we only handle Object and Null intersections
         if(!aName.equals("ceylon.language::Object")
-                && !aName.equals("ceylon.language::Null"))
+                && !aName.equals("ceylon.language::Null")) {
             return null;
+        }
         
         ProducedType caseA = bDecl.getCaseTypes().get(0);
         TypeDeclaration caseADecl = caseA.getDeclaration();
