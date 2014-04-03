@@ -83,12 +83,9 @@ JSNum$proto.power = function(exp) {
     }
     return toInt(Math.pow(this, exp));
 }
-defineAttr(JSNum$proto, 'negativeValue', function() {
+defineAttr(JSNum$proto, 'negated', function() {
     return this.float$ ? Float(-this) : -this;
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['ceylon.language','Invertable','$at','negativeValue']};});
-defineAttr(JSNum$proto, 'positiveValue', function() {
-    return this.float$ ? this : this.valueOf();
-},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['ceylon.language','Invertable','$at','positiveValue']};});
+},undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['ceylon.language','Invertable','$at','negated']};});
 defineAttr(JSNum$proto, 'negative', function(){
   return this.float$ ? this < 0.0 : this.valueOf() < 0;
 },undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','negative']};});
