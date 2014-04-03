@@ -127,8 +127,7 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
     shared actual MyNumeric plus(MyNumeric other) { return MyNumeric(x+other.x); }
     shared actual MyNumeric times(MyNumeric other) { return MyNumeric(x*other.x); }
     shared actual MyNumeric divided(MyNumeric other) { return MyNumeric(x/other.x); }
-    shared actual MyNumeric positiveValue { return MyNumeric(+x); }
-    shared actual MyNumeric negativeValue { return MyNumeric(-x); }
+    shared actual MyNumeric negated { return MyNumeric(-x); }
     shared actual MyNumeric power(Integer exp) { return MyNumeric(x^exp); }
     shared actual Boolean equals(Object o) {
         if (is MyNumeric o) {
@@ -138,8 +137,7 @@ class MyNumeric(Integer x) satisfies Numeric<MyNumeric> & Exponentiable<MyNumeri
     }
 }
 class MyInvertable(Integer x) satisfies Invertable<MyInvertable> {
-    shared actual MyInvertable negativeValue { return MyInvertable(-x); }
-    shared actual MyInvertable positiveValue { return MyInvertable(+x); }
+    shared actual MyInvertable negated { return MyInvertable(-x); }
     shared actual Boolean equals(Object o) {
         if (is MyInvertable o) {
             return o.x == x;

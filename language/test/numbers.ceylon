@@ -43,12 +43,9 @@ shared void numbers() {
     check(obj(+1+1) is Integer, "integer addition");
     check(obj(+1-2) is Integer, "integer subtraction");
     
-    check(1.negativeValue==-1, "natural negative");
-    check(-1.negativeValue==+1, "integer negative");
-    check(1.0.negativeValue==-1.0, "float negative");
-    check(1.positiveValue==1, "natural positive");
-    check(-1.positiveValue==-1, "integer positive");
-    check(1.0.positiveValue==1.0, "float positive");
+    check(1.negated==-1, "natural negative");
+    check(-1.negated==+1, "integer negative");
+    check(1.0.negated==-1.0, "float negative");
     
     check(12.string=="12", "natural string 12");
     check((-12).string=="-12", "integer string -12");
