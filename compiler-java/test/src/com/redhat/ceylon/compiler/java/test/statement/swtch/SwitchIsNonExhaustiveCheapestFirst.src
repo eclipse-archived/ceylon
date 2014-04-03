@@ -19,7 +19,7 @@ class SwitchIsNonExhaustiveCheapestFirst<TP1 extends .ceylon.language.Float, TP2
             } else if (sel$0 instanceof .ceylon.language.Integer) {
                 final long b$2 = ((.ceylon.language.Integer)sel$0).longValue();
                 name = "Integer";
-            } else if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP1)) {
+            } else if (sel$0 instanceof .ceylon.language.Float && .com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP1)) {
                 final TP1 b$1 = (TP1)sel$0;
                 name = "TP1";
             } else {

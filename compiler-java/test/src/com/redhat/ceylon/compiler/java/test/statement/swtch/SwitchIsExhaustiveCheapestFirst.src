@@ -25,10 +25,10 @@ class SwitchIsExhaustive<TP1 extends .ceylon.language.Float, TP2 extends .ceylon
             } else if (sel$0 instanceof .java.lang.Exception) {
                 final .java.lang.Exception b$3 = (.java.lang.Exception)sel$0;
                 name = "Exception";
-            } else if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP1)) {
+            } else if (sel$0 instanceof .ceylon.language.Float && .com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP1)) {
                 final TP1 b$2 = (TP1)sel$0;
                 name = "TP1";
-            } else if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP2)) {
+            } else if (sel$0 instanceof .ceylon.language.Boolean && .com.redhat.ceylon.compiler.java.Util.isReified(sel$0, $reified$TP2)) {
                 final TP2 b$1 = (TP2)sel$0;
                 name = "TP2";
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
