@@ -3482,6 +3482,47 @@ public abstract class AbstractTransformer implements Transformation {
         return makeTypeTest(perfTypeTester(), firstTimeExpr, varName, testedType, expressionType);
     }
     
+    JCExpression makeOptimizedTypeTest( 
+            JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
+        // If the type test is expensive and we can figure out a 
+        // "complement type" whose type test is cheap we can invert the test.
+        TypeDeclaration widerDeclaration = expressionType.getDeclaration();
+        if (!isTypeTestCheap(firstTimeExpr, varName, testedType, expressionType)) {
+            //if (widerDeclaration instanceof UnionType
+            //        || widerDeclaration instanceof ClassOrInterface) {
+                // we've got a X|Y and we're testing for X
+                // or parhaps a A|B|C|D and we're testing for C|D
+                java.util.List<ProducedType> cases = expressionType.getCaseTypes();
+                if (cases != null) {
+                    if ((testedType.getDeclaration() instanceof ClassOrInterface
+                            || testedType.getDeclaration() instanceof TypeParameter)
+                            && cases.remove(testedType)) { 
+                    } else if (testedType.getDeclaration() instanceof UnionType) {
+                        for (ProducedType ct : testedType.getCaseTypes()) {
+                            if (!cases.remove(ct)) {
+                                cases = null;
+                                break;
+                            }
+                        }
+                    } else {
+                        cases = null;
+                    }                
+                    if (cases != null) {
+                        ProducedType complementType = typeFact().getNothingDeclaration().getType();
+                        for (ProducedType ct : cases) {
+                            complementType = com.redhat.ceylon.compiler.typechecker.model.Util.unionType(complementType, ct, typeFact());
+                        }
+                        if (/*typeFact().getLanguageModuleDeclaration("Finished").equals(complementType.getDeclaration())
+                                ||*/ com.redhat.ceylon.compiler.typechecker.model.Util.intersectionType(complementType, testedType, typeFact()).isNothing()) {
+                            return make().Unary(JCTree.NOT, makeTypeTest(firstTimeExpr, varName, complementType, expressionType));
+                        }
+                    }
+                }
+            //}
+        }
+        return makeTypeTest(firstTimeExpr, varName, testedType, expressionType);
+    }
+    
     private <R> R makeTypeTest(TypeTestTransformation<R> typeTester, 
             JCExpression firstTimeExpr, Naming.CName varName, 
             ProducedType testedType, ProducedType expressionType) {

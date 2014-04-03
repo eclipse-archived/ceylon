@@ -940,7 +940,7 @@ public class StatementTransformer extends AbstractTransformer {
             else
                 expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
             // Test on the tmpVar in the following condition
-            expr = makeTypeTest(expr, isErasedToObjectOptimization() ? getVariableName() : testVar,
+            expr = makeOptimizedTypeTest(expr, isErasedToObjectOptimization() ? getVariableName() : testVar,
                     // only test the types we're testing for, not the type of
                     // the variable (which can be more precise)
                     cond.getType().getTypeModel(), expressionType);
