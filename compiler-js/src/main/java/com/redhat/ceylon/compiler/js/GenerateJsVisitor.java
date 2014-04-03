@@ -3329,7 +3329,7 @@ public class GenerateJsVisitor extends Visitor
                     out(")");
                 } else {
                     termgen.term();
-                    out(".negativeValue");
+                    out(".negated");
                 }
             }
         });
@@ -3346,7 +3346,7 @@ public class GenerateJsVisitor extends Visitor
                     out(")");
                 } else {
                     termgen.term();
-                    out(".positiveValue");
+                    out("TODO!!!!!!!");
                 }
             }
         });
