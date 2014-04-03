@@ -32,12 +32,17 @@ function _findTypeFromModel(pkg,mdl,cont) {
   return rv;
 }
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
-function _openTypeFromTarg(targ) {
+//second arg is the container for the second argument, if any
+function _openTypeFromTarg(targ,o) {
   if (targ.t==='u' || targ.t==='i') {
     var tl=[];
     for (var i=0; i < targ.l.length; i++) {
       var _ct=targ.l[i];
-      tl.push(_ct.t?_openTypeFromTarg(_ct):_ct);
+      if (typeof(_ct)==='string') {
+        tl.push(OpenTvar(OpenTypeParam(o,_ct)));
+      } else {
+        tl.push(_ct.t?_openTypeFromTarg(_ct,o):_ct);
+      }
     }
     return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({Element$Iterable:{t:OpenType$meta$declaration}}));
   } else if (targ.t==='T') {
@@ -193,7 +198,7 @@ defineAttr($$openFunction,'annotation',function(){
     defineAttr($$openFunction,'openType',function(){
       var t = this.tipo.$crtmm$.$t;
       if (typeof(t)==='string')return OpenTvar(OpenTypeParam(this.tipo,t));
-      return _openTypeFromTarg(t);
+      return _openTypeFromTarg(t, this.tipo);
     },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','openType']};});
             defineAttr($$openFunction,'name',function(){return this.name_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','name']};});
             defineAttr($$openFunction,'containingPackage',function(){return this._pkg;},undefined,function(){return{mod:$CCMM$,$t:{t:Package$meta$declaration},$cont:OpenFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','containingPackage']};});
@@ -282,7 +287,7 @@ defineAttr($$openValue,'container',function(){
       if (typeof(mm.$t)==='string') {
         return OpenTvar(OpenTypeParam(mm.$cont,mm.$t));
       }
-      return _openTypeFromTarg(mm.$t);
+      return _openTypeFromTarg(mm.$t, this.tipo);
     }
     throw Error("OpenValue.openType-we don't have a metamodel!");
   },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','openType']};});
@@ -684,7 +689,7 @@ function $init$OpenTypeParam(){
         if (typeof(tp.def)==='string') {
           return OpenTvar(OpenTypeParam(this._cont, tp.def));
         }
-        return tp.def?_openTypeFromTarg(tp.def):null;
+        return tp.def?_openTypeFromTarg(tp.def,this._cont):null;
       },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:OpenType$meta$declaration}]},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','TypeParameter','$at','defaultTypeArgument']};});
       //AttributeGetterDefinition variance at caca.ceylon (10:4-10:81)
       defineAttr($$openTypeParam,'variance',function(){
@@ -702,7 +707,7 @@ function $init$OpenTypeParam(){
         if (tp.satisfies) {
           var a=[];
           for (var i=0;i<tp.satisfies.length;i++) {
-            a.push(_openTypeFromTarg(tp.satisfies[i]));
+            a.push(_openTypeFromTarg(tp.satisfies[i],this._cont));
           }
           return ArraySequence(a,{Element$Iterable:{t:OpenType$meta$declaration}});
         }
@@ -714,7 +719,7 @@ function $init$OpenTypeParam(){
         if (tp.of) {
           var a=[];
           for (var i=0;i<tp.of.length;i++) {
-            a.push(_openTypeFromTarg(tp.of[i]));
+            a.push(_openTypeFromTarg(tp.of[i],this._cont));
           }
           return ArraySequence(a,{Element$Iterable:{t:OpenType$meta$declaration}});
         }
