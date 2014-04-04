@@ -33,4 +33,17 @@ public class Operators {
         gen.out(")");
     }
 
+    static void unaryOp(final Tree.UnaryOperatorExpression exp, final String before, final String after,
+            final GenerateJsVisitor gen) {
+        if (before != null) {
+            gen.out(before);
+        }
+        final int boxTypeLeft = gen.boxStart(exp.getTerm());
+        exp.getTerm().visit(gen);
+        if (boxTypeLeft == 4) gen.out("/*TODO: callable targs 9*/");
+        gen.boxUnboxEnd(boxTypeLeft);
+        if (after != null) {
+            gen.out(after);
+        }
+    }
 }

@@ -2551,7 +2551,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     // Make sure fromTerm is compatible with toTerm by boxing it when necessary
-    private int boxStart(Term fromTerm) {
+    int boxStart(Term fromTerm) {
         return boxUnboxStart(fromTerm, false);
     }
 
@@ -3199,37 +3199,16 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(final NegativeOp that) {
-        unaryOp(that, new UnaryOpGenerator() {
-            @Override
-            public void generate(UnaryOpTermGenerator termgen) {
-                TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
-                if (d.inherits(types._integer)) {
-                    out("(-");
-                    termgen.term();
-                    out(")");
-                } else {
-                    termgen.term();
-                    out(".negated");
-                }
-            }
-        });
+        final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
+        final boolean isint = d.inherits(types._integer);
+        Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", this);
     }
 
     @Override public void visit(final PositiveOp that) {
-        unaryOp(that, new UnaryOpGenerator() {
-            @Override
-            public void generate(UnaryOpTermGenerator termgen) {
-                TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
-                if (d.inherits(types._integer) || d.inherits(types._float)) {
-                    out("(+");
-                    termgen.term();
-                    out(")");
-                } else {
-                    termgen.term();
-                    out("TODO!!!!!!!");
-                }
-            }
-        });
+        final TypeDeclaration d = that.getTerm().getTypeModel().getDeclaration();
+        final boolean nat = d.inherits(types._integer) || d.inherits(types._float);
+        //TODO if it's positive we leave it as is?
+        Operators.unaryOp(that, nat?"(+":null, nat?")":null, this);
     }
 
     @Override public void visit(EqualOp that) {
@@ -3265,14 +3244,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(NotOp that) {
-        unaryOp(that, new UnaryOpGenerator() {
-            @Override
-            public void generate(UnaryOpTermGenerator termgen) {
-                out("(!");
-                termgen.term();
-                out(")");
-            }
-        });
+        Operators.unaryOp(that, "(!", ")", this);
     }
 
     @Override public void visit(IdenticalOp that) {
@@ -3445,45 +3417,6 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    interface UnaryOpTermGenerator {
-        void term();
-    }
-    interface UnaryOpGenerator {
-        void generate(UnaryOpTermGenerator termgen);
-    }
-    private void unaryOp(final UnaryOperatorExpression that, final UnaryOpGenerator gen) {
-        final GenerateJsVisitor visitor = this;
-        gen.generate(new UnaryOpTermGenerator() {
-            @Override
-            public void term() {
-                int boxTypeLeft = boxStart(that.getTerm());
-                that.getTerm().visit(visitor);
-                if (boxTypeLeft == 4) out("/*TODO: callable targs 9*/");
-                boxUnboxEnd(boxTypeLeft);
-            }
-        });
-    }
-
-    interface BinaryOpTermGenerator {
-        void left();
-        void right();
-    }
-    interface BinaryOpGenerator {
-        void generate(BinaryOpTermGenerator termgen);
-    }
-    private void binaryOp(final BinaryOperatorExpression that, final BinaryOpGenerator gen) {
-        gen.generate(new BinaryOpTermGenerator() {
-            @Override
-            public void left() {
-                box(that.getLeftTerm());
-            }
-            @Override
-            public void right() {
-                box(that.getRightTerm());
-            }
-        });
-    }
-
     /** Outputs the CL equivalent of 'a <=> b' in JS. */
     private void leftCompareRight(BinaryOperatorExpression that) {
         Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
@@ -3518,17 +3451,12 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(DefaultOp that) {
-       binaryOp(that, new BinaryOpGenerator() {
-           @Override
-           public void generate(BinaryOpTermGenerator termgen) {
-               String lhsVar = createRetainedTempVar();
-               out("(", lhsVar, "=");
-               termgen.left();
-               out(",", lhsVar, "!==null&&",lhsVar,"!==undefined?", lhsVar, ":");
-               termgen.right();
-               out(")");
-           }
-       });
+       String lhsVar = createRetainedTempVar();
+       out("(", lhsVar, "=");
+       box(that.getLeftTerm());
+       out(",", lhsVar, "!==null&&",lhsVar,"!==undefined?", lhsVar, ":");
+       box(that.getRightTerm());
+       out(")");
    }
 
    @Override public void visit(IncrementOp that) {
@@ -3634,24 +3562,10 @@ public class GenerateJsVisitor extends Visitor
     }
 
    @Override public void visit(Exists that) {
-       unaryOp(that, new UnaryOpGenerator() {
-           @Override
-           public void generate(UnaryOpTermGenerator termgen) {
-               out(clAlias, "exists(");
-               termgen.term();
-               out(")");
-           }
-       });
+       Operators.unaryOp(that, clAlias+"exists(", ")", this);
    }
    @Override public void visit(Nonempty that) {
-       unaryOp(that, new UnaryOpGenerator() {
-           @Override
-           public void generate(UnaryOpTermGenerator termgen) {
-               out(clAlias, "nonempty(");
-               termgen.term();
-               out(")");
-           }
-       });
+       Operators.unaryOp(that, clAlias+"nonempty(", ")", this);
    }
 
    //Don't know if we'll ever see this...
@@ -3785,15 +3699,10 @@ public class GenerateJsVisitor extends Visitor
     }
 
     public void visit(InOp that) {
-        binaryOp(that, new BinaryOpGenerator() {
-            @Override
-            public void generate(BinaryOpTermGenerator termgen) {
-                termgen.right();
-                out(".contains(");
-                termgen.left();
-                out(")");
-            }
-        });
+        box(that.getRightTerm());
+        out(".contains(");
+        box(that.getLeftTerm());
+        out(")");
     }
 
     @Override public void visit(TryCatchStatement that) {
@@ -4193,4 +4102,3 @@ public class GenerateJsVisitor extends Visitor
     }
 
 }
-
