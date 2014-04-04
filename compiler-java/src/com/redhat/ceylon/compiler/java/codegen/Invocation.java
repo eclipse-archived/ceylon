@@ -458,6 +458,7 @@ class IndirectInvocation extends SimpleInvocation {
         return CodegenUtil.isMemberReferenceInvocation((Tree.InvocationExpression)getNode());
     }
     
+    @Override
     public int getNumParameters() {
         return parameterTypes.size();
     }
