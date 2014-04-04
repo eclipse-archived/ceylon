@@ -56,10 +56,10 @@ public class GenerateJsVisitor extends Visitor
     private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
 
-    private final class SuperVisitor extends Visitor {
+    static final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
 
-        private SuperVisitor(List<Declaration> decs) {
+        SuperVisitor(List<Declaration> decs) {
             this.decs = decs;
         }
 
@@ -117,7 +117,7 @@ public class GenerateJsVisitor extends Visitor
     final Options opts;
     private CompilationUnit root;
     private static String clAlias="";
-    private static final String function="function ";
+    static final String function="function ";
     private boolean needIndent = true;
     private int indentLevel = 0;
 
@@ -421,7 +421,7 @@ public class GenerateJsVisitor extends Visitor
     private void initSelf(Block block) {
         initSelf(block.getScope(), false);
     }
-    private void initSelf(Scope scope, boolean force) {
+    void initSelf(Scope scope, boolean force) {
         if (force || (scope != null && prototypeOwner == scope.getContainer()) &&
                     ((scope instanceof MethodOrValue)
                      || (scope instanceof TypeDeclaration)
@@ -774,7 +774,7 @@ public class GenerateJsVisitor extends Visitor
         share(d);
     }
 
-    private void referenceOuter(TypeDeclaration d) {
+    void referenceOuter(TypeDeclaration d) {
         if (!d.isToplevel()) {
             final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
             if (coi != null) {
@@ -810,7 +810,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void callSuperclass(ExtendedType extendedType, Class d, Node that,
+    void callSuperclass(ExtendedType extendedType, Class d, Node that,
                 final List<Declaration> superDecs) {
         if (extendedType!=null) {
             PositionalArgumentList argList = extendedType.getInvocationExpression()
@@ -852,7 +852,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
+    void callInterfaces(SatisfiedTypes satisfiedTypes, ClassOrInterface d, Tree.StatementOrArgument that,
             final List<Declaration> superDecs) {
         if (satisfiedTypes!=null) {
             HashSet<String> myTypeArgs = new HashSet<>();
@@ -933,7 +933,7 @@ public class GenerateJsVisitor extends Visitor
      * @param d The declaration for the type being initialized
      * @param callback A callback to add something more to the type initializer in prototype style.
      */
-    private void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes,
+    void typeInitialization(ExtendedType extendedType, SatisfiedTypes satisfiedTypes,
             final ClassOrInterface d, PrototypeInitCallback callback) {
 
         final boolean isInterface = d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface;
@@ -1013,7 +1013,7 @@ public class GenerateJsVisitor extends Visitor
         return tfn;
     }
 
-    private void addToPrototype(Node node, ClassOrInterface d, List<Statement> statements) {
+    void addToPrototype(Node node, ClassOrInterface d, List<Statement> statements) {
         boolean enter = opts.isOptimize();
         ArrayList<com.redhat.ceylon.compiler.typechecker.model.Parameter> plist = null;
         if (enter) {
@@ -1139,7 +1139,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private void instantiateSelf(ClassOrInterface d) {
+    void instantiateSelf(ClassOrInterface d) {
         out("var ");
         self(d);
         out("=new ");
@@ -1151,7 +1151,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private void returnSelf(ClassOrInterface d) {
+    void returnSelf(ClassOrInterface d) {
         out("return ");
         self(d);
         out(";");
@@ -1360,8 +1360,8 @@ public class GenerateJsVisitor extends Visitor
                 out(names.self(outer), ".");
             }
             out(names.name(m), "=");            
-            singleExprFunction(that.getParameterLists(),
-                    that.getSpecifierExpression().getExpression(), that.getScope());
+            FunctionHelper.singleExprFunction(that.getParameterLists(),
+                    that.getSpecifierExpression().getExpression(), that.getScope(), this);
             endLine(true);
             if (outer != null) {
                 out(names.self(outer), ".");
@@ -1496,9 +1496,9 @@ public class GenerateJsVisitor extends Visitor
                 if (param instanceof ParameterDeclaration &&
                         ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
                     // function parameter defaulted using "=>"
-                    singleExprFunction(
+                    FunctionHelper.singleExprFunction(
                             ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                            expr.getExpression(), null);
+                            expr.getExpression(), null, this);
                 } else {
                     expr.visit(this);
                 }
@@ -1509,7 +1509,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Initialize the sequenced, defaulted and captured parameters in a type declaration. */
-    private void initParameters(ParameterList params, TypeDeclaration typeDecl, Method m) {
+    void initParameters(ParameterList params, TypeDeclaration typeDecl, Method m) {
         for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
             final String paramName = names.name(pd);
@@ -1533,9 +1533,9 @@ public class GenerateJsVisitor extends Visitor
                         } else if (param instanceof ParameterDeclaration &&
                                 ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
                             // function parameter defaulted using "=>"
-                            singleExprFunction(
+                            FunctionHelper.singleExprFunction(
                                     ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                                    expr.getExpression(), m);
+                                    expr.getExpression(), m, this);
                         } else {
                             expr.visit(this);
                         }
@@ -2619,73 +2619,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(final ObjectArgument that) {
-        //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
-        final Class c = (Class)that.getDeclarationModel().getTypeDeclaration();
-
-        out("(function()");
-        beginBlock();
-        out("//ObjectArgument ", that.getIdentifier().getText());
-        location(that);
-        endLine();
-        out(function, names.name(c), "()");
-        beginBlock();
-        instantiateSelf(c);
-        referenceOuter(c);
-        ExtendedType xt = that.getExtendedType();
-        final ClassBody body = that.getClassBody();
-        SatisfiedTypes sts = that.getSatisfiedTypes();
-        
-        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
-        if (!opts.isOptimize()) {
-            new SuperVisitor(superDecs).visit(that.getClassBody());
-        }
-        callSuperclass(xt, c, that, superDecs);
-        callInterfaces(sts, c, that, superDecs);
-        
-        body.visit(this);
-        returnSelf(c);
-        indentLevel--;
-        endLine();
-        out("}");
-        endLine();
-        //Add reference to metamodel
-        out(names.name(c), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(c, null, this);
-        endLine(true);
-
-        typeInitialization(xt, sts, c, new PrototypeInitCallback() {
-            @Override
-            public void addToPrototypeCallback() {
-                addToPrototype(that, c, body.getStatements());
-            }
-        });
-        out("return ", names.name(c), "(new ", names.name(c), ".$$);");
-        endBlock();
-        out("())");
+        FunctionHelper.objectArgument(that, this);
     }
 
     @Override
     public void visit(AttributeArgument that) {
-        out("(function()");
-        beginBlock();
-        out("//AttributeArgument ", that.getParameter().getName());
-        location(that);
-        endLine();
-        
-        Block block = that.getBlock();
-        SpecifierExpression specExpr = that.getSpecifierExpression();
-        if (specExpr != null) {
-            out("return ");
-            specExpr.getExpression().visit(this);
-            out(";");
-        }
-        else if (block != null) {
-            visitStatements(block.getStatements());
-        }
-        
-        endBlock();
-        out("())");
+        if (errVisitor.hasErrors(that))return;
+        FunctionHelper.attributeArgument(that, this);
     }
 
     @Override
@@ -2922,9 +2863,9 @@ public class GenerateJsVisitor extends Visitor
                     out("var ");
                 }
                 out(names.name(bmeDecl), "=");
-                singleExprFunction(paramExpr.getParameterLists(),
+                FunctionHelper.singleExprFunction(paramExpr.getParameterLists(),
                         specStmt.getSpecifierExpression().getExpression(),
-                        bmeDecl instanceof Scope ? (Scope)bmeDecl : null);
+                        bmeDecl instanceof Scope ? (Scope)bmeDecl : null, this);
                 out(";");
             }
         }
@@ -4191,65 +4132,15 @@ public class GenerateJsVisitor extends Visitor
     /** Generates the code for an anonymous function defined inside an argument list. */
     @Override
     public void visit(final Tree.FunctionArgument that) {
-        out("(");
-        if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope());
-        } else {
-            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope());
-        }
-        out(")");
-    }
-
-    private void multiStmtFunction(final List<ParameterList> paramLists,
-            final Block block, final Scope scope) {
-        generateParameterLists(paramLists, scope, new ParameterListCallback() {
-            @Override
-            public void completeFunction() {
-                beginBlock();
-                if (paramLists.size() == 1) { initSelf(scope, false); }
-                initParameters(paramLists.get(paramLists.size()-1),
-                        scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
-                visitStatements(block.getStatements());
-                endBlock();
-            }
-        });
-    }
-    private void singleExprFunction(final List<ParameterList> paramLists,
-                                    final Expression expr, final Scope scope) {
-        generateParameterLists(paramLists, scope, new ParameterListCallback() {
-            @Override
-            public void completeFunction() {
-                beginBlock();
-                if (paramLists.size() == 1) { initSelf(scope, false); }
-                initParameters(paramLists.get(paramLists.size()-1),
-                        null, scope instanceof Method ? (Method)scope : null);
-                out("return ");
-                expr.visit(GenerateJsVisitor.this);
-                out(";");
-                endBlock();
-            }
-        });
+        if (errVisitor.hasErrors(that))return;
+        FunctionHelper.functionArgument(that, this);
     }
 
     /** Generates the code for a function in a named argument list. */
     @Override
     public void visit(final MethodArgument that) {
-        generateParameterLists(that.getParameterLists(), that.getScope(),
-                new ParameterListCallback() {
-            @Override
-            public void completeFunction() {
-                Block block = that.getBlock();
-                SpecifierExpression specExpr = that.getSpecifierExpression();
-                if (specExpr != null) {
-                    out("{return ");
-                    specExpr.getExpression().visit(GenerateJsVisitor.this);
-                    out(";}");
-                }
-                else if (block != null) {
-                    block.visit(GenerateJsVisitor.this);
-                }
-            }
-        });
+        if (errVisitor.hasErrors(that))return;
+        FunctionHelper.methodArgument(that, this);
     }
 
     @Override
@@ -4277,43 +4168,6 @@ public class GenerateJsVisitor extends Visitor
         out(")");
         endLine();
         out("}else return ", clAlias, "getEmpty();}())");
-    }
-
-    /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
-    private void generateParameterLists(List<ParameterList> plist, Scope scope,
-                ParameterListCallback callback) {
-        if (plist.size() == 1) {
-            out(function);
-            ParameterList paramList = plist.get(0);
-            paramList.visit(this);
-            callback.completeFunction();
-        } else {
-            int count=0;
-            for (ParameterList paramList : plist) {
-                if (count==0) {
-                    out(function);
-                } else {
-                    //TODO add metamodel
-                    out("return function");
-                }
-                paramList.visit(this);
-                if (count == 0) {
-                    beginBlock();
-                    initSelf(scope, false);
-                    Scope parent = scope == null ? null : scope.getContainer();
-                    initParameters(paramList, parent instanceof TypeDeclaration ? (TypeDeclaration)parent : null,
-                            scope instanceof Method ? (Method)scope:null);
-                }
-                else {
-                    out("{");
-                }
-                count++;
-            }
-            callback.completeFunction();
-            for (int i=0; i < count; i++) {
-                endBlock(false, i==count-1);
-            }
-        }
     }
 
     /** Encloses the block in a function, IF NEEDED. */
@@ -4363,11 +4217,8 @@ public class GenerateJsVisitor extends Visitor
         public boolean isBreaked() { return bused; } //"isBroken" sounds really really bad in this case
     }
 
-    private static interface ParameterListCallback {
-        void completeFunction();
-    }
     /** This interface is used inside type initialization method. */
-    private interface PrototypeInitCallback {
+    static interface PrototypeInitCallback {
         void addToPrototypeCallback();
     }
 
@@ -4491,277 +4342,36 @@ public class GenerateJsVisitor extends Visitor
         return dynblock > 0;
     }
 
-    /** Generate the call to the corresponding open type for the specified literal. */
-    private void generateOpenType(Tree.MetaLiteral that) {
-        final Declaration d = that.getDeclaration();
-        final Module m = d.getUnit().getPackage().getModule();
-        out(clAlias, "$init$Open");
-        if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-            out("Interface");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-            out("Class");
-        } else if (d instanceof Method) {
-            out("Function");
-        } else if (d instanceof Value) {
-            out("Value");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.IntersectionType) {
-            out("Intersection");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.UnionType) {
-            out("Union");
-        } else if (d instanceof TypeParameter) {
-            out("TypeParam");
-        } else if (d instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
-            out("NothingType");
-        } else if (d instanceof TypeAlias) {
-            out("Alias()(");
-            if (d.isMember()) {
-                //Make the chain to the top-level container
-                ArrayList<Declaration> parents = new ArrayList<Declaration>(2);
-                Declaration pd = (Declaration)d.getContainer();
-                while (pd!=null) {
-                    parents.add(0,pd);
-                    pd = pd.isMember()?(Declaration)pd.getContainer():null;
-                }
-                for (Declaration _d : parents) {
-                    out(names.name(_d), ".$$.prototype.");
-                }
-            }
-            out(names.name(d), ")");
-            return;
-        }
-        out("()(", clAlias, "getModules$meta().find('", m.getNameAsString(),
-                "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
-                "'),");
-        if (d.isMember()) {
-            Declaration _md = d;
-            ArrayList<Declaration> parents = new ArrayList<>(3);
-            while (_md.isMember()) {
-                _md=(Declaration)_md.getContainer();
-                parents.add(0, _md);
-            }
-            boolean first=true;
-            boolean imported=false;
-            for (Declaration _d : parents) {
-                if (first){
-                    imported = qualify(that, _d);
-                    first=false;
-                }
-                if (_d.isAnonymous()) {
-                    final boolean wasShared=_d.isShared();
-                    _d.setShared(true);
-                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(false);
-                    out(names.getter(_d), "().");
-                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(true);
-                    _d.setShared(wasShared);
-                } else {
-                    if (!imported)out("$init$");
-                    out(names.name(_d), imported?".$$.prototype.":"().$$.prototype.");
-                }
-                imported=true;
-            }
-        }
-        if (d instanceof Value) {
-            if (!d.isMember()) qualify(that, d);
-            out("$prop$", names.getter(d), ")");
-        } else {
-            if (d.isAnonymous()) {
-                final boolean wasShared=d.isShared();
-                d.setShared(true);
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(false);
-                out(clAlias, "getrtmm$$(");
-                if (!d.isMember()) qualify(that, d);
-                out(names.getter(d), ").$t.t");
-                ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(true);
-                d.setShared(wasShared);
-            } else {
-                if (!d.isMember()) qualify(that, d);
-                out(names.name(d));
-            }
-            out(")");
-        }
-    }
-
     @Override
     public void visit(TypeLiteral that) {
         //Can be an alias, class, interface or type parameter
         if (that.getWantsDeclaration()) {
-            generateOpenType(that);
+            MetamodelHelper.generateOpenType(that, this);
         } else {
-            final ProducedType ltype = that.getType().getTypeModel();
-            final TypeDeclaration td = ltype.getDeclaration();
-            if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                if (Util.getContainingClassOrInterface(td.getContainer()) == null) {
-                    out(clAlias, "$init$AppliedClass$meta$model()(");
-                } else {
-                    out(clAlias, "$init$AppliedMemberClass$meta$model()(");
-                }
-                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this, false);
-                out(",");
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
-                out(")");
-            } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                if (td.isToplevel()) {
-                    out(clAlias, "$init$AppliedInterface$meta$model()(");
-                } else {
-                    out(clAlias, "$init$AppliedMemberInterface$meta$model()(");
-                }
-                TypeUtils.outputQualifiedTypename(isImported(getCurrentPackage(), td), ltype, this, false);
-                out(",");
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
-                out(")");
-            } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
-                out(clAlias,"getNothingType$meta$model()");
-            } else if (that instanceof Tree.AliasLiteral) {
-                out("/*TODO: applied alias*/");
-            } else if (that instanceof Tree.TypeParameterLiteral) {
-                out("/*TODO: applied type parameter*/");
-            } else {
-                out(clAlias, "/*TODO: closed type literal", that.getClass().getName(),"*/typeLiteral$meta({Type$typeLiteral:");
-                TypeUtils.typeNameOrList(that, ltype, this, false);
-                out("})");
-            }
+            MetamodelHelper.generateClosedTypeLiteral(that, this);
         }
     }
 
     @Override
     public void visit(Tree.MemberLiteral that) {
         if (that.getWantsDeclaration()) {
-            generateOpenType(that);
+            MetamodelHelper.generateOpenType(that, this);
         } else {
-            final com.redhat.ceylon.compiler.typechecker.model.ProducedReference ref = that.getTarget();
-            final ProducedType ltype = that.getType() == null ? null : that.getType().getTypeModel();
-            final Declaration d = ref.getDeclaration();
-            final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
-            if (that instanceof Tree.FunctionLiteral || d instanceof Method) {
-                out(clAlias, d.isMember()&&anonClass==null?"AppliedMethod$meta$model(":"AppliedFunction$meta$model(");
-                if (ltype == null) {
-                    if (anonClass != null) {
-                        qualify(that, anonClass);
-                        final String ancname = names.name(anonClass);
-                        final int dolpos = ancname.lastIndexOf('$');
-                        out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "().");
-                    } else {
-                        qualify(that, d);
-                    }
-                } else {
-                    qualify(that, ltype.getDeclaration());
-                    out(names.name(ltype.getDeclaration()));
-                    out(".$$.prototype.");
-                }
-                if (d instanceof Value) {
-                    out("$prop$", names.getter(d), ",");
-                } else {
-                    out(names.name(d),",");
-                }
-                if (d.isMember()&&anonClass==null) {
-                    if (that.getTypeArgumentList()!=null) {
-                        out("[");
-                        boolean first=true;
-                        for (ProducedType targ : that.getTypeArgumentList().getTypeModels()) {
-                            if (first)first=false;else out(",");
-                            out(clAlias,"typeLiteral$meta({Type$typeLiteral:");
-                            TypeUtils.typeNameOrList(that, targ, this, false);
-                            out("})");
-                        }
-                        out("]");
-                        out(",");
-                    } else {
-                        out("undefined,");
-                    }
-                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
-                } else {
-                    TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
-                    if (anonClass != null) {
-                        qualify(that, anonClass);
-                        final String ancname = names.name(anonClass);
-                        final int dolpos = ancname.lastIndexOf('$');
-                        out(",get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "()");
-                    }
-                    if (ref.getTypeArguments() != null && !ref.getTypeArguments().isEmpty()) {
-                        if (anonClass == null) {
-                            out(",undefined");
-                        }
-                        out(",");
-                        TypeUtils.printTypeArguments(that, ref.getTypeArguments(), this, false);
-                    }
-                }
-                out(")");
-            } else if (that instanceof ValueLiteral || d instanceof Value) {
-                Value vd = (Value)d;
-                if (vd.isMember() && anonClass==null) {
-                    out(clAlias, "$init$AppliedAttribute$meta$model()('");
-                    out(d.getName(), "',");
-                } else {
-                    out(clAlias, "$init$AppliedValue$meta$model()(");
-                    if (anonClass == null) {
-                        out("undefined");
-                    } else {
-                        qualify(that, anonClass);
-                        final String ancname = names.name(anonClass);
-                        final int dolpos = ancname.lastIndexOf('$');
-                        out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "()");
-                    }
-                    out(",");
-                }
-                if (ltype == null) {
-                    if (anonClass != null) {
-                        qualify(that, anonClass);
-                        final String ancname = names.name(anonClass);
-                        final int dolpos = ancname.lastIndexOf('$');
-                        out("get", ancname.substring(0,1).toUpperCase(), ancname.substring(1,dolpos), "().");
-                    } else {
-                        qualify(that, d);
-                    }
-                } else {
-                    qualify(that, ltype.getDeclaration());
-                    out(names.name(ltype.getDeclaration()));
-                    out(".$$.prototype.");
-                }
-                if (d instanceof Value) {
-                    out("$prop$", names.getter(d),",");
-                } else {
-                    out(names.name(d),",");
-                }
-                TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, false);
-                out(")");
-            } else {
-                out(clAlias, "/*TODO:closed member literal*/typeLiteral$meta({Type$typeLiteral:");
-                out("{t:");
-                if (ltype == null) {
-                    qualify(that, d);
-                } else {
-                    qualify(that, ltype.getDeclaration());
-                    out(names.name(ltype.getDeclaration()));
-                    out(".$$.prototype.");
-                }
-                if (d instanceof Value) {
-                    out("$prop$", names.getter(d));
-                } else {
-                    out(names.name(d));
-                }
-                if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
-                    out(",a:");
-                    TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), this, false);
-                }
-                out("}})");
-            }
+            MetamodelHelper.generateMemberLiteral(that, this);
         }
     }
 
     @Override
     public void visit(Tree.PackageLiteral that) {
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
-        
-        out(clAlias, "getModules$meta().find('", pkg.getModule().getNameAsString(),
-                "','", pkg.getModule().getVersion(), "').findPackage('", pkg.getNameAsString(),
-                "')");
+        MetamodelHelper.findModule(pkg.getModule(), this);
+        out(".findPackage('", pkg.getNameAsString(), "')");
     }
 
     @Override
     public void visit(Tree.ModuleLiteral that) {
         Module m = (Module)that.getImportPath().getModel();
-        out(clAlias, "getModules$meta().find('", m.getNameAsString(),
-                "','", m.getVersion(), "')");
+        MetamodelHelper.findModule(m, this);
     }
 
     /** Call internal function "throwexc" with the specified message and source location. */
