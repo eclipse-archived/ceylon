@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -117,7 +117,7 @@ import com.sun.tools.javac.util.Options;
         "**Important note**: There is no guarantee that any particular `javac` " +
         "option or combination of options will work, or continue to work in " +
         "future releases.")
-public class CeylonCompileTool extends RepoUsingTool {
+public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private static final class Helper implements OptionHelper {
         String lastError;
@@ -165,12 +165,9 @@ public class CeylonCompileTool extends RepoUsingTool {
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
-    private String out;
     private List<String> modulesOrFiles = Collections.emptyList();
     private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
-    private String user;
-    private String pass;
     private String encoding;
     private boolean noOsgi;
 
@@ -217,27 +214,6 @@ public class CeylonCompileTool extends RepoUsingTool {
     @Description("Set to continue compiling even when errors are found.")
     public void setContinueOnErrors(boolean continueOnErrors) {
         this.continueOnErrors = continueOnErrors;
-    }
-    
-    @OptionArgument(argumentName="url")
-    @Description("Specifies the output module repository (which must be publishable). " +
-    		"(default: `./modules`)")
-    public void setOut(String out) {
-        this.out = out;
-    }
-    
-    @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository" +
-    		"(no default).")
-    public void setUser(String user) {
-        this.user = user;
-    }
-    
-    @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository" +
-    		"(no default).")
-    public void setPass(String pass) {
-        this.pass = pass;
     }
 
     @OptionArgument(argumentName="encoding")

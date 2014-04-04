@@ -96,7 +96,7 @@ public class CeylonDocToolTest {
         if (deleteDestDir && dir.exists()) {
             Util.delete(dir);
         }
-        tool.setOutputRepository(dir.getAbsolutePath());
+        tool.setOut(dir.getAbsolutePath());
         tool.initialize();
         return tool;
     }
@@ -1233,7 +1233,7 @@ public class CeylonDocToolTest {
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
-        String outputRepo = tool.getOutputRepository();
+        String outputRepo = tool.getOut();
         return new File(com.redhat.ceylon.compiler.java.util.Util.getModulePath(new File(outputRepo), module),
                 "module-doc");
     }

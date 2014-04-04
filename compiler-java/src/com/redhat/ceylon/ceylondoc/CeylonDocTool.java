@@ -45,7 +45,7 @@ import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
@@ -126,7 +126,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 "    ceylon doc org.hibernate/3.0.0.beta \\\n"+
 "        --src ~/projects/hibernate/src \\\n"+
 "        --out ~/projects/hibernate/build")
-public class CeylonDocTool extends RepoUsingTool {
+public class CeylonDocTool extends OutputRepoUsingTool {
 
     private static final String OPTION_SECTION = "doctool.";
     private static final String OPTION_HEADER = OPTION_SECTION + "header";
@@ -138,10 +138,7 @@ public class CeylonDocTool extends RepoUsingTool {
     private static final String OPTION_IGNORE_BROKEN_LINK = OPTION_SECTION + "ignore-broken-link";
     private static final String OPTION_LINK = OPTION_SECTION + "link";
 
-    private String outputRepository;
     private String encoding;
-    private String user;
-    private String pass;
     private String header;
     private String footer;
     private boolean includeNonShared;
@@ -158,7 +155,6 @@ public class CeylonDocTool extends RepoUsingTool {
     private TypeChecker typeChecker;
     private Module currentModule;
     private File tempDestDir;
-    private final CeylondLogger log = new CeylondLogger();
     private final List<PhasedUnit> phasedUnits = new LinkedList<PhasedUnit>();
     private final List<Module> modules = new LinkedList<Module>();
     private final List<String> compiledClasses = new LinkedList<String>();
@@ -189,12 +185,8 @@ public class CeylonDocTool extends RepoUsingTool {
         if (linkValues != null) {
             setLinks(Arrays.asList(linkValues));
         }
-    }
-
-    @OptionArgument(longName="out", argumentName="dir-or-url")
-    @Description("The URL of the module repository where output should be published (default: `./out`)")
-    public void setOutputRepository(String outputRepository) {
-        this.outputRepository = outputRepository;
+        
+        log = new CeylondLogger();
     }
 
     @OptionArgument(argumentName="encoding")
@@ -205,18 +197,6 @@ public class CeylonDocTool extends RepoUsingTool {
 
     public String getEncoding(){
         return encoding;
-    }
-    
-    @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository.")
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository.")
-    public void setPass(String pass) {
-        this.pass = pass;
     }
     
     @OptionArgument(argumentName="header")
@@ -364,8 +344,8 @@ public class CeylonDocTool extends RepoUsingTool {
         return compiledClasses;
     }
 
-    public String getOutputRepository() {
-        return outputRepository;
+    public String getOut() {
+        return out;
     }
 
     @Override
@@ -377,19 +357,12 @@ public class CeylonDocTool extends RepoUsingTool {
         }
         
         // set up the artifact repository
-        RepositoryManager repository = createRepositoryManagerBuilder()
-                .logger(log)
-                .buildManager();
+        RepositoryManager repository = getRepositoryManager();
         
         builder.setRepositoryManager(repository);
         
         // make a destination repo
-        outputRepositoryManager = createRepositoryManagerBuilder()
-                .outRepo(this.outputRepository)
-                .logger(log)
-                .user(user)
-                .password(pass)
-                .buildOutputManager();
+        outputRepositoryManager = getOutputRepositoryManager();
 
         // we need to plug in the module manager which can load from .cars
         final List<ModuleSpec> modules = ModuleSpec.parseEachList(moduleSpecs);

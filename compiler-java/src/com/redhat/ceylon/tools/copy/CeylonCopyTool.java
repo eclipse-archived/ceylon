@@ -13,9 +13,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.RepositoryException;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -28,15 +26,10 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 		"to another. If set for recursive copying it will also copy " +
 		"all the module's dependencies and their dependencies until the " +
 		"entire module tree has been copied.")
-public class CeylonCopyTool extends RepoUsingTool {
+public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;
-    private String user;
-    private String out;
-    private String pass;
     private boolean recursive;
-    
-    private RepositoryManager orm;
     
     private HashSet<ModuleSpec> copiedModules = new HashSet<ModuleSpec>();
     
@@ -53,26 +46,6 @@ public class CeylonCopyTool extends RepoUsingTool {
         this.modules = modules;
     }
 
-    @OptionArgument(argumentName="dir-or-url")
-    @Description("Specifies the module repository (which must be publishable) " +
-            "into which the jar file should be imported. " +
-            "(default: `./modules`)")
-    public void setOut(String out) {
-        this.out = out;
-    }
-    
-    @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository.")
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository.")
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-    
     @Option
     @Description("Recursively copy dependencies")
     public void setRecursive(boolean recursive) {
@@ -91,20 +64,6 @@ public class CeylonCopyTool extends RepoUsingTool {
     
     @Override
     public void initialize() {
-    }
-    
-    protected synchronized RepositoryManager getOutputRepositoryManager() {
-        if (orm == null) {
-            orm = CeylonUtils.repoManager()
-                    .cwd(cwd)
-                    .outRepo(out)
-//                    .logger(log)
-                    .user(user)
-                    .password(pass)
-                    .offline(offline)
-                    .buildOutputManager();
-        }
-        return orm;
     }
     
     @Override
