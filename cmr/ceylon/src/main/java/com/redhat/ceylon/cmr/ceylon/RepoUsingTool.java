@@ -16,12 +16,14 @@ import java.util.ResourceBundle;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Messages;
@@ -47,6 +49,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected String mavenOverrides;
     protected boolean noDefRepos;
     protected boolean offline;
+    protected Logger log;
 
     private RepositoryManager rm;
     
@@ -60,6 +63,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
+        this.log = new JULLogger();
     }
     
     public List<String> getRepositoryAsStrings() {
@@ -137,7 +141,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)
                 .userRepos(getRepositoryAsStrings())
-                .offline(offline);
+                .offline(offline)
+                .logger(log);
         return rmb;
     }
     
