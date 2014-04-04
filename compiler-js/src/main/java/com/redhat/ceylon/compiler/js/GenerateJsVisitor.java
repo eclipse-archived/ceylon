@@ -157,7 +157,7 @@ public class GenerateJsVisitor extends Visitor
     /** Returns the helper component to handle naming. */
     JsIdentifierNames getNames() { return names; }
 
-    private static interface GenerateCallback {
+    static interface GenerateCallback {
         public void generateValue();
     }
     
@@ -2174,7 +2174,7 @@ public class GenerateJsVisitor extends Visitor
         BmeGenerator.generateBme(that, this, false);
     }
 
-    private boolean accessDirectly(Declaration d) {
+    boolean accessDirectly(Declaration d) {
         return !accessThroughGetter(d) || directAccess.contains(d) || d.isParameter();
     }
 
@@ -2183,13 +2183,13 @@ public class GenerateJsVisitor extends Visitor
                 && !defineAsProperty(d);
     }
     
-    private boolean defineAsProperty(Declaration d) {
+    boolean defineAsProperty(Declaration d) {
         // for now, only define member attributes as properties, not toplevel attributes
         return d.isMember() && (d instanceof MethodOrValue) && !(d instanceof Method);
     }
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
-    private static boolean isNative(Term t) {
+    static boolean isNative(Term t) {
         if (t instanceof MemberOrTypeExpression) {
             return isNative(((MemberOrTypeExpression)t).getDeclaration());
         }
@@ -2197,7 +2197,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Returns true if the declaration is annotated "nativejs" */
-    private static boolean isNative(Declaration d) {
+    static boolean isNative(Declaration d) {
         return hasAnnotationByName(getToplevel(d), "nativejs") || TypeUtils.isUnknown(d);
     }
 
@@ -2388,7 +2388,7 @@ public class GenerateJsVisitor extends Visitor
         return sb.toString();
     }
 
-    private String memberAccessBase(Node node, Declaration decl, boolean setter,
+    String memberAccessBase(Node node, Declaration decl, boolean setter,
                 String lhs) {
         final StringBuilder sb = new StringBuilder(getMember(node, decl, lhs));
 
@@ -2455,53 +2455,6 @@ public class GenerateJsVisitor extends Visitor
                 + (protoCall ? ".call(this)" : "()");
     }
     
-    /**
-     * Generates a write access to a member, as represented by the given expression.
-     * The given callback is responsible for generating the assigned value.
-     * If lhs==null and the expression is a BaseMemberExpression
-     * then the qualified path is prepended.
-     */
-    private void generateMemberAccess(StaticMemberOrTypeExpression expr,
-                GenerateCallback callback, String lhs) {
-        Declaration decl = expr.getDeclaration();
-        boolean paren = false;
-        String plainName = null;
-        if (decl == null && dynblock > 0) {
-            plainName = expr.getIdentifier().getText();
-        } else if (isNative(decl)) {
-            // direct access to a native element
-            plainName = decl.getName();
-        }
-        if (plainName != null) {
-            if ((lhs != null) && (lhs.length() > 0)) {
-                out(lhs, ".");
-            }
-            out(plainName, "=");
-        }
-        else {
-            boolean protoCall = opts.isOptimize() && (getSuperMemberScope(expr) != null);
-            if (accessDirectly(decl) && !(protoCall && defineAsProperty(decl))) {
-                // direct access, without setter
-                out(memberAccessBase(expr, decl, true, lhs), "=");
-            }
-            else {
-                // access through setter
-                out(memberAccessBase(expr, decl, true, lhs),
-                        protoCall ? ".call(this," : "(");
-                paren = true;
-            }
-        }
-        
-        callback.generateValue();
-        if (paren) { out(")"); }
-    }
-    private void generateMemberAccess(final StaticMemberOrTypeExpression expr,
-            final String strValue, final String lhs) {
-        generateMemberAccess(expr, new GenerateCallback() {
-            @Override public void generateValue() { out(strValue); }
-        }, lhs);
-    }
-
     @Override
     public void visit(BaseTypeExpression that) {
         Declaration d = that.getDeclaration();
@@ -2769,7 +2722,7 @@ public class GenerateJsVisitor extends Visitor
                 final MethodOrValue moval = (MethodOrValue)bmeDecl;
                 if (moval.isVariable()) {
                     // simple assignment to a variable attribute
-                    generateMemberAccess(bme, new GenerateCallback() {
+                    BmeGenerator.generateMemberAccess(bme, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
                                     moval);
@@ -2797,7 +2750,7 @@ public class GenerateJsVisitor extends Visitor
                             }
                             boxUnboxEnd(boxType);
                         }
-                    }, null);
+                    }, null, this);
                     out(";");
                 } else if (moval.isMember()) {
                     if (moval instanceof Method) {
@@ -2917,14 +2870,14 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         
-        generateMemberAccess(lhsExpr, new GenerateCallback() {
+        BmeGenerator.generateMemberAccess(lhsExpr, new GenerateCallback() {
             @Override public void generateValue() {
                 int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
                 that.getRightTerm().visit(GenerateJsVisitor.this);
                 if (boxType == 4) out("/*TODO: callable targs 7*/");
                 boxUnboxEnd(boxType);
             }
-        }, null);
+        }, null, this);
         
         if (returnValue != null) { out(",", returnValue); }
         out(")");
@@ -3018,7 +2971,7 @@ public class GenerateJsVisitor extends Visitor
      * emitted after the current Ceylon statement has been completely processed.
      * The resulting code is valid because JavaScript variables may be used before
      * they are declared. */
-    private String createRetainedTempVar() {
+    String createRetainedTempVar() {
         String varName = names.createTempVariable();
         retainedVars.add(varName);
         return varName;
@@ -3139,7 +3092,7 @@ public class GenerateJsVisitor extends Visitor
 
             final String getLHS = memberAccess(lhsBME, null);
             out("(");
-            generateMemberAccess(lhsBME, new GenerateCallback() {
+            BmeGenerator.generateMemberAccess(lhsBME, new GenerateCallback() {
                 @Override public void generateValue() {
                     if (isNative) {
                         out(getLHS, functionName);
@@ -3155,7 +3108,7 @@ public class GenerateJsVisitor extends Visitor
                         out(")");
                     }
                 }
-            }, null);
+            }, null, this);
             if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
             out(")");
 
@@ -3182,13 +3135,13 @@ public class GenerateJsVisitor extends Visitor
                 out("(", lhsPrimaryVar, "=");
                 lhsQME.getPrimary().visit(this);
                 out(",");
-                generateMemberAccess(lhsQME, new GenerateCallback() {
+                BmeGenerator.generateMemberAccess(lhsQME, new GenerateCallback() {
                     @Override public void generateValue() {
                         out(getLHS, ".", functionName, "(");
                         that.getRightTerm().visit(GenerateJsVisitor.this);
                         out(")");
                     }
-                }, lhsPrimaryVar);
+                }, lhsPrimaryVar, this);
                 
                 if (!hasSimpleGetterSetter(lhsQME.getDeclaration())) {
                     out(",", getLHS);
@@ -3479,7 +3432,7 @@ public class GenerateJsVisitor extends Visitor
            String getMember = memberAccess(bme, null);
            String applyFunc = String.format("%s.%s", getMember, functionName);
            out("(");
-           generateMemberAccess(bme, applyFunc, null);
+           BmeGenerator.generateMemberAccess(bme, applyFunc, null, this);
            if (!simpleSetter) { out(",", getMember); }
            out(")");
            
@@ -3491,7 +3444,7 @@ public class GenerateJsVisitor extends Visitor
            out("(", primaryVar, "=");
            qme.getPrimary().visit(this);
            out(",");
-           generateMemberAccess(qme, applyFunc, primaryVar);
+           BmeGenerator.generateMemberAccess(qme, applyFunc, primaryVar, this);
            if (!hasSimpleGetterSetter(qme.getDeclaration())) {
                out(",", getMember);
            }
@@ -3500,41 +3453,11 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(PostfixIncrementOp that) {
-       postfixIncrementOrDecrement(that.getTerm(), "successor");
+       Operators.postfixIncrementOrDecrement(that.getTerm(), "successor", this);
    }
 
    @Override public void visit(PostfixDecrementOp that) {
-       postfixIncrementOrDecrement(that.getTerm(), "predecessor");
-   }
-
-   private void postfixIncrementOrDecrement(Term term, String functionName) {
-       if (term instanceof BaseMemberExpression) {
-           BaseMemberExpression bme = (BaseMemberExpression) term;
-           if (bme.getDeclaration() == null && dynblock > 0) {
-               out(bme.getIdentifier().getText(), "successor".equals(functionName) ? "++" : "--");
-               return;
-           }
-           String oldValueVar = createRetainedTempVar();
-           String applyFunc = String.format("%s.%s", oldValueVar, functionName);
-           out("(", oldValueVar, "=", memberAccess(bme, null), ",");
-           generateMemberAccess(bme, applyFunc, null);
-           out(",", oldValueVar, ")");
-
-       } else if (term instanceof QualifiedMemberExpression) {
-           QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           if (qme.getDeclaration() == null && dynblock > 0) {
-               out(qme.getIdentifier().getText(), "successor".equals(functionName) ? "++" : "--");
-               return;
-           }
-           String primaryVar = createRetainedTempVar();
-           String oldValueVar = createRetainedTempVar();
-           String applyFunc = String.format("%s.%s", oldValueVar, functionName);
-           out("(", primaryVar, "=");
-           qme.getPrimary().visit(this);
-           out(",", oldValueVar, "=", memberAccess(qme, primaryVar), ",");
-           generateMemberAccess(qme, applyFunc, primaryVar);
-           out(",", oldValueVar, ")");
-       }
+       Operators.postfixIncrementOrDecrement(that.getTerm(), "predecessor", this);
    }
 
     @Override

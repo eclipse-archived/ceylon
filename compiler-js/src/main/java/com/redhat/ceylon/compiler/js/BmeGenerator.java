@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 
 public class BmeGenerator {
 
@@ -91,6 +93,53 @@ public class BmeGenerator {
                 tmpargs, ".push(");
         TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, true);
         gen.out(");return ", member, ".apply(", who==null?"null":who, ",", tmpargs, ");}");
+    }
+
+    /**
+     * Generates a write access to a member, as represented by the given expression.
+     * The given callback is responsible for generating the assigned value.
+     * If lhs==null and the expression is a BaseMemberExpression
+     * then the qualified path is prepended.
+     */
+    static void generateMemberAccess(StaticMemberOrTypeExpression expr,
+                GenerateCallback callback, String lhs, final GenerateJsVisitor gen) {
+        Declaration decl = expr.getDeclaration();
+        boolean paren = false;
+        String plainName = null;
+        if (decl == null && gen.isInDynamicBlock()) {
+            plainName = expr.getIdentifier().getText();
+        } else if (GenerateJsVisitor.isNative(decl)) {
+            // direct access to a native element
+            plainName = decl.getName();
+        }
+        if (plainName != null) {
+            if ((lhs != null) && (lhs.length() > 0)) {
+                gen.out(lhs, ".");
+            }
+            gen.out(plainName, "=");
+        }
+        else {
+            boolean protoCall = gen.opts.isOptimize() && (gen.getSuperMemberScope(expr) != null);
+            if (gen.accessDirectly(decl) && !(protoCall && gen.defineAsProperty(decl))) {
+                // direct access, without setter
+                gen.out(gen.memberAccessBase(expr, decl, true, lhs), "=");
+            }
+            else {
+                // access through setter
+                gen.out(gen.memberAccessBase(expr, decl, true, lhs),
+                        protoCall ? ".call(this," : "(");
+                paren = true;
+            }
+        }
+        
+        callback.generateValue();
+        if (paren) { gen.out(")"); }
+    }
+    static void generateMemberAccess(final StaticMemberOrTypeExpression expr,
+            final String strValue, final String lhs, final GenerateJsVisitor gen) {
+        generateMemberAccess(expr, new GenerateCallback() {
+            @Override public void generateValue() { gen.out(strValue); }
+        }, lhs, gen);
     }
 
 }

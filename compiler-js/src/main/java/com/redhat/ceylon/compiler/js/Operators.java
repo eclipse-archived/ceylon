@@ -46,4 +46,35 @@ public class Operators {
             gen.out(after);
         }
     }
+
+    static void postfixIncrementOrDecrement(Tree.Term term, String functionName, final GenerateJsVisitor gen) {
+        if (term instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) term;
+            if (bme.getDeclaration() == null && gen.isInDynamicBlock()) {
+                gen.out(bme.getIdentifier().getText(), "successor".equals(functionName) ? "++" : "--");
+                return;
+            }
+            String oldValueVar = gen.createRetainedTempVar();
+            String applyFunc = String.format("%s.%s", oldValueVar, functionName);
+            gen.out("(", oldValueVar, "=", gen.memberAccess(bme, null), ",");
+            BmeGenerator.generateMemberAccess(bme, applyFunc, null, gen);
+            gen.out(",", oldValueVar, ")");
+
+        } else if (term instanceof Tree.QualifiedMemberExpression) {
+            Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+            if (qme.getDeclaration() == null && gen.isInDynamicBlock()) {
+                gen.out(qme.getIdentifier().getText(), "successor".equals(functionName) ? "++" : "--");
+                return;
+            }
+            String primaryVar = gen.createRetainedTempVar();
+            String oldValueVar = gen.createRetainedTempVar();
+            String applyFunc = String.format("%s.%s", oldValueVar, functionName);
+            gen.out("(", primaryVar, "=");
+            qme.getPrimary().visit(gen);
+            gen.out(",", oldValueVar, "=", gen.memberAccess(qme, primaryVar), ",");
+            BmeGenerator.generateMemberAccess(qme, applyFunc, primaryVar, gen);
+            gen.out(",", oldValueVar, ")");
+        }
+    }
+
 }
