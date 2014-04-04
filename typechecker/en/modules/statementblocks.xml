@@ -1035,7 +1035,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <synopsis>Continue: "continue"</synopsis>
             
             <para>A <literal>throw</literal> directive may appear anywhere and may specify an 
-            expression, whose type must be a subtype of type <literal>Exception</literal> 
+            expression, whose type must be a subtype of type <literal>Throwable</literal> 
             defined in <literal>ceylon.language</literal>. When the directive is executed, the 
             expression is evaluated and the resulting exception is thrown. If no expression is 
             specified, the directive is equivalent to <literal>throw Exception()</literal>.</para>
@@ -2189,7 +2189,7 @@ while (n&lt;=max) {
             </itemizedlist>
             
             <para>Each <literal>catch</literal> block defines a variable. The type 
-            of the variable must be assignable to <literal>Exception</literal> in
+            of the variable must be assignable to <literal>Throwable</literal> in
             <literal>ceylon.language</literal>. If no type is explicitly specified, 
             the type is inferred to be <literal>Exception</literal>.</para> 
             

@@ -787,7 +787,7 @@ String result = middleObject.string;</programlisting>
              </itemizedlist>
              
              <comment><para>TODO: Specify what happens if <literal>close()</literal> 
-             throws an exception? Same semantics as Java with "suppressed" exceptions.</para></comment>
+             throws an exception. (Same semantics as Java with "suppressed" exceptions.)</para></comment>
              
         </section>
                 
