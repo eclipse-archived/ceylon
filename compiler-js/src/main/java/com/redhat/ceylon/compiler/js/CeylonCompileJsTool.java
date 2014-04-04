@@ -10,7 +10,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
-public class CeylonCompileJsTool extends RepoUsingTool {
+public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     private boolean profile = false;
     private boolean optimize = true;
@@ -37,9 +37,6 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     private boolean comments = false;
     private boolean skipSrc = false;
 
-    private String user = null;
-    private String pass = null;
-    private String out = DefaultToolOptions.getCompilerOutDir().getPath();
     private String encoding;
 
     private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
@@ -96,20 +93,6 @@ public class CeylonCompileJsTool extends RepoUsingTool {
         this.comments = !nocomments;
     }
 
-    @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository" +
-            "(no default).")
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository" +
-            "(no default).")
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
     public List<String> getSrcAsStrings() {
         if (roots != null) {
             List<String> result = new ArrayList<>(roots.size());
@@ -141,7 +124,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     }
     
     public String getOut() {
-        return out;
+        return (out != null) ? out : DefaultToolOptions.getCompilerOutDir().getPath();
     }
 
     @Option
@@ -151,13 +134,6 @@ public class CeylonCompileJsTool extends RepoUsingTool {
     }
     public boolean isSkipSrcArchive() {
         return skipSrc;
-    }
-
-    @OptionArgument(argumentName="url")
-    @Description("Specifies the output module repository (which must be publishable). " +
-            "(default: `./modules`)")
-    public void setOut(String out) {
-        this.out = out;
     }
 
     @Argument(argumentName="moduleOrFile", multiplicity="+")
@@ -194,15 +170,7 @@ public class CeylonCompileJsTool extends RepoUsingTool {
             append("Using repositories: "+getRepositoryAsStrings());
             newline();
         }
-        final RepositoryManager repoman = CeylonUtils.repoManager()
-                .cwd(cwd)
-                .systemRepo(systemRepo)
-                .cacheRepo(cacheRepo)
-                .noDefaultRepos(noDefRepos)
-                .userRepos(getRepositoryAsStrings())
-                .outRepo(getOut())
-                .offline(offline)
-                .buildManager();
+        final RepositoryManager repoman = getRepositoryManager();
         final List<String> onlyFiles = new ArrayList<>();
         long t0, t1, t2, t3, t4;
         final TypeCheckerBuilder tcb;
