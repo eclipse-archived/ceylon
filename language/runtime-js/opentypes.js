@@ -388,7 +388,7 @@ $$openClass.classApply=function(targs,$mptypes) {
     //TODO generate targs
   }
   validate$params(mm.$ps,$mptypes.Arguments$classApply,"Wrong number of Arguments for classApply");
-  return this.$apply(targs,$mptypes);//TODO tupleize, targs $apply
+  return this.$apply(targs,$mptypes);
 }
 $$openClass.memberClassApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$crtmm$;
@@ -519,7 +519,7 @@ $$openInterface.memberInterfaceApply=function(cont,targs,$mptypes){
   return rv;
 }
 $$openInterface.interfaceApply=function(targs,$mptypes) {
-  return this.$apply(targs,$mptypes); //TODO mptypes $apply
+  return this.$apply(targs,$mptypes);
 }
             
 defineAttr($$openInterface,'string',function(){

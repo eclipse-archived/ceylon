@@ -186,7 +186,8 @@ if ((typeof process !== "undefined") && (process.stderr !== undefined)) {
 process$proto.flush = function(){}
 process$proto.flushError=function(){}
 process$proto.readLine = function() {
-    return String$("", 0);//TODO
+  this.writeLine("process.readLine not supported on this platform.");
+  return "";
 }
 
 if ((typeof process !== "undefined") && (process.exit !== undefined)) {

@@ -511,7 +511,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
       if(_ta&&_ta.tipo)ttargs[tp]={t:_ta.tipo};
       else if (_ta) console.log("TODO assign type arg " + _ta + " to " + tp);
       else if (mptypes[tp])ttargs[tp]=mptypes[tp];
-      else throw Error("TODO no more type arguments in AppliedFunction");
+      else throw new Error("No more type arguments in AppliedFunction!");
       i++;
     }
   }
@@ -647,8 +647,10 @@ $$appliedValue.setIfAssignable=function(v) {
       },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Value'}},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
       defineAttr($$appliedValue,'container',function(){
-          if (this.$$targs$$.Container$Value) {//TODO if Container$Attribute?
+          if (this.$$targs$$.Container$Value) {
             return typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Container$Value});
+          } else if (this.$$targs$$.Container$Attribute) {
+            return typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Container$Attribute});
           }
           var mm=this.tipo.$crtmm$;
           if (mm.$cont) {

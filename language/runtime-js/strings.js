@@ -364,7 +364,6 @@ defineAttr(String$proto, 'first', function() { return this.$get(0); },undefined,
 defineAttr(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','Iterable','$at','last']}});
 defineAttr(String$proto, 'keys', function() {
-    //TODO implement!!!
     return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Category},d:['ceylon.language','Category','$at','keys']}});
 String$proto.join = function(strings) {
@@ -516,7 +515,6 @@ defineAttr(String$proto, 'reversed', function() {
     return String$(result);
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$at','reversed']}});
 String$proto.$replace = function(sub, repl) {
-    //TODO: escape regex metachars
     if (this.indexOf(sub) < 0) {
       return this;
     }
@@ -529,7 +527,6 @@ String$proto.$replace = function(sub, repl) {
 String$proto.$replace.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$m','replace'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};}
 String$proto.replaceFirst = function(sub, repl) {
-    //TODO: escape regex metachars
     return String$(this.replace(sub, repl));
 }
 String$proto.replaceFirst.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$m','replaceFirst'],
