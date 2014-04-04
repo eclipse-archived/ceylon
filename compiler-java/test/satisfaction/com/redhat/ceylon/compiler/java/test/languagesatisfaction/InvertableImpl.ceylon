@@ -18,7 +18,6 @@
  * MA  02110-1301, USA.
  */
 class InvertableImpl() satisfies Invertable<InvertableImpl> {
-    shared actual InvertableImpl negativeValue = nothing;
-    shared actual InvertableImpl positiveValue = nothing;
+    shared actual InvertableImpl negated = nothing;
     shared actual InvertableImpl plus(InvertableImpl other) => nothing;
 }

@@ -399,8 +399,8 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         sync = ((.ceylon.language.Invertable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertable)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)n).times((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Integral)n).remainder((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
-        sync = ((.ceylon.language.Invertable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertable)n).getNegativeValue();
-        sync = ((.ceylon.language.Invertable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertable)n).getPositiveValue();
+        sync = ((.ceylon.language.Invertable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertable)n).getNegated();
+        sync = (.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n;
     }
     
     private final void testComparisonOperators$priv$(final .java.lang.Object p1, final .java.lang.Object erasedTest, final .java.lang.Object container) {

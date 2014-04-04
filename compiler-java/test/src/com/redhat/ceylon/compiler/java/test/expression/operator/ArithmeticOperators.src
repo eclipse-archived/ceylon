@@ -567,8 +567,8 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             }
             returning $ceylontmp$opV$55;
         );
-        this.setBoxedI1(this.getBoxedN1().getPositiveValue());
-        this.setBoxedI1(this.getBoxedN1().getNegativeValue());
+        this.setBoxedI1(this.getBoxedN1());
+        this.setBoxedI1(this.getBoxedN1().getNegated());
         this.setBoxedN1(this.getBoxedN1().plus(this.getBoxedN2()));
         this.setBoxedI1(this.getBoxedN1().minus(this.getBoxedN2()));
         this.setBoxedN1(this.getBoxedN1().times(this.getBoxedN2()));
@@ -819,8 +819,8 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
             }
             returning $ceylontmp$op$75;
         );
-        i1 = n1.getPositiveValue();
-        i1 = n1.getNegativeValue();
+        i1 = n1;
+        i1 = n1.getNegated();
         n1 = n1.plus(n2);
         i1 = n1.minus(n2);
         n1 = n1.times(n2);
@@ -1134,8 +1134,8 @@ class ArithmeticOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expre
             }
             returning $ceylontmp$opV$119;
         );
-        super.setBoxedI1(super.getBoxedN1().getPositiveValue());
-        super.setBoxedI1(super.getBoxedN1().getNegativeValue());
+        super.setBoxedI1(super.getBoxedN1());
+        super.setBoxedI1(super.getBoxedN1().getNegated());
         super.setBoxedN1(super.getBoxedN1().plus(super.getBoxedN2()));
         super.setBoxedI1(super.getBoxedN1().minus(super.getBoxedN2()));
         super.setBoxedN1(super.getBoxedN1().times(super.getBoxedN2()));

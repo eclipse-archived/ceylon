@@ -38,27 +38,15 @@ shared class FloatTest() {
     }    
     
     @test
-    shared void testNegativeValue() {
+    shared void testNegated() {
         Float positive = 1.5;
         Float negative = -1.5;
         Float zero = 0.0;        
-        assertEquals(zero,zero.negativeValue);
-        assertEquals(negative,positive.negativeValue);
-        assertEquals(positive,negative.negativeValue);
-        assertFalse(negative == negative.negativeValue);
-        assertFalse(positive == positive.negativeValue);
-    }
-    
-    @test
-    shared void testPositiveValue() {
-        Float positive = 1.5;
-        Float negative = -1.5;
-        Float zero = 0.0;        
-        assertEquals(zero,zero.positiveValue);
-        assertEquals(positive,positive.positiveValue);
-        assertFalse(positive == negative.positiveValue);
-        assertEquals(negative,negative.positiveValue);
-        assertFalse(negative == positive.positiveValue);
+        assertEquals(zero,zero.negated);
+        assertEquals(negative,positive.negated);
+        assertEquals(positive,negative.negated);
+        assertFalse(negative == negative.negated);
+        assertFalse(positive == positive.negated);
     }
     
     @test

@@ -34,8 +34,8 @@ class Bug639WideningImpl2(Integer impl) satisfies Bug639Widening {
     shared actual Integer implementation = impl;
     shared void neg(Bug639Widening w) {
         if (is Bug639WideningImpl2 w) {
-            Number a = implementation.negativeValue;
-            Number b = w.implementation.negativeValue;
+            Number a = implementation.negated;
+            Number b = w.implementation.negated;
         }
     }
 }

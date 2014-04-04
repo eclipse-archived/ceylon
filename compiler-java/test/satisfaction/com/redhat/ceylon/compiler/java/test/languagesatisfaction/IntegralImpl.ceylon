@@ -47,11 +47,7 @@ class IntegralImpl() satisfies Integral<IntegralImpl> {
         return nothing;
     }
     
-    shared actual IntegralImpl negativeValue {
-        return nothing;
-    }
-    
-    shared actual IntegralImpl positiveValue {
+    shared actual IntegralImpl negated {
         return nothing;
     }
     

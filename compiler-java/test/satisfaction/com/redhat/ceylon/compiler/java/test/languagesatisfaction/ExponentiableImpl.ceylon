@@ -39,11 +39,7 @@ class ExponentiableImpl() satisfies Exponentiable<ExponentiableImpl,Exponentiabl
         return nothing;
     }
     
-    shared actual ExponentiableImpl negativeValue {
-        return nothing;
-    }
-    
-    shared actual ExponentiableImpl positiveValue {
+    shared actual ExponentiableImpl negated {
         return nothing;
     }
 }

@@ -12,7 +12,7 @@ final class twoParamListsTP_ {
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final T i = (T)$param$0;
                 .java.lang.Object elem$0;
-                .ceylon.language.Iterator<? extends T> x$iterator$$1 = new .ceylon.language.Range<T>($reified$T, ((.ceylon.language.Invertable<T>)(.ceylon.language.Invertable)i).getNegativeValue(), (T)i).iterator();
+                .ceylon.language.Iterator<? extends T> x$iterator$$1 = new .ceylon.language.Range<T>($reified$T, ((.ceylon.language.Invertable<T>)(.ceylon.language.Invertable)i).getNegated(), (T)i).iterator();
                 loop_0: while (!((elem$0 = x$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
                     final T x = (T)elem$0;
                     .ceylon.language.print_.print(.ceylon.language.String.instance("hello " + name));

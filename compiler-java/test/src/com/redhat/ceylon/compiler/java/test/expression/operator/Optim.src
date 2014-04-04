@@ -91,12 +91,12 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         ++n1;
         n1--;
         --n1;
-        n1 = n2.getPositiveValue().longValue();
+        n1 = n2.longValue();
         n1 = 0L;
-        n1 = <.ceylon.language.Integer>getBoxed$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).getPositiveValue().longValue();
-        n1 = n2.getNegativeValue().longValue();
+        n1 = <.ceylon.language.Integer>getBoxed$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue();
+        n1 = n2.getNegated().longValue();
         n1 = 0L;
-        n1 = <.ceylon.language.Integer>getBoxed$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).getNegativeValue().longValue();
+        n1 = <.ceylon.language.Integer>getBoxed$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).getNegated().longValue();
         n1 = n2.plus(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.minus(.ceylon.language.Integer.instance(n3)).longValue();
         n1 = n2.times(.ceylon.language.Integer.instance(n3)).longValue();
@@ -162,12 +162,12 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     public final .java.lang.Object boxedFloatArithmetic(final .ceylon.language.Float n2) {
         double n1 = 0.0;
         double n3 = 0.0;
-        n1 = n2.getPositiveValue().doubleValue();
+        n1 = n2.doubleValue();
         n1 = 0.0;
-        n1 = <.ceylon.language.Float>getBoxed$priv$(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(0.0)).getPositiveValue().doubleValue();
-        n1 = n2.getNegativeValue().doubleValue();
+        n1 = <.ceylon.language.Float>getBoxed$priv$(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(0.0)).doubleValue();
+        n1 = n2.getNegated().doubleValue();
         n1 = -0.0;
-        n1 = <.ceylon.language.Float>getBoxed$priv$(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(0.0)).getNegativeValue().doubleValue();
+        n1 = <.ceylon.language.Float>getBoxed$priv$(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(0.0)).getNegated().doubleValue();
         n1 = n2.plus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.minus(.ceylon.language.Float.instance(n3)).doubleValue();
         n1 = n2.times(.ceylon.language.Float.instance(n3)).doubleValue();

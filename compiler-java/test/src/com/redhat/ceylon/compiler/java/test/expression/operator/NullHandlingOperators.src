@@ -31,7 +31,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
             {
                 .ceylon.language.Integer safe$2 = intOrNothing;
             }
-            returning safe$2 != null ? safe$2.getNegativeValue() : null;
+            returning safe$2 != null ? safe$2.getNegated() : null;
         );
         .ceylon.language.Integer nullSafeInvoke = (
             let

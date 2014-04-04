@@ -21,11 +21,11 @@
 class Bug111() {
     void m1() {
         Integer nat = 0;
-        Integer neg = nat.negativeValue;
+        Integer neg = nat.negated;
     }
     void m2() {
         Integer|Integer num = 0;
-        Integer mag = num.negativeValue;
+        Integer mag = num.negated;
     }
     void m3() {
         Integer[]|Integer[] nums = [1,2,3];

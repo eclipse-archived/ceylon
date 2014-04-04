@@ -51,9 +51,7 @@ class ScalarImpl() satisfies Scalar<ScalarImpl> {
     
     shared actual Boolean negative = nothing;
     
-    shared actual ScalarImpl negativeValue = nothing;
-    
-    shared actual ScalarImpl positiveValue = nothing;
+    shared actual ScalarImpl negated = nothing;
     
     shared actual Comparison compare(ScalarImpl other) {
         return nothing;

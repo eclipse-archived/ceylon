@@ -35,11 +35,7 @@ class NumericImpl() satisfies Numeric<NumericImpl> {
         return nothing;
     }
     
-    shared actual NumericImpl negativeValue {
-        return nothing;
-    }
-    
-    shared actual NumericImpl positiveValue {
+    shared actual NumericImpl negated {
         return nothing;
     }
 }

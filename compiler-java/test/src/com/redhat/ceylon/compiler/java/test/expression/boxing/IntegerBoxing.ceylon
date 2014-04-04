@@ -78,22 +78,6 @@ class IntegerBoxing(){
         test(localAttrInteger.successor);
         test(attrInteger.successor);
         test(this.attrInteger.successor);
-        
-        localAttrInteger = localAttrInteger.positiveValue;
-        attrInteger = attrInteger.positiveValue;
-        this.attrInteger = this.attrInteger.positiveValue;
-        
-        test(localAttrInteger.positiveValue);
-        test(attrInteger.positiveValue);
-        test(this.attrInteger.positiveValue);
-        
-        localAttrInteger = -localAttrInteger.positiveValue;
-        attrInteger = -attrInteger.positiveValue;
-        this.attrInteger = -this.attrInteger.positiveValue;
-        
-        test(-localAttrInteger.positiveValue);
-        test(-attrInteger.positiveValue);
-        test(-this.attrInteger.positiveValue);
     }
     
     void test(Integer i) {

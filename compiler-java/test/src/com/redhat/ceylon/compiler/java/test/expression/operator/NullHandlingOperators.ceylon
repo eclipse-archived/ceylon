@@ -29,7 +29,7 @@ shared class NullHandlingOperators() {
         Integer? intOrNothing = +0;
         Integer n = natOrNothing1 else 2;
         Integer? nBoxed = natOrNothing1 else box(0); 
-        variable Integer? nullSafeMember = intOrNothing?.negativeValue;
+        variable Integer? nullSafeMember = intOrNothing?.negated;
         variable Integer? nullSafeInvoke = intOrNothing?.plus(+1);
         nullSafeInvoke = intOrNothing?.plus{
             other = +1;

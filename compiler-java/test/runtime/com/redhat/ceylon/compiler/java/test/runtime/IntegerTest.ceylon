@@ -75,24 +75,12 @@ shared class IntegerTest() {
     shared void testNegativeValue() {
         Integer positive = 1;
         Integer negative = -1;
-        Integer theZero = 0;        
-        assertEquals(theZero,theZero.negativeValue);
-        assertEquals(negative,positive.negativeValue);
-        assertEquals(positive,negative.negativeValue);
-        assertFalse(negative == negative.negativeValue);
-        assertFalse(positive == positive.negativeValue);
-    }
-    
-    @test
-    shared void testPositiveValue() {
-        Integer positive = 1;
-        Integer negative = -1;
-        Integer theZero = 0;        
-        assertEquals(theZero,theZero.positiveValue);
-        assertEquals(positive,positive.positiveValue);
-        assertFalse(positive == negative.positiveValue);
-        assertEquals(negative,negative.positiveValue);
-        assertFalse(negative == positive.positiveValue);
+        Integer theZero = 0;
+        assertEquals(theZero,theZero.negated);
+        assertEquals(negative,positive.negated);
+        assertEquals(positive,negative.negated);
+        assertFalse(negative == negative.negated);
+        assertFalse(positive == positive.negated);
     }
     
     @test

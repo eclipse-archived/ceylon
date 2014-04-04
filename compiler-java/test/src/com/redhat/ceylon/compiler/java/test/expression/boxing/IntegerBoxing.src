@@ -90,18 +90,6 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         test$priv$(.ceylon.language.Integer.getSuccessor(localAttrInteger));
         test$priv$(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv$()));
         test$priv$(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv$()));
-        localAttrInteger = .ceylon.language.Integer.getPositiveValue(localAttrInteger);
-        setAttrInteger$priv$(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
-        this.setAttrInteger$priv$(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
-        test$priv$(.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test$priv$(.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
-        test$priv$(.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
-        localAttrInteger = -.ceylon.language.Integer.getPositiveValue(localAttrInteger);
-        setAttrInteger$priv$(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
-        this.setAttrInteger$priv$(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
-        test$priv$(-.ceylon.language.Integer.getPositiveValue(localAttrInteger));
-        test$priv$(-.ceylon.language.Integer.getPositiveValue(getAttrInteger$priv$()));
-        test$priv$(-.ceylon.language.Integer.getPositiveValue(this.getAttrInteger$priv$()));
     }
     
     private final void test$priv$(final long i) {
