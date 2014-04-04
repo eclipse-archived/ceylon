@@ -1427,7 +1427,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression makeTuple(ProducedType tupleType, java.util.List<Tree.PositionalArgument> expressions) {
-        if (expressions.isEmpty()) {
+        if (typeFact().isEmptyType(tupleType)) {
             return makeEmpty();// A tuple terminated by empty
         }
         
@@ -2364,11 +2364,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             ProducedType type = invocation.getParameterType(argIndex);
             if (invocation.isParameterSequenced(argIndex)
                     // Java methods need their underlying type preserved
-                    && !invocation.isJavaMethod()
-                    && !invocation.isArgumentSpread(argIndex)) {
-                // If the parameter is sequenced and the argument is not ...
-                // then the expected type of the *argument* is the type arg to Iterator
-                type = typeFact().getIteratedType(type);
+                    && !invocation.isJavaMethod()) {
+                if (!invocation.isArgumentSpread(argIndex)) {
+                    // If the parameter is sequenced and the argument is not ...
+                    // then the expected type of the *argument* is the type arg to Iterator
+                    type = typeFact().getIteratedType(type);
+                } else  if (invocation.getArgumentType(argIndex).getSupertype(typeFact().getSequentialDeclaration())
+                        == null) {
+                    // On the other hand, if the parameter is sequenced and the argument is spread,
+                    // but not sequential, then transformArguments() will use getSequence(),
+                    // so we only need to expect an Iterable type
+                    type = com.redhat.ceylon.compiler.typechecker.model.Util.producedType(
+                            typeFact().getIterableDeclaration(),
+                            typeFact().getIteratedType(type), typeFact().getIteratedAbsentType(type));
+                }
             }
             BoxingStrategy boxingStrategy = invocation.getParameterBoxingStrategy(argIndex);
             int flags = 0;
@@ -2458,6 +2467,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     private List<ExpressionAndType> transformArgumentsForSimpleInvocation(SimpleInvocation invocation, CallBuilder callBuilder) {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int numArguments = invocation.getNumArguments();
+        if (invocation.getNumParameters() == 0) {
+            // skip transforming arguments
+            // (Usually, numArguments would already be null, but it's possible to call a
+            //  parameterless function with a *[] argument - see #1593.)
+            numArguments = 0;
+        }
         boolean wrapIntoArray = false;
         ListBuffer<JCExpression> arrayWrap = new ListBuffer<JCExpression>();
         for (int argIndex = 0; argIndex < numArguments; argIndex++) {
