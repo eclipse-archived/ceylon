@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -48,6 +49,7 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -126,6 +128,16 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 "        --out ~/projects/hibernate/build")
 public class CeylonDocTool extends RepoUsingTool {
 
+    private static final String OPTION_SECTION = "doctool.";
+    private static final String OPTION_HEADER = OPTION_SECTION + "header";
+    private static final String OPTION_FOOTER = OPTION_SECTION + "footer";
+    private static final String OPTION_NON_SHARED = OPTION_SECTION + "non-shared";
+    private static final String OPTION_SOURCE_CODE = OPTION_SECTION + "source-code";
+    private static final String OPTION_IGNORE_MISSING_DOC = OPTION_SECTION + "ignore-missing-doc";
+    private static final String OPTION_IGNORE_MISSING_THROWS = OPTION_SECTION + "ignore-missing-throws";
+    private static final String OPTION_IGNORE_BROKEN_LINK = OPTION_SECTION + "ignore-broken-link";
+    private static final String OPTION_LINK = OPTION_SECTION + "link";
+
     private String outputRepository;
     private String encoding;
     private String user;
@@ -162,8 +174,23 @@ public class CeylonDocTool extends RepoUsingTool {
 
     public CeylonDocTool() {
         super(CeylondMessages.RESOURCE_BUNDLE);
+
+        CeylonConfig config = CeylonConfig.get();
+        
+        header = config.getOption(OPTION_HEADER);
+        footer = config.getOption(OPTION_FOOTER);
+        includeNonShared = config.getBoolOption(OPTION_NON_SHARED, false);
+        includeSourceCode = config.getBoolOption(OPTION_SOURCE_CODE, false);
+        ignoreMissingDoc = config.getBoolOption(OPTION_IGNORE_MISSING_DOC, false);
+        ignoreMissingThrows = config.getBoolOption(OPTION_IGNORE_MISSING_THROWS, false);
+        ignoreBrokenLink = config.getBoolOption(OPTION_IGNORE_BROKEN_LINK, false);
+
+        String[] linkValues = config.getOptionValues(OPTION_LINK);
+        if (linkValues != null) {
+            setLinks(Arrays.asList(linkValues));
+        }
     }
-    
+
     @OptionArgument(longName="out", argumentName="dir-or-url")
     @Description("The URL of the module repository where output should be published (default: `./out`)")
     public void setOutputRepository(String outputRepository) {
