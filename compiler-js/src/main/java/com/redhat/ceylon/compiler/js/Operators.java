@@ -47,6 +47,33 @@ public class Operators {
         }
     }
 
+    static void prefixIncrementOrDecrement(Tree.Term term, String functionName, final GenerateJsVisitor gen) {
+        if (term instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) term;
+            boolean simpleSetter = gen.hasSimpleGetterSetter(bme.getDeclaration());
+            String getMember = gen.memberAccess(bme, null);
+            String applyFunc = String.format("%s.%s", getMember, functionName);
+            gen.out("(");
+            BmeGenerator.generateMemberAccess(bme, applyFunc, null, gen);
+            if (!simpleSetter) { gen.out(",", getMember); }
+            gen.out(")");
+            
+        } else if (term instanceof Tree.QualifiedMemberExpression) {
+            Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+            String primaryVar = gen.createRetainedTempVar();
+            String getMember = gen.memberAccess(qme, primaryVar);
+            String applyFunc = String.format("%s.%s", getMember, functionName);
+            gen.out("(", primaryVar, "=");
+            qme.getPrimary().visit(gen);
+            gen.out(",");
+            BmeGenerator.generateMemberAccess(qme, applyFunc, primaryVar, gen);
+            if (!gen.hasSimpleGetterSetter(qme.getDeclaration())) {
+                gen.out(",", getMember);
+            }
+            gen.out(")");
+        }
+    }
+
     static void postfixIncrementOrDecrement(Tree.Term term, String functionName, final GenerateJsVisitor gen) {
         if (term instanceof Tree.BaseMemberExpression) {
             Tree.BaseMemberExpression bme = (Tree.BaseMemberExpression) term;

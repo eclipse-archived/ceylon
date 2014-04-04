@@ -3205,7 +3205,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(CompareOp that) {
-        leftCompareRight(that);
+        Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
     }
 
     /** Returns true if both Terms' types is either Integer or Boolean. */
@@ -3233,13 +3233,9 @@ public class GenerateJsVisitor extends Visitor
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
-                out("(");
-                box(that.getLeftTerm());
-                out("<");
-                box(that.getRightTerm());
-                out(")");
+                Operators.simpleBinaryOp(that, "(", "<", ")", this);
             } else {
-                leftCompareRight(that);
+                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
                 out(".equals(", clAlias, "getSmaller())");
             }
         }
@@ -3259,13 +3255,9 @@ public class GenerateJsVisitor extends Visitor
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
-                out("(");
-                box(that.getLeftTerm());
-                out(">");
-                box(that.getRightTerm());
-                out(")");
+                Operators.simpleBinaryOp(that, "(", ">", ")", this);
             } else {
-                leftCompareRight(that);
+                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
                 out(".equals(", clAlias, "getLarger())");
             }
         }
@@ -3285,14 +3277,10 @@ public class GenerateJsVisitor extends Visitor
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
-                out("(");
-                box(that.getLeftTerm());
-                out("<=");
-                box(that.getRightTerm());
-                out(")");
+                Operators.simpleBinaryOp(that, "(", "<=", ")", this);
             } else {
                 out("(");
-                leftCompareRight(that);
+                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
                 out("!==", clAlias, "getLarger()");
                 out(")");
             }
@@ -3313,14 +3301,10 @@ public class GenerateJsVisitor extends Visitor
         } else {
             final boolean usenat = canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
             if (usenat) {
-                out("(");
-                box(that.getLeftTerm());
-                out(">=");
-                box(that.getRightTerm());
-                out(")");
+                Operators.simpleBinaryOp(that, "(", ">=", ")", this);
             } else {
                 out("(");
-                leftCompareRight(that);
+                Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
                 out("!==", clAlias, "getSmaller()");
                 out(")");
             }
@@ -3370,11 +3354,6 @@ public class GenerateJsVisitor extends Visitor
         out(")");
     }
 
-    /** Outputs the CL equivalent of 'a <=> b' in JS. */
-    private void leftCompareRight(BinaryOperatorExpression that) {
-        Operators.simpleBinaryOp(that, null, ".compare(", ")", this);
-    }
-
    @Override public void visit(AndOp that) {
        Operators.simpleBinaryOp(that, "(", "&&", ")", this);
    }
@@ -3413,43 +3392,16 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(IncrementOp that) {
-       prefixIncrementOrDecrement(that.getTerm(), "successor");
+       Operators.prefixIncrementOrDecrement(that.getTerm(), "successor", this);
    }
 
    @Override public void visit(DecrementOp that) {
-       prefixIncrementOrDecrement(that.getTerm(), "predecessor");
+       Operators.prefixIncrementOrDecrement(that.getTerm(), "predecessor", this);
    }
 
-   private boolean hasSimpleGetterSetter(Declaration decl) {
+   boolean hasSimpleGetterSetter(Declaration decl) {
        return (dynblock > 0 && TypeUtils.isUnknown(decl)) ||
                !((decl instanceof Value && ((Value)decl).isTransient()) || (decl instanceof Setter) || decl.isFormal());
-   }
-
-   private void prefixIncrementOrDecrement(Term term, String functionName) {
-       if (term instanceof BaseMemberExpression) {
-           BaseMemberExpression bme = (BaseMemberExpression) term;
-           boolean simpleSetter = hasSimpleGetterSetter(bme.getDeclaration());
-           String getMember = memberAccess(bme, null);
-           String applyFunc = String.format("%s.%s", getMember, functionName);
-           out("(");
-           BmeGenerator.generateMemberAccess(bme, applyFunc, null, this);
-           if (!simpleSetter) { out(",", getMember); }
-           out(")");
-           
-       } else if (term instanceof QualifiedMemberExpression) {
-           QualifiedMemberExpression qme = (QualifiedMemberExpression) term;
-           String primaryVar = createRetainedTempVar();
-           String getMember = memberAccess(qme, primaryVar);
-           String applyFunc = String.format("%s.%s", getMember, functionName);
-           out("(", primaryVar, "=");
-           qme.getPrimary().visit(this);
-           out(",");
-           BmeGenerator.generateMemberAccess(qme, applyFunc, primaryVar, this);
-           if (!hasSimpleGetterSetter(qme.getDeclaration())) {
-               out(",", getMember);
-           }
-           out(")");
-       }
    }
 
    @Override public void visit(PostfixIncrementOp that) {
