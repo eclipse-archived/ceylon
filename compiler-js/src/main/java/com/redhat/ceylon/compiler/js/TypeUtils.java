@@ -213,9 +213,9 @@ public class TypeUtils {
                 if (!skipSelfDecl) {
                     ClassOrInterface ontoy = Util.getContainingClassOrInterface(node.getScope());
                     if (((TypeDeclaration)ontoy).isAnonymous()) {
-                        gen.self((TypeDeclaration)parent);
+                        gen.out(gen.getNames().self((TypeDeclaration)parent));
                     } else {
-                        gen.self((TypeDeclaration)ontoy);
+                        gen.out(gen.getNames().self((TypeDeclaration)ontoy));
                         for (int i = 0; i < outers; i++) {
                             gen.out(".$$outer");
                         }

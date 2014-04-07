@@ -214,8 +214,7 @@ public class FunctionHelper {
                 //Declare the method just by pointing to the param function
                 final String name = gen.getNames().name(((Class)m.getContainer()).getParameter(m.getName()));
                 if (name != null) {
-                    gen.self((Class)m.getContainer());
-                    gen.out(".", gen.getNames().name(m), "=", name);
+                    gen.out(gen.getNames().self((Class)m.getContainer()), ".", gen.getNames().name(m), "=", name);
                     gen.endLine(true);
                 }
             } else if (m.getContainer() instanceof Method) {
@@ -227,8 +226,8 @@ public class FunctionHelper {
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
         } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
             if (m.getContainer() instanceof TypeDeclaration) {
-                gen.self((TypeDeclaration)m.getContainer());
-                gen.out(".", gen.getNames().name(m),"={$fml:1,$crtmm$:");
+                gen.out(gen.getNames().self((TypeDeclaration)m.getContainer()), ".",
+                        gen.getNames().name(m), "={$fml:1,$crtmm$:");
                 TypeUtils.encodeForRuntime(that, m, gen);
                 gen.out("};");
             }

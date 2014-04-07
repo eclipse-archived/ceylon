@@ -426,9 +426,7 @@ public class GenerateJsVisitor extends Visitor
                     ((scope instanceof MethodOrValue)
                      || (scope instanceof TypeDeclaration)
                      || (scope instanceof Specification))) {
-            out("var ");
-            self(prototypeOwner);
-            out("=this");
+            out("var ", names.self(prototypeOwner), "=this");
             endLine(true);
         }
     }
@@ -538,8 +536,7 @@ public class GenerateJsVisitor extends Visitor
         if (withTargs) {
             out("$$targs$$,");
         }
-        self(d);
-        out(")");
+        out(names.self(d), ")");
         beginBlock();
         //declareSelf(d);
         referenceOuter(d);
@@ -549,9 +546,7 @@ public class GenerateJsVisitor extends Visitor
         }
         callInterfaces(that.getSatisfiedTypes(), d, that, superDecs);
         if (withTargs) {
-            out(clAlias, "set_type_args(");
-            self(d);
-            out(",$$targs$$)");
+            out(clAlias, "set_type_args(", names.self(d), ",$$targs$$)");
             endLine(true);
         }
         that.getInterfaceBody().visit(this);
@@ -591,8 +586,7 @@ public class GenerateJsVisitor extends Visitor
         if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
             out("$$targs$$,");
         }
-        self(d);
-        out("){");
+        out(names.self(d), "){");
         final ProducedType pt = ext.getTypeModel();
         final TypeDeclaration aliased = pt.getDeclaration();
         qualify(that,aliased);
@@ -601,8 +595,7 @@ public class GenerateJsVisitor extends Visitor
             TypeUtils.printTypeArguments(that, pt.getTypeArguments(), this, true);
             out(",");
         }
-        self(d);
-        out(");}");
+        out(names.self(d), ");}");
         endLine();
         out(aname,".$crtmm$=");
         TypeUtils.encodeForRuntime(that, d, this);
@@ -626,8 +619,7 @@ public class GenerateJsVisitor extends Visitor
         if (d.getTypeParameters() != null && !d.getTypeParameters().isEmpty()) {
             out("$$targs$$,");
         }
-        self(d);
-        out("){return ");
+        out(names.self(d), "){return ");
         TypeDeclaration aliased = ext.getType().getDeclarationModel();
         qualify(that, aliased);
         out(names.name(aliased), "(");
@@ -644,8 +636,7 @@ public class GenerateJsVisitor extends Visitor
             TypeUtils.printTypeArguments(that, invargs, this, true);
             out(",");
         }
-        self(d);
-        out(");}");
+        out(names.self(d), ");}");
         endLine();
         out(aname, ".$$=");
         qualify(that, aliased);
@@ -672,8 +663,7 @@ public class GenerateJsVisitor extends Visitor
         if (withTargs) {
             out("$$targs$$,");
         }
-        self(d);
-        out(")");
+        out(names.self(d), ")");
         beginBlock();
         //This takes care of top-level attributes defined before the class definition
         out("$init$", names.name(d), "()");
@@ -681,8 +671,8 @@ public class GenerateJsVisitor extends Visitor
         declareSelf(d);
         referenceOuter(d);
         if (withTargs) {
-            out(clAlias, "set_type_args(");
-            self(d); out(",$$targs$$)"); endLine(true);
+            out(clAlias, "set_type_args(", names.self(d), ",$$targs$$)");
+            endLine(true);
         } else {
             //Check if any of the satisfied types have type arguments
             if (that.getSatisfiedTypes() != null) {
@@ -691,7 +681,7 @@ public class GenerateJsVisitor extends Visitor
                     Map<TypeParameter,ProducedType> targs = sat.getTypeModel().getTypeArguments();
                     if (targs != null && !targs.isEmpty()) {
                         if (first) {
-                            self(d); out(".$$targs$$=");
+                            out(names.self(d), ".$$targs$$=");
                             TypeUtils.printTypeArguments(that, targs, this, false);
                             endLine(true);
                             first = false;
@@ -722,8 +712,7 @@ public class GenerateJsVisitor extends Visitor
         }
         if (d.isNative()) {
             out("if(typeof($init$native$", names.name(d), "$before)==='function')$init$native$",
-                    names.name(d), "$before(");
-            self(d);
+                    names.name(d), "$before(", names.self(d));
             if (withTargs)out(",$$targs$$");
             out(")");
             endLine(true);
@@ -731,8 +720,7 @@ public class GenerateJsVisitor extends Visitor
         that.getClassBody().visit(this);
         if (d.isNative()) {
             out("if(typeof($init$native$", names.name(d), "$after)==='function')$init$native$",
-                    names.name(d), "$after(");
-            self(d);
+                    names.name(d), "$after(", names.self(d));
             if (withTargs)out(",$$targs$$");
             out(")");
             endLine(true);
@@ -778,14 +766,11 @@ public class GenerateJsVisitor extends Visitor
         if (!d.isToplevel()) {
             final ClassOrInterface coi = Util.getContainingClassOrInterface(d.getContainer());
             if (coi != null) {
-                self(d);
-                out(".");
-                out("$$outer");
+                out(names.self(d), ".$$outer");
                 if (d.isClassOrInterfaceMember()) {
                     out("=this");
                 } else {
-                    out("=");
-                    self(coi);
+                    out("=", names.self(coi));
                 }
                 endLine(true);
             }
@@ -844,8 +829,7 @@ public class GenerateJsVisitor extends Visitor
                         extendedType.getType().getTypeArgumentList().getTypeModels()), this, false);
                 out(",");
             }
-            self(d);
-            out(")");
+            out(names.self(d), ")");
             endLine(true);
            
             copySuperMembers(typeDecl, superDecs, d);
@@ -867,17 +851,15 @@ public class GenerateJsVisitor extends Visitor
                     TypeUtils.printTypeArguments(that, st.getTypeModel().getTypeArguments(), this, d.isToplevel());
                     out(",");
                 }
-                self(d);
-                out(")");
+                out(names.self(d), ")");
                 endLine(true);
                 //Set the reified types from interfaces
                 Map<TypeParameter, ProducedType> reifs = st.getTypeModel().getTypeArguments();
                 if (reifs != null && !reifs.isEmpty()) {
                     for (Map.Entry<TypeParameter, ProducedType> e : reifs.entrySet()) {
                         if (e.getValue().getDeclaration() instanceof ClassOrInterface) {
-                            out(clAlias, "add_type_arg(");
-                            self(d);
-                            out(",'", e.getKey().getName(), "$", e.getKey().getDeclaration().getName(), "',");
+                            out(clAlias, "add_type_arg(", names.self(d), ",'", e.getKey().getName(),
+                                    "$", e.getKey().getDeclaration().getName(), "',");
                             TypeUtils.typeNameOrList(that, e.getValue(), this, false);
                             out(")");
                             endLine(true);
@@ -1124,15 +1106,12 @@ public class GenerateJsVisitor extends Visitor
     }
 
     private void declareSelf(ClassOrInterface d) {
-        out("if(");
-        self(d);
-        out("===undefined)");
+        out("if(", names.self(d), "===undefined)");
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class && d.isAbstract()) {
             out(clAlias, "throwexc(", clAlias, "InvocationException$meta$model(");
             out("\"Cannot instantiate abstract class\"),'?','?')");
         } else {
-            self(d);
-            out("=new ");
+            out(names.self(d), "=new ");
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 out("this.");
             }
@@ -1142,9 +1121,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     void instantiateSelf(ClassOrInterface d) {
-        out("var ");
-        self(d);
-        out("=new ");
+        out("var ", names.self(d), "=new ");
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
             out("this.", names.name(d), ".$$;");
         } else {
@@ -1154,9 +1131,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     void returnSelf(ClassOrInterface d) {
-        out("return ");
-        self(d);
-        out(";");
+        out("return ", names.self(d), ";");
     }
 
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
@@ -1215,7 +1190,7 @@ public class GenerateJsVisitor extends Visitor
             new SuperVisitor(superDecs).visit(that.getClassBody());
         }
         if (!targs.isEmpty()) {
-            self(c); out(".$$targs$$=$$targs$$"); endLine(true);
+            out(names.self(c), ".$$targs$$=$$targs$$"); endLine(true);
         }
         callSuperclass(that.getExtendedType(), c, that, superDecs);
         callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
@@ -1304,10 +1279,7 @@ public class GenerateJsVisitor extends Visitor
 
     private void superRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         //if (d.isActual()) {
-            self(sub);
-            out(".", names.name(d), parentSuffix, "=");
-            self(sub);
-            out(".", names.name(d));
+            out(names.self(sub), ".", names.name(d), parentSuffix, "=", names.self(sub), ".", names.name(d));
             endLine(true);
         //}
     }
@@ -1318,20 +1290,16 @@ public class GenerateJsVisitor extends Visitor
                     parentSuffix, "')");
         }
         else {
-            self(sub);
-            out(".", names.getter(d), parentSuffix, "=");
-            self(sub);
-            out(".", names.getter(d));
+            out(names.self(sub), ".", names.getter(d), parentSuffix, "=",
+                    names.self(sub), ".", names.getter(d));
         }
         endLine(true);
     }
 
     private void superSetterRef(Declaration d, ClassOrInterface sub, String parentSuffix) {
         if (!defineAsProperty(d)) {
-            self(sub);
-            out(".", names.setter(d), parentSuffix, "=");
-            self(sub);
-            out(".", names.setter(d));
+            out(names.self(sub), ".", names.setter(d), parentSuffix, "=",
+                    names.self(sub), ".", names.setter(d));
             endLine(true);
         }
     }
@@ -1455,12 +1423,9 @@ public class GenerateJsVisitor extends Visitor
                 endLine();
             }
             if ((typeDecl != null) && pd.getModel().isCaptured()) {
-                self(typeDecl);
-                out(".", paramName, "_=", paramName);
+                out(names.self(typeDecl), ".", paramName, "_=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
-                    out(";");
-                    self(typeDecl);
-                    out(".", paramName, "=", paramName);
+                    out(";", names.self(typeDecl), ".", paramName, "=", paramName);
                 }
                 endLine(true);
             }
@@ -2048,12 +2013,12 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(This that) {
-        self(Util.getContainingClassOrInterface(that.getScope()));
+        out(names.self(Util.getContainingClassOrInterface(that.getScope())));
     }
 
     @Override
     public void visit(Super that) {
-        self(Util.getContainingClassOrInterface(that.getScope()));
+        out(names.self(Util.getContainingClassOrInterface(that.getScope())));
     }
 
     @Override
@@ -2065,15 +2030,14 @@ public class GenerateJsVisitor extends Visitor
                 scope = scope.getContainer();
             }
             if (scope != null && ((TypeDeclaration)scope).isClassOrInterfaceMember()) {
-                self((TypeDeclaration) scope);
-                out(".");
+                out(names.self((TypeDeclaration) scope), ".");
                 outer = true;
             }
         }
         if (outer) {
             out("$$outer");
         } else {
-            self(that.getTypeModel().getDeclaration());
+            out(names.self(that.getTypeModel().getDeclaration()));
         }
     }
 
@@ -2904,17 +2868,13 @@ public class GenerateJsVisitor extends Visitor
     @Override
     public void visit(AnnotationList that) {}
 
-    void self(TypeDeclaration d) {
-        out(names.self(d));
-    }
-
     private boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
             out("exports");
             return true;
         }
         else if (d.isClassOrInterfaceMember()) {
-            self((TypeDeclaration)d.getContainer());
+            out(names.self((TypeDeclaration)d.getContainer()));
             return true;
         }
         return false;
