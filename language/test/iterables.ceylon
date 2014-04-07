@@ -3,23 +3,23 @@ shared void testIterables() {
     value s1 = { 1, 2, 3, 4, 5 };
     value s2 = { "Hello", "World" };
     //Map
-    check(s1.map((Integer i) => i*2).sequence == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
-    check(s2.map((String s) => s.reversed).sequence == { "olleH", "dlroW" }, "Iterable.map 2");
-    check("hola".map((Character c) => c.uppercased).sequence == {'H', 'O', 'L', 'A'}, "String.map");
+    check(s1.map((Integer i) => i*2).sequence == { 2, 4, 6, 8, 10 }.sequence, "Iterable.map 1");
+    check(s2.map((String s) => s.reversed).sequence == { "olleH", "dlroW" }.sequence, "Iterable.map 2");
+    check("hola".map((Character c) => c.uppercased).sequence == {'H', 'O', 'L', 'A'}.sequence, "String.map");
 
     //Filter
-    check(s1.filter((Integer i) => i%2==0).sequence == { 2, 4 }, "Iterable.filter 1");
-    check(s2.filter((String s) => "e" in s).sequence == { "Hello" }, "Iterable.filter 2");
+    check(s1.filter((Integer i) => i%2==0).sequence == { 2, 4 }.sequence, "Iterable.filter 1");
+    check(s2.filter((String s) => "e" in s).sequence == { "Hello" }.sequence, "Iterable.filter 2");
     check(String("h o l a".filter((Character c) => c.letter)) == "hola", "String.filter");
 
     //Collect (like map, but it's already T[])
-    check(s1.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Iterable.map 1");
-    check(s2.collect((String s) => s.reversed) == { "olleH", "dlroW" }, "Iterable.map 2");
-    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}, "String.map");
+    check(s1.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }.sequence, "Iterable.map 1");
+    check(s2.collect((String s) => s.reversed) == { "olleH", "dlroW" }.sequence, "Iterable.map 2");
+    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}.sequence, "String.map");
 
     //Select
-    check(s1.select((Integer i) => i%2==0) == { 2, 4 }, "Iterable.select 1");
-    check(s2.select((String s) => "e" in s) == { "Hello" }, "Iterable.select 2");
+    check(s1.select((Integer i) => i%2==0) == { 2, 4 }.sequence, "Iterable.select 1");
+    check(s2.select((String s) => "e" in s) == { "Hello" }.sequence, "Iterable.select 2");
     check("h o l a".select((Character c) => c.letter) == "hola", "String.select");
 
     //Fold
@@ -60,15 +60,15 @@ shared void testIterables() {
         check(c == 'a', "String.findLast");
     } else { fail("String.findLast"); }
 
-    check((1..10).map((Integer i) => i.float).sequence == {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, "map 1");
-    check((1..10).filter((Integer i) => i>5).sequence == {6, 7, 8, 9, 10}, "filter 1");
+    check((1..10).map((Integer i) => i.float).sequence == {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}.sequence, "map 1");
+    check((1..10).filter((Integer i) => i>5).sequence == {6, 7, 8, 9, 10}.sequence, "filter 1");
     check(((1..10).find((Integer i) => i>5) else -1)==6, "find 1");
     check(((1..10).findLast((Integer i) => i>5) else -1)==10, "findLast 1");
     check((1..10).fold(0, (Integer i, Integer j) => i+j)==55, "fold 3");
     check((1..10).reduce((Integer i, Integer j) => i+j)==55, "reduce 3");
 
-    check({ 1, 3, 7, 10 }.map((Integer i) => i.float).sequence=={1.0, 3.0, 7.0, 10.0}, "map 2");
-    check({ 1, 3, 7, 10 }.filter((Integer i) => i>5).sequence=={7.0, 10.0}, "filter 2");
+    check({ 1, 3, 7, 10 }.map((Integer i) => i.float).sequence=={1.0, 3.0, 7.0, 10.0}.sequence, "map 2");
+    check({ 1, 3, 7, 10 }.filter((Integer i) => i>5).sequence=={7.0, 10.0}.sequence, "filter 2");
     check(({ 1, 3, 7, 10 }.find((Integer i) => i>5) else -1)==7, "find 2");
     check(({ 1, 3, 7, 10 }.findLast((Integer i) => i>5) else -1)==10, "findLast 2");
     check({ 1, 3, 7, 10 }.fold(1, (Integer i, Integer j) => i*j)==210, "fold 4");
@@ -89,7 +89,7 @@ shared void testIterables() {
     check(vacio.taking(1).sequence=={}, "empty.taking");
  
     //Singleton optimized implementations 
-    check(Singleton(5).map((Integer i) => i.float).sequence=={5.0}, "Singleton.map");
+    check(Singleton(5).map((Integer i) => i.float).sequence=={5.0}.sequence, "Singleton.map");
     check(Singleton(5).filter((Integer i) => i>5).sequence=={}, "Singleton.filter");
     check(!Singleton(5).find((Integer i) => i>5) exists, "Singleton.find");
     check(!Singleton(5).findLast((Integer i) => i>5) exists, "Singleton.findLast");
@@ -98,12 +98,12 @@ shared void testIterables() {
     check(Singleton(5).sort((Integer x, Integer y) => x<=>y) == Singleton(5), "Singleton.sort");
     check(Singleton(1).any((Integer x) => x == 1), "Singleton.any");
     check(Singleton(1).every((Integer x) => x>0), "Singleton.every");
-    check(Singleton(1).skipping(0).sequence=={1}, "Singleton.skipping [1]");
+    check(Singleton(1).skipping(0).sequence=={1}.sequence, "Singleton.skipping [1]");
     check(Singleton(1).skipping(1).sequence=={}, "Singleton.skipping [2]");
     check(Singleton(1).skipping(9).sequence=={}, "Singleton.skipping [3]");
-    check(Singleton(1).taking(5).sequence=={1}, "Singleton.taking");
-    check(Singleton(1).by(1).sequence=={1}, "Singleton.by [1]");
-    check(Singleton(1).by(5).sequence=={1}, "Singleton.by [2]");
+    check(Singleton(1).taking(5).sequence=={1}.sequence, "Singleton.taking");
+    check(Singleton(1).by(1).sequence=={1}.sequence, "Singleton.by [1]");
+    check(Singleton(1).by(5).sequence=={1}.sequence, "Singleton.by [2]");
     //Let's test by(0) with Singleton
     /*value endlessIter = Singleton(1).by(0).iterator;
     for (i in 1..1000) {
@@ -122,35 +122,35 @@ shared void testIterables() {
     check( !"Hello".every((Character c) => c.lowercase), "Iterable.every [3]");
 
     //Sorted
-    check({5,4,3,2,1}.sort((Integer x, Integer y) => x<=>y).sequence == {1,2,3,4,5}, "sort [1]");
-    check({"tt","aaa","z"}.sort((String a, String b) => a<=>b).sequence == {"aaa", "tt", "z"}, "sort [2]");
+    check({5,4,3,2,1}.sort((Integer x, Integer y) => x<=>y).sequence == {1,2,3,4,5}.sequence, "sort [1]");
+    check({"tt","aaa","z"}.sort((String a, String b) => a<=>b).sequence == {"aaa", "tt", "z"}.sequence, "sort [2]");
     check("hola".sort((Character a, Character b) => a<=>b) == "ahlo", "String.sort");
 
     //Skipping
-    check({1,2,3,4,5}.skipping(3).sequence=={4,5}, "skipping [1]");
+    check({1,2,3,4,5}.skipping(3).sequence=={4,5}.sequence, "skipping [1]");
     check(!{1,2,3,4,5}.skipping(9).sequence nonempty, "skipping [2]");
     check((1..10).skipping(5)==6..10, "Range.skipping [3]");
     check(!(1..5).skipping(9).sequence nonempty, "skipping [4]");
     check((5..1).skipping(2)==3..1, "Range.skipping [5]");
     check("hola".skipping(2)=="la", "String.skipping");
-    check({for(i in 1..10) i}.skipping(8).sequence=={9,10}, "comprehension.skipping");
+    check({for(i in 1..10) i}.skipping(8).sequence=={9,10}.sequence, "comprehension.skipping");
 
     //Taking
-    check({1,2,3,4,5}.taking(3).sequence=={1,2,3}, "taking [1]");
+    check({1,2,3,4,5}.taking(3).sequence=={1,2,3}.sequence, "taking [1]");
     check(!{1,2,3,4,5}.taking(0).sequence nonempty, "taking [2]");
     check((1..10).taking(5)==1..5, "Range.taking [3]");
     check(!(1..5).taking(0).sequence nonempty, "Range.taking [4]");
     check((1..10).taking(100)==1..10, "Range.taking [5]");
-    check({1,2,3,4,5}.taking(100).sequence=={1,2,3,4,5}, "taking [6]");
+    check({1,2,3,4,5}.taking(100).sequence=={1,2,3,4,5}.sequence, "taking [6]");
     check((5..1).taking(3)==5..3, "Range.taking [7]");
     check("hola".taking(2)=="ho", "String.taking");
-    check({for (i in 1..10) i}.taking(2).sequence=={1,2}, "comprehension.taking");
+    check({for (i in 1..10) i}.taking(2).sequence=={1,2}.sequence, "comprehension.taking");
 
     //By
-    check({1,2,3,4,5}.by(1).sequence=={1,2,3,4,5}, "by [1]");
-    check({1,2,3,4,5}.by(2).sequence=={1,3,5}, "by [2]");
-    check({1,2,3,4,5}.by(3).sequence=={1,4}, "by [3]");
-    check({1,2,3,4,5}.by(4).sequence=={1,5}, "by [4]");
+    check({1,2,3,4,5}.by(1).sequence=={1,2,3,4,5}.sequence, "by [1]");
+    check({1,2,3,4,5}.by(2).sequence=={1,3,5}.sequence, "by [2]");
+    check({1,2,3,4,5}.by(3).sequence=={1,4}.sequence, "by [3]");
+    check({1,2,3,4,5}.by(4).sequence=={1,5}.sequence, "by [4]");
     check({1,2,3,4,5}.by(5).sequence=={1,2,3,4,5}.by(9).sequence, "by [5]");
     check("AaEeIiOoUu".by(2)=="AEIOU", "String.by [1]");
     check("1234567890".by(3)=="1470", "String.by [2]");
@@ -158,11 +158,11 @@ shared void testIterables() {
     check("1234567890".by(5)=="16", "String.by [4]");
     check("1234567890".by(8)=="19", "String.by [5]");
     check("1234567890".by(11)=="1", "String.by [6]");
-    check((1..10).by(2).sequence=={1,3,5,7,9}, "Range.by [1]");
-    check((10..1).by(2).sequence=={10,8,6,4,2}, "Range.by [2]");
-    check((1..10).by(6).sequence=={1,7}, "Range.by [3]");
-    check((1..10).by(100).sequence=={1}, "Range.by [4]");
-    check({for(i in 1..10) i}.by(4).sequence=={1,5,9}, "comprehension.by");
+    check((1..10).by(2).sequence=={1,3,5,7,9}.sequence, "Range.by [1]");
+    check((10..1).by(2).sequence=={10,8,6,4,2}.sequence, "Range.by [2]");
+    check((1..10).by(6).sequence=={1,7}.sequence, "Range.by [3]");
+    check((1..10).by(100).sequence=={1}.sequence, "Range.by [4]");
+    check({for(i in 1..10) i}.by(4).sequence=={1,5,9}.sequence, "comprehension.by");
 
     //Count
     check((1..10).count((Integer x) => x%2==0)==5, "Range.count");
@@ -175,9 +175,11 @@ shared void testIterables() {
 
     //coalesced
     check((1..10).coalesced == 1..10, "Range.coalesced");
-    check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}, "Sequence.coalesced");
+    check({1,2,3,null,4,5}.coalesced.sequence=={1,2,3,4,5}.sequence, "Sequence.coalesced");
     check(String({for (c in "HoLa") c.uppercase then c else null}.coalesced.sequence)=="HL", "Iterable.coalesced");
-    check(Array{1,2,3,null,5}.coalesced.sequence=={1,2,3,5}, "Array.coalesced");
+    print(Array{1,2,3,null,5}.coalesced);
+    print({1,2,3,null,5}.coalesced);
+    check(Array{1,2,3,null,5}.coalesced.sequence=={1,2,3,5}.sequence, "Array.coalesced");
     check(Singleton("X").coalesced==Singleton("X"), "Singleton.coalesced [1]");
     check("ABC".coalesced=="ABC", "String.coalesced");
     check({}.coalesced=={}, "Empty.coalesced");
@@ -185,13 +187,13 @@ shared void testIterables() {
     for (k->v in (1..5).indexed) {
         check(k+1==v, "Range.indexed");
     }
-    check({"a", "b", "c"}.indexed.sequence=={0->"a", 1->"b", 2->"c"}, "Sequence.indexed");
-    check(Array{0, 1, 2}.indexed.sequence=={0->0, 1->1, 2->2}, "Array.indexed");
-    check(Singleton("A").indexed.sequence=={0->"A"}, "Singleton.indexed");
+    check({"a", "b", "c"}.indexed.sequence=={0->"a", 1->"b", 2->"c"}.sequence, "Sequence.indexed");
+    check(Array{0, 1, 2}.indexed.sequence=={0->0, 1->1, 2->2}.sequence, "Array.indexed");
+    check(Singleton("A").indexed.sequence=={0->"A"}.sequence, "Singleton.indexed");
     check({}.indexed=={}, "Empty.indexed");
-    check({for (c in "abc") c}.indexed.sequence=={0->'a', 1->'b', 2->'c'}, "Iterable.indexed");
-    check("abc".indexed.sequence=={0->'a', 1->'b', 2->'c'}, "String.indexed");
-    check({1,null,2}.indexed.sequence == {0->1, 2->2}, "indexed with nulls");
+    check({for (c in "abc") c}.indexed.sequence=={0->'a', 1->'b', 2->'c'}.sequence, "Iterable.indexed");
+    check("abc".indexed.sequence=={0->'a', 1->'b', 2->'c'}.sequence, "String.indexed");
+    check({1,null,2}.indexed.sequence == {0->1, 2->2}.sequence, "indexed with nulls");
 
     //last (defined in ContainerWithFirst but tested here)
     check((1..5000000000).last == 5000000000, "Range.last");
@@ -208,18 +210,18 @@ shared void testIterables() {
     } else { fail("Iterable.last"); }
 
     //chain()
-    check({1,2}.chain({"a", "b"}).sequence=={1,2,"a","b"}, "Sequence.chain");
-    check(Singleton(1).chain({2,3}).sequence=={1,2,3}, "Singleton.chain");
-    check((1..3).chain(Singleton(4)).sequence=={1,2,3,4}, "Range.chain");
-    check("abc".chain({1,2}).sequence=={'a', 'b', 'c', 1, 2}, "String.chain");
-    check("".chain(Singleton(1)).sequence=={1}, "\"\".chain");
-    check({}.chain({1,2})=={1,2}, "Empty.chain");
+    check({1,2}.chain({"a", "b"}).sequence=={1,2,"a","b"}.sequence, "Sequence.chain");
+    check(Singleton(1).chain({2,3}).sequence=={1,2,3}.sequence, "Singleton.chain");
+    check((1..3).chain(Singleton(4)).sequence=={1,2,3,4}.sequence, "Range.chain");
+    check("abc".chain({1,2}).sequence=={'a', 'b', 'c', 1, 2}.sequence, "String.chain");
+    check("".chain(Singleton(1)).sequence=={1}.sequence, "\"\".chain");
+    check({}.chain({1,2}).sequence=={1,2}.sequence, "Empty.chain");
     check(Array([]).chain({1,2}).sequence==[1,2], "EmptyArray.chain");
-    check(Array{1,2}.chain({3,4}).sequence=={1,2,3,4}, "NonemptyArray.chain");
-    check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}, "Singletons.chain");
+    check(Array{1,2}.chain({3,4}).sequence=={1,2,3,4}.sequence, "NonemptyArray.chain");
+    check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence=={1,2,"3"}.sequence, "Singletons.chain");
     
-    check({}.following("a").sequence=={"a"}, "Sequence.following(a) ``{}.following("a")``");
-    check({"b"}.following("a").sequence=={"a", "b"}, "Sequence.following(a), 2 ``{"b"}.following("a")``");
+    check({}.following("a").sequence=={"a"}.sequence, "Sequence.following(a) ``{}.following("a")``");
+    check({"b"}.following("a").sequence=={"a", "b"}.sequence, "Sequence.following(a), 2 ``{"b"}.following("a")``");
 
     //group
     /*value grouped = (1..10).group((Integer i) => i%2==0 then "even" else "odd");
@@ -254,20 +256,20 @@ shared void testIterables() {
     check(iz.string=="{ 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, ... }", "Iterable.string [3]");
 	
     //Iterable-related functions
-    check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}, "sort(byIncreasing)");
-    check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}, "sort(byDecreasing)");
+    check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence=={"z","tt","aaa"}.sequence, "sort(byIncreasing)");
+    check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence=={"aaa","tt","z"}.sequence, "sort(byDecreasing)");
     Iterable<String> combined = mapPairs((Character c, Integer i) => "comb ``c``+``i``",
                                                "hello", { 1,2,3,4 });
     check(combined.sequence.size==4, "combine [1]");
-    check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }, "combine [2]");
+    check(combined.sequence == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }.sequence, "combine [2]");
     
     check((1..4).fold(0, plus<Integer>)==10, "fold with plus");
     check((1..4).fold(1, times<Integer>)==24, "fold with times");
     check((1..4).reduce(plus<Integer>)==10, "reduce with plus");
     check((1..4).reduce(times<Integer>)==24, "reduce with times");
     
-    check({null, "foo", "bar", null}.defaultNullElements(0).sequence=={0, "foo", "bar", 0}, "defaultNullElements [1]");
-    check({"foo", null, "bar"}.defaultNullElements("-").sequence=={"foo", "-", "bar"}, "defaultNullElements [2]");
+    check({null, "foo", "bar", null}.defaultNullElements(0).sequence=={0, "foo", "bar", 0}.sequence, "defaultNullElements [1]");
+    check({"foo", null, "bar"}.defaultNullElements("-").sequence=={"foo", "-", "bar"}.sequence, "defaultNullElements [2]");
     
     check((0..2).cycle(3).fold(0,plus<Integer>)==9, "cycle");
 

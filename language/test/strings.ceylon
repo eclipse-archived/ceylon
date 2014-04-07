@@ -272,10 +272,10 @@ shared void strings() {
     check("hello world".split((Character c) => c=='l', true).sequence.size==3, "string split discarding [2]");
     check("hello world".split("l".contains, true).sequence.size==3, "string split discarding [3]");
     check("hello world".split((Character c) => c=='l', false).sequence.size==5, "string split including [2]");
-    check("hello world".split((Character c) => c=='l', false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [3]");
-    check("hello world".split((Character c) => c=='l', false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [4]");
-    check("hello world".split("l".contains, false, false).sequence=={"he","l","","l","o wor","l","d"}, "string split including [5]");
-    check("hello world".split('l'.equals, false, true).sequence=={"he","ll","o wor", "l", "d"}, "string split including [6]");
+    check("hello world".split((Character c) => c=='l', false, false).sequence=={"he","l","","l","o wor","l","d"}.sequence, "string split including [3]");
+    check("hello world".split((Character c) => c=='l', false, true).sequence=={"he","ll","o wor", "l", "d"}.sequence, "string split including [4]");
+    check("hello world".split("l".contains, false, false).sequence=={"he","l","","l","o wor","l","d"}.sequence, "string split including [5]");
+    check("hello world".split('l'.equals, false, true).sequence=={"he","ll","o wor", "l", "d"}.sequence, "string split including [6]");
     //With strings
     check("hello world".split("eo".contains).sequence == "hello world".split({'e','o'}.contains).sequence, "string split chars [1]");
     check("hello world".split("eo".contains).sequence == "hello world".split(StringBuilder().append("o").append("e").string.contains).sequence, "string split chars");

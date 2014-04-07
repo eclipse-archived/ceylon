@@ -161,7 +161,7 @@ void test_concatenate() {
     value l3 = {7,8,9};
     value concatenated = concatenate(l1, l2, l3);
     check(concatenated.size==l1.size+l2.size+l3.size, "concatenate [1]");
-    check(concatenate("aa", "bb", "cc").sequence=={'a', 'a', 'b', 'b', 'c', 'c'}, "concatenate [2]");
+    check(concatenate("aa", "bb", "cc").sequence=={'a', 'a', 'b', 'b', 'c', 'c'}.sequence, "concatenate [2]");
 }
 
 void test_zip() {
@@ -216,8 +216,8 @@ shared void arraySequence() {
     check(2==abc.lastIndex, "abc.lastIndex");
     
     check("a"==abc.first, "abc.first");
-    check({"b", "c"}==abc.rest, "abc.rest");
-    check({"c"}==abc.rest.rest, "abc.rest.rest");
+    check({"b", "c"}.sequence==abc.rest, "abc.rest");
+    check({"c"}.sequence==abc.rest.rest, "abc.rest.rest");
     check({}==abc.rest.rest.rest, "abc.rest.rest.rest");
     
     check(abc.defines(0), "abc.defines(0)");
@@ -234,44 +234,44 @@ shared void arraySequence() {
     check(abc.reversed.reversed==abc, "abc.reversed.reversed");
     
     check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
-    check(abc.span(-1, 0)=={"a"}, "abc.span(-1,0)");
-    check(abc.span(-1, 1)=={"a", "b"} , "abc.span(-1,1)");
+    check(abc.span(-1, 0)=={"a"}.sequence, "abc.span(-1,0)");
+    check(abc.span(-1, 1)=={"a", "b"}.sequence , "abc.span(-1,1)");
     check(abc.span(-1, 2)==abc, "abc.span(-1,2)");
     check(abc.span(-1, 3)==abc, "abc.span(-1,3)");
     
-    check(abc.span(0,-1)=={"a"}, "abc.span(0,-1)");
-    check(abc.span(0, 0)=={"a"}, "abc.span(0,0)");
-    check(abc.span(0, 1)=={"a", "b"} , "abc.span(0,1)");
+    check(abc.span(0,-1)=={"a"}.sequence, "abc.span(0,-1)");
+    check(abc.span(0, 0)=={"a"}.sequence, "abc.span(0,0)");
+    check(abc.span(0, 1)=={"a", "b"}.sequence , "abc.span(0,1)");
     check(abc.span(0, 2)==abc, "abc.span(0,2)");
     check(abc.span(0, 3)==abc, "abc.span(0,3)");
     
-    check(abc.span(1,-1)=={"b", "a"}, "abc.span(1,-1)");
-    check(abc.span(1, 0)=={"b", "a"}, "abc.span(1,0)");
-    check(abc.span(1, 1)=={"b"} , "abc.span(1,1)");
-    check(abc.span(1, 2)=={"b", "c"}, "abc.span(1,2)");
-    check(abc.span(1, 3)=={"b", "c"}, "abc.span(1,3)");
+    check(abc.span(1,-1)=={"b", "a"}.sequence, "abc.span(1,-1)");
+    check(abc.span(1, 0)=={"b", "a"}.sequence, "abc.span(1,0)");
+    check(abc.span(1, 1)=={"b"}.sequence , "abc.span(1,1)");
+    check(abc.span(1, 2)=={"b", "c"}.sequence, "abc.span(1,2)");
+    check(abc.span(1, 3)=={"b", "c"}.sequence, "abc.span(1,3)");
     
-    check(abc.span(2,-1)=={"c", "b", "a"}, "abc.span(2,-1)");
-    check(abc.span(2, 0)=={"c", "b", "a"}, "abc.span(2,0)");
-    check(abc.span(2, 1)=={"c", "b"} , "abc.span(2,1)");
-    check(abc.span(2, 2)=={"c"}, "abc.span(2,2)");
-    check(abc.span(2, 3)=={"c"}, "abc.span(2,3)");
+    check(abc.span(2,-1)=={"c", "b", "a"}.sequence, "abc.span(2,-1)");
+    check(abc.span(2, 0)=={"c", "b", "a"}.sequence, "abc.span(2,0)");
+    check(abc.span(2, 1)=={"c", "b"}.sequence , "abc.span(2,1)");
+    check(abc.span(2, 2)=={"c"}.sequence, "abc.span(2,2)");
+    check(abc.span(2, 3)=={"c"}.sequence, "abc.span(2,3)");
     
-    check(abc.span(3,-1)=={"c", "b", "a"}, "abc.span(3,-1) ``abc.span(3,-1)``");
-    check(abc.span(3, 0)=={"c", "b", "a"}, "abc.span(3,0)");
-    check(abc.span(3, 1)=={"c", "b"} , "abc.span(3,1)");
-    check(abc.span(3, 2)=={"c"}, "abc.span(3,1)");
+    check(abc.span(3,-1)=={"c", "b", "a"}.sequence, "abc.span(3,-1) ``abc.span(3,-1)``");
+    check(abc.span(3, 0)=={"c", "b", "a"}.sequence, "abc.span(3,0)");
+    check(abc.span(3, 1)=={"c", "b"}.sequence , "abc.span(3,1)");
+    check(abc.span(3, 2)=={"c"}.sequence, "abc.span(3,1)");
     check(abc.span(3, 3)=={}, "abc.span(3,3)");
     
     check(abc.spanFrom(-1)==abc, "abc.spanFrom(-1)");
     check(abc.spanFrom(0)==abc, "abc.spanFrom(0)");
-    check(abc.spanFrom(1)=={"b", "c"} , "abc.spanFrom(1)");
-    check(abc.spanFrom(2)=={"c"}, "abc.spanFrom(2)");
+    check(abc.spanFrom(1)=={"b", "c"}.sequence , "abc.spanFrom(1)");
+    check(abc.spanFrom(2)=={"c"}.sequence, "abc.spanFrom(2)");
     check(abc.spanFrom(3)=={}, "abc.spanFrom(3)");
     
     check(abc.spanTo(-1)=={}, "abc.spanTo(-1)");
-    check(abc.spanTo(0)=={"a"}, "abc.spanTo(0)");
-    check(abc.spanTo(1)=={"a", "b"} , "abc.spanTo(1)");
+    check(abc.spanTo(0)=={"a"}.sequence, "abc.spanTo(0)");
+    check(abc.spanTo(1)=={"a", "b"}.sequence , "abc.spanTo(1)");
     check(abc.spanTo(2)==abc, "abc.spanTo(2)");
     check(abc.spanTo(3)==abc, "abc.spanTo(3)");
     
@@ -279,26 +279,26 @@ shared void arraySequence() {
     check(abc.segment(-1,-1)=={}, "abc.segment(-1,-1)");
     check(abc.segment(-1, 0)=={}, "abc.segment(-1,0)");
     check(abc.segment(-1, 1)=={} , "abc.segment(-1,1)");
-    check(abc.segment(-1, 2)=={"a"}, "abc.segment(-1,2)");
-    check(abc.segment(-1, 3)=={"a", "b"}, "abc.segment(-1,3)");
+    check(abc.segment(-1, 2)=={"a"}.sequence, "abc.segment(-1,2)");
+    check(abc.segment(-1, 3)=={"a", "b"}.sequence, "abc.segment(-1,3)");
     
     check(abc.segment(0,-1)=={}, "abc.segment(0,-1)");
     check(abc.segment(0, 0)=={}, "abc.segment(0,0)");
-    check(abc.segment(0, 1)=={"a"} , "abc.segment(0,1)");
-    check(abc.segment(0, 2)=={"a", "b"}, "abc.segment(0,2)");
+    check(abc.segment(0, 1)=={"a"}.sequence , "abc.segment(0,1)");
+    check(abc.segment(0, 2)=={"a", "b"}.sequence, "abc.segment(0,2)");
     check(abc.segment(0, 3)==abc, "abc.segment(0,3)");
     
     check(abc.segment(1,-1)=={}, "abc.segment(1,-1)");
     check(abc.segment(1, 0)=={}, "abc.segment(1,0)");
-    check(abc.segment(1, 1)=={"b"} , "abc.segment(1,1)");
-    check(abc.segment(1, 2)=={"b", "c"}, "abc.segment(1,2)");
-    check(abc.segment(1, 3)=={"b", "c"}, "abc.segment(1,3)");
+    check(abc.segment(1, 1)=={"b"}.sequence , "abc.segment(1,1)");
+    check(abc.segment(1, 2)=={"b", "c"}.sequence, "abc.segment(1,2)");
+    check(abc.segment(1, 3)=={"b", "c"}.sequence, "abc.segment(1,3)");
     
     check(abc.segment(2,-1)=={}, "abc.segment(2,-1)");
     check(abc.segment(2, 0)=={}, "abc.segment(2,0)");
-    check(abc.segment(2, 1)=={"c"} , "abc.segment(2,1)");
-    check(abc.segment(2, 2)=={"c"}, "abc.segment(2,2)");
-    check(abc.segment(2, 3)=={"c"}, "abc.segment(2,3)");
+    check(abc.segment(2, 1)=={"c"}.sequence , "abc.segment(2,1)");
+    check(abc.segment(2, 2)=={"c"}.sequence, "abc.segment(2,2)");
+    check(abc.segment(2, 3)=={"c"}.sequence, "abc.segment(2,3)");
     
     check(abc.segment(3,-1)=={}, "abc.segment(3,-1)");
     check(abc.segment(3, 0)=={}, "abc.segment(3,0)");
@@ -374,7 +374,7 @@ shared void sequences() {
     check(!result.segment(0,0) nonempty, "!nonempty sequence.segment(0,0)");
     //check(!result.segment(1,-1) nonempty, "!nonempty sequence.segment(1,-1)");
     
-    check(result.reversed=={"world", "hello"}, "sequence.reversed");
+    check(result.reversed.sequence=={"world", "hello"}.sequence, "sequence.reversed");
 
     if (exists str = result[0]) {
         check(str=="hello", "sequence item");
@@ -450,7 +450,7 @@ shared void sequences() {
     value seq = [ 1, 2, 3, 4 ];
     check(seq.size==4, "sequence size");
     check(seq.string=="[1, 2, 3, 4]", "sequence.string 4: " + seq.string);
-    check(seq.reversed=={4, 3, 2, 1}, "sequence reversed");
+    check(seq.reversed=={4, 3, 2, 1}.sequence, "sequence reversed");
     check(seq.first==1, "sequence first");
     check(seq.rest.string=="[2, 3, 4]", "sequence.rest.string " + seq.rest.string);
     variable value i=0;
@@ -553,8 +553,8 @@ shared void sequences() {
     check(["world"].withLeading("hello").first=="hello", "sequence with trailing");
     
     //collect
-    check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }, "Sequence<Integer>.collect");
-    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}, "Sequence<String>.collect");
+    check({ 1, 2, 3, 4, 5 }.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }.sequence, "Sequence<Integer>.collect");
+    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}.sequence, "Sequence<String>.collect");
     
     check([1,2,3,4,5].longerThan(4), "Sequence.longerThan");
     check(![1,2,3].longerThan(3), "Sequence.longerThan");
