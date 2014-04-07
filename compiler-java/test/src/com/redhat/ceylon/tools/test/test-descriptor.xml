@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="urn:jboss:module:1.0" name="ceylon.language" slot="0.6">
     <dependencies>
-        <module name="java.base" slot="7"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.auth.kerberos" slot="7" export="true" optional="true"/>
+        <module name="java.jdbc" slot="7" export="true" optional="true"/>
+        <module name="java.tls" slot="7" export="true" optional="true"/>
         <module name="ceylon.language" slot="1.0.0"/>
-        <module name="missing" slot="1"/>
+        <module name="org.jboss.xnio.api" slot="3.1.0.CR7" export="true"/>
+        <module name="org.jboss.logging" slot="3.1.2.GA" export="true"/>
     </dependencies>
 </module>

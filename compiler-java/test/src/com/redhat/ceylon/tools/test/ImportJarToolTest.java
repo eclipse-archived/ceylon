@@ -20,6 +20,7 @@
 package com.redhat.ceylon.tools.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -31,6 +32,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.tools.importjar.CeylonImportJarTool;
 import com.redhat.ceylon.tools.importjar.ImportJarException;
@@ -106,11 +108,11 @@ public class ImportJarToolTest {
     }
     
     @Test
-    public void testSimpleModuleVersionJar() {
+    public void testSimpleModuleVersionJar() throws IOException {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("--force", "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
         tool.run();
         File f1 = new File("modules/importtest/1.0/importtest-1.0.jar");
         File f2 = new File("modules/importtest/1.0/importtest-1.0.jar.sha1");
@@ -118,11 +120,11 @@ public class ImportJarToolTest {
     }
     
     @Test
-    public void testVerbosePackageModuleVersionJar() {
+    public void testVerbosePackageModuleVersionJar() throws IOException {
         FileUtil.delete(new File("modules/importtest/imptest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("--verbose", "importtest.imptest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList("--verbose", "--force", "importtest.imptest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
         tool.run();
         File f1 = new File("modules/importtest/imptest/1.0/importtest.imptest-1.0.jar");
         File f2 = new File("modules/importtest/imptest/1.0/importtest.imptest-1.0.jar.sha1");
@@ -130,7 +132,7 @@ public class ImportJarToolTest {
     }
     
     @Test
-    public void testWithMissingXmlDescriptor() {
+    public void testWithMissingXmlDescriptor() throws IOException {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -150,7 +152,7 @@ public class ImportJarToolTest {
     }
 
     @Test
-    public void testWithInvalidXmlDescriptor() {
+    public void testWithInvalidXmlDescriptor() throws IOException {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -161,14 +163,13 @@ public class ImportJarToolTest {
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
             Assert.fail();
-        } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getCause() instanceof ImportJarException);
-            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml is not a valid module.xml file: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.", e.getCause().getMessage());
+        } catch (ImportJarException e) {
+            Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml is not a valid module.xml file: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.", e.getMessage());
         }
     }
 
     @Test
-    public void testWithInvalidPropertiesDescriptor() {
+    public void testWithInvalidPropertiesDescriptor() throws IOException {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -179,14 +180,13 @@ public class ImportJarToolTest {
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
             Assert.fail();
-        } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getCause() instanceof ImportJarException);
-            Assert.assertEquals("Invalid module version '' in module descriptor dependency list", e.getCause().getMessage());
+        } catch (ImportJarException e) {
+            Assert.assertEquals("Invalid module version '' in module descriptor dependency list", e.getMessage());
         }
     }
 
     @Test
-    public void testWithXmlDescriptor() {
+    public void testWithXmlDescriptor() throws IOException {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -202,7 +202,7 @@ public class ImportJarToolTest {
     }
     
     @Test
-    public void testWithPropertiesDescriptor() {
+    public void testWithPropertiesDescriptor() throws IOException {
         FileUtil.delete(new File("modules/importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
@@ -215,6 +215,39 @@ public class ImportJarToolTest {
         File f3 = new File("modules/importtest/1.0/module.properties");
         Assert.assertTrue(f1.exists() && f2.exists());
         Assert.assertTrue(f3.exists());
+    }
+    
+    @Test
+    public void testWithUnknownModule() throws IOException {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        try {
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor-unknown.properties", 
+                    "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+            tool.run();
+            Assert.fail();
+        } catch (ToolUsageError e) {
+            Assert.assertEquals("Problems were found, aborting.", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testDryRun() throws IOException {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                "--dry-run",
+                "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties", 
+                "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File f1 = new File("modules/importtest/1.0/importtest-1.0.jar");
+        File f2 = new File("modules/importtest/1.0/importtest-1.0.jar.sha1");
+        File f3 = new File("modules/importtest/1.0/module.properties");
+        Assert.assertTrue(!f1.exists() && !f2.exists());
+        Assert.assertTrue(!f3.exists());
     }
 
 }
