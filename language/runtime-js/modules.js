@@ -135,7 +135,7 @@ function Modulo(meta, $$modulo){
     var r = [];
     for (var i=0; i < anns.length; i++) {
       var an = anns[i];
-      if (isOfType(an, $$$mptypes.Annotation$annotations)) r.push(an);
+      if ($is(an, $$$mptypes.Annotation$annotations)) r.push(an);
     }
     return r.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
   }
@@ -291,7 +291,7 @@ function Paquete(name, container, pkg, $$paquete){
           var ans=mm.$an;
           if (typeof(ans)==='function'){ans=ans();mm.$an=ans;}
           if (ans) for (var j=0; j<ans.length;j++) {
-            if (isOfType(ans[j],$$$mptypes.Annotation$annotatedMembers)) {
+            if ($is(ans[j],$$$mptypes.Annotation$annotatedMembers)) {
               rv.push(ms[i]);
               break;
             }
@@ -399,7 +399,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
       var r = [];
       for (var i=0; i < anns.length; i++) {
         var an = anns[i];
-        if (isOfType(an, $$$mptypes.Annotation$annotations)) r.push(an);
+        if ($is(an, $$$mptypes.Annotation$annotations)) r.push(an);
       }
       return r.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
     }

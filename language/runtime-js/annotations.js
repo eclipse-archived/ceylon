@@ -12,14 +12,14 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
     if (anntype.tipo.$$.T$all['ceylon.language::OptionalAnnotation'] !== undefined) {
       //find the first one and return it
       for (var i=0; i < anns.length; i++) {
-        if (isOfType(anns[i], {t:anntype.tipo}))return anns[i];
+        if ($is(anns[i], {t:anntype.tipo}))return anns[i];
       }
       return null;
     }
     //gather all annotations of the required type and return them
     var r=[];
     for (var i=0; i < anns.length; i++) {
-      if (isOfType(anns[i], {t:anntype.tipo}))r.push(anns[i]);
+      if ($is(anns[i], {t:anntype.tipo}))r.push(anns[i]);
     }
     return r.length==0?getEmpty():r.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:ConstrainedAnnotation,
       a:{Value$ConstrainedAnnotation:$$$mptypes.Value$annotations,Values$ConstrainedAnnotation:$$$mptypes.Values$annotations,

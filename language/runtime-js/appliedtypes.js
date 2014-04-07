@@ -29,7 +29,7 @@ function AppliedClass(tipo,$$targs$$,that){
     that.getT$all=function(){return dummy.getT$all();};
     that.getT$name=function(){return dummy.getT$name();};
     that.equals=function(o){
-      var eq=isOfType(o,{t:AppliedClass}) && o.tipo===tipo;
+      var eq=$is(o,{t:AppliedClass}) && o.tipo===tipo;
       return eq;
     };
     that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
@@ -130,7 +130,7 @@ function AppliedMemberClass(tipo,$$targs$$,that){
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
       that.equals=function(o){
-        var eq=isOfType(o,{t:AppliedMemberClass}) && o.tipo===tipo;
+        var eq=$is(o,{t:AppliedMemberClass}) && o.tipo===tipo;
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
@@ -198,7 +198,7 @@ function AppliedInterface(tipo,$$targs$$,that) {
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
       that.equals=function(o){
-        var eq=isOfType(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==tipo;
+        var eq=$is(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==tipo;
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
@@ -260,7 +260,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
       that.getT$all=function(){return dummy.getT$all();};
       that.getT$name=function(){return dummy.getT$name();};
       that.equals=function(o){
-        var eq=isOfType(o,{t:AppliedMemberInterface}) && (o.tipo$2||o.tipo)==tipo;
+        var eq=$is(o,{t:AppliedMemberInterface}) && (o.tipo$2||o.tipo)==tipo;
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
@@ -332,7 +332,7 @@ $defat($$appliedUnionType,'hash',function(){
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
 
       $$appliedUnionType.equals=function(u) {
-        if(isOfType(u,{t:AppliedUnionType})) {
+        if($is(u,{t:AppliedUnionType})) {
           var mine=this._types;
           var his=u.caseTypes;
           if (mine.size==his.size) {
@@ -361,7 +361,7 @@ $defat($$appliedUnionType,'hash',function(){
           }
           tipos.push(_t);
         }
-        return isOfType(instance$20,{t:'u',l:tipos});
+        return $is(instance$20,{t:'u',l:tipos});
       };$$appliedUnionType.typeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','typeOf']};};
 
             $$appliedUnionType.supertypeOf=function supertypeOf(type$21){
@@ -370,7 +370,7 @@ $defat($$appliedUnionType,'hash',function(){
             };$$appliedUnionType.supertypeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type$Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$m','supertypeOf']};};
 
       $$appliedUnionType.exactly=function exactly(type$22){
-        if (isOfType(type$25, {t:AppliedUnionType})) {
+        if ($is(type$25, {t:AppliedUnionType})) {
           for (var i=0; i<this._types.length;i++) {
             var myt = this._types[i];
             var was=false;
@@ -432,7 +432,7 @@ $defat($$appliedIntersectionType,'hash',function(){
   return h;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
       $$appliedIntersectionType.equals=function(u) {
-        if(isOfType(u,{t:AppliedIntersectionType})) {
+        if($is(u,{t:AppliedIntersectionType})) {
           var mine=this._types;
           var his=u.satisfiedTypes;
           if (mine.size==his.size) {
@@ -461,7 +461,7 @@ $defat($$appliedIntersectionType,'hash',function(){
           }
           tipos.push(_t);
         }
-        return isOfType(instance$23,{t:'i',l:tipos});
+        return $is(instance$23,{t:'i',l:tipos});
       };$$appliedIntersectionType.typeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','typeOf']};};
 
             $$appliedIntersectionType.supertypeOf=function supertypeOf(type$24){
@@ -470,7 +470,7 @@ $defat($$appliedIntersectionType,'hash',function(){
             };$$appliedIntersectionType.supertypeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type$Type:{t:Anything}}},$an:function(){return[];}}],$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$m','supertypeOf']};};
 
       $$appliedIntersectionType.exactly=function exactly(type$25){
-        if (isOfType(type$25, {t:AppliedIntersectionType})) {
+        if ($is(type$25, {t:AppliedIntersectionType})) {
           for (var i=0; i<this._types.length;i++) {
             var myt = this._types[i];
             var was=false;
@@ -542,7 +542,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
     return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call(f);
   },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key$Map:{t:TypeParameter$meta$declaration},Item$Map:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}}},$cont:AppliedFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
   f.equals=function(oo){
-    return isOfType(oo,{t:AppliedFunction}) && oo.tipo===m && oo.typeArguments.equals(this.typeArguments) && (o?o.equals(oo.$bound):oo.$bound===o);
+    return $is(oo,{t:AppliedFunction}) && oo.tipo===m && oo.typeArguments.equals(this.typeArguments) && (o?o.equals(oo.$bound):oo.$bound===o);
   }
   $defat(f,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call(f);
@@ -634,7 +634,7 @@ $defat($$appliedValue,'string',function(){
  
 $$appliedValue.setIfAssignable=function(v) {
   var mm = this.tipo.$crtmm$;
-  if (!isOfType(v,mm.$t))throw IncompatibleTypeException$meta$model("The specified value has the wrong type");
+  if (!$is(v,mm.$t))throw IncompatibleTypeException$meta$model("The specified value has the wrong type");
   var mdl=get_model(mm);
   if (!(mdl &&mdl['var']))throw MutationException$meta$model("Attempt to modify a value that is not variable");
   this.obj?this.tipo.set.call(this.obj,v):this.tipo.set(v);
@@ -723,10 +723,10 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
 
   $$appliedMethod.equals=function(o){
-    return isOfType(o,{t:AppliedMethod}) && o.tipo===tipo && o.typeArguments.equals(this.typeArguments);
+    return $is(o,{t:AppliedMethod}) && o.tipo===tipo && o.typeArguments.equals(this.typeArguments);
   }
   $$appliedMethod.$bind=function(o){
-    if (!isOfType(o,{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Cannot bind " + $$appliedMethod.string + " to "+o);
+    if (!$is(o,{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Cannot bind " + $$appliedMethod.string + " to "+o);
     return $$appliedMethod(o);
   }
   $defat($$appliedMethod,'string',function(){
@@ -800,7 +800,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return String$(qn);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
-    return isOfType(o,{t:AppliedAttribute}) && o.tipo===atr;
+    return $is(o,{t:AppliedAttribute}) && o.tipo===atr;
   }
   return $$appliedAttribute;
 }

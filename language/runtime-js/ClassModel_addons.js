@@ -23,7 +23,7 @@ $defat(ClassModel$meta$model.$$.prototype,'declaration',function(){
   return $$clase._decl;
 },undefined,function(){return{mod:$CCMM$,$t:{t:ClassDeclaration$meta$declaration},$cont:ClassModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassModel','$at','declaration']};});
 ClassModel$meta$model.$$.prototype.equals=function(o){
-return isOfType(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
+return $is(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
 };
 ClassModel$meta$model.$$.prototype.equals.$crtmm$=function(){return{
   mod:$CCMM$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},$ps:[{$nm:'other',$t:{t:Object$},$mt:'prm'}]
