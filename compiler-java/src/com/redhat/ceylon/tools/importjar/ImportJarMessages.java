@@ -25,7 +25,7 @@ import com.redhat.ceylon.common.Messages;
 
 public class ImportJarMessages extends Messages {
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ImportJarMessages.class.getPackage().getName() + ".resources.messages");
+    public static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ImportJarMessages.class.getPackage().getName() + ".resources.messages");
 
     public static String msg(String msgKey, Object... msgArgs) {
         return msg(RESOURCE_BUNDLE, msgKey, msgArgs);
