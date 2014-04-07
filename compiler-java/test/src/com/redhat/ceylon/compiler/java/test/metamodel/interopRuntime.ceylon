@@ -309,7 +309,7 @@ void testByteArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `ByteArray.array`;
-    assert(array(byteArray).get() == {JByte(10), JByte(11), JByte(12)});
+    assert(array(byteArray).get() == {JByte(10), JByte(11), JByte(12)}.sequence);
 }
 
 void testShortArray(){
@@ -367,7 +367,7 @@ void testShortArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `ShortArray.array`;
-    assert(array(shortArray).get() == {JShort(10), JShort(11), JShort(12)});
+    assert(array(shortArray).get() == {JShort(10), JShort(11), JShort(12)}.sequence);
 }
 
 void testIntArray(){
@@ -425,10 +425,10 @@ void testIntArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `IntArray.array`;
-    assert(array(intArray).get() == {JInteger(10), JInteger(11), JInteger(12)});
+    assert(array(intArray).get() == {JInteger(10), JInteger(11), JInteger(12)}.sequence);
     // codePointArray
     value codePointArray = `IntArray.codePointArray`;
-    assert(codePointArray(intArray).get() == {'\{#0A}', '\{#0B}', '\{#0C}'});
+    assert(codePointArray(intArray).get() == {'\{#0A}', '\{#0B}', '\{#0C}'}.sequence);
 }
 
 void testLongArray(){
@@ -486,9 +486,9 @@ void testLongArray(){
     assert(dest.get(3) == 12);//left-over
     // array
     value array = `LongArray.array`;
-    assert(array(longArray).get() == {JLong(10), JLong(11), JLong(12)});
+    assert(array(longArray).get() == {JLong(10), JLong(11), JLong(12)}.sequence);
     value integerArrayAttribute = `LongArray.integerArray`;
-    assert(integerArrayAttribute(longArray).get() == {10, 11, 12});
+    assert(integerArrayAttribute(longArray).get() == {10, 11, 12}.sequence);
 }
 
 void testFloatArray(){
@@ -546,7 +546,7 @@ void testFloatArray(){
     assert(dest.get(3) == 12.0);//left-over
     // array
     value array = `FloatArray.array`;
-    assert(array(floatArray).get() == {JFloat(10.0), JFloat(11.0), JFloat(12.0)});
+    assert(array(floatArray).get() == {JFloat(10.0), JFloat(11.0), JFloat(12.0)}.sequence);
 }
 
 void testDoubleArray(){
@@ -604,9 +604,9 @@ void testDoubleArray(){
     assert(dest.get(3) == 12.0);//left-over
     // array
     value array = `DoubleArray.array`;
-    assert(array(doubleArray).get() == {JDouble(10.0), JDouble(11.0), JDouble(12.0)});
+    assert(array(doubleArray).get() == {JDouble(10.0), JDouble(11.0), JDouble(12.0)}.sequence);
     value floatArrayAttribute = `DoubleArray.floatArray`;
-    assert(floatArrayAttribute(doubleArray).get() == {10.0, 11.0, 12.0});
+    assert(floatArrayAttribute(doubleArray).get() == {10.0, 11.0, 12.0}.sequence);
 }
 
 void testCharArray(){
@@ -664,7 +664,7 @@ void testCharArray(){
     assert(dest.get(3) == 'c');//left-over
     // array
     value array = `CharArray.array`;
-    assert(array(charArray).get() == {JCharacter('a'), JCharacter('b'), JCharacter('c')});
+    assert(array(charArray).get() == {JCharacter('a'), JCharacter('b'), JCharacter('c')}.sequence);
 }
 
 void testBooleanArray(){
@@ -722,9 +722,9 @@ void testBooleanArray(){
     assert(dest.get(3) == false);//left-over
     // array
     value array = `BooleanArray.array`;
-    assert(array(booleanArray).get() == {JBoolean(false), JBoolean(true), JBoolean(false)});
+    assert(array(booleanArray).get() == {JBoolean(false), JBoolean(true), JBoolean(false)}.sequence);
     value booleanArrayAttribute = `BooleanArray.booleanArray`;
-    assert(booleanArrayAttribute(booleanArray).get() == {false, true, false});
+    assert(booleanArrayAttribute(booleanArray).get() == {false, true, false}.sequence);
 }
 
 Boolean eq(Anything a, Anything b){
@@ -794,7 +794,7 @@ void testObjectArray(){
     assert(eq(dest.get(3), 12));//left-over
     // array
     value array = `ObjectArray<Integer>.array`;
-    assert(array(objectArray).get() == {10, 11, 12});
+    assert(array(objectArray).get() == {10, 11, 12}.sequence);
     
     // make sure java's Object doesn't leak here
     assert("java.lang::ObjectArray<ceylon.language::Object>" == type(ObjectArray<Object>(0)).string);
