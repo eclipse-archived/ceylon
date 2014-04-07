@@ -1,6 +1,7 @@
 package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.File;
+import java.io.Flushable;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileVisitResult;
@@ -469,5 +470,15 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     public RepoUsingTool errorNewline() throws IOException {
         return newline(error);
+    }
+    
+    public RepoUsingTool flush() throws IOException {
+        if (out instanceof Flushable) {
+            ((Flushable)out).flush();
+        }
+        if (error instanceof Flushable) {
+            ((Flushable)error).flush();
+        }
+        return this;
     }
 }
