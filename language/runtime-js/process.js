@@ -7,23 +7,23 @@ function languageClass() {
 languageClass.$crtmm$={$nm:'languageClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','language']};
 initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
-defineAttr(lang$proto, 'version', function() {
+$defat(lang$proto, 'version', function() {
     return String$("1.0.0",3);
 },undefined,{$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','version']});
-defineAttr(lang$proto, 'majorVersion', function(){ return 1; },undefined,
+$defat(lang$proto, 'majorVersion', function(){ return 1; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','majorVersion']});
-defineAttr(lang$proto, 'minorVersion', function(){ return 0; },undefined,
+$defat(lang$proto, 'minorVersion', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','minorVersion']});
-defineAttr(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
+$defat(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','releaseVersion']});
-defineAttr(lang$proto, 'versionName', function(){ return String$("No More Mr Nice Guy",19); },undefined,
+$defat(lang$proto, 'versionName', function(){ return String$("No More Mr Nice Guy",19); },undefined,
   {$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','versionName']});
-defineAttr(lang$proto, 'majorVersionBinary', function(){ return 6; },undefined,
+$defat(lang$proto, 'majorVersionBinary', function(){ return 6; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','majorVersionBinary']});
-defineAttr(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
+$defat(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','minorVersionBinary']});
 var languageString = String$("language", 8);
-defineAttr(lang$proto, 'string', function() {
+$defat(lang$proto, 'string', function() {
     return languageString;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 
@@ -93,7 +93,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         }
     }
 }
-defineAttr(process$proto, 'arguments', function(){ return argv; },undefined,
+$defat(process$proto, 'arguments', function(){ return argv; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','process','$at','arguments']});
 process$proto.namedArgumentPresent = function(name) {
     return (name in namedArgs);
@@ -199,7 +199,7 @@ if ((typeof process !== "undefined") && (process.exit !== undefined)) {
 }
 
 var processString = String$("process", 7);
-defineAttr(process$proto, 'string', function() {
+$defat(process$proto, 'string', function() {
     return processString;
 },undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 
@@ -224,20 +224,20 @@ systemClass.$crtmm$={$nm:'systemClass',$mt:'cls',$ps:[],$an:function(){return[sh
 initTypeProto(systemClass, "ceylon.language::system", $init$Basic());
 var system$proto = systemClass.$$.prototype;
 
-defineAttr(system$proto, 'milliseconds', function() {
+$defat(system$proto, 'milliseconds', function() {
     return Date.now();
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','system','$at','milliseconds']});
-defineAttr(system$proto, 'nanoseconds', function() {
+$defat(system$proto, 'nanoseconds', function() {
     return Date.now()*1000000;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','system','$at','nanoseconds']});
-defineAttr(system$proto, 'timezoneOffset', function(){
+$defat(system$proto, 'timezoneOffset', function(){
   return new Date().getTimezoneOffset()*60000;
 },undefined,{$t:{t:Integer}, $cont:system$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','system','$at','timezoneOffset']});
-defineAttr(system$proto, 'locale', function(){
+$defat(system$proto, 'locale', function(){
   return properties["user.locale"] || String$("Unknown",7);
 },undefined,{$t:{t:String$}, $cont:system$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','system','$at','locale']});
 var systemString = String$("system", 7);
-defineAttr(system$proto, 'string', function() {
+$defat(system$proto, 'string', function() {
     return systemString;
 },undefined,{$t:{t:String$},$cont:system$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 
@@ -259,7 +259,7 @@ runtimeClass.$crtmm$={$nm:'runtimeClass',$mt:'cls',$ps:[],$an:function(){return[
 initTypeProto(runtimeClass, "ceylon.language::runtime", $init$Basic());
 var runtime$proto = runtimeClass.$$.prototype;
 
-defineAttr(runtime$proto, 'name', function() {
+$defat(runtime$proto, 'name', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(js)?(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
@@ -267,29 +267,29 @@ defineAttr(runtime$proto, 'name', function() {
     }
     return String$("Unknown JavaScript environment", 30);
 },undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','name']});
-defineAttr(runtime$proto, 'version', function() {
+$defat(runtime$proto, 'version', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
 },undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','version']});
-defineAttr(runtime$proto, 'integerSize', function() {
+$defat(runtime$proto, 'integerSize', function() {
     return 53;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','integerSize']});
 var $minIntegerValue = Integer(-9007199254740991); //-(2^53-1)
-defineAttr(runtime$proto, 'minIntegerValue', function() {
+$defat(runtime$proto, 'minIntegerValue', function() {
     return $minIntegerValue;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','minIntegerValue']});
 var $maxIntegerValue = Integer(9007199254740989); //(2^53-3) => ((2^53)-2 is NaN)
-defineAttr(runtime$proto, 'maxIntegerValue', function() {
+$defat(runtime$proto, 'maxIntegerValue', function() {
     return $maxIntegerValue;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','maxIntegerValue']});
 var $maxArraySize = Integer(4294967295); //(2^32-1)
-defineAttr(runtime$proto, 'maxArraySize', function() {
+$defat(runtime$proto, 'maxArraySize', function() {
     return $maxArraySize;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','maxArraySize']});
 var runtimeString = String$("runtime", 7);
-defineAttr(runtime$proto, 'string', function() {
+$defat(runtime$proto, 'string', function() {
     return runtimeString;
 },undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 
@@ -310,23 +310,23 @@ operatingSystemClass.$crtmm$={$nm:'operatingSystemClass',$mt:'cls',$ps:[],$an:fu
 initTypeProto(operatingSystemClass, "ceylon.language::operatingSystem", $init$Basic());
 var operatingSystem$proto = operatingSystemClass.$$.prototype;
 
-defineAttr(operatingSystem$proto, 'name',function() {
+$defat(operatingSystem$proto, 'name',function() {
     if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
 },undefined,{$t:{t:String$},$cont:operatingSystem$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','operatingSystem','$at','name']});
-defineAttr(operatingSystem$proto, 'version', function() {
+$defat(operatingSystem$proto, 'version', function() {
     return String$("Unknown");
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','operatingSystem','$at','version']});
-defineAttr(operatingSystem$proto, 'newline', function(){ return linesep; },undefined,
+$defat(operatingSystem$proto, 'newline', function(){ return linesep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','operatingSystem','$at','newline']});
-defineAttr(operatingSystem$proto, 'fileSeparator', function(){ return filesep; },undefined,
+$defat(operatingSystem$proto, 'fileSeparator', function(){ return filesep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','operatingSystem','$at','fileSeparator']});
-defineAttr(operatingSystem$proto, 'pathSeparator', function(){ return pathsep; },undefined,
+$defat(operatingSystem$proto, 'pathSeparator', function(){ return pathsep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','operatingSystem','$at','pathSeparator']});
 var operatingSystemString = String$("operatingSystem", 7);
-defineAttr(operatingSystem$proto, 'string', function() {
+$defat(operatingSystem$proto, 'string', function() {
     return operatingSystemString;
 },undefined,{$t:{t:String$},$cont:operatingSystem$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 

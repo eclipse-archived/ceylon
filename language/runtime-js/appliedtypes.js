@@ -34,31 +34,31 @@ function AppliedClass(tipo,$$targs$$,that){
     };
     that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
     that.$apply.$crtmm$=AppliedClass.$$.prototype.$apply.$crtmm$;
-    defineAttr(that,'satisfiedTypes',function(){
+    $defat(that,'satisfiedTypes',function(){
       return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
     },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-    defineAttr(that,'container',function(){
+    $defat(that,'container',function(){
       return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
     },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
-    defineAttr(that,'string',function(){
+    $defat(that,'string',function(){
       return ClassOrInterface$meta$model.$$.prototype.$prop$getString.get.call(that);
     },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getString.$crtmm$);
-    defineAttr(that,'hash',function(){
+    $defat(that,'hash',function(){
       return ClassOrInterface$meta$model.$$.prototype.$prop$getHash.get.call(that);
     },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getHash.$crtmm$);
-    defineAttr(that,'typeArguments',function(){
+    $defat(that,'typeArguments',function(){
       return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
     },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
-    defineAttr(that,'extendedType',function(){
+    $defat(that,'extendedType',function(){
       return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
     },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-    defineAttr(that,'declaration',function(){
+    $defat(that,'declaration',function(){
       return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
     },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-    defineAttr(that,'parameterTypes',function(){
+    $defat(that,'parameterTypes',function(){
       return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
     },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-    defineAttr(that,'declaration',function(){
+    $defat(that,'declaration',function(){
       return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
     },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
     that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
@@ -134,20 +134,20 @@ function AppliedMemberClass(tipo,$$targs$$,that){
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
-      defineAttr(that,'parameterTypes',function(){
+      $defat(that,'parameterTypes',function(){
         return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
       },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-      defineAttr(that,'extendedType',function(){
+      $defat(that,'extendedType',function(){
         return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
       },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-      defineAttr(that,'satisfiedTypes',function(){
+      $defat(that,'satisfiedTypes',function(){
         return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
       },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-      defineAttr(that,'declaration',function(){
+      $defat(that,'declaration',function(){
         return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
       },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
       that.$bind=function(){return AppliedMemberClass.$$.prototype.$bind.apply(that,arguments);}
-      defineAttr(that,'string',function(){
+      $defat(that,'string',function(){
         return String$($qname(mm));
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     } else {
@@ -202,10 +202,10 @@ function AppliedInterface(tipo,$$targs$$,that) {
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
-      defineAttr(that,'string',function(){
+      $defat(that,'string',function(){
         return String$($qname(mm));
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-      defineAttr(that,'declaration',function(){
+      $defat(that,'declaration',function(){
         return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
       },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
     } else {
@@ -264,10 +264,10 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
         if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
         return eq;
       };
-      defineAttr(that,'string',function(){
+      $defat(that,'string',function(){
         return String$($qname(mm));
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-      defineAttr(that,'declaration',function(){
+      $defat(that,'declaration',function(){
         return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
       },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
       that.$bind=function(x){return AppliedMemberInterface.$$.prototype.$bind.call(that,x);}
@@ -314,7 +314,7 @@ function $init$AppliedUnionType(){
     initTypeProto(AppliedUnionType,'ceylon.language.meta.model::AppliedUnionType',Basic,UnionType$meta$model);
     (function($$appliedUnionType){
 
-defineAttr($$appliedUnionType,'string',function(){
+$defat($$appliedUnionType,'string',function(){
   var qn="";
   var first=true;
   for (var i=0;i<this._types.length;i++) {
@@ -323,7 +323,7 @@ defineAttr($$appliedUnionType,'string',function(){
   }
   return String$(qn);
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-defineAttr($$appliedUnionType,'hash',function(){
+$defat($$appliedUnionType,'hash',function(){
   var h=this._types.length;
   for (var i=0; i<this._types.length;i++) {
     h+=this._types[i].hash;
@@ -345,7 +345,7 @@ defineAttr($$appliedUnionType,'hash',function(){
         return false;
       }
             
-            defineAttr($$appliedUnionType,'caseTypes',function(){
+            $defat($$appliedUnionType,'caseTypes',function(){
                 var $$appliedUnionType=this;
                 return $$appliedUnionType._types; //TODO type
             },undefined,function(){return{mod:$CCMM$,$t:{t:List,a:{Element$List:{t:Type$meta$model,a:{Type$Type:'Union$UnionType'}}}},$cont:AppliedUnionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','UnionType','$at','caseTypes']};});
@@ -415,7 +415,7 @@ function $init$AppliedIntersectionType(){
     initTypeProto(AppliedIntersectionType,'ceylon.language.meta.model::AppliedIntersectionType',Basic,IntersectionType$meta$model);
     (function($$appliedIntersectionType){
 
-defineAttr($$appliedIntersectionType,'string',function(){
+$defat($$appliedIntersectionType,'string',function(){
   var qn="";
   var first=true;
   for (var i=0;i<this._types.length;i++) {
@@ -424,7 +424,7 @@ defineAttr($$appliedIntersectionType,'string',function(){
   }
   return String$(qn);
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-defineAttr($$appliedIntersectionType,'hash',function(){
+$defat($$appliedIntersectionType,'hash',function(){
   var h=this._types.length;
   for (var i=0; i<this._types.length;i++) {
     h+=this._types[i].hash;
@@ -445,7 +445,7 @@ defineAttr($$appliedIntersectionType,'hash',function(){
         return false;
       }
  
-            defineAttr($$appliedIntersectionType,'satisfiedTypes',function(){
+            $defat($$appliedIntersectionType,'satisfiedTypes',function(){
                 var $$appliedIntersectionType=this;
                 return $$appliedIntersectionType._types;
             },undefined,function(){return{mod:$CCMM$,$t:{t:List,a:{Element$List:{t:Type$meta$model,a:{Type$Type:'Intersection$IntersectionType'}}}},$cont:AppliedIntersectionType,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','IntersectionType','$at','satisfiedTypes']};});
@@ -538,19 +538,19 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   f.tipo=m;
   f.$targs=ttargs;
   if (o)f.$bound=o;
-  defineAttr(f,'typeArguments',function(){
+  $defat(f,'typeArguments',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call(f);
   },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key$Map:{t:TypeParameter$meta$declaration},Item$Map:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}}},$cont:AppliedFunction,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
   f.equals=function(oo){
     return isOfType(oo,{t:AppliedFunction}) && oo.tipo===m && oo.typeArguments.equals(this.typeArguments) && (o?o.equals(oo.$bound):oo.$bound===o);
   }
-  defineAttr(f,'string',function(){
+  $defat(f,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call(f);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:AppliedFunction};});
-  defineAttr(f,'parameterTypes',function(){
+  $defat(f,'parameterTypes',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(f);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-defineAttr(f,'declaration',function(){
+$defat(f,'declaration',function(){
   if (f._decl)return f._decl;
   f._decl = OpenFunction(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), m);
   return f._decl;
@@ -582,7 +582,7 @@ function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
       var dummy=new AppliedValue.$$;
       $$appliedValue.getT$all=function(){return dummy.getT$all();};
       $$appliedValue.getT$name=function(){return dummy.getT$name();};
-defineAttr($$appliedValue,'string',function(){
+$defat($$appliedValue,'string',function(){
   var qn;
   if ($$targs$$ && $$targs$$.Container$Value) {
     qn = typeLiteral$meta({Type$typeLiteral:$$targs$$.Container$Value}).string + "." + mm.d[mm.d.length-1];
@@ -610,10 +610,10 @@ function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model);
     (function($$appliedValue){
-defineAttr($$appliedValue,'string',function(){
+$defat($$appliedValue,'string',function(){
   return String$($qname(this.tipo));
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-      defineAttr($$appliedValue,'declaration',function(){
+      $defat($$appliedValue,'declaration',function(){
         var $$av=this;
         var mm = $$av.tipo.$crtmm$;
         var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
@@ -640,13 +640,13 @@ $$appliedValue.setIfAssignable=function(v) {
   this.obj?this.tipo.set.call(this.obj,v):this.tipo.set(v);
 };$$appliedValue.setIfAssignable.$crtmm$=function(){return{mod:$CCMM$,$ps:[],$cont:AppliedValue,d:['ceylon.language.meta.model','Value','$m','setIfAssignable']};};
 
-      defineAttr($$appliedValue,'type',function(){
+      $defat($$appliedValue,'type',function(){
           var $$atr=this;
           var t = $$atr.tipo.$crtmm$;
           return typeLiteral$meta({Type$typeLiteral:t.$t});
       },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Value'}},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','type']};});
 
-      defineAttr($$appliedValue,'container',function(){
+      $defat($$appliedValue,'container',function(){
           if (this.$$targs$$.Container$Value) {
             return typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Container$Value});
           } else if (this.$$targs$$.Container$Attribute) {
@@ -706,19 +706,19 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   $$appliedMethod.tipo=tipo;
 
 //This was copied from prototype style
-  defineAttr($$appliedMethod,'declaration',function(){
+  $defat($$appliedMethod,'declaration',function(){
     var _pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
     return OpenFunction(_pkg, $$appliedMethod.tipo);
   },undefined,function(){return{mod:$CCMM$,$t:{t:FunctionDeclaration$meta$declaration},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','declaration']};});
 
-  defineAttr($$appliedMethod,'type',function(){
+  $defat($$appliedMethod,'type',function(){
     return typeLiteral$meta({Type$typeLiteral:mm.$t});
   },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Type'}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Method','$at','type']};});
 
-  defineAttr($$appliedMethod,'typeArguments',function(){
+  $defat($$appliedMethod,'typeArguments',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getTypeArguments.get.call($$appliedMethod);
   },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type$Type:{t:Anything}}}}},$cont:AppliedMethod,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
-  defineAttr($$appliedMethod,'parameterTypes',function(){
+  $defat($$appliedMethod,'parameterTypes',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call($$appliedMethod);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
 
@@ -729,7 +729,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
     if (!isOfType(o,{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Cannot bind " + $$appliedMethod.string + " to "+o);
     return $$appliedMethod(o);
   }
-  defineAttr($$appliedMethod,'string',function(){
+  $defat($$appliedMethod,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call($$appliedMethod);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:AppliedMethod};});
   return $$appliedMethod;
@@ -763,13 +763,13 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   Attribute$meta$model($$appliedAttribute.$$targs$$===undefined?$$targs$$:{Get$Attribute:$$appliedAttribute.$$targs$$.Get$Attribute,Set$Attribute:$$appliedAttribute.$$targs$$.Set$Attribute,Container$Attribute:$$appliedAttribute.$$targs$$.Container$Attribute},$$appliedAttribute);
   $$appliedAttribute.tipo=atr;
   $$appliedAttribute.pname=pname;
-  defineAttr($$appliedAttribute,'type',function(){
+  $defat($$appliedAttribute,'type',function(){
     var t = getrtmm$$(atr);
     t=t.$t;
     return typeLiteral$meta({Type$typeLiteral:t});
   },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Attribute'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
   //AttributeGetterDefinition declaration at X (100:4-100:83)
-  defineAttr($$appliedAttribute,'declaration',function(){
+  $defat($$appliedAttribute,'declaration',function(){
     var mm = getrtmm$$(atr);
     var pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
     return OpenValue(pkg, atr);
@@ -778,7 +778,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     return AppliedValue(cont,atr,{Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
       Container$Value:$$targs$$.Container$Attribute});
   }
-  defineAttr($$appliedAttribute,'string',function(){
+  $defat($$appliedAttribute,'string',function(){
     var c=getrtmm$$(atr).$cont;
     if (typeof(c.$crtmm$)==='function')c.$crtmm$=c.$crtmm$();
     if (!c)return String$($qname(atr));

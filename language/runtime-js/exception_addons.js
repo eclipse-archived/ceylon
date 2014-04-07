@@ -50,6 +50,6 @@ printStackTrace.$crtmm$=function(){
   ]};};
 exports.printStackTrace=printStackTrace;
 
-defineAttr(Throwable.$$.prototype, 'suppressed', function(){
+$defat(Throwable.$$.prototype, 'suppressed', function(){
   return this.$sups$||getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Throwable}}},$an:function(){return[shared(),native()];},d:['$','Throwable','$at','suppressed']};});

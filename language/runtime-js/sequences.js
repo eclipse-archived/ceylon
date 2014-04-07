@@ -48,8 +48,8 @@ Array$proto.getT$all = function() {
     return (this.$seq ? ArraySequence : Array$).$$.T$all;
 }
 
-defineAttr(Array$proto, 'size', function(){ return this.length; },undefined,function(){return{mod:$CCMM$,d:['ceylon.language','Iterable','$at','size'],$cont:Array$proto,$t:{t:Integer}};});
-defineAttr(Array$proto,'string',function(){
+$defat(Array$proto, 'size', function(){ return this.length; },undefined,function(){return{mod:$CCMM$,d:['ceylon.language','Iterable','$at','size'],$cont:Array$proto,$t:{t:Integer}};});
+$defat(Array$proto,'string',function(){
     return (opt$181=(this.empty?String$("[]",2):null),opt$181!==null?opt$181:StringBuilder().appendAll([String$("[",1),commaList(this).string,String$("]",1)]).string);
 },undefined,function(){return{mod:$CCMM$,d:['ceylon.language','Object','$at','string'],$t:{t:String},$cont:Array$proto};});
 Array$proto.set = function(idx,elem) {
@@ -65,10 +65,10 @@ Array$proto.$get = function(idx) {
 Array$proto.$get.$crtmm$=function(){
   return{mod:$CCMM$,d:['ceylon.language','List','$m','get'],$t:{t:'u',l:[{t:Null},'Element$Array']},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'}]};
 }
-defineAttr(Array$proto, 'lastIndex', function() {
+$defat(Array$proto, 'lastIndex', function() {
     return this.length>0 ? (this.length-1) : null;
 },undefined,function(){return{mod:$CCMM$,d:['ceylon.language','List','$at','lastIndex'],$t:{t:'u',l:[{t:Null},{t:Integer}]}};});
-defineAttr(Array$proto, 'reversed', function() {
+$defat(Array$proto, 'reversed', function() {
     if (this.length === 0) { return this; }
     var arr = this.slice(0);
     arr.reverse();
@@ -78,9 +78,9 @@ Array$proto.chain = function(other, $$$mptypes) {
     if (this.length === 0) { return other; }
     return Iterable.$$.prototype.chain.call(this, other, $$$mptypes);
 }
-defineAttr(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; },
+$defat(Array$proto, 'first', function(){ return this.length>0 ? this[0] : null; },
   undefined,function(){return{mod:$CCMM$,d:['ceylon.language','Iterable','$at','first'],$t:{t:'u',l:[{t:Null},'Element$Array']}};});
-defineAttr(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; },
+$defat(Array$proto, 'last', function() { return this.length>0 ? this[this.length-1] : null; },
   undefined,function(){return{mod:$CCMM$,d:['ceylon.language','List','$at','last'],$t:{t:'u',l:[{t:Null},'Element$Array']}};});
 Array$proto.segment = function(from, len) {
     if (len <= 0) { return getEmpty(); }
@@ -102,7 +102,7 @@ Array$proto.spanTo = function(to) {
 Array$proto.spanFrom = function(from) {
     return this.span(from, 0x7fffffff);
 }
-defineAttr(Array$proto, 'rest', function() {
+$defat(Array$proto, 'rest', function() {
     return this.length<=1 ? getEmpty() : ArraySequence(this.slice(1),this.$$targs$$||{Element$Iterable:{t:Anything}});
 });
 Array$proto.items = function(keys) {
@@ -114,7 +114,7 @@ Array$proto.items = function(keys) {
     }
     return ArraySequence(seq,this.$$targs$$||{Element$Iterable:{t:Anything}});
 }
-defineAttr(Array$proto, 'keys', function(){ return TypeCategory(this, {t:Integer}); });
+$defat(Array$proto, 'keys', function(){ return TypeCategory(this, {t:Integer}); });
 Array$proto.contains = function(elem) {
     for (var i=0; i<this.length; i++) {
         if (elem.equals(this[i])) {
@@ -185,7 +185,7 @@ SequenceBuilder.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]
 
 initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
 var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
-defineAttr(SequenceBuilder$proto, 'sequence', function() {
+$defat(SequenceBuilder$proto, 'sequence', function() {
     return (this.seq.length > 0) ? ArraySequence(this.seq,{Element$Iterable:this.$$targs$$.Element$SequenceBuilder}) : getEmpty();
 },undefined,function(){return{
   $t:{t:Sequential,a:{Element$Sequential:'Element$SequenceBuilder'}},mod:$CCMM$,d:['ceylon.language','SequenceBuilder','$at','sequence']};});
@@ -201,10 +201,10 @@ SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
     }
     return this;
 }
-defineAttr(SequenceBuilder$proto, 'size', function(){ return this.seq.length; },undefined,function(){return{
+$defat(SequenceBuilder$proto, 'size', function(){ return this.seq.length; },undefined,function(){return{
   $t:{t:Integer},mod:$CCMM$,d:['ceylon.language','SequenceBuilder','$at','size']
 };});
-defineAttr(SequenceBuilder$proto, 'empty', function() { return this.seq.length===0 },function(){return{
+$defat(SequenceBuilder$proto, 'empty', function() { return this.seq.length===0 },function(){return{
   $t:{t:Boolean$},mod:$CCMM$,d:['ceylon.language','SequenceBuilder','$at','empty']
 };});
 

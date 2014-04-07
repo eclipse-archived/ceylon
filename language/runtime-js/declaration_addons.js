@@ -56,7 +56,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDecla
   return this.getMemberDeclaration(nm,{Kind$getMemberDeclaration:$mptypes.Kind$getDeclaredMemberDeclaration},1);
 }
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getDeclaredMemberDeclaration.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},'Kind']},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}}],$cont:OpenClass,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','getDeclaredMemberDeclaration']};};
-defineAttr(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations',function(){
+$defat(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations',function(){
   var that=this;
   var parms = that.tipo.$crtmm$.$ps;
   if (!parms || parms.length === 0)return getEmpty();
@@ -117,7 +117,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
   return ArraySequence(r,{Element$Iterable:$$$mptypes.Kind$memberDeclarations});
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},$ps:[],$cont:OpenInterface,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
-defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',function(){
+$defat(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',function(){
   var casos = this.tipo.$crtmm$.of;
   if (casos && casos.length > 0) {
     var ct=[]; var ta=[];
@@ -166,7 +166,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   if (_t.a)rv.$targs=_t.a;
   return rv;
 };ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberApply']};};
-defineAttr(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',function(){
+$defat(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',function(){
   if (this.$parent)return this.$parent;
   var mm=getrtmm$$(this.tipo);
   if (mm.$cont) {

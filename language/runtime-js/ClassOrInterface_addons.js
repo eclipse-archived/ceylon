@@ -1,5 +1,5 @@
 //Addendum to ClassOrInterface
-defineAttr(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
+$defat(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
   var ints = this.tipo.$crtmm$['satisfies'];
   if (ints && ints.length) {
     var rv = [];
@@ -99,7 +99,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute=function getDeclar
   }
   return rv;
 };ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute.$crtmm$=function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container:{},Type:{}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredAttribute']};};
-defineAttr(ClassOrInterface$meta$model.$$.prototype,'container',function(){
+$defat(ClassOrInterface$meta$model.$$.prototype,'container',function(){
   if (this.$parent)return this.$parent;
   var cont = this.tipo.$crtmm$.$cont;
   if (cont === undefined)return null;
@@ -203,7 +203,7 @@ ClassOrInterface$meta$model.$$.prototype.exactly=function exactly(type$10){
   return type$10.tipo && this.tipo === type$10.tipo;
 };
 ClassOrInterface$meta$model.$$.prototype.exactly.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'type',$mt:'prm',$t:{t:Type$meta$model,a:{Type:{t:Anything}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','exactly']};};
-defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
+$defat(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   var mm = getrtmm$$(this.tipo);
   if (mm) {
     if (mm.$tp) {
@@ -230,7 +230,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'typeArguments',function(){
   }
   throw Exception(String$("ClassOrInterface.typeArguments-we don't have a metamodel!"));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
-defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
+$defat(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     var mm = getrtmm$$(this.tipo);
     var qn=this.tipo.$$ && this.tipo.$$.prototype && this.tipo.$$.prototype.getT$name ? this.tipo.$$.prototype.getT$name() : $qname(mm);
     if (mm.$tp) {
@@ -259,7 +259,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'string',function(){
     }
     return String$(qn);
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
+$defat(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   var mm = getrtmm$$(this.tipo);
   var h=String$($qname(mm)).hash;
   if (mm.$tp) {
@@ -281,7 +281,7 @@ defineAttr(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   if (this.$bound)h+=this.$bound.hash;
   return h;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
-defineAttr(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
+$defat(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
   var sc = this.tipo.$crtmm$['super'];
   if (sc === undefined)return null;
   var mm = getrtmm$$(sc.t);

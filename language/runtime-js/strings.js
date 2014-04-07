@@ -37,7 +37,7 @@ String$proto.getT$all = function() {
     return String$.$$.T$all;
 }
 String$proto.toString = origStrToString;
-defineAttr(String$proto, 'string', function(){ return this; },undefined,function(){return{mod:$CCMM$,
+$defat(String$proto, 'string', function(){ return this; },undefined,function(){return{mod:$CCMM$,
   $t:{t:String$},d:['ceylon.language','Object','$at','string']}});
 String$proto.plus = function(other) {
     var size = this.codePoints + other.codePoints;
@@ -66,17 +66,17 @@ String$proto.compare = function(other) {
 }
 String$proto.compare.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Comparison},d:['ceylon.language','String','$m','compare'],
   $ps:[{$nm:'other',$t:{t:String$}}]};}
-defineAttr(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
+$defat(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$at','uppercased']}});
-defineAttr(String$proto, 'lowercased', function(){ return String$(this.toLowerCase()); },undefined,function(){return{
+$defat(String$proto, 'lowercased', function(){ return String$(this.toLowerCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$at','lowercased']}});
-defineAttr(String$proto, 'size', function() {
+$defat(String$proto, 'size', function() {
   if (this.codePoints===undefined) {
     this.codePoints = countCodepoints(this);
   }
   return this.codePoints;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Iterable','$at','size']}});
-defineAttr(String$proto, 'lastIndex', function(){ return this.size.equals(0) ? null : this.size.predecessor; },undefined,function(){return{
+$defat(String$proto, 'lastIndex', function(){ return this.size.equals(0) ? null : this.size.predecessor; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','List','$at','lastIndex']}});
 String$proto.span = function(from, to) {
     if (from > to) {
@@ -117,7 +117,7 @@ String$proto.segment = function(from, len) {
 }
 String$proto.segment.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$m','segment'],
   $ps:[{$nm:'from',$t:{t:Integer}},{$nm:'length',$t:{t:Integer}}]};}
-defineAttr(String$proto, 'empty', function() {
+$defat(String$proto, 'empty', function() {
     return this.length===0;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Sequential','$at','empty']}});
 String$proto.longerThan = function(length) {
@@ -168,7 +168,7 @@ String$proto.$get=function(index){
 }
 String$proto.$get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','String','$m','get'],
   $ps:[{$nm:'index',$t:{t:Integer}}]};}
-defineAttr(String$proto, 'trimmed', function() {
+$defat(String$proto, 'trimmed', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var from = 0;
     while (from<this.length && (this.charCodeAt(from) in $WS)) {++from}
@@ -257,7 +257,7 @@ String$proto.terminal = function(length) {
 }
 String$proto.terminal.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$m','terminal'],
   $ps:[{$nm:'length',$t:{t:Integer}}]};}
-defineAttr(String$proto, 'hash', function() {
+$defat(String$proto, 'hash', function() {
     if (this._hash === undefined) {
         for (var i = 0; i < this.length; i++) {
           var c = this.charCodeAt(i);
@@ -301,7 +301,7 @@ String$proto.contains = function(sub) {
 }
 String$proto.contains.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','String','$m','contains'],
   $ps:[{$nm:'substring',$t:{t:String$}}]};}
-defineAttr(String$proto, 'normalized', function() {
+$defat(String$proto, 'normalized', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var result = "";
     var len = 0;
@@ -356,14 +356,14 @@ String$proto.lastOccurrence = function(subc) {
     return null;
 }
 String$proto.lastOccurrence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Integer}]},d:['ceylon.language','String','$m','lastOccurrence']};}
-defineAttr(String$proto, 'characters', function() {
+$defat(String$proto, 'characters', function() {
     return this.size>0 ? this:getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Character}}},d:['ceylon.language','String','$at','characters']}});
-defineAttr(String$proto, 'first', function() { return this.$get(0); },undefined,function(){return{
+$defat(String$proto, 'first', function() { return this.$get(0); },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','Iterable','$at','first']}});
-defineAttr(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
+$defat(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['ceylon.language','Iterable','$at','last']}});
-defineAttr(String$proto, 'keys', function() {
+$defat(String$proto, 'keys', function() {
     return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Category},d:['ceylon.language','Category','$at','keys']}});
 String$proto.join = function(strings) {
@@ -502,7 +502,7 @@ String$proto.$split = function(sep, discard, group) {
     return tokens.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:String$}});
 }
 String$proto.$split.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['ceylon.language','String','$m','split']};}
-defineAttr(String$proto, 'reversed', function() {
+$defat(String$proto, 'reversed', function() {
     var result = "";
     for (var i=this.length; i>0;) {
         var cc = this.charCodeAt(--i);
@@ -541,7 +541,7 @@ String$proto.repeat = function(times) {
 String$proto.repeat.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$m','repeat'],
   $ps:[{$nm:'times',$t:{t:Integer}}]};}
 function isNewline(c) { return c.value===10; }
-defineAttr(String$proto, 'lines', function() {
+$defat(String$proto, 'lines', function() {
     return this.$split(isNewline, true);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['ceylon.language','String','$at','lines']}});
 String$proto.occurrences = function(sub) {
@@ -588,7 +588,7 @@ String$proto.$sort = function(f) {
     return String$(r);
 }
 String$proto.$sort.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$m','sort']};}
-defineAttr(String$proto, 'coalesced', function(){ return this; },undefined,function(){return{
+$defat(String$proto, 'coalesced', function(){ return this; },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['ceylon.language','String','$at','coalesced']}});
 String$proto.$slice=function(idx) {
   var s1 = idx>0 ? this.segment(0,idx) : String$('',0);
@@ -666,7 +666,7 @@ Character.$crtmm$=function(){return{'super':{t:Object$}, 'satisfies':[
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
-defineAttr(Character$proto, 'string', function(){
+$defat(Character$proto, 'string', function(){
   if (this._str===undefined) {
     this._str=String$(codepointToString(this.value));
   }
@@ -676,21 +676,21 @@ defineAttr(Character$proto, 'string', function(){
 Character$proto.equals = function(other) {
     return other.constructor===Character.$$ && other.value===this.value;
 }
-defineAttr(Character$proto, 'hash', function(){ return this.value; },undefined,function(){return{
+$defat(Character$proto, 'hash', function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Character','$at','hash']}});
 Character$proto.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
 }
-defineAttr(Character$proto, 'uppercased', function() {
+$defat(Character$proto, 'uppercased', function() {
     var ucstr = codepointToString(this.value).toUpperCase();
     return Character(codepointFromString(ucstr, 0));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['ceylon.language','Character','$at','uppercased']}});
-defineAttr(Character$proto, 'lowercased', function() {
+$defat(Character$proto, 'lowercased', function() {
     var lcstr = codepointToString(this.value).toLowerCase();
     return Character(codepointFromString(lcstr, 0));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['ceylon.language','Character','$at','lowercased']}});
-defineAttr(Character$proto, 'titlecased', function() {
+$defat(Character$proto, 'titlecased', function() {
     var tc = $toTitlecase[this.value];
     return tc===undefined ? this.uppercased : Character(tc);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['ceylon.language','Character','$at','titlecased']}});
@@ -725,11 +725,11 @@ var $toTitlecase={
     0x1f97:0x1f9f, 0x1fa0:0x1fa8, 0x1fa1:0x1fa9, 0x1fa2:0x1faa, 0x1fa3:0x1fab, 0x1fa4:0x1fac,
     0x1fa5:0x1fad, 0x1fa6:0x1fae, 0x1fa7:0x1faf, 0x1fb3:0x1fbc, 0x1fc3:0x1fcc, 0x1ff3:0x1ffc
 }
-defineAttr(Character$proto, 'whitespace', function(){ return this.value in $WS; },undefined,function(){return{
+$defat(Character$proto, 'whitespace', function(){ return this.value in $WS; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','whitespace']}});
-defineAttr(Character$proto, 'control', function(){ return this.value<32 || this.value===127; },undefined,function(){return{
+$defat(Character$proto, 'control', function(){ return this.value<32 || this.value===127; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','control']}});
-defineAttr(Character$proto, 'digit', function() {
+$defat(Character$proto, 'digit', function() {
     var check = this.value & 0xfffffff0;
     if (check in $digit) {
         return (this.value&0xf) <= 9;
@@ -740,34 +740,34 @@ defineAttr(Character$proto, 'digit', function() {
     return this.value>=0x1d7ce && this.value<=0x1d7ff;
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','digit']}});
-defineAttr(Character$proto, 'integerValue', function(){ return this.value; },undefined,function(){return{
+$defat(Character$proto, 'integerValue', function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Enumerable','$at','integerValue']}});
-defineAttr(Character$proto, 'integer',function(){ return this.value; },undefined,function(){return{
+$defat(Character$proto, 'integer',function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Character','$at','integer']}});
-defineAttr(Character$proto, 'uppercase', function() {
+$defat(Character$proto, 'uppercase', function() {
     var str = codepointToString(this.value);
     return str.toLowerCase()!==str && !(this.value in $titlecase);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','uppercase']}});
-defineAttr(Character$proto, 'lowercase', function() {
+$defat(Character$proto, 'lowercase', function() {
     var str = codepointToString(this.value);
     return str.toUpperCase()!==str && !(this.value in $titlecase);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','lowercase']}});
-defineAttr(Character$proto, 'titlecase', function(){ return this.value in $titlecase; },undefined,function(){return{
+$defat(Character$proto, 'titlecase', function(){ return this.value in $titlecase; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','titlecase']}});
-defineAttr(Character$proto, 'letter', function() {
+$defat(Character$proto, 'letter', function() {
     //TODO: this captures only letters that have case
     var str = codepointToString(this.value);
     return str.toUpperCase()!==str || str.toLowerCase()!==str || (this.value in $titlecase);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Character','$at','letter']}});
-defineAttr(Character$proto, 'successor', function() {
+$defat(Character$proto, 'successor', function() {
     var succ = this.value+1;
     if ((succ&0xf800) === 0xd800) {return Character(0xe000)}
     return Character((succ<=0x10ffff) ? succ:0);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['ceylon.language','Ordinal','$at','successor']}});
-defineAttr(Character$proto, 'predecessor', function() {
+$defat(Character$proto, 'predecessor', function() {
     var succ = this.value-1;
     if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
     return Character((succ>=0) ? succ:0x10ffff);
@@ -792,7 +792,7 @@ StringBuilder.$crtmm$=function(){return{'super':{t:Basic},$ps:[],
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
-defineAttr(StringBuilder$proto, 'string', function(){ return String$(this.value, this.size); },undefined,function(){return{
+$defat(StringBuilder$proto, 'string', function(){ return String$(this.value, this.size); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['ceylon.language','StringBuilder','$at','string'],$cont:StringBuilder}});
 StringBuilder$proto.append = function(s) {
     this.value = this.value.concat(s);
@@ -822,7 +822,7 @@ StringBuilder$proto.appendSpace=function(){return this.append(" ");}
 StringBuilder$proto.appendSpace.$crtmm$=function(){return{mod:$$CCMM$,d:['ceylon.language','StringBuilder','$m','appendSpace'],
   $t:{t:StringBuilder},$ps:[],$cont:StringBuilder
 };};
-defineAttr(StringBuilder$proto, 'size', function() {
+$defat(StringBuilder$proto, 'size', function() {
     return countCodepoints(this.value);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','StringBuilder','$at','size'],$cont:StringBuilder}});
 StringBuilder$proto.reset = function() {

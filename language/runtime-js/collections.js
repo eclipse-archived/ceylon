@@ -18,7 +18,7 @@ var Comprehension$proto = Comprehension.$$.prototype;
 Comprehension$proto.iterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
 }
-defineAttr(Comprehension$proto, 'sequence', function() {
+$defat(Comprehension$proto, 'sequence', function() {
     var sb = SequenceBuilder({Element$SequenceBuilder:this.$$targs$$.Element$Iterable});
     sb.appendAll(this);
     return sb.sequence;

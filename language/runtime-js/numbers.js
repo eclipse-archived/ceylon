@@ -51,7 +51,7 @@ JSNum$proto.getT$name = function() {
     return (this.float$ ? Float : Integer).$$.T$name;
 }
 JSNum$proto.toString = origNumToString;
-defineAttr(JSNum$proto, 'string', function(){ return String$(this.toString()); },
+$defat(JSNum$proto, 'string', function(){ return String$(this.toString()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','string']};});
 JSNum$proto.plus = function(other) {
     return (this.float$||other.float$) ? Float(this+other) : (this+other);
@@ -83,13 +83,13 @@ JSNum$proto.power = function(exp) {
     }
     return toInt(Math.pow(this, exp));
 }
-defineAttr(JSNum$proto, 'negated', function() {
+$defat(JSNum$proto, 'negated', function() {
     return this.float$ ? Float(-this) : -this;
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['ceylon.language','Invertable','$at','negated']};});
-defineAttr(JSNum$proto, 'negative', function(){
+$defat(JSNum$proto, 'negative', function(){
   return this.float$ ? this < 0.0 : this.valueOf() < 0;
 },undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','negative']};});
-defineAttr(JSNum$proto, 'positive', function(){
+$defat(JSNum$proto, 'positive', function(){
   return this.float$ ? this > 0.0 : this.valueOf() > 0;
 },undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','positive']};});
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
@@ -97,40 +97,40 @@ JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
 }
-defineAttr(JSNum$proto, '$float', function(){ return Float(this.valueOf()); },
+$defat(JSNum$proto, '$float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','float']};});
-defineAttr(JSNum$proto, 'integer', function(){ return toInt(this); },
+$defat(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','integer']};});
-defineAttr(JSNum$proto, 'integerValue', function(){ return toInt(this); },
+$defat(JSNum$proto, 'integerValue', function(){ return toInt(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['ceylon.language','Ordinal','$at','integerValue']};});
-defineAttr(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
+$defat(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['ceylon.language','Integer','$at','character']};});
-defineAttr(JSNum$proto, 'successor', function(){ return this+1; },
+$defat(JSNum$proto, 'successor', function(){ return this+1; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['ceylon.language','Ordinal','$at','successor']};});
-defineAttr(JSNum$proto, 'predecessor', function(){ return this-1; },
+$defat(JSNum$proto, 'predecessor', function(){ return this-1; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['ceylon.language','Ordinal','$at','predecessor']};});
-defineAttr(JSNum$proto, 'unit', function(){ return this == 1; },
+$defat(JSNum$proto, 'unit', function(){ return this == 1; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['ceylon.language','Integral','$at','unit']};});
-defineAttr(JSNum$proto, 'zero', function(){ return this == 0; },
+$defat(JSNum$proto, 'zero', function(){ return this == 0; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['ceylon.language','Integral','$at','zero']};});
-defineAttr(JSNum$proto, 'fractionalPart', function() {
+$defat(JSNum$proto, 'fractionalPart', function() {
     if (!this.float$) { return 0; }
     return Float(this - (this>=0 ? Math.floor(this) : Math.ceil(this)));
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','fractionalPart']};});
-defineAttr(JSNum$proto, 'wholePart', function() {
+$defat(JSNum$proto, 'wholePart', function() {
     if (!this.float$) { return this.valueOf(); }
     return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','wholePart']};});
-defineAttr(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
+$defat(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','sign']};});
-defineAttr(JSNum$proto, 'hash', function() {
+$defat(JSNum$proto, 'hash', function() {
     return this.float$ ? String$(this.toPrecision()).hash : this.valueOf();
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','hash']};});
 JSNum$proto.distanceFrom = function(other) {
     return (this.float$ ? this.wholePart : this) - other;
 }
 //Binary interface
-defineAttr(JSNum$proto, 'not', function(){ return ~this; },
+$defat(JSNum$proto, 'not', function(){ return ~this; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['ceylon.language','Binary','$at','not']};});
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
 JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
@@ -154,23 +154,23 @@ JSNum$proto.flip = function(idx) {
 JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
-defineAttr(JSNum$proto, 'size', function(){ return 53; },
+$defat(JSNum$proto, 'size', function(){ return 53; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['ceylon.language','Binary','$at','size']};});
-defineAttr(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
+$defat(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','magnitude']};});
 
 function $parseFloat(s) { return Float(parseFloat(s)); }
 $parseFloat.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Float}]},$ps:[{$nm:'string',$t:{t:String$}}],d:['ceylon.language','parseFloat']};}
 
-defineAttr(JSNum$proto, 'undefined', function(){ return isNaN(this); },
+$defat(JSNum$proto, 'undefined', function(){ return isNaN(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['ceylon.language','Float','$at','undefined']};});
-defineAttr(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
+$defat(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['ceylon.language','Float','$at','finite']};});
-defineAttr(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
+$defat(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['ceylon.language','Float','$at','infinite']};});
-defineAttr(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
+$defat(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['ceylon.language','Float','$at','strictlyPositive']};});
-defineAttr(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
+$defat(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['ceylon.language','Float','$at','strictlyNegative']};});
 
 var $infinity = Float(Infinity);

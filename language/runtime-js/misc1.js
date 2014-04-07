@@ -15,11 +15,11 @@ Boolean.prototype.getT$all = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
-defineAttr(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
+$defat(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','hash']});
 var trueString = String$("true", 4);
 var falseString = String$("false", 5);
-defineAttr(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
+$defat(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 function getTrue() {return true;}
 function getFalse() {return false;}
@@ -36,7 +36,7 @@ function Comparison(name) {
 initTypeProto(Comparison, 'ceylon.language::Comparison', $init$Basic());
 Comparison.$crtmm$={$ps:[{t:String$}],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Comparison']};
 var Comparison$proto = Comparison.$$.prototype;
-defineAttr(Comparison$proto, 'string', function(){ return this.name; },
+$defat(Comparison$proto, 'string', function(){ return this.name; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
 
 
@@ -74,7 +74,7 @@ function $init$Mapita(){
             $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'other',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['ceylon.language','Map','$m','equals']};};
             
             //AttributeDecl hash at caca.ceylon (6:2-6:56)
-            defineAttr($$mapita,'hash',function(){
+            $defat($$mapita,'hash',function(){
                 var $$mapita=this;
                 return attrGetter($$mapita.getT$all()['ceylon.language::Map'],'hash').call(this);
             },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:Mapita,$an:function(){return[shared(),actual()];},d:['ceylon.language','Map','$at','hash']};});

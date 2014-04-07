@@ -1,5 +1,5 @@
 //Addendum to ClassModel
-defineAttr(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
+$defat(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
   var ps=this.tipo.$crtmm$.$ps;
   if (!ps || ps.length==0)return getEmpty();
   var r=[];
@@ -15,7 +15,7 @@ defineAttr(ClassModel$meta$model.$$.prototype,'parameterTypes',function(){
   return ArraySequence(r,{Element$Iterable:{t:Type$meta$model,a:{t:Anything}}});
 },undefined,function(){return{mod:$CCMM$,$cont:ClassModel$meta$model,d:['ceylon.language.meta.model','ClassModel','$at','parameterTypes'],$t:{t:Sequential,a:{ElementSequential:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
 
-defineAttr(ClassModel$meta$model.$$.prototype,'declaration',function(){
+$defat(ClassModel$meta$model.$$.prototype,'declaration',function(){
   var $$clase=this;
   if ($$clase._decl)return $$clase._decl;
   var mm = getrtmm$$($$clase.tipo);
