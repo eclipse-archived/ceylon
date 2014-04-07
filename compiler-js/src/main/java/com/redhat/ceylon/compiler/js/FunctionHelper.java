@@ -9,15 +9,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 
 public class FunctionHelper {
 
@@ -25,8 +16,8 @@ public class FunctionHelper {
         void completeFunction();
     }
 
-    static void multiStmtFunction(final List<ParameterList> paramLists,
-            final Block block, final Scope scope, final GenerateJsVisitor gen) {
+    static void multiStmtFunction(final List<Tree.ParameterList> paramLists,
+            final Tree.Block block, final Scope scope, final GenerateJsVisitor gen) {
         generateParameterLists(paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
@@ -39,8 +30,8 @@ public class FunctionHelper {
             }
         }, gen);
     }
-    static void singleExprFunction(final List<ParameterList> paramLists,
-                                    final Expression expr, final Scope scope, final GenerateJsVisitor gen) {
+    static void singleExprFunction(final List<Tree.ParameterList> paramLists,
+                                    final Tree.Expression expr, final Scope scope, final GenerateJsVisitor gen) {
         generateParameterLists(paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
@@ -57,16 +48,16 @@ public class FunctionHelper {
     }
 
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
-    static void generateParameterLists(final List<ParameterList> plist, final Scope scope,
+    static void generateParameterLists(final List<Tree.ParameterList> plist, final Scope scope,
                 final ParameterListCallback callback, final GenerateJsVisitor gen) {
         if (plist.size() == 1) {
             gen.out(GenerateJsVisitor.function);
-            ParameterList paramList = plist.get(0);
+            Tree.ParameterList paramList = plist.get(0);
             paramList.visit(gen);
             callback.completeFunction();
         } else {
             int count=0;
-            for (ParameterList paramList : plist) {
+            for (Tree.ParameterList paramList : plist) {
                 if (count==0) {
                     gen.out(GenerateJsVisitor.function);
                 } else {
@@ -100,8 +91,8 @@ public class FunctionHelper {
         gen.location(that);
         gen.endLine();
         
-        Block block = that.getBlock();
-        SpecifierExpression specExpr = that.getSpecifierExpression();
+        Tree.Block block = that.getBlock();
+        Tree.SpecifierExpression specExpr = that.getSpecifierExpression();
         if (specExpr != null) {
             gen.out("return ");
             specExpr.getExpression().visit(gen);
@@ -127,9 +118,9 @@ public class FunctionHelper {
         gen.beginBlock();
         gen.instantiateSelf(c);
         gen.referenceOuter(c);
-        ExtendedType xt = that.getExtendedType();
-        final ClassBody body = that.getClassBody();
-        SatisfiedTypes sts = that.getSatisfiedTypes();
+        Tree.ExtendedType xt = that.getExtendedType();
+        final Tree.ClassBody body = that.getClassBody();
+        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
         
         final List<Declaration> superDecs = new ArrayList<Declaration>(3);
         if (!gen.opts.isOptimize()) {
@@ -162,8 +153,8 @@ public class FunctionHelper {
                 new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                Block block = that.getBlock();
-                SpecifierExpression specExpr = that.getSpecifierExpression();
+                Tree.Block block = that.getBlock();
+                Tree.SpecifierExpression specExpr = that.getSpecifierExpression();
                 if (specExpr != null) {
                     gen.out("{return ");
                     specExpr.getExpression().visit(gen);
@@ -186,7 +177,7 @@ public class FunctionHelper {
         gen.out(")");
     }
 
-    static void methodDeclaration(TypeDeclaration outer, MethodDeclaration that, GenerateJsVisitor gen) {
+    static void methodDeclaration(TypeDeclaration outer, Tree.MethodDeclaration that, GenerateJsVisitor gen) {
         final Method m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
             // method(params) => expr
@@ -244,11 +235,11 @@ public class FunctionHelper {
         }
     }
 
-    static void methodDefinition(MethodDefinition that, GenerateJsVisitor gen) {
+    static void methodDefinition(Tree.MethodDefinition that, GenerateJsVisitor gen) {
         final Method d = that.getDeclarationModel();
         if (that.getParameterLists().size() == 1) {
             gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
-            ParameterList paramList = that.getParameterLists().get(0);
+            Tree.ParameterList paramList = that.getParameterLists().get(0);
             paramList.visit(gen);
             gen.beginBlock();
             gen.initSelf(that.getBlock());
@@ -257,7 +248,7 @@ public class FunctionHelper {
             gen.endBlock();
         } else {
             int count=0;
-            for (ParameterList paramList : that.getParameterLists()) {
+            for (Tree.ParameterList paramList : that.getParameterLists()) {
                 if (count==0) {
                     gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
                 } else {

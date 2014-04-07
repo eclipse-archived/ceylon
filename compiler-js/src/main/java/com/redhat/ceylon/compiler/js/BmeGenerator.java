@@ -12,7 +12,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 
 public class BmeGenerator {
 
@@ -101,7 +100,7 @@ public class BmeGenerator {
      * If lhs==null and the expression is a BaseMemberExpression
      * then the qualified path is prepended.
      */
-    static void generateMemberAccess(StaticMemberOrTypeExpression expr,
+    static void generateMemberAccess(Tree.StaticMemberOrTypeExpression expr,
                 GenerateCallback callback, String lhs, final GenerateJsVisitor gen) {
         Declaration decl = expr.getDeclaration();
         boolean paren = false;
@@ -135,7 +134,7 @@ public class BmeGenerator {
         callback.generateValue();
         if (paren) { gen.out(")"); }
     }
-    static void generateMemberAccess(final StaticMemberOrTypeExpression expr,
+    static void generateMemberAccess(final Tree.StaticMemberOrTypeExpression expr,
             final String strValue, final String lhs, final GenerateJsVisitor gen) {
         generateMemberAccess(expr, new GenerateCallback() {
             @Override public void generateValue() { gen.out(strValue); }
