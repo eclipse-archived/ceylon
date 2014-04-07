@@ -419,6 +419,7 @@ public class ClassTransformer extends AbstractTransformer {
         // annotations are never explicitly final in Java
         annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(def) & ~FINAL));
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
+        annoBuilder.annotations(makeAtIgnore());
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getParameterModel();
@@ -439,6 +440,7 @@ public class ClassTransformer extends AbstractTransformer {
             mdb.noBody();
             ClassDefinitionBuilder sequencedAnnotation = sequencedBuilder.method(mdb);
             sequencedAnnotation.annotations(transformAnnotationConstraints(klass));
+            sequencedAnnotation.annotations(makeAtIgnore());
             result = result.appendList(sequencedAnnotation.build());
             
         } else {
