@@ -513,42 +513,50 @@ public class TypeUtils {
         encodeForRuntime(annotations, d, gen, include ? new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 gen.out(",", MetamodelGenerator.KEY_ANNOTATIONS, ":");
-                outputAnnotationsFunction(annotations, gen);
+                outputAnnotationsFunction(annotations, d, gen);
             }
         } : null);
     }
 
-    static void outputModelPath(final Declaration d, GenerateJsVisitor gen) {
+    static List<String> generateModelPath(final Declaration d) {
+        final ArrayList<String> sb = new ArrayList<>();
         final String pkgName = d.getUnit().getPackage().getNameAsString();
-        gen.out("['", "ceylon.language".equals(pkgName)?"$":pkgName, "'");
+        sb.add("ceylon.language".equals(pkgName)?"$":pkgName);
         if (d.isToplevel()) {
-            gen.out(",'", d.getName(), "'");
+            sb.add(d.getName());
         } else {
-            ArrayList<String> path = new ArrayList<>();
             Declaration p = d;
+            final int i = sb.size();
             while (p instanceof Declaration) {
-                path.add(0, p.getName());
+                sb.add(i, p.getName());
                 //Build the path in reverse
                 if (!p.isToplevel()) {
                     if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                        path.add(0, p.isAnonymous() ? "$o" : "$c");
+                        sb.add(i, p.isAnonymous() ? "$o" : "$c");
                     } else if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                        path.add(0, "$i");
+                        sb.add(i, "$i");
                     } else if (p instanceof Method) {
-                        path.add(0, "$m");
+                        sb.add(i, "$m");
                     } else if (p instanceof TypeAlias) {
-                        path.add(0, "$at");
+                        sb.add(i, "$at");
                     } else { //It's a value
                         TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
-                        path.add(0, (td!=null&&td.isAnonymous())?"$o":"$at");
+                        sb.add(i, (td!=null&&td.isAnonymous())?"$o":"$at");
                     }
                 }
                 p = Util.getContainingDeclaration(p);
             }
-            //Output path
-            for (String part : path) {
-                gen.out(",'", part, "'");
-            }
+        }
+        return sb;
+    }
+
+    static void outputModelPath(final Declaration d, GenerateJsVisitor gen) {
+        List<String> parts = generateModelPath(d);
+        gen.out("[");
+        boolean first = true;
+        for (String p : parts) {
+            if (first)first=false;else gen.out(",");
+            gen.out("'", p, "'");
         }
         gen.out("]");
     }
@@ -791,8 +799,34 @@ public class TypeUtils {
         return tt;
     }
 
-    /** Outputs a function that returns the specified annotations, so that they can be loaded lazily. */
-    static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
+    static String pathToModelDoc(final Declaration d) {
+        if (d == null)return null;
+        final StringBuilder sb = new StringBuilder();
+        for (String p : generateModelPath(d)) {
+            if (sb.length()==0) {
+                sb.append("$CCMM$");
+                if ("$".equals(p)) {
+                    p = "ceylon.language";
+                }
+                if (p.isEmpty() || p.indexOf('.') >= 0) {
+                    sb.append("['").append(p).append("']");
+                } else {
+                    sb.append(".").append(p);
+                }
+            } else {
+                sb.append(".").append(p);
+            }
+        }
+        sb.append(".$an.doc[0]");
+        return sb.toString();
+    }
+
+    /** Outputs a function that returns the specified annotations, so that they can be loaded lazily.
+     * @param annotations The annotations to be output.
+     * @param d The declaration to which the annotations belong.
+     * @param gen The generator to use for output. */
+    static void outputAnnotationsFunction(final Tree.AnnotationList annotations, final Declaration d,
+            final GenerateJsVisitor gen) {
         if (annotations == null || (annotations.getAnnotations().isEmpty() && annotations.getAnonymousAnnotation()==null)) {
             gen.out("[]");
         } else {
@@ -801,8 +835,14 @@ public class TypeUtils {
             //Leave the annotation but remove the doc from runtime for brevity
             if (annotations.getAnonymousAnnotation() != null) {
                 first = false;
+                final Tree.StringLiteral lit = annotations.getAnonymousAnnotation().getStringLiteral();
                 gen.out(GenerateJsVisitor.getClAlias(), "doc(");
-                annotations.getAnonymousAnnotation().getStringLiteral().visit(gen);
+                final String sb = pathToModelDoc(d);
+                if (sb != null && sb.length() < lit.getText().length()) {
+                    gen.out(sb);
+                } else {
+                    lit.visit(gen);
+                }
                 gen.out(")");
             }
             for (Tree.Annotation a : annotations.getAnnotations()) {
@@ -850,10 +890,21 @@ public class TypeUtils {
                             gen.out(v == null ? "undefined" : v);
                         }
                     } else {
-                        boolean farg = true;
-                        for (String s : a.getPositionalArguments()) {
-                            if (farg)farg=false; else gen.out(",");
-                            gen.out("\"", gen.escapeStringLiteral(s), "\"");
+                        if ("ceylon.language::doc".equals(ad.getQualifiedNameString())) {
+                            //Use ref if it's too long
+                            final String ref = pathToModelDoc(d);
+                            final String doc = a.getPositionalArguments().get(0);
+                            if (ref != null && ref.length() < doc.length()) {
+                                gen.out(ref);
+                            } else {
+                                gen.out("\"", gen.escapeStringLiteral(doc), "\"");
+                            }
+                        } else {
+                            boolean farg = true;
+                            for (String s : a.getPositionalArguments()) {
+                                if (farg)farg=false; else gen.out(",");
+                                gen.out("\"", gen.escapeStringLiteral(s), "\"");
+                            }
                         }
                     }
                     gen.out(")");

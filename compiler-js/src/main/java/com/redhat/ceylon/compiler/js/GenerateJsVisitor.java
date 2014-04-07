@@ -275,7 +275,7 @@ public class GenerateJsVisitor extends Visitor
         if (!that.getModuleDescriptors().isEmpty()) {
             ModuleDescriptor md = that.getModuleDescriptors().get(0);
             out("exports.$mod$ans$=");
-            TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), this);
+            TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), null, this);
             endLine(true);
             if (md.getImportModuleList() != null && !md.getImportModuleList().getImportModules().isEmpty()) {
                 out("exports.$mod$imps=function(){return{");
@@ -300,7 +300,7 @@ public class GenerateJsVisitor extends Visitor
                     path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
                     if (first)first=false;else{out(",");endLine();}
                     out(path.toString(), ":");
-                    TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), this);
+                    TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), null, this);
                 }
                 if (!opts.isMinify())endLine();
                 out("};};");
@@ -310,7 +310,7 @@ public class GenerateJsVisitor extends Visitor
         if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
             out("exports.$pkg$ans$", pknm, "=");
-            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(), this);
+            TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(), null, this);
             endLine(true);
         }
 
