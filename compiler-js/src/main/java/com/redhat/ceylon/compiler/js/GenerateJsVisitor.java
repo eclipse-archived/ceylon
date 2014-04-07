@@ -734,7 +734,7 @@ public class GenerateJsVisitor extends Visitor
             }
             System.out.println(".");
         }
-        returnSelf(d);
+        out("return ", names.self(d), ";");
         endBlockNewLine();
         //Add reference to metamodel
         out(names.name(d), ".$crtmm$=");
@@ -1123,15 +1123,10 @@ public class GenerateJsVisitor extends Visitor
     void instantiateSelf(ClassOrInterface d) {
         out("var ", names.self(d), "=new ");
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-            out("this.", names.name(d), ".$$;");
-        } else {
-            out(names.name(d), ".$$;");
+            out("this.");
         }
+        out(names.name(d), ".$$;");
         endLine();
-    }
-
-    void returnSelf(ClassOrInterface d) {
-        out("return ", names.self(d), ";");
     }
 
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
@@ -1196,7 +1191,7 @@ public class GenerateJsVisitor extends Visitor
         callInterfaces(that.getSatisfiedTypes(), c, that, superDecs);
         
         that.getClassBody().visit(this);
-        returnSelf(c);
+        out("return ", names.self(c), ";");
         indentLevel--;
         endLine();
         out("};", names.name(c), ".$crtmm$=");
@@ -3430,11 +3425,10 @@ public class GenerateJsVisitor extends Visitor
         } else {
             itemVar = names.createTempVariable();
         }
-        out("var ", iterVar, " = ");
-        iterable.visit(this);
-        out(".iterator()");
         endLine(true);
-        out("var ", itemVar, ";while((", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished())");
+        out("var ", itemVar, ";for(var ", iterVar,"=");
+        iterable.visit(this);
+        out(".iterator();(", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished();)");
         beginBlock();
         if (that instanceof ValueIterator) {
             directAccess.add(((ValueIterator)that).getVariable().getDeclarationModel());

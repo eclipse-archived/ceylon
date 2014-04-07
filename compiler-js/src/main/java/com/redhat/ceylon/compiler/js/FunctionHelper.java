@@ -130,7 +130,7 @@ public class FunctionHelper {
         gen.callInterfaces(sts, c, that, superDecs);
         
         body.visit(gen);
-        gen.returnSelf(c);
+        gen.out("return ", gen.getNames().self(c), ";");
         gen.endBlock(false, true);
         //Add reference to metamodel
         gen.out(gen.getNames().name(c), ".$crtmm$=");
