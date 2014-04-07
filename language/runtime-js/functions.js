@@ -315,6 +315,9 @@ function throwexc(e,loc,file) {
   if (file !== undefined) e.$file=file;
   throw e;
 }
+function $nn(e) {
+  return e!==null&&e!==undefined;
+}
 exports.set_type_args=set_type_args;
 exports.add_type_arg=add_type_arg;
 exports.exists=exists;
@@ -324,3 +327,4 @@ exports.className=className;
 exports.identityHash=identityHash;
 exports.throwexc=throwexc;
 exports.wrapexc=wrapexc;
+exports.$nn=$nn;
