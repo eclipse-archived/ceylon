@@ -66,35 +66,35 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     
     @Ignore
     @Override
-    public Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
+    public final Category$impl<java.lang.Object> $ceylon$language$Category$impl(){
         return $ceylon$language$Category$this;
     }
 
     @Ignore
     @Override
-    public Iterable$impl<Element,Absent> $ceylon$language$Iterable$impl(){
+    public final Iterable$impl<Element,Absent> $ceylon$language$Iterable$impl(){
         return $ceylon$language$Iterable$this;
     }
     
     @Override
     @Ignore
-    public String toString() {
+    public final String toString() {
         return $ceylon$language$Iterable$this.toString();
     }
 
     @Override
-    public long getSize() {
+    public final long getSize() {
         return $ceylon$language$Iterable$this.getSize();
     }
     
     @Override
-    public boolean getEmpty() {
+    public final boolean getEmpty() {
         return iterator().next() == finished_.get_();
     }
 
     @Override
     @Ignore
-    public Sequential<? extends Element> getSequence() {
+    public final Sequential<? extends Element> getSequence() {
         final SequenceBuilder<Element> sb = new SequenceBuilder<Element>($reifiedElement);
         java.lang.Object next = null;
         for (Iterator<? extends Element> iter = iterator(); 
@@ -106,23 +106,23 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     
     @Override
     @Ignore
-    public Element getFirst() {
+    public final Element getFirst() {
     	return (Element) $ceylon$language$Iterable$this.getFirst();
     }
     @Override @Ignore 
-    public Element getLast() {
+    public final Element getLast() {
         return (Element) $ceylon$language$Iterable$this.getLast();
     }
 
     @Override
     @Ignore
-    public Iterable<? extends Element, ?> getRest() {
+    public final Iterable<? extends Element, ?> getRest() {
     	return $ceylon$language$Iterable$this.getRest();
     }
 
     @Ignore
     @Override
-    public <Result> Iterable<? extends Result, ? extends Absent> map(
+    public final <Result> Iterable<? extends Result, ? extends Absent> map(
             TypeDescriptor $reifiedResult,
             Callable<? extends Result> collecting) {
         return $ceylon$language$Iterable$this.map($reifiedResult, collecting);
@@ -130,14 +130,14 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     @Ignore
     @Override
-    public Iterable<? extends Element, ?> filter(
+    public final Iterable<? extends Element, ?> filter(
             Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.filter(selecting);
     }
 
     @Override
     @Ignore
-    public <Result> Result fold(TypeDescriptor $reifiedResult,
+    public final <Result> Result fold(TypeDescriptor $reifiedResult,
             Result initial,
             Callable<? extends Result> accumulating) {
         return $ceylon$language$Iterable$this.fold($reifiedResult, initial, accumulating);
@@ -145,145 +145,145 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
 
     @Override
     @Ignore
-    public <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+    public final <Result> java.lang.Object reduce(@Ignore TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.reduce($reifiedResult, f);
     }
     
     @Override @Ignore
-    public Element find(Callable<? extends Boolean> selecting) {
+    public final Element find(Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.find(selecting);
     }
 
     @Override @Ignore
-    public Element findLast(Callable<? extends Boolean> selecting) {
+    public final Element findLast(Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.findLast(selecting);
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ?> takingWhile(Callable<? extends Boolean> take) {
+    public final Iterable<? extends Element, ?> takingWhile(Callable<? extends Boolean> take) {
         return $ceylon$language$Iterable$this.takingWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ?> skippingWhile(Callable<? extends Boolean> skip) {
+    public final Iterable<? extends Element, ?> skippingWhile(Callable<? extends Boolean> skip) {
         return $ceylon$language$Iterable$this.skippingWhile(skip);
     }
     
     @Override 
     @Ignore
-    public Sequential<? extends Element> sort(Callable<? extends Comparison> f) { 
+    public final Sequential<? extends Element> sort(Callable<? extends Comparison> f) { 
         return $ceylon$language$Iterable$this.sort(f); 
     }
     @Override @Ignore
-    public <Result> Sequential<? extends Result> collect(TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
+    public final <Result> Sequential<? extends Result> collect(TypeDescriptor $reifiedResult, Callable<? extends Result> f) {
         return $ceylon$language$Iterable$this.collect($reifiedResult, f);
     }
     @Override @Ignore
-    public Sequential<? extends Element> select(Callable<? extends Boolean> f) {
+    public final Sequential<? extends Element> select(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.select(f);
     }
     @Override @Ignore
-    public boolean any(Callable<? extends Boolean> f) {
+    public final boolean any(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.any(f);
     }
     @Override @Ignore
-    public boolean every(Callable<? extends Boolean> f) {
+    public final boolean every(Callable<? extends Boolean> f) {
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
-    public boolean longerThan(long length) {
+    public final boolean longerThan(long length) {
         return $ceylon$language$Iterable$this.longerThan(length);
     }
     @Override @Ignore
-    public boolean shorterThan(long length) {
+    public final boolean shorterThan(long length) {
         return $ceylon$language$Iterable$this.shorterThan(length);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ?> skipping(long skip) {
+    public final Iterable<? extends Element, ?> skipping(long skip) {
         return $ceylon$language$Iterable$this.skipping(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ?> taking(long take) {
+    public final Iterable<? extends Element, ?> taking(long take) {
         return $ceylon$language$Iterable$this.taking(take);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ? extends Absent> by(long step) {
+    public final Iterable<? extends Element, ? extends Absent> by(long step) {
         return $ceylon$language$Iterable$this.by(step);
     }
     @Override @Ignore
-    public long count(Callable<? extends Boolean> selecting) {
+    public final long count(Callable<? extends Boolean> selecting) {
         return $ceylon$language$Iterable$this.count(selecting);
     }
     @Override @Ignore
-    public Iterable<? extends Element,?> getCoalesced() {
+    public final Iterable<? extends Element,?> getCoalesced() {
         return $ceylon$language$Iterable$this.getCoalesced();
     }
     @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ?> getIndexed() {
+    public final Iterable<? extends Entry<? extends Integer, ? extends Element>, ?> getIndexed() {
         return $ceylon$language$Iterable$this.getIndexed();
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other,Absent>Iterable chain(TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
+    public final <Other,Absent>Iterable chain(TypeDescriptor $reifiedOther, @Ignore TypeDescriptor $reifiedOtherAbsent, Iterable<? extends Other, ? extends Absent> other) {
         return $ceylon$language$Iterable$this.chain($reifiedOther, $reifiedOtherAbsent, other);
     }
     @Override @Ignore @SuppressWarnings("rawtypes")
-    public <Other>Iterable following(TypeDescriptor $reifiedOther, Other other) {
+    public final <Other>Iterable following(TypeDescriptor $reifiedOther, Other other) {
         return $ceylon$language$Iterable$this.following($reifiedOther, other);
     }
     @Override @Ignore
-    public <Default>Iterable<?,? extends Absent> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
+    public final <Default>Iterable<?,? extends Absent> defaultNullElements(TypeDescriptor $reifiedDefault, Default defaultValue) {
         return $ceylon$language$Iterable$this.defaultNullElements($reifiedDefault, defaultValue);
     }
     @Override
     @Ignore
-    public Iterable<? extends Element,? extends Absent> getCycled() {
+    public final Iterable<? extends Element,? extends Absent> getCycled() {
         return $ceylon$language$Iterable$this.getCycled();
     }
     @Override
     @Ignore
-    public Iterable<? extends Element,? extends Absent> cycle(long times) {
+    public final Iterable<? extends Element,? extends Absent> cycle(long times) {
         return $ceylon$language$Iterable$this.cycle(times);
     }
     @Override
     @Ignore
-    public List<? extends Element> repeat(long times) {
+    public final List<? extends Element> repeat(long times) {
         return $ceylon$language$Iterable$this.repeat(times);
     }
     /*@Override @Ignore
-    public <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
+    public final <Key> Map<? extends Key, ? extends Sequence<? extends Element>> group(Callable<? extends Key> grouping) {
         return $ceylon$language$Iterable$this.group(grouping);
     }*/
     @Override @Ignore
-    public boolean contains(java.lang.Object element) {
+    public final boolean contains(java.lang.Object element) {
         return $ceylon$language$Iterable$this.contains(element);
     }
     @Override @Ignore
-    public boolean containsEvery(Iterable<?,?> elements) {
+    public final boolean containsEvery(Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsEvery(elements);
     }
 //    @Override @Ignore
-//    public boolean containsEvery() {
+//    public final boolean containsEvery() {
 //        return $ceylon$language$Category$this.containsEvery();
 //    }
 //    @Override @Ignore
-//    public Sequential<?> containsEvery$elements() {
+//    public final Sequential<?> containsEvery$elements() {
 //        return $ceylon$language$Category$this.containsEvery$elements();
 //    }
     @Override @Ignore
-    public boolean containsAny(Iterable<?,?> elements) {
+    public final boolean containsAny(Iterable<?,?> elements) {
         return $ceylon$language$Category$this.containsAny(elements);
     }
 //    @Override @Ignore
-//    public boolean containsAny() {
+//    public final boolean containsAny() {
 //        return $ceylon$language$Category$this.containsAny();
 //    }
 //    @Override @Ignore
-//    public Sequential<?> containsAny$elements() {
+//    public final Sequential<?> containsAny$elements() {
 //        return $ceylon$language$Category$this.containsAny$elements();
 //    }
     @Override
     @Ignore
-    public TypeDescriptor $getType$() {
+    public final TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AbstractIterable.class, $reifiedElement, $reifiedAbsent);
     }
 }
