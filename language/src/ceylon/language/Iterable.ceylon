@@ -527,8 +527,7 @@ shared interface Iterable<out Element, out Absent=Null>
             Boolean selecting(Element element)) {
         variable value count=0;
         for (elem in this) {
-            if (exists elem, 
-                selecting(elem)) {
+            if (selecting(elem)) {
                 count++;
             }
         }
