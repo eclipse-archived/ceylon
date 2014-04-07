@@ -482,64 +482,94 @@ final class comprehensions_ {
     
     static void comprehensions() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
-                    {
-                        $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
+            @.java.lang.Override
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            private final .java.lang.Object $0() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$23 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$23 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$23;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return .ceylon.language.Float.instance(2.0);
-                        } else return .ceylon.language.finished_.get_();
+                    public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
+                            {
+                                $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted$;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmp$item$23 = $iterator$0.next();
+                                i$exhausted$ = $ceylontmp$item$23 == .ceylon.language.finished_.get_();
+                                if (i$exhausted$) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmp$item$23;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return .ceylon.language.Float.instance(2.0);
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
                     }
                 };
             }
         }.getSequence()));
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
-                    {
-                        $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
+            @.java.lang.Override
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            private final .java.lang.Object $0() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$24 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$24 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$24;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return .ceylon.language.Float.instance(2.0);
-                        } else return .ceylon.language.finished_.get_();
+                    public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
+                            {
+                                $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted$;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmp$item$24 = $iterator$0.next();
+                                i$exhausted$ = $ceylontmp$item$24 == .ceylon.language.finished_.get_();
+                                if (i$exhausted$) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmp$item$24;
+                                    return true;
+                                }
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.i()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    return .ceylon.language.Float.instance(2.0);
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
                     }
                 };
             }
@@ -625,9 +655,26 @@ final class moreOverloads_ {
         .java.nio.file.Files.copy(.java.nio.file.Paths.get(new .java.net.URI("", "", "")), .java.nio.file.Paths.get(new .java.net.URI("")), (
             let
             {
-                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$27$0 = .ceylon.language.ArraySequence.<.java.nio.file.StandardCopyOption>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class)), new .java.lang.Object[]{
-                        .java.nio.file.StandardCopyOption.REPLACE_EXISTING,
-                        .java.nio.file.StandardCopyOption.COPY_ATTRIBUTES}).getSequence();
+                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$27$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.nio.file.StandardCopyOption, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+                    }
+                }.getSequence();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$27$0, new .java.nio.file.CopyOption[(int)$ceylontmp$27$0.getSize() + 1], .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.file.StandardCopyOption.ATOMIC_MOVE));
         ));

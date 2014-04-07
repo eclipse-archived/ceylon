@@ -221,7 +221,22 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                return .java.lang.invoke.MethodHandles.lookup();
+                            }
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                return handle.invokeExact(this);
+                            }
+                            
+                            private final .java.lang.Object $0() {
+                                return .ceylon.language.Integer.instance(1L);
+                            }
+                        }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;
@@ -278,7 +293,22 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}).iterator();
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                return .java.lang.invoke.MethodHandles.lookup();
+                            }
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                return handle.invokeExact(this);
+                            }
+                            
+                            private final .java.lang.Object $0() {
+                                return .ceylon.language.Integer.instance(1L);
+                            }
+                        }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;

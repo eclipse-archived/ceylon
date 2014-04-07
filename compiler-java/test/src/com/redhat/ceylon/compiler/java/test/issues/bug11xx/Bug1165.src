@@ -77,16 +77,51 @@ final class bug1165_ {
                         P arg$2$0 = (
                             let
                             {
-                                .ceylon.language.Iterable arg$3$0 = .ceylon.language.ArraySequence.<.java.lang.Object>instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class))), new .java.lang.Object[]{
-                                        .ceylon.language.String.instance("Hello "),
-                                        (
+                                .ceylon.language.Iterable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class))), .ceylon.language.Null.$TypeDescriptor$, 3, false){
+                                    
+                                    @.java.lang.Override
+                                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                        return .java.lang.invoke.MethodHandles.lookup();
+                                    }
+                                    
+                                    @.java.lang.Override
+                                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                        return handle.invokeExact(this);
+                                    }
+                                    
+                                    private final .java.lang.Object $0() {
+                                        return .ceylon.language.String.instance("Hello ");
+                                    }
+                                    
+                                    private final .java.lang.Object $1() {
+                                        return (
                                             let
                                             {
-                                                .ceylon.language.Iterable arg$4$0 = .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("JUDCon")});
+                                                .ceylon.language.Iterable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, false){
+                                                    
+                                                    @.java.lang.Override
+                                                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                                        return .java.lang.invoke.MethodHandles.lookup();
+                                                    }
+                                                    
+                                                    @.java.lang.Override
+                                                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                                        return handle.invokeExact(this);
+                                                    }
+                                                    
+                                                    private final .java.lang.Object $0() {
+                                                        return .ceylon.language.String.instance("JUDCon");
+                                                    }
+                                                };
                                             }
                                             returning new B(arg$4$0);
-                                        ),
-                                        .ceylon.language.String.instance(" guys")});
+                                        );
+                                    }
+                                    
+                                    private final .java.lang.Object $2() {
+                                        return .ceylon.language.String.instance(" guys");
+                                    }
+                                };
                             }
                             returning new P(arg$3$0);
                         );

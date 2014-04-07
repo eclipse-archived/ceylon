@@ -6,60 +6,75 @@ final class comp2_ {
     }
     
     static void comp2(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ints) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> i = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> i = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = ints.iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
+            @.java.lang.Override
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            private final .java.lang.Object $0() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                     
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$0;
-                            return true;
-                        }
-                    }
-                    private .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$1;
-                    
-                    private final boolean $iterator$1() {
-                        if (i$exhausted$) return false;
-                        if ($iterator$1 != null) return true;
-                        if (!this.i()) return false;
-                        $iterator$1 = ints.iterator();
-                        return true;
-                    }
-                    private .ceylon.language.Integer j;
-                    private boolean j$exhausted$;
-                    
-                    private final boolean j() {
-                        while (this.$iterator$1()) {
-                            final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
-                            j$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
-                            if (j$exhausted$) {
-                                $iterator$1 = null;
-                            } else {
-                                j = (.ceylon.language.Integer)$ceylontmp$item$1;
+                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                            {
+                                $iterator$0 = ints.iterator();
+                            }
+                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                            private .ceylon.language.Integer i;
+                            private boolean i$exhausted$;
+                            
+                            private final boolean i() {
+                                final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                                i$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                                if (i$exhausted$) {
+                                    return false;
+                                } else {
+                                    i = (.ceylon.language.Integer)$ceylontmp$item$0;
+                                    return true;
+                                }
+                            }
+                            private .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$1;
+                            
+                            private final boolean $iterator$1() {
+                                if (i$exhausted$) return false;
+                                if ($iterator$1 != null) return true;
+                                if (!this.i()) return false;
+                                $iterator$1 = ints.iterator();
                                 return true;
                             }
-                        }
-                        if (i$exhausted$) j$exhausted$ = true;
-                        return false;
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.j()) {
-                            final .ceylon.language.Integer i = this.i;
-                            final .ceylon.language.Integer j = this.j;
-                            return i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j));
-                        } else return .ceylon.language.finished_.get_();
+                            private .ceylon.language.Integer j;
+                            private boolean j$exhausted$;
+                            
+                            private final boolean j() {
+                                while (this.$iterator$1()) {
+                                    final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
+                                    j$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                                    if (j$exhausted$) {
+                                        $iterator$1 = null;
+                                    } else {
+                                        j = (.ceylon.language.Integer)$ceylontmp$item$1;
+                                        return true;
+                                    }
+                                }
+                                if (i$exhausted$) j$exhausted$ = true;
+                                return false;
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.j()) {
+                                    final .ceylon.language.Integer i = this.i;
+                                    final .ceylon.language.Integer j = this.j;
+                                    return i.times(.ceylon.language.Integer.instance(2L)).plus(.ceylon.language.Integer.instance(3L).divided(j));
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
                     }
                 };
             }

@@ -20,7 +20,22 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> defaulted$b(final long a) {
-        return .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            private final .java.lang.Object $0() {
+                return .ceylon.language.Integer.instance(1L);
+            }
+        };
     }
     
     private void defaulted$priv$$canonical$(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> b) {
@@ -56,10 +71,30 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$2$0 = 1L;
-                .ceylon.language.Iterable arg$2$1 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                        .ceylon.language.Integer.instance(2L),
-                        .ceylon.language.Integer.instance(3L),
-                        .ceylon.language.Integer.instance(4L)});
+                .ceylon.language.Iterable arg$2$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .ceylon.language.Integer.instance(2L);
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .ceylon.language.Integer.instance(3L);
+                    }
+                    
+                    private final .java.lang.Object $2() {
+                        return .ceylon.language.Integer.instance(4L);
+                    }
+                };
                 m$priv$(arg$2$0, arg$2$1);
             }
             returning null;
@@ -68,9 +103,24 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$3$0 = 1L;
-                .ceylon.language.Iterable arg$3$1 = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                        .ceylon.language.Integer.instance(4L),
-                        .ceylon.language.Integer.instance(5L)});
+                .ceylon.language.Iterable arg$3$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                                .ceylon.language.Integer.instance(4L),
+                                .ceylon.language.Integer.instance(5L)});
+                    }
+                };
                 m$priv$(arg$3$0, arg$3$1);
             }
             returning null;
@@ -79,9 +129,41 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$4$0 = 1L;
-                .ceylon.language.Iterable arg$4$1 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                        .ceylon.language.Integer.instance(4L),
-                        .ceylon.language.Integer.instance(5L)});
+                .ceylon.language.Iterable arg$4$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                return .java.lang.invoke.MethodHandles.lookup();
+                            }
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                return handle.invokeExact(this);
+                            }
+                            
+                            private final .java.lang.Object $0() {
+                                return .ceylon.language.Integer.instance(4L);
+                            }
+                            
+                            private final .java.lang.Object $1() {
+                                return .ceylon.language.Integer.instance(5L);
+                            }
+                        };
+                    }
+                };
                 m$priv$(arg$4$0, arg$4$1);
             }
             returning null;
@@ -90,9 +172,32 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$5$0 = 1L;
-                .ceylon.language.Iterable arg$5$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                        .ceylon.language.Integer.instance(4L),
-                        .ceylon.language.Integer.instance(5L)}), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable arg$5$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .ceylon.language.Integer.instance(2L);
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .ceylon.language.Integer.instance(3L);
+                    }
+                    
+                    private final .java.lang.Object $2() {
+                        return new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                                .ceylon.language.Integer.instance(4L),
+                                .ceylon.language.Integer.instance(5L)});
+                    }
+                };
                 m$priv$(arg$5$0, arg$5$1);
             }
             returning null;
@@ -101,9 +206,49 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$6$0 = 1L;
-                .ceylon.language.Iterable arg$6$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                        .ceylon.language.Integer.instance(4L),
-                        .ceylon.language.Integer.instance(5L)}), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Iterable arg$6$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .ceylon.language.Integer.instance(2L);
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .ceylon.language.Integer.instance(3L);
+                    }
+                    
+                    private final .java.lang.Object $2() {
+                        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                return .java.lang.invoke.MethodHandles.lookup();
+                            }
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                return handle.invokeExact(this);
+                            }
+                            
+                            private final .java.lang.Object $0() {
+                                return .ceylon.language.Integer.instance(4L);
+                            }
+                            
+                            private final .java.lang.Object $1() {
+                                return .ceylon.language.Integer.instance(5L);
+                            }
+                        };
+                    }
+                };
                 m$priv$(arg$6$0, arg$6$1);
             }
             returning null;
@@ -112,33 +257,63 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$7$0 = 1L;
-                .ceylon.language.Iterable arg$7$1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                .ceylon.language.Iterable arg$7$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
                     
-                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                            {
-                                $iterator$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(2L)}).iterator();
-                            }
-                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                            private .ceylon.language.Integer i;
-                            private boolean i$exhausted$;
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                             
-                            private final boolean i() {
-                                final .java.lang.Object $ceylontmp$item$8 = $iterator$0.next();
-                                i$exhausted$ = $ceylontmp$item$8 == .ceylon.language.finished_.get_();
-                                if (i$exhausted$) {
-                                    return false;
-                                } else {
-                                    i = (.ceylon.language.Integer)$ceylontmp$item$8;
-                                    return true;
-                                }
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.i()) {
-                                    final .ceylon.language.Integer i = this.i;
-                                    return i;
-                                } else return .ceylon.language.finished_.get_();
+                            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                    {
+                                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                                            
+                                            @.java.lang.Override
+                                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                                return .java.lang.invoke.MethodHandles.lookup();
+                                            }
+                                            
+                                            @.java.lang.Override
+                                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                                return handle.invokeExact(this);
+                                            }
+                                            
+                                            private final .java.lang.Object $0() {
+                                                return .ceylon.language.Integer.instance(2L);
+                                            }
+                                        }.iterator();
+                                    }
+                                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                    private .ceylon.language.Integer i;
+                                    private boolean i$exhausted$;
+                                    
+                                    private final boolean i() {
+                                        final .java.lang.Object $ceylontmp$item$8 = $iterator$0.next();
+                                        i$exhausted$ = $ceylontmp$item$8 == .ceylon.language.finished_.get_();
+                                        if (i$exhausted$) {
+                                            return false;
+                                        } else {
+                                            i = (.ceylon.language.Integer)$ceylontmp$item$8;
+                                            return true;
+                                        }
+                                    }
+                                    
+                                    public final .java.lang.Object next() {
+                                        if (this.i()) {
+                                            final .ceylon.language.Integer i = this.i;
+                                            return i;
+                                        } else return .ceylon.language.finished_.get_();
+                                    }
+                                };
                             }
                         };
                     }
@@ -151,37 +326,75 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 long arg$9$0 = 1L;
-                .ceylon.language.Iterable arg$9$1 = .com.redhat.ceylon.compiler.java.language.ArrayIterable.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                .ceylon.language.Iterable arg$9$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, true){
                     
-                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                            {
-                                $iterator$0 = .ceylon.language.ArraySequence.<.ceylon.language.Integer>instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(4L)}).iterator();
-                            }
-                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                            private .ceylon.language.Integer i;
-                            private boolean i$exhausted$;
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .ceylon.language.Integer.instance(2L);
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .ceylon.language.Integer.instance(3L);
+                    }
+                    
+                    private final .java.lang.Object $2() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                             
-                            private final boolean i() {
-                                final .java.lang.Object $ceylontmp$item$10 = $iterator$0.next();
-                                i$exhausted$ = $ceylontmp$item$10 == .ceylon.language.finished_.get_();
-                                if (i$exhausted$) {
-                                    return false;
-                                } else {
-                                    i = (.ceylon.language.Integer)$ceylontmp$item$10;
-                                    return true;
-                                }
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.i()) {
-                                    final .ceylon.language.Integer i = this.i;
-                                    return i;
-                                } else return .ceylon.language.finished_.get_();
+                            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                    {
+                                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                                            
+                                            @.java.lang.Override
+                                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                                                return .java.lang.invoke.MethodHandles.lookup();
+                                            }
+                                            
+                                            @.java.lang.Override
+                                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                                                return handle.invokeExact(this);
+                                            }
+                                            
+                                            private final .java.lang.Object $0() {
+                                                return .ceylon.language.Integer.instance(4L);
+                                            }
+                                        }.iterator();
+                                    }
+                                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                    private .ceylon.language.Integer i;
+                                    private boolean i$exhausted$;
+                                    
+                                    private final boolean i() {
+                                        final .java.lang.Object $ceylontmp$item$10 = $iterator$0.next();
+                                        i$exhausted$ = $ceylontmp$item$10 == .ceylon.language.finished_.get_();
+                                        if (i$exhausted$) {
+                                            return false;
+                                        } else {
+                                            i = (.ceylon.language.Integer)$ceylontmp$item$10;
+                                            return true;
+                                        }
+                                    }
+                                    
+                                    public final .java.lang.Object next() {
+                                        if (this.i()) {
+                                            final .ceylon.language.Integer i = this.i;
+                                            return i;
+                                        } else return .ceylon.language.finished_.get_();
+                                    }
+                                };
                             }
                         };
                     }
-                }, .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                };
                 m$priv$(arg$9$0, arg$9$1);
             }
             returning null;
@@ -201,10 +414,30 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 .java.lang.Exception arg$12$0 = e;
-                .ceylon.language.Iterable arg$12$1 = .ceylon.language.ArraySequence.<.java.lang.Exception>instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
-                        e,
-                        e,
-                        e});
+                .ceylon.language.Iterable arg$12$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Exception, .java.lang.Object>(.ceylon.language.Exception.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return e;
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return e;
+                    }
+                    
+                    private final .java.lang.Object $2() {
+                        return e;
+                    }
+                };
                 m2$priv$(arg$12$0, arg$12$1);
             }
             returning null;
@@ -213,10 +446,30 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable arg$13$0 = this;
-                .ceylon.language.Iterable arg$13$1 = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable>instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.$TypeDescriptor$, new .java.lang.Object[]{
-                        this,
-                        this,
-                        this});
+                .ceylon.language.Iterable arg$13$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
+                    }
+                    
+                    private final .java.lang.Object $2() {
+                        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
+                    }
+                };
                 m3$priv$(arg$13$0, arg$13$1);
             }
             returning null;

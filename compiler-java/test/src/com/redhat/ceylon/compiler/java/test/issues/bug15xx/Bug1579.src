@@ -25,10 +25,35 @@ final class do_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void $do() {
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> iterable = .ceylon.language.ArraySequence.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>instance(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .java.lang.Object[]{
-                new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(1L),
-                new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L),
-                new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(3L)});
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> iterable = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .java.lang.Object $0() {
+                return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(1L);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .java.lang.Object $1() {
+                return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .java.lang.Object $2() {
+                return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(3L);
+            }
+        };
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>following(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
     }
     
@@ -47,7 +72,25 @@ final class bug1579_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1579() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")}).<.ceylon.language.String>following(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .java.lang.Object $0() {
+                return .ceylon.language.String.instance("a");
+            }
+        }.<.ceylon.language.String>following(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

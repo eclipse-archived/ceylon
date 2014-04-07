@@ -6,7 +6,22 @@ public final class bug660_ {
     }
     
     public static void bug660() {
-        .ceylon.language.print_.print(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Null.$TypeDescriptor$, new .java.lang.Object[]{null}));
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                return .java.lang.invoke.MethodHandles.lookup();
+            }
+            
+            @.java.lang.Override
+            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                return handle.invokeExact(this);
+            }
+            
+            private final .java.lang.Object $0() {
+                return null;
+            }
+        });
     }
     
     public static void main(.java.lang.String[] args) {

@@ -28,14 +28,51 @@ class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.
         super(name, true, (.ceylon.language.Sequence<? extends .ceylon.language.String>)(
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$0 = flag ? .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                        .ceylon.language.String.instance("def"),
-                        .ceylon.language.String.instance("abc")}) : null;
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$0 = flag ? new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                        return .java.lang.invoke.MethodHandles.lookup();
+                    }
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                        return handle.invokeExact(this);
+                    }
+                    
+                    private final .java.lang.Object $0() {
+                        return .ceylon.language.String.instance("def");
+                    }
+                    
+                    private final .java.lang.Object $1() {
+                        return .ceylon.language.String.instance("abc");
+                    }
+                } : null;
             }
-            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
-                    .ceylon.language.String.instance("ghi"),
-                    .ceylon.language.String.instance("abc"),
-                    .ceylon.language.String.instance("xyz")});
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+                
+                @.java.lang.Override
+                protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
+                    return .java.lang.invoke.MethodHandles.lookup();
+                }
+                
+                @.java.lang.Override
+                protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
+                    return handle.invokeExact(this);
+                }
+                
+                private final .java.lang.Object $0() {
+                    return .ceylon.language.String.instance("ghi");
+                }
+                
+                private final .java.lang.Object $1() {
+                    return .ceylon.language.String.instance("abc");
+                }
+                
+                private final .java.lang.Object $2() {
+                    return .ceylon.language.String.instance("xyz");
+                }
+            };
         ).getSequence());
     }
     
