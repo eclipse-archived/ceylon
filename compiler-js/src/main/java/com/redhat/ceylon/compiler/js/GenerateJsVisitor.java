@@ -418,7 +418,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void initSelf(Block block) {
+    void initSelf(Block block) {
         initSelf(block.getScope(), false);
     }
     void initSelf(Scope scope, boolean force) {
@@ -433,7 +433,7 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
-    private void comment(Tree.Declaration that) {
+    void comment(Tree.Declaration that) {
         if (!opts.isComment() || opts.isMinify()) return;
         endLine();
         String dname = that.getNodeType();
@@ -445,7 +445,7 @@ public class GenerateJsVisitor extends Visitor
         endLine();
     }
 
-    private boolean share(Declaration d) {
+    boolean share(Declaration d) {
         return share(d, true);
     }
 
@@ -1054,8 +1054,8 @@ public class GenerateJsVisitor extends Visitor
     private void generateAttributeForParameter(Node node, com.redhat.ceylon.compiler.typechecker.model.Class d,
             com.redhat.ceylon.compiler.typechecker.model.Parameter p) {
         final String privname = names.name(p) + "_";
-        out(clAlias, "defineAttr(", names.self(d), ",'", names.name(p.getModel()),
-                "',function(){");
+        defineAttribute(names.self(d), names.name(p.getModel()));
+        out("{");
         if (p.getModel().isLate()) {
             generateUnitializedAttributeReadCheck("this."+privname, names.name(p));
         }
@@ -1086,7 +1086,9 @@ public class GenerateJsVisitor extends Visitor
         if (s instanceof MethodDefinition) {
             addMethodToPrototype(d, (MethodDefinition)s);
         } else if (s instanceof MethodDeclaration) {
-            methodDeclaration(d, (MethodDeclaration) s);
+            //Don't even bother with nodes that have errors
+            if (errVisitor.hasErrors(s))return;
+            FunctionHelper.methodDeclaration(d, (MethodDeclaration) s, this);
         } else if (s instanceof AttributeGetterDefinition) {
             addGetterToPrototype(d, (AttributeGetterDefinition)s);
         } else if (s instanceof AttributeDeclaration) {
@@ -1285,7 +1287,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else {
-            out(clAlias, "defineAttr(");
+            out(clAlias, "$defat(");
             outerSelf(d);
             out(",'", names.name(d), "',function(){return ");
             if (addToPrototype) {
@@ -1336,119 +1338,25 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(MethodDeclaration that) {
-        methodDeclaration(null, that);
-    }
-    
-    private void methodDeclaration(TypeDeclaration outer, MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
-        final Method m = that.getDeclarationModel();
-        if (that.getSpecifierExpression() != null) {
-            // method(params) => expr
-            if (outer == null) {
-                // Not in a prototype definition. Null to do here if it's a
-                // member in prototype style.
-                if (opts.isOptimize() && m.isMember()) { return; }
-                comment(that);
-                initDefaultedParameters(that.getParameterLists().get(0), m);
-                out("var ");
-            }
-            else {
-                // prototype definition
-                comment(that);
-                initDefaultedParameters(that.getParameterLists().get(0), m);
-                out(names.self(outer), ".");
-            }
-            out(names.name(m), "=");            
-            FunctionHelper.singleExprFunction(that.getParameterLists(),
-                    that.getSpecifierExpression().getExpression(), that.getScope(), this);
-            endLine(true);
-            if (outer != null) {
-                out(names.self(outer), ".");
-            }
-            out(names.name(m), ".$crtmm$=");
-            TypeUtils.encodeForRuntime(m, that.getAnnotationList(), this);
-            endLine(true);
-            share(m);
-        }
-        else if (outer == null // don't do the following in a prototype definition
-                && m == that.getScope()) { //Check for refinement of simple param declaration
-            
-            if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
-                //Declare the method just by pointing to the param function
-                final String name = names.name(((Class)m.getContainer()).getParameter(m.getName()));
-                if (name != null) {
-                    self((Class)m.getContainer());
-                    out(".", names.name(m), "=", name);
-                    endLine(true);
-                }
-            } else if (m.getContainer() instanceof Method) {
-                //Declare the function just by forcing the name we used in the param list
-                final String name = names.name(((Method)m.getContainer()).getParameter(m.getName()));
-                if (names != null) {
-                    names.forceName(m, name);
-                }
-            }
-            //Only the first paramlist can have defaults
-            initDefaultedParameters(that.getParameterLists().get(0), m);
-        } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
-            if (m.getContainer() instanceof TypeDeclaration) {
-                self((TypeDeclaration)m.getContainer());
-                out(".", names.name(m),"={$fml:1,$crtmm$:");
-                TypeUtils.encodeForRuntime(that, m, this);
-                out("};");
-            }
-        }
+        FunctionHelper.methodDeclaration(null, that, this);
     }
-
+    
     @Override
     public void visit(MethodDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
         final Method d = that.getDeclarationModel();
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || isNative(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
-            methodDefinition(that);
+            FunctionHelper.methodDefinition(that, this);
             //Add reference to metamodel
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             endLine(true);
         }
-    }
-
-    private void methodDefinition(MethodDefinition that) {
-        //Don't even bother with nodes that have errors
-        if (errVisitor.hasErrors(that))return;
-        final Method d = that.getDeclarationModel();
-        if (that.getParameterLists().size() == 1) {
-            out(function, names.name(d));
-            ParameterList paramList = that.getParameterLists().get(0);
-            paramList.visit(this);
-            beginBlock();
-            initSelf(that.getBlock());
-            initParameters(paramList, null, d);
-            visitStatements(that.getBlock().getStatements());
-            endBlock();
-        } else {
-            int count=0;
-            for (ParameterList paramList : that.getParameterLists()) {
-                if (count==0) {
-                    out(function, names.name(d));
-                } else {
-                    out("return function");
-                }
-                paramList.visit(this);
-                beginBlock();
-                if (count==0)initSelf(that.getBlock());
-                initParameters(paramList, null, d);
-                count++;
-            }
-            visitStatements(that.getBlock().getStatements());
-            for (int i=0; i < count; i++) {
-                endBlock();
-            }
-        }
-
-        if (!share(d)) { out(";"); }
     }
 
     /** Get the specifier expression for a Parameter, if one is available. */
@@ -1478,7 +1386,7 @@ public class GenerateJsVisitor extends Visitor
     }
 
     /** Create special functions with the expressions for defaulted parameters in a parameter list. */
-    private void initDefaultedParameters(ParameterList params, Method container) {
+    void initDefaultedParameters(ParameterList params, Method container) {
         if (!container.isMember())return;
         for (final Parameter param : params.getParameters()) {
             com.redhat.ceylon.compiler.typechecker.model.Parameter pd = param.getParameterModel();
@@ -1561,12 +1469,14 @@ public class GenerateJsVisitor extends Visitor
 
     private void addMethodToPrototype(TypeDeclaration outer,
             MethodDefinition that) {
+        //Don't even bother with nodes that have errors
+        if (errVisitor.hasErrors(that))return;
         Method d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), d);
         out(names.self(outer), ".", names.name(d), "=");
-        methodDefinition(that);
+        FunctionHelper.methodDefinition(that, this);
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -1579,7 +1489,7 @@ public class GenerateJsVisitor extends Visitor
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
         if (defineAsProperty(d)) {
-            out(clAlias, "defineAttr(");
+            out(clAlias, "$defat(");
             outerSelf(d);
             out(",'", names.name(d), "',function()");
             super.visit(that);
@@ -1614,8 +1524,7 @@ public class GenerateJsVisitor extends Visitor
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
-                "',function()");
+        defineAttribute(names.self(outer), names.name(d));
         super.visit(that);
         final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
         if (setterDef == null) {
@@ -1753,7 +1662,7 @@ public class GenerateJsVisitor extends Visitor
             else if (specInitExpr instanceof LazySpecifierExpression) {
                 final boolean property = defineAsProperty(d);
                 if (property) {
-                    out(clAlias, "defineAttr(");
+                    out(clAlias, "$defat(");
                     outerSelf(d);
                     out(",'", names.name(d), "',function(){return ");
                 } else {
@@ -1920,7 +1829,7 @@ public class GenerateJsVisitor extends Visitor
             if (isCaptured(decl) || decl.isToplevel()) {
                 final boolean isLate = decl.isLate();
                 if (defineAsProperty(decl)) {
-                    out(clAlias, "defineAttr(");
+                    out(clAlias, "$defat(");
                     outerSelf(decl);
                     out(",'", varName, "',function(){");
                     if (isLate) {
@@ -1995,8 +1904,7 @@ public class GenerateJsVisitor extends Visitor
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
-                    out(clAlias, "defineAttr(", names.self(outer), ",'", names.name(d),
-                            "',function()");
+                    defineAttribute(names.self(outer), names.name(d));
                     beginBlock();
                     initSelf(that.getScope(), true);
                     out("return ");
@@ -2035,8 +1943,8 @@ public class GenerateJsVisitor extends Visitor
                 else {
                     final String atname = names.name(d);
                     final String privname = param == null ? names.privateName(d) : names.name(param)+"_";
-                    out(clAlias, "defineAttr(", names.self(outer), ",'", atname,
-                            "',function(){");
+                    defineAttribute(names.self(outer), atname);
+                    out("{");
                     if (isLate) {
                         generateUnitializedAttributeReadCheck("this."+privname, atname);
                     }
@@ -2686,8 +2594,7 @@ public class GenerateJsVisitor extends Visitor
                 // attr => expr;
                 final boolean property = defineAsProperty(bmeDecl);
                 if (property) {
-                    out(clAlias, "defineAttr(", qualifiedPath(specStmt, bmeDecl), ",'",
-                            names.name(bmeDecl), "',function()");
+                    defineAttribute(qualifiedPath(specStmt, bmeDecl), names.name(bmeDecl));
                 } else  {
                     if (bmeDecl.isMember()) {
                         qualify(specStmt, bmeDecl);
@@ -3763,7 +3670,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Encloses the block in a function, IF NEEDED. */
     void encloseBlockInFunction(Block block) {
-        boolean wrap=encloser.encloseBlock(block);
+        final boolean wrap=encloser.encloseBlock(block);
         if (wrap) {
             beginBlock();
             Continuation c = new Continuation(block.getScope(), names);
@@ -3974,6 +3881,11 @@ public class GenerateJsVisitor extends Visitor
 
     @Override public void visit(Tree.CompilerAnnotation that) {
         //just ignore this
+    }
+
+    /** Outputs the initial part of an attribute definition. */
+    void defineAttribute(final String owner, final String name) {
+        out(clAlias, "$defat(", owner, ",'", name, "',function()");
     }
 
 }

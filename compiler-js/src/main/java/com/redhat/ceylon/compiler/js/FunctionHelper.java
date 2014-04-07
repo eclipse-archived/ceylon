@@ -13,6 +13,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Block;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SatisfiedTypes;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
@@ -182,6 +184,100 @@ public class FunctionHelper {
             multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), gen);
         }
         gen.out(")");
+    }
+
+    static void methodDeclaration(TypeDeclaration outer, MethodDeclaration that, GenerateJsVisitor gen) {
+        final Method m = that.getDeclarationModel();
+        if (that.getSpecifierExpression() != null) {
+            // method(params) => expr
+            if (outer == null) {
+                // Not in a prototype definition. Null to do here if it's a
+                // member in prototype style.
+                if (gen.opts.isOptimize() && m.isMember()) { return; }
+                gen.comment(that);
+                gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+                gen.out("var ");
+            }
+            else {
+                // prototype definition
+                gen.comment(that);
+                gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+                gen.out(gen.getNames().self(outer), ".");
+            }
+            gen.out(gen.getNames().name(m), "=");            
+            singleExprFunction(that.getParameterLists(),
+                    that.getSpecifierExpression().getExpression(), that.getScope(), gen);
+            gen.endLine(true);
+            if (outer != null) {
+                gen.out(gen.getNames().self(outer), ".");
+            }
+            gen.out(gen.getNames().name(m), ".$crtmm$=");
+            TypeUtils.encodeForRuntime(m, that.getAnnotationList(), gen);
+            gen.endLine(true);
+            gen.share(m);
+        }
+        else if (outer == null // don't do the following in a prototype definition
+                && m == that.getScope()) { //Check for refinement of simple param declaration
+            
+            if (m.getContainer() instanceof Class && m.isClassOrInterfaceMember()) {
+                //Declare the method just by pointing to the param function
+                final String name = gen.getNames().name(((Class)m.getContainer()).getParameter(m.getName()));
+                if (name != null) {
+                    gen.self((Class)m.getContainer());
+                    gen.out(".", gen.getNames().name(m), "=", name);
+                    gen.endLine(true);
+                }
+            } else if (m.getContainer() instanceof Method) {
+                //Declare the function just by forcing the name we used in the param list
+                final String name = gen.getNames().name(((Method)m.getContainer()).getParameter(m.getName()));
+                gen.getNames().forceName(m, name);
+            }
+            //Only the first paramlist can have defaults
+            gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+        } else if (m.isFormal() && m.isMember() && m == that.getScope()) {
+            if (m.getContainer() instanceof TypeDeclaration) {
+                gen.self((TypeDeclaration)m.getContainer());
+                gen.out(".", gen.getNames().name(m),"={$fml:1,$crtmm$:");
+                TypeUtils.encodeForRuntime(that, m, gen);
+                gen.out("};");
+            }
+        }
+    }
+
+    static void methodDefinition(MethodDefinition that, GenerateJsVisitor gen) {
+        final Method d = that.getDeclarationModel();
+        if (that.getParameterLists().size() == 1) {
+            gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+            ParameterList paramList = that.getParameterLists().get(0);
+            paramList.visit(gen);
+            gen.beginBlock();
+            gen.initSelf(that.getBlock());
+            gen.initParameters(paramList, null, d);
+            gen.visitStatements(that.getBlock().getStatements());
+            gen.endBlock();
+        } else {
+            int count=0;
+            for (ParameterList paramList : that.getParameterLists()) {
+                if (count==0) {
+                    gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
+                } else {
+                    gen.out("return function");
+                }
+                paramList.visit(gen);
+                gen.beginBlock();
+                if (count==0) {
+                    gen.initSelf(that.getBlock());
+                }
+                gen.initParameters(paramList, null, d);
+                count++;
+            }
+            gen.visitStatements(that.getBlock().getStatements());
+            for (int i=0; i < count; i++) {
+                gen.endBlock();
+            }
+        }
+
+        if (!gen.share(d)) { gen.out(";"); }
     }
 
 }
