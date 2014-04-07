@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface EnumeratedReference$annotation$ {
     
@@ -11,6 +12,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface EnumeratedReference$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference$annotation$[] value();
@@ -106,6 +108,7 @@ final class enumeratedReference_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface EnumeratedReferenceVariadic$annotation$ {
     
@@ -115,6 +118,7 @@ final class enumeratedReference_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface EnumeratedReferenceVariadic$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic$annotation$[] value();
@@ -235,6 +239,7 @@ final class enumeratedReferenceVariadic_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface EnumeratedReferenceDefaulted$annotation$ {
     
@@ -244,6 +249,7 @@ final class enumeratedReferenceVariadic_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface EnumeratedReferenceDefaulted$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation$[] value();

@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface ConstrainedToClass$annotation$ {
 }
@@ -71,12 +72,14 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToClassSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToClassSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation$[] value();
@@ -147,6 +150,7 @@ final class ConstrainedToClassSeq implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface ConstrainedToInterface$annotation$ {
 }
@@ -216,12 +220,14 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToInterfaceSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToInterfaceSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation$[] value();
@@ -292,6 +298,7 @@ final class ConstrainedToInterfaceSeq implements .com.redhat.ceylon.compiler.jav
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({
         .java.lang.annotation.ElementType.PARAMETER,
         .java.lang.annotation.ElementType.METHOD})
@@ -363,6 +370,7 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToFunctionSeq$annotation$ {
 }
@@ -371,6 +379,7 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 @.java.lang.annotation.Target({
         .java.lang.annotation.ElementType.PARAMETER,
         .java.lang.annotation.ElementType.METHOD})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToFunctionSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation$[] value();
@@ -441,6 +450,7 @@ final class ConstrainedToFunctionSeq implements .com.redhat.ceylon.compiler.java
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({
         .java.lang.annotation.ElementType.PARAMETER,
         .java.lang.annotation.ElementType.METHOD})
@@ -512,6 +522,7 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToValueSeq$annotation$ {
 }
@@ -520,6 +531,7 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 @.java.lang.annotation.Target({
         .java.lang.annotation.ElementType.PARAMETER,
         .java.lang.annotation.ElementType.METHOD})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToValueSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation$[] value();
@@ -590,6 +602,7 @@ final class ConstrainedToValueSeq implements .com.redhat.ceylon.compiler.java.ru
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface ConstrainedToPackage$annotation$ {
 }
@@ -659,12 +672,14 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToPackageSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToPackageSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation$[] value();
@@ -735,6 +750,7 @@ final class ConstrainedToPackageSeq implements .com.redhat.ceylon.compiler.java.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @interface ConstrainedToModule$annotation$ {
 }
@@ -804,12 +820,14 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToModuleSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToModuleSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation$[] value();
@@ -880,6 +898,7 @@ final class ConstrainedToModuleSeq implements .com.redhat.ceylon.compiler.java.r
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.FIELD})
 @interface ConstrainedToImport$annotation$ {
 }
@@ -949,12 +968,14 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface ConstrainedToImportSeq$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.FIELD})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToImportSeq$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation$[] value();

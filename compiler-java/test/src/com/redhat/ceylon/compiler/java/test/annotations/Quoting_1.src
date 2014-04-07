@@ -21,6 +21,7 @@ public final class Cloneable$impl<Clone extends .com.redhat.ceylon.compiler.java
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface Quoting$annotation$ {
     
@@ -35,6 +36,7 @@ public final class Cloneable$impl<Clone extends .com.redhat.ceylon.compiler.java
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface Quoting$annotations$ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$[] value();
