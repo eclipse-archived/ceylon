@@ -161,7 +161,7 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
-                name = String.format("$%d", getUID(decl));
+                name = "$" + Long.toString(getUID(decl), 36);
             }
         }
         return name;
@@ -204,11 +204,8 @@ public class JsIdentifierNames {
             //If we're compiling the language module, omit the package name
             return "";
         }
-        StringBuilder sb = new StringBuilder("$$");
-        for (String s: pkg.getName()) {
-            sb.append(s.substring(0,1));
-        }
-        sb.append(getUID(pkg));
+        StringBuilder sb = new StringBuilder("m$");
+        sb.append(Long.toString(getUID(pkg), 36));
         return sb.toString();
     }
 
@@ -222,12 +219,12 @@ public class JsIdentifierNames {
      */
     public String self(TypeDeclaration decl) {
         String name = decl.getName();
-        if (!(decl.isShared() || decl.isToplevel())) {
+        if (decl.isShared() || decl.isToplevel()) {
+            name += nestingSuffix(decl);
+        } else {
             // The identifier will not be used outside the generated .js file,
             // so we can simply disambiguate it with a numeric ID.
-            name = String.format("%s$%d", name, getUID(decl));
-        } else {
-            name += nestingSuffix(decl);
+            name = "$" + Long.toString(getUID(decl), 36);
         }
         return String.format("$%c%s", Character.toLowerCase(name.charAt(0)),
                     name.substring(1));
@@ -315,7 +312,7 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniqueVarNames.get(decl);
             if (name == null) {
-                name = String.format(priv ? "$%d_" : "$%d", getUID(decl));
+                name = String.format(priv ? "$%s_" : "$%s", Long.toString(getUID(decl), 36));
             }
         }
         //Fix #204 - same top-level declarations in different packages

@@ -2189,7 +2189,8 @@ public class GenerateJsVisitor extends Visitor
         out("(function()");
         beginBlock();
         if (opts.isComment() && !opts.isMinify()) {
-            out("//SpreadOp at ", that.getLocation());
+            out("//SpreadOp");
+            location(that);
             endLine();
         }
         //Declare an array to store the values/references
