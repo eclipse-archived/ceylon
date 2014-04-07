@@ -3104,7 +3104,17 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(NotOp that) {
-        Operators.unaryOp(that, "(!", ")", this);
+        final Term t = that.getTerm();
+        final boolean omitParens = t instanceof BaseMemberExpression
+                || t instanceof QualifiedMemberExpression
+                || t instanceof IsOp || t instanceof Exists || t instanceof IdenticalOp
+                || t instanceof InOp || t instanceof Nonempty
+                || (t instanceof InvocationExpression && ((InvocationExpression)t).getNamedArgumentList() == null);
+        if (omitParens) {
+            Operators.unaryOp(that, "!", null, this);
+        } else {
+            Operators.unaryOp(that, "(!", ")", this);
+        }
     }
 
     @Override public void visit(IdenticalOp that) {
@@ -3384,7 +3394,7 @@ public class GenerateJsVisitor extends Visitor
         if (negate) {
             out("!");
         }
-        out(clAlias, "isOfType(");
+        out(clAlias, "$is(");
         if (term instanceof Term) {
             conds.specialConditionRHS((Term)term, tmpvar);
         } else {
