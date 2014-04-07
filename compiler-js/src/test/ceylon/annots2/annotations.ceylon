@@ -63,6 +63,19 @@ issue235_1 void testIssue235_1() {
 issue235_2 void testIssue235_2() {
 }
 
+"This is an interface with a somewhat long documentation,
+ longer than its path to the model would be anyway..."
+interface TestShortLongDocs {
+  "short"
+  shared formal void a();
+  "A doc long enough to make sure the path is used instead."
+  shared formal void b();
+  "short"
+  shared void c() {}
+  "Another doc long enough to make sure the path should be used instead of this text."
+  shared void d() {}
+}
+
 //annotest1("should be two")
 annotest2{count=5;}
 shared void test() {
@@ -112,5 +125,20 @@ shared void test() {
   } else {
     fail("testIssue235_2 should have annotation Issue235_1");
   }
+  "TestShortLongDocs has no doc annotations"
+  assert(exists doc1 = `interface TestShortLongDocs`.annotations<DocAnnotation>().first);
+  check("somewhat long" in doc1.description, "TestShortLongDocs doc is wrong: ``doc1.description``");
+  "TestShortLongDocs.a has no doc annotations"
+  assert(exists doc2 = `function TestShortLongDocs.a`.annotations<DocAnnotation>().first);
+  check("short" == doc2.description, "TestShortLongDocs.a doc is wrong: ``doc2.description``");
+  "TestShortLongDocs.b has no doc annotations"
+  assert(exists doc3 = `function TestShortLongDocs.b`.annotations<DocAnnotation>().first);
+  check("doc long enough to make sure" in doc3.description, "TestShortLongDocs.b doc is wrong: ``doc3.description``");
+  "TestShortLongDocs.c has no doc annotations"
+  assert(exists doc4 = `function TestShortLongDocs.c`.annotations<DocAnnotation>().first);
+  check(doc4.description == doc2.description, "TestShortLongDocs.c doc is wrong: ``doc4.description``");
+  "TestShortLongDocs.d has no doc annotations"
+  assert(exists doc5 = `function TestShortLongDocs.d`.annotations<DocAnnotation>().first);
+  check("doc long enough to make sure" in doc5.description, "TestShortLongDocs.d doc is wrong: ``doc5.description``");
   results();
 }
