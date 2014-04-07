@@ -374,4 +374,12 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         super.visit(that);
         inLazySpecifierExpression = lse;
     }
+    
+    @Override public void visit(Tree.SequencedArgument that) {
+        // Because a SequenceArgument requires an anonymous class
+        // enumerated the expressions are in a different scope
+        boolean cs = enterCapturingScope();
+        super.visit(that);
+        exitCapturingScope(cs);
+    }
 }

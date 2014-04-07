@@ -1118,10 +1118,11 @@ class NamedArgumentInvocation extends Invocation {
         ProducedType parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
         // find out the individual type
         ProducedType iteratedType = gen.typeFact().getIteratedType(parameterType);
+        ProducedType absentType = gen.typeFact().getIteratedAbsentType(parameterType);
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
-        JCTree.JCExpression sequenceValue = gen.makeIterable(sequencedArgument, iteratedType, flags);
+        JCTree.JCExpression sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
         Naming.SyntheticName argName = argName(parameter);

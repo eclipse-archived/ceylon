@@ -22,6 +22,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.sun.tools.javac.code.Flags.FINAL;
+import static com.sun.tools.javac.code.Flags.PROTECTED;
+import static com.sun.tools.javac.code.Flags.PRIVATE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +89,7 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
+import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
@@ -3129,54 +3132,90 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     /**
-     * Makes an iterable literal, for a sequenced argument
+     * Makes a lazy iterable literal, for a sequenced argument to a named invocation 
+     * (<code>f{foo=""; expr1, expr2, *expr3}</code>) or
+     * for an iterable instantiation (<code>{expr1, expr2, *expr3}</code>)
      */
-    JCExpression makeIterable(Tree.SequencedArgument sequencedArgument, ProducedType seqElemType, int flags) {
-        ListBuffer<JCExpression> elems = new ListBuffer<JCExpression>();
-        java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
-        int i = list.size();
-        boolean spread = false;
-        for (Tree.PositionalArgument arg : list) {
-            at(arg);
-            i--;
-            JCExpression jcExpression;
-            // last expression can be an Iterable<seqElemType>
-            if(arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension){
-                // make sure we only have spread/comprehension as last
-                if(i != 0){
-                    jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
-                }else{
-                    ProducedType type = typeFact().getIterableType(seqElemType);
-                    spread = true;
-                    if(arg instanceof Tree.SpreadArgument){
-                        Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
-                        // always boxed since it is a sequence
-                        jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+    JCExpression makeLazyIterable(Tree.SequencedArgument sequencedArgument, 
+            ProducedType seqElemType, ProducedType absentType, 
+            int flags) {
+        boolean old = expressionGen().withinSyntheticClassBody(true);
+        try {
+            ListBuffer<JCTree> elems = new ListBuffer<JCTree>();
+            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "lookup");
+            mdb.isOverride(true);
+            mdb.modifiers(PROTECTED | FINAL);
+            mdb.resultType(null, naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"));
+            mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
+                    naming.makeQualIdent(make().Type(syms().methodHandlesType), "lookup"), 
+                    List.<JCExpression>nil())));
+            elems.add(mdb.build());
+            
+            mdb = MethodDefinitionBuilder.systemMethod(this, "invoke");
+            mdb.isOverride(true);
+            mdb.modifiers(PROTECTED | FINAL);
+            mdb.resultType(null, make().Type(syms().objectType));
+            mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, "handle")
+                    .type(make().Type(syms().methodHandleType), null));
+            mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
+                    naming.makeQualIdent(naming.makeUnquotedIdent("handle"), "invokeExact"), 
+                    List.<JCExpression>of(naming.makeThis()))));
+            elems.add(mdb.build());
+            
+            java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
+            int i = 0;
+            boolean spread = false;
+            for (Tree.PositionalArgument arg : list) {
+                at(arg);
+                JCExpression jcExpression;
+                // last expression can be an Iterable<seqElemType>
+                if(arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension){
+                    // make sure we only have spread/comprehension as last
+                    if(i != list.size()-1){
+                        jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
                     }else{
-                        jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
+                        ProducedType type = typeFact().getIterableType(seqElemType);
+                        spread = true;
+                        if(arg instanceof Tree.SpreadArgument){
+                            Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+                            // always boxed since it is a sequence
+                            jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                        }else{
+                            jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
+                        }
                     }
+                }else if(arg instanceof Tree.ListedArgument){
+                    Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+                    // always boxed since we stuff them into a sequence
+                    jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType);
+                }else{
+                    jcExpression = makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is not a supported sequenced argument");
                 }
-            }else if(arg instanceof Tree.ListedArgument){
-                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
-                // always boxed since we stuff them into a sequence
-                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType);
-            }else{
-                jcExpression = makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is not a supported sequenced argument");
+                // the last iterable goes first if spread
+                
+                mdb = MethodDefinitionBuilder.systemMethod(this, "$"+i);
+                i++;
+                mdb.modifiers(PRIVATE | FINAL);
+                mdb.resultType(null, make().Type(syms().objectType));
+                mdb.body(make().Return(jcExpression));
+                elems.add(mdb.build());
             }
-            // the last iterable goes first if spread
-            if(i == 0 && spread)
-                elems.prepend(jcExpression);
-            else
-                elems.append(jcExpression);
+            
+            at(sequencedArgument);
+            return make().NewClass(null, 
+                    List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
+                    make().TypeApply(make().QualIdent(syms.ceylonLazyIterableType.tsym),
+                            List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 
+                    List.of(makeReifiedTypeArgument(seqElemType),// td, 
+                            makeReifiedTypeArgument(absentType),//td
+                            make().Literal(list.size()),// numMethods
+                            make().Literal(spread)),// spread), 
+                    make().AnonymousClassDef(make().Modifiers(FINAL), 
+                            elems.toList()));
+        } finally {
+            expressionGen().withinSyntheticClassBody(old);
         }
-        // small optimisation if we have only a single element
-        if(elems.size() == 1 && spread)
-            return elems.first();
-        at(sequencedArgument);
-        if(spread)
-            return makeIterable(elems.toList(), seqElemType, flags | JT_NO_PRIMITIVES);
-        else
-            return makeSequence(elems.toList(), seqElemType, flags | JT_NO_PRIMITIVES);
+        
     }
 
     /**

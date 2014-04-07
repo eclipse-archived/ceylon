@@ -1394,7 +1394,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return makeErroneous(value, "compiler bug: empty iterable literal with sequenced arguments: "+value);
             ProducedType seqElemType = typeFact().getIteratedType(value.getTypeModel());
             seqElemType = wrapInOptionalForInterop(seqElemType, expectedType);
-            return makeIterable(sequencedArgument, seqElemType, 0);
+            ProducedType absentType = typeFact().getIteratedAbsentType(value.getTypeModel());
+            return makeLazyIterable(sequencedArgument, seqElemType, absentType, 0);
         } else {
             return makeEmpty();
         }

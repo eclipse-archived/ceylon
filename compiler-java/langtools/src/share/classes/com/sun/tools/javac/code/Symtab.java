@@ -134,6 +134,7 @@ public class Symtab {
     public final Type serializableType;
     // Backported by Ceylon from JDK8
     public final Type methodHandleLookupType;
+    public final Type methodHandlesType;
     // Backported by Ceylon from JDK8
     public final Type methodTypeType;
     public final Type methodHandleType;
@@ -184,6 +185,7 @@ public class Symtab {
     public  Type ceylonArrayIterableType;
     public  Type ceylonAbstractIterableType;
     public  Type ceylonAbstractIteratorType;
+    public  Type ceylonLazyIterableType;
     public  Type ceylonCharacterType;
     public  Type ceylonBooleanType;
     public  Type ceylonFinishedType;
@@ -551,6 +553,7 @@ public class Symtab {
         methodHandleType = enterClass("java.lang.invoke.MethodHandle");
         // Backported by Ceylon from JDK8
         methodHandleLookupType = enterClass("java.lang.invoke.MethodHandles$Lookup");
+        methodHandlesType = enterClass("java.lang.invoke.MethodHandles");
         // Backported by Ceylon from JDK8
         methodTypeType = enterClass("java.lang.invoke.MethodType");
         polymorphicSignatureType = enterClass("java.lang.invoke.MethodHandle$PolymorphicSignature");
@@ -876,6 +879,7 @@ public class Symtab {
         ceylonArrayIterableType = enterClass("com.redhat.ceylon.compiler.java.language.ArrayIterable");
         ceylonAbstractIterableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterable");
         ceylonAbstractIteratorType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterator");
+        ceylonLazyIterableType = enterClass("com.redhat.ceylon.compiler.java.language.LazyIterable");
         ceylonCharacterType = enterClass("ceylon.language.Character");
         ceylonBooleanType = enterClass("ceylon.language.Boolean");
         ceylonFinishedType = enterClass("ceylon.language.Finished");
