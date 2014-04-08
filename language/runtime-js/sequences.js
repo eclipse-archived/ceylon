@@ -229,8 +229,7 @@ function $sarg(elems,spread,$$targs$$){
   $init$sarg();
   that=new $sarg.$$;
   set_type_args(that,$$targs$$);
-  Iterable({Element$Iterable:$$targs$$.T$LazyIterable,Absent$Iterable:{t:Null}},that);
-  add_type_arg(that,'Absent$Iterable',{t:Null});
+  Iterable($$targs$$,that);
   that.e=elems;
   that.s=spread;
   return that;
