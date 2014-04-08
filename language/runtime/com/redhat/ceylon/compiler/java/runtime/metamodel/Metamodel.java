@@ -306,7 +306,10 @@ public class Metamodel {
             }
             ((CeylonModuleClassLoader) cl).registerInMetaModel();
         } catch (ModuleLoadException e) {
-            throw new RuntimeException(e);
+            // it's not an issue if we don't find the default module, it's always created but not always
+            // present
+            if(!declaration.isDefault())
+                throw new RuntimeException(e);
         } catch (SecurityException e) {
             throw new RuntimeException(e);
         } catch (IllegalArgumentException e) {
