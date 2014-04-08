@@ -1791,6 +1791,16 @@ public abstract class AbstractTransformer implements Transformation {
             return makeErroneous(null, "compiler bug: " + type + " is an unknown java array type");
         }
     }
+    
+    boolean isJavaEnumType(ProducedType type) {
+        Module jdkBaseModule = loader().getJDKBaseModule();
+        Package javaLang = jdkBaseModule.getPackage("java.lang");
+        TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
+        if (type.getDeclaration().isAnonymous()) {
+            type = type.getDeclaration().getExtendedType();
+        }
+        return type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)));
+    }
 
     public JCExpression makeParameterisedType(ProducedType type, ProducedType generalType, final int flags, 
             JCExpression qualifyingExpression, java.util.List<ProducedType> qualifyingTypes, 

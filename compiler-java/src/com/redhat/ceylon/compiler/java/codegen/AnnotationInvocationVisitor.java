@@ -490,14 +490,12 @@ class AnnotationInvocationVisitor extends Visitor {
         if (exprGen.isBooleanTrue(term.getDeclaration())
                 || exprGen.isBooleanFalse(term.getDeclaration())) {
             append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()));
-        } else if (Decl.isAnonCaseOfEnumeratedType(term)) {
+        } else if (Decl.isAnonCaseOfEnumeratedType(term)
+                && !exprGen.isJavaEnumType(term.getTypeModel())) {
+            exprGen.isJavaEnumType(term.getTypeModel());
             append(exprGen.makeClassLiteral(term.getTypeModel()));
         } else if (anno.isInterop()) {
-            ProducedType type = term.getTypeModel();
-            Module jdkBaseModule = exprGen.loader().getJDKBaseModule();
-            Package javaLang = jdkBaseModule.getPackage("java.lang");
-            TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
-            if (type.isSubtypeOf(enumDecl.getProducedType(null, Collections.singletonList(type)))) {
+            if (exprGen.isJavaEnumType(term.getTypeModel())) {
                 // A Java enum
                 append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, null));
             }
