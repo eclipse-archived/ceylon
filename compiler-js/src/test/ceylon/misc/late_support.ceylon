@@ -12,7 +12,7 @@ class LateTestParent(children) {
 }
 
 void testLate() {
-    value kids = {LateTestChild(), LateTestChild()};
+    value kids = [LateTestChild(), LateTestChild()];
     LateTestParent(*kids);
     try {
         LateTestParent(*kids);
