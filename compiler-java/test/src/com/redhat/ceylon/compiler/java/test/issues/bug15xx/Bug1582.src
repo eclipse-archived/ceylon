@@ -15,58 +15,42 @@ public final class bug1582_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("1");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return .ceylon.language.String.instance("2");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $2() {
-                return .ceylon.language.String.instance("3");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("1");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("2");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("3");
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> i2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("1");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return .ceylon.language.String.instance("2");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $2() {
-                return .ceylon.language.String.instance("3");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("1");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("2");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("3");
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>, ? extends .java.lang.Object> x = (.ceylon.language.Iterable<? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.String, ? extends .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.zipPairs_.<.ceylon.language.String, .ceylon.language.String>zipPairs(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, i1, i2);

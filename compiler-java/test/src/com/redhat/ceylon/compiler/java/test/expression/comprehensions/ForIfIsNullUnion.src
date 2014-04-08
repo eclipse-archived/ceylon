@@ -9,61 +9,59 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
-                    
-                    public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                            {
-                                $iterator$0 = xs.iterator();
-                            }
-                            private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
-                            private .java.lang.Object x;
-                            private boolean x$exhausted$;
-                            
-                            private final boolean x() {
-                                final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
-                                x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
-                                if (x$exhausted$) {
-                                    return false;
-                                } else {
-                                    x = (.java.lang.Object)$ceylontmp$item$0;
-                                    return true;
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
+                                {
+                                    $iterator$0 = xs.iterator();
                                 }
-                            }
-                            private .ceylon.language.Character x$2;
-                            
-                            private final boolean $next$1() {
-                                ifcomp_1: while (true) {
-                                    if (!this.x()) break ifcomp_1;
-                                    .java.lang.Object x$1 = null;
-                                    if ((x$1 = x) == null || x$1 instanceof .ceylon.language.Character) {
-                                        x$2 = (.ceylon.language.Character)x$1;
-                                        break ifcomp_1;
+                                private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                                private .java.lang.Object x;
+                                private boolean x$exhausted$;
+                                
+                                private final boolean x() {
+                                    final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                                    x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                                    if (x$exhausted$) {
+                                        return false;
+                                    } else {
+                                        x = (.java.lang.Object)$ceylontmp$item$0;
+                                        return true;
                                     }
                                 }
-                                return !x$exhausted$;
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.$next$1()) {
-                                    final .java.lang.Object x = this.x;
-                                    final .ceylon.language.Character x$2 = this.x$2;
-                                    return x$2;
-                                } else return .ceylon.language.finished_.get_();
-                            }
-                        };
-                    }
-                };
+                                private .ceylon.language.Character x$2;
+                                
+                                private final boolean $next$1() {
+                                    ifcomp_1: while (true) {
+                                        if (!this.x()) break ifcomp_1;
+                                        .java.lang.Object x$1 = null;
+                                        if ((x$1 = x) == null || x$1 instanceof .ceylon.language.Character) {
+                                            x$2 = (.ceylon.language.Character)x$1;
+                                            break ifcomp_1;
+                                        }
+                                    }
+                                    return !x$exhausted$;
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.$next$1()) {
+                                        final .java.lang.Object x = this.x;
+                                        final .ceylon.language.Character x$2 = this.x$2;
+                                        return x$2;
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
         });
     }

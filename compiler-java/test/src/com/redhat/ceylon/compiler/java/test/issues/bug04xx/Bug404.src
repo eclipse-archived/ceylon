@@ -15,21 +15,18 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             returning new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
                 
                 @.java.lang.Override
-                protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                    return .java.lang.invoke.MethodHandles.lookup();
-                }
-                
-                @.java.lang.Override
-                protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                    return handle.invokeExact(this);
-                }
-                
-                private final .java.lang.Object $0() {
-                    return .ceylon.language.String.instance("1");
-                }
-                
-                private final .java.lang.Object $1() {
-                    return .ceylon.language.String.instance("1.0");
+                protected final .java.lang.Object $evaluate$(int $index$) {
+                    switch ($index$) {
+                    case 0: 
+                        return .ceylon.language.String.instance("1");
+                    
+                    case 1: 
+                        return .ceylon.language.String.instance("1.0");
+                    
+                    default: 
+                        return null;
+                    
+                    }
                 }
             }.contains($ceylontmp$0);
         );

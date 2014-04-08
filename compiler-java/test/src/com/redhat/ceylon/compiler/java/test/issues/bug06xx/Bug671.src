@@ -13,17 +13,15 @@ public final class bug671_ {
                 .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, 1, false){
                     
                     @.java.lang.Override
-                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                        return .java.lang.invoke.MethodHandles.lookup();
-                    }
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                        return handle.invokeExact(this);
-                    }
-                    
-                    private final .java.lang.Object $0() {
-                        return .ceylon.language.Integer.instance(1L);
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Integer.instance(1L);
+                        
+                        default: 
+                            return null;
+                        
+                        }
                     }
                 };
             }

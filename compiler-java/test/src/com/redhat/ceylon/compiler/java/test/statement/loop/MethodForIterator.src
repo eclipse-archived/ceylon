@@ -31,25 +31,21 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$9 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("aap");
-            }
-            
-            private final .java.lang.Object $1() {
-                return .ceylon.language.String.instance("noot");
-            }
-            
-            private final .java.lang.Object $2() {
-                return .ceylon.language.String.instance("mies");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("aap");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("noot");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("mies");
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final boolean isArraySequence$10 = iterable$9 instanceof .ceylon.language.ArraySequence;
@@ -73,25 +69,21 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$16 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("aap");
-            }
-            
-            private final .java.lang.Object $1() {
-                return null;
-            }
-            
-            private final .java.lang.Object $2() {
-                return .ceylon.language.String.instance("mies");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("aap");
+                
+                case 1: 
+                    return null;
+                
+                case 2: 
+                    return .ceylon.language.String.instance("mies");
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final boolean isArraySequence$17 = iterable$16 instanceof .ceylon.language.ArraySequence;
@@ -115,25 +107,21 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$23 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return .ceylon.language.Integer.instance(1L);
-            }
-            
-            private final .java.lang.Object $1() {
-                return .ceylon.language.Integer.instance(2L);
-            }
-            
-            private final .java.lang.Object $2() {
-                return .ceylon.language.Integer.instance(3L);
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Integer.instance(2L);
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final boolean isArraySequence$24 = iterable$23 instanceof .ceylon.language.ArraySequence;
@@ -157,25 +145,21 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$30 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return .ceylon.language.Integer.instance(1L);
-            }
-            
-            private final .java.lang.Object $1() {
-                return null;
-            }
-            
-            private final .java.lang.Object $2() {
-                return .ceylon.language.Integer.instance(3L);
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return null;
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final boolean isArraySequence$31 = iterable$30 instanceof .ceylon.language.ArraySequence;

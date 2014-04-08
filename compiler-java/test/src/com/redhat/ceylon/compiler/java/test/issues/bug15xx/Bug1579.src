@@ -29,29 +29,21 @@ final class do_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(1L);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $2() {
-                return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(3L);
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(1L);
+                
+                case 1: 
+                    return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L);
+                
+                case 2: 
+                    return new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(3L);
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)(.ceylon.language.Iterable)iterable.<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo>following(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
@@ -76,19 +68,15 @@ final class bug1579_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("a");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("a");
+                
+                default: 
+                    return null;
+                
+                }
             }
         }.<.ceylon.language.String>following(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
     }

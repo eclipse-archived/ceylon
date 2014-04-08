@@ -107,29 +107,21 @@ final class sequenceDefaults_String_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("a");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return .ceylon.language.String.instance("b");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $2() {
-                return .ceylon.language.String.instance("c");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("a");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("b");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("c");
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
     }
@@ -217,29 +209,21 @@ final class sequenceArguments_String_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.String.instance("A");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return .ceylon.language.String.instance("B");
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $2() {
-                return .ceylon.language.String.instance("C");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("A");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("B");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("C");
+                
+                default: 
+                    return null;
+                
+                }
             }
         });
     }

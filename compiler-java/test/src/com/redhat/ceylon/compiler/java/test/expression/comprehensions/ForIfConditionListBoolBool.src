@@ -9,59 +9,57 @@ class ForIfConditionListBoolBool implements .com.redhat.ceylon.compiler.java.run
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-                    
-                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                            {
-                                $iterator$0 = xs.iterator();
-                            }
-                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                            private .ceylon.language.Integer x;
-                            private boolean x$exhausted$;
-                            
-                            private final boolean x() {
-                                final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
-                                x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
-                                if (x$exhausted$) {
-                                    return false;
-                                } else {
-                                    x = (.ceylon.language.Integer)$ceylontmp$item$0;
-                                    return true;
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                {
+                                    $iterator$0 = xs.iterator();
                                 }
-                            }
-                            
-                            private final boolean $next$1() {
-                                ifcomp_1: while (true) {
-                                    if (!this.x()) break ifcomp_1;
-                                    if (x.compare(.ceylon.language.Integer.instance(0L)).largerThan()) {
-                                        if (x.compare(.ceylon.language.Integer.instance(10L)).smallerThan()) {
-                                            break ifcomp_1;
-                                        }
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                private .ceylon.language.Integer x;
+                                private boolean x$exhausted$;
+                                
+                                private final boolean x() {
+                                    final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                                    x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                                    if (x$exhausted$) {
+                                        return false;
+                                    } else {
+                                        x = (.ceylon.language.Integer)$ceylontmp$item$0;
+                                        return true;
                                     }
                                 }
-                                return !x$exhausted$;
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.$next$1()) {
-                                    final .ceylon.language.Integer x = this.x;
-                                    return x;
-                                } else return .ceylon.language.finished_.get_();
-                            }
-                        };
-                    }
-                };
+                                
+                                private final boolean $next$1() {
+                                    ifcomp_1: while (true) {
+                                        if (!this.x()) break ifcomp_1;
+                                        if (x.compare(.ceylon.language.Integer.instance(0L)).largerThan()) {
+                                            if (x.compare(.ceylon.language.Integer.instance(10L)).smallerThan()) {
+                                                break ifcomp_1;
+                                            }
+                                        }
+                                    }
+                                    return !x$exhausted$;
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.$next$1()) {
+                                        final .ceylon.language.Integer x = this.x;
+                                        return x;
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
         });
     }

@@ -158,25 +158,21 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         f3(.ceylon.language.ArraySequence.<.java.lang.Object>instance(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return .ceylon.language.Integer.instance(1L);
-            }
-            
-            private final .java.lang.Object $1() {
-                return .ceylon.language.Integer.instance(2L);
-            }
-            
-            private final .java.lang.Object $2() {
-                return .ceylon.language.Integer.instance(3L);
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Integer.instance(2L);
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
             }
         }}));
         f3(new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{

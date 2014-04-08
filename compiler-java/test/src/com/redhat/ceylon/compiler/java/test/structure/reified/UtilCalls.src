@@ -24,19 +24,15 @@ public final class utilCalls_ {
                             
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }
@@ -68,115 +64,95 @@ public final class utilCalls_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.Integer.instance(1L);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return .ceylon.language.String.instance("a");
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.String.instance("a");
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> it2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return .ceylon.language.Integer.instance(1L);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $1() {
-                return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)it1;
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)it1;
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .java.lang.Object $0() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-                    
-                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                            {
-                                $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                    
-                                    @.java.lang.Override
-                                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                        return .java.lang.invoke.MethodHandles.lookup();
-                                    }
-                                    
-                                    @.java.lang.Override
-                                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                        return handle.invokeExact(this);
-                                    }
-                                    
-                                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                    private final .java.lang.Object $0() {
-                                        return .ceylon.language.Integer.instance(1L);
-                                    }
-                                }.iterator();
-                            }
-                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                            private .ceylon.language.Integer i;
-                            private boolean i$exhausted$;
-                            
-                            private final boolean i() {
-                                final .java.lang.Object $ceylontmp$item$1 = $iterator$0.next();
-                                i$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
-                                if (i$exhausted$) {
-                                    return false;
-                                } else {
-                                    i = (.ceylon.language.Integer)$ceylontmp$item$1;
-                                    return true;
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                {
+                                    $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                                        
+                                        @.java.lang.Override
+                                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                                        protected final .java.lang.Object $evaluate$(int $index$) {
+                                            switch ($index$) {
+                                            case 0: 
+                                                return .ceylon.language.Integer.instance(1L);
+                                            
+                                            default: 
+                                                return null;
+                                            
+                                            }
+                                        }
+                                    }.iterator();
                                 }
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.i()) {
-                                    final .ceylon.language.Integer i = this.i;
-                                    return i;
-                                } else return .ceylon.language.finished_.get_();
-                            }
-                        };
-                    }
-                };
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                private .ceylon.language.Integer i;
+                                private boolean i$exhausted$;
+                                
+                                private final boolean i() {
+                                    final .java.lang.Object $ceylontmp$item$1 = $iterator$0.next();
+                                    i$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                                    if (i$exhausted$) {
+                                        return false;
+                                    } else {
+                                        i = (.ceylon.language.Integer)$ceylontmp$item$1;
+                                        return true;
+                                    }
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.i()) {
+                                        final .ceylon.language.Integer i = this.i;
+                                        return i;
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
@@ -189,19 +165,15 @@ public final class utilCalls_ {
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                        return .java.lang.invoke.MethodHandles.lookup();
-                    }
-                    
-                    @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                        return handle.invokeExact(this);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    private final .java.lang.Object $0() {
-                        return .ceylon.language.Integer.instance(1L);
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Integer.instance(1L);
+                        
+                        default: 
+                            return null;
+                        
+                        }
                     }
                 };
                 .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);

@@ -87,17 +87,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                             
                             @.java.lang.Override
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }
@@ -133,17 +131,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                             
                             @.java.lang.Override
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }
@@ -179,17 +175,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                             
                             @.java.lang.Override
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }
@@ -225,17 +219,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                             
                             @.java.lang.Override
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }
@@ -271,17 +263,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                             
                             @.java.lang.Override
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }
@@ -317,17 +307,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
                             
                             @.java.lang.Override
-                            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                                return .java.lang.invoke.MethodHandles.lookup();
-                            }
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                                return handle.invokeExact(this);
-                            }
-                            
-                            private final .java.lang.Object $0() {
-                                return .ceylon.language.Integer.instance(1L);
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
                             }
                         }.iterator();
                     }

@@ -9,101 +9,97 @@ final class ifFor_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-                    
-                    public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                            {
-                            }
-                            private boolean $next$0$exhausted$;
-                            private .java.lang.String x$1;
-                            
-                            private final boolean $next$0() {
-                                if ($next$0$exhausted$) return false;
-                                $next$0$exhausted$ = true;
-                                .ceylon.language.String x$0 = null;
-                                if ((x$0 = x) != null) {
-                                    x$1 = x$0.toString();
-                                    return true;
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                                {
                                 }
-                                return false;
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.$next$0()) {
-                                    final .java.lang.String x$1 = this.x$1;
-                                    return .ceylon.language.String.instance(x$1);
-                                } else return .ceylon.language.finished_.get_();
-                            }
-                        };
-                    }
-                };
+                                private boolean $next$0$exhausted$;
+                                private .java.lang.String x$1;
+                                
+                                private final boolean $next$0() {
+                                    if ($next$0$exhausted$) return false;
+                                    $next$0$exhausted$ = true;
+                                    .ceylon.language.String x$0 = null;
+                                    if ((x$0 = x) != null) {
+                                        x$1 = x$0.toString();
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.$next$0()) {
+                                        final .java.lang.String x$1 = this.x$1;
+                                        return .ceylon.language.String.instance(x$1);
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-                    
-                    public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                            {
-                            }
-                            private boolean $next$0$exhausted$;
-                            private .java.lang.Object x2$3;
-                            
-                            private final boolean $next$0() {
-                                if ($next$0$exhausted$) return false;
-                                $next$0$exhausted$ = true;
-                                .java.lang.Object x2$2 = null;
-                                if ((x2$2 = x2) != null) {
-                                    x2$3 = x2$2;
-                                    return true;
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                                {
                                 }
-                                return false;
-                            }
-                            private .java.lang.String x2$5;
-                            
-                            private final boolean $next$1() {
-                                if (!this.$next$0()) return false;
-                                .java.lang.Object x2$4 = null;
-                                if ((x2$4 = x2$3) instanceof .ceylon.language.String) {
-                                    x2$5 = ((.ceylon.language.String)x2$4).toString();
-                                    return true;
+                                private boolean $next$0$exhausted$;
+                                private .java.lang.Object x2$3;
+                                
+                                private final boolean $next$0() {
+                                    if ($next$0$exhausted$) return false;
+                                    $next$0$exhausted$ = true;
+                                    .java.lang.Object x2$2 = null;
+                                    if ((x2$2 = x2) != null) {
+                                        x2$3 = x2$2;
+                                        return true;
+                                    }
+                                    return false;
                                 }
-                                return false;
-                            }
-                            
-                            public final .java.lang.Object next() {
-                                if (this.$next$1()) {
-                                    final .java.lang.Object x2$3 = this.x2$3;
-                                    final .java.lang.String x2$5 = this.x2$5;
-                                    return .ceylon.language.String.instance(x2$5);
-                                } else return .ceylon.language.finished_.get_();
-                            }
-                        };
-                    }
-                };
+                                private .java.lang.String x2$5;
+                                
+                                private final boolean $next$1() {
+                                    if (!this.$next$0()) return false;
+                                    .java.lang.Object x2$4 = null;
+                                    if ((x2$4 = x2$3) instanceof .ceylon.language.String) {
+                                        x2$5 = ((.ceylon.language.String)x2$4).toString();
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.$next$1()) {
+                                        final .java.lang.Object x2$3 = this.x2$3;
+                                        final .java.lang.String x2$5 = this.x2$5;
+                                        return .ceylon.language.String.instance(x2$5);
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
         };
     }

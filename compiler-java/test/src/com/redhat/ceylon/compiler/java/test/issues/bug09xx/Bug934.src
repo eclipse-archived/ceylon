@@ -59,17 +59,15 @@ final class bug934_ {
         .ceylon.language.print_.print(.ceylon.language.String.instance("Uppercase letters: " + .ceylon.language.String.join(", ", new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
             
             @.java.lang.Override
-            protected final .java.lang.invoke.MethodHandles.Lookup lookup() {
-                return .java.lang.invoke.MethodHandles.lookup();
-            }
-            
-            @.java.lang.Override
-            protected final .java.lang.Object invoke(.java.lang.invoke.MethodHandle handle) {
-                return handle.invokeExact(this);
-            }
-            
-            private final .java.lang.Object $0() {
-                return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)results).get(.ceylon.language.Integer.instance(1L));
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Correspondence)results).get(.ceylon.language.Integer.instance(1L));
+                
+                default: 
+                    return null;
+                
+                }
             }
         })));
     }
