@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,11 +41,13 @@ import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ceylon.language.SequenceBuilder;
 
 import com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError;
+import com.redhat.ceylon.compiler.java.metadata.CompileTimeError;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -103,6 +106,25 @@ public class RecoveryTest extends CompilerTest {
         getCompilerTask(defaultOptions, c, ceylon).call2();
         Assert.assertTrue("Expected only ceylon errors: " + c.getAssertionFailureMessage(), 0 == c.getNumBackendErrors());
         return c;
+    }
+    
+    private void checkClassHasCompileTimeErrorAnnotation(String brokenClass) {
+        synchronized(RUN_LOCK){
+            try {
+                NonCachingURLClassLoader classLoader = getClassLoader(brokenClass, getDestModuleWithArtifact());
+                try {
+                    Class<?> c = Class.forName(brokenClass, false, classLoader);
+                    Assert.assertTrue("class lacks @CompileTimeError", c.isAnnotationPresent((CompileTimeError.class)));
+                } finally {
+                    classLoader.clearCache();
+                    classLoader.close();
+                }
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     
     @Test
@@ -171,6 +193,7 @@ public class RecoveryTest extends CompilerTest {
                 "expression/ExpressionRecoveryClassDp.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassDp",
                 "function or value does not exist: asdfClassDp");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassDp");
     }
     
     @Test
@@ -179,6 +202,7 @@ public class RecoveryTest extends CompilerTest {
                 "expression/ExpressionRecoveryClassExtends.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtends",
                 "no matching parameter declared by Basic: Basic has 0 parameters");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtends");
     }
     
     @Test
@@ -187,15 +211,17 @@ public class RecoveryTest extends CompilerTest {
                 "expression/ExpressionRecoveryClassExtendsMissingParens.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtendsMissingParens",
                 "missing invocation expression");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassExtendsMissingParens");
     }
     
     @Test
-    public void testRcvExpressionRecoveryClassInitValueInit(){
+    public void testRcvExpressionRecoveryClassInitValueInit() {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassInitValueInit.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueInit",
                 "function or value does not exist: asdfClassInitValueInit", 
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueInit");
     }
     
     @Test
@@ -205,6 +231,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitVariableValueInit",
                 "function or value does not exist: asdfClassInitVariableValueInit", 
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitVariableValueInit");
     }
     
     @Test
@@ -214,6 +241,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifier",
                 "function or value does not exist: asdfClassInitValueSpecifier", 
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifier");
     }
     
     @Test
@@ -223,6 +251,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifierDeferred",
                 "function or value does not exist: asdfClassInitValueSpecifierDeferred", 
                 1, 2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifierDeferred");
     }
     
     @Test
@@ -232,6 +261,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitIf",
                 "function or value does not exist: asdfClassInitIf", 
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitIf");
     }
     
     @Test
@@ -250,6 +280,8 @@ public class RecoveryTest extends CompilerTest {
                 1, 2, 3);
         run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_nothrow2",
                 1, 2, 3, 5, 10);
+        
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassMethodDp");
     }
     
     @Test
@@ -259,6 +291,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodBody_main",
                 "function or value does not exist: asdfClassMethodBody", 
                 1, 2, 3);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassMethodBody");
     }
 
     @Test
@@ -268,6 +301,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodSpecifier_main",
                 "function or value does not exist: asdfClassMethodSpecifier", 
                 1, 2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassMethodSpecifier");
     }
     
     @Test
@@ -279,6 +313,7 @@ public class RecoveryTest extends CompilerTest {
                 // in the deferred case we throw when an instance is initialized
                 // rather than when the method is called.
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassMethodSpecifierDeferred");
     }
     @Test
     public void testRcvExpressionRecoveryClassAttributeBody(){
@@ -287,6 +322,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassAttributeBody_main",
                 "function or value does not exist: asdfClassAttributeBody", 
                 1, 2, 3);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassAttributeBody");
     }
     
     @Test
@@ -296,6 +332,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassSetterBody_main",
                 "value type could not be inferred", 
                 1, 2, 3, 4, 5);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassSetterBody");
     }
     
     @Test
@@ -314,6 +351,7 @@ public class RecoveryTest extends CompilerTest {
                 1, 2, 3);
         run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_nothrow2",
                 1, 2, 3, 5, 10);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceMethodDp");
     }
     
     @Test
@@ -328,6 +366,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodBody_main2",
                 "function or value does not exist: asdfInterfaceMethodBody", 
                 1, 2, 3);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceMethodBody");
     }
     
     @Test
@@ -337,6 +376,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceAttributeBody_main",
                 "function or value does not exist: asdfInterfaceAttributeBody", 
                 1, 2, 3);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceAttributeBody");
     }
     
     @Test
@@ -346,6 +386,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceSetterBody_main",
                 "value type could not be inferred", 
                 1, 2, 3, 4, 5);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceSetterBody");
     }
     
     @Test
@@ -354,6 +395,7 @@ public class RecoveryTest extends CompilerTest {
                 "expression/ExpressionRecoveryFunctionDp.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionDp",
                 "function or value does not exist: asdfFunctionDp");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionDp_");
     }
     
     @Test
@@ -368,6 +410,8 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBodyMpl_main",
                 "function or value does not exist: asdfFunctionBodyMpl",
                 1,2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBody_");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBodyMpl_");
     }
     
     @Test
@@ -380,6 +424,8 @@ public class RecoveryTest extends CompilerTest {
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_main",
                 "function or value does not exist: asdfFunctionSpecifierMpl");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifier_");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_");
     }
     
     @Test
@@ -389,6 +435,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueBody_main",
                 "function or value does not exist: asdfValueBody",
                 1,2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueBody_");
     }
     
     @Test
@@ -398,6 +445,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueSpecifier_main",
                 "function or value does not exist: asdfValueSpecifier",
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueSpecifier_");
     }
     
     @Test
@@ -407,6 +455,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueInit_main",
                 "function or value does not exist: asdfValueInit",
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueInit_");
     }
     
     @Test
@@ -416,6 +465,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_main",
                 "function or value does not exist: asdfVariableValueInit", 
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_");
     }
     
     @Test
@@ -425,6 +475,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterBody_main",
                 "function or value does not exist: asdfSetterBody",
                 1, 2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterBody_");
     }
     
     @Test
@@ -434,6 +485,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterSpecifier_main",
                 "function or value does not exist: asdfSetterSpecifier",
                 1,2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterSpecifier_");
     }
     
     @Test
@@ -443,6 +495,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIf",
                 "function or value does not exist: asdfIf",
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIf_");
     }
     
     @Test
@@ -452,6 +505,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryElseIf",
                 "function or value does not exist: asdfElseIf",
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryElseIf_");
     }
     
     @Test
@@ -461,6 +515,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIfBlock",
                 "function or value does not exist: asdfIfBlock",
                 1, 2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIfBlock_");
     }
     
     @Test
@@ -470,6 +525,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryForClause",
                 "function or value does not exist: asdfForClause",
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryForClause_");
     }
     
     @Test
@@ -479,6 +535,7 @@ public class RecoveryTest extends CompilerTest {
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryAssertVariable",
                 "function or value does not exist: baz", 
                 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryAssertVariable_");
     }
     
     

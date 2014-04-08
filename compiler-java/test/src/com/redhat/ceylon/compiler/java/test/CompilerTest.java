@@ -623,7 +623,7 @@ public abstract class CompilerTest {
         }
     }
 
-    private NonCachingURLClassLoader getClassLoader(String main,
+    protected NonCachingURLClassLoader getClassLoader(String main,
             ModuleWithArtifact... modules) throws MalformedURLException {
         List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
