@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoadException;
+import org.jboss.modules.ModuleLoader;
+
 import ceylon.language.Annotated;
 import ceylon.language.Anything;
 import ceylon.language.ArraySequence;
@@ -32,9 +36,11 @@ import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
@@ -270,10 +276,41 @@ public class Metamodel {
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule ret = typeCheckModulesToRuntimeModel.get(declaration);
             if(ret == null){
+                // make sure it is loaded
+                loadModule(declaration);
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule(declaration); 
                 typeCheckModulesToRuntimeModel.put(declaration, ret);
             }
             return ret;
+        }
+    }
+
+    private static void loadModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
+        // don't do if not running JBoss modules
+        if(Metamodel.class.getClassLoader() instanceof org.jboss.modules.ModuleClassLoader == false)
+            return;
+        // we must use the context module loader, which is the one CeylonModuleLoader for every user module
+        // if we use the language module loader it will be a LocalModuleLoader which doesn't know about the
+        // module repos specified on the command-line.
+        ModuleLoader moduleLoader = org.jboss.modules.Module.getContextModuleLoader();
+        // no loading required for these
+        if(JDKUtils.isJDKModule(declaration.getNameAsString())
+                || JDKUtils.isOracleJDKModule(declaration.getNameAsString()))
+            return;
+        try {
+            org.jboss.modules.Module jbossModule = moduleLoader.loadModule(ModuleIdentifier.create(declaration.getNameAsString(), declaration.getVersion()));
+            org.jboss.modules.ModuleClassLoader cl = jbossModule.getClassLoader();
+            if(cl instanceof CeylonModuleClassLoader == false){
+                // it was loaded via the bootstrap module loader perhaps?
+                return;
+            }
+            ((CeylonModuleClassLoader) cl).registerInMetaModel();
+        } catch (ModuleLoadException e) {
+            throw new RuntimeException(e);
+        } catch (SecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
         }
     }
 
