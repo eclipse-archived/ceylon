@@ -272,8 +272,13 @@ public abstract class TypeDescriptor {
             if(obj == null || obj instanceof FunctionOrValue == false)
                 return false;
             FunctionOrValue other = (FunctionOrValue) obj;
-            if(name.equals(other.name))
-                return false;
+            if(name != null){
+                if(!name.equals(other.name))
+                    return false;
+            }else{
+                if(klass != other.klass)
+                    return false;
+            }
             // now compare type arguments
             return super.equals(other);
         }
@@ -382,11 +387,21 @@ public abstract class TypeDescriptor {
         }
 
         protected boolean equals(Composite other) {
-            if(members.length != other.members.length)
+            return allContained(members, other.members)
+                    && allContained(other.members, members);
+        }
+
+        private static boolean allContained(TypeDescriptor[] a, TypeDescriptor[] b) {
+            OUTER:
+            for(int i=0;i<a.length;i++){
+                TypeDescriptor ref = a[i];
+                // find it anywhere
+                for(int j=0;j<b.length;j++){
+                    if(ref.equals(b[j]))
+                        continue OUTER;
+                }
+                // not found
                 return false;
-            for(int i=0;i<members.length;i++){
-                if(!members[i].equals(other.members[i]))
-                    return false;
             }
             return true;
         }
@@ -555,12 +570,67 @@ public abstract class TypeDescriptor {
     public static TypeDescriptor union(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionError("members can't be null or empty");
+        TypeDescriptor single = getSingleTypeDescriptorIfUnique(members);
+        if(single != null)
+            return single;
+        members = removeDuplicates(members);
         return new Union(members);
     }
-    
+
     public static TypeDescriptor intersection(TypeDescriptor... members){
         if(members == null || members.length == 0)
             throw new AssertionError("members can't be null or empty");
+        TypeDescriptor single = getSingleTypeDescriptorIfUnique(members);
+        if(single != null)
+            return single;
+        members = removeDuplicates(members);
         return new Intersection(members);
+    }
+
+    private static TypeDescriptor[] removeDuplicates(TypeDescriptor[] members) {
+        int duplicates = 0;
+        for(int i=0;i<members.length;i++){
+            TypeDescriptor ref = members[i];
+            for(int j=i+1;j<members.length;j++){
+                if(ref.equals(members[j])){
+                    duplicates++;
+                    // next ref
+                    break;
+                }
+            }
+        }
+        if(duplicates > 0){
+            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates];
+            REF:
+            for(int i=0,u=0;i<members.length;i++){
+                TypeDescriptor ref = members[i];
+                for(int j=i+1;j<members.length;j++){
+                    if(ref.equals(members[j])){
+                        duplicates++;
+                        // skip it
+                        continue REF;
+                    }
+                }
+                // it's unique: keep it
+                unique[u++] = ref;
+            }
+            return unique;
+        }
+        return members;
+    }
+
+    /**
+     * Returns a single type descriptor if they are all equal. Null otherwise.
+     */
+    private static TypeDescriptor getSingleTypeDescriptorIfUnique(TypeDescriptor[] members) {
+        if(members.length == 1)
+            return members[0];
+        TypeDescriptor first = members[0];
+        for(int i=1;i<members.length;i++){
+            if(!members[i].equals(first)){
+                return null;
+            }
+        }
+        return first;
     }
 }
