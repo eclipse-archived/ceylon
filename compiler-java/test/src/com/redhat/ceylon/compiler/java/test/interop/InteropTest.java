@@ -149,6 +149,12 @@ public class InteropTest extends CompilerTest {
         compile("JavaEnum.java");
         compareWithJavaSource("Enums");
     }
+    
+    @Test
+    public void testIopEnumSwitch(){
+        compile("JavaEnum.java");
+        compareWithJavaSource("EnumSwitch");
+    }
 
     @Test
     public void testIopNesting(){

@@ -24,6 +24,9 @@ import com.redhat.ceylon.compiler.java.test.interop { JavaEnum { one = \iONE, tw
 void enums(){
     JavaEnum e = one;
     e.field = e.field;
+    variable JavaEnum e2 = e.enumField;
     e.property = e.property;
+    e2 = e.enumProperty;
     e.method();
+    e2 = e.enumMethod();
 }

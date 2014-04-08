@@ -24,7 +24,12 @@ public enum JavaEnum {
     ONE, TWO;
     
     public long field;
+    public JavaEnum enumField;
     public void method(){}
+    public JavaEnum enumMethod(){ return null; }
     public long getProperty(){ return 1; }
+    public JavaEnum getEnumProperty(){ return null; }
     public void setProperty(long p){}
+    
+    
 }

@@ -669,7 +669,7 @@ final class moreOverloads_ {
                     }
                 }.getSequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$27$0, new .java.nio.file.CopyOption[(int)$ceylontmp$27$0.getSize() + 1], .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.file.StandardCopyOption.ATOMIC_MOVE));
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$27$0, new .java.nio.file.CopyOption[(int)$ceylontmp$27$0.getSize() + 1], .java.nio.file.StandardCopyOption.ATOMIC_MOVE);
         ));
     }
     
