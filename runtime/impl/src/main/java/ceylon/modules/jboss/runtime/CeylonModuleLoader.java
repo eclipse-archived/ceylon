@@ -325,8 +325,13 @@ public class CeylonModuleLoader extends ModuleLoader {
 
             dependencies.put(moduleIdentifier, deps);
 
-            builder.setClassFileTransformer(new UtilRegistryTransformer(moduleIdentifier, artifact));
+            UtilRegistryTransformer transformer = new UtilRegistryTransformer(moduleIdentifier, artifact);
+            builder.setClassFileTransformer(transformer);
 
+            // make sure we set our own class loader factory so we can find the transformer back from the class loader
+            // this is used in the language module to force module metamodel registration
+            builder.setModuleClassLoaderFactory(new CeylonModuleClassLoader.CeylonModuleClassLoaderFactory(transformer));
+            
             return builder.create();
         } catch (Exception e) {
             throw new ModuleLoadException(e);

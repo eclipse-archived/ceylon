@@ -45,6 +45,17 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
     }
 
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+        register(loader);
+        return classfileBuffer;
+    }
+
+    static void registerModule(String name, String version, ArtifactResult result, ClassLoader cl) {
+        // transform "null" into null version for the default module
+        version = RepositoryManager.DEFAULT_MODULE.equals(name) ? null : version;
+        com.redhat.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
+    }
+
+    public void register(ClassLoader loader) {
         if (done == false) {
             synchronized (this) {
                 if (done == false) {
@@ -53,12 +64,5 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
                 }
             }
         }
-        return classfileBuffer;
-    }
-
-    static void registerModule(String name, String version, ArtifactResult result, ClassLoader cl) {
-        // transform "null" into null version for the default module
-        version = RepositoryManager.DEFAULT_MODULE.equals(name) ? null : version;
-        com.redhat.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
     }
 }
