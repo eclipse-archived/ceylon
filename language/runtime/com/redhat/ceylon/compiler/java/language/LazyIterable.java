@@ -1,9 +1,5 @@
 package com.redhat.ceylon.compiler.java.language;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-
 import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.finished_;
@@ -11,10 +7,14 @@ import ceylon.language.finished_;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+/**
+ * Base class for the iterables used for iterable instantiation and the 
+ * sequenced argument of are named argument invocation, where the expressions 
+ * in the iterable are evaluated lazily. 
+ */
 public abstract class LazyIterable<Element, Absent> extends AbstractIterable<Element, Absent>{
-    private static final MethodType methodType = MethodType.methodType(Object.class);
     private final TypeDescriptor $reifiedElement;
-    private final int $numMethods;
+    private final int $numExpressions;
     private final boolean $spread;
 
     public LazyIterable(
@@ -24,42 +24,27 @@ public abstract class LazyIterable<Element, Absent> extends AbstractIterable<Ele
             boolean $spread) {
         super($reifiedElement, $reifiedAbsent);
         this.$reifiedElement = $reifiedElement;
-        this.$numMethods = $numMethods;
+        this.$numExpressions = $numMethods;
         this.$spread = $spread;
     }
-    // We need the (anonymous) subclass to obtain the lookup for us
-    protected abstract MethodHandles.Lookup lookup(); 
     
     @Override
     public Iterator<? extends Element> iterator() {
-        return new AbstractIterator($reifiedElement){
+        return new AbstractIterator<Element>($reifiedElement){
             
             int index = 0;
             Iterator<? extends Element> rest = null;
-            final MethodHandles.Lookup lookup = lookup();
-            Class<? extends LazyIterable> subclass = LazyIterable.this.getClass();
             
             @Override
             public Object next() {
                 if (rest != null) {
                     return rest.next();
                 } 
-                if (index >= $numMethods) {
+                if (index >= $numExpressions) {
                     return finished_.get_();
                 }
-                java.lang.String methodName = "$"+index;
-                index++;
-                Object result;
-                try {
-                    MethodHandle handle = lookup.findSpecial(subclass, methodName, methodType, subclass);
-                    // by delegating to the (anonymous) subclass `this` will 
-                    // have the subclasses type and it can use invokeExact(), where
-                    // this class could not (because we can't cast or even name the type of this)
-                    result = invoke(handle);
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
-                }
-                if ($spread && index == $numMethods) {
+                Object result = $evaluate$(index++);
+                if ($spread && index == $numExpressions) {
                     rest = ((Iterable)result).iterator();
                     result = rest.next();
                 }
@@ -68,5 +53,9 @@ public abstract class LazyIterable<Element, Absent> extends AbstractIterable<Ele
         };
     }
     
-    protected abstract Object invoke(MethodHandle handle) throws Throwable;
+    /**
+     * Evaluate the expression at the given index.
+     */
+    @Ignore
+    protected abstract Object $evaluate$(int $index$);
 }
