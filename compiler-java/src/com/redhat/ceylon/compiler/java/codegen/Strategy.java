@@ -36,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 
 /**
  * Utility functions telling you about code generation strategies
@@ -327,6 +328,16 @@ class Strategy {
             return false;
         }
         return false;
+    }
+    /**
+     * Whether to use a 
+     * {@code LazySwitchingIterable} instead of a {@code LazyInvokingIterable}.
+     * The only real consideration here is whether switching would result in 
+     * method code that exceeded the limits of the class file format.
+     */
+    public static boolean preferLazySwitchingIterable(
+            java.util.List<PositionalArgument> positionalArguments) {
+        return positionalArguments.size() < 128;
     }
     
 }

@@ -41,6 +41,7 @@ import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.java.codegen.Naming.Unfix;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -85,6 +86,7 @@ import com.sun.tools.javac.tree.JCTree.Factory;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
 import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCCase;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
@@ -3139,83 +3141,114 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression makeLazyIterable(Tree.SequencedArgument sequencedArgument, 
             ProducedType seqElemType, ProducedType absentType, 
             int flags) {
-        boolean old = expressionGen().withinSyntheticClassBody(true);
-        try {
-            ListBuffer<JCTree> elems = new ListBuffer<JCTree>();
-            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "lookup");
-            mdb.isOverride(true);
-            mdb.modifiers(PROTECTED | FINAL);
-            mdb.resultType(null, naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"));
-            mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
-                    naming.makeQualIdent(make().Type(syms().methodHandlesType), "lookup"), 
-                    List.<JCExpression>nil())));
-            elems.add(mdb.build());
-            
-            mdb = MethodDefinitionBuilder.systemMethod(this, "invoke");
-            mdb.isOverride(true);
-            mdb.modifiers(PROTECTED | FINAL);
-            mdb.resultType(null, make().Type(syms().objectType));
-            mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, "handle")
-                    .type(make().Type(syms().methodHandleType), null));
-            mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
-                    naming.makeQualIdent(naming.makeUnquotedIdent("handle"), "invokeExact"), 
-                    List.<JCExpression>of(naming.makeThis()))));
-            elems.add(mdb.build());
-            
-            java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
-            int i = 0;
-            boolean spread = false;
-            for (Tree.PositionalArgument arg : list) {
-                at(arg);
-                JCExpression jcExpression;
-                // last expression can be an Iterable<seqElemType>
-                if(arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension){
-                    // make sure we only have spread/comprehension as last
-                    if(i != list.size()-1){
-                        jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
-                    }else{
-                        ProducedType type = typeFact().getIterableType(seqElemType);
-                        spread = true;
-                        if(arg instanceof Tree.SpreadArgument){
-                            Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
-                            // always boxed since it is a sequence
-                            jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
-                        }else{
-                            jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
-                        }
-                    }
-                }else if(arg instanceof Tree.ListedArgument){
-                    Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
-                    // always boxed since we stuff them into a sequence
-                    jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType);
+        java.util.List<PositionalArgument> list = sequencedArgument.getPositionalArguments();
+        int i = 0;
+        ListBuffer<JCExpression> expressions = new ListBuffer<JCExpression>();
+        boolean spread = false;
+        for (Tree.PositionalArgument arg : list) {
+            at(arg);
+            JCExpression jcExpression;
+            // last expression can be an Iterable<seqElemType>
+            if(arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension){
+                // make sure we only have spread/comprehension as last
+                if(i != list.size()-1){
+                    jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
                 }else{
-                    jcExpression = makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is not a supported sequenced argument");
+                    ProducedType type = typeFact().getIterableType(seqElemType);
+                    spread = true;
+                    if(arg instanceof Tree.SpreadArgument){
+                        Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+                        // always boxed since it is a sequence
+                        jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                    }else{
+                        jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
+                    }
                 }
-                // the last iterable goes first if spread
-                
-                mdb = MethodDefinitionBuilder.systemMethod(this, "$"+i);
-                i++;
-                mdb.modifiers(PRIVATE | FINAL);
-                mdb.resultType(null, make().Type(syms().objectType));
-                mdb.body(make().Return(jcExpression));
-                elems.add(mdb.build());
+            }else if(arg instanceof Tree.ListedArgument){
+                Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
+                // always boxed since we stuff them into a sequence
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType);
+            }else{
+                jcExpression = makeErroneous(arg, "compiler bug: " + arg.getNodeType() + " is not a supported sequenced argument");
             }
-            
-            at(sequencedArgument);
-            return make().NewClass(null, 
-                    List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
-                    make().TypeApply(make().QualIdent(syms.ceylonLazyIterableType.tsym),
-                            List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 
-                    List.of(makeReifiedTypeArgument(seqElemType),// td, 
-                            makeReifiedTypeArgument(absentType),//td
-                            make().Literal(list.size()),// numMethods
-                            make().Literal(spread)),// spread), 
-                    make().AnonymousClassDef(make().Modifiers(FINAL), 
-                            elems.toList()));
+            // the last iterable goes first if spread
+            expressions.add(jcExpression);
+            i++;
+        }
+        boolean old = expressionGen().withinSyntheticClassBody(true);
+        try (SavedPosition p = noPosition()) {
+            if (Strategy.preferLazySwitchingIterable(sequencedArgument.getPositionalArguments())) {
+                // use a LazySwitchingIterable
+                MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$evaluate$.toString());
+                mdb.isOverride(true);
+                mdb.modifiers(PROTECTED | FINAL);
+                mdb.resultType(null, make().Type(syms().objectType));
+                mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, Unfix.$index$.toString())
+                        .type(make().Type(syms().intType), null));
+                
+                ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+                i = 0;
+                for (JCExpression e : expressions) {
+                    cases.add(make().Case(make().Literal(i++), List.<JCStatement>of(make().Return(e))));
+                }
+                cases.add(make().Case(null, List.<JCStatement>of(make().Return(makeNull()))));
+                mdb.body(make().Switch(naming.makeUnquotedIdent(Unfix.$index$), cases.toList()));
+                
+                return make().NewClass(null, 
+                        List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
+                        make().TypeApply(make().QualIdent(syms.ceylonLazyIterableType.tsym),
+                                List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 
+                        List.of(makeReifiedTypeArgument(seqElemType),// td, 
+                                makeReifiedTypeArgument(absentType),//td
+                                make().Literal(list.size()),// numMethods
+                                make().Literal(spread)),// spread), 
+                        make().AnonymousClassDef(make().Modifiers(FINAL), 
+                                List.<JCTree>of(mdb.build())));
+            } else {
+                // use a LazyInvokingIterable
+                ListBuffer<JCTree> methods = new ListBuffer<JCTree>();
+                MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$lookup$.toString());
+                mdb.isOverride(true);
+                mdb.modifiers(PROTECTED | FINAL);
+                mdb.resultType(null, naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"));
+                mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
+                        naming.makeQualIdent(make().Type(syms().methodHandlesType), "lookup"), 
+                        List.<JCExpression>nil())));
+                methods.add(mdb.build());
+                
+                mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$invoke$.toString());
+                mdb.isOverride(true);
+                mdb.modifiers(PROTECTED | FINAL);
+                mdb.resultType(null, make().Type(syms().objectType));
+                mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, "handle")
+                        .type(make().Type(syms().methodHandleType), null));
+                mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
+                        naming.makeQualIdent(naming.makeUnquotedIdent("handle"), "invokeExact"), 
+                        List.<JCExpression>of(naming.makeThis()))));
+                methods.add(mdb.build());
+                i = 0;
+                for (JCExpression expr : expressions) {
+                    mdb = MethodDefinitionBuilder.systemMethod(this, "$"+i);
+                    i++;
+                    mdb.modifiers(PRIVATE | FINAL);
+                    mdb.resultType(null, make().Type(syms().objectType));
+                    mdb.body(make().Return(expr));
+                    methods.add(mdb.build());
+                }
+                return make().NewClass(null, 
+                        List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
+                        make().TypeApply(make().QualIdent(syms.ceylonLazyInvokingIterableType.tsym),
+                                List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 
+                        List.of(makeReifiedTypeArgument(seqElemType),// td, 
+                                makeReifiedTypeArgument(absentType),//td
+                                make().Literal(list.size()),// numMethods
+                                make().Literal(spread)),// spread), 
+                        make().AnonymousClassDef(make().Modifiers(FINAL), 
+                                methods.toList()));
+            }
         } finally {
             expressionGen().withinSyntheticClassBody(old);
         }
-        
     }
 
     /**
