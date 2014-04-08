@@ -2386,7 +2386,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         ProducedType type = obtainType(fieldMirror.getType(), fieldMirror, klass, Decl.getModuleContainer(klass), VarianceLocation.INVARIANT,
                 "field '"+value.getName()+"'", klass);
-        value.setType(type);
+        if (value.isEnumValue()) {
+            Class enumValueType = new Class();
+            enumValueType.setAnonymous(true);
+            enumValueType.setExtendedType(type);
+            enumValueType.setContainer(value.getContainer());
+            enumValueType.setDeprecated(value.isDeprecated());
+            enumValueType.setName(value.getName());
+            enumValueType.setFinal(true);
+            enumValueType.setUnit(value.getUnit());
+            enumValueType.setStaticallyImportable(value.isStaticallyImportable());
+            value.setType(enumValueType.getType());
+        } else {
+            value.setType(type);
+        }
         value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), fieldMirror.getType()));
 
@@ -3434,22 +3447,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void setCaseTypes(ClassOrInterface klass, ClassMirror classMirror) {
-        String selfType = getSelfTypeFromAnnotations(classMirror);
-        Module moduleScope = Decl.getModuleContainer(klass);
-        if(selfType != null && !selfType.isEmpty()){
-            ProducedType type = decodeType(selfType, klass, moduleScope, "self type");
-            if(!(type.getDeclaration() instanceof TypeParameter)){
-                logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
-            }else{
-                klass.setSelfType(type);
-                List<ProducedType> caseTypes = new LinkedList<ProducedType>();
-                caseTypes.add(type);
-                klass.setCaseTypes(caseTypes);
+        if (classMirror.isEnum()) {
+            ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>();
+            for (Declaration member : klass.getMembers()) {
+                if (member instanceof FieldValue
+                        && ((FieldValue) member).isEnumValue()) {
+                    caseTypes.add(((FieldValue)member).getType());
+                }
             }
+            klass.setCaseTypes(caseTypes);
         } else {
-            List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
-            if(caseTypes != null && !caseTypes.isEmpty()){
-                klass.setCaseTypes(getTypesList(caseTypes, klass, moduleScope, "case types", klass.getQualifiedNameString()));
+            String selfType = getSelfTypeFromAnnotations(classMirror);
+            Module moduleScope = Decl.getModuleContainer(klass);
+            if(selfType != null && !selfType.isEmpty()){
+                ProducedType type = decodeType(selfType, klass, moduleScope, "self type");
+                if(!(type.getDeclaration() instanceof TypeParameter)){
+                    logError("Invalid type signature for self type of "+klass.getQualifiedNameString()+": "+selfType+" is not a type parameter");
+                }else{
+                    klass.setSelfType(type);
+                    List<ProducedType> caseTypes = new LinkedList<ProducedType>();
+                    caseTypes.add(type);
+                    klass.setCaseTypes(caseTypes);
+                }
+            } else {
+                List<String> caseTypes = getCaseTypesFromAnnotations(classMirror);
+                if(caseTypes != null && !caseTypes.isEmpty()){
+                    klass.setCaseTypes(getTypesList(caseTypes, klass, moduleScope, "case types", klass.getQualifiedNameString()));
+                }
             }
         }
     }
