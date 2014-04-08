@@ -2338,6 +2338,10 @@ public abstract class AbstractTransformer implements Transformation {
      * Annotation generation
      */
     
+    List<JCAnnotation> makeAtCompileTimeError() {
+        return List.of(make().Annotation(makeIdent(syms().ceylonAtCompileTimeErrorType), List.<JCExpression> nil()));
+    }
+    
     List<JCAnnotation> makeAtOverride() {
         return List.<JCAnnotation> of(make().Annotation(makeIdent(syms().overrideType), List.<JCExpression> nil()));
     }

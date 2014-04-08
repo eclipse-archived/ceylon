@@ -184,12 +184,26 @@ public class Errors {
         }
     }
     
+    private boolean annotateBrokenness(boolean result) {
+        if (result && gen.current() != null) {
+            gen.current().broken();
+        }
+        return result;
+    }
+    
+    private HasErrorException annotateBrokenness(HasErrorException result) {
+        if (result!= null && gen.current() != null) {
+            gen.current().broken();
+        }
+        return result;
+    }
+    
     /** Visit the given declaration (but not it's body, specifier or 
      * initializer or defaulted parameter expressions) and return true if 
      * there are any errors
      */
     public boolean hasDeclarationError(Tree.Declaration node) {
-        return declarationVisitor.hasErrors(node);
+        return annotateBrokenness(declarationVisitor.hasErrors(node));
     }
     
     /**
@@ -197,11 +211,11 @@ public class Errors {
      * or null if the tree is free of errors.
      */
     public HasErrorException getFirstExpressionError(Tree.Term node) {
-        return expressionVisitor.getFirstErrorMessage(node);
+        return annotateBrokenness(expressionVisitor.getFirstErrorMessage(node));
     }
     
     public HasErrorException getFirstExpressionError(Tree.ExtendedType node) {
-        return expressionVisitor.getFirstErrorMessage(node);
+        return annotateBrokenness(expressionVisitor.getFirstErrorMessage(node));
     }
     
     /**
@@ -215,10 +229,10 @@ public class Errors {
             if (r == null && Decl.isLocal((Tree.Declaration)blockStatement)) {
                 r = expressionVisitor.getFirstErrorMessage(blockStatement);
             }
-            return r;
+            return annotateBrokenness(r);
         } else if (blockStatement instanceof Tree.ExecutableStatement) {
             // An executable statement
-            return statementVisitor.getFirstErrorMessage(blockStatement);
+            return annotateBrokenness(statementVisitor.getFirstErrorMessage(blockStatement));
         }
         return null;
     }
@@ -226,10 +240,10 @@ public class Errors {
     public HasErrorException getFirstErrorInitializer(Tree.Statement classBodyStatement) {
         if (classBodyStatement instanceof Tree.Declaration
                 && Decl.isLocalToInitializer((Tree.Declaration)classBodyStatement)) {
-            return declarationVisitor.getFirstErrorMessage(classBodyStatement);
+            return annotateBrokenness(declarationVisitor.getFirstErrorMessage(classBodyStatement));
         } else if (classBodyStatement instanceof Tree.ExecutableStatement) {
             // An executable statement
-            return statementVisitor.getFirstErrorMessage(classBodyStatement);
+            return annotateBrokenness(statementVisitor.getFirstErrorMessage(classBodyStatement));
         }
         return null;
     }

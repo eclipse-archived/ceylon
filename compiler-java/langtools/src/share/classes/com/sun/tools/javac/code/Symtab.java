@@ -246,6 +246,7 @@ public class Symtab {
     public final Type ceylonAtAliasType;
     public final Type ceylonAtTypeAliasType;
     public final Type ceylonAtTransientType;
+    public final Type ceylonAtCompileTimeErrorType;
     
     public final Type ceylonAtBooleanValueType;
     public final Type ceylonAtBooleanExprsType;
@@ -645,6 +646,7 @@ public class Symtab {
         ceylonAtAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.Alias");
         ceylonAtTypeAliasType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeAlias");
         ceylonAtTransientType = enterClass("com.redhat.ceylon.compiler.java.metadata.Transient");
+        ceylonAtCompileTimeErrorType = enterClass("com.redhat.ceylon.compiler.java.metadata.CompileTimeError");
         ceylonAtSetterType = enterClass("com.redhat.ceylon.compiler.java.metadata.Setter");
         
         ceylonAtBooleanValueType = enterClass("com.redhat.ceylon.compiler.java.metadata.BooleanValue");

@@ -95,6 +95,8 @@ public class ClassDefinitionBuilder
     private boolean built = false;
     
     private boolean isCompanion = false;
+    
+    private boolean isBroken = false;
 
     private ClassDefinitionBuilder containingClassBuilder;
 
@@ -432,6 +434,9 @@ public class ClassDefinitionBuilder
         }else{
             ret = ret.prependList(this.annotations.toList());
         }
+        if (isBroken) {
+            ret = ret.prependList(gen.makeAtCompileTimeError());
+        }
         return ret;
     }
 
@@ -664,5 +669,10 @@ public class ClassDefinitionBuilder
                                                   gen.makeTypeDescriptorType(), 
                                                   classDescriptor);
         defs(varDef);
+    }
+    
+    public ClassDefinitionBuilder broken() {
+        getTopLevelBuilder().isBroken = true;
+        return this;
     }
 }

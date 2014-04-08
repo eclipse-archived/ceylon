@@ -266,6 +266,11 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.TypedDeclaration decl,
             final Tree.AttributeSetterDefinition setterDecl) {
         
+        // For everything else generate a getter/setter method
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+            .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
+            .is(Flags.PUBLIC, declarationModel.isShared());
+        
         final JCExpression initialValue;
         final HasErrorException expressionError;
         if (expression != null) {
@@ -300,11 +305,6 @@ public class CeylonTransformer extends AbstractTransformer {
             return List.<JCTree>of(var);
         }
         
-        // For everything else generate a getter/setter method
-        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
-            .is(Flags.PUBLIC, declarationModel.isShared());
-
         // Set the local declarations annotation
         if(decl != null){
             List<JCAnnotation> scopeAnnotations;
