@@ -17,7 +17,5 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-"Some module doc"
-module metamodel "0.1" {
-    import modules.imported "1";
+module modules.imported "1" {
 }
