@@ -23,7 +23,8 @@
 
     <!-- jar generated -->
     <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
-
+    <property name="module-resolver-api.jar" location="${build.lib}/module-resolver-api.jar"/>
+	
     <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
     <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
 
@@ -195,8 +196,8 @@
 
     <!-- Tasks related to building the module-resolver -->
     <!-- Rule to build module-resolver classes from their Java sources -->
-    <target name="module-resolver.classes">
-        <mkdir dir="${build.classes}"/>
+    <target name="module-resolver.classes.api">
+        <mkdir dir="${build.classes}"/>	
         <javac debug="true"
                srcdir="${cmr-spi.src}"
                destdir="${build.classes}"
@@ -207,6 +208,17 @@
                destdir="${build.classes}"
                classpathref="compiler.classpath"
                includeantruntime="false"/>
+        <copy todir="${build.classes}">
+            <fileset dir="${cmr-api.resources}">
+                <include name="**"/>
+            </fileset>
+        </copy>
+    </target>
+	
+    <!-- Rule to build module-resolver classes from their Java sources -->
+    <target name="module-resolver.classes" depends="module-resolver.classes.api">
+        <mkdir dir="${build.classes}"/>
+
         <javac debug="true"
                srcdir="${cmr-impl.src}"
                destdir="${build.classes}"
@@ -228,9 +240,6 @@
                classpathref="compiler.classpath"
                includeantruntime="false"/>
         <copy todir="${build.classes}">
-            <fileset dir="${cmr-api.resources}">
-                <include name="**"/>
-            </fileset>
             <fileset dir="${cmr-maven.resources}">
                 <include name="**"/>
             </fileset>
@@ -246,6 +255,17 @@
         </jar>
     </target>
 
+    <!-- Rule to build module-resolver-api jar -->
+    <target name="module-resolver-api.jar" depends="module-resolver.classes.api">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${module-resolver-api.jar}">
+            <fileset dir="${build.classes}">
+            	<include name="**/spi/*"/>
+            	<include name="**/api/*"/>
+            </fileset>
+        </jar>
+    </target>
+        	
     <!-- Rule to compile and test -->
     <target name="build" depends="module-resolver.jar"/>
 
