@@ -6,5 +6,5 @@ class Bug245Person(String name) {
 shared void bug245() {
     value createPerson = `Bug245Person`;
     value person = createPerson("Gavin");
-    print(person);
+    assert(person.string == "Gavin");
 }

@@ -1,7 +1,7 @@
 import ceylon.language.meta { modules }
 
 void bugC1196<T>(T t) {
-    print(`List<T>`);
+    String s = `List<T>`.string;
 }
 
 @test

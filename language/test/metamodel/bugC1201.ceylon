@@ -12,5 +12,5 @@ shared void bugC1201() {
     value person = BugC1201Person("Gavin");
     value n = `BugC1201Person.name`;
     n(person).set("Stef");
-    print(n(person).get());
+    assert(n(person).get() == "Stef");
 }

@@ -8,5 +8,5 @@ class Bug286() {
 shared void bug286() {
     value a = `Bug286`;
     value attribute = a.getAttribute<Bug286, String?>("nome");
-    print(type(attribute));
+    String s = type(attribute).string;
 }
