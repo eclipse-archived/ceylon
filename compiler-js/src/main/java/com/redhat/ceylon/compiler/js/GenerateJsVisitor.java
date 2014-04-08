@@ -2105,6 +2105,10 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    void supervisit(final Tree.QualifiedMemberOrTypeExpression that) {
+        super.visit(that);
+    }
+
     @Override
     public void visit(final QualifiedMemberExpression that) {
         //Big TODO: make sure the member is actually
@@ -2112,7 +2116,7 @@ public class GenerateJsVisitor extends Visitor
         if (that.getMemberOperator() instanceof SafeMemberOp) {
             generateSafeOp(that);
         } else if (that.getMemberOperator() instanceof SpreadOp) {
-            generateSpread(that);
+            SequenceGenerator.generateSpread(that, this);
         } else if (that.getDeclaration() instanceof Method && that.getSignature() == null) {
             //TODO right now this causes that all method invocations are done this way
             //we need to filter somehow to only use this pattern when the result is supposed to be a callable
@@ -2138,54 +2142,6 @@ public class GenerateJsVisitor extends Visitor
             });
             out(memberAccess(that, lhs));
         }
-    }
-
-    /** SpreadOp cannot be a simple function call because we need to reference the object methods directly, so it's a function */
-    private void generateSpread(QualifiedMemberOrTypeExpression that) {
-        //Determine if it's a method or attribute
-        boolean isMethod = that.getDeclaration() instanceof Method;
-        //Define a function
-        out("(function()");
-        beginBlock();
-        if (opts.isComment() && !opts.isMinify()) {
-            out("//SpreadOp");
-            location(that);
-            endLine();
-        }
-        //Declare an array to store the values/references
-        String tmplist = names.createTempVariable();
-        out("var ", tmplist, "=[]"); endLine(true);
-        //Get an iterator
-        String iter = names.createTempVariable();
-        out("var ", iter, "=");
-        super.visit(that);
-        out(".iterator()"); endLine(true);
-        //Iterate
-        String elem = names.createTempVariable();
-        out("var ", elem); endLine(true);
-        out("while((", elem, "=", iter, ".next())!==", clAlias, "getFinished())");
-        beginBlock();
-        //Add value or reference to the array
-        out(tmplist, ".push(");
-        if (isMethod) {
-            out("{o:", elem, ", f:", memberAccess(that, elem), "}");
-        } else {
-            out(memberAccess(that, elem));
-        }
-        out(");");
-        endBlockNewLine();
-        //Gather arguments to pass to the callable
-        //Return the array of values or a Callable with the arguments
-        out("return ", clAlias);
-        if (isMethod) {
-            out("JsCallableList(", tmplist, ");");
-        } else {
-            out("ArraySequence(", tmplist, ",");
-            TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), this, true);
-            out(");");
-        }
-        endBlock();
-        out("())");
     }
 
     private void generateCallable(final QualifiedMemberOrTypeExpression that, String name) {
@@ -2452,70 +2408,14 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(SequencedArgument that) {
-    	List<PositionalArgument> positionalArguments = that.getPositionalArguments();
-    	boolean spread = !positionalArguments.isEmpty() 
-    			&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
-        if (!spread) { out("["); }
-        boolean first=true;
-        for (PositionalArgument arg: positionalArguments) {
-            if (!first) out(",");
-            if (arg instanceof Tree.ListedArgument) {
-                ((Tree.ListedArgument) arg).getExpression().visit(this);
-            } else if(arg instanceof Tree.SpreadArgument)
-            	((Tree.SpreadArgument) arg).getExpression().visit(this);
-            else // comprehension
-            	arg.visit(this);
-            first = false;
-        }
-        if (!spread) { out("]"); }
+        if (errVisitor.hasErrors(that))return;
+        SequenceGenerator.sequencedArgument(that, this);
     }
 
     @Override
     public void visit(SequenceEnumeration that) {
-        SequencedArgument sarg = that.getSequencedArgument();
-        if (sarg == null) {
-            out(clAlias, "getEmpty()");
-        } else {
-            List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
-            int lim = positionalArguments.size()-1;
-            boolean spread = !positionalArguments.isEmpty() 
-                    && positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
-            int count=0;
-            ProducedType chainedType = null;
-            if (lim>0 || !spread) {
-                out("[");
-            }
-            for (PositionalArgument expr : positionalArguments) {
-                if (count==lim && spread) {
-                    if (lim > 0) {
-                        ProducedType seqType = TypeUtils.findSupertype(types.iterable, that.getTypeModel());
-                        closeSequenceWithReifiedType(that, seqType.getTypeArguments());
-                        out(".chain(");
-                        chainedType = TypeUtils.findSupertype(types.iterable, expr.getTypeModel());
-                    }
-                    count--;
-                } else {
-                    if (count > 0) {
-                        out(",");
-                    }
-                }
-                if (dynblock > 0 && expr instanceof ListedArgument && TypeUtils.isUnknown(expr.getTypeModel())) {
-                    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), types.anything.getType(), this, false);
-                } else {
-                    expr.visit(this);
-                }
-                count++;
-            }
-            if (chainedType == null) {
-                if (!spread) {
-                    closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments());
-                }
-            } else {
-                out(",");
-                TypeUtils.printTypeArguments(that, chainedType.getTypeArguments(), this, false);
-                out(")");
-            }
-        }
+        if (errVisitor.hasErrors(that))return;
+        SequenceGenerator.sequenceEnumeration(that, this);
     }
 
 
@@ -3694,8 +3594,7 @@ public class GenerateJsVisitor extends Visitor
         } else {
         	List<Map<TypeParameter,ProducedType>> targs = new ArrayList<Map<TypeParameter,ProducedType>>(3);
         	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
-        	boolean spread = !positionalArguments.isEmpty() 
-        			&& positionalArguments.get(positionalArguments.size()-1) instanceof Tree.ListedArgument == false;
+        	final boolean spread = SequenceGenerator.isSpread(positionalArguments);
         	int lim = positionalArguments.size()-1;
         	for (PositionalArgument expr : positionalArguments) {
         		if (count > 0) {
@@ -3792,13 +3691,6 @@ public class GenerateJsVisitor extends Visitor
             endLine();
         }
         dynblock--;
-    }
-
-    /** Closes a native array and invokes reifyCeylonType with the specified type parameters. */
-    void closeSequenceWithReifiedType(Node that, Map<TypeParameter,ProducedType> types) {
-        out("].reifyCeylonType(");
-        TypeUtils.printTypeArguments(that, types, this, false);
-        out(")");
     }
 
     boolean isInDynamicBlock() {

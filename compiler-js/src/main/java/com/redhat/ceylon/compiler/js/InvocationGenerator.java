@@ -357,8 +357,8 @@ public class InvocationGenerator {
                         expr = null;
                     }
                     if (opened) {
-                        gen.closeSequenceWithReifiedType(that,
-                                gen.getTypeUtils().wrapAsIterableArguments(sequencedType));
+                        SequenceGenerator.closeSequenceWithReifiedType(that,
+                                gen.getTypeUtils().wrapAsIterableArguments(sequencedType), gen);
                         gen.out(".chain(");
                         sequencedType=null;
                     } else if (!first) {
@@ -450,8 +450,8 @@ public class InvocationGenerator {
                 first = false;
             }
             if (sequencedType != null) {
-                gen.closeSequenceWithReifiedType(that,
-                        gen.getTypeUtils().wrapAsIterableArguments(sequencedType));
+                SequenceGenerator.closeSequenceWithReifiedType(that,
+                        gen.getTypeUtils().wrapAsIterableArguments(sequencedType), gen);
             }
             return argvars;
         }
