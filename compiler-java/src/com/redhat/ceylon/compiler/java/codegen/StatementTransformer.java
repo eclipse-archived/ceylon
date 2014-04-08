@@ -3149,7 +3149,8 @@ public class StatementTransformer extends AbstractTransformer {
                 for (int ii = 0; ii < exprs.size()-1; ii++) {
                     Tree.Term term = ExpressionTransformer.eliminateParens(exprs.get(ii).getTerm());
                     at(term);
-                    cases.add(make().Case(expressionGen().transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()), List.<JCStatement>nil()));
+                    cases.add(make().Case(transformCaseExpr(term), 
+                            List.<JCStatement>nil()));
                 }
                 Tree.Term term = exprs.get(exprs.size()-1).getTerm();
                 JCBlock block = transform(caseClause.getBlock());
@@ -3158,7 +3159,8 @@ public class StatementTransformer extends AbstractTransformer {
                     stmts = stmts.prepend(make().Break(label));
                 }
                 stmts = stmts.prepend(block);
-                cases.add(make().Case(expressionGen().transformExpression(term, BoxingStrategy.UNBOXED, term.getTypeModel()),  stmts));
+                cases.add(make().Case(transformCaseExpr(term), 
+                        stmts));
             }
             cases.add(make().Case(null, List.of(transformElse(stmt.getSwitchCaseList()))));
             
@@ -3166,6 +3168,16 @@ public class StatementTransformer extends AbstractTransformer {
             JCStatement last = make().Switch(switchExpr, cases.toList());
             last = make().Labelled(label, last);
             return last;
+        }
+        private JCExpression transformCaseExpr(Tree.Term term) {
+            if (term instanceof Tree.BaseMemberExpression
+                    && ((Tree.BaseMemberExpression)term).getDeclaration() instanceof Value
+                    && ((Value)((Tree.BaseMemberExpression)term).getDeclaration()).isEnumValue()) {
+                // A case(enumValue) must use the unqualified name
+                return naming.makeName((Value)((Tree.BaseMemberExpression)term).getDeclaration(), Naming.NA_MEMBER);
+            }
+            return expressionGen().transformExpression(term, 
+                    BoxingStrategy.UNBOXED, term.getTypeModel());
         }
     }
     Tree.Term getSingletonNullCase(Tree.CaseClause caseClause) {
@@ -3305,6 +3317,12 @@ public class StatementTransformer extends AbstractTransformer {
         
     }
     
+    private boolean isJavaSwitchableType(ProducedType type) {
+        return type.isExactly(typeFact().getCharacterDeclaration().getType())
+                || type.isExactly(typeFact().getStringDeclaration().getType())
+                || isJavaEnumType(type);
+    }
+    
     /**
      * Transforms a Ceylon switch to a Java {@code if/else if} chain.
      * @param stmt The Ceylon switch
@@ -3314,8 +3332,7 @@ public class StatementTransformer extends AbstractTransformer {
         SwitchTransformation transformation = null;
         ProducedType exprType = stmt.getSwitchClause().getExpression().getTypeModel();
         // Are we switching with just String literal or Character literal match cases? 
-        if (exprType.isExactly(typeFact().getCharacterDeclaration().getType())
-                || exprType.isExactly(typeFact().getStringDeclaration().getType())) {
+        if (isJavaSwitchableType(exprType)) {
             boolean canUseSwitch = true;
             caseStmts: for (Tree.CaseClause clause : stmt.getSwitchCaseList().getCaseClauses()) {
                 if (clause.getCaseItem() instanceof Tree.MatchCase) {
@@ -3324,6 +3341,10 @@ public class StatementTransformer extends AbstractTransformer {
                         Tree.Term e = ExpressionTransformer.eliminateParens(expr);
                         if (e instanceof Tree.StringLiteral
                                 || e instanceof Tree.CharLiteral) {
+                            continue caseExpr;
+                        } else if (e instanceof Tree.BaseMemberExpression
+                                && ((Tree.BaseMemberExpression)e).getDeclaration() instanceof Value
+                                && ((Value)((Tree.BaseMemberExpression)e).getDeclaration()).isEnumValue()) {
                             continue caseExpr;
                         } else {
                             canUseSwitch = false;
@@ -3345,8 +3366,7 @@ public class StatementTransformer extends AbstractTransformer {
             // Are we switching with just String literal or Character literal plus null 
             // match cases?
             ProducedType definiteType = typeFact().getDefiniteType(exprType);
-            if (definiteType.isExactly(typeFact().getCharacterDeclaration().getType())
-                    || definiteType.isExactly(typeFact().getStringDeclaration().getType())) {
+            if (isJavaSwitchableType(definiteType)) {
                 boolean canUseIfElseSwitch = true;
                 boolean hasSingletonNullCase = false;
                 caseStmts: for (Tree.CaseClause clause : stmt.getSwitchCaseList().getCaseClauses()) {
@@ -3363,6 +3383,10 @@ public class StatementTransformer extends AbstractTransformer {
                             } else if (e instanceof Tree.BaseMemberExpression
                                     && isNullValue(((Tree.BaseMemberExpression)e).getDeclaration())
                                     && caseExprs.size() == 1) {
+                                continue caseExpr;
+                            } else if (e instanceof Tree.BaseMemberExpression
+                                    && ((Tree.BaseMemberExpression)e).getDeclaration() instanceof Value
+                                    && ((Value)((Tree.BaseMemberExpression)e).getDeclaration()).isEnumValue()) {
                                 continue caseExpr;
                             } else {
                                 canUseIfElseSwitch = false;
