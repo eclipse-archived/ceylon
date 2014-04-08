@@ -11,36 +11,49 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class SequenceGenerator {
 
+    static void lazyEnumeration(final List<Tree.PositionalArgument> args, final Node node, final ProducedType seqType,
+            final boolean spread, final GenerateJsVisitor gen) {
+        final String idxvar = gen.getNames().createTempVariable();
+        gen.out(GenerateJsVisitor.getClAlias(), "$sarg(function(", idxvar,"){switch(",idxvar,"){");
+        int count=0;
+        Tree.PositionalArgument seqarg = spread ? args.get(args.size()-1) : null;
+        for (Tree.PositionalArgument expr : args) {
+            if (expr == seqarg) {
+                gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},function(){return ");
+                expr.visit(gen);
+                gen.out(";},");
+            } else {
+                gen.out("case ", Integer.toString(count), ":return ");
+                expr.visit(gen);
+                gen.out(";");
+            }
+            count++;
+        }
+        if (seqarg == null) {
+            gen.out("}return ", GenerateJsVisitor.getClAlias(), "getFinished();},undefined,");
+        }
+        TypeUtils.printTypeArguments(node, seqType.getTypeArguments(), gen, false);
+        gen.out(")");
+    }
+
     static void sequenceEnumeration(final Tree.SequenceEnumeration that, final GenerateJsVisitor gen) {
         final Tree.SequencedArgument sarg = that.getSequencedArgument();
         if (sarg == null) {
             gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
         } else {
             final List<Tree.PositionalArgument> positionalArguments = sarg.getPositionalArguments();
-            final int lim = positionalArguments.size()-1;
             final boolean spread = isSpread(positionalArguments);
-            ProducedType chainedType = null;
-            if (spread) {
-                if (lim>0) {
-                    gen.out("[");
-                }
+            final boolean canBeEager = allLiterals(positionalArguments);
+            if (spread || !canBeEager) {
+                lazyEnumeration(positionalArguments, that, that.getTypeModel(), spread, gen);
+                return;
             } else {
                 gen.out("[");
             }
             int count=0;
             for (Tree.PositionalArgument expr : positionalArguments) {
-                if (count==lim && spread) {
-                    if (lim > 0) {
-                        ProducedType seqType = TypeUtils.findSupertype(gen.getTypeUtils().iterable, that.getTypeModel());
-                        closeSequenceWithReifiedType(that, seqType.getTypeArguments(), gen);
-                        gen.out(".chain(");
-                        chainedType = TypeUtils.findSupertype(gen.getTypeUtils().iterable, expr.getTypeModel());
-                    }
-                    count--;
-                } else {
-                    if (count > 0) {
-                        gen.out(",");
-                    }
+                if (count > 0) {
+                    gen.out(",");
                 }
                 if (gen.isInDynamicBlock() && expr instanceof Tree.ListedArgument && TypeUtils.isUnknown(expr.getTypeModel())) {
                     TypeUtils.generateDynamicCheck(((Tree.ListedArgument)expr).getExpression(), gen.getTypeUtils().anything.getType(), gen, false);
@@ -49,15 +62,7 @@ public class SequenceGenerator {
                 }
                 count++;
             }
-            if (chainedType == null) {
-                if (!spread) {
-                    closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen);
-                }
-            } else {
-                gen.out(",");
-                TypeUtils.printTypeArguments(that, chainedType.getTypeArguments(), gen, false);
-                gen.out(")");
-            }
+            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen);
         }
     }
 
@@ -138,6 +143,18 @@ public class SequenceGenerator {
         return !args.isEmpty() && args.get(args.size()-1) instanceof Tree.ListedArgument == false;
     }
 
+    static boolean allLiterals(List<Tree.PositionalArgument> args) {
+        for (Tree.PositionalArgument a : args) {
+            if (a instanceof Tree.ListedArgument) {
+                if (((Tree.ListedArgument) a).getExpression().getTerm() instanceof Tree.Literal == false) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
     /** Closes a native array and invokes reifyCeylonType with the specified type parameters. */
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,ProducedType> types,
             final GenerateJsVisitor gen) {
