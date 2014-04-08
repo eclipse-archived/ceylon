@@ -2,7 +2,8 @@
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=function(name$20,$$$mptypes,noInherit){
   var _m=undefined;
   if (extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ValueDeclaration$meta$declaration})) {
-    var _d = this.tipo.$$.prototype['$prop$get'+name$20[0].toUpperCase()+name$20.substring(1)];
+    var propname='$prop$get'+name$20[0].toUpperCase()+name$20.substring(1);
+    var _d = this.tipo.$$.prototype[propname];
     if (_d){
       if (noInherit) {
         var mm=getrtmm$$(_d);
@@ -15,6 +16,18 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     var nom=name$20;
     if (this.tipo===String$ && ['split','replace','filter','every','map','sort','slice'].indexOf(nom)>=0)nom='$'+nom;
     var _d = this.tipo.$$.prototype[nom];
+    if (_d===undefined) {
+      //Let's just look for this thing everywhere
+      for (var $k in this.tipo.$$.prototype) {
+        var propname='$prop$get'+$k[0].toUpperCase()+$k.substring(1);
+        var m$ = this.tipo.$$.prototype[propname] ? undefined: this.tipo.$$.prototype[$k];
+        _d = typeof(m$)==='function' && m$.$$===undefined ? getrtmm$$(m$) : undefined;
+        if (_d && _d.d && _d.d[_d.d.length-1]===nom){
+          _d = this.tipo.$$.prototype[$k];
+          break;
+        }else _d=undefined;
+      }
+    }
     if(_d){
       if (noInherit) {
         var mm=getrtmm$$(_d);
@@ -26,6 +39,18 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:ClassOrInterfaceDeclaration$meta$declaration})) {
     var nom=name$20+'$'+this.name;
     var _d = this.tipo.$$.prototype[nom];
+    if (_d===undefined) {
+      //Let's just look for this thing everywhere
+      for (var $k in this.tipo.$$.prototype) {
+        var propname='$prop$get'+$k[0].toUpperCase()+$k.substring(1);
+        var m$ = this.tipo.$$.prototype[propname] ? undefined: this.tipo.$$.prototype[$k];
+        _d = typeof(m$)==='function' && m$.$$ ? getrtmm$$(m$) : undefined;
+        if (_d && _d.d && _d.d[_d.d.length-1]===nom){
+          _d = this.tipo.$$.prototype[$k];
+          break;
+        }else _d=undefined;
+      }
+    }
     if (!_d) {
       if (noInherit)return null;
       var pere=this.tipo.$crtmm$['super'];
