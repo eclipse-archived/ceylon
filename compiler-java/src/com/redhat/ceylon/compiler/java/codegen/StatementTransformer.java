@@ -1714,7 +1714,6 @@ public class StatementTransformer extends AbstractTransformer {
                         break outer;
                     }
                 }*/
-                SyntheticName labelName = naming.alias("outer");
                 
                 if (!stmt.getExits() && !getBlock().getDefinitelyReturns()) {
                     SyntheticName stepName = naming.alias("step");
@@ -1726,7 +1725,7 @@ public class StatementTransformer extends AbstractTransformer {
                     
                     JCStatement stepBlock = make().Block(0, List.<JCStatement>of(
                             incr,
-                            make().If(cond, make().Break(labelName.asName()), null)));
+                            make().If(cond, make().Break(this.label), null)));
                     
                     JCStatement stepLoop = make().ForLoop(
                             List.<JCStatement>of(makeVar(stepCounterName, make().Type(syms().longType), makeLong(0))),
@@ -1739,7 +1738,7 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 JCStatement block = make().Block(0, transformedBlock);
                 
-                result.add(make().Labelled(labelName.asName(), 
+                result.add(make().Labelled(this.label, 
                         make().ForLoop(List.<JCStatement>of(init), null, List.<JCExpressionStatement>nil(), block)));
             }
             
