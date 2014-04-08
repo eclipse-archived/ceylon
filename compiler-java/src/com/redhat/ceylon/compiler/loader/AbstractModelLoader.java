@@ -2397,10 +2397,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             enumValueType.setUnit(value.getUnit());
             enumValueType.setStaticallyImportable(value.isStaticallyImportable());
             value.setType(enumValueType.getType());
+            value.setUncheckedNullType(false);
         } else {
             value.setType(type);
+            value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
         }
-        value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), fieldMirror.getType()));
 
         markUnboxed(value, null, fieldMirror.getType());
