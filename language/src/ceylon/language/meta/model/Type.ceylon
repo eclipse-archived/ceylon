@@ -20,10 +20,10 @@ shared interface Type<out Type=Anything> /* of ClassOrInterface
     "True if the given instance is of this type, or is of a subtype of this type."
     shared formal Boolean typeOf(Anything instance);
 
-    "True if the given type is a supertype of this type."
+    "True if this type is a supertype of the given type, or if both types are the same."
     shared formal Boolean supertypeOf(AppliedType<Anything> type);
     
-    "True if the given type is a subtype of this type."
+    "True if this type is a subtype of the given type, or if both types are the same."
     shared default Boolean subtypeOf(AppliedType<Anything> type) => type.supertypeOf(this);
 
     "True if the given type is a exactly this type."
