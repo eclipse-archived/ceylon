@@ -321,9 +321,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         return outCar;
     }
     
-    private URLClassLoader classLoaderForModule(final String moduleName, String[] deps, File repo)
+    private URLClassLoader classLoaderForModule(final String moduleName, final String[] deps, File repo)
             throws URISyntaxException, MalformedURLException {
-        URL[] carUrls = new URL[1 + (deps != null ? deps.length : 0)];
+        final URL[] carUrls = new URL[1 + (deps != null ? deps.length : 0)];
         
         URL carUrl = urlForModule(repo, moduleName);
         final File carFile = new File(carUrl.toURI());
@@ -356,6 +356,27 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
                 Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, AbstractModelLoader.JDK_MODULE_VERSION, CompilerTest.makeArtifactResult(null), cl);
                 Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
+                // dependencies
+                for (int i = 0; i < deps.length; i++) {
+                    // url is in carUrls[1+i]
+                    try {
+                        File car = new File(carUrls[1+i].toURI());
+                        String name = deps[i];
+                        String namePart = car.getName();
+                        String version;
+                        if(namePart.startsWith(name+"-")){
+                            // remove name prefix
+                            version = namePart.substring(name.length()+1);
+                            // remove .car extension
+                            version = version.substring(0, version.length()-4);
+                        }else
+                            throw new RuntimeException("Failed to find dependency module version for "+name);
+                        Metamodel.loadModule(name,  version, CompilerTest.makeArtifactResult(car), cl);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
             }
         };
         return cl;
