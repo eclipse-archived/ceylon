@@ -88,7 +88,7 @@ function Modulo(meta, $$modulo){
   },undefined,{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Package$meta$declaration}}},$cont:Modulo,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Module','$at','members']});
   $defat($$modulo,'dependencies',function(){
     if (typeof(meta.$mod$imps)==='function')meta.$mod$imps=meta.$mod$imps();
-    var deps=mm['$mod-deps'];
+    var deps=mm['$mod-deps']||[];
     if (typeof(deps[0]) === 'string') {
       var _d=[];
       for (var d in meta.$mod$imps) {
@@ -111,11 +111,14 @@ function Modulo(meta, $$modulo){
   function findImportedPackage(pknm){
     var pk = this.findPackage(pknm);
     if (pk) return pk;
-    var deps=this.dependencies;
     if (pknm.match('^ceylon\\.language')) {
+      var clmod=getModules$meta().find('ceylon.language', $CCMM$['$mod-version']);
+      var deps=clmod.dependencies;
       if (deps===getEmpty())deps=[];
-      deps.push(Importa('ceylon.language', $CCMM$['$mod-version']),this);
+      deps.push(Importa('ceylon.language', $CCMM$['$mod-version']),clmod);
+      return clmod.findPackage(pknm);
     }
+    var deps=this.dependencies;
     for (var i=0; i < deps.length; i++) {
       pk = deps[i].container.findImportedPackage(pknm);
       if (pk)return pk;
