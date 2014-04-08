@@ -76,33 +76,39 @@ shared interface ClassOrInterfaceDeclaration
     shared formal Boolean isAlias;
     
     // FIXME: should Kind default to NestableDeclaration?
-    "Returns the list of member declarations that satisfy the given `Kind` type argument."
+    "Returns the list of shared member declarations that satisfy the given `Kind` type argument. This includes inherited
+     declarations but not unshared declarations."
     shared formal Kind[] memberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
 
-    "Returns the list of member declarations that satisfy the given `Kind` type argument."
+    "Returns the list of member declarations directly declared on this class or interface, which satisfy the given 
+     `Kind` type argument. This includes unshared declarations but not inherited declarations."
     shared formal Kind[] declaredMemberDeclarations<Kind>() 
         given Kind satisfies NestableDeclaration;
 
-    "Returns the list of member declarations that satisfy the given `Kind` type argument and
-     that are annotated with the given `Annotation` type argument"
+    "Returns the list of shared member declarations that satisfy the given `Kind` type argument and
+     that are annotated with the given `Annotation` type argument. This includes inherited
+     declarations but not unshared declarations."
     shared formal Kind[] annotatedMemberDeclarations<Kind, Annotation>() 
         given Kind satisfies NestableDeclaration
         given Annotation satisfies AnnotationType;
     
-    "Returns the list of member declarations that satisfy the given `Kind` type argument and
-     that are annotated with the given `Annotation` type argument"
+    "Returns the list of member declarations directly declared on this class or interface, which satisfy the given 
+     `Kind` type argument and that are annotated with the given `Annotation` type argument.
+     This includes unshared declarations but not inherited declarations."
     shared formal Kind[] annotatedDeclaredMemberDeclarations<Kind, Annotation>() 
         given Kind satisfies NestableDeclaration
         given Annotation satisfies AnnotationType;
     
-    "Looks up a member declaration by name, provided it satisfies the given `Kind` type
-     argument. Returns `null` if no such member matches."
+    "Looks up a shared member declaration by name, provided it satisfies the given `Kind` type
+     argument. Returns `null` if no such member matches. This includes inherited
+     declarations but not unshared declarations"
     shared formal Kind? getMemberDeclaration<Kind>(String name) 
         given Kind satisfies NestableDeclaration;
 
-    "Looks up a member declaration by name, provided it satisfies the given `Kind` type
-     argument. Returns `null` if no such member matches."
+    "Looks up a member declaration directly declared on this class or interface, by name, 
+     provided it satisfies the given `Kind` type argument. Returns `null` if no such member matches. 
+     This includes unshared declarations but not inherited declarations."
     shared formal Kind? getDeclaredMemberDeclaration<Kind>(String name) 
         given Kind satisfies NestableDeclaration;
     
