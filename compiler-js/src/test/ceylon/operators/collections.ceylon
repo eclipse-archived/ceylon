@@ -26,6 +26,6 @@ void testEnumerations() {
     check(t2.size==4, "t2.size!=4");
     //check(t3.size==5, "t3.size!=5");
     check(!className({*lcomp}).startsWith("ceylon.language::Tuple"), "{*comp} is not Tuple but ``className({*lcomp})``");
-    check(className({*ecomp}).startsWith("ceylon.language::ArraySequence"), "{*ecomp} is not Tuple but ``className({*ecomp})``");
-    check(className({*seq}).startsWith("ceylon.language::Tuple"), "{*seq} is not Tuple but ``className({*seq})``");
+    check(className({*ecomp}).startsWith("ceylon.language::LazyIterable"), "{*ecomp} is not LazyIterable but ``className({*ecomp})``");
+    check(className({*seq}).startsWith("ceylon.language::LazyIterable"), "{*seq} is not LazyIterable but ``className({*seq})``");
 }
