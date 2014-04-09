@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -98,9 +99,10 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     } else if (MetamodelGenerator.METATYPE_INTERFACE.equals(metatype)) {
                         refineMembers(loadInterface(e.getKey(), m, this, null));
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
-                            || metatype.equals(MetamodelGenerator.METATYPE_GETTER)
-                            || metatype.equals(MetamodelGenerator.METATYPE_SETTER)) {
+                            || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
                         loadAttribute(k, m, this, null);
+                    } else if (metatype.equals(MetamodelGenerator.METATYPE_SETTER)) {
+                        loadSetter(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
                         loadMethod(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
@@ -223,6 +225,15 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
                 if (d.getDirectMember(e.getKey(), null, false) == null) {
                     d.getMembers().add(loadAttribute(e.getKey(), e.getValue(), (Scope)d, tparms));
+                }
+            }
+        }
+        //Setters
+        sub = (Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_SETTERS);
+        if (sub != null) {
+            for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
+                if (d.getDirectMember(e.getKey(), null, false) == null) {
+                    d.getMembers().add(loadSetter(e.getKey(), e.getValue(), (Scope)d, tparms));
                 }
             }
         }
@@ -475,6 +486,27 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
+        @SuppressWarnings("unchecked")
+        final Map<String,Object> ktype = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
+        d.setType(getTypeFromJson(ktype, parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
+        return d;
+    }
+
+    Setter loadSetter(String name, Map<String, Object> m, Scope parent,
+            List<TypeParameter> typeParameters) {
+        final Value v = (Value)parent.getDirectMember(name, null, false);
+        Setter d = new Setter();
+        d.setName(name);
+        d.setContainer(parent);
+        d.setUnit(u2);
+        d.setGetter(v);
+        if (parent == this) {
+            u2.addDeclaration(d);
+            addMember(null);
+        }
+        @SuppressWarnings("unchecked")
+        final Map<String,List<String>> _anns = (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS);
+        setAnnotations(d, _anns);
         @SuppressWarnings("unchecked")
         final Map<String,Object> ktype = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
         d.setType(getTypeFromJson(ktype, parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
