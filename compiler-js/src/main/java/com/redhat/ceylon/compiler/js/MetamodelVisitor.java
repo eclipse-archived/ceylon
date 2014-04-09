@@ -143,8 +143,6 @@ public class MetamodelVisitor extends Visitor {
                 throw new RuntimeException("JS compiler doesn't know how to encode " +
                         d.getClass().getName() + " into model");
             }
-        } else {
-//            st.addUnexpectedError("Specifier statement encountered without a corresponding declaration");
         }
     }
 

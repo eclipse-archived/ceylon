@@ -1830,6 +1830,10 @@ public class GenerateJsVisitor extends Visitor
                     shareGetter(decl);
                 }
             } else {
+                if (decl.isMember()) {
+                    qualify(expr, decl);
+                    out(names.name(decl), "=", varName, ";");
+                }
                 directAccess.add(decl);
             }
         }
