@@ -56,6 +56,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
+import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
@@ -553,6 +554,11 @@ public abstract class CompilerTest {
             @Override
             public File artifact() throws RepositoryException {
                 return file;
+            }
+
+            @Override
+            public String repositoryDisplayString() {
+                return NodeUtils.UNKNOWN_REPOSITORY;
             }
         };
     }
