@@ -146,7 +146,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private boolean ignoreMissingDoc;
     private boolean ignoreMissingThrows;
     private boolean ignoreBrokenLink;
-    private boolean haltOnError;
+    private boolean haltOnError = true;
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
     private List<String> moduleSpecs = new LinkedList<String>();
@@ -384,8 +384,9 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         // collect all units we are typechecking
         initTypeCheckedUnits(typeChecker);
         typeChecker.process();
-        if(haltOnError && typeChecker.getErrors() > 0)
-            throw new RuntimeException(CeylondMessages.msg("error.failedParsing", typeChecker.getErrors()));
+        if (haltOnError && typeChecker.getErrors() > 0) {
+            throw new CeylondException("error.failedParsing", new Object[] { typeChecker.getErrors() }, null);
+        }
         
         initModules(modules);
         initPhasedUnits();

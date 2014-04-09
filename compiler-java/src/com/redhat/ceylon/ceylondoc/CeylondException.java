@@ -19,7 +19,9 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
-public class CeylondException extends RuntimeException {
+import com.redhat.ceylon.common.tool.ToolError;
+
+public class CeylondException extends ToolError {
 
     private static final long serialVersionUID = 1L;
 
