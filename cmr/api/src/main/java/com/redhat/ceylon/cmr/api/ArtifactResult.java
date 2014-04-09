@@ -78,4 +78,12 @@ public interface ArtifactResult {
      * @throws RepositoryException for any I/O error
      */
     List<ArtifactResult> dependencies() throws RepositoryException;
+
+    /**
+     * Get the display string of the repository this 
+	 *   result comes from
+     *
+     * @return the repository display string.
+     */
+    String repositoryDisplayString();
 }

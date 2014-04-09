@@ -97,6 +97,11 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         public List<ArtifactResult> dependencies() throws RepositoryException {
             return getDelegate().dependencies();
         }
+
+        @Override
+        public String repositoryDisplayString() {
+            return getDelegate().repositoryDisplayString();
+        }
     }
 }
 

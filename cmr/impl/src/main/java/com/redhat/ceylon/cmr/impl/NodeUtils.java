@@ -165,6 +165,19 @@ public final class NodeUtils {
         return null;
     }
 
+    public static final String UNKNOWN_REPOSITORY = "Unknown repository";
+    
+    /**
+     * Get repository display string.
+     *
+     * @param node the node
+     * @return repository display string
+     */
+    public static String getRepositoryDisplayString(Node node) {
+        Repository repo = getRepository(node);
+        return repo != null ? repo.getDisplayString() : UNKNOWN_REPOSITORY;
+    }
+
     protected static void buildFullPath(Node node, StringBuilder path, String separator, boolean appendSeparator) {
         final Iterable<? extends Node> parents = node.getParents();
         //noinspection LoopStatementThatDoesntLoop

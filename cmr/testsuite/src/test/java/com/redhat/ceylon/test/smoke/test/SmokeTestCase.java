@@ -17,8 +17,11 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -35,19 +38,23 @@ import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.cmr.impl.AbstractNodeRepositoryManager;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.JDKRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
+import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -203,12 +210,29 @@ public class SmokeTestCase extends AbstractTest {
 
         String name = "com.redhat.fizbiz";
         String version = "1.0.0.Beta1";
+        File file = null;
+        File originFile = null;
         try {
-            File file = manager.getArtifact(name, version);
+            file = manager.getArtifact(name, version);
             Assert.assertNotNull(file);
+            originFile = new File(file.getAbsolutePath() + ".origin");
+            Assert.assertNotNull(originFile);            
+            try {
+                String line = null;
+                BufferedReader reader = new BufferedReader(new FileReader(originFile));
+                try {
+                    line = reader.readLine();
+                } finally {
+                    reader.close();
+                }
+                assertEquals(repoURL, line);
+            } catch(IOException e) {
+            } 
         } finally {
             manager.removeArtifact(name, version);
             // test if remove really works
+            if (file != null) assertFalse(file.exists());
+            if (originFile != null) assertFalse(originFile.exists());
             testSearchResults("com.redhat.fizbiz", Type.JVM, new ModuleDetails[0]);
         }
     }

@@ -20,6 +20,7 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -81,8 +82,17 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                         log.debug(" -> Found it, now caching it");
                         final File file = putContent(context, node, inputStream);
                         log.debug("    Caching done: " + file);
+                        String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
+                        File originalRepoFile = new File(file.getParentFile(), file.getName().concat(ORIGIN));                        
+                        FileWriter writer = new FileWriter(originalRepoFile, false);
+                        try {
+                            writer.write(repositoryDisplayString);
+                            writer.close();
+                        } catch(IOException e) {
+                            log.error(e.toString());
+                        }
                         // we expect the remote nodes to support Ceylon module info
-                        return new FileArtifactResult(this, context.getName(), context.getVersion(), file);
+                        return new FileArtifactResult(this, context.getName(), context.getVersion(), file, repositoryDisplayString);
                     } finally {
                         IOUtils.safeClose(inputStream);
                     }
@@ -214,6 +224,10 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 final Node sl = parent.getChild(child + SHA1 + LOCAL);
                 if (sl != null) {
                     fileContentStore.removeFile(sl);
+                }
+                final Node origin = parent.getChild(child + ORIGIN);
+                if (origin != null) {
+                    fileContentStore.removeFile(origin);
                 }
                 final Node descriptor = Configuration.getResolvers().descriptor(node);
                 if (descriptor != null) {

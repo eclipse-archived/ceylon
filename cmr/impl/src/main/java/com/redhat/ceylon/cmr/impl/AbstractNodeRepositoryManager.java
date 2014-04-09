@@ -51,6 +51,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected static final String SHA1 = ".sha1";
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
+    protected static final String ORIGIN = ".origin";
 
     protected List<Repository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
 
@@ -111,7 +112,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             }
             repos.add(root);
         }
-        if (!addCacheAsRoot) {
+        if (!addCacheAsRoot && !cacheAdded) {
             repos.add(cache);
         }
         return repos;
@@ -119,16 +120,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     
     public List<String> getRepositoriesDisplayString() {
         final List<String> displayStrings = new ArrayList<>();
-        boolean cacheAdded = false;
-        for (Repository root : roots) {
-            if (!addCacheAsRoot && !cacheAdded && root.getRoot().isRemote()) {
-                displayStrings.add(cache.getDisplayString());
-                cacheAdded = true;
-            }
+        for (Repository root : getRepositories()) {
             displayStrings.add(root.getDisplayString());
-        }
-        if (!addCacheAsRoot && !cacheAdded) {
-            displayStrings.add(cache.getDisplayString());
         }
         return displayStrings;
     }

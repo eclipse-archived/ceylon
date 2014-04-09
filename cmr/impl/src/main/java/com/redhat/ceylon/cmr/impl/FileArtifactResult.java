@@ -28,14 +28,21 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
  */
 public class FileArtifactResult extends AbstractCeylonArtifactResult {
     private final File file;
+    private final String repositoryDisplayString;
 
-    protected FileArtifactResult(RepositoryManager manager, String name, String version, File file) {
+    protected FileArtifactResult(RepositoryManager manager, String name, String version, File file, String repositoryDisplayString) {
         super(manager, name, version);
         this.file = file;
+        this.repositoryDisplayString = repositoryDisplayString;
     }
 
     protected File artifactInternal() throws RepositoryException {
         return file;
+    }
+
+    @Override
+    public String repositoryDisplayString() {
+        return repositoryDisplayString;
     }
 }
 

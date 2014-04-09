@@ -16,8 +16,12 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -56,6 +60,28 @@ public class DefaultRepository extends AbstractRepository {
             } catch (IOException e) {
                 throw new RepositoryException(e);
             }
+        }
+        
+        @Override
+        public String repositoryDisplayString() {
+            String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
+            File artifact = artifact();
+            File originFile = new File(artifact.getParentFile(), artifact.getName() + RootRepositoryManager.ORIGIN);
+            if (originFile.exists()) {
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(originFile));
+                    try {
+                        String line = reader.readLine();
+                        if (line != null && !line.trim().isEmpty()) {
+                            repositoryDisplayString = line;
+                        }
+                    } finally {
+                        reader.close();
+                    }
+                } catch(IOException e) {
+                } 
+            }
+            return repositoryDisplayString;
         }
     }
 }

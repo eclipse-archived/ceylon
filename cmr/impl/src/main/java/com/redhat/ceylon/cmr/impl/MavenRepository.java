@@ -83,5 +83,10 @@ public class MavenRepository extends AbstractRepository {
         public List<ArtifactResult> dependencies() throws RepositoryException {
             return Collections.emptyList(); // dunno how to grab deps
         }
+        
+        @Override
+        public String repositoryDisplayString() {
+            return NodeUtils.getRepositoryDisplayString(node);
+        }
     }
 }

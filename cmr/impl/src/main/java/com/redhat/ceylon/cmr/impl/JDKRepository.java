@@ -43,6 +43,8 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
 public class JDKRepository extends AbstractRepository {
 
     public static final String JDK_VERSION = "7";
+
+    public static final String JDK_REPOSITORY_DISPLAY_STRING = "JDK modules repository";
     
     private static final String JAVA_ORIGIN = "Java Runtime";
 
@@ -82,7 +84,7 @@ public class JDKRepository extends AbstractRepository {
 
         @Override
         public String getDisplayString() {
-            return "JDK modules repository";
+            return JDK_REPOSITORY_DISPLAY_STRING;
         }
 
         @Override
