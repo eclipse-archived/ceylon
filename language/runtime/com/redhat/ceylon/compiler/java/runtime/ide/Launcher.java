@@ -14,6 +14,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResultType;
 import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
+import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
@@ -151,6 +152,11 @@ public class Launcher {
             @Override
             public List<ArtifactResult> dependencies() throws RepositoryException {
                 return Collections.emptyList();
+            }
+
+            @Override
+            public String repositoryDisplayString() {
+                return NodeUtils.UNKNOWN_REPOSITORY;
             }};
     }
 
