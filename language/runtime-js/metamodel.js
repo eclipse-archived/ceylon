@@ -113,8 +113,10 @@ function typeLiteral$meta($$targs$$) {
       return OpenInterface(_pkg, t);
     } else if (mdl['$mt'] === 'm') {
       return OpenFunction(_pkg, t);
-    } else if (mdl['$mt'] === 'a' || mdl['$mt'] === 'g'||mdl.$mt==='s') {
+    } else if (mdl['$mt'] === 'a' || mdl['$mt'] === 'g') {
       return OpenValue(_pkg, t);
+    } else if (mdl.$mt==='s') {
+      return OpenSetter(OpenValue(_pkg, t));
     } else {
       console.log("WTF is a metatype " + mdl['$mt'] + " on an open type???????");
     }
