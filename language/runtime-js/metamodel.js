@@ -26,7 +26,7 @@ function type$meta(x,$$targs$$) {
     }
   }
   if (mm===undefined&&x.reifyCeylonType)mm=Array$.$crtmm$;
-  if (mm===undefined)throw Error("Cannot retrieve metamodel for " + x);
+  if (mm===undefined)throw new Error("Cannot retrieve metamodel for " + x);
   if (mm.$t) { //it's a value
     if (typeof(x)==='function') { //It's a callable
       if (mm.$cont) {
@@ -64,12 +64,12 @@ exports.type$meta=type$meta;
 
 function typeLiteral$meta($$targs$$) {
   if ($$targs$$ === undefined || $$targs$$.Type$typeLiteral === undefined) {
-    throw Exception("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
+    throw new Error("Missing type argument 'Type' " + /*require('util').inspect(*/$$targs$$);
   } else if ($$targs$$.Type$typeLiteral.$crtmm$ == undefined) {
     //closed type
     var t = $$targs$$.Type$typeLiteral.t
     if (t === undefined) {
-      throw Exception("'Type' argument should be an open or closed type");
+      throw new Error("'Type' argument should be an open or closed type");
     } else if (t === 'u' || t === 'i') {
       return t === 'u' ? applyUnionType($$targs$$.Type$typeLiteral) : applyIntersectionType($$targs$$.Type$typeLiteral);
     } else if (t === 'T') {
@@ -77,7 +77,7 @@ function typeLiteral$meta($$targs$$) {
       var _tt=$retuple($$targs$$.Type$typeLiteral);
       return AppliedClass(Tuple,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
     } else if (t.$crtmm$ === undefined) {
-      throw Exception("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
+      throw new Error("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);
     } else {
       var mm = getrtmm$$(t);
       var mdl = get_model(mm);
@@ -122,7 +122,7 @@ function typeLiteral$meta($$targs$$) {
     }
     console.log("typeLiteral<" + t.getT$name() + "> (open type)");
   }
-  throw Exception("typeLiteral UNIMPLEMENTED for " + /*require('util').inspect(*/$$targs$$);
+  throw new Error("typeLiteral UNIMPLEMENTED for " + /*require('util').inspect(*/$$targs$$);
 }
 typeLiteral$meta.$crtmm$={$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language.meta','typeLiteral']};
 exports.typeLiteral$meta=typeLiteral$meta;
