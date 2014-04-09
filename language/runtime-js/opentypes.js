@@ -278,6 +278,8 @@ $defat($$openValue,'container',function(){
         return false;
       },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
       $defat($$openValue,'variable',function(){
+        var _m = get_model(getrtmm$$(this.tipo));
+        if (_m && _m['var']) return true;
         return $findAnnotation(this.tipo,VariableAnnotation)!==null;
       },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','variadic']};});
             
@@ -343,13 +345,17 @@ function OpenSetter(v, $$openSetter){
 }
 OpenSetter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:SetterDeclaration$meta$declaration}],d:['ceylon.language.meta.declaration','SetterDeclaration']};};
 function $init$OpenSetter(){
-    if (OpenSetter.$$===undefined){
-        initTypeProto(OpenSetter,'ceylon.language.meta.declaration::OpenSetter',Basic,SetterDeclaration$meta$declaration);
-        (function($$openSetter){
-            $defat($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
-        })(OpenSetter.$$.prototype);
-    }
-    return OpenSetter;
+  if (OpenSetter.$$===undefined){
+    initTypeProto(OpenSetter,'ceylon.language.meta.declaration::OpenSetter',Basic,SetterDeclaration$meta$declaration);
+    (function($$openSetter){
+      $defat($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
+      $defat($$openSetter,'name',function(){return this.variable_.name;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','name']};});
+      $$openSetter.equals=function(o) {
+        return (isOfType(o,{t:OpenSetter}) && o.variable.equals(this.variable))
+      }
+    })(OpenSetter.$$.prototype);
+  }
+  return OpenSetter;
 }
 exports.$init$OpenSetter=$init$OpenSetter;
 $init$OpenSetter();
