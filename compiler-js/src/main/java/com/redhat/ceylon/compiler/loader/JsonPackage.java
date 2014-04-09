@@ -98,7 +98,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     } else if (MetamodelGenerator.METATYPE_INTERFACE.equals(metatype)) {
                         refineMembers(loadInterface(e.getKey(), m, this, null));
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
-                            || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
+                            || metatype.equals(MetamodelGenerator.METATYPE_GETTER)
+                            || metatype.equals(MetamodelGenerator.METATYPE_SETTER)) {
                         loadAttribute(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
                         loadMethod(k, m, this, null);
