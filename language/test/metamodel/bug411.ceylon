@@ -1,5 +1,9 @@
+import ceylon.language.meta.declaration { ClassDeclaration }
+
 @test
 shared void bug411() {
-    assert(`module modules.imported`.members.size == 1);
-    assert(`module modules.imported`.findPackage("modules.imported") exists);
+    value m = `module modules.imported`;
+    assert(m.members.size == 1);
+    assert(exists p = m.findPackage("modules.imported"));
+    assert(p.members<ClassDeclaration>().size == 1);
 }
