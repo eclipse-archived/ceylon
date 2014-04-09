@@ -72,5 +72,6 @@ shared void test() {
     typeTests();
     modulesTests();
     testModelLoader();
+    locals();
     results();
 }
