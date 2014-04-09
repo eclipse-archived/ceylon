@@ -40,6 +40,7 @@ public class MetamodelGenerator {
     public static final String KEY_OBJECTS      = "$o";
     public static final String KEY_METHODS      = "$m";
     public static final String KEY_ATTRIBUTES   = "$at";
+    public static final String KEY_SETTERS      = "$as";
     public static final String KEY_ANNOTATIONS  = "$an";
     public static final String KEY_TYPE         = "$t";
     public static final String KEY_TYPES        = "$ts";
@@ -110,30 +111,32 @@ public class MetamodelGenerator {
         if (d.isToplevel()) {
             return pkgmap;
         }
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Declaration> names = new ArrayList<>();
         Scope sc = d.getContainer();
         while (sc.getContainer() != null) {
             if (sc instanceof Declaration) {
-                names.add(0, ((Declaration) sc).getName());
+                names.add(0, (Declaration) sc);
             }
             sc = sc.getContainer();
         }
         Map<String, Object> last = pkgmap;
-        for (String name : names) {
+        for (Declaration name : names) {
             if (last == null) {
                 break;
             } else if (last == pkgmap) {
-                last = (Map<String, Object>)last.get(name);
-            } else if (last.containsKey(KEY_METHODS) && ((Map<String,Object>)last.get(KEY_METHODS)).containsKey(name)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_METHODS)).get(name);
-            } else if (last.containsKey(KEY_ATTRIBUTES) && ((Map<String,Object>)last.get(KEY_ATTRIBUTES)).containsKey(name)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_ATTRIBUTES)).get(name);
-            } else if (last.containsKey(KEY_CLASSES) && ((Map<String,Object>)last.get(KEY_CLASSES)).containsKey(name)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_CLASSES)).get(name);
-            } else if (last.containsKey(KEY_INTERFACES) && ((Map<String,Object>)last.get(KEY_INTERFACES)).containsKey(name)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_INTERFACES)).get(name);
-            } else if (last.containsKey(KEY_OBJECTS) && ((Map<String,Object>)last.get(KEY_OBJECTS)).containsKey(name)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_OBJECTS)).get(name);
+                last = (Map<String, Object>)last.get(name.getName());
+            } else if (last.containsKey(KEY_METHODS) && name instanceof Method) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_METHODS)).get(name.getName());
+            } else if (last.containsKey(KEY_ATTRIBUTES) && (name instanceof Value || name instanceof TypeAlias)) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_ATTRIBUTES)).get(name.getName());
+            } else if (last.containsKey(KEY_SETTERS) && name instanceof Setter) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_SETTERS)).get(name.getName());
+            } else if (last.containsKey(KEY_CLASSES) && name instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_CLASSES)).get(name.getName());
+            } else if (last.containsKey(KEY_INTERFACES) && name instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_INTERFACES)).get(name.getName());
+            } else if (last.containsKey(KEY_OBJECTS) && ((Map<String,Object>)last.get(KEY_OBJECTS)).containsKey(name.getName())) {
+                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_OBJECTS)).get(name.getName());
             }
         }
         return last;
@@ -374,10 +377,7 @@ public class MetamodelGenerator {
     }
 
     public void encodeSetter(Setter d) {
-        Map<String, Object> m = encodeAttributeOrGetter(d);
-        if (m != null) {
-            m.put("var", 1);
-        }
+        encodeAttributeOrGetter(d);
     }
 
     @SuppressWarnings("unchecked")
@@ -504,22 +504,26 @@ public class MetamodelGenerator {
                 return null;
             }
             if (!d.isToplevel()) {
-                if (!parent.containsKey(KEY_ATTRIBUTES)) {
-                    parent.put(KEY_ATTRIBUTES, new HashMap<>());
+                final String _k = d instanceof Setter ? KEY_SETTERS : KEY_ATTRIBUTES;
+                if (!parent.containsKey(_k)) {
+                    parent.put(_k, new HashMap<>());
                 }
-                parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
-            }
-            //Find the existing model to merge
-            Map<String,Object> existing = (Map<String,Object>)parent.get(d.getName());
-            if (existing != null) {
-                m = existing;
+                parent = (Map<String,Object>)parent.get(_k);
+                if (parent.containsKey(d.getName())) {
+                    //merge existing
+                    m = (Map<String, Object>)parent.get(d.getName());
+                }
             }
         } else {
             //Ignore attributes inside control blocks, methods, etc.
             return null;
         }
         m.put(KEY_NAME, d.getName());
-        m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
+        if (d instanceof Setter) {
+            m.put(KEY_METATYPE, METATYPE_SETTER);
+        } else {
+            m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
+        }
         m.put(KEY_TYPE, typeMap(d.getType(), d));
         encodeAnnotations(d, m);
         parent.put(d.getName(), m);
