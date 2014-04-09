@@ -19,6 +19,7 @@ public class NodeTest {
     private static void run(final String nodePath, final File subdir) throws IOException, InterruptedException {
         final File root = subdir.getParentFile();
         final File jsf = getJavaScript(subdir);
+        if (!jsf.exists())return;
         final String path = jsf.getPath();
         String subpath = path.substring(root.getPath().length()+1);
         System.out.printf("RUNNING %s/%s%n", root.getName(), subdir.getName());
@@ -56,7 +57,7 @@ public class NodeTest {
         final String nodePath = CeylonRunJsTool.findNode();
         for (File subdir1 : root1.listFiles()) {
             final String modname = subdir1.getName();
-            if (subdir1.isDirectory() && !(modname.equals("ceylon"))) { //skip language module
+            if (subdir1.isDirectory()) { //skip language module
                 File subdir2 = new File(root2, modname);
                 run(nodePath, subdir1);
                 run(nodePath, subdir2);
