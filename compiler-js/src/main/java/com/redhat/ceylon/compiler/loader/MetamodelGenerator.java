@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -54,14 +55,15 @@ public class MetamodelGenerator {
 
     public static final String KEY_DEFAULT      = "$def";
 
-    public static final String METATYPE_CLASS           = "cls";
-    public static final String METATYPE_INTERFACE       = "ifc";
+    public static final String METATYPE_CLASS           = "c";
+    public static final String METATYPE_INTERFACE       = "i";
     public static final String METATYPE_ALIAS           = "als";
-    public static final String METATYPE_OBJECT          = "obj";
-    public static final String METATYPE_METHOD          = "mthd";
-    public static final String METATYPE_ATTRIBUTE       = "attr";
-    public static final String METATYPE_GETTER          = "gttr";
-    public static final String METATYPE_TYPE_PARAMETER  = "tpm";
+    public static final String METATYPE_OBJECT          = "o";
+    public static final String METATYPE_METHOD          = "m";
+    public static final String METATYPE_ATTRIBUTE       = "a";
+    public static final String METATYPE_GETTER          = "g";
+    public static final String METATYPE_SETTER          = "s";
+    public static final String METATYPE_TYPE_PARAMETER  = "tp";
     public static final String METATYPE_PARAMETER       = "prm";
 
     private final Map<String, Object> model = new HashMap<>();
@@ -371,6 +373,13 @@ public class MetamodelGenerator {
         }
     }
 
+    public void encodeSetter(Setter d) {
+        Map<String, Object> m = encodeAttributeOrGetter(d);
+        if (m != null) {
+            m.put("var", 1);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public Map<String,Object> encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
         final Map<String, Object> m = new HashMap<>();
@@ -500,6 +509,11 @@ public class MetamodelGenerator {
                 }
                 parent = (Map<String,Object>)parent.get(KEY_ATTRIBUTES);
             }
+            //Find the existing model to merge
+            Map<String,Object> existing = (Map<String,Object>)parent.get(d.getName());
+            if (existing != null) {
+                m = existing;
+            }
         } else {
             //Ignore attributes inside control blocks, methods, etc.
             return null;
@@ -586,7 +600,7 @@ public class MetamodelGenerator {
         }
     }
 
-    private boolean containsTypes(Declaration d) {
+    public boolean containsTypes(Declaration d) {
         for (Declaration m : d.getMembers()) {
             if (m instanceof TypeDeclaration || containsTypes(m)) {
                 return true;
