@@ -489,7 +489,7 @@ public class MetamodelGenerator {
     private Map<String, Object> encodeAttributeOrGetter(MethodOrValue d) {
         Map<String, Object> m = new HashMap<>();
         Map<String, Object> parent;
-        if (d.isToplevel() || d.isMember()) {
+        if (d.isToplevel() || d.isMember() || containsTypes(d)) {
             parent = findParent(d);
             if (parent == null) {
                 return null;
@@ -584,6 +584,15 @@ public class MetamodelGenerator {
         } else {
             map.put(KEY_PACKAGE, pkgName);
         }
+    }
+
+    private boolean containsTypes(Declaration d) {
+        for (Declaration m : d.getMembers()) {
+            if (m instanceof TypeDeclaration || containsTypes(m)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
