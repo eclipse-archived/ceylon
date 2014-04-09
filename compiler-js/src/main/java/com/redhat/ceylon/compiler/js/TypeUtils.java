@@ -533,16 +533,19 @@ public class TypeUtils {
                 //Build the path in reverse
                 if (!p.isToplevel()) {
                     if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                        sb.add(i, p.isAnonymous() ? "$o" : "$c");
+                        sb.add(i, p.isAnonymous() ? MetamodelGenerator.KEY_OBJECTS : MetamodelGenerator.KEY_CLASSES);
                     } else if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                        sb.add(i, "$i");
+                        sb.add(i, MetamodelGenerator.KEY_INTERFACES);
                     } else if (p instanceof Method) {
-                        sb.add(i, "$m");
+                        sb.add(i, MetamodelGenerator.KEY_METHODS);
                     } else if (p instanceof TypeAlias) {
-                        sb.add(i, "$at");
+                        sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
+                    } else if (p instanceof Setter) {
+                        sb.add(i, MetamodelGenerator.KEY_SETTERS);
                     } else { //It's a value
                         TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
-                        sb.add(i, (td!=null&&td.isAnonymous())?"$o":"$at");
+                        sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS
+                                : MetamodelGenerator.KEY_ATTRIBUTES);
                     }
                 }
                 p = Util.getContainingDeclaration(p);
