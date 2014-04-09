@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -604,6 +605,8 @@ public class TypeUtils {
             final Declaration _cont = Util.getContainingDeclaration(d);
             if (_cont instanceof Value) {
                 gen.out(",$cont:$prop$", gen.getNames().getter(_cont));
+            } else if (_cont instanceof Setter) {
+                gen.out(",$cont:", gen.getNames().setter(((Setter) _cont).getGetter()));
             } else {
                 gen.out(",$cont:", gen.getNames().name(_cont));
             }
