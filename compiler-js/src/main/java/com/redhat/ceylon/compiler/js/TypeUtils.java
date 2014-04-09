@@ -601,7 +601,12 @@ public class TypeUtils {
         }
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
-            gen.out(",$cont:", gen.getNames().name(Util.getContainingDeclaration(d)));
+            final Declaration _cont = Util.getContainingDeclaration(d);
+            if (_cont instanceof Value) {
+                gen.out(",$cont:$prop$", gen.getNames().getter(_cont));
+            } else {
+                gen.out(",$cont:", gen.getNames().name(_cont));
+            }
         }
         if (tparms != null && !tparms.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
