@@ -13,12 +13,12 @@ function _findTypeFromModel(pkg,mdl,cont) {
   //TODO this is very primitive needs a lot of rules replicated from the JsIdentifierNames
   var nm = mdl.$nm;
   var mt = mdl['$mt'];
-  if (mt === 'attr' || mt === 'gttr' || mt === 'obj') {
+  if (mt === 'a' || mt === 'g' || mt === 'o' || mt === 's') {
     nm = '$prop$get' + nm[0].toUpperCase() + nm.substring(1);
   }
   if (cont) {
     var imm=getrtmm$$(cont);
-    if (mt==='cls'||mt==='ifc')nm=nm+'$'+imm.d[imm.d.length-1];
+    if (mt==='c'||mt==='i')nm=nm+'$'+imm.d[imm.d.length-1];
   }else {
     nm+=pkg.suffix;
   }
@@ -52,9 +52,9 @@ function _openTypeFromTarg(targ,o) {
   var lit = typeLiteral$meta({Type$typeLiteral:targ.t});
   if (targ.a && lit)lit._targs=targ.a;
   var mdl = get_model(mm);
-  if (mdl.$mt==='ifc') {
+  if (mdl.$mt==='i') {
     return FreeInterface(lit);
-  } else if (mdl.$mt==='cls' || mdl.$mt==='obj') {
+  } else if (mdl.$mt==='c' || mdl.$mt==='o') {
     return FreeClass(lit);
   }
   console.log("Don't know WTF to return for " + lit + " metatype " + mdl.$mt);
@@ -408,7 +408,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
         return "class " + this.qualifiedName;
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
       $defat($$openClass,'anonymous',function(){
-        return this.meta.$mt==='obj';
+        return this.meta.$mt==='o';
       },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
       $defat($$openClass,'abstract',function(){
         return $findAnnotation(this.tipo,AbstractAnnotation)!==null;

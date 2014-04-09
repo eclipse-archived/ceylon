@@ -66,8 +66,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       var wantsIface=extendsType($$$mptypes.Kind$getMemberDeclaration,{t:InterfaceDeclaration$meta$declaration});
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
-      if ((wantsClass && _mdl.$mt!=='cls') || (wantsIface && _mdl.$mt!=='ifc'))return null;
-      _m=(_mdl.$mt==='cls'?OpenClass:OpenInterface)(this.containingPackage, _d);
+      if ((wantsClass && _mdl.$mt!=='c') || (wantsIface && _mdl.$mt!=='i'))return null;
+      _m=(_mdl.$mt==='c'?OpenClass:OpenInterface)(this.containingPackage, _d);
     }
   }
   if (_m) {
@@ -125,13 +125,13 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
     var m=defs[i];
     var mt = m['$mt'];
     var _d;
-    if (mt === 'mthd') {
+    if (mt === 'm') {
       _d=this.getMemberDeclaration(m.$nm, {Kind$getMemberDeclaration:{t:FunctionDeclaration$meta$declaration}});
-    } else if (mt==='cls') {
+    } else if (mt==='c') {
       _d=this.getMemberDeclaration(m.$nm, {Kind$getMemberDeclaration:{t:ClassDeclaration$meta$declaration}});
-    } else if (mt==='ifc') {
+    } else if (mt==='i') {
       _d=this.getMemberDeclaration(m.$nm, {Kind$getMemberDeclaration:{t:InterfaceDeclaration$meta$declaration}});
-    } else if (mt==='attr'||mt==='gttr'||mt==='obj') {
+    } else if (mt==='a'||mt==='g'||mt==='o'||mt==='s') {
       _d=this.getMemberDeclaration(m.$nm, {Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
     }
     if (_d) {
@@ -173,7 +173,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
   validate$typeparams(_t,_m.$tp,types);
   if (!extendsType(_t, $mptypes.Type$apply))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
-  var rv=this.meta.$mt==='ifc'?AppliedInterface(_t.t, {Type$Interface:$mptypes.Type$apply}):
+  var rv=this.meta.$mt==='i'?AppliedInterface(_t.t, {Type$Interface:$mptypes.Type$apply}):
     AppliedClass(_t.t, {Type$Class:$mptypes.Type$apply,Arguments$Class:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;
   return rv;
@@ -186,7 +186,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
   validate$typeparams(_t,mm.$tp,types);
   if (!extendsType(_t, $mptypes.Type$memberApply))
     throw IncompatibleTypeException$meta$model(String$("Type argument for 'Type' must be a supertype of " + this));
-  var rv=this.meta.$mt==='ifc'?AppliedMemberInterface(_t.t, {Container$MemberInterface:$mptypes.Container$memberApply, Type$MemberInterface:_t})
+  var rv=this.meta.$mt==='i'?AppliedMemberInterface(_t.t, {Container$MemberInterface:$mptypes.Container$memberApply, Type$MemberInterface:_t})
     :AppliedMemberClass(_t.t, {Container$MemberClass:$mptypes.Container$memberApply, Type$MemberClass:_t, Arguments$MemberClass:$mptypes.Arguments$memberApply});
   if (_t.a)rv.$targs=_t.a;
   return rv;

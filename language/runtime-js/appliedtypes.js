@@ -90,7 +90,7 @@ function $init$AppliedClass(){
 
       $$clase.$apply=function(a){
         var mdl=get_model(this.tipo.$crtmm$);
-        if (mdl&&mdl.$mt==='obj')throw InvocationException$meta$model("Cannot instantiate anonymous class");
+        if (mdl&&mdl.$mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
         a=convert$params(this.tipo.$crtmm$,a);
         if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);

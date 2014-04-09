@@ -34,7 +34,7 @@ function $is(obj, type) {
       if (obj.$crtmm$) {
         var _mm = getrtmm$$(obj);
         //We can navigate the metamodel
-        if (_mm.d['$mt'] === 'mthd') {
+        if (_mm.d['$mt'] === 'm') {
           if (type.t === Callable) { //It's a callable reference
             if (type.a && type.a.Return$Callable && _mm['$t']) {
               //Check if return type matches

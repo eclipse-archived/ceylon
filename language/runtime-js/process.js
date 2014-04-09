@@ -4,7 +4,7 @@ function languageClass() {
     Basic(lang);
     return lang;
 }
-languageClass.$crtmm$={$nm:'languageClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','language']};
+languageClass.$crtmm$={$nm:'languageClass',$mt:'c',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','language']};
 initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
 $defat(lang$proto, 'version', function() {
@@ -38,7 +38,7 @@ function processClass() {
     Basic(proc);
     return proc;
 }
-processClass.$crtmm$={$nm:'processClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','process']};
+processClass.$crtmm$={$nm:'processClass',$mt:'c',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','process']};
 initTypeProto(processClass, "ceylon.language::process", $init$Basic());
 var process$proto = processClass.$$.prototype;
 
@@ -220,7 +220,7 @@ function systemClass() {
     Basic(proc);
     return proc;
 }
-systemClass.$crtmm$={$nm:'systemClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','system']};
+systemClass.$crtmm$={$nm:'systemClass',$mt:'c',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','system']};
 initTypeProto(systemClass, "ceylon.language::system", $init$Basic());
 var system$proto = systemClass.$$.prototype;
 
@@ -255,7 +255,7 @@ function runtimeClass() {
     Basic(proc);
     return proc;
 }
-runtimeClass.$crtmm$={$nm:'runtimeClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','runtime']};
+runtimeClass.$crtmm$={$nm:'runtimeClass',$mt:'c',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','runtime']};
 initTypeProto(runtimeClass, "ceylon.language::runtime", $init$Basic());
 var runtime$proto = runtimeClass.$$.prototype;
 
@@ -306,7 +306,7 @@ function operatingSystemClass() {
     Basic(proc);
     return proc;
 }
-operatingSystemClass.$crtmm$={$nm:'operatingSystemClass',$mt:'cls',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','operatingSystem']};
+operatingSystemClass.$crtmm$={$nm:'operatingSystemClass',$mt:'c',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','operatingSystem']};
 initTypeProto(operatingSystemClass, "ceylon.language::operatingSystem", $init$Basic());
 var operatingSystem$proto = operatingSystemClass.$$.prototype;
 

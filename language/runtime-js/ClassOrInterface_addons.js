@@ -103,7 +103,7 @@ $defat(ClassOrInterface$meta$model.$$.prototype,'container',function(){
   if (this.$parent)return this.$parent;
   var cont = this.tipo.$crtmm$.$cont;
   if (cont === undefined)return null;
-  if (get_model(cont.$crtmm$).$mt === 'ifc')
+  if (get_model(cont.$crtmm$).$mt === 'i')
     return AppliedInterface(cont,{Type$Interface:{t:cont}});
   return AppliedClass(cont,{Type$Class:{t:cont},Arguments$Class:{t:Sequential,a:{Element$Iterable:{t:Anything}}}});
 },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Type$meta$model,a:{Type:{t:Anything}}}]},$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Member','$at','container']};});
@@ -132,11 +132,11 @@ ClassOrInterface$meta$model.$$.prototype.getClassOrInterface=function getClassOr
     var ict={t:ic};
     var _cont={t:this.tipo};
     if (this.$targs)_cont.a=this.$targs;
-    if (md.$mt==='ifc') {
+    if (md.$mt==='i') {
       if (!extendsType({t:Interface$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is an interface");
       validate$typeparams(ict,ic.$crtmm$.$tp,types$3);
       rv=AppliedMemberInterface(ic, {Container$MemberInterface:_cont,Type$MemberInterface:ict});
-    } else if (md.$mt==='cls'){
+    } else if (md.$mt==='c'){
       if (!extendsType({t:Class$meta$model},{t:$$$mptypes.Kind$getClassOrInterface.t}))throw IncompatibleTypeException$meta$model("Member " + name$2 + " is a class");
       validate$typeparams(ict,ic.$crtmm$.$tp,types$3);
       rv=AppliedMemberClass(ic, {Container$MemberClass:_cont,Type$MemberClass:ict, Arguments$MemberClass:$$$mptypes.Arguments$getClassOrInterface});

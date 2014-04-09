@@ -17,7 +17,7 @@ var toInt = function(float) {
 
 function JSNumber(value) { return Number(value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
-JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'cls',$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Number']};}
+JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Number']};}
 
 var origNumToString = Number.prototype.toString;
 inheritProto(JSNumber, Object$, Scalar, $init$Integral(), Exponentiable);

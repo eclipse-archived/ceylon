@@ -606,7 +606,7 @@ function StringIterator(string) {
     that.index = 0;
     return that;
 }
-StringIterator.$crtmm$=function(){return{$nm:'StringIterator',$mt:'cls',$ps:[{$nm:'string',$t:{t:String$}}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Iterator']}};
+StringIterator.$crtmm$=function(){return{$nm:'StringIterator',$mt:'c',$ps:[{$nm:'string',$t:{t:String$}}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Iterator']}};
 
 initTypeProto(StringIterator, 'ceylon.language::StringIterator', $init$Basic(), Iterator);
 var StringIterator$proto = StringIterator.$$.prototype;

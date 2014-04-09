@@ -145,7 +145,7 @@ function Nothing(wat) {
 }
 initType(Nothing, 'ceylon.language::Nothing');
 //This is quite a special case, since Nothing is not in the model, we need to insert it there
-$CCMM$['ceylon.language']["Nothing"]={"$mt":"cls","$an":{"shared":[]},"$nm":"Nothing"};
+$CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothing"};
 Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['ceylon.language','Nothing']};}
 
 function Object$(wat) {
@@ -204,7 +204,7 @@ function NativeException(e) {
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'cls',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Exception']};}
+NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Exception']};}
 exports.Identifiable=Identifiable;
 exports.identityHash=$identityHash;
 exports.$Object=Object$;
