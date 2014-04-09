@@ -216,7 +216,8 @@ shared final class Range<Element>(first, last)
     
     "Determines if this range includes the given range."
     shared Boolean includesRange(Range<Element> sublist) {
-        return first<=sublist.first<=last &&
+        return decreasing == sublist.decreasing &&
+                first<=sublist.first<=last &&
                 first<=sublist.last<=last;
     }
     
@@ -295,6 +296,9 @@ shared final class Range<Element>(first, last)
     shared actual Range<Element> reversed => Range(last,first);
     
     shared actual Range<Element>|Empty skipping(Integer skip) {
+        if (skip <= 0) {
+            return this;
+        }
         variable value x=0;
         variable value e = first;
         while (x++<skip) {
@@ -304,7 +308,7 @@ shared final class Range<Element>(first, last)
     }
     
     shared actual Range<Element>|Empty taking(Integer take) {
-        if (take == 0) {
+        if (take <= 0) {
             return {};
         }
         variable value x=0;
