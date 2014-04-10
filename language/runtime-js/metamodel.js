@@ -5,6 +5,7 @@ function get_model(mm) {
   for (var i=0; i < path.length; i++) {
     var _p=path[i];
     if (i===0 && _p==='$')_p='ceylon.language';
+    else if (i==path.length-1&&_p==='$set' && map.$nm && map.$set)return map;
     map = map[_p];
   }
   return map;
