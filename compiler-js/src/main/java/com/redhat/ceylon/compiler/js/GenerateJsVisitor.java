@@ -1449,9 +1449,7 @@ public class GenerateJsVisitor extends Visitor
         if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
         comment(that);
         if (defineAsProperty(d)) {
-            out(clAlias, "$defat(");
-            outerSelf(d);
-            out(",'", names.name(d), "',function()");
+            defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
             super.visit(that);
             final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
             if (setterDef == null) {
@@ -1468,12 +1466,18 @@ public class GenerateJsVisitor extends Visitor
             }
             out(",");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            if (setterDef != null) {
+                out(",");
+                TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+            }
             out(");");
         }
         else {
             out(function, names.getter(d), "()");
             super.visit(that);
             endLine();
+            out(names.getter(d), ".$crtmm$=");
+            TypeUtils.encodeForRuntime(that, d, this);
             if (!shareGetter(d)) { out(";"); }
             generateAttributeMetamodel(that, true, false);
         }
@@ -1501,9 +1505,9 @@ public class GenerateJsVisitor extends Visitor
         }
         out(",");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
-        if (d.getSetter() != null && d.getSetter().getAnnotations() != null && !d.getSetter().getAnnotations().isEmpty()) {
+        if (setterDef != null) {
             out(",");
-            new TypeUtils.ModelAnnotationGenerator(this, d.getSetter(), that).omitKey().generateAnnotations();
+            TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
         }
         out(");");
     }
@@ -1543,7 +1547,7 @@ public class GenerateJsVisitor extends Visitor
         Setter d = that.getDeclarationModel();
         if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
-        out("var ", names.setter(d.getGetter()), "=function(", names.name(d.getParameter()), ")");
+        out("function ", names.setter(d.getGetter()), "(", names.name(d.getParameter()), ")");
         if (that.getSpecifierExpression() == null) {
             that.getBlock().visit(this);
         } else {
@@ -1622,9 +1626,8 @@ public class GenerateJsVisitor extends Visitor
             else if (specInitExpr instanceof LazySpecifierExpression) {
                 final boolean property = defineAsProperty(d);
                 if (property) {
-                    out(clAlias, "$defat(");
-                    outerSelf(d);
-                    out(",'", names.name(d), "',function(){return ");
+                    defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
+                    out("{return ");
                 } else {
                     out(function, names.getter(d), "(){return ");
                 }
@@ -1634,11 +1637,10 @@ public class GenerateJsVisitor extends Visitor
                 boxUnboxEnd(boxType);
                 out(";}");
                 if (property) {
-                    boolean hasSetter = false;
+                    Tree.AttributeSetterDefinition setterDef = null;
                     if (d.isVariable()) {
-                        Tree.AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
+                        setterDef = associatedSetterDefinition(d);
                         if (setterDef != null) {
-                            hasSetter = true;
                             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
                             if (setterDef.getSpecifierExpression() == null) {
                                 super.visit(setterDef);
@@ -1649,11 +1651,15 @@ public class GenerateJsVisitor extends Visitor
                             }
                         }
                     }
-                    if (!hasSetter) {
+                    if (setterDef == null) {
                         out(",undefined");
                     }
                     out(",");
                     TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+                    if (setterDef != null) {
+                        out(",");
+                        TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+                    }
                     out(")");
                     endLine(true);
                 } else {
@@ -1879,11 +1885,10 @@ public class GenerateJsVisitor extends Visitor
                     if (boxType == 4) out("/*TODO: callable targs 3*/");
                     boxUnboxEnd(boxType);
                     endBlock();
-                    boolean hasSetter = false;
+                    Tree.AttributeSetterDefinition setterDef = null;
                     if (d.isVariable()) {
-                        Tree.AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
+                        setterDef = associatedSetterDefinition(d);
                         if (setterDef != null) {
-                            hasSetter = true;
                             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
                             if (setterDef.getSpecifierExpression() == null) {
                                 super.visit(setterDef);
@@ -1896,11 +1901,15 @@ public class GenerateJsVisitor extends Visitor
                             }
                         }
                     }
-                    if (!hasSetter) {
+                    if (setterDef == null) {
                         out(",undefined");
                     }
                     out(",");
                     TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+                    if (setterDef != null) {
+                        out(",");
+                        TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), that.getAnnotationList(), this);
+                    }
                     out(")");
                     endLine(true);
                 }
