@@ -95,14 +95,6 @@ public class MetamodelVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.AttributeSetterDefinition that) {
-        if (errorFree(that)) {
-            gen.encodeSetter(that.getDeclarationModel());
-            super.visit(that);
-        }
-    }
-
-    @Override
     public void visit(Tree.TypeAliasDeclaration that) {
         if (errorFree(that)) {
             gen.encodeTypeAlias(that.getDeclarationModel());
