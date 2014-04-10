@@ -761,9 +761,11 @@ public class Metamodel {
     public static Sequential<? extends ceylon.language.meta.declaration.Module> getModuleList() {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         Set<com.redhat.ceylon.compiler.typechecker.model.Module> modules = moduleManager.getContext().getModules().getListOfModules();
-        ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[modules.size()];
+        com.redhat.ceylon.compiler.typechecker.model.Module[] view = new com.redhat.ceylon.compiler.typechecker.model.Module[modules.size()];
+        modules.toArray(view);
+        ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[view.length];
         int i=0;
-        for(com.redhat.ceylon.compiler.typechecker.model.Module module : modules){
+        for(com.redhat.ceylon.compiler.typechecker.model.Module module : view){
             array[i++] = getOrCreateMetamodel(module);
         }
         return Util.sequentialInstance(Module.$TypeDescriptor$, array);
