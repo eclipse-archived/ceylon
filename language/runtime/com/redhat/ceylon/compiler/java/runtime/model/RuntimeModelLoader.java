@@ -143,5 +143,4 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     public Unit getUnit() {
         return typeFactory;
     }
-
 }
