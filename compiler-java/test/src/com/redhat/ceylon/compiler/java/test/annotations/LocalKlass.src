@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "4Local",
@@ -14,7 +14,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
     public LocalKlass() {
         if (true) {
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
             @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = Local.Inner.class)})
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
             class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -22,7 +22,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 Local() {
                 }
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Local.class)
                 class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
@@ -44,7 +44,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
         } else {
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
             class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
@@ -59,7 +59,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Attribute(setterClass = getter$setter$_.class)
         @.com.redhat.ceylon.compiler.java.metadata.Name("getter")
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<java.lang::String>"})
@@ -73,7 +73,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.Transient
             public .java.lang.String get_() {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
@@ -91,7 +91,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> getter$getter$_ = new getter$getter$_();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         @.com.redhat.ceylon.compiler.java.metadata.Setter(getterClass = getter$getter$_.class)
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
@@ -105,7 +105,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             public void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
             final .java.lang.String getter) {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
@@ -126,7 +126,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv$() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>>"})
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(

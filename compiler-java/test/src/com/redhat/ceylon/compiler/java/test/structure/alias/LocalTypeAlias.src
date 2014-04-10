@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
         path = {"localTypeAliasMethod"},
@@ -11,7 +11,7 @@ interface localTypeAliasMethod$TypeAliasInterface_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .java.lang.Object TypeAliasInterface$impl();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1TypeAliasClass",
@@ -24,7 +24,7 @@ final class localTypeAliasMethod_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void localTypeAliasMethod() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -49,7 +49,7 @@ final class localTypeAliasMethod_ {
             private final .com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ $this;
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class classAliasMethod1_ {
@@ -64,7 +64,7 @@ final class localTypeAliasMethod_ {
         }
         final classAliasMethod1_ classAliasMethod1 = new classAliasMethod1_();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class classAliasMethod2_ {
@@ -79,7 +79,7 @@ final class localTypeAliasMethod_ {
         }
         final classAliasMethod2_ classAliasMethod2 = new classAliasMethod2_();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class classAliasMethod3_ {
@@ -94,7 +94,7 @@ final class localTypeAliasMethod_ {
         }
         final classAliasMethod3_ classAliasMethod3 = new classAliasMethod3_();
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         final class classAliasMethod4_ {

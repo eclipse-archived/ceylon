@@ -23,7 +23,7 @@ package com.redhat.ceylon.compiler.java.test.model;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Method
 public class bogusTopLevelMethodNoMethod_ {
     // it's missing its method

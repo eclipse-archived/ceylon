@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class reifiedInstantiateFromModelLoader_ {
     
@@ -63,7 +63,7 @@ final class reifiedInstantiateFromModelLoader_ {
         .com.redhat.ceylon.compiler.java.test.structure.reified.reifiedInstantiateFromModelLoader_.reifiedInstantiateFromModelLoader();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class reifiedMethodsFromModelLoader_ {
     

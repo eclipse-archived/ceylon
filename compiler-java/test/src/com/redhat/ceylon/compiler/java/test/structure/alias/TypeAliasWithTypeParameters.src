@@ -34,14 +34,14 @@ public final class TypeAliasWithTypeParametersInterface$impl<T> {
         this.$reified$T = $reified$T;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>")
 final class TypeAliasWithTypeParameters1 {
     
     private TypeAliasWithTypeParameters1() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<T>")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
@@ -53,7 +53,7 @@ final class TypeAliasWithTypeParameters2<T> {
     private TypeAliasWithTypeParameters2() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -71,7 +71,7 @@ final class TypeAliasWithTypeParameters3<T, V> {
     private TypeAliasWithTypeParameters3() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -89,7 +89,7 @@ final class TypeAliasWithTypeParameters4<T, V> {
     private TypeAliasWithTypeParameters4() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasWithTypeParametersMethod1_ {
     
@@ -107,7 +107,7 @@ final class typeAliasWithTypeParametersMethod1_ {
         return f;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasWithTypeParametersMethod2_ {
     
@@ -125,7 +125,7 @@ final class typeAliasWithTypeParametersMethod2_ {
         return f;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasWithTypeParametersMethod3_ {
     
@@ -152,7 +152,7 @@ final class typeAliasWithTypeParametersMethod3_ {
         return f;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasWithTypeParametersMethod4_ {
     

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)})
 class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -102,7 +102,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
             "ceylon.language::Ordinal<com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal>",

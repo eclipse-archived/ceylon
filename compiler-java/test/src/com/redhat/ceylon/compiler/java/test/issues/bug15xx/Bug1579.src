@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("number")
@@ -16,7 +16,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class do_ {
     
@@ -55,7 +55,7 @@ final class do_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug15xx.do_.$do();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1579_ {
     

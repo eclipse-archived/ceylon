@@ -42,7 +42,7 @@ final class defaultFunctionReference_ {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference_.defaultFunctionReference();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class defaultFunctionReference2_ {
     
@@ -188,7 +188,7 @@ final class defaultFunctionReference2_ {
         .com.redhat.ceylon.compiler.java.test.expression.invoke.defaultFunctionReference2_.defaultFunctionReference2();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class defaultFunctionReference3_ {
     

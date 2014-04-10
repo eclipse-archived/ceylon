@@ -64,9 +64,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
                 .ceylon.language.empty_.class}),
         @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$(seq = {})})
 @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotations$({
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {"::1.0.0:ceylon.language::Vempty"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {"::1.1.0:ceylon.language::Vempty"}),
         @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {"::1.0.0:ceylon.language::Vempty"}),
+        @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {"::1.1.0:ceylon.language::Vempty"}),
         @.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$(seq = {})})
 class SequenceDefaults_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

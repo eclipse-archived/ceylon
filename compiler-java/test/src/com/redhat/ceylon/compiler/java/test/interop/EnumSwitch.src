@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     EnumSwitch() {

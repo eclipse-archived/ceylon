@@ -66,6 +66,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -1110,7 +1111,7 @@ public class CMRTest extends CompilerTest {
         final Manifest manifest = getManifest(
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a", "1.1.0");
 
-        assertEquals("ceylon.language;bundle-version=1.0.0;visibility:=reexport",
+        assertEquals("ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
                 manifest.getMainAttributes().get(OsgiManifest.Require_Bundle));
     }
 
@@ -1189,7 +1190,7 @@ public class CMRTest extends CompilerTest {
         assertEquals(2, requireBundle.length);
 
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
-                "ceylon.language;bundle-version=1.0.0;visibility:=reexport",
+                "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0"));
     }
 
@@ -1212,7 +1213,7 @@ public class CMRTest extends CompilerTest {
 
         assertEquals(2, requireBundle.length);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
-                "ceylon.language;bundle-version=1.0.0;visibility:=reexport",
+                "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0;visibility:=reexport"));
     }
 

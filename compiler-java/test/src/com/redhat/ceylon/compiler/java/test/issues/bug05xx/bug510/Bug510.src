@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class)
 interface Bug510$Bug510inner {
@@ -8,7 +8,7 @@ interface Bug510$Bug510inner {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$impl.Bug510inner$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$bug510$Bug510$impl$Bug510inner$impl();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner.class)})
 interface Bug510 {
     
@@ -38,7 +38,7 @@ final class Bug510$impl {
         private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class goto_ {
     
@@ -55,7 +55,7 @@ final class goto_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.goto_.$goto();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -83,7 +83,7 @@ final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.mo
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.class);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("volatile")
 final class volatile_ {

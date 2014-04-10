@@ -60,7 +60,7 @@ public class Insert<ValueTypes> implements .com.redhat.ceylon.compiler.java.runt
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Insert.class, $reified$ValueTypes);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class insert_ {
     
