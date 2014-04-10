@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 //TODO make an interface?
 public class TypeChecker {
 
-    public static final String LANGUAGE_MODULE_VERSION = "1.0.0";
+    public static final String LANGUAGE_MODULE_VERSION = "1.1.0";
 
     private final boolean verbose;
     private final boolean statistics;
