@@ -273,8 +273,10 @@ function Paquete(name, container, pkg, $$paquete){
             r.push(OpenClass(this, m));
           } else if (mt==='i') {
             r.push(OpenInterface(this, m));
-          } else if (mt==='a'||mt==='g'||mt==='o'||mt==='s') {
+          } else if (mt==='a'||mt==='g'||mt==='o') {
             r.push(OpenValue(this, m));
+          } else if (mt==='s') {
+            r.push(OpenSetter(OpenValue(this, m)));
           } else if (mt==='als') {
             r.push(OpenAlias(_findTypeFromModel(this,m)));
           }
@@ -313,16 +315,20 @@ function Paquete(name, container, pkg, $$paquete){
         var mt = m['$mt'];
         //There's a member alright, but check its type
         if (extendsType({t:ValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='a'||mt==='g'||mt==='o'||mt==='s') {
+          if (mt==='a'||mt==='g'||mt==='o') {
             return OpenValue(this, m);
+          } else if (mt==='s') {
+            return OpenSetter(OpenValue(this, m));
           }
         } else if (extendsType({t:FunctionDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
           if (mt==='m') {
             return OpenFunction(this, m);
           }
         } else if (extendsType({t:FunctionOrValueDeclaration$meta$declaration}, $$$mptypes.Kind$getMember)) {
-          if (mt==='a'||mt==='g'||mt==='o'||mt==='s') {
+          if (mt==='a'||mt==='g'||mt==='o') {
             return OpenValue(this, m);
+          } else if (mt==='s') {
+            return OpenSetter(OpenValue(this, m));
           } else if (mt==='m') {
             return OpenFunction(this, m);
           }
