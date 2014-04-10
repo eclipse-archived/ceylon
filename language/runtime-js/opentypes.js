@@ -238,6 +238,9 @@ function OpenValue(pkg, meta, that){
     that.meta = get_model(_mm);
   }
   that.name_=_mm.d===undefined?_mm['$nm']:_mm.d[_mm.d.length-1];
+  if (that.name_==='$set') {
+    that.name_=_mm.d[_mm.d.length-2];
+  }
   that.toplevel_=_mm.$cont === undefined;
   ValueDeclaration$meta$declaration(that);
   return that;
