@@ -177,7 +177,7 @@ public class BcTests extends CompilerTest {
         new File(destDir).mkdirs();
 
         List<String> options = new LinkedList<String>();
-        options.addAll(Arrays.asList("-sourcepath", getSourcePath(), "-d", destDir));
+        options.addAll(Arrays.asList("-sourcepath", getSourcePath(), "-d", destDir, "-cp", getClassPathAsPath()));
         Iterable<? extends JavaFileObject> compilationUnits1 =
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return runCompiler.getTask(null, runFileManager, null, 

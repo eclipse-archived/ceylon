@@ -1248,7 +1248,7 @@ public class CeylonDocToolTest {
 
     private void compileJavaModule(String pathname, String... fileNames) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars");
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-cp", CompilerTest.getClassPathAsPath());
         JavacFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){

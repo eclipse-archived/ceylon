@@ -93,6 +93,7 @@ public abstract class CompilerTest {
         "./../ceylon-common/build/classes",
         "./../ceylon-runtime/build/classes",
         "./../ceylon-runtime/lib/jboss-modules-1.1.3.GA.jar",
+        "./../ceylon-module-resolver/lib/slf4j-api-1.6.1.jar",
         LANGUAGE_MODULE_CAR,
     };
 
@@ -737,6 +738,8 @@ public abstract class CompilerTest {
             options.addAll(Arrays.asList("-src", getSourcePath()));
         if(!options.contains("-cacherep"))
             options.addAll(Arrays.asList("-cacherep", getCachePath()));
+        if(!options.contains("-cp"))
+            options.addAll(Arrays.asList("-cp", getClassPathAsPath()));
         boolean hasVerbose = false;
         for(String option : options){
             if(option.startsWith("-verbose")){
