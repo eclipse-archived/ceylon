@@ -40,7 +40,6 @@ public class MetamodelGenerator {
     public static final String KEY_OBJECTS      = "$o";
     public static final String KEY_METHODS      = "$m";
     public static final String KEY_ATTRIBUTES   = "$at";
-    public static final String KEY_SETTERS      = "$as";
     public static final String KEY_ANNOTATIONS  = "$an";
     public static final String KEY_TYPE         = "$t";
     public static final String KEY_TYPES        = "$ts";
@@ -127,10 +126,11 @@ public class MetamodelGenerator {
                 last = (Map<String, Object>)last.get(name.getName());
             } else if (last.containsKey(KEY_METHODS) && name instanceof Method) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_METHODS)).get(name.getName());
-            } else if (last.containsKey(KEY_ATTRIBUTES) && (name instanceof Value || name instanceof TypeAlias)) {
+            } else if (last.containsKey(KEY_ATTRIBUTES) && (name instanceof Value || name instanceof Setter || name instanceof TypeAlias)) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_ATTRIBUTES)).get(name.getName());
-            } else if (last.containsKey(KEY_SETTERS) && name instanceof Setter) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_SETTERS)).get(name.getName());
+                if (last != null && name instanceof Setter) {
+                    last = (Map<String,Object>)last.get("$set");
+                }
             } else if (last.containsKey(KEY_CLASSES) && name instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
                 last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_CLASSES)).get(name.getName());
             } else if (last.containsKey(KEY_INTERFACES) && name instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
@@ -504,7 +504,7 @@ public class MetamodelGenerator {
                 return null;
             }
             if (!d.isToplevel()) {
-                final String _k = d instanceof Setter ? KEY_SETTERS : KEY_ATTRIBUTES;
+                final String _k = KEY_ATTRIBUTES;
                 if (!parent.containsKey(_k)) {
                     parent.put(_k, new HashMap<>());
                 }
@@ -513,20 +513,25 @@ public class MetamodelGenerator {
                     //merge existing
                     m = (Map<String, Object>)parent.get(d.getName());
                 }
+                if (d instanceof Setter) {
+                    HashMap<String, Object> smap = new HashMap<>();
+                    m.put("$set", smap);
+                    m = smap;
+                }
             }
         } else {
             //Ignore attributes inside control blocks, methods, etc.
             return null;
         }
-        m.put(KEY_NAME, d.getName());
         if (d instanceof Setter) {
             m.put(KEY_METATYPE, METATYPE_SETTER);
         } else {
+            m.put(KEY_NAME, d.getName());
             m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
+            m.put(KEY_TYPE, typeMap(d.getType(), d));
+            parent.put(d.getName(), m);
         }
-        m.put(KEY_TYPE, typeMap(d.getType(), d));
         encodeAnnotations(d, m);
-        parent.put(d.getName(), m);
         return m;
     }
 

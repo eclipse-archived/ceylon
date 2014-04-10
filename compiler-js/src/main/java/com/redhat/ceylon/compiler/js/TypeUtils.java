@@ -529,6 +529,9 @@ public class TypeUtils {
             Declaration p = d;
             final int i = sb.size();
             while (p instanceof Declaration) {
+                if (p instanceof Setter) {
+                    sb.add(i, "$set");
+                }
                 sb.add(i, p.getName());
                 //Build the path in reverse
                 if (!p.isToplevel()) {
@@ -538,10 +541,8 @@ public class TypeUtils {
                         sb.add(i, MetamodelGenerator.KEY_INTERFACES);
                     } else if (p instanceof Method) {
                         sb.add(i, MetamodelGenerator.KEY_METHODS);
-                    } else if (p instanceof TypeAlias) {
+                    } else if (p instanceof TypeAlias || p instanceof Setter) {
                         sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
-                    } else if (p instanceof Setter) {
-                        sb.add(i, MetamodelGenerator.KEY_SETTERS);
                     } else { //It's a value
                         TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
                         sb.add(i, (td!=null&&td.isAnonymous())? MetamodelGenerator.KEY_OBJECTS

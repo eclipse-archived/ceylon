@@ -101,8 +101,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
                             || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
                         loadAttribute(k, m, this, null);
-                    } else if (metatype.equals(MetamodelGenerator.METATYPE_SETTER)) {
-                        loadSetter(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
                         loadMethod(k, m, this, null);
                     } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
@@ -225,15 +223,6 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
                 if (d.getDirectMember(e.getKey(), null, false) == null) {
                     d.getMembers().add(loadAttribute(e.getKey(), e.getValue(), (Scope)d, tparms));
-                }
-            }
-        }
-        //Setters
-        sub = (Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_SETTERS);
-        if (sub != null) {
-            for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
-                if (d.getDirectMember(e.getKey(), null, false) == null) {
-                    d.getMembers().add(loadSetter(e.getKey(), e.getValue(), (Scope)d, tparms));
                 }
             }
         }
@@ -489,28 +478,24 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         @SuppressWarnings("unchecked")
         final Map<String,Object> ktype = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
         d.setType(getTypeFromJson(ktype, parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
-        return d;
-    }
-
-    Setter loadSetter(String name, Map<String, Object> m, Scope parent,
-            List<TypeParameter> typeParameters) {
-        final Value v = (Value)parent.getDirectMember(name, null, false);
-        Setter d = new Setter();
-        d.setName(name);
-        d.setContainer(parent);
-        d.setUnit(u2);
-        d.setGetter(v);
-        v.setSetter(d);
-        if (parent == this) {
-            u2.addDeclaration(d);
-            addMember(null);
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> smap = (Map<String, Object>)m.remove("$set");
+        if (smap != null) {
+            Setter s = new Setter();
+            s.setName(name);
+            s.setContainer(parent);
+            s.setUnit(u2);
+            s.setGetter(d);
+            d.setSetter(s);
+            if (parent == this) {
+                u2.addDeclaration(s);
+                addMember(null);
+            }
+            @SuppressWarnings("unchecked")
+            final Map<String,List<String>> sanns = (Map<String,List<String>>)smap.remove(MetamodelGenerator.KEY_ANNOTATIONS);
+            setAnnotations(s, sanns);
+            s.setType(d.getType());
         }
-        @SuppressWarnings("unchecked")
-        final Map<String,List<String>> _anns = (Map<String,List<String>>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-        setAnnotations(d, _anns);
-        @SuppressWarnings("unchecked")
-        final Map<String,Object> ktype = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
-        d.setType(getTypeFromJson(ktype, parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
         return d;
     }
 
