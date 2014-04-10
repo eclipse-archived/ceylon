@@ -69,6 +69,12 @@ function typeLiteral$meta($$targs$$) {
     //closed type
     var t = $$targs$$.Type$typeLiteral.t
     if (t === undefined) {
+      t = $$targs$$.Type$typeLiteral.setter;
+      if (t && t.$crtmm$) {
+        var mm = getrtmm$$(t);
+        var _mod = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']);
+        return OpenSetter(OpenValue(_mod.findPackage(mm.d[0]), t));
+      }
       throw new Error("'Type' argument should be an open or closed type");
     } else if (t === 'u' || t === 'i') {
       return t === 'u' ? applyUnionType($$targs$$.Type$typeLiteral) : applyIntersectionType($$targs$$.Type$typeLiteral);
