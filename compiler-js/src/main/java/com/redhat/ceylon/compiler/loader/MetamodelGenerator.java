@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.js.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
@@ -19,13 +20,13 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
+import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 /** Generates the metamodel for all objects in a module.
@@ -110,34 +111,19 @@ public class MetamodelGenerator {
         if (d.isToplevel()) {
             return pkgmap;
         }
-        ArrayList<Declaration> names = new ArrayList<>();
-        Scope sc = d.getContainer();
-        while (sc.getContainer() != null) {
-            if (sc instanceof Declaration) {
-                names.add(0, (Declaration) sc);
-            }
-            sc = sc.getContainer();
-        }
+        List<String> names = TypeUtils.generateModelPath(Util.getContainingDeclaration(d));
+        names.remove(0); //we don't need the package key
         Map<String, Object> last = pkgmap;
-        for (Declaration name : names) {
+        for (String name : names) {
             if (last == null) {
                 break;
-            } else if (last == pkgmap) {
-                last = (Map<String, Object>)last.get(name.getName());
-            } else if (last.containsKey(KEY_METHODS) && name instanceof Method) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_METHODS)).get(name.getName());
-            } else if (last.containsKey(KEY_ATTRIBUTES) && (name instanceof Value || name instanceof Setter || name instanceof TypeAlias)) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_ATTRIBUTES)).get(name.getName());
-                if (last != null && name instanceof Setter) {
-                    last = (Map<String,Object>)last.get("$set");
-                }
-            } else if (last.containsKey(KEY_CLASSES) && name instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_CLASSES)).get(name.getName());
-            } else if (last.containsKey(KEY_INTERFACES) && name instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_INTERFACES)).get(name.getName());
-            } else if (last.containsKey(KEY_OBJECTS) && ((Map<String,Object>)last.get(KEY_OBJECTS)).containsKey(name.getName())) {
-                last = (Map<String,Object>)((Map<String,Object>)last.get(KEY_OBJECTS)).get(name.getName());
             }
+            Map<String,Object> sub = (Map<String,Object>)last.get(name);
+            if (sub == null && name.charAt(0)=='$') {
+                sub = new HashMap<>();
+                last.put(name, sub);
+            }
+            last = sub;
         }
         return last;
     }
@@ -509,14 +495,17 @@ public class MetamodelGenerator {
                     parent.put(_k, new HashMap<>());
                 }
                 parent = (Map<String,Object>)parent.get(_k);
-                if (parent.containsKey(d.getName())) {
-                    //merge existing
-                    m = (Map<String, Object>)parent.get(d.getName());
-                }
-                if (d instanceof Setter) {
-                    HashMap<String, Object> smap = new HashMap<>();
-                    m.put("$set", smap);
-                    m = smap;
+            }
+            if (parent.containsKey(d.getName())) {
+                //merge existing
+                m = (Map<String, Object>)parent.get(d.getName());
+            }
+            if (d instanceof Setter) {
+                parent = m;
+                m = (Map<String, Object>)parent.get("$set");
+                if (m == null) {
+                    m = new HashMap<>();
+                    parent.put("$set", m);
                 }
             }
         } else {
