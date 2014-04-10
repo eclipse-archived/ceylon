@@ -143,6 +143,8 @@
         <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.repo}"/>
         <copy file="${jboss-logmanager.lib}" tofile="${build.dist.repo}/${jboss-logmanager.repo}"/>
         <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.repo}"/>
+        <copy file="${antlr.stringtemplate.lib}" tofile="${build.dist.repo}/${antlr.stringtemplate.repo}"/>
+        <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
     </target>
 
 	<target name="dist-for-tests" description="Copy jars in the repo used by tests">
@@ -167,6 +169,8 @@
         <copy file="${jboss-logmanager.lib}"
             tofile="${build.dist.repo}/${jboss-logmanager.repo}"/>
         <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.repo}"/>
+        <copy file="${antlr.stringtemplate.lib}" tofile="${build.dist.repo}/${antlr.stringtemplate.repo}"/>
+        <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
     </target>
 
     <target name="publish-internal" depends="init.repo">
