@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
-@Ceylon(major = 6) @Object
+@Ceylon(major = 7) @Object
 public final class process_ {
 
     @SuppressWarnings("unchecked")

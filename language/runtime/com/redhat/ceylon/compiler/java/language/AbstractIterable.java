@@ -27,7 +27,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes("ceylon.language::Iterable<Element,Absent>")
 public abstract class AbstractIterable<Element,Absent> implements Iterable<Element,Absent>, ReifiedType {

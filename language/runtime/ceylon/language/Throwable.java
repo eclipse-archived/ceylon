@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class(extendsType = "ceylon.language::Basic")
 @CaseTypes({"ceylon.language::Error", "ceylon.language::Exception"})
 public abstract class Throwable extends java.lang.Object {

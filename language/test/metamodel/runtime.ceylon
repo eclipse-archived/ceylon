@@ -1130,7 +1130,7 @@ shared void checkEqualityAndHash(){
     assert(m1Decl.hash == m1Decl.hash);
     assert(m1Decl != m2Decl);
     assert(m1Decl.hash != m2Decl.hash);
-    assert(m1Decl.string == "module ceylon.language/1.0.0");
+    assert(m1Decl.string == "module ceylon.language/"+language.version);
     
     assert(is TypeParameterDeclaration tp1Decl = `class TypeParams`.getTypeParameterDeclaration("T"));
     assert(is TypeParameterDeclaration tp2Decl = `class ParameterisedContainerClass`.getTypeParameterDeclaration("Outer"));

@@ -10,7 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Object")
 public abstract class AbstractIterator<Element> implements Iterator<Element>, ReifiedType {
     

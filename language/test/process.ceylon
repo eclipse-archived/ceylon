@@ -28,12 +28,12 @@ shared void testProcess() {
     process.flushError();
     
     //language object
-    check(language.version=="1.0.0", "language.version");
+    check(language.version=="1.1.0", "language.version");
     check(language.majorVersion==1, "language.majorVersion");
-    check(language.minorVersion==0, "language.minorVersion");
+    check(language.minorVersion==1, "language.minorVersion");
     check(language.releaseVersion==0, "language.releaseVersion");
     check(!language.versionName.empty, "language.versionName");
-    check(language.majorVersionBinary==6, "language.majorVersionBinary");
+    check(language.majorVersionBinary==7, "language.majorVersionBinary");
     check(language.minorVersionBinary==0, "language.minorVersionBinary");
     print("Ceylon language version ``language.version`` major ``language.majorVersion`` " +
         "minor ``language.minorVersion`` release ``language.releaseVersion`` " +

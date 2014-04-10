@@ -3,4 +3,4 @@
 by ("Gavin King", "Tom Bentley", "Tako Schotanus",
    "Stephane Epardaud", "Enrique Zamudio")
 license ("http://www.apache.org/licenses/LICENSE-2.0.html")
-module ceylon.language "1.0.0" {}
+module ceylon.language "1.1.0" {}

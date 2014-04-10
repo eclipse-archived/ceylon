@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeTypeParameterType 
     implements ceylon.language.meta.declaration.OpenTypeVariable, ReifiedType {

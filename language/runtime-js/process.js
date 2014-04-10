@@ -8,17 +8,17 @@ languageClass.$crtmm$={$nm:'languageClass',$mt:'c',$ps:[],$an:function(){return[
 initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
 $defat(lang$proto, 'version', function() {
-    return String$("1.0.0",3);
+    return String$("1.1.0",3);
 },undefined,{$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','version']});
 $defat(lang$proto, 'majorVersion', function(){ return 1; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','majorVersion']});
-$defat(lang$proto, 'minorVersion', function(){ return 0; },undefined,
+$defat(lang$proto, 'minorVersion', function(){ return 1; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','minorVersion']});
 $defat(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','releaseVersion']});
-$defat(lang$proto, 'versionName', function(){ return String$("No More Mr Nice Guy",19); },undefined,
+$defat(lang$proto, 'versionName', function(){ return String$("Unflatzburged",13); },undefined,
   {$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','versionName']});
-$defat(lang$proto, 'majorVersionBinary', function(){ return 6; },undefined,
+$defat(lang$proto, 'majorVersionBinary', function(){ return 7; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','majorVersionBinary']});
 $defat(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','language','$at','minorVersionBinary']});

@@ -4,7 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 
-@Ceylon(major = 6) @Object
+@Ceylon(major = 7) @Object
 public final class false_ extends Boolean {
     
     private final static false_ value = new false_();

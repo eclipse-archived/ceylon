@@ -13,7 +13,7 @@ import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Object")
 @SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
@@ -1864,7 +1864,7 @@ public final class String
         }
     }
 
-    @Ceylon(major = 6)
+    @Ceylon(major = 7)
     @Class
     @SatisfiedTypes("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
     private static final class Tokens 
@@ -2262,7 +2262,7 @@ public final class String
         }
     }
 
-    @Ceylon(major = 6)
+    @Ceylon(major = 7)
     @Class
     @SatisfiedTypes("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
     private static final class Inclusions 

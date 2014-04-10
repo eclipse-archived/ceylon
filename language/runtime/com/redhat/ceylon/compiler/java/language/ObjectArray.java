@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class
 @ValueType
 public final class ObjectArray<T> implements ReifiedType {

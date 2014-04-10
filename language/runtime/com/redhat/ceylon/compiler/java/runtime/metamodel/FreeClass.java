@@ -28,7 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreeClass 
     extends FreeClassOrInterface

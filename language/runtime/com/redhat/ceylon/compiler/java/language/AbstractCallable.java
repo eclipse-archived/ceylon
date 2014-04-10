@@ -24,7 +24,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 // Note: The compiler sometimes generates anonymous subclasses with 
 // an extra $call$typed() method. This is used when dealing with 
 // defaulted parameters so as to avoid multiple boxings and unboxings.
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class
 @TypeParameters({
     @TypeParameter(value="Return", variance=Variance.OUT),

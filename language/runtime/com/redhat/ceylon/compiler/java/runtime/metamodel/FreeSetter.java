@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class
 @SatisfiedTypes({"ceylon.language.meta.declaration::SetterDeclaration"})
 public class FreeSetter 

@@ -34,7 +34,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  * 
  * @author Enrique Zamudio
  */
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Object")
 public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
 

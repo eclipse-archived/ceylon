@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
 public class FreePackage implements ceylon.language.meta.declaration.Package, 
         AnnotationBearing,

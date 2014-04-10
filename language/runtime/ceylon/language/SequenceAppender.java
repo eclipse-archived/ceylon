@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class(extendsType="ceylon.language::SequenceBuilder<Element>")
 @TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceAppender<Element> extends SequenceBuilder<Element> {

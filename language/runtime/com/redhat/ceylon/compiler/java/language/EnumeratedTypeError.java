@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
  *  
  * @author tom
  */
-@Ceylon(major = 6)
+@Ceylon(major = 7)
 @Class
 public class EnumeratedTypeError extends Error {
 
