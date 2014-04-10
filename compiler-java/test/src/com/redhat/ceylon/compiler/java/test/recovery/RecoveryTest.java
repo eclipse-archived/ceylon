@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +40,6 @@ import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ceylon.language.SequenceBuilder;
@@ -808,7 +806,7 @@ public class RecoveryTest extends CompilerTest {
             String name = module.substring(0, sep);
             String version = module.substring(sep+1);
             carFile = getModuleArchive(name, version);
-            assertTrue(carFile.exists());
+            assertTrue("Module created car: "+module, carFile.exists());
         }
     }
 
