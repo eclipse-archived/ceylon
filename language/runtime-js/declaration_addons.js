@@ -20,6 +20,14 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       //Let's just look for this thing everywhere
       for (var $k in this.tipo.$$.prototype) {
         var propname='$prop$get'+$k[0].toUpperCase()+$k.substring(1);
+        if (!$k.startsWith("$prop$get") && this.tipo.$$.prototype[propname]===undefined && typeof(this.tipo.$$.prototype[$k])==='function') {
+          var lafun=this.tipo.$$.prototype[$k];
+          var mm=getrtmm$$(lafun);
+          var mod=mm&&get_model(mm);
+          if (mod && mod.$nm===nom) {
+            _d=lafun; break;
+          }
+        }
         var m$ = this.tipo.$$.prototype[propname] ? undefined: this.tipo.$$.prototype[$k];
         _d = typeof(m$)==='function' && m$.$$===undefined ? getrtmm$$(m$) : undefined;
         if (_d && _d.d && _d.d[_d.d.length-1]===nom){
