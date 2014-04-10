@@ -20,7 +20,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -348,7 +347,7 @@ public class MetamodelGenerator {
                 parent = (Map<String, Object>)parent.get(KEY_METHODS);
             }
             if (parent != null) {
-                parent.put(d.getName(), m);
+                parent.put(TypeUtils.modelName(d), m);
             }
         }
         return m;
@@ -360,10 +359,6 @@ public class MetamodelGenerator {
         if (m != null && d.isVariable()) {
             m.put("var", 1);
         }
-    }
-
-    public void encodeSetter(Setter d) {
-        encodeAttributeOrGetter(d);
     }
 
     @SuppressWarnings("unchecked")
@@ -416,7 +411,7 @@ public class MetamodelGenerator {
                 }
                 parent = (Map<String,Object>)parent.get(KEY_CLASSES);
             }
-            parent.put(d.getName(), m);
+            parent.put(TypeUtils.modelName(d), m);
         }
         return m;
     }
@@ -453,7 +448,7 @@ public class MetamodelGenerator {
                 }
                 parent = (Map<String,Object>)parent.get(KEY_INTERFACES);
             }
-            parent.put(d.getName(), m);
+            parent.put(TypeUtils.modelName(d), m);
         }
         return m;
     }
@@ -477,13 +472,14 @@ public class MetamodelGenerator {
 
         //Certain annotations
         encodeAnnotations(d, m);
-        parent.put(d.getName(), m);
+        parent.put(TypeUtils.modelName(d.getTypeDeclaration()), m);
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> encodeAttributeOrGetter(MethodOrValue d) {
         Map<String, Object> m = new HashMap<>();
         Map<String, Object> parent;
+        final String mname = TypeUtils.modelName(d);
         if (d.isToplevel() || d.isMember() || containsTypes(d)) {
             parent = findParent(d);
             if (parent == null) {
@@ -496,31 +492,28 @@ public class MetamodelGenerator {
                 }
                 parent = (Map<String,Object>)parent.get(_k);
             }
-            if (parent.containsKey(d.getName())) {
+            if (parent.containsKey(mname)) {
                 //merge existing
-                m = (Map<String, Object>)parent.get(d.getName());
-            }
-            if (d instanceof Setter) {
-                parent = m;
-                m = (Map<String, Object>)parent.get("$set");
-                if (m == null) {
-                    m = new HashMap<>();
-                    parent.put("$set", m);
-                }
+                m = (Map<String, Object>)parent.get(mname);
             }
         } else {
             //Ignore attributes inside control blocks, methods, etc.
             return null;
         }
-        if (d instanceof Setter) {
-            m.put(KEY_METATYPE, METATYPE_SETTER);
-        } else {
-            m.put(KEY_NAME, d.getName());
-            m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
-            m.put(KEY_TYPE, typeMap(d.getType(), d));
-            parent.put(d.getName(), m);
-        }
+        m.put(KEY_NAME, d.getName());
+        m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
+        m.put(KEY_TYPE, typeMap(d.getType(), d));
+        parent.put(mname, m);
         encodeAnnotations(d, m);
+        if (d instanceof Value && ((Value) d).getSetter() != null) {
+            Map<String,Object> smap = (Map<String,Object>)m.get("$set");
+            if (smap==null) {
+                smap = new HashMap<>();
+                m.put("$set", smap);
+                smap.put(KEY_METATYPE, METATYPE_SETTER);
+                encodeAnnotations(((Value)d).getSetter(), smap);
+            }
+        }
         return m;
     }
 
@@ -556,7 +549,7 @@ public class MetamodelGenerator {
         encodeTypes(d.getCaseTypes(), m, "of", d);
         encodeTypes(d.getSatisfiedTypes(), m, KEY_SATISFIES, d);
         encodeAnnotations(d, m);
-        parent.put(d.getName(), m);
+        parent.put(TypeUtils.modelName(d), m);
         return m;
     }
 
@@ -600,6 +593,7 @@ public class MetamodelGenerator {
 
     public boolean containsTypes(Declaration d) {
         for (Declaration m : d.getMembers()) {
+            if (m instanceof Value && ((Value)m).getTypeDeclaration().isAnonymous())return true;
             if (m instanceof TypeDeclaration || containsTypes(m)) {
                 return true;
             }
