@@ -238,7 +238,6 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
-    @Ignore("https://github.com/ceylon/ceylon-compiler/issues/1602")
     public void testBug1602() {
         compareWithJavaSource("bug16xx/Bug1602.src", "bug16xx/Bug1602Java.java", "bug16xx/Bug1602.ceylon");
     }

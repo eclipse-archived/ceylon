@@ -17,10 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { IntArray }
+import java.lang { BooleanArray, ByteArray, CharArray, DoubleArray, FloatArray, IntArray, LongArray, ObjectArray, ShortArray }
 
 @noanno
 void bug1602() {
+    BooleanArray boolArray = Bug1602Java().boolArray;
+    print(boolArray.string);
+    ByteArray byteArray = Bug1602Java().byteArray;
+    print(byteArray.string);
+    CharArray charArray = Bug1602Java().charArray;
+    print(charArray.string);
+    DoubleArray doubleArray = Bug1602Java().doubleArray;
+    print(doubleArray.string);
+    FloatArray floatArray = Bug1602Java().floatArray;
+    print(floatArray.string);
     IntArray intArray = Bug1602Java().intArray;
     print(intArray.string);
+    LongArray longArray = Bug1602Java().longArray;
+    print(longArray.string);
+    ObjectArray<Object> objectArray = Bug1602Java().objectArray;
+    print(objectArray.string);
+    ShortArray shortArray = Bug1602Java().shortArray;
+    print(shortArray.string);
 }
