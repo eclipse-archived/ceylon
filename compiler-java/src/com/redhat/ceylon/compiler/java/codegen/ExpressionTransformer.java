@@ -5177,13 +5177,23 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression checkForBitwiseOperators(Tree.Term node, Tree.QualifiedMemberExpression qme, Tree.Term right) {
         // must be a call on Integer
         Tree.Term left = qme.getPrimary();
-        if(left == null || !isCeylonInteger(left.getTypeModel()))
+        if (left == null) {
             return null;
-        // must be a supported method/attribute
-        ProducedType integerType = typeFact().getIntegerDeclaration().getType();
-        String name = qme.getIdentifier().getText();
-        String signature = "ceylon.language.Integer."+name;
-        
+        }
+        String signature;
+        ProducedType binaryType;
+        if (isCeylonInteger(left.getTypeModel())) {
+            // must be a supported method/attribute
+            binaryType = typeFact().getIntegerDeclaration().getType();
+            String name = qme.getIdentifier().getText();
+            signature = "ceylon.language.Integer."+name;
+        } else if (isCeylonBoolean(left.getTypeModel())) {
+            binaryType = typeFact().getBooleanDeclaration().getType();
+            String name = qme.getIdentifier().getText();
+            signature = "ceylon.language.Boolean."+name;
+        } else {
+            return null;
+        }
         // see if we have an operator for it
         OperatorTranslation operator = Operators.getOperator(signature);
         if(operator != null){
@@ -5195,8 +5205,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(!optimisationStrategy.useJavaOperator())
                     return null;
                 
-                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
-                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), integerType);
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType);
+                JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), binaryType);
 
                 return make().Binary(operator.javacOperator, leftExpr, rightExpr);
             }else{
@@ -5208,7 +5218,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(!optimisationStrategy.useJavaOperator())
                     return null;
                 
-                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), integerType);
+                JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType);
 
                 return make().Unary(operator.javacOperator, leftExpr);
             }
