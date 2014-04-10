@@ -131,4 +131,34 @@ public final class CharArray implements ReifiedType {
     public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
+
+    @Override
+    public boolean equals(@Name("that") java.lang.Object that) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static boolean equals(char[] value, java.lang.Object that) {
+        return value.equals(that);
+    }
+
+    @Override
+    public int hashCode() {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static int hashCode(char[] value) {
+        return value.hashCode();
+    }
+
+    @Override
+    public java.lang.String toString() {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static java.lang.String toString(char[] value) {
+        return value.toString();
+    }
 }

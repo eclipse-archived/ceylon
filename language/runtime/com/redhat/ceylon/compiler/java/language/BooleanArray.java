@@ -141,4 +141,34 @@ public final class BooleanArray implements ReifiedType {
     public TypeDescriptor $getType$() {
         throw Util.makeJavaArrayWrapperException();
     }
+
+    @Override
+    public boolean equals(@Name("that") java.lang.Object that) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static boolean equals(boolean[] value, java.lang.Object that) {
+        return value.equals(that);
+    }
+
+    @Override
+    public int hashCode() {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static int hashCode(boolean[] value) {
+        return value.hashCode();
+    }
+
+    @Override
+    public java.lang.String toString() {
+        throw Util.makeJavaArrayWrapperException();
+    }
+
+    @Ignore
+    public static java.lang.String toString(boolean[] value) {
+        return value.toString();
+    }
 }
