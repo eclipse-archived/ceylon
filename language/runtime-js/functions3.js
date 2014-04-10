@@ -99,7 +99,11 @@ function $qname(mm) {
   if (!mm.d)return "[unnamed type]";
   var qn=mm.d[0];
   if (qn==='$')qn='ceylon.language';
-  for (var i=1; i<mm.d.length; i++)if(mm.d[i][0]!=='$')qn+=(i==1?"::":".")+mm.d[i];
+  for (var i=1; i<mm.d.length; i++){
+    var n=mm.d[i];
+    var p=n.indexOf('$');
+    if(p!==0)qn+=(i==1?"::":".")+(p>0?n.substring(0,p):n);
+  }
   return qn;
 }
 function resolve$typearg(ta,mm) {
