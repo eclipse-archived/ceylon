@@ -33,21 +33,28 @@ shared interface Binary<Other> of Other
     "Performs a logical exclusive OR operation."
     shared formal Other xor(Other other);
 
-    "Retrieves a given bit from this bit sequence. Bits are 
-     indexed from right to left."
+    "Retrieves a given bit from this bit sequence 
+     if `0 <= index < size`, otherwise returns false. 
+     Bits are indexed from right to left."
     shared formal Boolean get(Integer index);
 
-    "Returns a new number with the given bit set to the given 
-     value. Bits are indexed from right to left."
+    "Returns an instance with the given bit set to the given 
+     value if `0 <= index < size`, otherwise returns an instance
+     with the same bits set as this instance. 
+     Bits are indexed from right to left."
     shared formal Other set(Integer index, Boolean bit = true);
 
-    "Returns a new number with the given bit set to 0.
+    "Returns an instance with the given bit set to 0
+     if `0 <= index < size`, otherwise returns an instance 
+     with the same bits set as this instance.
      Bits are indexed from right to left."
     shared default Other clear(Integer index) 
             => set(index, false);
 
-    "Returns a new number with the given bit flipped to its 
-     opposite value. Bits are indexed from right to left."
+    "Returns an instance with the given bit flipped to its 
+     opposite value if `0 <= index < size`, otherwise returns an instance 
+     with the same bits set as this instance. 
+     Bits are indexed from right to left."
     shared formal Other flip(Integer index);
 }
 

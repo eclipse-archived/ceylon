@@ -629,12 +629,14 @@ public final class Integer
 
     @Override
     public boolean get(@Name("index") long index) {
-        long mask = 1 << index;
-        return (value & mask) != 0;
+        return get(value, index);
     }
 
     @Ignore
     public static boolean get(long value, long index){
+        if (index < 0 || index > 63) {
+            return false;
+        }
         long mask = 1 << index;
         return (value & mask) != 0;
     }
@@ -642,14 +644,12 @@ public final class Integer
     @Override
     @Ignore
     public Integer set(long index) {
-        long mask = 1 << index;
-        return instance(value | mask);
+        return instance(set(value, index));
     }
 
     @Override
     public Integer set(@Name("index") long index, @Name("bit") @Defaulted boolean bit) {
-        long mask = 1 << index;
-        return bit ? instance(value | mask) : instance(value & ~mask);
+        return instance(set(value, index, bit));
     }
 
     @Override
@@ -660,36 +660,42 @@ public final class Integer
 
     @Ignore
     public static long set(long value, long index) {
-        long mask = 1 << index;
-        return value | mask;
+        return set(value , index, true);
     }
 
     @Ignore
     public static long set(long value, long index, boolean bit) {
+        if (index < 0 || index > 63) {
+            return value;
+        }
         long mask = 1 << index;
         return bit ? value | mask : value & ~mask;
     }
 
     @Override
     public Integer clear(@Name("index") long index) {
-        long mask = 1 << index;
-        return instance(value & ~mask);
+        return instance(clear(value, index));
     }
 
     @Ignore
     public static long clear(long value, long index) {
+        if (index < 0 || index > 63) {
+            return value;
+        }
         long mask = 1 << index;
         return value & ~mask;
     }
 
     @Override
     public Integer flip(@Name("index") long index) {
-        long mask = 1 << index;
-        return instance(value ^ mask);
+        return instance(flip(value, index));
     }
 
     @Ignore
     public static long flip(long value, long index) {
+        if (index < 0 || index > 63) {
+            return value;
+        }
         long mask = 1 << index;
         return value ^ mask;
     }

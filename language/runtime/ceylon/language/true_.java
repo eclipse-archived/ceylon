@@ -3,8 +3,13 @@ package ceylon.language;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Object;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.ValueType;
 
-@Ceylon(major = 7) @Object
+@Ceylon(major = 7) 
+@Object
+@Class(extendsType = "ceylon.language::Boolean")
+@ValueType
 public final class true_ extends Boolean {
     
     private final static true_ value = new true_();
