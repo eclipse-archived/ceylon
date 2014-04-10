@@ -500,6 +500,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         d.setContainer(parent);
         d.setUnit(u2);
         d.setGetter(v);
+        v.setSetter(d);
         if (parent == this) {
             u2.addDeclaration(d);
             addMember(null);
