@@ -128,7 +128,7 @@ function OpenFunction(pkg, meta, that){
       that.tipo = meta;
       that.meta = get_model(_mm);
     }
-    that.name_=(_mm&&_mm.d[_mm.d.length-1])||'?';
+    that.name_=(that.meta&&that.meta.$nm)||'?';
     that.toplevel_=_mm===undefined||_mm.$cont===undefined;
     FunctionDeclaration$meta$declaration(that);
     return that;
@@ -237,10 +237,7 @@ function OpenValue(pkg, meta, that){
     that.tipo = meta;
     that.meta = get_model(_mm);
   }
-  that.name_=_mm.d===undefined?_mm['$nm']:_mm.d[_mm.d.length-1];
-  if (that.name_==='$set') {
-    that.name_=_mm.d[_mm.d.length-2];
-  }
+  that.name_=that.meta?that.meta.$nm:_mm&&_mm.d&&_mm.d[_mm.d.length-1];
   that.toplevel_=_mm.$cont === undefined;
   ValueDeclaration$meta$declaration(that);
   return that;
@@ -309,10 +306,9 @@ $defat($$openValue,'toplevel',function(){return this.toplevel_;},undefined,funct
     return false;
   }
   $defat($$openValue,'string',function(){return "value " + this.qualifiedName;},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
-
-    $defat($$openValue,'qualifiedName',function(){
-      return $qname(this.tipo);
-    },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
+  $defat($$openValue,'qualifiedName',function(){
+    return $qname(this.tipo);
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
     $$openValue.memberSet=function(c,v) {
       if (!$is(c,{t:this.tipo.$crtmm$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
       if (!$is(v,this.tipo.$crtmm$.$t))throw IncompatibleTypeException$meta$model("Incompatible value type");
@@ -351,8 +347,11 @@ function $init$OpenSetter(){
     (function($$openSetter){
       $defat($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
       $defat($$openSetter,'name',function(){return this.variable_.name;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','name']};});
+$defat($$openSetter,'name',function(){return this.variable.name;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','name']};});
+  $defat($$openSetter,'string',function(){return "setter " + this.qualifiedName;},undefined,function(){return{$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']};});
+  $defat($$openSetter,'qualifiedName',function(){return this.variable.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
       $$openSetter.equals=function(o) {
-        return ($is(o,{t:OpenSetter}) && o.variable.equals(this.variable))
+        return $is(o,{t:OpenSetter}) && o.variable.equals(this.variable);
       }
     })(OpenSetter.$$.prototype);
   }
@@ -377,7 +376,7 @@ function OpenClass(pkg, meta, that){
       that.tipo = meta;
       that.meta = get_model(_mm);
     }
-    that.name_=_mm.d[_mm.d.length-1];
+    that.name_=(that.meta&&that.meta.$nm)||_mm.d[_mm.d.length-1];
     that.toplevel_=_mm.$cont===undefined;
     ClassDeclaration$meta$declaration(that);
     return that;
@@ -502,7 +501,7 @@ function OpenInterface(pkg, meta, that) {
       that.tipo = meta;
       that.meta = get_model(_mm);
     }
-    that.name_=_mm.d[_mm.d.length-1];
+    that.name_=(that.meta&&that.meta.$nm)||_mm.d[_mm.d.length-1];
     that.toplevel_=_mm.$cont === undefined;
     InterfaceDeclaration$meta$declaration(that);
     return that;
