@@ -41,7 +41,7 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     @Ignore
     private TypeDescriptor $reifiedAbsent;
 
-    private ArrayIterable(TypeDescriptor $reifiedElement, TypeDescriptor $reifiedAbsent, 
+    private ArrayIterable(@Ignore TypeDescriptor $reifiedElement, @Ignore TypeDescriptor $reifiedAbsent, 
             Iterable<? extends Element, ?> rest, Element... array) {
         this($reifiedElement, $reifiedAbsent, rest, array, 0);
     }

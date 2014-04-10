@@ -718,6 +718,7 @@ public final class Array<Element>
         return get((int)i);
     }
 
+    @Ignore
     private Element get(int index) {
         return index < 0 || index >= getSize() ?
                 null : unsafeItem(index);
