@@ -31,6 +31,7 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
         <module name="org.jboss.jandex" slot="1.0.3.Final"/>
         <module name="com.redhat.ceylon.maven-support" slot="1.0" services="import" optional="true"/>
+        <module name="com.googlecode.sardine" slot="314"/>
         <system export="true">
             <paths>
                 <path name="javax/xml"/>
@@ -38,6 +39,7 @@
                 <path name="javax/xml/parsers"/>
                 <path name="javax/xml/stream"/>
                 <path name="org/w3c/dom"/>
+                <path name="org/xml/sax"/>
             </paths>
         </system>
     </dependencies>
