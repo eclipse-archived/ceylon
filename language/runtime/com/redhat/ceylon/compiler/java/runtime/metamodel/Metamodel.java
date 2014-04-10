@@ -146,7 +146,7 @@ public class Metamodel {
     }
 
     public static Object getLock(){
-        return moduleManager.getModelLoader();
+        return moduleManager.getModelLoader().getLock();
     }
     
     public static TypeDescriptor getTypeDescriptor(Object instance) {
