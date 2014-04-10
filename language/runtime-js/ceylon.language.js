@@ -91,11 +91,11 @@ function inheritProto(type) {
 }
 // Define a property on the given object (which may be a prototype).
 // "get" and "set" are getter/setter functions, and the latter is optional.
-function $defat(obj, name, get, set, metamodel,setterAnns) {
+function $defat(obj, name, get, set, metamodel,settermm) {
   Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
-  if (name[0]==='$')name=name.substring(1);//names matching reserved words are prefixed with $
+  //if (name[0]==='$')name=name.substring(1);//names matching reserved words are prefixed with $
   obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $crtmm$:metamodel};
-  if (setterAnns)set.setter$anns=setterAnns;
+  if (settermm)set.$crtmm$=settermm;
 }
 // Create a copy of the given property. The name of the copied property is name+suffix.
 // This is used in closure mode to provide access to inherited attribute implementations.
