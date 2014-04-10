@@ -606,12 +606,24 @@ public class TypeUtils {
         if (!d.isToplevel()) {
             //Find the first container that is a Declaration
             final Declaration _cont = Util.getContainingDeclaration(d);
+            gen.out(",$cont:");
             if (_cont instanceof Value) {
-                gen.out(",$cont:$prop$", gen.getNames().getter(_cont));
+                if (gen.defineAsProperty(_cont)) {
+                    gen.qualify(that, _cont);
+                    gen.out("$prop$");
+                }
+                gen.out(gen.getNames().getter(_cont));
             } else if (_cont instanceof Setter) {
-                gen.out(",$cont:", gen.getNames().setter(((Setter) _cont).getGetter()));
+                gen.out("{setter:");
+                if (gen.defineAsProperty(_cont)) {
+                    gen.qualify(that, _cont);
+                    gen.out("$prop$", gen.getNames().getter(((Setter) _cont).getGetter()), ".set");
+                } else {
+                    gen.out(gen.getNames().setter(((Setter) _cont).getGetter()));
+                }
+                gen.out("}");
             } else {
-                gen.out(",$cont:", gen.getNames().name(_cont));
+                gen.out(gen.getNames().name(_cont));
             }
         }
         if (tparms != null && !tparms.isEmpty()) {
