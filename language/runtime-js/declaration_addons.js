@@ -194,8 +194,12 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(c
 $defat(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'container',function(){
   if (this.$parent)return this.$parent;
   var mm=getrtmm$$(this.tipo);
-  if (mm.$cont) {
-    return typeLiteral$meta({Type$typeLiteral:mm.$cont});
+  var _c=mm.$cont;
+  if (_c) {
+    if (_c.t === undefined && _c.get && _c.$crtmm$) {
+      return OpenValue(this.containingPackage, _c);
+    }
+    return typeLiteral$meta({Type$typeLiteral:_c});
   }
   return this.containingPackage;
 },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:NestableDeclaration$meta$declaration},{t:Package$meta$declaration}]},d:['ceylon.language.meta.declaration.NestableDeclaration','$at','container']};});
