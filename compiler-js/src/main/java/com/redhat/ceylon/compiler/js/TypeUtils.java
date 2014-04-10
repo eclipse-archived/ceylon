@@ -536,7 +536,7 @@ public class TypeUtils {
                 if (p instanceof Setter) {
                     sb.add(i, "$set");
                 }
-                sb.add(i, p.getName());
+                sb.add(i, TypeUtils.modelName(p));
                 //Build the path in reverse
                 if (!p.isToplevel()) {
                     if (p instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
@@ -1033,6 +1033,16 @@ public class TypeUtils {
             s = s.getContainer();
         }
         return p.toString();
+    }
+
+    public static String modelName(Declaration d) {
+        if (d.isToplevel() || d.isShared()) {
+            return d.getName();
+        }
+        if (d instanceof Setter) {
+            d = ((Setter)d).getGetter();
+        }
+        return d.getName()+"$"+Long.toString(Math.abs((long)d.hashCode()), 36);
     }
 
 }
