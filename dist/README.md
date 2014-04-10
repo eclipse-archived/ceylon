@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the 1.0 "No More Mr Nice Guy" release of the Ceylon command line tools (version 
-1.0.0). This is a production version of the platform.
+This is the 1.1 "Unflatzburged" release of the Ceylon command line tools (version 
+1.1.0). This is a production version of the platform.
 
 Ceylon is a programming language for writing large programs in a team environment. 
 The language is elegant, highly readable, extremely typesafe, and makes it easy to 
