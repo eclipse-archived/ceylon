@@ -334,11 +334,9 @@ function OpenSetter(v, $$openSetter){
   $$openSetter.variable_=v;
   SetterDeclaration$meta$declaration($$openSetter);
   $$openSetter.tipo=v.tipo.set;
-  if (v.tipo.set && v.tipo.set.setter$anns) {
-    var mm={};
-    var omm=getrtmm$$(v.tipo.set)
-    for (var k in omm)mm[k]=omm[k];
-    mm.$an=v.tipo.set.setter$anns;
+  if (v.tipo.set && getrtmm$$(v.tipo.set)) {
+    var mm=getrtmm$$(v.tipo.set)
+    if (typeof(mm.$an)==='function')mm.$an=mm.$an();
     v.tipo.set.$crtmm$=mm;
   }
   return $$openSetter;
@@ -351,7 +349,7 @@ function $init$OpenSetter(){
       $defat($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
       $defat($$openSetter,'name',function(){return this.variable_.name;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','name']};});
       $$openSetter.equals=function(o) {
-        return (isOfType(o,{t:OpenSetter}) && o.variable.equals(this.variable))
+        return ($is(o,{t:OpenSetter}) && o.variable.equals(this.variable))
       }
     })(OpenSetter.$$.prototype);
   }
