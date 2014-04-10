@@ -152,45 +152,47 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public synchronized boolean loadPackage(Module module, String packageName, boolean loadDeclarations) {
-        // abort if we already loaded it, but only record that we loaded it if we want
-        // to load the declarations, because merely calling complete() on the package
-        // is OK
-        packageName = Util.quoteJavaKeywords(packageName);
-        if(loadDeclarations && !loadedPackages.add(cacheKeyByModule(module, packageName))){
-            return true;
-        }
-        PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
-        ceylonPkg.complete();
-        if(loadDeclarations){
-            /*
-             * Eventually this will go away as we get a hook from the typechecker to load on demand, but
-             * for now the typechecker requires at least ceylon.language to be loaded 
-             */
-            for(Symbol m : ceylonPkg.members().getElements()){
-                // skip things that are not classes (perhaps package-info?)
-                if(!(m instanceof ClassSymbol))
-                    continue;
-                ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
-                
-                if(!Util.isLoadedFromSource(enclosingClass)){
-                    m.complete();
-                    // avoid anonymous and local classes
-                    if(isAnonymousOrLocal((ClassSymbol) m))
+    public boolean loadPackage(Module module, String packageName, boolean loadDeclarations) {
+        synchronized(getLock()){
+            // abort if we already loaded it, but only record that we loaded it if we want
+            // to load the declarations, because merely calling complete() on the package
+            // is OK
+            packageName = Util.quoteJavaKeywords(packageName);
+            if(loadDeclarations && !loadedPackages.add(cacheKeyByModule(module, packageName))){
+                return true;
+            }
+            PackageSymbol ceylonPkg = packageName.equals("") ? syms().unnamedPackage : reader.enterPackage(names.fromString(packageName));
+            ceylonPkg.complete();
+            if(loadDeclarations){
+                /*
+                 * Eventually this will go away as we get a hook from the typechecker to load on demand, but
+                 * for now the typechecker requires at least ceylon.language to be loaded 
+                 */
+                for(Symbol m : ceylonPkg.members().getElements()){
+                    // skip things that are not classes (perhaps package-info?)
+                    if(!(m instanceof ClassSymbol))
                         continue;
-                    // avoid member classes
-                    if(((ClassSymbol)m).getNestingKind() != NestingKind.TOP_LEVEL)
-                        continue;
-                    // skip module and package descriptors
-                    if(isModuleOrPackageDescriptorName(m.name.toString()))
-                        continue;
-                    convertToDeclaration(lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
+                    ClassSymbol enclosingClass = getEnclosing((ClassSymbol) m);
+
+                    if(!Util.isLoadedFromSource(enclosingClass)){
+                        m.complete();
+                        // avoid anonymous and local classes
+                        if(isAnonymousOrLocal((ClassSymbol) m))
+                            continue;
+                        // avoid member classes
+                        if(((ClassSymbol)m).getNestingKind() != NestingKind.TOP_LEVEL)
+                            continue;
+                        // skip module and package descriptors
+                        if(isModuleOrPackageDescriptorName(m.name.toString()))
+                            continue;
+                        convertToDeclaration(lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
+                    }
                 }
             }
+            // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
+            // might be too late
+            return ceylonPkg.members().getElements().iterator().hasNext();
         }
-        // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
-        // might be too late
-        return ceylonPkg.members().getElements().iterator().hasNext();
     }
 
     private boolean isAnonymousOrLocal(ClassSymbol m) {
@@ -219,21 +221,23 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
     
     @Override
-    public synchronized ClassMirror lookupNewClassMirror(Module module, String name) {
-        ClassMirror classMirror = lookupNewClassMirror(name);
-        if(classMirror == null)
-            return null;
-        Module classMirrorModule = findModuleForClassMirror(classMirror);
-        if(classMirrorModule == null){
-            logVerbose("Found a class mirror with no module");
+    public ClassMirror lookupNewClassMirror(Module module, String name) {
+        synchronized(getLock()){
+            ClassMirror classMirror = lookupNewClassMirror(name);
+            if(classMirror == null)
+                return null;
+            Module classMirrorModule = findModuleForClassMirror(classMirror);
+            if(classMirrorModule == null){
+                logVerbose("Found a class mirror with no module");
+                return null;
+            }
+            // make sure it's imported
+            if(isImported(module, classMirrorModule)){
+                return classMirror;
+            }
+            logVerbose("Found a class mirror that is not imported: "+name);
             return null;
         }
-        // make sure it's imported
-        if(isImported(module, classMirrorModule)){
-            return classMirror;
-        }
-        logVerbose("Found a class mirror that is not imported: "+name);
-        return null;
     }
     
     private ClassMirror lookupNewClassMirror(String name) {

@@ -45,7 +45,7 @@ public class ReflectionModule extends LazyModule {
         // make sure we're complete
         AbstractModelLoader modelLoader = getModelLoader();
         if(!packagesLoaded){
-            synchronized(modelLoader){
+            synchronized(modelLoader.getLock()){
                 if(!packagesLoaded){
                     String name = getNameAsString();
                     for(String pkg : jarPackages){

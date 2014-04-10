@@ -96,7 +96,7 @@ public class LazyMethod extends Method implements LazyElement, LocalDeclarationC
     
     private void load() {
         if(!isLoaded2){
-            synchronized(completer){
+            synchronized(completer.getLock()){
                 if(!isLoaded){
                     isLoaded = true;
                     completer.complete(this);

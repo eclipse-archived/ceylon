@@ -74,7 +74,7 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
 
     private void load() {
         if(!isLoaded2){
-            synchronized(completer){
+            synchronized(completer.getLock()){
                 if(!isLoaded){
                     isLoaded = true;
                     completer.complete(this);

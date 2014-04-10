@@ -63,7 +63,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
 
     private void load() {
         if(!isLoaded2){
-            synchronized(completer){
+            synchronized(completer.getLock()){
                 loadTypeParams();
                 if(!isLoaded){
                     isLoaded = true;
@@ -76,7 +76,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
 
     private void loadTypeParams() {
         if(!isTypeParamsLoaded2){
-            synchronized(completer){
+            synchronized(completer.getLock()){
                 if(!isTypeParamsLoaded){
                     isTypeParamsLoaded = true;
                     completer.completeTypeParameters(this);

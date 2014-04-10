@@ -95,4 +95,9 @@ public interface ModelCompleter {
      * Completes loading of a lazy type alias's type parameters only
      */
     void completeTypeParameters(LazyTypeAlias lazyTypeAlias);
+
+    /**
+     * Returns a lock we can use for thread-safety
+     */
+    Object getLock();
 }

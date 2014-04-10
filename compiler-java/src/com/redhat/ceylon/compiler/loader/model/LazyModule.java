@@ -114,7 +114,7 @@ public abstract class LazyModule extends Module {
         if(module.containsPackage(name)){
             // first try the already loaded packages from that module
             AbstractModelLoader modelLoader = getModelLoader();
-            synchronized(modelLoader){
+            synchronized(modelLoader.getLock()){
                 for(Package pkg : module.getPackages()){
                     if(pkg.getNameAsString().equals(name))
                         return pkg;

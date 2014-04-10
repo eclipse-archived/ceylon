@@ -97,7 +97,7 @@ public class LazyPackage extends Package {
     }
     
     private Declaration getDirectMemberMemoised(String name, List<ProducedType> signature, boolean ellipsis) {
-        synchronized(modelLoader){
+        synchronized(modelLoader.getLock()){
 
             String pkgName = getQualifiedNameString();
             Module module = getModule();
@@ -171,7 +171,7 @@ public class LazyPackage extends Package {
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public List<Declaration> getMembers() {
-        synchronized(modelLoader){
+        synchronized(modelLoader.getLock()){
             // make sure the package is loaded
             modelLoader.loadPackage(getModule(), getQualifiedNameString(), true);
             List<Declaration> sourceDeclarations = super.getMembers();
@@ -193,7 +193,7 @@ public class LazyPackage extends Package {
     }
 
     public void addCompiledMember(Declaration d) {
-        synchronized(modelLoader){
+        synchronized(modelLoader.getLock()){
             flushCache(d);
             compiledDeclarations.add(d);
             if (d instanceof LazyInterface
@@ -222,7 +222,7 @@ public class LazyPackage extends Package {
      * @param iface
      */
     private void makeInteropAnnotation(LazyInterface iface) {
-        Class klass = new Class();
+        Class klass = new AnnotationProxyClass(iface);
         klass.setContainer(this);
         klass.setName(iface.getName()+"$Proxy");
         klass.setShared(iface.isShared());
@@ -235,7 +235,7 @@ public class LazyPackage extends Package {
         ParameterList classpl = new ParameterList();
         klass.addParameterList(classpl);
         
-        Method ctor = new Method();
+        Method ctor = new AnnotationProxyMethod();
         ctor.setContainer(this);
         ctor.setAnnotation(true);
         ctor.setName(iface.getName().substring(0, 1).toLowerCase() + iface.getName().substring(1));
@@ -368,7 +368,7 @@ public class LazyPackage extends Package {
     
     @Override
     public Iterable<Unit> getUnits() {
-        synchronized(modelLoader){
+        synchronized(modelLoader.getLock()){
             Iterable<Unit> sourceUnits = super.getUnits();
             LinkedList<Unit> ret = new LinkedList<Unit>();
             for (Unit unit : sourceUnits) {
@@ -381,7 +381,7 @@ public class LazyPackage extends Package {
 
     @Override
     public void removeUnit(Unit unit) {
-        synchronized(modelLoader){
+        synchronized(modelLoader.getLock()){
             for (Declaration d : unit.getDeclarations()) {
                 flushCache(d);
                 if (d instanceof TypeDeclaration) {
