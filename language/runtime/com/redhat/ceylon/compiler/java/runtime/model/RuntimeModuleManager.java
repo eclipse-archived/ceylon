@@ -57,31 +57,33 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     }
 
     public void loadModule(String name, String version, ArtifactResult artifact, ClassLoader classLoader) {
-        Module module = getOrCreateModule(splitModuleName(name), version);
         RuntimeModelLoader modelLoader = getModelLoader();
-        modelLoader.addModuleToClassPath(module, artifact);
-        modelLoader.addModuleClassLoader(module, classLoader);
-        module.setAvailable(true);
-        Unit u = new Unit();
-        u.setFilename(artifact.name());
-        if(artifact.artifact() != null)
-            u.setFullPath(artifact.artifact().getAbsolutePath());
-        module.setUnit(u);
-        
-        if(!module.isDefault()){
-            // FIXME: dependencies of Ceylon modules?
-            if(!modelLoader.loadCompiledModule(module)){
-                // we didn't find module.class so it must be a java module if it's not the default module
-                ((LazyModule)module).setJava(true);
+        synchronized(modelLoader.getLock()){
+            Module module = getOrCreateModule(splitModuleName(name), version);
+            modelLoader.addModuleToClassPath(module, artifact);
+            modelLoader.addModuleClassLoader(module, classLoader);
+            module.setAvailable(true);
+            Unit u = new Unit();
+            u.setFilename(artifact.name());
+            if(artifact.artifact() != null)
+                u.setFullPath(artifact.artifact().getAbsolutePath());
+            module.setUnit(u);
 
-                // Java modules must have their dependencies set by the artifact result, as there is no module info in the jar
-                for (ArtifactResult dep : artifact.dependencies()) {
-                    Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
+            if(!module.isDefault()){
+                // FIXME: dependencies of Ceylon modules?
+                if(!modelLoader.loadCompiledModule(module)){
+                    // we didn't find module.class so it must be a java module if it's not the default module
+                    ((LazyModule)module).setJava(true);
 
-                    ModuleImport depImport = findImport(module, dependency);
-                    if (depImport == null) {
-                        ModuleImport moduleImport = new ModuleImport(dependency, false, false);
-                        module.addImport(moduleImport);
+                    // Java modules must have their dependencies set by the artifact result, as there is no module info in the jar
+                    for (ArtifactResult dep : artifact.dependencies()) {
+                        Module dependency = getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
+
+                        ModuleImport depImport = findImport(module, dependency);
+                        if (depImport == null) {
+                            ModuleImport moduleImport = new ModuleImport(dependency, false, false);
+                            module.addImport(moduleImport);
+                        }
                     }
                 }
             }
