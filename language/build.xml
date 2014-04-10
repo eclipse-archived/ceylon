@@ -430,6 +430,7 @@
             out="${build.test}">
             <files>
                 <include name="**/*.ceylon"/>
+            	<exclude name="jvm/**"/>
             </files>
         </ceylon-compile-js>
     </target>
