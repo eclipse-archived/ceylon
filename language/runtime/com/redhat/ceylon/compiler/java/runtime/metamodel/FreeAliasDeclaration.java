@@ -179,7 +179,6 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        checkInit();
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }
 }
