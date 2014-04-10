@@ -1251,6 +1251,9 @@ public class GenerateJsVisitor extends Visitor
             }
             out(names.getter(d), ".$crtmm$}");
             endLine(true);
+            //make available with the class name as well, for metamodel access
+            out(names.getter(c), "=", names.getter(d), ";$prop$", names.getter(c), "=", names.getter(d));
+            endLine(true);
             if (d.isToplevel()) {
                 out("exports.$prop$", names.getter(d), "=$prop$", names.getter(d));
                 endLine(true);
