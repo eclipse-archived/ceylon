@@ -76,7 +76,11 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   if (!extendsType($$$mptypes.Container$getAttribute,{t:this.tipo}))throw IncompatibleTypeException$meta$model("Incompatible Container type argument");
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = this.tipo.$$.prototype[nom];
-  if (!at)return null;
+  if (!at) {
+    nom = '$prop$get$' + name$15;
+    at = this.tipo.$$.prototype[nom];
+    if (!at)return null;
+  }
   var mm=getrtmm$$(at);
   var _t=$$$mptypes.Get$getAttribute;
   if (mm && mm.$t) {
