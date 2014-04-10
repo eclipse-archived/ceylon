@@ -262,6 +262,7 @@ public class MiscTest extends CompilerTest {
                 "collection", 
                 "dbc",
                 "file",
+                "html",
                 "interop.java",
                 "io",
                 "json",
