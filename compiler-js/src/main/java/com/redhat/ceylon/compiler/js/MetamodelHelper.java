@@ -96,9 +96,9 @@ public class MetamodelHelper {
                 ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(false);
                 gen.out(GenerateJsVisitor.getClAlias(), "getrtmm$$(");
                 if (!d.isMember()) gen.qualify(that, d);
-                gen.out(gen.getNames().getter(d), ").$t.t");
                 ((com.redhat.ceylon.compiler.typechecker.model.Class)d).setAnonymous(true);
                 d.setShared(wasShared);
+                gen.out(gen.getNames().getter(d), ").$t.t");
             } else {
                 if (!d.isMember()) gen.qualify(that, d);
                 gen.out(gen.getNames().name(d));
