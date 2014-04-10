@@ -519,12 +519,16 @@ public class TypeUtils {
         } : null);
     }
 
-    static List<String> generateModelPath(final Declaration d) {
+    /** Returns the list of keys to get from the package to the declaration, in the model. */
+    public static List<String> generateModelPath(final Declaration d) {
         final ArrayList<String> sb = new ArrayList<>();
         final String pkgName = d.getUnit().getPackage().getNameAsString();
         sb.add("ceylon.language".equals(pkgName)?"$":pkgName);
         if (d.isToplevel()) {
             sb.add(d.getName());
+            if (d instanceof Setter) {
+                sb.add("$set");
+            }
         } else {
             Declaration p = d;
             final int i = sb.size();
