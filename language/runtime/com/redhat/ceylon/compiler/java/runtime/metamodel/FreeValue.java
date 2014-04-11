@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -98,7 +99,9 @@ public class FreeValue
         ProducedType qualifyingType = Metamodel.getModel(containerType);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
-        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(qualifyingType, Collections.<ProducedType>emptyList());
+        // find the proper qualifying type
+        ProducedType memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) modelDecl.getContainer());
+        com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(memberQualifyingType, Collections.<ProducedType>emptyList());
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(qualifyingType);
         
         com.redhat.ceylon.compiler.typechecker.model.ProducedType getType = typedReference.getType();
