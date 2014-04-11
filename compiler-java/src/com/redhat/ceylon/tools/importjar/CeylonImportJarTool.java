@@ -54,6 +54,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.ModuleSpec;
@@ -67,6 +68,14 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
         "`com.example.foobar/1.2.0`.\n" +
         "\n" +
         "`<jar-file>` is the name of the Jar file to import.")
+@RemainingSections(
+        "## Output repositories" +
+        "\n\n" +
+        "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
+        "to remote servers or can be names of repositories when prepended with a `+` symbol. " +
+        "These names refer to repositories defined in the configuration file or can be any of " +
+        "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
+        "For more information see http://ceylon-lang.org/documentation/1.0/reference/tool/config")
 public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     private ModuleSpec module;

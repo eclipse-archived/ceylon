@@ -101,6 +101,14 @@ import com.sun.tools.javac.util.Options;
         "where the order is defined by the order of the `--resource` options on the command " +
         "line or the order of the `compiler.resource` options in the configuration file." +
         "\n\n" +
+        "## Output repositories" +
+        "\n\n" +
+        "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
+        "to remote servers or can be names of repositories when prepended with a `+` symbol. " +
+        "These names refer to repositories defined in the configuration file or can be any of " +
+        "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
+        "For more information see http://ceylon-lang.org/documentation/1.0/reference/tool/config" +
+        "\n\n" +
         "## Specifying `javac` options" +
         "\n\n" +
         "It is possible to pass options to the `javac` compiler by prefixing them " +
