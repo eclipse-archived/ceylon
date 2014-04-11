@@ -3428,6 +3428,9 @@ public class ClassTransformer extends AbstractTransformer {
 
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(objectClassBuilder, klass);
+        
+        // make sure we set the container in case we move it out
+        addAtContainer(objectClassBuilder, klass);
 
         List<JCTree> result = objectClassBuilder
             .annotations(makeAtObject())
