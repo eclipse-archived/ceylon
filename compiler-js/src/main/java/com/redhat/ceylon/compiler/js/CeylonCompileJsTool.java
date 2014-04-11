@@ -17,6 +17,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.compiler.Options;
@@ -28,6 +29,20 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
+@RemainingSections(
+        "## Configuration file" +
+        "\n\n" +
+        "The compile tool accepts the following options from the Ceylon configuration file: " +
+        "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories` " +
+        "(the equivalent options on the command line always have precedence)." +
+        "\n\n" +
+        "## Output repositories" +
+        "\n\n" +
+        "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
+        "to remote servers or can be names of repositories when prepended with a `+` symbol. " +
+        "These names refer to repositories defined in the configuration file or can be any of " +
+        "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
+        "For more information see http://ceylon-lang.org/documentation/1.0/reference/tool/config")
 public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     private boolean profile = false;
