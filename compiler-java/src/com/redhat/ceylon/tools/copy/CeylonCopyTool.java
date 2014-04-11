@@ -27,14 +27,7 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 		"to another. If set for recursive copying it will also copy " +
 		"all the module's dependencies and their dependencies until the " +
 		"entire module tree has been copied.")
-@RemainingSections(
-        "## Output repositories" +
-        "\n\n" +
-        "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
-        "to remote servers or can be names of repositories when prepended with a `+` symbol. " +
-        "These names refer to repositories defined in the configuration file or can be any of " +
-        "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
-        "For more information see http://ceylon-lang.org/documentation/1.0/reference/tool/config")
+@RemainingSections(OutputRepoUsingTool.DOCSECTION_OUTPUT)
 public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;

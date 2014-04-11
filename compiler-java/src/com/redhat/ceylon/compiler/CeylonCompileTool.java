@@ -88,19 +88,9 @@ import com.sun.tools.javac.util.Options;
         "* source archives in the specified repositories, and\n"+
         "* module directories in the specified source directories.\n")
 @RemainingSections(
-        "## Configuration file" +
+        OutputRepoUsingTool.DOCSECTION_CONFIG_COMPILER +
         "\n\n" +
-        "The compile tool accepts the following options from the Ceylon configuration file: " +
-        "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories` " +
-        "(the equivalent options on the command line always have precedence)." +
-        "\n\n" +
-        "## Output repositories" +
-        "\n\n" +
-        "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
-        "to remote servers or can be names of repositories when prepended with a `+` symbol. " +
-        "These names refer to repositories defined in the configuration file or can be any of " +
-        "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
-        "For more information see http://ceylon-lang.org/documentation/1.0/reference/tool/config" +
+        OutputRepoUsingTool.DOCSECTION_OUTPUT +
         "\n\n" +
         "## Specifying `javac` options" +
         "\n\n" +
