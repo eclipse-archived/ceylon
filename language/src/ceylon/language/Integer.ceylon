@@ -43,7 +43,6 @@ shared native final class Integer(integer)
     shared actual native Integer hash;
     shared actual native Comparison compare(Integer other);
     
-    shared actual native Integer size;
     shared actual native Boolean get(Integer index);
     shared actual native Integer flip(Integer index);
     shared actual native Integer set(Integer index, Boolean bit);

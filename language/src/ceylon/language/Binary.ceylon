@@ -1,6 +1,6 @@
-"Abstraction of numeric types like [[Integer]] that may be 
- represented as a sequence of bits, and may be the subject
- of bitwise operations. A bit is a [[Boolean]] value."
+"Abstraction of types that are conceptually a sequence of bits, 
+ and may be the subject of bitwise operations. 
+ A bit is a [[Boolean]] value."
 see (`class Integer`)
 by ("Stef")
 shared interface Binary<Other> of Other 
@@ -8,9 +8,6 @@ shared interface Binary<Other> of Other
 
     "The binary complement of this sequence of bits."
     shared formal Other not;
-
-    "The number of bits that this sequence of bits can hold."
-    shared formal Integer size;
 
     "Performs a left logical shift. Sign is not preserved. 
      Padded with zeros."

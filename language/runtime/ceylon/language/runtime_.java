@@ -33,6 +33,10 @@ public final class runtime_ {
     public long getIntegerSize() {
         return 64L;
     }
+    
+    public long getIntegerAddressableSize() {
+        return 64L;
+    }
 
     public Integer getMinIntegerValue() {
         return minIntegerValue;

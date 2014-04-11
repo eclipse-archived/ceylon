@@ -558,16 +558,6 @@ public final class Integer
     }
 
     @Override
-    public long getSize() {
-        return runtime_.get_().getIntegerSize();
-    }
-    
-    @Ignore
-    public static long getSize(long value){
-        return runtime_.get_().getIntegerSize();
-    }
-
-    @Override
     public Integer leftLogicalShift(@Name("shift") long shift) {
         return instance(value << shift);
     }

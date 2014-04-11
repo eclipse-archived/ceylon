@@ -96,16 +96,6 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public long getSize() {
-        return 1;
-    }
-    
-    @Ignore
-    public static long getSize(boolean instance) {
-        return 1;
-    }
-
-    @Override
     public Boolean leftLogicalShift(@Name("shift") long arg0) {
         return this;
     }

@@ -154,8 +154,6 @@ JSNum$proto.flip = function(idx) {
 JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
-$defat(JSNum$proto, 'size', function(){ return 53; },
-  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['ceylon.language','Binary','$at','size']};});
 $defat(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['ceylon.language','Number','$at','magnitude']};});
 

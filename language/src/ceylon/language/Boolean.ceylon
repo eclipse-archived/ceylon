@@ -1,11 +1,10 @@
 "A type capable of representing the values [[true]] and 
  [[false]] of Boolean logic."
 by ("Gavin")
-shared native abstract class Boolean()
+shared abstract class Boolean()
         of true | false 
         satisfies Binary<Boolean> {
     shared actual Boolean not => this then false else true;
-    shared actual Integer size => 1;
     shared actual Boolean and(Boolean other) => this && other;
     shared actual Boolean or(Boolean other) => this||other;
     shared actual Boolean xor(Boolean other) => (this && !other) || (!this && other);

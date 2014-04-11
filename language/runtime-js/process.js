@@ -276,6 +276,9 @@ $defat(runtime$proto, 'version', function() {
 $defat(runtime$proto, 'integerSize', function() {
     return 53;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','integerSize']});
+$defat(runtime$proto, 'integerAddressableSize', function() {
+    return 32;
+},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','runtime','$at','integerAddressableSize']});
 var $minIntegerValue = Integer(-9007199254740991); //-(2^53-1)
 $defat(runtime$proto, 'minIntegerValue', function() {
     return $minIntegerValue;

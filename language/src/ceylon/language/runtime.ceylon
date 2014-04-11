@@ -14,6 +14,10 @@ shared native object runtime  {
     see (`class Integer`)
     shared native Integer integerSize;
     
+    "The number of bits of [[Integer]] instances 
+     which may be manipulated via the methods inherited from [[Binary]]."
+    shared native Integer integerAddressableSize;
+    
     "The minimum [[Integer]] value that can be represented by the runtime.
      
      It is the minimum `Integer` that can be distinguished from its successor
