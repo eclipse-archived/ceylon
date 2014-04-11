@@ -88,6 +88,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     public final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

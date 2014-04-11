@@ -14,6 +14,7 @@ public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.mod
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
         @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Object
         final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
