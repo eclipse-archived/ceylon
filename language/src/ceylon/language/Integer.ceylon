@@ -10,7 +10,17 @@
    represented without loss of precision.
  
  Overflow or loss of precision occurs silently (with no 
- exception raised)."
+ exception raised).
+ 
+ Not all of the bits in the representation may be addressed by the 
+ methods inherited from [[Binary]]:
+ 
+ - For the JVM runtime, the bits at all indices (0 to 63) are 
+   addressable.
+ 
+ - For the JavaScript runtime, the bits at indices 0 to 31 are 
+   addressable.
+ "
 see (`value runtime`)
 shared native final class Integer(integer)
         extends Object()
@@ -28,8 +38,26 @@ shared native final class Integer(integer)
     shared actual native Integer xor(Integer other);
     shared actual native Integer and(Integer other);
     
-    shared actual native Integer rightArithmeticShift(Integer shift);    
+    "If shift is in the range of addressable bits 
+     (`0..runtime.integerAddressableSize-1`), shift the addressable bits to 
+     the right by `shift` positions, with sign extension.
+     Otherwise shift the addressable bits to the right by 
+     `(bits + (shift % bits)) % bits` 
+     where `bits=runtime.integerAddressableSize`"
+    shared actual native Integer rightArithmeticShift(Integer shift);
+    "If shift is in the range of addressable bits 
+     (`0..runtime.integerAddressableSize-1`), shift the addressable bits to 
+     the right by `shift` positions, with zero extension.
+     Otherwise shift the addressable bits to the right by 
+     `(bits + (shift % bits)) % bits` 
+     where `bits=runtime.integerAddressableSize`"
     shared actual native Integer rightLogicalShift(Integer shift);
+    "If shift is in the range of addressable bits 
+     (`0..runtime.integerAddressableSize-1`), shift the addressable bits to 
+     the left by `shift` positions.
+     Otherwise shift the addressable bits to the left by 
+     `(bits + (shift % bits)) % bits` 
+     where `bits=runtime.integerAddressableSize`"
     shared actual native Integer leftLogicalShift(Integer shift);
     
     shared actual native Integer plus(Integer other);
@@ -43,8 +71,20 @@ shared native final class Integer(integer)
     shared actual native Integer hash;
     shared actual native Comparison compare(Integer other);
     
+    "If the `index` is for an addressable bit, the value of that bit.
+     Otherwise false."
     shared actual native Boolean get(Integer index);
+    "If the `index` is for an addressable bit, an instance with the same 
+     addressable bits as this instance, but with that bit cleared.
+     Otherwise an instance with the same addressable bits as this instance."
+    shared actual native Integer clear(Integer index);
+    "If the `index` is for an addressable bit, an instance with the same 
+     addressable bits as this instance, but with that bit flipped.
+     Otherwise an instance with the same addressable bits as this instance."
     shared actual native Integer flip(Integer index);
+    "If the `index` is for an addressable bit, an instance with the same 
+     addressable bits as this instance, but with that bit set to `bit`.
+     Otherwise an instance with the same addressable bits as this instance."
     shared actual native Integer set(Integer index, Boolean bit);
     
     shared actual native Float float;
