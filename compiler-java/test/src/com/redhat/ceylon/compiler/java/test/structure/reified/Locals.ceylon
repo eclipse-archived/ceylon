@@ -560,3 +560,16 @@ class MapTest<Key, Item>(<Key->Item>* entry)
         return null;
     }
 }
+
+shared interface MyIterable<out Element, out Absent=Null>
+        satisfies Category
+        given Absent satisfies Null {
+
+    shared default {<Integer->Element&Object>*} indexed {
+        object indexes
+            satisfies {<Integer->Element&Object>*} {
+            iterator() => nothing;
+        }
+        return indexes;
+    }
+}
