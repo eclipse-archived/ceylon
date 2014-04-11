@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -73,6 +74,11 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     @Override
     public void visit(Tree.ObjectDefinition that) {
         visitLocalDecl(that);
+        // use the same qualifier for the object type
+        if(that.getAnonymousClass() != null
+                && that.getDeclarationModel() != null) {
+            that.getAnonymousClass().setQualifier(that.getDeclarationModel().getQualifier());
+        }
 
         Map<String,Integer> oldLocalNames = localNames;
         localNames = new HashMap<String,Integer>();
