@@ -31,7 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 @RemainingSections(
         OutputRepoUsingTool.DOCSECTION_CONFIG_COMPILER +
         "\n\n" +
-        OutputRepoUsingTool.DOCSECTION_OUTPUT)
+        OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     private boolean profile = false;
