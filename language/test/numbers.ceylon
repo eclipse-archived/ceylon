@@ -418,6 +418,48 @@ shared void numbers() {
     check(!($10).get(0), "b10.get(0) == false");
     check($10.get(1), "b10.get(1) == true");
     check(!($10).get(2), "b10.get(2) == false");
+    
+    Integer allOnes =     $1111111111111111111111111111111111111111111111111111111111111111;
+    Integer leftmostOne = $1000000000000000000000000000000000000000000000000000000000000000;
+    Integer rightmostOne =$0000000000000000000000000000000000000000000000000000000000000001;
+    Integer allZeros =    $0000000000000000000000000000000000000000000000000000000000000000;
+    value oobIndices = (-2..-1).chain(runtime.integerAddressableSize..runtime.integerAddressableSize+2);
+    // by doing the tests using values of the real type and on type parameters
+    // we test both jvm optimized and non-optimized paths
+    void binaryOob<T>(T ones, T zeros, T leftmost, T rightmost)
+        given T satisfies Binary<T> {
+        for (oobIndex in oobIndices) {
+            value ibIndex = ((oobIndex % runtime.integerAddressableSize) + runtime.integerAddressableSize) % runtime.integerAddressableSize;
+            for (lhs in [ones, zeros, leftmost, rightmost]) {
+                // Theses are weirdly circular
+                check(lhs.leftLogicalShift(oobIndex) == lhs.leftLogicalShift(ibIndex), "``lhs``.leftLogicalShift(``oobIndex``) == ``lhs``.leftLogicalShift(``ibIndex``)");
+                check(lhs.rightLogicalShift(oobIndex) == lhs.rightLogicalShift(ibIndex), "``lhs``.rightLogicalShift(``oobIndex``) == ``lhs``.leftLogicalShift(``ibIndex``)");
+                check(lhs.rightArithmeticShift(oobIndex) == lhs.rightArithmeticShift(ibIndex), "``lhs``.leftLogicalShift(``oobIndex``) == ``lhs``.rightArithmeticShift(``ibIndex``)");
+                // These should be noops
+                check(lhs.clear(oobIndex) == lhs,      "``lhs``.clear(``oobIndex``) == ``lhs``");
+                check(lhs.flip(oobIndex) == lhs,       "``lhs``.flip(``oobIndex``) == ``lhs``");
+                check(lhs.set(oobIndex) == lhs,        "``lhs``.set(``oobIndex``) == ``lhs``");
+                check(lhs.set(oobIndex, false) == lhs, "``lhs``.set(``oobIndex``, false) == ``lhs``");
+                // This should be false
+                check(lhs.get(oobIndex) == false,      "``lhs``.get(``oobIndex``) == false");
+            }
+            for (lhs in [allOnes, allZeros, leftmostOne, rightmostOne]) {
+                // Theses are weirdly circular
+                check(lhs.leftLogicalShift(oobIndex) == lhs.leftLogicalShift(ibIndex), "``lhs``.leftLogicalShift(``oobIndex``) == ``lhs``.leftLogicalShift(``ibIndex``)");
+                check(lhs.rightLogicalShift(oobIndex) == lhs.rightLogicalShift(ibIndex), "``lhs``.rightLogicalShift(``oobIndex``) == ``lhs``.leftLogicalShift(``ibIndex``)");
+                check(lhs.rightArithmeticShift(oobIndex) == lhs.rightArithmeticShift(ibIndex), "``lhs``.leftLogicalShift(``oobIndex``) == ``lhs``.rightArithmeticShift(``ibIndex``)");
+                // These should be noops
+                check(lhs.clear(oobIndex) == lhs,      "``lhs``.clear(``oobIndex``) == ``lhs``");
+                check(lhs.flip(oobIndex) == lhs,       "``lhs``.flip(``oobIndex``) == ``lhs``");
+                check(lhs.set(oobIndex) == lhs,        "``lhs``.set(``oobIndex``) == ``lhs``");
+                check(lhs.set(oobIndex, false) == lhs, "``lhs``.set(``oobIndex``, false) == ``lhs``");
+                // This should be false
+                check(lhs.get(oobIndex) == false,      "``lhs``.get(``oobIndex``) == false");
+            }
+        }
+    }
+    binaryOob(allOnes, allZeros, leftmostOne, rightmostOne);
+    
 }
 
 void checkParseInteger() {
