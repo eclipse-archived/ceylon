@@ -124,4 +124,10 @@ public class OptimizationTest extends CompilerTest {
         //compile("loop/optim/Correct.ceylon");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct");
     }
+    
+    @Test
+    public void testLopOptimBug1467(){
+        compareWithJavaSource("loop/optim/Bug1467");
+        run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug1467");
+    }
 }

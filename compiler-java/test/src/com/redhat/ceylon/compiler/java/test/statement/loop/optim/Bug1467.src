@@ -1,0 +1,97 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1467() {
+        this.size = 1024L * 1024L * 1024L / 4L;
+        this.buff = new int[(int)getSize$priv$()];
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long size;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    private final long getSize$priv$() {
+        return size;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final int[] buff;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::IntArray")
+    private final int[] getBuff$priv$() {
+        return buff;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void bufferTest$priv$() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$2 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), getSize$priv$() - 1L);
+        final boolean isArraySequence$3 = iterable$2 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$4;
+        int i$5 = 0;
+        final int length$6;
+        if (isArraySequence$3) {
+            array$4 = ((.ceylon.language.ArraySequence)iterable$2).$getArray$();
+            i$5 = ((.ceylon.language.ArraySequence)iterable$2).$getFirst$();
+            length$6 = i$5 + ((.ceylon.language.ArraySequence)iterable$2).$getLength$();
+        } else {
+            array$4 = null;
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
+        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
+            final long i = ((.ceylon.language.Integer)elem$0).longValue();
+            getBuff$priv$()[(int)i] = (int)i;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void buffer() {
+        final long startTime = .ceylon.language.system_.get_().getNanoseconds();
+        final long $ceylontmp$start$7 = 1L;
+        final long $ceylontmp$end$8 = 100L;
+        final boolean $ceylontmp$increasing$9 = $ceylontmp$start$7 <= $ceylontmp$end$8;
+        final long $ceylontmp$incr$10 = $ceylontmp$increasing$9 ? 1L : -1L;
+        loop_1: for (long i$11 = $ceylontmp$start$7; $ceylontmp$increasing$9 ? i$11 - $ceylontmp$end$8 <= 0L : i$11 - $ceylontmp$end$8 >= 0L; i$11 += $ceylontmp$incr$10) {
+            final long i = i$11;
+            bufferTest$priv$();
+        }
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Duration: ").append((.ceylon.language.system_.get_().getNanoseconds() - startTime) / 100L).append("\n").toString()));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1467_ {
+    
+    private bug1467_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1467() {
+        final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467 b = new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467();
+        b.buffer();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug1467_.bug1467();
+    }
+}
