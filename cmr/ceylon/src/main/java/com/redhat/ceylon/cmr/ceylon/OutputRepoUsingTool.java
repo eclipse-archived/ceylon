@@ -20,11 +20,11 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
             "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories` " +
             "(the equivalent options on the command line always have precedence).";
     
-    public static final String DOCSECTION_OUTPUT =
-            "## Output repositories" +
+    public static final String DOCSECTION_REPOSITORIES =
+            "## Repositories" +
             "\n\n" +
-            "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
-            "to remote servers or can be names of repositories when prepended with a `+` symbol. " +
+            "Repositories like those specified with the `--rep` or `--out` options can be file paths, " +
+            "HTTP urls to remote servers or can be names of repositories when prepended with a `+` symbol. " +
             "These names refer to repositories defined in the configuration file or can be any of " +
             "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
             "For more information see http://ceylon-lang.org/documentation/1.0/reference/tool/config";
