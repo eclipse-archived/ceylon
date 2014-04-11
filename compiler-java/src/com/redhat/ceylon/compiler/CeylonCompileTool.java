@@ -94,13 +94,6 @@ import com.sun.tools.javac.util.Options;
         "`defaults.offline`, `defaults.encoding`, `compiler.source`, `compiler.resource` and `repositories` " +
         "(the equivalent options on the command line always have precedence)." +
         "\n\n" +
-        "## About resources" +
-        "\n\n" +
-        "Duplicate resources (resources with the exact same name and path found in several " +
-        "resource folders at a time) are handled on a first come first serve basis " +
-        "where the order is defined by the order of the `--resource` options on the command " +
-        "line or the order of the `compiler.resource` options in the configuration file." +
-        "\n\n" +
         "## Output repositories" +
         "\n\n" +
         "Output repositories specified with the `--out` option can be file paths, HTTP urls " +
