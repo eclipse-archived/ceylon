@@ -356,7 +356,7 @@ shared void numbers() {
     check(#ffff_ffff == 4294967295, "ffff_ffff");
     check($1111_1111 == 255, "1111_1111");
 
-    if (0.size == 64) {
+    if (runtime.integerSize== 64) {
         check(#ff.not == #ffffffffffffff00, "~xff == xffffffffffffff00");
         check(box(#ff).not == #ffffffffffffff00, "~xff == xffffffffffffff00 boxed");
         check(0.not == #ffffffffffffffff, "~0 == xffffffffffffffff");
@@ -371,7 +371,7 @@ shared void numbers() {
         check(box($1010101010101010101010101010101010101010101010101010101010101010).rightArithmeticShift(1) 
                 == $1101010101010101010101010101010101010101010101010101010101010101, 
                 "b1010101010101010101010101010101010101010101010101010101010101010 >>> 1 == b1101010101010101010101010101010101010101010101010101010101010101 boxed");
-    } else if (0.size == 53) {
+    } else if (runtime.integerSize == 53) {
         check(#ff.not == -256, "~xff == -256");
         check(box(#ff).not == -256, "~xff == -256 boxed");
         check(0.not == -1, "~0 == -1");
@@ -387,7 +387,7 @@ shared void numbers() {
                 == $00101010101010101010101010101010,
                 "b10101010101010101010101010101010101010101010101010101 >>> 1 == b00101010101010101010101010101010 boxed");
     } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number tests for this platform");
     }
     check(1.leftLogicalShift(2) == $100, "1<<2 == b100");
     check(box(1).leftLogicalShift(2) == $100, "1<<2 == b100 boxed");
@@ -504,8 +504,8 @@ void checkParseInteger() {
         // OK
     }
     
-    print("Testing `` 0.size ``-bit integers");
-    if (0.size == 64) {
+    print("Testing `` runtime.integerSize ``-bit integers");
+    if (runtime.integerSize == 64) {
         check(9223372036854775807==(parseInteger("9223372036854775807") else ""), "parseInteger(9223372036854775807)");
         check(9_223_372_036_854_775_807==(parseInteger("9_223_372_036_854_775_807") else ""), "parseInteger(9_223_372_036_854_775_807)");
         check(-9223372036854775808==(parseInteger("-9223372036854775808") else ""), "parseInteger(-9223372036854775808)");
@@ -533,7 +533,7 @@ void checkParseInteger() {
         check(-9223372036854775808==(parseInteger("-1y2p0ij32e8e8", 36) else ""), "parseInteger(-1y2p0ij32e8e8, 36)");
         check(!parseInteger("1y2p0ij32e8e8", 36) exists, "parseInteger(1y2p0ij32e8e8, 36)");
         check(!parseInteger("-1y2p0ij32e8e9", 36) exists, "parseInteger(-1y2p0ij32e8e9, 36)");
-    } else if (0.size == 53) {
+    } else if (runtime.integerSize == 53) {
         check(9007199254740989==(parseInteger("9007199254740989") else ""), "parseInteger(9007199254740989)");
         check(9_007_199_254_740_989==(parseInteger("9_007_199_254_740_989") else ""), "parseInteger(9_007_199_254_740_989)");
         check(-9007199254740991==(parseInteger("-9007199254740991") else ""), "parseInteger(-9007199254740991)");
@@ -562,7 +562,7 @@ void checkParseInteger() {
         check(!parseInteger("2gosa7pa2gu", 36) exists, "parseInteger(2gosa7pa2gu, 36)");
         check(!parseInteger("-2gosa7pa2gw", 36) exists, "parseInteger(-2gosa7pa2gw, 36)");
     } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add parseInteger() tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add parseInteger() tests for this platform");
     }
 
     check(!parseInteger("") exists, "parseInteger()");
@@ -608,7 +608,7 @@ void checkFormatInteger() {
     } catch (AssertionError ex) {
         // OK
     }
-    if (0.size == 64) {
+    if (runtime.integerSize == 64) {
         Integer maxIntegerValue = 9_223_372_036_854_775_807;
         Integer minIntegerValue = -9_223_372_036_854_775_808;
         check("9223372036854775807"==formatInteger(maxIntegerValue), "formatInteger(``maxIntegerValue``)");
@@ -622,7 +622,7 @@ void checkFormatInteger() {
         
         check("1y2p0ij32e8e7"==formatInteger(maxIntegerValue, 36), "formatInteger(``maxIntegerValue``, 36)");
         check("-1y2p0ij32e8e8"==formatInteger(minIntegerValue, 36), "formatInteger(``minIntegerValue``, 36)");
-    } else if (0.size == 53) {
+    } else if (runtime.integerSize == 53) {
         Integer maxIntegerValue = 9_007_199_254_740_989;
         Integer minIntegerValue = -9_007_199_254_740_991;
         check("9007199254740989"==formatInteger(maxIntegerValue), "formatInteger(``maxIntegerValue``)");
@@ -637,6 +637,6 @@ void checkFormatInteger() {
         check("2gosa7pa2gt"==formatInteger(maxIntegerValue, 36), "formatInteger(``maxIntegerValue``, 36)");
         check("-2gosa7pa2gv"==formatInteger(minIntegerValue, 36), "formatInteger(``minIntegerValue``, 36)");
     } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number formatInteger() tests for this platform");
+        fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number formatInteger() tests for this platform");
     }
 }

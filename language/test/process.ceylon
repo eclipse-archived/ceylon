@@ -76,7 +76,7 @@ shared void testRuntime() {
         check(runtime.minIntegerValue == -9007199254740991, "js runtime.minIntegerValue");
         check(runtime.maxIntegerValue == 9007199254740989, "js runtime.maxIntegerValue");
     } else {
-        fail("UNKNOWN INTEGER SIZE `` 0.size `` - please add number tests for this runtime");
+        fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number tests for this runtime");
     }
     if (runtime.name == "jvm") {
         check(runtime.maxArraySize == #7ffffff7, "runtime.maxArraySize");
