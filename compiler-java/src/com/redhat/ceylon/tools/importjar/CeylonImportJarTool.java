@@ -68,7 +68,7 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
         "`com.example.foobar/1.2.0`.\n" +
         "\n" +
         "`<jar-file>` is the name of the Jar file to import.")
-@RemainingSections(OutputRepoUsingTool.DOCSECTION_OUTPUT)
+@RemainingSections(OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     private ModuleSpec module;

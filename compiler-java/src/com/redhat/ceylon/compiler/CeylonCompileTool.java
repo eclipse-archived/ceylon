@@ -90,7 +90,7 @@ import com.sun.tools.javac.util.Options;
 @RemainingSections(
         OutputRepoUsingTool.DOCSECTION_CONFIG_COMPILER +
         "\n\n" +
-        OutputRepoUsingTool.DOCSECTION_OUTPUT +
+        OutputRepoUsingTool.DOCSECTION_REPOSITORIES +
         "\n\n" +
         "## Specifying `javac` options" +
         "\n\n" +

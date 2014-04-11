@@ -27,7 +27,7 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 		"to another. If set for recursive copying it will also copy " +
 		"all the module's dependencies and their dependencies until the " +
 		"entire module tree has been copied.")
-@RemainingSections(OutputRepoUsingTool.DOCSECTION_OUTPUT)
+@RemainingSections(OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;

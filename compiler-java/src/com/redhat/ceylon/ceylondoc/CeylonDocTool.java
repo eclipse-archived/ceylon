@@ -127,7 +127,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
         "        --src ~/projects/hibernate/src \\\n"+
         "        --out ~/projects/hibernate/build" +
         "\n\n" +
-        OutputRepoUsingTool.DOCSECTION_OUTPUT)
+        OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonDocTool extends OutputRepoUsingTool {
 
     private static final String OPTION_SECTION = "doctool.";
