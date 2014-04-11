@@ -139,15 +139,24 @@ JSNum$proto.and = function(x) { return this & x; }
 JSNum$proto.or = function(x) { return this | x; }
 JSNum$proto.xor = function(x) { return this ^ x; }
 JSNum$proto.$get = function(idx) {
+    if (idx < 0 || idx >31) {
+        return false;
+    } 
     var mask = 1 << idx;
     return (this & mask) != 0 ? $true : $false;
 }
 JSNum$proto.set = function(idx,bit) {
+    if (idx < 0 || idx >31) {
+        return this;
+    } 
     if (bit === undefined) { bit = $true; }
         var mask = idx > 1 ? 1 << idx : 1;
     return (bit === $true) ? this | mask : this & ~mask;
 }
 JSNum$proto.flip = function(idx) {
+    if (idx < 0 || idx >31) {
+        return this;
+    } 
     var mask = 1 << idx;
     return this ^ mask;
 }

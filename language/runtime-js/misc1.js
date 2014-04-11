@@ -21,6 +21,29 @@ var trueString = String$("true", 4);
 var falseString = String$("false", 5);
 $defat(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
+
+$defat(Boolean.prototype, 'not', function(){ return !this.valueOf(); },
+  undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['ceylon.language','Binary','$at','not']};});
+Boolean.prototype.leftLogicalShift = function(i) { return this.valueOf(); }
+Boolean.prototype.rightLogicalShift = function(i) { return this.valueOf(); }
+Boolean.prototype.rightArithmeticShift = function(i) { return this.valueOf(); }
+Boolean.prototype.and = function(x) { return this.valueOf() && x.valueOf(); }
+Boolean.prototype.or = function(x) { return this.valueOf() || x.valueOf(); }
+Boolean.prototype.xor = function(x) { return this.valueOf()?!x.valueOf():x.valueOf(); }
+Boolean.prototype.$get = function(idx) {
+    return idx === 0 ? this.valueOf() : false;
+}
+Boolean.prototype.set = function(idx,bit) {
+    if (bit === undefined) { bit = $true; }
+    return idx === 0 ? bit.valueOf() : this.valueOf();
+}
+Boolean.prototype.flip = function(idx) {
+    return idx === 0 ? !this.valueOf() : this.valueOf();
+}
+Boolean.prototype.clear = function(index) {
+    return index === 0 ? false : this.valueOf();
+}
+
 function getTrue() {return true;}
 function getFalse() {return false;}
 exports.$prop$getTrue={get:getTrue,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','true'],$t:{t:Boolean$}};}};
