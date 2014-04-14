@@ -102,7 +102,10 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     @Override
     protected Module findModuleForClassMirror(ClassMirror classMirror) {
         Class<?> klass = ((ReflectionClass)classMirror).klass;
-        return findModuleForClass(klass);
+        Module ret = findModuleForClass(klass);
+        if(ret == null)
+            throw new RuntimeException("Could not find module for class "+klass);
+        return ret;
     }
 
     public Module findModuleForClass(Class<?> klass){
@@ -113,7 +116,23 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             String name = jbossModule.getIdentifier().getName();
             String version = jbossModule.getIdentifier().getSlot();
             String cacheKey = cacheKeyByModule(name, version);
-            return moduleCache.get(cacheKey);
+            Module ret = moduleCache.get(cacheKey);
+            if(ret == null){
+                // there's a good chance we didn't get the module loaded in time, wait until that classloader is
+                // registered then
+                Object lock = getLock();
+                synchronized(lock){
+                    while(!classLoaders.containsValue(cl)){
+                        try {
+                            lock.wait(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    ret = moduleCache.get(cacheKey);
+                }
+            }
+            return ret;
         }else{
             // revert to a single classloader version?
             // FIXME: perhaps we can have other one-classloader-to-one-module setups than jboss modules?

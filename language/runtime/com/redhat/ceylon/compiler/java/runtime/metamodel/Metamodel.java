@@ -108,6 +108,11 @@ public class Metamodel {
 
     public static void loadModule(String name, String version, ArtifactResult result, ClassLoader classLoader){
         moduleManager.loadModule(name, version, result, classLoader);
+        // notify any thread waiting for this monitor
+        Object lock = getLock();
+        synchronized(lock){
+            lock.notifyAll();
+        }
     }
     
     public static void resetModuleManager() {
@@ -218,6 +223,10 @@ public class Metamodel {
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeNestableDeclaration ret = typeCheckModelToRuntimeModel.get(declaration);
             if(ret == null){
+                // make sure its module is loaded
+                com.redhat.ceylon.compiler.typechecker.model.Package pkg = getPackage(declaration);
+                com.redhat.ceylon.compiler.typechecker.model.Module mod = pkg.getModule();
+                getOrCreateMetamodel(mod);
                 if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.Class){
                     com.redhat.ceylon.compiler.typechecker.model.Class klass = (com.redhat.ceylon.compiler.typechecker.model.Class) declaration;
                     ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClass(klass);
@@ -266,6 +275,10 @@ public class Metamodel {
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage ret = typeCheckPackagesToRuntimeModel.get(declaration);
             if(ret == null){
+                // make sure its module is loaded
+                com.redhat.ceylon.compiler.typechecker.model.Module mod = declaration.getModule();
+                getOrCreateMetamodel(mod);
+
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreePackage(declaration); 
                 typeCheckPackagesToRuntimeModel.put(declaration, ret);
             }
@@ -288,8 +301,9 @@ public class Metamodel {
 
     private static void loadModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
         // don't do if not running JBoss modules
-        if(Metamodel.class.getClassLoader() instanceof org.jboss.modules.ModuleClassLoader == false)
+        if(!isJBossModules()){
             return;
+        }
         // we must use the context module loader, which is the one CeylonModuleLoader for every user module
         // if we use the language module loader it will be a LocalModuleLoader which doesn't know about the
         // module repos specified on the command-line.
@@ -305,7 +319,21 @@ public class Metamodel {
                 // it was loaded via the bootstrap module loader perhaps?
                 return;
             }
+            // this can complete in another thread or this thread
             ((CeylonModuleClassLoader) cl).registerInMetaModel();
+            if(!declaration.isAvailable()){
+                // perhaps it is being loaded in another thread, wait for it
+                Object lock = getLock();
+                synchronized(lock){
+                    while(!declaration.isAvailable()){
+                        try {
+                            lock.wait(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
             // present
@@ -316,6 +344,10 @@ public class Metamodel {
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static boolean isJBossModules() {
+        return Metamodel.class.getClassLoader() instanceof org.jboss.modules.ModuleClassLoader;
     }
 
     public static ceylon.language.meta.declaration.OpenType getMetamodel(ProducedType pt) {
