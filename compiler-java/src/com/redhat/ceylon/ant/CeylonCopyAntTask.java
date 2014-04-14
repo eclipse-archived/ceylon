@@ -43,6 +43,11 @@ public class CeylonCopyAntTask extends RepoUsingCeylonAntTask {
     private String user;
     private String pass;
     private boolean recursive;
+    private Boolean js;
+    private Boolean jvm;
+    private Boolean docs;
+    private Boolean src;
+    private Boolean all;
     
     public CeylonCopyAntTask() {
         super("copy");
@@ -102,6 +107,42 @@ public class CeylonCopyAntTask extends RepoUsingCeylonAntTask {
     }
 
     /**
+     * Set to true to copy JS artifacts (defaults: true)
+     */
+    public void setJs(Boolean js) {
+        this.js = js;
+    }
+
+    /**
+     * Set to true to copy JVM artifacts (defaults: true)
+     */
+    public void setJvm(Boolean jvm) {
+        this.jvm = jvm;
+    }
+
+    /**
+     * Set to true to copy source artifacts (defaults: false)
+     */
+    public void setSrc(Boolean src) {
+        this.src = src;
+    }
+
+    /**
+     * Set to true to copy documentation artifacts (defaults: false)
+     */
+    public void setDocs(Boolean docs) {
+        this.docs = docs;
+    }
+
+    /**
+     * Set to true to copy every artifact (js, jvm, docs, src)
+     */
+    public void setAll(Boolean all) {
+        this.all = all;
+    }
+
+
+    /**
      * Check that all required attributes have been set and nothing silly has
      * been entered.
      * 
@@ -134,7 +175,27 @@ public class CeylonCopyAntTask extends RepoUsingCeylonAntTask {
         if (recursive) {
             appendOption(cmd, "--recursive");
         }
-        
+
+        if (js == Boolean.TRUE) {
+            appendOption(cmd, "--js");
+        }
+
+        if (jvm == Boolean.TRUE) {
+            appendOption(cmd, "--jvm");
+        }
+
+        if (src == Boolean.TRUE) {
+            appendOption(cmd, "--src");
+        }
+
+        if (docs == Boolean.TRUE) {
+            appendOption(cmd, "--docs");
+        }
+
+        if (all == Boolean.TRUE) {
+            appendOption(cmd, "--all");
+        }
+
         for (Module module : moduleSet.getModules()) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
             cmd.createArgument().setValue(module.toVersionedSpec());

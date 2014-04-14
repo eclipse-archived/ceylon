@@ -526,19 +526,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             descriptorContext.setForceOperation(true);
         }
         try{
-            outputRepository.putArtifact(context, new File(jarFile));
-            String sha1 = ShaSigner.sha1(jarFile, log);
-            if(sha1 != null){
-                File shaFile = ShaSigner.writeSha1(sha1, log);
-                if(shaFile != null){
-                    try{
-                        ArtifactContext sha1Context = context.getSha1Context();
-                        outputRepository.putArtifact(sha1Context, shaFile);
-                    }finally{
-                        shaFile.delete();
-                    }
-                }
-            }
+            File jarFile = new File(this.jarFile);
+            outputRepository.putArtifact(context, jarFile);
+            signArtifact(context, jarFile);
             
             if (descriptorContext != null) {
                 outputRepository.putArtifact(descriptorContext, new File(descriptor));

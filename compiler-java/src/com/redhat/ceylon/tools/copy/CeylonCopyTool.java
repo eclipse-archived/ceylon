@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -34,6 +35,11 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     private boolean recursive;
     
     private HashSet<ModuleSpec> copiedModules = new HashSet<ModuleSpec>();
+    private boolean jvm = true;
+    private boolean js = true;
+    private boolean docs;
+    private boolean src;
+    private boolean all;
     
     public CeylonCopyTool() {
         super(CeylonCopyMessages.RESOURCE_BUNDLE);
@@ -55,6 +61,36 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Option
+    @Description("Include modules compiled for the JVM (.car) (default: true)")
+    public void setJvm(boolean jvm) {
+        this.jvm = jvm;
+    }
+
+    @Option
+    @Description("Include modules compiled for the JSVM (.js) (default: true)")
+    public void setJs(boolean js) {
+        this.js = js;
+    }
+
+    @Option
+    @Description("Include documentation (default: false)")
+    public void setDocs(boolean docs) {
+        this.docs = docs;
+    }
+
+    @Option
+    @Description("Include sources (default: false)")
+    public void setSrc(boolean src) {
+        this.src = src;
+    }
+
+    @Option
+    @Description("Include everything (jvm,js,docs,src) (default: false)")
+    public void setAll(boolean all) {
+        this.all = all;
+    }
+
+    @Option
     @OptionArgument(argumentName = "flags")
     @Description("Produce verbose output. " +
             "If no `flags` are given then be verbose about everything, " +
@@ -73,29 +109,42 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         setSystemProperties();
         // FIXME: copying is currently very inefficient!
         // All possible suffix types are tried which will result in numerous
-        // unnecessary roundtrips to external servers, also, no de-duplication
-        // is done so if a module is encountered several times it will be
-        // copied the same number of times (only one copy will exist but it's slow)
+        // unnecessary roundtrips to external servers
+        Set<String> artifacts = new HashSet<String>();
+        if(js || all)
+            artifacts.add(ArtifactContext.JS);
+        if(jvm || all){
+            // put the CAR first since its presence will shortcut the other three
+            artifacts.add(ArtifactContext.CAR);
+            artifacts.add(ArtifactContext.JAR);
+            artifacts.add(ArtifactContext.MODULE_PROPERTIES);
+            artifacts.add(ArtifactContext.MODULE_XML);
+        }
+        if(src || all)
+            artifacts.add(ArtifactContext.SRC);
+        if(docs || all){
+            artifacts.add(ArtifactContext.DOCS_ZIPPED);
+            artifacts.add(ArtifactContext.DOCS);
+        }
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
                 String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
                 module = new ModuleSpec(module.getName(), version);
             }
-            copyModule(module);
+            copyModule(module, artifacts);
         }
     }
 
-    private void copyModule(ModuleSpec module) throws IOException {
-        if (copiedModules.contains(module)) {
+    private void copyModule(ModuleSpec module, Set<String> artifacts) throws IOException {
+        if (!copiedModules.add(module)) {
             return;
         }
-        copiedModules.add(module);
         if (!JDKUtils.isJDKModule(module.getName()) && !JDKUtils.isOracleJDKModule(module.getName())) {
             Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), ModuleQuery.Type.ALL, null, null);
             if (!versions.isEmpty()) {
                 ModuleVersionDetails ver = versions.iterator().next();
                 msg("copying.module", module).newline();
-                for (String suffix : ArtifactContext.userSuffixes) {
+                for (String suffix : artifacts) {
                     ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), suffix);
                     ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(ac);
                     if (srcArchive != null) {
@@ -105,7 +154,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 if (recursive) {
                     for (ModuleInfo dep : ver.getDependencies()) {
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
-                        copyModule(depModule);
+                        copyModule(depModule, artifacts);
                     }
                 }
             } else {
@@ -121,6 +170,10 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             msg("copying.artifact", archive).newline();
         }
         getOutputRepositoryManager().putArtifact(ac, archive);
+        // SHA1 it if required
+        if(!ac.getSingleSuffix().equals(ArtifactContext.DOCS)){
+            signArtifact(ac, archive);
+        }
     }
 
 }
