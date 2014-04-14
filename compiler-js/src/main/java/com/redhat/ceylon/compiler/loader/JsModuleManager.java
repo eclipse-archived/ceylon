@@ -179,13 +179,16 @@ public class JsModuleManager extends ModuleManager {
                     line = line.substring(line.indexOf("{"), line.length()-1);
                     Map<String,Object> model = (Map<String,Object>)JSONValue.parse(line);
                     if (!model.containsKey("$mod-bin")) {
-                        throw new CeylonRunJsException("The JS module " + jsFile +
+                        throw new CeylonRunJsException("The JavaScript module " + jsFile +
                                 " is not compatible with the current version of ceylon-js");
                     } else if (!model.get("$mod-bin").toString().equals(BIN_VERSION)) {
-                        throw new CompilerErrorException(String.format("This JavaScript module has binary version %s incompatible with the compiler version %s",
+                        throw new CompilerErrorException(String.format("This Ceylon-JS module has binary version %s is incompatible with the compiler version %s",
                                 model.get("$mod-bin"), BIN_VERSION));
                     }
                     return model;
+                } else if (line.startsWith("var $METAMODEL$=") && line.endsWith("};")) {
+                    throw new CompilerErrorException(String.format("This Ceylon-JS module has an incompatible binary version with compiler version %s",
+                            BIN_VERSION));
                 }
             }
             throw new CompilerErrorException("Can't find metamodel definition in " + jsFile.getAbsolutePath());
