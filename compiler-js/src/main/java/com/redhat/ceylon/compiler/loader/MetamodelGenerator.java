@@ -150,9 +150,23 @@ public class MetamodelGenerator {
         if (d.isToplevel() || d instanceof TypeParameter) {
             m.put(KEY_NAME, d.getName());
         } else {
-            final String qn = d.getQualifiedNameString();
+            String qn = d.getQualifiedNameString();
             int p0 = qn.indexOf("::");
-            m.put(KEY_NAME, p0>=0 ? qn.substring(p0+2) : qn);
+            if (p0>=0) {
+                qn = qn.substring(p0+2);
+            }
+            p0 = qn.indexOf('.');
+            if (p0 >= 0) {
+                StringBuilder nestedName = new StringBuilder(TypeUtils.modelName(d));
+                Declaration pd = Util.getContainingDeclaration(d);
+                while (pd != null) {
+                    nestedName.insert(0, '.');
+                    nestedName.insert(0, TypeUtils.modelName(pd));
+                    pd = Util.getContainingDeclaration(pd);
+                }
+                qn = nestedName.toString();
+            }
+            m.put(KEY_NAME, qn);
         }
         if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
             //For types that reference type parameters, we're done
@@ -365,7 +379,7 @@ public class MetamodelGenerator {
     public Map<String,Object> encodeClass(com.redhat.ceylon.compiler.typechecker.model.Class d) {
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_CLASS);
-        m.put(KEY_NAME, d.getName());
+        m.put(KEY_NAME, TypeUtils.modelName(d));
 
         //Type parameters
         List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
