@@ -1,7 +1,9 @@
 package com.redhat.ceylon.cmr.ceylon;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -68,5 +70,20 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
             outrm = rmb.buildOutputManager();
         }
         return outrm;
+    }
+
+    protected void signArtifact(ArtifactContext context, File jarFile){
+        String sha1 = ShaSigner.sha1(jarFile, log);
+        if(sha1 != null){
+            File shaFile = ShaSigner.writeSha1(sha1, log);
+            if(shaFile != null){
+                try{
+                    ArtifactContext sha1Context = context.getSha1Context();
+                    getOutputRepositoryManager().putArtifact(sha1Context, shaFile);
+                }finally{
+                    shaFile.delete();
+                }
+            }
+        }
     }
 }
