@@ -108,7 +108,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
 
     private static Set<ModuleInfo> getDependencies(Object engine) {
         try {
-            return asModInfos(safeEval(engine, "exports.$$CCMM$$()['$mod-deps']"));
+            return asModInfos(metaModelProperty(engine, "$mod-deps"));
         } catch (Exception ex) {
             throw new RuntimeException("Failed to parse module JS file", ex);
         }
@@ -116,17 +116,18 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
         ScriptEngine engine = (ScriptEngine)getEngine(moduleArchive);
-        Object name = safeEval(engine, "exports.$$CCMM$$()['$mod-name']");
+
+        String name = asString(metaModelProperty(engine, "$mod-name"));
         if (!moduleName.equals(name)) {
             throw new RuntimeException("Incorrect module");
         }
-        String version = asString(safeEval(engine, "exports.$$CCMM$$()['$mod-version']"));
+        String version = asString(metaModelProperty(engine, "$mod-version"));
         Set<ModuleInfo> deps = getDependencies(engine);
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
         Integer mayor = null, minor = null;
-        String bin = asString(safeEval(engine, "exports.$$CCMM$$()['$mod-bin']"));
+        String bin = asString(metaModelProperty(engine, "$mod-bin"));
         if (bin != null) {
             int p = bin.indexOf('.');
             if (p >= 0) {
@@ -141,6 +142,20 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, mayor, minor));
         mvd.getDependencies().addAll(deps);
         return mvd;
+    }
+    
+    private static Object metaModelProperty(Object engine, String propName) {
+        return safeEval(engine, "exports." + metaModelName(engine) + "()['" + propName + "']");
+    }
+    
+    private static String metaModelName(Object engine) {
+        String modelVarName = "$CCMM$";
+        Object model = safeEval(engine, "exports." + modelVarName);
+        if (model == null) {
+            // Try the old name
+            modelVarName = "$$METAMODEL$$";
+        }
+        return modelVarName;
     }
     
     private static Object safeEval(Object engine, String code) {
