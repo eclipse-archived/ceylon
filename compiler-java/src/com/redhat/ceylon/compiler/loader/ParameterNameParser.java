@@ -41,17 +41,17 @@ class ParameterNameParser {
             lexer.eat();
             method.setDeclaredVoid(true);
         }
-        method.addParameterList(parseNameList(type, method.getUnit()));
+        method.addParameterList(parseNameList(type, method, method.getUnit()));
         while (lexer.lookingAt(LEFT_PAREN)) {// mpl
             type = loader.getSimpleCallableReturnType(type);
-            method.addParameterList(parseNameList(type, method.getUnit()));
+            method.addParameterList(parseNameList(type, method, method.getUnit()));
         }
         method.setType(loader.getSimpleCallableReturnType(type));
         if (!lexer.lookingAt(EOI)) {
             throw new ParameterNameParserException("Expected end of input" + System.lineSeparator() + input);
         }
     }
-    private ParameterList parseNameList(ProducedType type, Unit unit) {
+    private ParameterList parseNameList(ProducedType type, Method method, Unit unit) {
         ParameterList pl = new ParameterList();
         lexer.eat(LEFT_PAREN);
         if (!lexer.lookingAt(RIGHT_PAREN)) {
@@ -59,13 +59,13 @@ class ParameterNameParser {
             if (!ct.hasNext()) {
                 throw new ParameterNameParserException("Too few parameter types");
             }
-            pl.getParameters().add(parseName(ct.next(), unit));
+            pl.getParameters().add(parseName(ct.next(), method, unit));
             while (lexer.lookingAt(COMMA)) {
                 lexer.eat();
                 if (!ct.hasNext()) {
                     throw new ParameterNameParserException("Too few parameter types");
                 }
-                pl.getParameters().add(parseName(ct.next(), unit));
+                pl.getParameters().add(parseName(ct.next(), method, unit));
             }
             if (ct.hasNext()) {
                 throw new ParameterNameParserException("Too many parameter types");
@@ -75,7 +75,7 @@ class ParameterNameParser {
         return pl;
     }
 
-    private Parameter parseName(ProducedType type, Unit unit) {
+    private Parameter parseName(ProducedType type, Method container, Unit unit) {
         String identifier = lexer.eatIdentifier();
         Parameter p = new Parameter();
         p.setName(identifier);
@@ -100,7 +100,7 @@ class ParameterNameParser {
             method.setDeclaredVoid(declaredVoid);
             method.setType(loader.getSimpleCallableReturnType(type));
             while (lexer.lookingAt(LEFT_PAREN)) {
-                method.addParameterList(parseNameList(type, unit));
+                method.addParameterList(parseNameList(type, method, unit));
                 type = loader.getSimpleCallableReturnType(type);
             }
             result = method;
@@ -114,6 +114,7 @@ class ParameterNameParser {
         }
         result.setName(identifier);
         result.setUnit(unit);
+        result.setContainer(container);
         
         p.setModel(result);
         
