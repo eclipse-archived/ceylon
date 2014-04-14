@@ -35,11 +35,11 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     private boolean recursive;
     
     private HashSet<ModuleSpec> copiedModules = new HashSet<ModuleSpec>();
-    private boolean jvm = true;
-    private boolean js = true;
-    private boolean docs;
-    private boolean src;
-    private boolean all;
+    private Boolean jvm;
+    private Boolean js;
+    private Boolean docs;
+    private Boolean src;
+    private Boolean all;
     
     public CeylonCopyTool() {
         super(CeylonCopyMessages.RESOURCE_BUNDLE);
@@ -111,18 +111,23 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         // All possible suffix types are tried which will result in numerous
         // unnecessary roundtrips to external servers
         Set<String> artifacts = new HashSet<String>();
-        if(js || all)
+        boolean defaults = js == null 
+                && jvm == null
+                && src == null
+                && docs == null
+                && all == null;
+        if(js == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE) || defaults)
             artifacts.add(ArtifactContext.JS);
-        if(jvm || all){
+        if(jvm == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE) || defaults){
             // put the CAR first since its presence will shortcut the other three
             artifacts.add(ArtifactContext.CAR);
             artifacts.add(ArtifactContext.JAR);
             artifacts.add(ArtifactContext.MODULE_PROPERTIES);
             artifacts.add(ArtifactContext.MODULE_XML);
         }
-        if(src || all)
+        if(src == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE))
             artifacts.add(ArtifactContext.SRC);
-        if(docs || all){
+        if(docs == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE)){
             artifacts.add(ArtifactContext.DOCS_ZIPPED);
             artifacts.add(ArtifactContext.DOCS);
         }
