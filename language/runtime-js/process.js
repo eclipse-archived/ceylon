@@ -207,7 +207,7 @@ $defat(process$proto, 'string', function() {
 var process$ = processClass();
 function getProcess() { return process$; }
 getProcess.$crtmm$=function(){return{
-  mod:$CCMM$,$t:{t:processClass},$an:function(){return[shared(),native()];},d:['ceylon.language','process']};
+  mod:$CCMM$,$t:{t:processClass},$an:function(){return[shared(),$native()];},d:['ceylon.language','process']};
 }
 exports.getProcess=getProcess;
 exports.$prop$getProcess={get:getProcess,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','process'],$t:{t:processClass}

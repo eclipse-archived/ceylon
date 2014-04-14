@@ -30,7 +30,7 @@ function Integer(value) {
 }
 initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
         $init$Integral(), Exponentiable, Binary);
-Integer.$crtmm$=function(){return{$an:function(){return[shared(),native(),final()];},mod:$CCMM$,d:['ceylon.language','Integer']};}
+Integer.$crtmm$=function(){return{$an:function(){return[shared(),$native(),$final()];},mod:$CCMM$,d:['ceylon.language','Integer']};}
 
 function Float(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -41,7 +41,7 @@ function Float(value) {
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
-Float.$crtmm$=function(){return{$an:function(){return[shared(),native(),final()];},mod:$CCMM$,d:['ceylon.language','Float']};}
+Float.$crtmm$=function(){return{$an:function(){return[shared(),$native(),$final()];},mod:$CCMM$,d:['ceylon.language','Float']};}
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {

@@ -21,7 +21,7 @@ String$.$crtmm$=function(){return{'super':{t:Object$},
   $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element$Iterable:{t:Character},Absent$Iterable:{t:Null}}},$mt:'prm'}],
   'satisfies':[{t:List,a:{Element$List:{t:Character}}}, {t:Comparable,a:{Other$Comparable:{t:String$}}},
     {t:Summable,a:{Other$Summable:{t:String$}}}, {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:String$}}}],
-  $an:function(){return[shared(),native(),final()];},
+  $an:function(){return[shared(),$native(),$final()];},
   mod:$CCMM$,d:['ceylon.language','String']};};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
@@ -662,7 +662,7 @@ function Character(value,cache) {
 }
 Character.$crtmm$=function(){return{'super':{t:Object$}, 'satisfies':[
     {t:Comparable,a:{Other:{t:Character}}}, {t:Enumerable,a:{Other:{t:Character}}}],
-  $an:function(){return[shared(),native(),final()];},mod:$CCMM$,d:['ceylon.language','Character']};}
+  $an:function(){return[shared(),$native(),$final()];},mod:$CCMM$,d:['ceylon.language','Character']};}
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
@@ -788,7 +788,7 @@ function StringBuilder(/*String...*/comps) {
     return that;
 }
 StringBuilder.$crtmm$=function(){return{'super':{t:Basic},$ps:[],
-  $an:function(){return[shared(),native()];},mod:$CCMM$,d:['ceylon.language','StringBuilder']};};
+  $an:function(){return[shared(),$native()];},mod:$CCMM$,d:['ceylon.language','StringBuilder']};};
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;

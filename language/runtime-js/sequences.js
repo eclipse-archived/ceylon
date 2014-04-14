@@ -10,7 +10,7 @@ function Array$(elems,$$targs$$) {
     List({Element$List:$$targs$$.Element$Array}, e);
     return e;
 }
-Array$.$crtmm$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$Array'}}}],$an:function(){return[shared(),final(),native()];},mod:$CCMM$,d:['ceylon.language','Array'],
+Array$.$crtmm$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$Array'}}}],$an:function(){return[shared(),$final(),$native()];},mod:$CCMM$,d:['ceylon.language','Array'],
   'super':{t:Object$}, $tp:{Element$Array:{}}, satisfies:[{t:List,a:{Element$List:'Element$Array'}},
     {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:Array$,a:{Element$Array:'Element$Array'}}}}]};
 

@@ -58,7 +58,7 @@ function type$meta(x,$$targs$$) {
   return c;
 }
 type$meta.$crtmm$=function(){return{
-  $ps:[{$nm:'instance',$t:'Type'}],$an:function(){return[shared(),native()];},
+  $ps:[{$nm:'instance',$t:'Type'}],$an:function(){return[shared(),$native()];},
   $t:{t:ClassModel$meta$model,a:{Type$Class:'Type', Arguments$Class:{t:Nothing}}}, $tp:{Type$type:{satisfies:{t:Anything}}},
   mod:$CCMM$,d:['ceylon.language.meta','type']};}
 exports.type$meta=type$meta;
