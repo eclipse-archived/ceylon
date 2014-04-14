@@ -144,11 +144,21 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             if (!versions.isEmpty()) {
                 ModuleVersionDetails ver = versions.iterator().next();
                 msg("copying.module", module).newline();
+                boolean foundCar = true;
                 for (String suffix : artifacts) {
+                    // if we found a car we can skip the jar and module descriptors
+                    if(foundCar 
+                            && (suffix.equals(ArtifactContext.JAR)
+                                    || suffix.equals(ArtifactContext.MODULE_PROPERTIES)
+                                    || suffix.equals(ArtifactContext.MODULE_XML)))
+                        continue;
                     ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), suffix);
                     ArtifactResult srcArchive = getRepositoryManager().getArtifactResult(ac);
                     if (srcArchive != null) {
                         copyArtifact(ac, srcArchive.artifact());
+                        // if we found a car we can skip the jar and module descriptors
+                        if(suffix.equals(ArtifactContext.CAR))
+                            foundCar = true;
                     }
                 }
                 if (recursive) {
