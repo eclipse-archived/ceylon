@@ -193,24 +193,12 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 Util.addToIntersection(cls.getSatisfiedTypes(), sat, u2);
             }
         }
-        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
-            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
-                loadInterface(inner.getKey(), inner.getValue(), cls, allparms);
-            }
-        }
-        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
-            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES)).entrySet()) {
-                loadClass(inner.getKey(), inner.getValue(), cls, allparms);
-            }
-        }
         if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
             for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
                 loadObject(inner.getKey(), inner.getValue(), cls, allparms);
             }
         }
         addAttributesAndMethods(m, cls, allparms);
-        m.clear();
-        m.put(MetamodelGenerator.KEY_METATYPE, cls);
         return cls;
     }
 
@@ -575,19 +563,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 Util.addToIntersection(t.getSatisfiedTypes(), s, u2);
             }
         }
-        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
-            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
-                loadInterface(inner.getKey(), inner.getValue(), t, allparms);
-            }
-        }
-        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
-            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES)).entrySet()) {
-                loadClass(inner.getKey(), inner.getValue(), t, allparms);
-            }
-        }
         addAttributesAndMethods(m, t, allparms);
-        m.clear();
-        m.put(MetamodelGenerator.KEY_METATYPE, t);
         return t;
     }
 
@@ -748,9 +724,24 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             final String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
             if (pname == null) {
                 //It's a ref to a type parameter
-                for (TypeParameter typeParam : typeParams) {
-                    if (typeParam.getName().equals(tname)) {
-                        td = typeParam;
+                List<TypeParameter> containerTypeParameters = null;
+                if (container instanceof TypeDeclaration) {
+                    containerTypeParameters = ((TypeDeclaration)container).getTypeParameters();
+                } else if (container instanceof Method) {
+                    containerTypeParameters = ((Method)container).getTypeParameters();
+                }
+                if (containerTypeParameters != null) {
+                    for (TypeParameter typeParam : containerTypeParameters) {
+                        if (typeParam.getName().equals(tname)) {
+                            td = typeParam;
+                        }
+                    }
+                }
+                if (td == null) {
+                    for (TypeParameter typeParam : typeParams) {
+                        if (typeParam.getName().equals(tname)) {
+                            td = typeParam;
+                        }
                     }
                 }
             } else {
@@ -781,16 +772,28 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 }
                 final boolean nested = tname.indexOf('.') > 0;
                 final String level1 = nested ? tname.substring(0, tname.indexOf('.')) : tname;
-                //Then look in the top-level declarations
-                for (Declaration d : rp.getMembers()) {
-                    if (d instanceof TypeDeclaration && level1.equals(d.getName())) {
+                if (rp != null && !nested) {
+                    Declaration d = rp.getDirectMember(tname, null, false);
+                    if (d instanceof TypeDeclaration) {
                         td = (TypeDeclaration)d;
+                    } else if (d instanceof MethodOrValue) {
+                        td = ((MethodOrValue)d).getTypeDeclaration();
                     }
                 }
                 if (td == null && rp instanceof JsonPackage) {
-                    td = (TypeDeclaration)((JsonPackage)rp).load(level1, typeParams);
+                    if (nested) {
+                        td = ((JsonPackage)rp).loadNestedType(tname, typeParams);
+                    } else {
+                        td = (TypeDeclaration)((JsonPackage)rp).load(tname, typeParams);
+                    }
                 }
-                if (nested && td != null) {
+                //Then look in the top-level declarations
+                if (nested && td == null) {
+                    for (Declaration d : rp.getMembers()) {
+                        if (d instanceof TypeDeclaration && level1.equals(d.getName())) {
+                            td = (TypeDeclaration)d;
+                        }
+                    }
                     final String[] path = tname.split("\\.");
                     for (int i = 1; i < path.length; i++) {
                         td = (TypeDeclaration)td.getDirectMember(path[i], null, false);
@@ -829,16 +832,9 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         }
         if (td == null) {
             try {
-                if (container == null) {
-                    throw new IllegalArgumentException(String.format("Couldn't find type %s::%s for %s in %s<%s> (FROM pkg %s)",
-                            m.get(MetamodelGenerator.KEY_PACKAGE), m.get(MetamodelGenerator.KEY_NAME),
-                            m.get(MetamodelGenerator.KEY_MODULE), m, typeParams, getNameAsString()));
-                } else {
-                    throw new IllegalArgumentException(String.format("Couldn't find type %s::%s or %s::%s.%s for %s in %s<%s> (FROM pkg %s)",
-                            m.get(MetamodelGenerator.KEY_PACKAGE), m.get(MetamodelGenerator.KEY_NAME),
-                            m.get(MetamodelGenerator.KEY_PACKAGE), container.getName(), m.get(MetamodelGenerator.KEY_NAME),
-                            m.get(MetamodelGenerator.KEY_MODULE), m, typeParams, getNameAsString()));
-                }
+                throw new IllegalArgumentException(String.format("Couldn't find type %s::%s for %s in %s<%s> (FROM pkg %s)",
+                        m.get(MetamodelGenerator.KEY_PACKAGE), m.get(MetamodelGenerator.KEY_NAME),
+                        m.get(MetamodelGenerator.KEY_MODULE), m, typeParams, getNameAsString()));
             } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
@@ -913,6 +909,45 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         if (JsCompiler.isCompilingLanguageModule() && d.isToplevel() && !d.isShared()) {
             d.setShared(true);
         }
+    }
+
+    /** Load a nested type that hasn't been loaded yet */
+    private TypeDeclaration loadNestedType(final String fqn, List<TypeParameter> typeParams) {
+        String[] path = fqn.split("\\.");
+        @SuppressWarnings("unchecked")
+        Map<String,Object> typeMap = (Map<String,Object>)model.get(path[0]);
+        if (typeMap.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeDeclaration == false) {
+            load(path[0], typeParams);
+        }
+        TypeDeclaration td = (TypeDeclaration)typeMap.get(MetamodelGenerator.KEY_METATYPE);
+        for (int i = 1; i < path.length; i++) {
+            @SuppressWarnings("unchecked")
+            Map<String,Object> subtypes = (Map<String,Object>)typeMap.get(MetamodelGenerator.KEY_INTERFACES);
+            Map<String,Object> childMap = null;
+            int type = 0;
+            if (subtypes != null) {
+                childMap = (Map<String,Object>)subtypes.get(path[i]);
+                type = 1;
+            }
+            if (childMap == null) {
+                subtypes = (Map<String,Object>)typeMap.get(MetamodelGenerator.KEY_CLASSES);
+                if (subtypes != null) {
+                    childMap = (Map<String,Object>)subtypes.get(path[i]);
+                    type = 2;
+                }
+            }
+            TypeDeclaration child = (TypeDeclaration)td.getDirectMember(path[i], null, false);
+            if (child == null) {
+                switch(type) {
+                case 1:child = loadInterface(path[i], childMap, td, typeParams);
+                break;
+                case 2:child = loadClass(path[i], childMap, td, typeParams);
+                break;
+                }
+            }
+            td = child;
+        }
+        return td;
     }
 
     /** Create a new list that contains all the type parameters in the first list,
