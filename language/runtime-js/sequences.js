@@ -35,7 +35,7 @@ if (t===undefined)t=$$targs$$.Element$Array;
 if (t===undefined)t=$$targs$$.Element$Sequence;
 if (t===undefined)t=$$targs$$.Element$Sequential;
 if (t===undefined)t=$$targs$$.Element$List;
-if (t===undefined)throw new Error("Invalid type arguments for ArraySequence: "+require('util').inspect($$targs$$));
+if (t===undefined)throw new Error("Invalid type arguments for ArraySequence: "+/*require('util').inspect(*/$$targs$$);
     value.$$targs$$={Element$Iterable:t, Element$ArraySequence:t, Element$Sequence:t, Element$Sequential:t, Element$List:t, Element$Collection:t, Item$Correspondence:t, Key$Correspondence:{t:Integer},Absent$Iterable:{t:Nothing}, Element$Array:t};
     return value;
 }
