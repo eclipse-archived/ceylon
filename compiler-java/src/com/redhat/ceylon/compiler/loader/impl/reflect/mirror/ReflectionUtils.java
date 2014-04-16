@@ -339,22 +339,8 @@ public class ReflectionUtils {
         Type[] typeArguments = pt.getActualTypeArguments();
         int i=0;
         for(TypeVariable<?> tv : sc.getTypeParameters()){
-            Class<?> erasedTa = null;
             Type ta = typeArguments[i++];
-            if(ta instanceof TypeVariable){
-                // see if we have it
-                erasedTa = baseTypeArguments.get(ta);
-            }else if(ta instanceof Class<?>){
-                erasedTa = (Class<?>) ta;
-            }else if(ta instanceof ParameterizedType){
-                erasedTa = (Class<?>) ((ParameterizedType) ta).getRawType();
-            }else
-                throw new RuntimeException("Unknown type argument type: "+ta);
-            /*
-             * See Erasure bounds Note above
-             */
-            if(erasedTa == null)
-                erasedTa = Object.class;
+            Class<?> erasedTa = getParameterErasure(baseTypeArguments, ta);
             typeArgsMap.put(tv, erasedTa);
         }
     }
