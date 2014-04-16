@@ -1,0 +1,23 @@
+#!/bin/sh
+
+VERSION=1.1.0
+
+set -e
+
+case "$1" in
+configure)
+	update-alternatives --install /usr/bin/ceylon ceylon /usr/share/ceylon/$VERSION/bin/ceylon 11000
+    update-alternatives --auto ceylon
+	# Remove old symlinks
+	for command in ceylon-js ceylonc ceylonc-js ceylond ceylon-import-jar
+	do
+	    rm -f /usr/bin/$command;
+	done
+	for man in /usr/share/doc/ceylon-$VERSION/man/*
+	do
+	    page=`basename $man`
+	    rm -rf /usr/share/man/man1/$page
+        update-alternatives --install /usr/share/man/man1/$page $page $man 11000
+        update-alternatives --auto $page
+	done
+esac
