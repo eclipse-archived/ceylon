@@ -225,15 +225,20 @@ public abstract class AbstractRepository implements Repository {
 
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
+        boolean found = false;
         for (Node child : node.getChildren()) {
             String name = child.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
-            if (isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, lookup, ret))
-                return true;
+            if (isFolder && !name.equals(ArtifactContext.DOCS) && containsArtifact(node, child, lookup, ret)){
+                // stop if we found the right type
+                if(ret.foundRightType)
+                    return true;
+                // keep looking for the other versions, perhaps we will find the right type
+                found = true;
+            }
         }
-        // could not find any
-        return false;
+        return found;
     }
 
     private boolean containsArtifact(Node moduleNode, Node versionNode, ModuleQuery lookup, Ret ret) {
