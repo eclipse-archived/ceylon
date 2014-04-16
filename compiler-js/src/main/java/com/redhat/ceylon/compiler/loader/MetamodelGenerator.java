@@ -78,10 +78,15 @@ public class MetamodelGenerator {
             ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
             for (ModuleImport mi : module.getImports()) {
                 String impath = String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion());
-                if (mi.isOptional()) {
-                    Map<String,Object> optimp = new HashMap<>(2);
+                if (mi.isOptional() || mi.isExport()) {
+                    Map<String,Object> optimp = new HashMap<>(3);
                     optimp.put("path",impath);
-                    optimp.put("opt",1);
+                    if (mi.isOptional()) {
+                        optimp.put("opt",1);
+                    }
+                    if (mi.isExport()) {
+                        optimp.put("exp", 1);
+                    }
                     imps.add(optimp);
                 } else {
                     imps.add(impath);
