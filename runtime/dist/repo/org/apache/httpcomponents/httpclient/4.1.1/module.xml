@@ -31,5 +31,11 @@
         <module name="org.apache.httpcomponents.httpcore" slot="4.1.1" export="true"/>
         <module name="org.apache.commons.logging" slot="1.1.1"/>
         <module name="org.apache.commons.codec" slot="1.4"/>
+        <system export="true">
+            <paths>
+                <path name="javax/net"/>
+                <path name="javax/net/ssl"/>
+            </paths>
+        </system>
     </dependencies>
 </module>
