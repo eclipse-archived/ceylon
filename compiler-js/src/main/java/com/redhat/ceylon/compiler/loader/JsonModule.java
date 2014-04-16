@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 
 public class JsonModule extends Module {
 
@@ -60,11 +61,26 @@ public class JsonModule extends Module {
         if ("default".equals(name)) {
             name = "";
         }
-        final com.redhat.ceylon.compiler.typechecker.model.Package p = super.getPackage(name);
-        if (p == null) {
-            throw new CompilerErrorException("Package " + name + " not available");
+        com.redhat.ceylon.compiler.typechecker.model.Package p = getDirectPackage(name);
+        if (p != null) {
+            return p;
         }
-        return p;
+        for (ModuleImport imp : getImports()) {
+            final Module mod = imp.getModule();
+            p = mod.getDirectPackage(name);
+            if (p != null) {
+                return p;
+            }
+            for (ModuleImport im2 : mod.getImports()) {
+                if (im2.isExport()) {
+                    p = im2.getModule().getPackage(name);
+                }
+                if (p != null) {
+                    return p;
+                }
+            }
+        }
+        throw new CompilerErrorException("Package " + name + " not available in module " + this);
     }
 
 }
