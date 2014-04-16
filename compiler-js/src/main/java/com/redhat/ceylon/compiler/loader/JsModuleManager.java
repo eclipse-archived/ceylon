@@ -134,9 +134,19 @@ public class JsModuleManager extends ModuleManager {
             List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule,
             Map<String, Object> model) {
         @SuppressWarnings("unchecked")
-        List<String> deps = (List<String>)model.get("$mod-deps");
+        List<Object> deps = (List<Object>)model.get("$mod-deps");
         if (deps != null) {
-            for (String s : deps) {
+            for (Object dep : deps) {
+                final String s;
+                boolean optional = false;
+                boolean export = false;
+                if (dep instanceof Map) {
+                    s = (String)((Map)dep).get("path");
+                    optional = ((Map)dep).containsKey("opt");
+                    export = ((Map)dep).containsKey("exp");
+                } else {
+                    s = (String)dep;
+                }
                 int p = s.indexOf('/');
                 String depname = null;
                 String depv = null;
@@ -148,8 +158,8 @@ public class JsModuleManager extends ModuleManager {
                     depname = s;
                 }
                 //This will cause the dependency to be loaded later
-                JsonModule dep = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
-                ModuleImport imp = new ModuleImport(dep, false, false);
+                JsonModule mod = (JsonModule)getOrCreateModule(splitModuleName(depname), depv);
+                ModuleImport imp = new ModuleImport(mod, optional, export);
                 module.addImport(imp);
             }
         }
