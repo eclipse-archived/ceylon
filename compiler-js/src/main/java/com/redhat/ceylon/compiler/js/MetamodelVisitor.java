@@ -146,4 +146,9 @@ public class MetamodelVisitor extends Visitor {
         }
     }
 
+    @Override
+    public void visit(Tree.PackageDescriptor that) {
+        super.visit(that);
+        gen.getPackageMap(that.getUnit().getPackage());
+    }
 }

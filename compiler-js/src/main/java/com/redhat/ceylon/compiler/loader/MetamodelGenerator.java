@@ -104,14 +104,7 @@ public class MetamodelGenerator {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> findParent(Declaration d) {
-        Map<String,Object> pkgmap = (Map<String,Object>)model.get(d.getUnit().getPackage().getNameAsString());
-        if (pkgmap == null) {
-            pkgmap = new HashMap<>();
-            if (d.getUnit().getPackage().isShared()) {
-                pkgmap.put("$pkg-shared", 1);
-            }
-            model.put(d.getUnit().getPackage().getNameAsString(), pkgmap);
-        }
+        Map<String,Object> pkgmap = getPackageMap(d.getUnit().getPackage());
         if (d.isToplevel()) {
             return pkgmap;
         }
@@ -618,6 +611,19 @@ public class MetamodelGenerator {
             }
         }
         return false;
+    }
+
+    public Map<String,Object> getPackageMap(com.redhat.ceylon.compiler.typechecker.model.Package p) {
+        @SuppressWarnings("unchecked")
+        Map<String,Object> pkgmap = (Map<String,Object>)model.get(p.getNameAsString());
+        if (pkgmap == null) {
+            pkgmap = new HashMap<>();
+            if (p.isShared()) {
+                pkgmap.put("$pkg-shared", 1);
+            }
+            model.put(p.getNameAsString(), pkgmap);
+        }
+        return pkgmap;
     }
 
 }
