@@ -64,15 +64,23 @@ public class JsModuleManager extends ModuleManager {
         }
         //Create a similar artifact but with .js extension
         File js = artifact.artifact();
-        if (module instanceof JsonModule && js.getName().endsWith(".js")) {
-            if (js.exists() && js.isFile() && js.canRead()) {
+        if (module instanceof JsonModule) {
+            if (((JsonModule)module).getModel() != null) {
+                return;
+            }
+            if (js.exists() && js.isFile() && js.canRead() && js.getName().endsWith(".js")) {
                 if (JsModuleManagerFactory.isVerbose()) {
-                    System.out.println("Loading metamodel from " + js);
+                    System.out.println("Loading model from " + js);
                 }
-                Map<String,Object> model = loadMetamodel(js);
-                if (model != null) {
+                Map<String,Object> model = loadJsonModel(js);
+                if (model == null) {
+                    if (JsModuleManagerFactory.isVerbose()) {
+                        System.out.println("Model not found in " + js);
+                    }
+                } else {
                     loadModuleFromMap(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies,
                             forCompiledModule, model);
+                    return;
                 }
             }
         }
@@ -162,6 +170,7 @@ public class JsModuleManager extends ModuleManager {
                 ModuleImport imp = new ModuleImport(mod, optional, export);
                 module.addImport(imp);
             }
+            model.remove("$mod-deps");
         }
         ((JsonModule)module).setModel(model);
         for (ModuleImport imp : module.getImports()) {
@@ -181,7 +190,7 @@ public class JsModuleManager extends ModuleManager {
 
     /** Find the metamodel declaration in a js file, parse it as a Map and return it. */
     @SuppressWarnings("unchecked")
-    public static Map<String,Object> loadMetamodel(File jsFile) {
+    public static Map<String,Object> loadJsonModel(File jsFile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
