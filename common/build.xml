@@ -57,7 +57,7 @@
     </target>
 
     <target name="ceylon-common.jar" depends="compile">
-        <mkdir dir="${build.dist.repo}"/>
+        <mkdir dir="${build.dist.repo}/${ceylon.common.dir}"/>
         <jar destfile="${build.dist.repo}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
             </fileset>
