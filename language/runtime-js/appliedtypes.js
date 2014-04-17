@@ -527,7 +527,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
     }
     return _fu.apply(o,arguments);
   }
-  f.$crtmm$={mod:$CCMM$,d:['ceylon.language.model','Function'],$t:mm.$t,$ps:mm.$ps,$an:mm.$an};
+  f.$crtmm$={mod:$CCMM$,d:['ceylon.language.meta.model','Function'],$t:mm.$t,$ps:mm.$ps,$an:mm.$an};
   var dummy=new AppliedFunction.$$;
   f.getT$all=function(){return dummy.getT$all();}
   f.getT$name=function(){return dummy.getT$name();}
