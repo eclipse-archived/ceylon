@@ -431,7 +431,7 @@
     </target>
     
     <target name="dist" depends="compile">
-        <mkdir dir="${build.dist.repo}"/>
+        <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
         <zip destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
             <fileset dir="${build.classes}">
                 <include name="**/*.class"/>
