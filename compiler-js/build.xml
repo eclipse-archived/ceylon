@@ -106,7 +106,7 @@
 
     <!-- build jscompiler jar -->
     <target name="ceylon.js.jar" depends="compile">
-        <mkdir dir="${build.dist}"/>
+        <mkdir dir="${ceylon.js.dist}"/>
         <jar destfile="${ceylon.js.lib}">
             <fileset dir="${build.classes}">
             </fileset>
