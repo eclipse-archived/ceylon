@@ -63,9 +63,11 @@ function $is(obj, type) {
       return false;
     }
     if (type.t.$$.T$name in obj.getT$all()) {
-      if (type.t==Callable && !obj.$$targs$$ && getrtmm$$(obj) && obj.$crtmm$.$t && obj.$crtmm$.$ps!==undefined) {
+      if (type.t==Callable && !(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
+          && getrtmm$$(obj) && obj.$crtmm$.$t && obj.$crtmm$.$ps!==undefined) {
         //Callable with no $$targs$$, we can build them from metamodel
-        obj.$$targs$$={Return$Callable:obj.$crtmm$.$t,Arguments$Callable:{t:'T',l:[]}};
+        add_type_arg(obj,'Return$Callable',obj.$crtmm$.$t);
+        add_type_arg(obj,'Arguments$Callable',{t:'T',l:[]});
         for (var i=0; i < obj.$crtmm$.$ps.length; i++) {
           obj.$$targs$$.Arguments$Callable.l.push(obj.$crtmm$.$ps[i].$t);
         }
