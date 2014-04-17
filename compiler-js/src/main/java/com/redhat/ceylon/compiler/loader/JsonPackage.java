@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
@@ -46,6 +47,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     private boolean loaded = false;
     private final Unit u2 = new Unit();
     private NothingType nothing = new NothingType(u2);
+    private UnknownType unknown = new UnknownType(u2);
 
     static {
         idobj.put(MetamodelGenerator.KEY_NAME, "Basic");
@@ -86,7 +88,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
         //Ugly ass hack - add Nothing to the model
         nothing.setContainer(this);
         nothing.setUnit(u2);
-        setShared(model.get("$pkg-shared") != null);
+        setShared(model.remove("$pkg-shared") != null);
         for (Map.Entry<String,Object> e : model.entrySet()) {
             String k = e.getKey();
             if (!k.startsWith("$pkg-")) {
@@ -853,6 +855,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             if ("Nothing".equals(name)) {
                 //Load Nothing from language module, regardless of what this package is
                 return nothing;
+            } else if ("unknown".equals(name)) {
+                return unknown;
             }
             throw new IllegalStateException("Cannot find " + pkgname + "::" + name + " in " + model.keySet());
         }

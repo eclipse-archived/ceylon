@@ -327,7 +327,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     private List<Object> getDependencies(File jsmod) throws IOException {
-        final Map<String,Object> model = JsModuleManager.loadMetamodel(jsmod);
+        final Map<String,Object> model = JsModuleManager.loadJsonModel(jsmod);
         if (model == null) {
             return Collections.emptyList();
         }
