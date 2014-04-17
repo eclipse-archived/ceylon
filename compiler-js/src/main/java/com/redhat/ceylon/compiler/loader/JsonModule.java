@@ -7,6 +7,7 @@ import java.util.Objects;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class JsonModule extends Module {
 
@@ -57,11 +58,11 @@ public class JsonModule extends Module {
     }
 
     @Override
-    public com.redhat.ceylon.compiler.typechecker.model.Package getPackage(String name) {
+    public Package getPackage(String name) {
         if ("default".equals(name)) {
             name = "";
         }
-        com.redhat.ceylon.compiler.typechecker.model.Package p = getDirectPackage(name);
+        Package p = getDirectPackage(name);
         if (p != null) {
             return p;
         }
@@ -73,7 +74,7 @@ public class JsonModule extends Module {
             }
             for (ModuleImport im2 : mod.getImports()) {
                 if (im2.isExport()) {
-                    p = im2.getModule().getPackage(name);
+                    p = im2.getModule().getDirectPackage(name);
                 }
                 if (p != null) {
                     return p;
