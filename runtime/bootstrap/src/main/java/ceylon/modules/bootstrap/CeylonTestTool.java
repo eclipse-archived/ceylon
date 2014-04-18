@@ -36,8 +36,8 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends RepoUsingTool {
 
-    private static final String TEST_MODULE_NAME = "com.redhat.ceylon.test";
-    private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.test.run";
+    private static final String TEST_MODULE_NAME = "com.redhat.ceylon.testjvm";
+    private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.testjvm.run";
 
     private List<String> moduleNameOptVersionList;
     private List<String> testList;
