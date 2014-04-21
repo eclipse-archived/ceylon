@@ -232,6 +232,10 @@ shared void strings() {
     check(builder.size==28, "StringBuilder.size 2");
     check(builder.reset().size==0, "StringBuilder.reset");
 
+    check(builder.append("so|me").size==5);
+    check(builder.deleteInitial(2).string == "|me", "StringBuilder.deleteInitial");
+    check(builder.deleteTerminal(2).string == "|", "StringBuilder.deleteTerminal");
+
     check("hello world".initial(0)=="", "string initial 1");
     check("hello world".terminal(0)=="", "string terminal 1");
     check("hello world".initial(1)=="h", "string initial 2");
