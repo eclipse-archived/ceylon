@@ -40,6 +40,10 @@ import java.util.TreeSet;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult;
+import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.CMRException;
@@ -48,6 +52,7 @@ import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -75,6 +80,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private boolean force;
     private boolean dryRun;
     private boolean showClasses;
+    private boolean showSuggestions;
     
     private Set<String> jarClassNames;
     private Set<String> checkedClassNames;
@@ -136,6 +142,12 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         this.showClasses = showClasses;
     }
     
+    @Option(longName="show-suggestions")
+    @Description("Shows suggestions for modules based on missing package names (this can take a long time).")
+    public void setShowSuggestions(boolean showSuggestions) {
+        this.showSuggestions = showSuggestions;
+    }
+    
     @Override
     public void initialize() {
         setSystemProperties();
@@ -191,7 +203,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     if (!externalPackages.isEmpty()) {
                         msg("info.declare.module.imports").newline();
                         for (String pkg : externalPackages) {
-                            append("    ").append(pkg).newline();
+                            append("    ").append(pkg);
+                            if (showSuggestions) {
+                                outputSuggestions(pkg);
+                            }
+                            newline();
                         }
                     }
                 }
@@ -241,6 +257,40 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         return externalClasses;
     }
     
+    private void outputSuggestions(String pkg) throws IOException {
+        flush();
+        Set<String> suggestions = findSuggestions(pkg);
+        if (!suggestions.isEmpty()) {
+            append(", ");
+            if (suggestions.size() > 1) {
+                msg("info.try.importing.multiple");
+                for (String s : suggestions) {
+                    newline();
+                    append("        ").append(s);
+                }
+            } else {
+                msg("info.try.importing", suggestions.iterator().next());                
+            }
+        }
+    }
+
+    private Set<String> findSuggestions(String pkg) {
+        Set<String> suggestions = new TreeSet<>();
+        ModuleVersionQuery query = new ModuleVersionQuery("", null, ModuleQuery.Type.JVM);
+        query.setBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
+        query.setBinaryMinor(Versions.JVM_BINARY_MINOR_VERSION);
+        query.setMemberName(pkg);
+        query.setMemberSearchExact(true);
+        query.setMemberSearchPackageOnly(true);
+        ModuleSearchResult result = getRepositoryManager().completeModules(query);
+        for (ModuleDetails mvd : result.getResults()) {
+            if (mvd.getLastVersion().getMembers().isEmpty()) continue; // FIXME Remove when Herd implements searching for members
+            String modver = mvd.getName() + "/" + mvd.getLastVersion().getVersion();
+            suggestions.add(modver);
+        }
+        return suggestions;
+    }
+
     // Check the public API of a class for types that are external to the JAR we're importing
     private void checkPublicApi(Set<String> externalClasses, Class<?> clazz) {
         if (clazz.getModifiers() != Modifier.PUBLIC) {
