@@ -29,7 +29,6 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ContentFinder;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -202,7 +201,7 @@ public abstract class AbstractRepository implements Repository {
                 if (ret.foundRightType) {
                     // collect them
                     String moduleName = toModuleName(node);
-                    addSearchResult(result, moduleName, node, lookup.getType(), lookup.getMemberName());
+                    addSearchResult(result, moduleName, node, lookup);
                 }
             } else {
                 // collect in the children
@@ -460,7 +459,7 @@ public abstract class AbstractRepository implements Repository {
                             ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file, memberName != null);
                             SortedSet<String> matchingMembers = null;
                             if (memberName != null) {
-                                matchingMembers = matchMembers(mvd2, memberName);
+                                matchingMembers = matchMembers(mvd2, lookup);
                                 if (matchingMembers.isEmpty()) {
                                     // We haven't found a matching member in the module so we
                                     // just continue to the next suffix/artifact if any
@@ -563,7 +562,7 @@ public abstract class AbstractRepository implements Repository {
                         if (query.getStart() == null || ret.found++ >= query.getStart()) {
                             // are we interested in this result or did we need to skip it?
                             String moduleName = toModuleName(child);
-                            addSearchResult(result, moduleName, child, query.getType(), query.getMemberName());
+                            addSearchResult(result, moduleName, child, query);
                             // stop if we're done searching
                             if (query.getStart() != null
                                     && query.getCount() != null
@@ -582,9 +581,9 @@ public abstract class AbstractRepository implements Repository {
         }
     }
 
-    private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, Type type, String memberName) {
+    private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, ModuleQuery query) {
         SortedSet<String> versions = new TreeSet<String>();
-        String[] suffixes = type.getSuffixes();
+        String[] suffixes = query.getType().getSuffixes();
         for (Node child : namePart.getChildren()) {
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
@@ -617,6 +616,7 @@ public abstract class AbstractRepository implements Repository {
         
         Node artifact = getBestInfoArtifact(versionChild);
 
+        String memberName = query.getMemberName();
         ModuleVersionDetails mvd = null;
         if (artifact != null) {
             try {
@@ -626,7 +626,7 @@ public abstract class AbstractRepository implements Repository {
                     if (reader != null) {
                         mvd = reader.readModuleInfo(moduleName, file, memberName != null);
                         if (memberName != null) {
-                            SortedSet<String> matchingMembers = matchMembers(mvd, memberName);
+                            SortedSet<String> matchingMembers = matchMembers(mvd, query);
                             if (matchingMembers.isEmpty()) {
                                 // We haven't found a matching member in the module so we
                                 // just continue to the next suffix/artifact if any
@@ -661,16 +661,43 @@ public abstract class AbstractRepository implements Repository {
         result.addResult(moduleName, mvd);
     }
 
-    private SortedSet<String> matchMembers(ModuleVersionDetails mvd, String memberName) {
+    private SortedSet<String> matchMembers(ModuleVersionDetails mvd, ModuleQuery query) {
         // We're actually looking for a module containing a specific member
         SortedSet<String> found = new TreeSet<String>();
-        String lcaseName = memberName.toLowerCase();
-        for (String member : mvd.getMembers()) {
-            if (member.toLowerCase().contains(lcaseName)) {
-                found.add(member);
+        String name = query.getMemberName();
+        boolean matchPackage = query.isMemberSearchPackageOnly();
+        if (query.isMemberSearchExact()) {
+            for (String member : mvd.getMembers()) {
+                if (matchPackage) {
+                    member = packageName(member);
+                }
+                if (member.equals(name)) {
+                    found.add(member);
+                }
+            }
+        } else {
+            name = name.toLowerCase();
+            for (String member : mvd.getMembers()) {
+                if (matchPackage) {
+                    member = packageName(member);
+                }
+                if (member.toLowerCase().contains(name)) {
+                    found.add(member);
+                }
             }
         }
         return found;
+    }
+
+    // Given a fully qualified member name return it's package
+    // (or an empty string if it's not part of any package)
+    private String packageName(String memberName) {
+        int p = memberName.lastIndexOf('.');
+        if (p >= 0) {
+            return memberName.substring(0, p);
+        } else {
+            return "";
+        }
     }
     
     private Node getBestInfoArtifact(Node versionNode) {

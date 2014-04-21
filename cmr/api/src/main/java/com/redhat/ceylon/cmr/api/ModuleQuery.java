@@ -9,6 +9,8 @@ public class ModuleQuery {
     private Integer binaryMajor;
     private Integer binaryMinor;
     private String memberName;
+    private boolean memberSearchPackageOnly;
+    private boolean memberSearchExact;
 
     public enum Type {
         SRC(ArtifactContext.SRC), 
@@ -99,6 +101,22 @@ public class ModuleQuery {
 
     public void setMemberName(String memberName) {
         this.memberName = memberName;
+    }
+
+    public boolean isMemberSearchPackageOnly() {
+        return memberSearchPackageOnly;
+    }
+
+    public void setMemberSearchPackageOnly(boolean memberSearchPackageOnly) {
+        this.memberSearchPackageOnly = memberSearchPackageOnly;
+    }
+
+    public boolean isMemberSearchExact() {
+        return memberSearchExact;
+    }
+
+    public void setMemberSearchExact(boolean memberSearchExact) {
+        this.memberSearchExact = memberSearchExact;
     }
 
     @Override
