@@ -71,14 +71,25 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
     }
 
     @Override
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
         ModuleVersionDetails mvd = new ModuleVersionDetails(getVersionFromFilename(moduleName, moduleArchive.getName()));
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
         Set<ModuleInfo> deps = getDependencies(moduleArchive);
         if (deps != null) {
             mvd.getDependencies().addAll(deps);
         }
+        if (includeMembers) {
+            mvd.setMembers(getMembers(moduleArchive));
+        }
         return mvd;
+    }
+
+    private Set<String> getMembers(File moduleArchive) {
+        try {
+            return gatherClassnamesFromJar(moduleArchive);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to retrieve members for module " + moduleArchive.getPath(), e);
+        }
     }
 
     private static Set<ModuleInfo> getDependencies(File moduleArchive) {
@@ -137,15 +148,6 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
     @Override
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
         return null;
-    }
-
-    @Override
-    public Set<String> getMembers(String moduleName, File moduleArchive) {
-        try {
-            return gatherClassnamesFromJar(moduleArchive);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to retrieve members for module " + moduleArchive.getPath(), e);
-        }
     }
 
     // Return the set of fully qualified names for all the classes

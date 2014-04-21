@@ -79,7 +79,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         int major = 0;
         int minor = 0;
         
-        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive);
+        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive, false);
         ModuleVersionArtifact mva = mvd.getArtifactTypes().first();
         if (mva.getMajorBinaryVersion() != null) {
             major = mva.getMajorBinaryVersion();
@@ -114,7 +114,8 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         }
     }
     
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+    @Override
+    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
         ScriptEngine engine = (ScriptEngine)getEngine(moduleArchive);
 
         String name = asString(metaModelProperty(engine, "$mod-name"));
@@ -141,7 +142,17 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         ModuleVersionDetails mvd = new ModuleVersionDetails(version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, mayor, minor));
         mvd.getDependencies().addAll(deps);
+        
+        if (includeMembers) {
+            mvd.setMembers(getMembers(moduleName, moduleArchive));
+        }
+        
         return mvd;
+    }
+
+    private Set<String> getMembers(String moduleName, File moduleArchive) {
+        // TODO Implement this!
+        throw new RuntimeException("Not implemented yet");
     }
     
     private static Object metaModelProperty(Object engine, String propName) {
@@ -209,7 +220,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     }
 
     public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive);
+        ModuleVersionDetails mvd = readModuleInfo(moduleName, moduleArchive, false);
         if (mvd.getDoc() != null && matches(mvd.getDoc(), query))
             return true;
         if (mvd.getLicense() != null && matches(mvd.getLicense(), query))
@@ -227,12 +238,6 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
 
     private static boolean matches(String string, String query) {
         return string.toLowerCase().contains(query);
-    }
-
-    @Override
-    public Set<String> getMembers(String moduleName, File moduleArchive) {
-        // TODO Implement this!
-        throw new RuntimeException("Not implemented yet");
     }
 
 }

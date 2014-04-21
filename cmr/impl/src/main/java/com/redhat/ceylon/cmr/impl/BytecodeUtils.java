@@ -153,7 +153,7 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
     }
 
     @Override
-    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
+    public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
         Index index = readModuleIndex(moduleName, moduleArchive);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
@@ -182,7 +182,19 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         ModuleVersionArtifact mva = new ModuleVersionArtifact(type, majorVer != null ? majorVer.asInt() : null, minorVer != null ? minorVer.asInt() : null);
         mvd.getArtifactTypes().add(mva);
         
+        if (includeMembers) {
+            mvd.setMembers(getMembers(index));
+        }
+        
         return mvd;
+    }
+
+    private Set<String> getMembers(Index index) {
+        HashSet<String> members = new HashSet<>(); 
+        for (ClassInfo cls : index.getKnownClasses()) {
+            members.add(cls.name().toString());
+        }
+        return members;
     }
 
     private static String getVersionFromFilename(String moduleName, String name) {
@@ -265,15 +277,5 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
             return null;
         
         return annotations.get(0);
-    }
-
-    @Override
-    public Set<String> getMembers(String moduleName, File moduleArchive) {
-        HashSet<String> members = new HashSet<>(); 
-        Index index = readModuleIndex(moduleName, moduleArchive);
-        for (ClassInfo cls : index.getKnownClasses()) {
-            members.add(cls.name().toString());
-        }
-        return members;
     }
 }
