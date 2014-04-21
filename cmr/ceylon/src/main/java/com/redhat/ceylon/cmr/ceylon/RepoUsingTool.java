@@ -155,7 +155,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return rm;
     }
     
-    protected ModuleVersionQuery getModuleVersionQuery(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+    protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
         ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
         if (binaryMajor != null) {
             query.setBinaryMajor(binaryMajor);
@@ -171,7 +171,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
-        ModuleVersionQuery query = getModuleVersionQuery(repoMgr, name, version, type, binaryMajor, binaryMinor);
+        ModuleVersionQuery query = getModuleVersionQuery(name, version, type, binaryMajor, binaryMinor);
         ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
         return versionMap.values();
