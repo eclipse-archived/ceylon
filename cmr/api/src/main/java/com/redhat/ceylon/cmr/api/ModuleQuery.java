@@ -8,6 +8,7 @@ public class ModuleQuery {
     private long[] pagingInfo;
     private Integer binaryMajor;
     private Integer binaryMinor;
+    private String memberName;
 
     public enum Type {
         SRC(ArtifactContext.SRC), 
@@ -90,6 +91,14 @@ public class ModuleQuery {
 
     public void setBinaryMinor(Integer binaryMinor) {
         this.binaryMinor = binaryMinor;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
     @Override

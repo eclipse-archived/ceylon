@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -202,7 +203,7 @@ public abstract class AbstractRepository implements Repository {
                 if (ret.foundRightType) {
                     // collect them
                     String moduleName = toModuleName(node);
-                    addSearchResult(result, moduleName, node, lookup.getType());
+                    addSearchResult(result, moduleName, node, lookup.getType(), lookup.getMemberName());
                 }
             } else {
                 // collect in the children
@@ -421,6 +422,7 @@ public abstract class AbstractRepository implements Repository {
         if (namePart == null)
             return;
         String[] suffixes = lookup.getType().getSuffixes();
+        String memberName = lookup.getMemberName();
         // now each child is supposed to be a version part, let's verify that
         for (Node child : namePart.getChildren()) {
             // Winner of the less aptly-named method
@@ -438,6 +440,7 @@ public abstract class AbstractRepository implements Repository {
                 continue;
             // try every known suffix
             boolean found = false;
+            boolean foundInfo = false;
             ModuleVersionDetails mvd = new ModuleVersionDetails(version);
             for (String suffix : suffixes) {
                 String artifactName = getArtifactName(name, version, suffix);
@@ -455,6 +458,12 @@ public abstract class AbstractRepository implements Repository {
                     if (file != null) {
                         ModuleInfoReader reader = getModuleInfoReader(suffix);
                         if (reader != null) {
+                            if (memberName != null && !hasMember(memberName, reader, name, file)) {
+                                // We haven't found a matching member in the module so we
+                                // just continue to the next suffix/artifact if any
+                                continue;
+                            }
+                            foundInfo = true;
                             ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file);
                             if (mvd2.getDoc() != null) {
                                 mvd.setDoc(mvd2.getDoc());
@@ -466,15 +475,20 @@ public abstract class AbstractRepository implements Repository {
                             mvd.getDependencies().addAll(mvd2.getDependencies());
                             mvd.getArtifactTypes().addAll(mvd2.getArtifactTypes());
                         } else {
-                            // We didn't get any information but we'll at least add the artifact type to the result
-                            mvd.getArtifactTypes().add(new ModuleVersionArtifact(suffix, null, null));
+                            if (memberName == null) {
+                                // We didn't get any information but we'll at least add the artifact type to the result
+                                mvd.getArtifactTypes().add(new ModuleVersionArtifact(suffix, null, null));
+                            }
                         }
                     }
                 } catch (Exception e) {
                     // bah
                 }
             }
-            if (found) {
+            // NB: When searching for members it's not enough to have found
+            // just any artifact, we need to make sure we were able to
+            // read the artifac's information
+            if ((found && memberName == null) || foundInfo) {
                 mvd.setRemote(root.isRemote());
                 mvd.setOrigin(getDisplayString());
                 result.addVersion(mvd);
@@ -545,7 +559,7 @@ public abstract class AbstractRepository implements Repository {
                         if (query.getStart() == null || ret.found++ >= query.getStart()) {
                             // are we interested in this result or did we need to skip it?
                             String moduleName = toModuleName(child);
-                            addSearchResult(result, moduleName, child, query.getType());
+                            addSearchResult(result, moduleName, child, query.getType(), query.getMemberName());
                             // stop if we're done searching
                             if (query.getStart() != null
                                     && query.getCount() != null
@@ -564,17 +578,16 @@ public abstract class AbstractRepository implements Repository {
         }
     }
 
-    private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, Type type) {
+    private void addSearchResult(ModuleSearchResult result, String moduleName, Node namePart, Type type, String memberName) {
         SortedSet<String> versions = new TreeSet<String>();
         String[] suffixes = type.getSuffixes();
-        String foundSuffix = null;
         for (Node child : namePart.getChildren()) {
             // Winner of the less aptly-named method
             boolean isFolder = !child.hasBinaries();
             // ignore non-folders
             if (!isFolder)
                 continue;
-            // now make sure we can find the artifact we're looking for in there
+            // now make sure at least one of the artifacts we're looking for is in there
             String version = child.getLabel();
             // try every known suffix
             for (String suffix : suffixes) {
@@ -583,14 +596,15 @@ public abstract class AbstractRepository implements Repository {
                 if (artifact != null) {
                     // we found the artifact: store it
                     versions.add(version);
-                    foundSuffix = suffix;
                     break;
                 }
             }
         }
         // sanity check
-        if (versions.isEmpty())
-            throw new RuntimeException("Assertion failed: we didn't find any version of the proper type for " + moduleName);
+        if (versions.isEmpty()) {
+            // We didn't  find any versions so we silently skip this result
+            return;
+        }
         // find the latest version
         String latestVersion = versions.last();
         Node versionChild = namePart.getChild(latestVersion);
@@ -606,11 +620,27 @@ public abstract class AbstractRepository implements Repository {
                 if (file != null) {
                     ModuleInfoReader reader = getModuleInfoReader(artifact);
                     if (reader != null) {
+                        if (memberName != null && !hasMember(memberName, reader, moduleName, file)) {
+                            // We haven't found a matching member in the module so we
+                            // just exit without adding anything to the search result
+                            return;
+                        }
                         mvd = reader.readModuleInfo(moduleName, file);
                     }
                 }
             } catch (Exception e) {
                 // bah
+                if (memberName != null) {
+                    // We couldn't check the artifact for its members so we
+                    // just exit without adding anything to the search result
+                    return;
+                }
+            }
+        } else {
+            if (memberName != null) {
+                // We haven't found an artifact to check for members so we
+                // just exit without adding anything to the search result
+                return;
             }
         }
         if (mvd == null) {
@@ -621,6 +651,20 @@ public abstract class AbstractRepository implements Repository {
         mvd.setOrigin(getDisplayString());
 
         result.addResult(moduleName, mvd);
+    }
+
+    private boolean hasMember(String memberName, ModuleInfoReader reader, String moduleName, File file) {
+        // We're actually looking for a module containing a specific member
+        boolean found = false;
+        String lcaseName = memberName.toLowerCase();
+        Set<String> members = reader.getMembers(moduleName, file);
+        for (String member : members) {
+            if (member.toLowerCase().contains(lcaseName)) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
     
     private Node getBestInfoArtifact(Node versionNode) {

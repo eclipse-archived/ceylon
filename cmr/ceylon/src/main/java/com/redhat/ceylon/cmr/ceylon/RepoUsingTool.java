@@ -156,16 +156,27 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
     
     protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
-        return getModuleVersions(getRepositoryManager(), name, version, type, binaryMajor, binaryMinor);
+        return getModuleVersions(getRepositoryManager(), name, version, type, binaryMajor, binaryMinor, null);
+    }
+
+    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor, String memberName) {
+        return getModuleVersions(getRepositoryManager(), name, version, type, binaryMajor, binaryMinor, memberName);
     }
 
     protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        return getModuleVersions(repoMgr, name, version, type, binaryMajor, binaryMinor, null);
+    }
+    
+    protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor, String memberName) {
         ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
         if (binaryMajor != null) {
             query.setBinaryMajor(binaryMajor);
         }
         if (binaryMinor != null) {
             query.setBinaryMinor(binaryMinor);
+        }
+        if (memberName != null) {
+            query.setMemberName(memberName);
         }
         ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
@@ -205,7 +216,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
         
         boolean suggested = false;
-        Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryMajor, binaryMinor);
+        Collection<ModuleVersionDetails> versions = getModuleVersions(repoMgr, name, version, type, binaryMajor, binaryMinor, null);
         if (version != null) {
             // Here we either have a single version or none
             if (versions.isEmpty() || forceCompilation || shouldRecompile(checkCompilation, repoMgr, name, version, type)) {
@@ -224,7 +235,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 if (versions.isEmpty()) {
                     // Maybe the user specified the wrong version?
                     // Let's see if we can find any and suggest them
-                    versions = getModuleVersions(repoMgr, name, null, type, binaryMajor, binaryMinor);
+                    versions = getModuleVersions(repoMgr, name, null, type, binaryMajor, binaryMinor, null);
                     suggested = true;
                 }
             }
