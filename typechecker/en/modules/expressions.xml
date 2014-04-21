@@ -1837,7 +1837,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs &identical; rhs</literal></entry>
             <entry>identical</entry>
-            <entry><literal>identical(lhs,rhs)</literal></entry>
+            <entry><literal></literal></entry>
             <entry><literal>X given X satisfies Identifiable</literal></entry>
             <entry><literal>Y given Y satisfies Identifiable</literal>
             where <literal>X&amp;Y</literal> is not <literal>Nothing</literal></entry>
