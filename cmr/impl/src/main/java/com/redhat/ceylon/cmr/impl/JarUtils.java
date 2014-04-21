@@ -17,7 +17,12 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -132,6 +137,36 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
     @Override
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
         return null;
+    }
+
+    @Override
+    public Set<String> getMembers(String moduleName, File moduleArchive) {
+        try {
+            return gatherClassnamesFromJar(moduleArchive);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to retrieve members for module " + moduleArchive.getPath(), e);
+        }
+    }
+
+    // Return the set of fully qualified names for all the classes
+    // in the JAR pointed to by the given file
+    public static Set<String> gatherClassnamesFromJar(File jar) throws IOException {
+        HashSet<String> names = new HashSet<>();
+        JarFile zf = new JarFile(jar);
+        try {
+            Enumeration<? extends JarEntry> entries = zf.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+                    String name = entry.getName();
+                    String className = name.substring(0, name.length() - 6).replace('/', '.');
+                    names.add(className);
+                }
+            }
+        } finally {
+            zf.close();
+        }
+        return names;
     }
 
 }

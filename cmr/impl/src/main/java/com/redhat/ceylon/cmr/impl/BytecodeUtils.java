@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,7 +82,8 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
      * @return module info list
      */
     private static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        final AnnotationInstance ai = getAnnotation(moduleName, jarFile, MODULE_ANNOTATION);
+        Index index = readModuleIndex(moduleName, jarFile);
+        final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (ai == null)
             return null;
         final AnnotationValue dependencies = ai.value("dependencies");
@@ -107,8 +109,7 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         return infos;
     }
 
-    private static ClassInfo getModuleInfo(final String moduleName,
-                                           final File jarFile) {
+    private static Index readModuleIndex(final String moduleName, final File jarFile) {
         final Index index;
         try {
             // TODO -- remove this with new Jandex release
@@ -127,16 +128,20 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
                 stream.close();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read index for zip file " + jarFile.getPath(), e);
+            throw new RuntimeException("Failed to read index for module " + jarFile.getPath(), e);
         }
+        return index;
+    }
 
+    private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
         final DotName moduleClassName = DotName.createSimple(moduleName + ".module_");
         return index.getClassByName(moduleClassName);
     }
 
     @Override
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
-        final AnnotationInstance ceylonAnnotation = getAnnotation(moduleName, moduleArchive, CEYLON_ANNOTATION);
+        Index index = readModuleIndex(moduleName, moduleArchive);
+        final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
         AnnotationValue majorAnnotation = ceylonAnnotation.value("major");
@@ -149,7 +154,8 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
 
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive) {
-        final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
+        Index index = readModuleIndex(moduleName, moduleArchive);
+        final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
         
@@ -159,7 +165,7 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         AnnotationValue dependencies = moduleAnnotation.value("dependencies");
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
         
-        final AnnotationInstance ceylonAnnotation = getAnnotation(moduleName, moduleArchive, CEYLON_ANNOTATION);
+        final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
 
@@ -206,7 +212,8 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
     
     @Override
     public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        final AnnotationInstance moduleAnnotation = getAnnotation(moduleName, moduleArchive, MODULE_ANNOTATION);
+        Index index = readModuleIndex(moduleName, moduleArchive);
+        final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;
         AnnotationValue doc = moduleAnnotation.value("doc");
@@ -248,8 +255,8 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         return (av != null) && av.asBoolean();
     }
 
-    private static AnnotationInstance getAnnotation(String moduleName, File moduleArchive, DotName annotationName) {
-        final ClassInfo moduleClass = getModuleInfo(moduleName, moduleArchive);
+    private static AnnotationInstance getAnnotation(Index index, String moduleName, DotName annotationName) {
+        final ClassInfo moduleClass = getModuleInfo(index, moduleName);
         if (moduleClass == null)
             return null;
         
@@ -258,5 +265,15 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
             return null;
         
         return annotations.get(0);
+    }
+
+    @Override
+    public Set<String> getMembers(String moduleName, File moduleArchive) {
+        HashSet<String> members = new HashSet<>(); 
+        Index index = readModuleIndex(moduleName, moduleArchive);
+        for (ClassInfo cls : index.getKnownClasses()) {
+            members.add(cls.name().toString());
+        }
+        return members;
     }
 }

@@ -229,4 +229,10 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         return string.toLowerCase().contains(query);
     }
 
+    @Override
+    public Set<String> getMembers(String moduleName, File moduleArchive) {
+        // TODO Implement this!
+        throw new RuntimeException("Not implemented yet");
+    }
+
 }
