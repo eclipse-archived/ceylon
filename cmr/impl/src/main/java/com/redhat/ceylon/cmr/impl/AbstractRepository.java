@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -458,13 +457,18 @@ public abstract class AbstractRepository implements Repository {
                     if (file != null) {
                         ModuleInfoReader reader = getModuleInfoReader(suffix);
                         if (reader != null) {
-                            if (memberName != null && !hasMember(memberName, reader, name, file)) {
-                                // We haven't found a matching member in the module so we
-                                // just continue to the next suffix/artifact if any
-                                continue;
+                            ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file, memberName != null);
+                            SortedSet<String> matchingMembers = null;
+                            if (memberName != null) {
+                                matchingMembers = matchMembers(mvd2, memberName);
+                                if (matchingMembers.isEmpty()) {
+                                    // We haven't found a matching member in the module so we
+                                    // just continue to the next suffix/artifact if any
+                                    continue;
+                                }
+                                mvd.getMembers().addAll(matchingMembers);
                             }
                             foundInfo = true;
-                            ModuleVersionDetails mvd2 = reader.readModuleInfo(name, file);
                             if (mvd2.getDoc() != null) {
                                 mvd.setDoc(mvd2.getDoc());
                             }
@@ -620,12 +624,16 @@ public abstract class AbstractRepository implements Repository {
                 if (file != null) {
                     ModuleInfoReader reader = getModuleInfoReader(artifact);
                     if (reader != null) {
-                        if (memberName != null && !hasMember(memberName, reader, moduleName, file)) {
-                            // We haven't found a matching member in the module so we
-                            // just exit without adding anything to the search result
-                            return;
+                        mvd = reader.readModuleInfo(moduleName, file, memberName != null);
+                        if (memberName != null) {
+                            SortedSet<String> matchingMembers = matchMembers(mvd, memberName);
+                            if (matchingMembers.isEmpty()) {
+                                // We haven't found a matching member in the module so we
+                                // just continue to the next suffix/artifact if any
+                                return;
+                            }
+                            mvd.setMembers(matchingMembers);
                         }
-                        mvd = reader.readModuleInfo(moduleName, file);
                     }
                 }
             } catch (Exception e) {
@@ -653,15 +661,13 @@ public abstract class AbstractRepository implements Repository {
         result.addResult(moduleName, mvd);
     }
 
-    private boolean hasMember(String memberName, ModuleInfoReader reader, String moduleName, File file) {
+    private SortedSet<String> matchMembers(ModuleVersionDetails mvd, String memberName) {
         // We're actually looking for a module containing a specific member
-        boolean found = false;
+        SortedSet<String> found = new TreeSet<String>();
         String lcaseName = memberName.toLowerCase();
-        Set<String> members = reader.getMembers(moduleName, file);
-        for (String member : members) {
+        for (String member : mvd.getMembers()) {
             if (member.toLowerCase().contains(lcaseName)) {
-                found = true;
-                break;
+                found.add(member);
             }
         }
         return found;

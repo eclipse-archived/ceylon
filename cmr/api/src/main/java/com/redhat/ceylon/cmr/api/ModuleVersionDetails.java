@@ -15,6 +15,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private NavigableSet<String> authors = new TreeSet<String>();
     private NavigableSet<ModuleInfo> dependencies = new TreeSet<ModuleInfo>();
     private NavigableSet<ModuleVersionArtifact> artifactTypes = new TreeSet<ModuleVersionArtifact>();
+    private NavigableSet<String> members = new TreeSet<>();
 
     public ModuleVersionDetails(String version) {
         assert(version != null);
@@ -110,6 +111,14 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
         this.artifactTypes.addAll(types);
     }
 
+    public NavigableSet<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<String> members) {
+        this.members.clear();
+        this.members.addAll(members);
+    }
     
     @Override
     public int hashCode() {
