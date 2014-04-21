@@ -202,6 +202,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     }
                     if (!externalPackages.isEmpty()) {
                         msg("info.declare.module.imports").newline();
+                        if (!showSuggestions) {
+                            msg("info.try.suggestions").newline();
+                        }
                         for (String pkg : externalPackages) {
                             append("    ").append(pkg);
                             if (showSuggestions) {
