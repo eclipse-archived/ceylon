@@ -204,7 +204,7 @@ public class CeylonInfoTool extends RepoUsingTool {
             queryString = queryString.substring(0, queryString.length() - 1);
         }
         
-        ModuleVersionQuery query = getModuleVersionQuery(repoMgr, queryString, null, type, binaryMajor, binaryMinor);
+        ModuleVersionQuery query = getModuleVersionQuery(queryString, null, type, binaryMajor, binaryMinor);
         
         ModuleSearchResult result;
         if (!name.startsWith("*") || name.equals("*")) {
@@ -216,8 +216,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
-    protected ModuleVersionQuery getModuleVersionQuery(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
-        ModuleVersionQuery query = super.getModuleVersionQuery(repoMgr, name, version, type, binaryMajor, binaryMinor);
+    protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        ModuleVersionQuery query = super.getModuleVersionQuery(name, version, type, binaryMajor, binaryMinor);
         if (findMember != null) {
             query.setMemberName(findMember);
         }
