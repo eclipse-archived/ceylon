@@ -53,7 +53,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected static final String CACHED = ".cached";
     protected static final String ORIGIN = ".origin";
 
-    protected List<Repository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
+    private List<Repository> roots = new CopyOnWriteArrayList<>(); // lookup roots - order matters!
+    private List<Repository> allRoots;
 
     protected Repository cache; // cache root
     protected boolean addCacheAsRoot; // do we treat cache as repo
@@ -62,10 +63,11 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         super(log);
     }
 
-    public void setAddCacheAsRoot(boolean addCacheAsRoot) {
+    public synchronized void setAddCacheAsRoot(boolean addCacheAsRoot) {
         this.addCacheAsRoot = addCacheAsRoot;
         if (addCacheAsRoot == false && cache != null) {
             roots.remove(cache);
+            allRoots = null;
         }
     }
 
@@ -76,7 +78,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         return cache.getRoot();
     }
 
-    protected void setCache(Repository cache) {
+    protected synchronized void setCache(Repository cache) {
         if (cache == null)
             throw new IllegalArgumentException("Null cache");
         if (this.cache != null)
@@ -85,15 +87,18 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         this.cache = cache;
         if (addCacheAsRoot) {
             roots.add(cache);
+            allRoots = null;
         }
     }
 
-    protected void addRepository(Repository external) {
+    protected synchronized void addRepository(Repository external) {
         roots.add(external);
+        allRoots = null;
     }
 
-    protected void removeRepository(Repository external) {
+    protected synchronized void removeRepository(Repository external) {
         roots.remove(external);
+        allRoots = null;
     }
 
     protected ArtifactResult toArtifactResult(Node node) {
@@ -102,20 +107,22 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     @Override
-    public List<Repository> getRepositories() {
-        final List<Repository> repos = new ArrayList<>();
-        boolean cacheAdded = false;
-        for (Repository root : roots) {
-            if (!addCacheAsRoot && !cacheAdded && root.getRoot().isRemote()) {
-                repos.add(cache);
-                cacheAdded = true;
+    public synchronized List<Repository> getRepositories() {
+        if (allRoots == null) {
+            allRoots = new ArrayList<>();
+            boolean cacheAdded = false;
+            for (Repository root : roots) {
+                if (!addCacheAsRoot && !cacheAdded && root.getRoot().isRemote()) {
+                    allRoots.add(cache);
+                    cacheAdded = true;
+                }
+                allRoots.add(root);
             }
-            repos.add(root);
+            if (!addCacheAsRoot && !cacheAdded) {
+                allRoots.add(cache);
+            }
         }
-        if (!addCacheAsRoot && !cacheAdded) {
-            repos.add(cache);
-        }
-        return repos;
+        return allRoots;
     }
     
     public List<String> getRepositoriesDisplayString() {
@@ -315,7 +322,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     protected Node getFromAllRoots(ArtifactContext context, boolean addLeaf) {
         LookupCaching.enable();
         try {
-            return fromRepositories(roots, context, addLeaf);
+            return fromRepositories(getRepositories(), context, addLeaf);
         } finally {
             LookupCaching.disable();
         }
@@ -324,38 +331,19 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     /**
      * Cache is only used for remote repos; see issue #47.
      */
-    protected Node fromRepositories(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
+    private Node fromRepositories(Iterable<Repository> repositories, ArtifactContext context, boolean addLeaf) {
         log.debug("Looking for " + context);
 
-        Node child = null;
-
-        boolean checked = false;
         for (Repository repository : repositories) {
-            // cache is not in roots, not checked and repo is remote
-            if (addCacheAsRoot == false && checked == false && repository.getRoot().isRemote()) {
-                checked = true;
-                child = fromRepository(cache, context, addLeaf);
-                if (child != null)
-                    return child;
-            }
-
-            child = fromRepository(repository, context, addLeaf);
+            Node child = fromRepository(repository, context, addLeaf);
             if (child != null)
                 return child;
 
             log.debug("  -> Not Found");
         }
 
-        // if not already checked, try cache as last resort
-        if (addCacheAsRoot == false && checked == false && context.isIgnoreCache() == false) {
-            child = fromRepository(cache, context, addLeaf);
-        }
-
-        if (child == null) {
-            log.debug(" -> Artifact " + context + " not found in any repository");
-        }
-
-        return child;
+        log.debug(" -> Artifact " + context + " not found in any repository");
+        return null;
     }
 
     protected Node fromRepository(Repository repository, ArtifactContext context, boolean addLeaf) {
@@ -389,7 +377,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     @Override
     public ModuleSearchResult completeModules(ModuleQuery query) {
         ModuleSearchResult result = new ModuleSearchResult();
-        for (Repository root : roots) {
+        for (Repository root : getRepositories()) {
             root.completeModules(query, result);
         }
         return result;
@@ -398,7 +386,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     @Override
     public ModuleVersionResult completeVersions(ModuleVersionQuery query) {
         ModuleVersionResult result = new ModuleVersionResult(query.getName());
-        for (Repository root : roots) {
+        for (Repository root : getRepositories()) {
             root.completeVersions(query, result);
         }
         return result;
@@ -409,24 +397,25 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         if (!query.isPaging()) {
             // that's pretty simple
             ModuleSearchResult result = new ModuleSearchResult();
-            for (Repository root : roots) {
+            for (Repository root : getRepositories()) {
                 root.searchModules(query, result);
             }
             return result;
         } else {
             // we need to merge manually
-            ModuleSearchResult[] results = new ModuleSearchResult[roots.size()];
+            List<Repository> repos = getRepositories();
+            ModuleSearchResult[] results = new ModuleSearchResult[repos.size()];
             // keep an overall module name ordering
             SortedSet<String> names = new TreeSet<>();
             int i = 0;
             long[] pagingInfo = query.getPagingInfo();
             if (pagingInfo != null) {
                 // check its length
-                if (pagingInfo.length != roots.size())
+                if (pagingInfo.length != repos.size())
                     throw new IllegalArgumentException("Paging info is not the same size as roots, it must have come from a different RepositoryManager");
             }
             Long start = query.getStart();
-            for (Repository root : roots) {
+            for (Repository root : repos) {
                 ModuleSearchResult result = new ModuleSearchResult();
                 // adapt the start index if required
                 if (pagingInfo != null)
@@ -439,7 +428,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             query.setStart(start);
             // now merge results
             ModuleSearchResult result = new ModuleSearchResult();
-            long[] resultPagingInfo = new long[roots.size()];
+            long[] resultPagingInfo = new long[repos.size()];
             // initialise it if we need to
             if (pagingInfo != null)
                 System.arraycopy(pagingInfo, 0, resultPagingInfo, 0, resultPagingInfo.length);
@@ -499,7 +488,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     
     @Override
     public void refresh(boolean recurse) {
-        for (Repository root : roots) {
+        for (Repository root : getRepositories()) {
             root.refresh(recurse);
         }
     }
