@@ -33,12 +33,9 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.JDKUtils;
@@ -46,6 +43,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.CMRException;
+import com.redhat.ceylon.cmr.impl.JarUtils;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.Messages;
@@ -223,7 +221,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             File jar = new File(jarFile);
             URLClassLoader cl = new URLClassLoader(new URL[] { jar.toURI().toURL() });
             try {
-                jarClassNames = gatherClassnamesFromJar(jar);
+                jarClassNames = JarUtils.gatherClassnamesFromJar(jar);
                 for (String className : jarClassNames) {
                     Class<?> clazz;
                     try {
@@ -489,27 +487,6 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         return jdkModules;
     }
 
-    // Return the set of fully qualified names for all the classes
-    // in the JAR pointed to by the given file
-    private Set<String> gatherClassnamesFromJar(File jar) throws IOException {
-        HashSet<String> names = new HashSet<>();
-        JarFile zf = new JarFile(jar);
-        try {
-            Enumeration<? extends JarEntry> entries = zf.entries();
-            while (entries.hasMoreElements()) {
-                JarEntry entry = entries.nextElement();
-                if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
-                    String name = entry.getName();
-                    String className = name.substring(0, name.length() - 6).replace('/', '.');
-                    names.add(className);
-                }
-            }
-        } finally {
-            zf.close();
-        }
-        return names;
-    }
-
     // Publish the JAR to the specified or default output repository
     public void publish() {
         RepositoryManager outputRepository = getOutputRepositoryManager();
@@ -611,7 +588,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     File artifact = getRepositoryManager().getArtifact(context);
                     if (artifact != null && artifact.exists()) {
                         try {
-                            Set<String> importedClasses = gatherClassnamesFromJar(artifact);
+                            Set<String> importedClasses = JarUtils.gatherClassnamesFromJar(artifact);
                             if (removeMatchingClasses(externalClasses, importedClasses)) {
                                 if (dep.isExport()) {
                                     msg("info.ok");
