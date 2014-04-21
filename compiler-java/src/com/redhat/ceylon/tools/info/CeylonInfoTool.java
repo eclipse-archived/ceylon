@@ -11,6 +11,7 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Versions;
@@ -48,7 +49,9 @@ public class CeylonInfoTool extends RepoUsingTool {
     private String showType;
     private int depth = 1;
     private String findMember;
-    private boolean showMembers;
+    private String findPackage;
+    private boolean showNames;
+    private boolean exactMatch;
     
     private Integer binaryMajor = null;
     private Integer binaryMinor = null;
@@ -116,10 +119,22 @@ public class CeylonInfoTool extends RepoUsingTool {
         this.findMember = findMember;
     }
     
-    @Option(longName="show-members")
-    @Description("Show the matching members when using the `find-member` option")
-    public void setShowMembers(boolean showMembers) {
-        this.showMembers = showMembers;
+    @OptionArgument(argumentName = "package-name")
+    @Description("Shows only those modules that contain packages whose name match the given argument.")
+    public void setFindPackage(String findPackage) {
+        this.findPackage = findPackage;
+    }
+    
+    @Option(longName="show-names")
+    @Description("Show the matching items when using the `find-member` or `find-package` option")
+    public void setShowNames(boolean showNames) {
+        this.showNames = showNames;
+    }
+    
+    @Option(longName="exact-match")
+    @Description("Only returns exact matches when using the `find-member` or `find-package` option")
+    public void setExactMatch(boolean exactMatch) {
+        this.exactMatch = exactMatch;
     }
 
     @Override
@@ -137,8 +152,11 @@ public class CeylonInfoTool extends RepoUsingTool {
                 throw new IllegalArgumentException(CeylonInfoMessages.msg("illegal.type", showType));
             }
         }
-        if (findMember != null &&"src".equalsIgnoreCase(showType)) {
-            throw new IllegalArgumentException(CeylonInfoMessages.msg("incompatible.query.and.find", showType));
+        if (findMember != null && "src".equalsIgnoreCase(showType)) {
+            throw new IllegalArgumentException(CeylonInfoMessages.msg("incompatible.query.and.find"));
+        }
+        if (findMember != null && findPackage != null) {
+            throw new IllegalArgumentException(CeylonInfoMessages.msg("incompatible.find.options"));
         }
     }
     
@@ -152,7 +170,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         for (ModuleSpec module : modules) {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
-                Collection<ModuleDetails> modules = getModules(name, queryType, binaryMajor, binaryMinor, findMember);
+                Collection<ModuleDetails> modules = getModules(getRepositoryManager(), name, queryType, binaryMajor, binaryMinor);
                 if (modules.isEmpty()) {
                     String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
                     errorAppend(err);
@@ -161,7 +179,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 }
                 outputModules(module, modules);
             } else {
-                Collection<ModuleVersionDetails> versions = getModuleVersions(module.getName(), module.getVersion(), queryType, binaryMajor, binaryMinor, findMember);
+                Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, binaryMajor, binaryMinor);
                 if (versions.isEmpty()) {
                     String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
                     errorAppend(err);
@@ -177,11 +195,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         }
     }
 
-    private Collection<ModuleDetails> getModules(String name, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor, String memberName) {
-        return getModules(getRepositoryManager(), name, type, binaryMajor, binaryMinor, memberName);
-    }
-
-    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String name, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor, String memberName) {
+    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String name, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
         String queryString = name;
         if (queryString.startsWith("*")) {
             queryString = queryString.substring(1);
@@ -190,16 +204,7 @@ public class CeylonInfoTool extends RepoUsingTool {
             queryString = queryString.substring(0, queryString.length() - 1);
         }
         
-        ModuleQuery query = new ModuleQuery(queryString, type);
-        if (binaryMajor != null) {
-            query.setBinaryMajor(binaryMajor);
-        }
-        if (binaryMinor != null) {
-            query.setBinaryMinor(binaryMinor);
-        }
-        if (memberName != null) {
-            query.setMemberName(findMember);
-        }
+        ModuleVersionQuery query = getModuleVersionQuery(repoMgr, queryString, null, type, binaryMajor, binaryMinor);
         
         ModuleSearchResult result;
         if (!name.startsWith("*") || name.equals("*")) {
@@ -210,6 +215,20 @@ public class CeylonInfoTool extends RepoUsingTool {
         return result.getResults();
     }
 
+    @Override
+    protected ModuleVersionQuery getModuleVersionQuery(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+        ModuleVersionQuery query = super.getModuleVersionQuery(repoMgr, name, version, type, binaryMajor, binaryMinor);
+        if (findMember != null) {
+            query.setMemberName(findMember);
+        }
+        if (findPackage != null) {
+            query.setMemberName(findPackage);
+            query.setMemberSearchPackageOnly(true);
+        }
+        query.setMemberSearchExact(exactMatch);
+        return query;
+    }
+    
     private void outputModules(ModuleSpec query, Collection<ModuleDetails> modules) throws IOException {
         if (findMember == null) {
             msg("module.query", query.getName()).newline();
@@ -220,8 +239,8 @@ public class CeylonInfoTool extends RepoUsingTool {
             append("    ").append(module.getName()).newline();
             if (showVersions) {
                 outputVersions(module.getVersions(), "        ");
-            } else if (showMembers) {
-                outputMembers(module.getLastVersion(), "        ");
+            } else if (showNames) {
+                outputNames(module.getLastVersion(), "        ");
             }
         }
     }
@@ -247,13 +266,13 @@ public class CeylonInfoTool extends RepoUsingTool {
                     append(prefix).append("    ").append(dep).newline();
                 }
             }
-            if (showMembers) {
-                outputMembers(version, prefix + "    ");
+            if (showNames) {
+                outputNames(version, prefix + "    ");
             }
         }
     }
 
-    private void outputMembers(ModuleVersionDetails version, String prefix) throws IOException {
+    private void outputNames(ModuleVersionDetails version, String prefix) throws IOException {
         for (String member : version.getMembers()) {
             append(prefix).append(member).newline();
         }
