@@ -105,14 +105,19 @@ shared void test() {
   } else {
     fail("Annotations 5 (on attribute)");
   }
-  print("FIXME: metamodel of member methods unavailable in lexical scope style");
-  /*
-  value a6 = annotations(`AnnoTest1`, `Example1.printTime`);
-  if (exists a6) {
+  try {
+  if (exists a6 = annotations(`AnnoTest1`, `function Example1.printTime`)) {
     check(a6.count == 9, "Annotations 6 count");
   } else {
     fail("Annotations 6 (on member method)");
-  }*/
+  }
+  } catch (Exception ex) {
+    if ("lexical" in ex.message) {
+      fail("member annotations don't work in lexical style");
+    } else {
+      fail("Annotations 6 ``ex``");
+    }
+  }
   value tiss235_1 = `function testIssue235_1`.annotations<Issue235_1>();
   value tiss235_2 = `function testIssue235_2`.annotations<Issue235_1>();
   if (nonempty tiss235_1) {
@@ -128,6 +133,7 @@ shared void test() {
   "TestShortLongDocs has no doc annotations"
   assert(exists doc1 = `interface TestShortLongDocs`.annotations<DocAnnotation>().first);
   check("somewhat long" in doc1.description, "TestShortLongDocs doc is wrong: ``doc1.description``");
+  try {
   "TestShortLongDocs.a has no doc annotations"
   assert(exists doc2 = `function TestShortLongDocs.a`.annotations<DocAnnotation>().first);
   check("short" == doc2.description, "TestShortLongDocs.a doc is wrong: ``doc2.description``");
@@ -140,5 +146,12 @@ shared void test() {
   "TestShortLongDocs.d has no doc annotations"
   assert(exists doc5 = `function TestShortLongDocs.d`.annotations<DocAnnotation>().first);
   check("doc long enough to make sure" in doc5.description, "TestShortLongDocs.d doc is wrong: ``doc5.description``");
+  } catch (Exception e) {
+    if ("lexical" in e.message) {
+      fail("method tests won't work in lexical style");
+    } else {
+      throw e;
+    }
+  }
   results();
 }
