@@ -1814,6 +1814,7 @@ shared void run() {
     sandbox(bug349);
     sandbox(bug388);
     sandbox(bug411);
+    sandbox(bug433);
     sandbox(bug434);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
