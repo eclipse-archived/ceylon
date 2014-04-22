@@ -69,4 +69,10 @@ shared void testArrays() {
     value a9=Array{"a","b","c",null,null};
     a9.copyTo(a9,1,2,2);
     check(a9==Array{"a","b","b","c",null}, "copyTo self 2 expected a,b,b,c,null got ``a9``");
+    a8.set(4,4);
+    a8.copyTo(a8,2,1);
+    check(a8==Array{1,2,3,4,4}, "copyTo self 3 expected 1,2,3,4,4 got ``a8``");
+    a9.set(4,"d");
+    a9.copyTo(a9,2,1);
+    check(a9==Array{"a","b","c","d","d"}, "copyTo self 4 expected a,b,c,d,d got ``a9``");
 }
