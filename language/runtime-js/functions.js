@@ -62,32 +62,45 @@ function $is(obj, type) {
       }
       return false;
     }
-    if (type.t.$$.T$name in obj.getT$all()) {
-      if (type.t==Callable && !(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
-          && getrtmm$$(obj) && obj.$crtmm$.$t && obj.$crtmm$.$ps!==undefined) {
+    if(type.t.$$.T$name in obj.getT$all()){
+      if(type.t==Callable&&!(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
+          && getrtmm$$(obj)&&obj.$crtmm$.$t && obj.$crtmm$.$ps!==undefined){
         //Callable with no $$targs$$, we can build them from metamodel
         add_type_arg(obj,'Return$Callable',obj.$crtmm$.$t);
         add_type_arg(obj,'Arguments$Callable',{t:'T',l:[]});
-        for (var i=0; i < obj.$crtmm$.$ps.length; i++) {
+        for(var i=0;i<obj.$crtmm$.$ps.length;i++){
           obj.$$targs$$.Arguments$Callable.l.push(obj.$crtmm$.$ps[i].$t);
         }
       }
-      if (type.a && obj.$$targs$$) {
-        for (var i in type.a) {
-          var cmptype = type.a[i];
-          var tmpobj = obj;
-          var iance = null;
-          var _mm = getrtmm$$(type.t);
-          if (_mm && _mm.$tp && _mm.$tp[i]) iance=_mm.$tp[i]['var'];
-          if (iance===null) {//null means no i in _mm.$tp
+      if(type.a && obj.$$targs$$) {
+        for(var i in type.a) {
+          var cmptype=type.a[i];
+          var tmpobj=obj;
+          var iance=null;
+          var _mm=getrtmm$$(type.t);
+          if(_mm&&_mm.$tp&&_mm.$tp[i])iance=_mm.$tp[i]['var'];
+          if(iance===null) {
+            //null means no i in _mm.$tp
             //Type parameter may be in the outer type
-            while (iance===null && tmpobj.$$outer !== undefined) {
+            while(iance===null && tmpobj.$$outer !== undefined) {
               tmpobj=tmpobj.$$outer;
               var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
               var _mmf = getrtmm$$(_tmpf);
-              if (_mmf && _mmf.$tp && _mmf.$tp[i]) {
+              if(_mmf&&_mmf.$tp&&_mmf.$tp[i]){
                 iance=_mmf.$tp[i]['var'];
               }
+            }
+          }
+          if(iance===null) {
+            //if the type has a container it could be a method
+            //in which case the type parameter could be defined there
+            var _omm=_mm;
+            while(iance===null&&_omm) {
+              if(_omm.$tp&&_omm.$tp[i]!==undefined){
+                iance=_omm.$tp[i]['var'];
+                tmpobj=obj;
+              }
+              if(iance===null)_omm=getrtmm$$(_omm.$cont);
             }
           }
           if (iance === 'out') {
