@@ -53,6 +53,24 @@ public class FreeValue
         return ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration) declaration).isVariable();
     }
     
+    
+    @Override
+    public boolean getIsObject(){
+        return type instanceof ceylon.language.meta.declaration.OpenClassType
+                && ((ceylon.language.meta.declaration.OpenClassType) type).getDeclaration().getAnonymous();
+    }
+    
+    @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration|ceylon.language::Nothing")
+    @Override
+    public ceylon.language.meta.declaration.ClassDeclaration getObjectDeclaration(){
+        if(type instanceof ceylon.language.meta.declaration.OpenClassType){
+            ceylon.language.meta.declaration.OpenClassType decl = (ceylon.language.meta.declaration.OpenClassType)type;
+            if(decl.getDeclaration().getAnonymous())
+                return decl.getDeclaration();
+        }
+        return null;
+    }
+
     @Override
     @TypeInfo("ceylon.language.meta.model::Value<Get,Set>")
     @TypeParameters({

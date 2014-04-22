@@ -44,6 +44,12 @@ shared interface ValueDeclaration
     "True if this declaration is annotated with [[variable|ceylon.language::variable]]."
     shared formal Boolean variable;
 
+    "True if this declaration is an `object` declaration, whose type is an anonymous class."
+    shared formal Boolean isObject;
+    
+    "This value's anonymous class declaration if this value is an object declaration. `null` otherwise."
+    shared formal ClassDeclaration? objectDeclaration;
+
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
