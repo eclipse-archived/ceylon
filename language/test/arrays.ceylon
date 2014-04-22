@@ -61,6 +61,6 @@ shared void testArrays() {
     
     a2.copyTo(a3, 1, 1, 1);
     check(a3==Array{ 5, 2, 5 }, "copyTo(1, 1, 1)");
-    
-    
+    a3.copyTo(a3, 0, 1);
+    check(a3==Array{5,5,2}, "copyTo itself");
 }
