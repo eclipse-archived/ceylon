@@ -664,52 +664,7 @@ public class TypeUtils {
         }
         if (tparms != null && !tparms.isEmpty()) {
             gen.out(",", MetamodelGenerator.KEY_TYPE_PARAMS, ":{");
-            boolean first = true;
-            for(TypeParameter tp : tparms) {
-                boolean comma = false;
-                if (!first)gen.out(",");
-                first=false;
-                gen.out(tp.getName(), "$", tp.getDeclaration().getName(), ":{");
-                if (tp.isCovariant()) {
-                    gen.out("'var':'out'");
-                    comma = true;
-                } else if (tp.isContravariant()) {
-                    gen.out("'var':'in'");
-                    comma = true;
-                }
-                List<ProducedType> typelist = tp.getSatisfiedTypes();
-                if (typelist != null && !typelist.isEmpty()) {
-                    if (comma)gen.out(",");
-                    gen.out("'satisfies':[");
-                    boolean first2 = true;
-                    for (ProducedType st : typelist) {
-                        if (!first2)gen.out(",");
-                        first2=false;
-                        metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
-                    }
-                    gen.out("]");
-                    comma = true;
-                }
-                typelist = tp.getCaseTypes();
-                if (typelist != null && !typelist.isEmpty()) {
-                    if (comma)gen.out(",");
-                    gen.out("'of':[");
-                    boolean first3 = true;
-                    for (ProducedType st : typelist) {
-                        if (!first3)gen.out(",");
-                        first3=false;
-                        metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
-                    }
-                    gen.out("]");
-                    comma = true;
-                }
-                if (tp.getDefaultTypeArgument() != null) {
-                    if (comma)gen.out(",");
-                    gen.out("'def':");
-                    metamodelTypeNameOrList(d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
-                }
-                gen.out("}");
-            }
+            encodeTypeParametersForRuntime(d, tparms, true, gen);
             gen.out("}");
         }
         if (satisfies != null && !satisfies.isEmpty()) {
@@ -739,6 +694,56 @@ public class TypeUtils {
         gen.out(",d:");
         outputModelPath(d, gen);
         gen.out("};}");
+    }
+
+    static boolean encodeTypeParametersForRuntime(final Declaration d, final List<TypeParameter> tparms,
+            boolean first, final GenerateJsVisitor gen) {
+        for(TypeParameter tp : tparms) {
+            boolean comma = false;
+            if (!first)gen.out(",");
+            first=false;
+            gen.out(tp.getName(), "$", tp.getDeclaration().getName(), ":{");
+            if (tp.isCovariant()) {
+                gen.out("'var':'out'");
+                comma = true;
+            } else if (tp.isContravariant()) {
+                gen.out("'var':'in'");
+                comma = true;
+            }
+            List<ProducedType> typelist = tp.getSatisfiedTypes();
+            if (typelist != null && !typelist.isEmpty()) {
+                if (comma)gen.out(",");
+                gen.out("'satisfies':[");
+                boolean first2 = true;
+                for (ProducedType st : typelist) {
+                    if (!first2)gen.out(",");
+                    first2=false;
+                    metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
+                }
+                gen.out("]");
+                comma = true;
+            }
+            typelist = tp.getCaseTypes();
+            if (typelist != null && !typelist.isEmpty()) {
+                if (comma)gen.out(",");
+                gen.out("'of':[");
+                boolean first3 = true;
+                for (ProducedType st : typelist) {
+                    if (!first3)gen.out(",");
+                    first3=false;
+                    metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
+                }
+                gen.out("]");
+                comma = true;
+            }
+            if (tp.getDefaultTypeArgument() != null) {
+                if (comma)gen.out(",");
+                gen.out("'def':");
+                metamodelTypeNameOrList(d.getUnit().getPackage(), tp.getDefaultTypeArgument(), gen);
+            }
+            gen.out("}");
+        }
+        return first;
     }
 
     /** Prints out an object with a type constructor under the property "t" and its type arguments under
