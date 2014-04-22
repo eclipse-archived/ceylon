@@ -34,49 +34,49 @@ function AppliedClass(tipo,$$targs$$,that){
     };
     that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
     that.$apply.$crtmm$=AppliedClass.$$.prototype.$apply.$crtmm$;
-    $defat(that,'satisfiedTypes',function(){
-      return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
-    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-    $defat(that,'container',function(){
-      return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
-    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
-    $defat(that,'string',function(){
-      return ClassOrInterface$meta$model.$$.prototype.$prop$getString.get.call(that);
-    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getString.$crtmm$);
-    $defat(that,'hash',function(){
-      return ClassOrInterface$meta$model.$$.prototype.$prop$getHash.get.call(that);
-    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getHash.$crtmm$);
-    $defat(that,'typeArguments',function(){
-      return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
-    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
-    $defat(that,'extendedType',function(){
-      return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
-    },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-    $defat(that,'declaration',function(){
-      return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-    },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-    $defat(that,'parameterTypes',function(){
-      return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
-    },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-    $defat(that,'declaration',function(){
-      return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-    },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-    that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
-    that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
-    that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
-    that.getDeclaredAttribute=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute;
-    that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
-    that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
-    that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
-    that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
-    that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
-    that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
-    that.equals=ClassModel$meta$model.$$.prototype.equals;
-    that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
-    that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
-    that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
-    that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
   }
+  $defat(that,'satisfiedTypes',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
+  $defat(that,'container',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getContainer.$crtmm$);
+  $defat(that,'string',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getString.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getString.$crtmm$);
+  $defat(that,'hash',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getHash.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getHash.$crtmm$);
+  $defat(that,'typeArguments',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getTypeArguments.$crtmm$);
+  $defat(that,'extendedType',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
+  $defat(that,'declaration',function(){
+    return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+  },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
+  $defat(that,'parameterTypes',function(){
+    return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
+  },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
+  $defat(that,'declaration',function(){
+    return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+  },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
+  that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
+  that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
+  that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
+  that.getDeclaredAttribute=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute;
+  that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
+  that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
+  that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
+  that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
+  that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
+  that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
+  that.equals=ClassModel$meta$model.$$.prototype.equals;
+  that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
+  that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
+  that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
+  that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
   set_type_args(that,$$targs$$);
   Class$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$Class:that.$$targs$$.Arguments$Class,Type$Class:that.$$targs$$.Type$Class},that);
   that.tipo=tipo;
@@ -125,35 +125,36 @@ function AppliedMemberClass(tipo,$$targs$$,that){
         rv.$bound=x;
         return rv;
       }
-      var dummy = new AppliedMemberClass.$$;
-      that.$$=AppliedMemberClass.$$;
-      that.getT$all=function(){return dummy.getT$all();};
-      that.getT$name=function(){return dummy.getT$name();};
-      that.equals=function(o){
-        var eq=$is(o,{t:AppliedMemberClass}) && o.tipo===tipo;
-        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
-        return eq;
-      };
-      $defat(that,'parameterTypes',function(){
-        return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
-      },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
-      $defat(that,'extendedType',function(){
-        return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
-      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-      $defat(that,'satisfiedTypes',function(){
-        return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
-      },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
-      $defat(that,'declaration',function(){
-        return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-      },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-      that.$bind=function(){return AppliedMemberClass.$$.prototype.$bind.apply(that,arguments);}
-      $defat(that,'string',function(){
-        return String$($qname(mm));
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
     } else {
       throw IncompatibleTypeException$meta$model("Invalid metamodel data for MemberClass");
     }
   }
+  AppliedClass(tipo,$$targs$$,that);
+  var dummy = new AppliedMemberClass.$$;
+  that.$$=AppliedMemberClass.$$;
+  that.getT$all=function(){return dummy.getT$all();};
+  that.getT$name=function(){return dummy.getT$name();};
+  that.equals=function(o){
+    var eq=$is(o,{t:AppliedMemberClass}) && o.tipo===tipo;
+    if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+    return eq;
+  };
+  $defat(that,'parameterTypes',function(){
+    return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
+  },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
+  $defat(that,'extendedType',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
+  $defat(that,'satisfiedTypes',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
+  $defat(that,'declaration',function(){
+    return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+  },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
+  that.$bind=function(){return AppliedMemberClass.$$.prototype.$bind.apply(that,arguments);}
+  $defat(that,'string',function(){
+    return String$($qname(mm));
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
   set_type_args(that,$$targs$$);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$MemberClass,Type$MemberClass:that.$$targs$$.Type$MemberClass,Container$MemberClass:that.$$targs$$.Container$MemberClass},that);
   that.tipo=tipo;
@@ -193,27 +194,42 @@ function AppliedInterface(tipo,$$targs$$,that) {
         return that;
       }
       that.tipo$2=tipo;
-      var dummy = new AppliedInterface.$$;
-      that.$$=AppliedInterface.$$;
-      that.getT$all=function(){return dummy.getT$all();};
-      that.getT$name=function(){return dummy.getT$name();};
-      that.equals=function(o){
-        var eq=$is(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==tipo;
-        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
-        return eq;
-      };
-      $defat(that,'string',function(){
-        return String$($qname(mm));
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-      $defat(that,'declaration',function(){
-        return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-      },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
     } else {
       that=new AppliedInterface.$$;
     }
   }
   set_type_args(that,$$targs$$);
   Interface$meta$model($$targs$$,that);
+  that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
+  that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
+  that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
+  that.getDeclaredAttribute=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute;
+  that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
+  that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
+  that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
+  that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
+  that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
+  that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
+  that.equals=ClassModel$meta$model.$$.prototype.equals;
+  that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
+  that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
+  that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
+  that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
+  var dummy = new AppliedInterface.$$;
+  that.$$=AppliedInterface.$$;
+  that.getT$all=function(){return dummy.getT$all();};
+  that.getT$name=function(){return dummy.getT$name();};
+  that.equals=function(o){
+    var eq=$is(o,{t:AppliedInterface}) && (o.tipo$2||o.tipo)==tipo;
+    if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+    return eq;
+  };
+  $defat(that,'string',function(){
+    return String$($qname(mm));
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+  $defat(that,'declaration',function(){
+    return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+  },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
   that.tipo=tipo;
   return that;
 }
@@ -255,22 +271,6 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
         return rv;
       }
       that.tipo$2=tipo;
-      var dummy = new AppliedMemberInterface.$$;
-      that.$$=AppliedMemberInterface.$$;
-      that.getT$all=function(){return dummy.getT$all();};
-      that.getT$name=function(){return dummy.getT$name();};
-      that.equals=function(o){
-        var eq=$is(o,{t:AppliedMemberInterface}) && (o.tipo$2||o.tipo)==tipo;
-        if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
-        return eq;
-      };
-      $defat(that,'string',function(){
-        return String$($qname(mm));
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
-      $defat(that,'declaration',function(){
-        return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
-      },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-      that.$bind=function(x){return AppliedMemberInterface.$$.prototype.$bind.call(that,x);}
     } else {
       that=new AppliedMemberInterface.$$;
     }
@@ -278,7 +278,38 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
   set_type_args(that,$$targs$$);
   MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type$MemberInterface:that.$$targs$$.Type$MemberInterface,
     Container$MemberInterface:that.$$targs$$.Container$MemberInterface},that);
+  that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
+  that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
+  that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
+  that.getDeclaredAttribute=ClassOrInterface$meta$model.$$.prototype.getDeclaredAttribute;
+  that.getClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getClassOrInterface;
+  that.getDeclaredClassOrInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface;
+  that.getClass=ClassOrInterface$meta$model.$$.prototype.getClass;
+  that.getDeclaredClass=ClassOrInterface$meta$model.$$.prototype.getDeclaredClass;
+  that.getInterface=ClassOrInterface$meta$model.$$.prototype.getInterface;
+  that.getDeclaredInterface=ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface;
+  that.equals=ClassModel$meta$model.$$.prototype.equals;
+  that.typeOf=ClassOrInterface$meta$model.$$.prototype.typeOf;
+  that.supertypeOf=ClassOrInterface$meta$model.$$.prototype.supertypeOf;
+  that.subtypeOf=ClassOrInterface$meta$model.$$.prototype.subtypeOf;
+  that.exactly=ClassOrInterface$meta$model.$$.prototype.exactly;
   that.tipo=tipo;
+  var dummy = new AppliedMemberInterface.$$;
+  that.$$=AppliedMemberInterface.$$;
+  that.getT$all=function(){return dummy.getT$all();};
+  that.getT$name=function(){return dummy.getT$name();};
+  that.equals=function(o){
+    var eq=$is(o,{t:AppliedMemberInterface}) && (o.tipo$2||o.tipo)==tipo;
+    if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
+    return eq;
+  };
+  $defat(that,'string',function(){
+    return String$($qname(mm));
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
+  $defat(that,'declaration',function(){
+    return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
+  },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
+  that.$bind=function(x){return AppliedMemberInterface.$$.prototype.$bind.call(that,x);}
   return that;
 }
 AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{Container$MemberInterface:{'var':'in'},Type$MemberInterface:{'var':'out','def':{t:Anything}}},satisfies:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],$an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
@@ -322,14 +353,14 @@ $defat($$appliedUnionType,'string',function(){
     qn+=this._types[i].string;
   }
   return String$(qn);
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 $defat($$appliedUnionType,'hash',function(){
   var h=this._types.length;
   for (var i=0; i<this._types.length;i++) {
     h+=this._types[i].hash;
   }
   return h;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
 
       $$appliedUnionType.equals=function(u) {
         if($is(u,{t:AppliedUnionType})) {
@@ -423,14 +454,14 @@ $defat($$appliedIntersectionType,'string',function(){
     qn+=this._types[i].string;
   }
   return String$(qn);
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 $defat($$appliedIntersectionType,'hash',function(){
   var h=this._types.length;
   for (var i=0; i<this._types.length;i++) {
     h+=this._types[i].hash;
   }
   return h;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
       $$appliedIntersectionType.equals=function(u) {
         if($is(u,{t:AppliedIntersectionType})) {
           var mine=this._types;
@@ -546,7 +577,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
   }
   $defat(f,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call(f);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:AppliedFunction};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:AppliedFunction};});
   $defat(f,'parameterTypes',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(f);
   },undefined,FunctionModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
@@ -593,7 +624,7 @@ $defat($$appliedValue,'string',function(){
     qn=$qname(mm);
   }
   return String$(qn);
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
     }
   }
   set_type_args($$appliedValue,$$targs$$);
@@ -613,7 +644,7 @@ function $init$AppliedValue(){
     (function($$appliedValue){
 $defat($$appliedValue,'string',function(){
   return String$($qname(this.tipo));
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
       $defat($$appliedValue,'declaration',function(){
         var $$av=this;
         var mm = $$av.tipo.$crtmm$;
@@ -732,7 +763,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   }
   $defat($$appliedMethod,'string',function(){
     return FunctionModel$meta$model.$$.prototype.$prop$getString.get.call($$appliedMethod);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:AppliedMethod};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:AppliedMethod};});
   return $$appliedMethod;
 }
 AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
@@ -800,7 +831,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     }
     qn+="."+pname;
     return String$(qn);
-  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+  },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
   $$appliedAttribute.equals=function(o) {
     return $is(o,{t:AppliedAttribute}) && o.tipo===atr;
   }
