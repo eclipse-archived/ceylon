@@ -351,6 +351,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         }
         t3=System.nanoTime();
         if (!jsc.generate()) {
+            if (jsc.getExitCode() != 0) {
+                System.exit(jsc.getExitCode());
+            }
             int count = jsc.printErrors(System.out);
             throw new CompilerErrorException(String.format("%d errors.", count));
         }

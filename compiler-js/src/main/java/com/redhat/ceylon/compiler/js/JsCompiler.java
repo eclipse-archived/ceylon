@@ -55,6 +55,11 @@ public class JsCompiler {
     //You have to manually set this when compiling the language module
     static boolean compilingLanguageModule;
     private TypeUtils types;
+    private int exitCode = 0;
+
+    public int getExitCode() {
+        return exitCode;
+    }
 
     private final Visitor unitVisitor = new Visitor() {
         private boolean hasErrors(Node that) {
@@ -83,8 +88,9 @@ public class JsCompiler {
         }
         @Override
         public void visit(Tree.ImportModule that) {
-            if (hasErrors(that)) return;
-            if (((Module)that.getImportPath().getModel()).isJava()) {
+            if (hasErrors(that)) {
+                exitCode = 1;
+            } else if (((Module)that.getImportPath().getModel()).isJava()) {
                 that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript");
             }
             super.visit(that);
@@ -165,9 +171,10 @@ public class JsCompiler {
 
     /** Compile one phased unit.
      * @return The errors found for the unit. */
-    public Set<Message> compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
+    public void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
         unitErrors.clear();
         pu.getCompilationUnit().visit(unitVisitor);
+        if (exitCode != 0)return;
         if (errCount == 0 || !stopOnErrors) {
             if (opts.isVerbose()) {
                 System.out.printf("%nCompiling %s to JS%n", pu.getUnitFile().getPath());
@@ -182,8 +189,10 @@ public class JsCompiler {
             GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens(), types);
             pu.getCompilationUnit().visit(jsv);
             pu.getCompilationUnit().visit(unitVisitor);
+            if (jsv.getExitCode() != 0) {
+                exitCode = jsv.getExitCode();
+            }
         }
-        return unitErrors;
     }
 
     /** Indicates if compilation should stop, based on whether there were errors
@@ -232,22 +241,15 @@ public class JsCompiler {
             JsIdentifierNames names = new JsIdentifierNames();
             if (files == null) {
                 for (PhasedUnit pu: tc.getPhasedUnits().getPhasedUnits()) {
-                    String path = pu.getUnitFile().getPath();
-                    if (files == null || files.contains(path)) {
-                        compileUnit(pu, names);
-                        if (stopOnError()) {
-                            System.err.println("Errors found. Compilation stopped.");
-                            break;
-                        }
-                        getOutput(pu).addSource(getFullPath(pu));
-                    } else {
-                        if (opts.isVerbose()) {
-                            System.err.println("Files does not contain "+path);
-                            for (String p : files) {
-                                System.err.println(" Files: "+p);
-                            }
-                        }
+                    compileUnit(pu, names);
+                    if (exitCode != 0) {
+                        return false;
                     }
+                    if (stopOnError()) {
+                        System.err.println("Errors found. Compilation stopped.");
+                        break;
+                    }
+                    getOutput(pu).addSource(getFullPath(pu));
                 }
             } else if(!tc.getPhasedUnits().getPhasedUnits().isEmpty()){
                 final List<PhasedUnit> units = tc.getPhasedUnits().getPhasedUnits();
@@ -281,6 +283,9 @@ public class JsCompiler {
                             String unitPath = pu.getUnitFile().getPath();
                             if (path.equals(unitPath)) {
                                 compileUnit(pu, names);
+                                if (exitCode != 0) {
+                                    return false;
+                                }
                                 if (stopOnError()) {
                                     System.err.println("Errors found. Compilation stopped.");
                                     break;
@@ -295,9 +300,11 @@ public class JsCompiler {
                 System.err.println("No source units found to compile");
             }
         } finally {
-            finish();
+            if (exitCode==0) {
+                finish();
+            }
         }
-        return errCount == 0;
+        return errCount == 0 && exitCode == 0;
     }
 
     public String getFullPath(PhasedUnit pu) {

@@ -55,6 +55,7 @@ public class GenerateJsVisitor extends Visitor
     private final List<CommonToken> tokens;
     private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
+    private int exitCode = 0;
 
     static final class SuperVisitor extends Visitor {
         private final List<Declaration> decs;
@@ -3769,4 +3770,7 @@ public class GenerateJsVisitor extends Visitor
         out(clAlias, "$defat(", owner, ",'", name, "',function()");
     }
 
+    public int getExitCode() {
+        return exitCode;
+    }
 }
