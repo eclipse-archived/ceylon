@@ -258,20 +258,16 @@ String$proto.terminal = function(length) {
 String$proto.terminal.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','terminal'],
   $ps:[{$nm:'length',$t:{t:Integer}}]};}
 $defat(String$proto, 'hash', function() {
-    if (this._hash === undefined) {
-        for (var i = 0; i < this.length; i++) {
-          var c = this.charCodeAt(i);
-          this._hash += c + (this._hash << 10);
-          this._hash ^= this._hash >> 6;
+  if (this._hash === undefined) {
+    var h=0;
+    for (var i = 0; i < this.length; i++) {
+      var c = this.charCodeAt(i);
+      h=(31*h+c)&0xffffffff;
     }
-
-    this._hash += this._hash << 3;
-    this._hash ^= this._hash >> 11;
-    this._hash += this._hash << 15;
-    this._hash = this._hash & ((1 << 29) - 1);
+    this._hash=h;
   }
   return this._hash;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']}});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$an:function(){return[shared(),actual()];},d:['$','Object','$at','hash']}});
 
 function cmpSubString(str, subStr, offset) {
     for (var i=0; i<subStr.length; ++i) {
