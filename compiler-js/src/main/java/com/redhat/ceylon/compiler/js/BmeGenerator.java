@@ -134,6 +134,7 @@ public class BmeGenerator {
         callback.generateValue();
         if (paren) { gen.out(")"); }
     }
+
     static void generateMemberAccess(final Tree.StaticMemberOrTypeExpression expr,
             final String strValue, final String lhs, final GenerateJsVisitor gen) {
         generateMemberAccess(expr, new GenerateCallback() {

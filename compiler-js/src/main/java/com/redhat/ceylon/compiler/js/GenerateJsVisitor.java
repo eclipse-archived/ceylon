@@ -1596,29 +1596,26 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(AttributeDeclaration that) {
-        Value d = that.getDeclarationModel();
+        final Value d = that.getDeclarationModel();
         //Check if the attribute corresponds to a class parameter
         //This is because of the new initializer syntax
-        com.redhat.ceylon.compiler.typechecker.model.Parameter param = null;
-        if (d.isParameter()) {
-            param = ((Functional)d.getContainer()).getParameter(d.getName());
-        }
+        final com.redhat.ceylon.compiler.typechecker.model.Parameter param = d.isParameter() ?
+                ((Functional)d.getContainer()).getParameter(d.getName()) : null;
         if (d.isFormal()) {
             if (!opts.isOptimize())generateAttributeMetamodel(that, false, false);
         } else {
             comment(that);
-            final boolean isLate = d.isLate();
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
-                    || d.isVariable() || isLate;
-            final boolean addSetter = (d.isVariable() || isLate) && !defineAsProperty(d);
+                    || d.isVariable() || d.isLate();
+            final boolean addSetter = (d.isVariable() || d.isLate()) && !defineAsProperty(d);
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
                 if ((specInitExpr != null
-                        && !(specInitExpr instanceof LazySpecifierExpression)) || isLate) {
+                        && !(specInitExpr instanceof LazySpecifierExpression)) || d.isLate()) {
                     outerSelf(d);
                     out(".", names.privateName(d), "=");
-                    if (isLate) {
+                    if (d.isLate()) {
                         out("undefined");
                     } else {
                         super.visit(that);
@@ -1678,7 +1675,7 @@ public class GenerateJsVisitor extends Visitor
                     final String varName = names.name(d);
                     String paramVarName = names.createTempVariable();
                     out(function, names.setter(d), "(", paramVarName, "){");
-                    if (isLate) {
+                    if (d.isLate()) {
                         generateImmutableAttributeReassignmentCheck(varName, names.name(d));
                     }
                     out("return ", varName, "=", paramVarName, ";}");
@@ -1791,7 +1788,7 @@ public class GenerateJsVisitor extends Visitor
             if (decl.isClassOrInterfaceMember() && isCaptured(decl)) {
                 beginNewLine();
                 outerSelf(decl);
-                out(".", names.name(decl), "=", names.name(decl));
+                out(".", varName, "=", varName);
                 endLine(true);
             }
         } else {
@@ -1802,7 +1799,7 @@ public class GenerateJsVisitor extends Visitor
                     outerSelf(decl);
                     out(",'", varName, "',function(){");
                     if (isLate) {
-                        generateUnitializedAttributeReadCheck(varName, names.name(decl));
+                        generateUnitializedAttributeReadCheck(varName, varName);
                     }
                     if (initVal) {
                         out("return $valinit$", varName, "();}");
@@ -1813,7 +1810,7 @@ public class GenerateJsVisitor extends Visitor
                         final String par = names.createTempVariable();
                         out(",function(", par, "){");
                         if (isLate && !decl.isVariable()) {
-                            generateImmutableAttributeReassignmentCheck(varName, names.name(decl));
+                            generateImmutableAttributeReassignmentCheck(varName, varName);
                         }
                         out("return ", varName, "=", par, ";}");
                     } else {
@@ -1839,9 +1836,8 @@ public class GenerateJsVisitor extends Visitor
                     shareGetter(decl);
                 }
             } else {
-                if (decl.isMember()) {
-                    qualify(expr, decl);
-                    out(names.name(decl), "=", varName, ";");
+                if (decl.isMember() && qualify(expr, decl)) {
+                    out(varName, "=", varName, ";");
                 }
                 directAccess.add(decl);
             }
@@ -2717,7 +2713,7 @@ public class GenerateJsVisitor extends Visitor
                 return path;
             }
         }
-        else if (d != null && (d.isShared() || inProto) && isMember) {
+        else if (d != null && isMember && (d.isShared() || inProto)) {
             TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d : that.getScope().getInheritingDeclaration(d);
             if (id==null) {
                 //a shared local declaration
