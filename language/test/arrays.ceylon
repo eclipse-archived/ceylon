@@ -75,4 +75,11 @@ shared void testArrays() {
     a9.set(4,"d");
     a9.copyTo(a9,2,1);
     check(a9==Array{"a","b","c","d","d"}, "copyTo self 4 expected a,b,c,d,d got ``a9``");
+    //native array for JVM
+    value a10=Array{1,2,3,4,5};
+    a10.copyTo(a10,1,2,3);
+    check(a10==Array{1,2,2,3,4}, "copyTo self 5 expected 1,2,2,3,4 got ``a10``");
+    value a11=Array{1,2,3,4,5};
+    a11.copyTo(a11,2,1);
+    check(a11==Array{1,3,4,5,5}, "copyTo self 6 expected 1,3,4,5,5 got ``a11``");
 }
