@@ -83,12 +83,24 @@ function $is(obj,type){
           if(iance===null) {
             //null means no i in _mm.$tp
             //Type parameter may be in the outer type
-            while(iance===null && tmpobj.$$outer !== undefined) {
+            while(iance===null&&tmpobj.$$outer!==undefined){
               tmpobj=tmpobj.$$outer;
               var _tmpf = tmpobj.constructor.T$all[tmpobj.constructor.T$name];
               var _mmf = getrtmm$$(_tmpf);
               if(_mmf&&_mmf.$tp&&_mmf.$tp[i]){
                 iance=_mmf.$tp[i]['var'];
+              }
+              if(iance===null&&_mmf&&_mmf['super']){
+                //lookup the type parameter in the supertype
+                var smm=getrtmm$$(_mmf['super'].t);
+                if(smm&&smm.$tp&&smm.$tp[i])iance=smm.$tp[i]['var'];
+              }
+              if(iance===null&&_mmf&&_mmf['satisfies']){
+                var sats=_mmf['satisfies'];
+                for(var s=0;iance===null&&s<sats.length;s++){
+                  var smm=getrtmm$$(sats[s].t);
+                  if (smm&&smm.$tp&&smm.$tp[i])iance=smm.$tp[i]['var'];
+                }
               }
             }
           }
