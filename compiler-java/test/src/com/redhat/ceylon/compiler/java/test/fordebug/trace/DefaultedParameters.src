@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.trace;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class defaultedParameters_ {
+    
+    private defaultedParameters_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static long defaultedParameters() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$s();
+                long $ceylontmp$i$1 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$i($ceylontmp$s$0);
+            }
+            returning defaultedParameters($ceylontmp$s$0, $ceylontmp$i$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .java.lang.String defaultedParameters$s() {
+        return "";
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static long defaultedParameters(final .java.lang.String s) {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$i(s);
+            }
+            returning defaultedParameters(s, $ceylontmp$i$2);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final long defaultedParameters$i(final .java.lang.String s) {
+        return 0L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    static long defaultedParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        return i + .ceylon.language.String.getSize(s);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class defaultedParametersMain_ {
+    
+    private defaultedParametersMain_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void defaultedParametersMain() {
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters();
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters("1");
+        (
+            let
+            {
+                long arg$3$1 = 1L;
+                .java.lang.String arg$3$0 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$s();
+            }
+            returning .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters(arg$3$0, arg$3$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParametersMain_.defaultedParametersMain();
+    }
+}

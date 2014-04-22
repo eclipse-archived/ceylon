@@ -1,6 +1,7 @@
 AssertFalse.ceylon:?:main(java.lang.String[])
 AssertFalse.ceylon:?:main(java.lang.String[])
 AssertFalse.ceylon:?:main(java.lang.String[])
+AssertFalse.ceylon:2:assertFalse()
 AssertFalse.ceylon:3:assertFalse()
 AssertFalse.ceylon:3:assertFalse()
 AssertFalse.ceylon:3:assertFalse()

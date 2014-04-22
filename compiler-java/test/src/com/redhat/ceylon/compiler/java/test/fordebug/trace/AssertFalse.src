@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.trace;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class assertFalse_ {
+    
+    private assertFalse_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void assertFalse() {
+        final long foo = 1L + 1L;
+        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.assertFalse();
+    }
+}

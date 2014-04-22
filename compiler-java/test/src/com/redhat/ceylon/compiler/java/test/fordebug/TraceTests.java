@@ -17,8 +17,8 @@ public class TraceTests extends DebuggerTest {
     }
     
     private void compileAndTrace(String mainClass, String ceylonSource) throws Exception {
-        compile(ceylonSource);
-        trace(ceylonSource, mainClass);
+        compareWithJavaSource(ceylonSource);
+        trace(ceylonSource+".ceylon", mainClass);
     }
 
     private void trace(String ceylonSource, String mainClass) throws Exception {
@@ -50,7 +50,7 @@ public class TraceTests extends DebuggerTest {
     public void testAssertFalse() throws Exception {
         compileAndTrace(
                 "com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_", 
-                "trace/AssertFalse.ceylon"
+                "trace/AssertFalse"
                 );
     }
     
@@ -58,7 +58,7 @@ public class TraceTests extends DebuggerTest {
     public void testDefaultParameters() throws Exception {
         compileAndTrace(
                 "com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParametersMain_",
-                "trace/DefaultedParameters.ceylon"
+                "trace/DefaultedParameters"
                 );
     }
     
