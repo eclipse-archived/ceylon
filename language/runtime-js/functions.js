@@ -1,56 +1,57 @@
-var larger = Comparison("larger");
-function getLarger() { return larger }
-var smaller = Comparison("smaller");
-function getSmaller() { return smaller }
-var equal = Comparison("equal");
-function getEqual() { return equal }
+var larger=Comparison("larger");
+function getLarger(){return larger}
+var smaller=Comparison("smaller");
+function getSmaller(){return smaller}
+var equal=Comparison("equal");
+function getEqual(){return equal}
 
 exports.getLarger=getLarger;
 exports.getSmaller=getSmaller;
 exports.getEqual=getEqual;
-exports.$prop$getLarger={get:getLarger,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','larger'],$t:{t:Comparison}};}};
-exports.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','smaller'],$t:{t:Comparison}};}};
-exports.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','equal'],$t:{t:Comparison}};}};
+exports.$prop$getLarger={get:getLarger,$crtmm$:function(){return{mod:$CCMM$,d:['$','larger'],$t:{t:Comparison}};}};
+exports.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['$','smaller'],$t:{t:Comparison}};}};
+exports.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['$','equal'],$t:{t:Comparison}};}};
 
 //These are operators for handling nulls
-function exists(value) {
-  return value !== null && value !== undefined;
+function exists(value){
+  return value!==null&&value!==undefined;
 }
-function nonempty(value) {
-  return value !== null && value !== undefined && !value.empty;
+function nonempty(value){
+  return value!==null&&value!==undefined&&!value.empty;
 }
 
-function $is(obj, type) {
-  if (type && type.t) {
-    if (type.t==='i' || type.t==='u') {
+function $is(obj,type){
+  if(type && type.t){
+    if(type.t==='i'||type.t==='u'){
       return isOfTypes(obj, type);
-    } else if (type.t==='T') {
+    } else if(type.t==='T'){
       type=$retuple(type);
     }
-    if (obj===null || obj===undefined) {
-      return type.t===Null || type.t===Anything;
+    if(obj===null||obj===undefined){
+      return type.t===Null||type.t===Anything;
     }
-    if (obj.getT$all === undefined) {
-      if (obj.$crtmm$) {
-        var _mm = getrtmm$$(obj);
+    if(obj.getT$all===undefined){
+      if(obj.$crtmm$){
+        var _mm=getrtmm$$(obj);
         //We can navigate the metamodel
-        if (_mm.d['$mt'] === 'm') {
-          if (type.t === Callable) { //It's a callable reference
-            if (type.a && type.a.Return$Callable && _mm['$t']) {
+        if(_mm.d['$mt']==='m'){
+          if(type.t===Callable){
+            //It's a callable reference
+            if(type.a&&type.a.Return$Callable&&_mm['$t']){
               //Check if return type matches
-              if (extendsType(_mm['$t'], type.a.Return$Callable)) {
-                if (type.a.Arguments$Callable && _mm['$ps'] !== undefined) {
-                  var metaparams = _mm['$ps'];
-                  if (metaparams.length == 0) {
+              if(extendsType(_mm['$t'],type.a.Return$Callable)){
+                if(type.a.Arguments$Callable&&_mm['$ps']!==undefined){
+                  var metaparams=_mm['$ps'];
+                  if(metaparams.length==0){
                     return type.a.Arguments$Callable.t === Empty;
-                  } else {
+                  }else{
                     //check if arguments match
-                    var comptype = type.a.Arguments$Callable;
-                    for (var i=0; i < metaparams.length; i++) {
-                      if (comptype.t !== Tuple || !extendsType(metaparams[i]['$t'], comptype.a.First$Tuple)) {
+                    var comptype=type.a.Arguments$Callable;
+                    for(var i=0;i<metaparams.length;i++){
+                      if(comptype.t!==Tuple||!extendsType(metaparams[i]['$t'],comptype.a.First$Tuple)){
                         return false;
                       }
-                      comptype = comptype.a.Rest$Tuple;
+                      comptype=comptype.a.Rest$Tuple;
                     }
                   }
                 }
@@ -297,12 +298,12 @@ function className(obj) {
     }
     return String$(tn);
 }
-className.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','className']};
+className.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['$','className']};
 
 function identityHash(obj) {
     return obj.BasicID;
 }
-identityHash.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','identityHash']};
+identityHash.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['$','identityHash']};
 
 function set_type_args(obj, targs) {
     if (obj===undefined)return;
