@@ -811,8 +811,9 @@ public class GenerateJsVisitor extends Visitor
                 out(",");
             }
             //There may be defaulted args we must pass as undefined
-            if (d.getExtendedTypeDeclaration().getParameterList().getParameters().size() > argList.getPositionalArguments().size()) {
-                List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams = d.getExtendedTypeDeclaration().getParameterList().getParameters();
+            final List<com.redhat.ceylon.compiler.typechecker.model.Parameter> superParams =
+                    d.getExtendedTypeDeclaration().getParameterList().getParameters();
+            if (superParams.size() > argList.getPositionalArguments().size()) {
                 for (int i = argList.getPositionalArguments().size(); i < superParams.size(); i++) {
                     com.redhat.ceylon.compiler.typechecker.model.Parameter p = superParams.get(i);
                     if (p.isSequenced()) {
@@ -2449,11 +2450,12 @@ public class GenerateJsVisitor extends Visitor
     
     private void specifierStatement(final TypeDeclaration outer,
             final SpecifierStatement specStmt) {
+        final Tree.Expression expr = specStmt.getSpecifierExpression().getExpression();
         if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getBaseMemberExpression().getTypeModel())) {
             specStmt.getBaseMemberExpression().visit(this);
             out("=");
-            int box = boxUnboxStart(specStmt.getSpecifierExpression().getExpression(), specStmt.getBaseMemberExpression());
-            specStmt.getSpecifierExpression().getExpression().visit(this);
+            int box = boxUnboxStart(expr, specStmt.getBaseMemberExpression());
+            expr.visit(this);
             if (box == 4) out("/*TODO: callable targs 6*/");
             boxUnboxEnd(box);
             out(";");
@@ -2503,14 +2505,12 @@ public class GenerateJsVisitor extends Visitor
                     // simple assignment to a variable attribute
                     BmeGenerator.generateMemberAccess(bme, new GenerateCallback() {
                         @Override public void generateValue() {
-                            int boxType = boxUnboxStart(specStmt.getSpecifierExpression().getExpression().getTerm(),
-                                    moval);
+                            int boxType = boxUnboxStart(expr.getTerm(), moval);
                             if (dynblock > 0 && !TypeUtils.isUnknown(moval.getType())
-                                    && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
-                                TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
-                                        moval.getType(), GenerateJsVisitor.this, false);
+                                    && TypeUtils.isUnknown(expr.getTypeModel())) {
+                                TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false);
                             } else {
-                                specStmt.getSpecifierExpression().getExpression().visit(GenerateJsVisitor.this);
+                                expr.visit(GenerateJsVisitor.this);
                             }
                             if (boxType == 4) {
                                 out(",");
@@ -2523,8 +2523,7 @@ public class GenerateJsVisitor extends Visitor
                                     //TODO extract parameters from Value
                                     out("[/*VALUE Callable params", moval.getClass().getName(), "*/],");
                                 }
-                                TypeUtils.printTypeArguments(specStmt.getSpecifierExpression().getExpression(),
-                                        specStmt.getSpecifierExpression().getExpression().getTypeModel().getTypeArguments(),
+                                TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),
                                         GenerateJsVisitor.this, false);
                             }
                             boxUnboxEnd(boxType);
@@ -2538,14 +2537,16 @@ public class GenerateJsVisitor extends Visitor
                         out(names.name(moval), "=function ", names.name(moval), "(");
                         //Build the parameter list, we'll use it several times
                         final StringBuilder paramNames = new StringBuilder();
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : ((Method) moval).getParameterLists().get(0).getParameters()) {
+                        final List<com.redhat.ceylon.compiler.typechecker.model.Parameter> params =
+                                ((Method) moval).getParameterLists().get(0).getParameters();
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : params) {
                             if (paramNames.length() > 0) paramNames.append(",");
                             paramNames.append(names.name(p));
                         }
                         out(paramNames.toString());
                         out("){");
                         initSelf(moval.getContainer(), false);
-                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : ((Method) moval).getParameterLists().get(0).getParameters()) {
+                        for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : params) {
                             if (p.isDefaulted()) {
                                 out("if(", names.name(p), "===undefined)", names.name(p),"=");
                                 qualify(specStmt, moval);
@@ -2571,9 +2572,8 @@ public class GenerateJsVisitor extends Visitor
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    if (dynblock > 0 && TypeUtils.isUnknown(specStmt.getSpecifierExpression().getExpression().getTypeModel())) {
-                        TypeUtils.generateDynamicCheck(specStmt.getSpecifierExpression().getExpression(),
-                                bme.getTypeModel(), this, false);
+                    if (dynblock > 0 && TypeUtils.isUnknown(expr.getTypeModel())) {
+                        TypeUtils.generateDynamicCheck(expr, bme.getTypeModel(), this, false);
                     } else {
                         specStmt.getSpecifierExpression().visit(this);
                     }
@@ -2595,8 +2595,7 @@ public class GenerateJsVisitor extends Visitor
                     out("var ");
                 }
                 out(names.name(bmeDecl), "=");
-                FunctionHelper.singleExprFunction(paramExpr.getParameterLists(),
-                        specStmt.getSpecifierExpression().getExpression(),
+                FunctionHelper.singleExprFunction(paramExpr.getParameterLists(), expr,
                         bmeDecl instanceof Scope ? (Scope)bmeDecl : null, this);
                 out(";");
             }
@@ -3230,7 +3229,8 @@ public class GenerateJsVisitor extends Visitor
 
    //Don't know if we'll ever see this...
    @Override public void visit(ConditionList that) {
-       System.out.println("ZOMG condition list in the wild! " + that.getLocation() + " of " + that.getUnit().getFilename());
+       System.out.println("ZOMG condition list in the wild! " + that.getLocation()
+               + " of " + that.getUnit().getFilename());
        super.visit(that);
    }
 
@@ -3668,7 +3668,8 @@ public class GenerateJsVisitor extends Visitor
             for (Annotation ann : that.getAnnotationList().getAnnotations()) {
                 BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
                 if ("doc".equals(bme.getDeclaration().getName())) {
-                    custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0)).getExpression().getTerm().getText();
+                    custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0))
+                            .getExpression().getTerm().getText();
                 }
             }
         }
@@ -3730,7 +3731,8 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Tree.PackageLiteral that) {
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg =
+                (com.redhat.ceylon.compiler.typechecker.model.Package)that.getImportPath().getModel();
         MetamodelHelper.findModule(pkg.getModule(), this);
         out(".findPackage('", pkg.getNameAsString(), "')");
     }
