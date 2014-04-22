@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -163,8 +165,37 @@ public class TypeUtils {
                 gen.out("{t:");
                 outputQualifiedTypename(gen.isImported(node == null ? null : node.getUnit().getPackage(), type), pt, gen, skipSelfDecl);
                 if (!pt.getTypeArgumentList().isEmpty()) {
+                    final Map<TypeParameter,ProducedType> targs;
+                    if (pt.getDeclaration().isToplevel()) {
+                        targs = pt.getTypeArguments();
+                    } else {
+                        //Gather all type parameters from containers
+                        Scope scope = node.getScope();
+                        final HashSet<TypeParameter> parenttp = new HashSet<>();
+                        while (scope != null) {
+                            if (scope instanceof Generic) {
+                                for (TypeParameter tp : ((Generic)scope).getTypeParameters()) {
+                                    parenttp.add(tp);
+                                }
+                            }
+                            scope = scope.getScope();
+                        }
+                        targs = new HashMap<>();
+                        targs.putAll(pt.getTypeArguments());
+                        Declaration cd = Util.getContainingDeclaration(pt.getDeclaration());
+                        while (cd != null) {
+                            if (cd instanceof Generic) {
+                                for (TypeParameter tp : ((Generic)cd).getTypeParameters()) {
+                                    if (parenttp.contains(tp)) {
+                                        targs.put(tp, tp.getType());
+                                    }
+                                }
+                            }
+                            cd = Util.getContainingDeclaration(cd);
+                        }
+                    }
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl);
+                    printTypeArguments(node, targs, gen, skipSelfDecl);
                 }
                 gen.out("}");
             }
@@ -573,7 +604,7 @@ public class TypeUtils {
     static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
             final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$CCMM$");
-        List<TypeParameter> tparms = d instanceof TypeDeclaration ? ((TypeDeclaration)d).getTypeParameters() : null;
+        List<TypeParameter> tparms = d instanceof Generic ? ((Generic)d).getTypeParameters() : null;
         List<ProducedType> satisfies = null;
         List<ProducedType> caseTypes = null;
         if (d instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
