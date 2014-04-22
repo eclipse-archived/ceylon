@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -726,12 +727,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
             final String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
             if (pname == null) {
                 //It's a ref to a type parameter
-                List<TypeParameter> containerTypeParameters = null;
-                if (container instanceof TypeDeclaration) {
-                    containerTypeParameters = ((TypeDeclaration)container).getTypeParameters();
-                } else if (container instanceof Method) {
-                    containerTypeParameters = ((Method)container).getTypeParameters();
-                }
+                final List<TypeParameter> containerTypeParameters = container instanceof Generic ?
+                    ((Generic)container).getTypeParameters() : null;
                 if (containerTypeParameters != null) {
                     for (TypeParameter typeParam : containerTypeParameters) {
                         if (typeParam.getName().equals(tname)) {

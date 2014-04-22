@@ -7,9 +7,9 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
@@ -64,10 +64,8 @@ public class BmeGenerator {
      *  type argument list in the expression itself. */
     static Map<TypeParameter, ProducedType> createTypeArguments(final Tree.StaticMemberOrTypeExpression expr) {
         List<TypeParameter> tparams = null;
-        if (expr.getDeclaration() instanceof Method) {
-            tparams = ((Method)expr.getDeclaration()).getTypeParameters();
-        } else if (expr.getDeclaration() instanceof TypeDeclaration) {
-            tparams = ((TypeDeclaration)expr.getDeclaration()).getTypeParameters();
+        if (expr.getDeclaration() instanceof Generic) {
+            tparams = ((Generic)expr.getDeclaration()).getTypeParameters();
         } else {
             expr.addUnexpectedError("Getting type parameters from unidentified declaration type "
                     + expr.getDeclaration());
