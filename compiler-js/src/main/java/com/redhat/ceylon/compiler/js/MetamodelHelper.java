@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -59,31 +60,36 @@ public class MetamodelHelper {
                 "','", m.getVersion(), "').findPackage('", d.getUnit().getPackage().getNameAsString(),
                 "'),");
         if (d.isMember()) {
-            Declaration _md = d;
-            ArrayList<Declaration> parents = new ArrayList<>(3);
-            while (_md.isMember()) {
-                _md=(Declaration)_md.getContainer();
-                parents.add(0, _md);
-            }
-            boolean first=true;
-            boolean imported=false;
-            for (Declaration _d : parents) {
-                if (first){
-                    imported = gen.qualify(that, _d);
-                    first=false;
+            final Declaration parent = Util.getContainingDeclaration(d);
+            if (!gen.opts.isOptimize() && parent instanceof TypeDeclaration && Util.contains((Scope)parent, that.getScope())) {
+                gen.out(gen.getNames().self((TypeDeclaration)parent), ".");
+            } else {
+                Declaration _md = d;
+                final ArrayList<Declaration> parents = new ArrayList<>(3);
+                while (_md.isMember()) {
+                    _md=Util.getContainingDeclaration(_md);
+                    parents.add(0, _md);
                 }
-                if (_d.isAnonymous()) {
-                    final boolean wasShared=_d.isShared();
-                    _d.setShared(true);
-                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(false);
-                    gen.out(gen.getNames().getter(_d), "().");
-                    ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(true);
-                    _d.setShared(wasShared);
-                } else {
-                    if (!imported)gen.out("$init$");
-                    gen.out(gen.getNames().name(_d), imported?".$$.prototype.":"().$$.prototype.");
+                boolean first=true;
+                boolean imported=false;
+                for (Declaration _d : parents) {
+                    if (first){
+                        imported = gen.qualify(that, _d);
+                        first=false;
+                    }
+                    if (_d.isAnonymous()) {
+                        final boolean wasShared=_d.isShared();
+                        _d.setShared(true);
+                        ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(false);
+                        gen.out(gen.getNames().getter(_d), "().");
+                        ((com.redhat.ceylon.compiler.typechecker.model.Class)_d).setAnonymous(true);
+                        _d.setShared(wasShared);
+                    } else {
+                        if (!imported)gen.out("$init$");
+                        gen.out(gen.getNames().name(_d), imported?".$$.prototype.":"().$$.prototype.");
+                    }
+                    imported=true;
                 }
-                imported=true;
             }
         }
         if (d instanceof Value) {
