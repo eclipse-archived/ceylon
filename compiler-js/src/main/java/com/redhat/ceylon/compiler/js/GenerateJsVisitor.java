@@ -2065,7 +2065,7 @@ public class GenerateJsVisitor extends Visitor
     
     boolean defineAsProperty(Declaration d) {
         // for now, only define member attributes as properties, not toplevel attributes
-        return d.isMember() && (d instanceof MethodOrValue) && !(d instanceof Method);
+        return d.isMember() && d instanceof MethodOrValue && !(d instanceof Method);
     }
 
     /** Returns true if the top-level declaration for the term is annotated "nativejs" */
@@ -2712,16 +2712,18 @@ public class GenerateJsVisitor extends Visitor
                 return path;
             }
         }
-        else if (d != null && isMember && (d.isShared() || inProto)) {
-            TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d : that.getScope().getInheritingDeclaration(d);
-            if (id==null) {
-                //a shared local declaration
-                return names.self((TypeDeclaration)d.getContainer());
-            }
-            else {
-                //an inherited declaration that might be
-                //inherited by an outer scope
-                return names.self(id);
+        else {
+            if (d != null && isMember && (d.isShared() || inProto || (!d.isParameter() && defineAsProperty(d)))) {
+                TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d : that.getScope().getInheritingDeclaration(d);
+                if (id==null) {
+                    //a shared local declaration
+                    return names.self((TypeDeclaration)d.getContainer());
+                }
+                else {
+                    //an inherited declaration that might be
+                    //inherited by an outer scope
+                    return names.self(id);
+                }
             }
         }
         return "";
