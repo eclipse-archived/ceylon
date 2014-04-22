@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -206,7 +207,9 @@ public class FreeFunction
         ProducedType containerType = Metamodel.getModel(container);
         Metamodel.checkQualifyingType(containerType, declaration);
         Metamodel.checkTypeArguments(containerType, declaration, producedTypes);
-        final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(containerType, producedTypes);
+        // find the proper qualifying type
+        ProducedType memberQualifyingType = containerType.getSupertype((TypeDeclaration) declaration.getContainer());
+        final ProducedTypedReference appliedFunction = ((com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration)declaration).getProducedTypedReference(memberQualifyingType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);

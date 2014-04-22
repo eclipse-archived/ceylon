@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -428,7 +429,9 @@ public abstract class FreeClassOrInterface
         ProducedType qualifyingType = Metamodel.getModel(container);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
-        ProducedReference producedReference = declaration.getProducedReference(qualifyingType, producedTypes);
+        // find the proper qualifying type
+        ProducedType memberQualifyingType = qualifyingType.getSupertype((TypeDeclaration) declaration.getContainer());
+        ProducedReference producedReference = declaration.getProducedReference(memberQualifyingType, producedTypes);
         final ProducedType appliedType = producedReference.getType();
         return (Member<Container, Kind>) Metamodel.getAppliedMetamodel(appliedType);
     }
