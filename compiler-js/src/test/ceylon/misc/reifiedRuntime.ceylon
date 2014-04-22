@@ -59,6 +59,16 @@ class C309<T>() satisfies A309<List<T>> & B309<T> {
     }
 }
 
+class Bug341<T>(T t) {
+  shared Object b<U>(U u) {
+    class C<V>(V v) {}
+    if (!u is String) {
+      check(!u is C<Float>, "Bug 341");
+    }
+    return C(1.0);
+  }
+}
+
 void testReifiedRuntime(){
     print("Reified generics");
     Object member = Container<String>().Member<Integer>();
@@ -137,4 +147,5 @@ void testReifiedRuntime(){
     check(Test310Class4<Integer,Character>(Test310Class1<Integer,Character>()).test(), "Issue 310 [2]");
     //issue #309
     check(C309<String>().foo() == "ceylon.language::String", "Issue 309 - expected String got ``C309<String>().foo()``");
+    Bug341("!").b(Bug341(1).b("2"));
 }
