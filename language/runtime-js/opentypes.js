@@ -113,7 +113,8 @@ exports.$init$FreeInterface=$init$FreeInterface;
 $init$FreeInterface();
 
 //ClassDefinition OpenFunction at X (18:0-36:0)
-function OpenFunction(pkg, meta, that){
+function OpenFunction(pkg,meta,that){
+    if (meta===undefined)throw Exception("Function reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
     $init$OpenFunction();
     if (that===undefined)that=new OpenFunction.$$;
     that._pkg=pkg;
@@ -218,6 +219,7 @@ $init$OpenFunction();
 
 //ClassDefinition OpenValue at X (38:0-45:0)
 function OpenValue(pkg, meta, that){
+  if (meta===undefined)throw Exception("Value reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
   $init$OpenValue();
   if (that===undefined)that=new OpenValue.$$;
   that._pkg = pkg;
@@ -362,6 +364,7 @@ $init$OpenSetter();
 
 //ClassDefinition OpenClass at X (47:0-70:0)
 function OpenClass(pkg, meta, that){
+    if (meta===undefined)throw Exception("Class reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
     $init$OpenClass();
     if (that===undefined)that=new OpenClass.$$;
     that._pkg = pkg;
@@ -487,6 +490,7 @@ $init$OpenClass();
 
 //ClassDefinition OpenInterface at X (72:0-92:0)
 function OpenInterface(pkg, meta, that) {
+    if (meta===undefined)throw Exception("Interface reference not found. Metamodel doesn't work with modules compiled in lexical scope style");
     $init$OpenInterface();
     if (that===undefined)that=new OpenInterface.$$;
     that._pkg = pkg;

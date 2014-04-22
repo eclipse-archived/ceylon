@@ -572,6 +572,7 @@ exports.AppliedFunction$meta$model=AppliedFunction;
 initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,Function$meta$model);
 
 function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
+  if (attr===undefined)throw Exception("Value reference not found. Metamodel doesn't work with modules compiled in lexical scope style.");
   var mm = getrtmm$$(attr);
   $init$AppliedValue();
   if ($$appliedValue===undefined){
@@ -765,6 +766,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   $$appliedAttribute.pname=pname;
   $defat($$appliedAttribute,'type',function(){
     var t = getrtmm$$(atr);
+    if (t===undefined)throw Exception("Attribute reference not found. Metamodel doesn't work in modules compiled in lexical scope style.");
     t=t.$t;
     return typeLiteral$meta({Type$typeLiteral:t});
   },undefined,function(){return{mod:$CCMM$,$t:{t:Type$meta$model,a:{Type$Type:'Get$Attribute'}},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','type']};});
