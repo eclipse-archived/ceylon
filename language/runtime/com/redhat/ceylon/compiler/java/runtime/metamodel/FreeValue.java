@@ -60,7 +60,7 @@ public class FreeValue
                 && ((ceylon.language.meta.declaration.OpenClassType) type).getDeclaration().getAnonymous();
     }
     
-    @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration|ceylon.language::Nothing")
+    @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration|ceylon.language::Null")
     @Override
     public ceylon.language.meta.declaration.ClassDeclaration getObjectDeclaration(){
         if(type instanceof ceylon.language.meta.declaration.OpenClassType){
