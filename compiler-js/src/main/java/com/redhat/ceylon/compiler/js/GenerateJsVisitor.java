@@ -549,6 +549,10 @@ public class GenerateJsVisitor extends Visitor
             out(clAlias, "set_type_args(", names.self(d), ",$$targs$$)");
             endLine(true);
         }
+        if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
+            out(clAlias, "set_type_args(", names.self(d), ",$$$mptypes)");
+            endLine(true);
+        }
         that.getInterfaceBody().visit(this);
         //returnSelf(d);
         endBlockNewLine();
@@ -692,6 +696,10 @@ public class GenerateJsVisitor extends Visitor
                     }
                 }
             }
+        }
+        if (!d.isToplevel() && d.getContainer() instanceof Method && !((Method)d.getContainer()).getTypeParameters().isEmpty()) {
+            out(clAlias, "set_type_args(", names.self(d), ",$$$mptypes)");
+            endLine(true);
         }
         initParameters(that.getParameterList(), d, null);
         
