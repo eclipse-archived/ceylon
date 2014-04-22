@@ -61,6 +61,12 @@ shared void testArrays() {
     
     a2.copyTo(a3, 1, 1, 1);
     check(a3==Array{ 5, 2, 5 }, "copyTo(1, 1, 1)");
-    a3.copyTo(a3, 0, 1);
-    check(a3==Array{5,5,2}, "copyTo itself");
+
+    //copy to itself
+    value a8=Array{1,2,3,null,null};
+    a8.copyTo(a8,1,2,2);
+    check(a8==Array{1,2,2,3,null}, "copyTo self 1 expected 1,2,2,3,null got ``a8``");
+    value a9=Array{"a","b","c",null,null};
+    a9.copyTo(a9,1,2,2);
+    check(a9==Array{"a","b","b","c",null}, "copyTo self 2 expected a,b,b,c,null got ``a9``");
 }
