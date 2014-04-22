@@ -422,7 +422,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
-            throw new RuntimeException(Tools.progName() + " node exit code: "+exitCode);
+            System.exit(exitCode);
         }
     }
 
