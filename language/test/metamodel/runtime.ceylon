@@ -1718,17 +1718,35 @@ shared void run() {
         total++;
         checkContainers();
         pass++;
-    } catch (Exception|AssertionError e) { print("Failed containers"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) {
+        if ("lexical" in e.message) {
+            print("Containers test won't work in lexical scope style");
+        } else {
+            print("Failed containers"); e.printStackTrace();
+        }
+    }
     try {
         total++;
         checkLocalTypes();
         pass++;
-    } catch (Exception|AssertionError e) { print("Failed local types"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) {
+        if ("lexical" in e.message) {
+            print("Local types test won't work in lexical scope style");
+        } else {
+            print("Failed local types"); e.printStackTrace();
+        }
+    }
     try {
         total++;
         checkEqualityAndHash();
         pass++;
-    } catch (Exception|AssertionError e) { print("Failed equals/hash"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) {
+        if ("lexical" in e.message) {
+            print("Equals/hash test won't work in lexical scope style");
+        } else {
+            print("Failed equals/hash"); e.printStackTrace();
+        }
+    }
     try {
         total++;
         checkApplyTypeConstraints();
@@ -1738,7 +1756,13 @@ shared void run() {
         total++;
         checkApplications();
         pass++;
-    } catch (Exception|AssertionError e) { print("Failed applications"); e.printStackTrace(); }
+    } catch (Exception|AssertionError e) {
+        if ("lexical" in e.message) {
+            print("Applications test won't work in lexical scope style");
+        } else {
+            print("Failed applications"); e.printStackTrace();
+        }
+    }
     try {
         total++;
         checkTests();
@@ -1761,8 +1785,12 @@ shared void run() {
         t();
         pass++;
       } catch (Exception|AssertionError e) {
-        print("Failed bug test ``total``");
-        e.printStackTrace();
+        if ("lexical" in e.message) {
+            print("Bug test won't work in lexical scope style");
+        } else {
+            print("Failed bug test ``total``");
+            e.printStackTrace();
+        }
       }
     }
     sandbox(bug237);
