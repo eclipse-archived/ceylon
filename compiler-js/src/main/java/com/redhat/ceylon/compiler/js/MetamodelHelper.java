@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -125,6 +126,11 @@ public class MetamodelHelper {
             TypeUtils.outputQualifiedTypename(gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
+            final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
+            if (targs != null && !targs.isEmpty()) {
+                gen.out(",undefined,");
+                TypeUtils.printTypeArguments(that, targs, gen, false);
+            }
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.Interface) {
             if (td.isToplevel()) {
@@ -135,6 +141,11 @@ public class MetamodelHelper {
             TypeUtils.outputQualifiedTypename(gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             gen.out(",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false);
+            final Map<TypeParameter,ProducedType> targs = that.getType().getTypeModel().getTypeArguments();
+            if (targs != null && !targs.isEmpty()) {
+                gen.out(",undefined,");
+                TypeUtils.printTypeArguments(that, targs, gen, false);
+            }
             gen.out(")");
         } else if (td instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType) {
             gen.out(GenerateJsVisitor.getClAlias(),"getNothingType$meta$model()");
