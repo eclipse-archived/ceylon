@@ -41,6 +41,10 @@ public class CeylonTestJsTool extends RepoUsingTool {
 
     private static final String TEST_MODULE_NAME = "com.redhat.ceylon.testjs";
     private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.testjs.run";
+    
+    private static final String COLOR_WHITE = "com.redhat.ceylon.common.tool.terminal.color.white";
+    private static final String COLOR_GREEN = "com.redhat.ceylon.common.tool.terminal.color.green";
+    private static final String COLOR_RED = "com.redhat.ceylon.common.tool.terminal.color.red";
 
     private List<String> moduleNameOptVersionList;
     private List<String> testList;
@@ -161,6 +165,17 @@ public class CeylonTestJsTool extends RepoUsingTool {
         
         if (tap) {
             args.add("__tap");
+        }
+        
+        if (System.getProperties().containsKey(COLOR_WHITE)
+                && System.getProperties().containsKey(COLOR_GREEN)
+                && System.getProperties().containsKey(COLOR_RED)) {
+            args.add("__" + COLOR_WHITE);
+            args.add(System.getProperty(COLOR_WHITE));
+            args.add("__" + COLOR_GREEN);
+            args.add(System.getProperty(COLOR_GREEN));
+            args.add("__" + COLOR_RED);
+            args.add(System.getProperty(COLOR_RED));
         }
 
         CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
