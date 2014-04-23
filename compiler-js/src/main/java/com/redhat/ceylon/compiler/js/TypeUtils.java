@@ -125,12 +125,12 @@ public class TypeUtils {
                 gen.out(modAlias, ".");
                 qual = true;
             }
-            if (t.getScope() instanceof ClassOrInterface) {
+            if (t.getContainer() instanceof ClassOrInterface) {
                 List<ClassOrInterface> parents = new ArrayList<>();
-                ClassOrInterface parent = (ClassOrInterface)t.getScope();
+                ClassOrInterface parent = (ClassOrInterface)t.getContainer();
                 parents.add(0, parent);
-                while (parent.getScope() instanceof ClassOrInterface) {
-                    parent = (ClassOrInterface)parent.getScope();
+                while (parent.getContainer() instanceof ClassOrInterface) {
+                    parent = (ClassOrInterface)parent.getContainer();
                     parents.add(0, parent);
                 }
                 qual = true;
