@@ -36,6 +36,7 @@ import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
+import ceylon.language.meta.model.nullArgument_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
@@ -1226,6 +1227,10 @@ public class Metamodel {
                 // we need to fetch the default value
                 value = defaultValueProvider.getDefaultParameterValue(parameter, values, parameterIndex);
             }else{
+                // handle null arguments
+                if(value == nullArgument_.get_())
+                    value = null;
+                
                 // we have a value: check the type
                 ProducedType argumentType = Metamodel.getProducedType(value);
                 ProducedType parameterType = parameterProducedTypes.get(parameterIndex);
