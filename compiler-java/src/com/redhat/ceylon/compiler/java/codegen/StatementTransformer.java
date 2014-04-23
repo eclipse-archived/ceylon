@@ -1078,9 +1078,8 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public JCExpression makeTest() {
             at(cond);
-            // booleans can't be erased
             return expressionGen().transformExpression(cond.getExpression(), 
-                    BoxingStrategy.UNBOXED, null);
+                    BoxingStrategy.UNBOXED, typeFact().getBooleanDeclaration().getType());
         }
 
         @Override
