@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+final class bug1611_ {
+    
+    private bug1611_() {
+    }
+    
+    static void bug1611(final .ceylon.language.meta.model.Function f) {
+        final boolean b1 = ((.ceylon.language.Boolean)(
+            let
+            {
+                .ceylon.language.meta.model.Function arg$0$callable$ = f;
+                .ceylon.language.Iterable arg$0$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+            }
+            returning arg$0$callable$.namedApply(arg$0$0);
+        )).booleanValue();
+        if (((.ceylon.language.Boolean)(
+            let
+            {
+                .ceylon.language.meta.model.Function arg$2$callable$ = f;
+                .ceylon.language.Iterable arg$2$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+            }
+            returning arg$2$callable$.namedApply(arg$2$0);
+        )).booleanValue()) {
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "f.namedApply{}"));
+        if (((.ceylon.language.Boolean)(
+            let
+            {
+                .ceylon.language.meta.model.Function arg$4$callable$ = f;
+                .ceylon.language.Iterable arg$4$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+            }
+            returning arg$4$callable$.namedApply(arg$4$0);
+        )).booleanValue()) {
+        }
+        loop_0: while (true) {
+            if (((.ceylon.language.Boolean)(
+                let
+                {
+                    .ceylon.language.meta.model.Function arg$5$callable$ = f;
+                    .ceylon.language.Iterable arg$5$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+                }
+                returning arg$5$callable$.namedApply(arg$5$0);
+            )).booleanValue()) {
+            } else break loop_0;
+        }
+        final boolean b2 = ((.ceylon.language.Boolean)f.namedApply((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_())).booleanValue();
+        if (((.ceylon.language.Boolean)f.namedApply((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_())).booleanValue()) {
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "f.namedApply({})"));
+        if (((.ceylon.language.Boolean)f.namedApply((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_())).booleanValue()) {
+        }
+        loop_1: while (true) {
+            if (((.ceylon.language.Boolean)f.namedApply((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_())).booleanValue()) {
+            } else break loop_1;
+        }
+    }
+}
