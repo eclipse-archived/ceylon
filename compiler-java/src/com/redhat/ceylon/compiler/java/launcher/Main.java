@@ -710,15 +710,23 @@ public class Main extends com.sun.tools.javac.main.Main {
                 Iterable<JavaFileObject> files2 = fileManager.list(CeylonLocation.RESOURCE_PATH, "", EnumSet.allOf(Kind.class), true);
                 files = filterModuleFiles(chain(files1, files2));
             }
-            boolean gotOne = false;
+            List<File> moduleFiles = List.nil();
+            boolean isProperModule = "default".equals(moduleName);
+            String moduleFilePath = moduleName.replace('.', File.separatorChar) + File.separatorChar + "module.ceylon";
             for (JavaFileObject file : files) {
                 File f = new File(file.toUri().getPath());
-                if(!filenames.contains(f))
-                    filenames = filenames.append(f);
-                gotOne = true;
+                if (!filenames.contains(f) && !moduleFiles.contains(f)) {
+                    moduleFiles = moduleFiles.append(f);
+                }
+                if (!isProperModule) {
+                    String relPath = relativeSourcePath(file);
+                    isProperModule = moduleFilePath.equals(relPath);
+                }
             }
-            if (!gotOne){
-                warning("ceylon", "Could not find source files for module: "+moduleName);
+            if (isProperModule) {
+                filenames = filenames.appendList(moduleFiles);
+            } else {
+                warning("ceylon", "Missing module descriptor or is not a module: "+moduleName);
             }
         }
         return filenames;
@@ -841,6 +849,13 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
         }
         return false;
+    }
+
+    private String relativeSourcePath(JavaFileObject file) {
+        String path = file.toUri().getPath();
+        Iterable<? extends File> paths = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
+        String relPath = FileUtil.relativeFile(paths, path);
+        return relPath;
     }
 
     /**
