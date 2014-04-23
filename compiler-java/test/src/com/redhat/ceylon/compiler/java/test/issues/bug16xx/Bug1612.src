@@ -1,0 +1,144 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar2.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar1.class)})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    Bug1612(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        (
+            let
+            {
+                long $ceylontmp$i$0 = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.<T>$default$i($reified$T);
+                this($reified$T, $ceylontmp$i$0);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1612(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        this.$reified$T = $reified$T;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <T>long $default$i(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final <G>G $default$Bar1$j(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        return (G).ceylon.language.nothing_.get_();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "G",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    class Bar1<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        Bar1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+            (
+                let
+                {
+                    G $ceylontmp$j$1 = $default$Bar1$j($reified$G);
+                    this($reified$G, $ceylontmp$j$1);
+                }
+                returning null;
+            );
+        }
+        
+        Bar1(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
+        @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("G")
+        final G j) {
+            this.$reified$G = $reified$G;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar1.class, $reified$G));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <G>.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612<T>.Bar2<G> Bar2$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, final long j) {
+        return new Bar2<G>($reified$G, j);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final <G>long $default$Bar2$j(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        return 3L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <G>.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612<T>.Bar2<G> Bar2$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        return (
+            let
+            {
+                long $ceylontmp$j$2 = $default$Bar2$j($reified$G);
+            }
+            returning new Bar2<G>($reified$G, $ceylontmp$j$2);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "G",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public class Bar2<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Bar2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
+        @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+        final long j) {
+            this.$reified$G = $reified$G;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar2.class, $reified$G));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class, $reified$T);
+    }
+}
