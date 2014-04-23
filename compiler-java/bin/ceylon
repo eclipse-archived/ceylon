@@ -39,6 +39,9 @@ LIB="$CEYLON_HOME/lib"
 if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 	PREPEND_JAVA_OPTS="$JAVA_DEBUG_OPTS"
 	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$(tput 2>/dev/null cols)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.white=$(tput 2>/dev/null setaf 7)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=$(tput 2>/dev/null setaf 2)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
 	PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)"
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
