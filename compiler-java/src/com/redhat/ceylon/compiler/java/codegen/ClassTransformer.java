@@ -3325,12 +3325,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
         methodBuilder.modifiers(modifiers);
         
-        if (container instanceof Method) {
-            copyTypeParameters((Method)container, methodBuilder);
-        } else if (container != null
-                && Decl.isToplevel(container)
-                && container instanceof Class) {
-            copyTypeParameters((Class)container, methodBuilder);
+        if (container instanceof Functional) {
+            copyTypeParameters((Functional)container, methodBuilder);
         }
         
         // make sure reified type parameters are accepted
