@@ -285,7 +285,8 @@ public class MethodHandleUtil {
             checkIgnoreAnnotations = method.getAnnotation(Ignore.class) == null;
         }else{
             Constructor<?> constructor = (Constructor<?>) methodOrConstructor;
-            tpCount = constructor.getTypeParameters().length;
+            // we don't support constructor type parameters but only those from the class
+            tpCount = constructor.getDeclaringClass().getTypeParameters().length;
             parameterTypes = constructor.getParameterTypes();
             annotations = constructor.getParameterAnnotations();
             checkIgnoreAnnotations = constructor.getAnnotation(Ignore.class) == null;
