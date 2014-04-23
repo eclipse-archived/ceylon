@@ -133,9 +133,11 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     // it's likely an overloaded constructor
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
+                        int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass()) 
+                                ? decl.getTypeParameters().size() : 0;
                         // this doesn't need to count synthetic parameters because we only use the constructor for Java types
                         // which can't have defaulted parameters
-                        int params = constr.getParameterTypes().length;
+                        int params = constr.getParameterTypes().length - reifiedTypeParameterCount;
                         defaultedMethods[params - firstDefaulted] = constr;
                     }
                     continue;
@@ -159,7 +161,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                     continue;
                 // FIXME: proper checks
                 if(firstDefaulted != -1){
-                    int params = meth.getParameterTypes().length;
+                    int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(meth, true) 
+                            ? decl.getTypeParameters().size() : 0;
+                    int params = meth.getParameterTypes().length - reifiedTypeParameterCount;
                     if(params != parameters.size()){
                         defaultedMethods[params - firstDefaulted] = meth;
                         continue;
@@ -180,7 +184,9 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 // this won't find the last one, but it's method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
-                    // FIXME: proper checks
+                    if(defaultedMethods[i] == null)
+                        throw new RuntimeException("Missing defaulted constructor for "+ declaration.getName()
+                                +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
                     dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameterProducedTypes, variadic, false);
                 }
                 dispatch[i] = constructor;

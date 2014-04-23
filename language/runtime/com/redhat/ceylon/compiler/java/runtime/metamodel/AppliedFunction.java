@@ -116,7 +116,9 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         }else{
             // FIXME: deal with Java classes and overloading
             // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
-            found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);;
+            found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
+            
+            int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(found, false) ? found.getTypeParameters().length : 0;
             boolean isArray = MethodHandleUtil.isJavaArray(javaClass);
             for(Method method : javaClass.getDeclaredMethods()){
                 if(!method.getName().equals(name))
@@ -130,7 +132,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                     // save method for later
                     // FIXME: proper checks
                     if(firstDefaulted != -1){
-                        int params = method.getParameterTypes().length;
+                        // do not count reified type parameters
+                        int params = method.getParameterTypes().length - reifiedTypeParameterCount;
                         defaultedMethods[params - firstDefaulted] = method;
                     }
                     continue;
@@ -142,7 +145,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             boolean variadic = found.isVarArgs();
             method = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameterProducedTypes, variadic, false);
             if(defaultedMethods != null){
-                // this won't find the last one, but it's method
+                // this won't find the last one, but its method
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     if(defaultedMethods[i] == null)
