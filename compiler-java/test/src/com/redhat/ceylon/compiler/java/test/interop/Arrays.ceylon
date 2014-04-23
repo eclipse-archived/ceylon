@@ -72,6 +72,8 @@ void test_booleans() {
     java.take_booleans(booleanArray([true, true, false]));
     java.take_booleans(booleanArray{});
     BooleanArray{size=2;};
+    BooleanArray(2);
+    Anything(Integer) ctorRef = BooleanArray;
     Integer i = items.size;
     Array<Boolean> arr1 = items.booleanArray;
     Array<JBoolean> arr2 = items.array;
@@ -120,6 +122,9 @@ void test_bytes() {
     }
     //for (Integer n2 in items) { print(n2); }
     java.take_bytes(items);
+    
+    ByteArray(2);
+    Anything(Integer) ctorRef = ByteArray;
 }
 
 @noanno
@@ -144,6 +149,9 @@ void test_shorts() {
     }
     //for (Integer n2 in items) { print(n2); }
     java.take_shorts(items);
+    
+    ShortArray(2);
+    Anything(Integer) ctorRef = ShortArray;
 }
 
 @noanno
@@ -168,6 +176,9 @@ void test_ints() {
     }
     //for (Integer n2 in items) { print(n2); }
     java.take_ints(items);
+    
+    IntArray(2);
+    Anything(Integer) ctorRef = IntArray;
 }
 
 @noanno
@@ -192,6 +203,9 @@ void test_longs() {
     }
     //for (Integer n2 in items) { print(n2); }
     java.take_longs(items);
+    
+    LongArray(2);
+    Anything(Integer) ctorRef = LongArray;
 }
 
 @noanno
@@ -216,6 +230,9 @@ void test_floats() {
     }
     //for (Float f2 in items) { print(f2); }
     java.take_floats(items);
+    
+    FloatArray(2);
+    Anything(Integer) ctorRef = FloatArray;
 }
 
 @noanno
@@ -240,6 +257,9 @@ void test_doubles() {
     }
     //for (Float f2 in items) { print(f2); }
     java.take_doubles(items);
+    
+    DoubleArray(2);
+    Anything(Integer) ctorRef = DoubleArray;
 }
 
 @noanno
