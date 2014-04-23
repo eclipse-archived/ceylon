@@ -231,6 +231,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
 
     @Override
     @Ignore
+    public ceylon.language.meta.model.Applicable$impl<Type> $ceylon$language$meta$model$Applicable$impl() {
+        return null;
+    }
+
+    @Override
+    @Ignore
     public Model$impl $ceylon$language$meta$model$Model$impl() {
         return null;
     }

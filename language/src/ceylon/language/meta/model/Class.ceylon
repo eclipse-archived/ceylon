@@ -15,14 +15,6 @@
        }
  """
 shared interface Class<out Type=Anything, in Arguments=Nothing>
-    satisfies ClassModel<Type, Arguments> & Callable<Type, Arguments>
+    satisfies ClassModel<Type, Arguments> & Callable<Type, Arguments> & Applicable<Type>
     given Arguments satisfies Anything[] {
-    
-    "Type-unsafe initialiser application, to be used when the argument types are unknown until runtime.
-     
-     This has the same behaviour as invoking this `Class` directly, but exchanges compile-time type
-     safety with runtime checks."
-    throws(`class IncompatibleTypeException`, "If any argument is not assignable to this initialiser's corresponding parameter")
-    throws(`class InvocationException`, "If there are not enough or too many provided arguments")
-    shared formal Type apply(Anything* arguments);
 }
