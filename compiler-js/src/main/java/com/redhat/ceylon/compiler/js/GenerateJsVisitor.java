@@ -962,7 +962,7 @@ public class GenerateJsVisitor extends Visitor
                     containers.insert(0, '.');
                 }
                 containers.insert(0, names.name((Declaration)_d2));
-                _d2 = _d2.getScope();
+                _d2 = _d2.getContainer();
             }
             endLine();
             out(containers.toString(), "=", names.name(d), ";");
