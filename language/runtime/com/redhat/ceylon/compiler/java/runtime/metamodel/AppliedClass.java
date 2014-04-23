@@ -36,7 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     })
 public class AppliedClass<Type, Arguments extends Sequential<? extends Object>> 
     extends AppliedClassOrInterface<Type>
-    implements ceylon.language.meta.model.Class<Type, Arguments> {
+    implements ceylon.language.meta.model.Class<Type, Arguments>, DefaultValueProvider {
 
     @Ignore
     final TypeDescriptor $reifiedArguments;
@@ -206,6 +206,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
         MethodHandle constructor = null;
         java.lang.Class<?>[] parameterTypes;
+        java.lang.Class<?> returnType;
         boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
         boolean isStatic = Modifier.isStatic(javaClass.getModifiers());
         try {
@@ -213,15 +214,21 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 ((java.lang.reflect.Constructor<?>) found).setAccessible(true);
                 constructor = MethodHandles.lookup().unreflectConstructor((java.lang.reflect.Constructor<?>)found);
                 parameterTypes = ((java.lang.reflect.Constructor<?>)found).getParameterTypes();
+                returnType = javaClass;
             }else{
                 ((Method)found).setAccessible(true);
                 constructor = MethodHandles.lookup().unreflect((Method) found);
                 parameterTypes = ((java.lang.reflect.Method)found).getParameterTypes();
+                returnType = ((java.lang.reflect.Method)found).getReturnType();
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
         }
         boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null && !isStatic;
+
+        // box the return type, which is only necessary for default parameter methods, and not constructors
+        constructor = MethodHandleUtil.boxReturnValue(constructor, returnType, producedType);
+
         // we need to cast to Object because this is what comes out when calling it in $call
         
         // if it's a java member we will be using the member constructor which has an extra synthetic parameter so we can't bind it
@@ -424,6 +431,62 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
     }
 
+    @Override
+    public Type namedApply(@Name("arguments")
+        @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Object>,ceylon.language::Null>")
+        ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
+        checkInit();
+        checkConstructor();
+        
+        return Metamodel.namedApply(this, this, 
+                (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
+                arguments, parameterProducedTypes);
+    }
+    
+    @Override
+    public Object getDefaultParameterValue(Parameter parameter, Object[] values, int collectedValueCount) {
+        com.redhat.ceylon.compiler.typechecker.model.Class decl = 
+                (com.redhat.ceylon.compiler.typechecker.model.Class)declaration.declaration;
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass(decl);
+
+        Method found = null;
+        String name;
+        java.lang.Class<?> lookupClass;
+        if(!javaClass.isMemberClass()){
+            name = "$default$"+parameter.getName();
+            lookupClass = javaClass;
+        }else{
+            name = "$default$" + declaration.getName() + "$" + parameter.getName();
+            // FIXME: perhaps store and access the container class literal from an extra param of @Container?
+            lookupClass = Metamodel.getJavaClass((Declaration) declaration.declaration.getContainer());
+        }
+        // iterate to find it, rather than figure out its parameter types
+        for(Method m : lookupClass.getDeclaredMethods()){
+            if(m.getName().equals(name)){
+                found = m;
+                break;
+            }
+        }
+        if(found == null)
+            throw new RuntimeException("Default argument method for "+parameter.getName()+" not found");
+        int parameterCount = found.getParameterTypes().length;
+        if(MethodHandleUtil.isReifiedTypeSupported(found, false))
+            parameterCount -= found.getTypeParameters().length;
+        if(parameterCount != collectedValueCount)
+            throw new RuntimeException("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
+
+        // AFAIK default value methods cannot be Java-variadic 
+        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, false, false);
+        // sucks that we have to copy the array, but that's the MH API
+        java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
+        System.arraycopy(values, 0, arguments, 0, collectedValueCount);
+        try {
+            return methodHandle.invokeWithArguments(arguments);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
     @Override
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> getParameterTypes(){

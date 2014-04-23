@@ -37,7 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
     @TypeParameter(value = "Arguments", variance = Variance.IN, satisfies = "ceylon.language::Sequential<ceylon.language::Anything>"),
     })
 public class AppliedFunction<Type, Arguments extends Sequential<? extends Object>> 
-    implements ceylon.language.meta.model.Function<Type, Arguments>, ReifiedType {
+    implements ceylon.language.meta.model.Function<Type, Arguments>, ReifiedType, DefaultValueProvider {
 
     @Ignore
     private final TypeDescriptor $reifiedType;
@@ -55,6 +55,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     private ceylon.language.meta.model.Type<?> container;
     private List<ProducedType> parameterProducedTypes;
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
+    private ProducedReference appliedFunction;
 
     public AppliedFunction(@Ignore TypeDescriptor $reifiedType, 
                            @Ignore TypeDescriptor $reifiedArguments,
@@ -65,6 +66,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         this.$reifiedArguments = $reifiedArguments;
         this.container = container;
         this.instance = instance;
+        this.appliedFunction = appliedFunction;
         
         com.redhat.ceylon.compiler.typechecker.model.Method decl = (com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration;
         List<Parameter> parameters = decl.getParameterLists().get(0).getParameters();
@@ -420,6 +422,50 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         Sequential<?> arguments){
         
         return Metamodel.apply(this, arguments, parameterProducedTypes, firstDefaulted, variadicIndex);
+    }
+
+    @Override
+    public Type namedApply(@Name("arguments")
+        @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<ceylon.language::String,ceylon.language::Object>,ceylon.language::Null>")
+        ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments){
+
+        return Metamodel.namedApply(this, this, 
+                (com.redhat.ceylon.compiler.typechecker.model.Functional)declaration.declaration, 
+                arguments, parameterProducedTypes);
+    }
+
+    @Override
+    public Object getDefaultParameterValue(Parameter parameter, Object[] values, int collectedValueCount) {
+        // find the right class
+        java.lang.Class<?> javaClass = Metamodel.getJavaClass(declaration.declaration);
+        // default method name
+        String name = declaration.getName()+"$"+parameter.getName();
+        Method found = null;
+        // iterate to find it, rather than figure out its parameter types
+        for(Method m : javaClass.getDeclaredMethods()){
+            if(m.getName().equals(name)){
+                found = m;
+                break;
+            }
+        }
+        if(found == null)
+            throw new RuntimeException("Default argument method for "+parameter.getName()+" not found");
+        int parameterCount = found.getParameterTypes().length;
+        if(MethodHandleUtil.isReifiedTypeSupported(found, false))
+            parameterCount -= found.getTypeParameters().length;
+        if(parameterCount != collectedValueCount)
+            throw new RuntimeException("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
+        
+        // AFAIK default value methods cannot be Java-variadic 
+        MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameterProducedTypes, false, false);
+        // sucks that we have to copy the array, but that's the MH API
+        java.lang.Object[] arguments = new java.lang.Object[collectedValueCount];
+        System.arraycopy(values, 0, arguments, 0, collectedValueCount);
+        try {
+            return methodHandle.invokeWithArguments(arguments);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")

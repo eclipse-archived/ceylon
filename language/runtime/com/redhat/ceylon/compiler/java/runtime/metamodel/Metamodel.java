@@ -19,6 +19,8 @@ import ceylon.language.Anything;
 import ceylon.language.ArraySequence;
 import ceylon.language.Callable;
 import ceylon.language.ConstrainedAnnotation;
+import ceylon.language.Entry;
+import ceylon.language.Iterable;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.SequenceBuilder;
@@ -1200,6 +1202,65 @@ public class Metamodel {
             throw new IncompatibleTypeException("Invalid container type: "+qualifyingType+" is not a subtype of "+typeDecl);
     }
     
+    public static <Return> Return namedApply(Callable<? extends Return> function,
+            DefaultValueProvider defaultValueProvider, 
+            com.redhat.ceylon.compiler.typechecker.model.Functional declaration,
+            ceylon.language.Iterable<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>,? extends java.lang.Object> arguments, 
+            List<ProducedType> parameterProducedTypes){
+        // FIXME: throw for Java declarations
+        
+        java.util.Map<java.lang.String,java.lang.Object> argumentMap = collectArguments(arguments);
+        
+        java.util.List<Parameter> parameters = declaration.getParameterLists().get(0).getParameters();
+        
+        // store the values in an array
+        java.lang.Object[] values = new java.lang.Object[parameters.size()];
+        int parameterIndex = 0;
+        for(Parameter parameter : parameters){
+            // get the parameter value and remove it so we can keep track of those we used
+            java.lang.Object value = argumentMap.remove(parameter.getName());
+            if(value == null){
+                // make sure it has a default value
+                if(!parameter.isDefaulted())
+                    throw new InvocationException("Missing value for non-defaulted parameter "+parameter.getName());
+                // we need to fetch the default value
+                value = defaultValueProvider.getDefaultParameterValue(parameter, values, parameterIndex);
+            }else{
+                // we have a value: check the type
+                ProducedType argumentType = Metamodel.getProducedType(value);
+                ProducedType parameterType = parameterProducedTypes.get(parameterIndex);
+                if(!argumentType.isSubtypeOf(parameterType))
+                    throw new ceylon.language.meta.model.IncompatibleTypeException("Invalid argument "+parameter.getName()+", expected type "+parameterType+" but got "+argumentType);
+            }
+            values[parameterIndex++] = value;
+        }
+        // do we have extra unknown/unused parameters left?
+        if(!argumentMap.isEmpty()){
+            for(String name : argumentMap.keySet()){
+                throw new InvocationException("No such parameter "+name);
+            }
+        }
+        // FIXME: don't we need to spread any variadic param?
+        
+        // now do a regular invocation
+        ArraySequence<Object> argumentSequence = new ArraySequence<>(ceylon.language.Object.$TypeDescriptor$, values, 0, values.length, false);
+        return Util.apply(function, argumentSequence);
+    }
+    
+    private static Map<String, Object> collectArguments(Iterable<? extends Entry<? extends ceylon.language.String, ? extends Object>, ? extends Object> arguments) {
+        java.util.Map<java.lang.String,java.lang.Object> args = new java.util.HashMap<>();
+        ceylon.language.Iterator<? extends ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>> iterator 
+                = arguments.iterator();
+        java.lang.Object elem; 
+        while((elem = iterator.next()) != finished_.get_()){
+            @SuppressWarnings("unchecked")
+            ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object> entry 
+                = (ceylon.language.Entry<? extends ceylon.language.String,? extends java.lang.Object>)elem;
+            args.put(entry.getKey().toString(), entry.getItem());
+        }
+        return args;
+    }
+
     public static <Return> Return apply(Callable<? extends Return> function,
             Sequential<?> arguments, 
             List<ProducedType> parameterProducedTypes,
