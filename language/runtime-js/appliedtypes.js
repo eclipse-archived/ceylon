@@ -1,4 +1,4 @@
-function AppliedClass(tipo,$$targs$$,that){
+function AppliedClass(tipo,$$targs$$,that,classTargs){
   $init$AppliedClass();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -34,7 +34,10 @@ function AppliedClass(tipo,$$targs$$,that){
     };
     that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
     that.$apply.$crtmm$=AppliedClass.$$.prototype.$apply.$crtmm$;
+    that.namedApply=function(x){return AppliedClass.$$.prototype.namedApply.call(that,x);};
+    that.namedApply.$crtmm$=AppliedClass.$$.prototype.namedApply.$crtmm$;
   }
+  that.$targs=classTargs;
   $defat(that,'satisfiedTypes',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
@@ -94,8 +97,42 @@ function $init$AppliedClass(){
         a=convert$params(this.tipo.$crtmm$,a);
         if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);
-      };$$clase.$apply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Class','$m','apply'],$t:'Type'};};
+      };$$clase.$apply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',$ps:[{$nm:'arguments',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Anything}}},$an:function(){return[];}}],$cont:Applicable$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].Applicable.$m.apply.$an.doc[0]),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','apply']};};
 
+      $$clase.namedApply=function(args){
+        var mdl=get_model(this.tipo.$crtmm$);
+        if (mdl&&mdl.$mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
+        var mm=getrtmm$$(this.tipo);
+        if (mm.$ps===undefined)throw InvocationException$meta$model("Applied function does not have metamodel parameter info for named args call");
+        var mapped={};
+        var iter=args.iterator();var a;while((a=iter.next())!==getFinished()) {
+          mapped[a.key]=a.item===getNullArgument$meta$model()?null:a.item;
+        }
+        var ordered=[];
+        for (var i=0; i<mm.$ps.length; i++) {
+          var p=mm.$ps[i];
+          var v=mapped[p.$nm];
+          if (v===undefined && p.$def===undefined) {
+            throw InvocationException$meta$model("Required argument " + p.$nm + " missing in named-argument invocation");
+          } else if (v!==undefined) {
+              var t=p.$t;
+              if(typeof(t)==='string'&&this.$targs)t=this.$targs[t];
+              if (t&&!$is(v,t))throw IncompatibleTypeException$meta$model("Argument " + p.$nm + "="+v+" is not of the expected type.");
+          } 
+          delete mapped[p.$nm];
+          ordered.push(v);
+        }
+        if (Object.keys(mapped).length>0)throw new InvocationException$meta$model("No arguments with names " + Object.keys(mapped));
+        if (this.$targs) {
+          ordered.push(this.$targs);
+        }
+        return this.tipo.apply(undefined,ordered);
+
+
+
+
+
+      };$$clase.namedApply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',$ps:[{$nm:'arguments',$mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Entry,a:{Item$Entry:{t:$Object},Key$Entry:{t:String$}}},Absent$Iterable:{t:Null}}},$an:function(){return[];}}],$cont:Applicable$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].Applicable.$m.namedApply.$an.doc[0]),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','namedApply']};};
     })(AppliedClass.$$.prototype);
   }
   return AppliedClass;
@@ -103,7 +140,7 @@ function $init$AppliedClass(){
 exports.$init$AppliedClass$meta$model=$init$AppliedClass;
 $init$AppliedClass();
 
-function AppliedMemberClass(tipo,$$targs$$,that){
+function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   $init$AppliedMemberClass();
   if (that===undefined) {
     var mm = getrtmm$$(tipo);
@@ -139,6 +176,7 @@ function AppliedMemberClass(tipo,$$targs$$,that){
     if (that.$bound)eq=eq && o.$bound && o.$bound.equals(that.$bound);else eq=eq && o.$bound===undefined;
     return eq;
   };
+  that.$targs=myTargs;
   $defat(that,'parameterTypes',function(){
     return ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.get.call(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getParameterTypes.$crtmm$);
@@ -183,7 +221,7 @@ function $init$AppliedMemberClass(){
 exports.$init$AppliedMemberClass$meta$model=$init$AppliedMemberClass;
 $init$AppliedMemberClass();
 
-function AppliedInterface(tipo,$$targs$$,that) {
+function AppliedInterface(tipo,$$targs$$,that,myTargs) {
   $init$AppliedInterface();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -200,6 +238,7 @@ function AppliedInterface(tipo,$$targs$$,that) {
   }
   set_type_args(that,$$targs$$);
   Interface$meta$model($$targs$$,that);
+  that.$targs=myTargs;
   that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
   that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
   that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
@@ -248,7 +287,7 @@ function $init$AppliedInterface(){
 exports.$init$AppliedInterface$meta$model=$init$AppliedInterface;
 $init$AppliedInterface();
 
-function AppliedMemberInterface(tipo,$$targs$$,that){
+function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   $init$AppliedMemberInterface();
   if (that===undefined){
     var mm = getrtmm$$(tipo);
@@ -278,6 +317,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that){
   set_type_args(that,$$targs$$);
   MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type$MemberInterface:that.$$targs$$.Type$MemberInterface,
     Container$MemberInterface:that.$$targs$$.Container$MemberInterface},that);
+  that.$targs=myTargs;
   that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
   that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
   that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
@@ -596,6 +636,34 @@ $defat(f,'declaration',function(){
     }
     return m.apply(o,a);
   }
+
+f.namedApply=function(args) {
+  if (mm.$ps===undefined)throw InvocationException$meta$model("Applied function does not have metamodel parameter info for named args call");
+  var mapped={};
+  var iter=args.iterator();var a;while((a=iter.next())!==getFinished()) {
+    mapped[a.key]=a.item===getNullArgument$meta$model()?null:a.item;
+  }
+  var ordered=[];
+  for (var i=0; i<mm.$ps.length; i++) {
+    var p=mm.$ps[i];
+    var v=mapped[p.$nm];
+    if (v===undefined && p.$def===undefined) {
+      throw InvocationException$meta$model("Required argument " + p.$nm + " missing in named-argument invocation");
+    } else if (v!==undefined) {
+        var t=p.$t;
+        if(typeof(t)==='string'&&ttargs)t=ttargs[t];
+        if (t&&!$is(v,t))throw IncompatibleTypeException$meta$model("Argument " + p.$nm + "="+v+" is not of the expected type.");
+    }
+    delete mapped[p.$nm];
+    ordered.push(v);
+  }
+  if (Object.keys(mapped).length>0)throw new InvocationException$meta$model("No arguments with names " + Object.keys(mapped));
+  if (ttargs) {
+    ordered.push(ttargs);
+  }
+  return m.apply(o,ordered);
+}
+
   return f;
 }
 AppliedFunction.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type$Function:'Type$Function',Arguments$Function:'Arguments$Function'}},$an:function(){return [shared(),actual()];}};};
