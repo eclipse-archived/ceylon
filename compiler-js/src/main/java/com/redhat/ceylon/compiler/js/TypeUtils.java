@@ -683,7 +683,11 @@ public class TypeUtils {
             for (ProducedType st : caseTypes) {
                 if (!first)gen.out(",");
                 first=false;
-                metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
+                if (st.getDeclaration().isAnonymous()) {
+                    gen.out("$prop$", gen.getNames().getter(st.getDeclaration()));
+                } else {
+                    metamodelTypeNameOrList(d.getUnit().getPackage(), st, gen);
+                }
             }
             gen.out("]");
         }
@@ -726,7 +730,7 @@ public class TypeUtils {
             typelist = tp.getCaseTypes();
             if (typelist != null && !typelist.isEmpty()) {
                 if (comma)gen.out(",");
-                gen.out("'of':[");
+                gen.out("of:[");
                 boolean first3 = true;
                 for (ProducedType st : typelist) {
                     if (!first3)gen.out(",");
