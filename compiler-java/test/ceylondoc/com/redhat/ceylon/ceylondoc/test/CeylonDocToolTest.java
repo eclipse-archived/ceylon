@@ -548,8 +548,8 @@ public class CeylonDocToolTest {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
-        makeCarFromClassFiles(dir, fileNames, "ceylon.net", "1.0.1");
-        makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", "1.0.0");
+        makeCarFromClassFiles(dir, fileNames, "ceylon.net", "1.1.0");
+        makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", "1.1.0");
     }
 
     private void makeCarFromClassFiles(File dir, String[] fileNames, String module, String version) throws IOException {
