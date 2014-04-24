@@ -16,13 +16,16 @@ shared interface ClassOrInterface<out Type=Anything>
     
     "The declaration for this class or interface."
     shared formal actual ClassOrInterfaceDeclaration declaration;
-    
+
     "The extended closed type for this class or interface. Note that the [[Anything|ceylon.language::Anything]] type
      has no extended type since it is the top of the type hierarchy."
     shared formal ClassModel<Anything, Nothing>? extendedType;
     
     "The list of closed types that this class or interface satisfies."
     shared formal InterfaceModel<Anything>[] satisfiedTypes;
+
+    "The list of case values for this type. This omits any case type to only contain case values."
+    shared formal Type[] caseValues;
 
     // FIXME: move all these to Type
     // FIXME: introduce MemberClassOrInterface?

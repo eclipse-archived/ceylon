@@ -2,9 +2,13 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.util.List;
 
+import ceylon.language.ArraySequence;
+import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.finished_;
+import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.ClassOrInterface$impl;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
@@ -522,6 +526,31 @@ public abstract class AppliedClassOrInterface<Type>
         return Metamodel.isExactly(producedType, type);
     }
 
+    @Override
+    @TypeInfo("ceylon.language::Sequential<Type>")
+    public ceylon.language.Sequential<? extends Type> getCaseValues(){
+        Sequential<? extends ceylon.language.meta.declaration.OpenType> caseTypeDeclarations = getDeclaration().getCaseTypes();
+        Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = caseTypeDeclarations.iterator();
+        Object it;
+        @SuppressWarnings("unchecked")
+        Type[] ret = (Type[]) java.lang.reflect.Array.newInstance($reifiedType.getArrayElementClass(), (int) caseTypeDeclarations.getSize());
+        int count = 0;
+        while((it = iterator.next()) != finished_.get_()){
+            if(it instanceof ceylon.language.meta.declaration.OpenClassType == false)
+                continue;
+            ceylon.language.meta.declaration.OpenClassType caseClassType = (ceylon.language.meta.declaration.OpenClassType)it;
+            ceylon.language.meta.declaration.ClassDeclaration caseClass = caseClassType.getDeclaration();
+            if(!caseClass.getAnonymous())
+                continue;
+            ValueDeclaration valueDeclaration = caseClass.getContainingPackage().getValue(caseClass.getName());
+            ceylon.language.meta.model.Value<? extends Type,? super Object> valueModel = 
+                    valueDeclaration.<Type,Object>apply($reifiedType, TypeDescriptor.NothingType);
+            Type value = valueModel.get();
+            ret[count++] = value;
+        }
+        return new ArraySequence<>($reifiedType, ret, 0, count, false);
+    }
+    
     @Ignore
     @Override
     public TypeDescriptor $getType$() {
