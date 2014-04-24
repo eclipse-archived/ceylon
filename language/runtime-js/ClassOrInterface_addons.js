@@ -299,3 +299,16 @@ $defat(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
   return ac;
 },undefined,function(){return{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:ClassModel$meta$model,a:{Arguments:{t:Nothing},Type:{t:Anything}}}]},$cont:AppliedClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Class','$at','extendedType']};});
 
+$defat(ClassOrInterface$meta$model.$$.prototype,'caseValues',function(){
+  var cts = this.tipo.$crtmm$.of;
+  if (cts && cts.length > 0) {
+    var rv=[];
+    for (var i=0; i < cts.length; i++) {
+      if (typeof(cts[i])==='function') {
+        rv.push(cts[i]());
+      }
+    }
+    return ArraySequence(rv,{Element$Sequential:{t:this.tipo}});
+  }
+  return getEmpty();
+},undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Type$ClassOrInterface'}},$cont:ClassOrInterface$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].ClassOrInterface.$at.caseValues.$an.doc[0]),shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','caseValues']};});
