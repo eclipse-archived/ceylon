@@ -66,7 +66,8 @@ function validate$typeparams(t,tparms,types) {
       if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
         for (var j=0; j<restraints.length;j++) {
-          if (!extendsType(t.a[tp],restraints[j]))
+          var _r=restraints[j];if(typeof(_r)==='function')_r=getrtmm$$(_r).$t;
+          if (!extendsType(t.a[tp],_r))
             throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
         }
       }

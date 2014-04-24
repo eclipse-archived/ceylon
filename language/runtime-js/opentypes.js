@@ -738,7 +738,8 @@ function $init$OpenTypeParam(){
         if (tp.of) {
           var a=[];
           for (var i=0;i<tp.of.length;i++) {
-            a.push(_openTypeFromTarg(tp.of[i],this._cont));
+            var _ct=tp.of[i];if (typeof(_ct)==='function')_ct=getrtmm$$(_ct).$t;
+            a.push(_openTypeFromTarg(_ct,this._cont));
           }
           return ArraySequence(a,{Element$Iterable:{t:OpenType$meta$declaration}});
         }

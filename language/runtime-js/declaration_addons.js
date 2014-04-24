@@ -159,7 +159,9 @@ $defat(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',fun
         ct.push(OpenTvar(OpenTypeParam(this, casos[i])));
         if (!ta.contains(OpenTypeVariable$meta$declaration))ta.push(OpenTypeVariable$meta$declaration);
       } else {
-        var ot=_openTypeFromTarg(casos[i]);
+        var _t=casos[i];
+        if (typeof(_t)==='function')_t=getrtmm$$(_t).$t;
+        var ot=_openTypeFromTarg(_t);
         ct.push(ot);
         if ($is(ot,{t:OpenClassType$meta$declaration}) && !ta.contains(OpenClassType$meta$declaration))ta.push(OpenClassType$meta$declaration);
         else if ($is(ot,{t:OpenInterfaceType$meta$declaration})&&!ta.contains(OpenInterfaceType$meta$declaration))ta.push(OpenInterfaceType$meta$declaration);
