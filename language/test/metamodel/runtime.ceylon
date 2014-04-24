@@ -1810,6 +1810,7 @@ shared void run() {
     sandbox(bug308);
     sandbox(bug318);
     sandbox(bug320);
+    sandbox(bug329);
     sandbox(bug347);
     sandbox(bug349);
     sandbox(bug366);
