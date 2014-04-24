@@ -1116,7 +1116,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     +"\nThe class was compiled using "+major+"."+minor+"."
                     +"\nThis compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+"."
                     +"\nPlease try to recompile your module using a compatible compiler."
-                    +"\nBinary compatibility will only be supported after Ceylon 1.0.");
+                    +"\nBinary compatibility will only be supported after Ceylon 1.2.");
             binaryCompatibilityErrorRaised = true;
         }
     }

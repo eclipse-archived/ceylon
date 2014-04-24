@@ -134,7 +134,7 @@ public class BcTests extends CompilerTest {
     public void testBinaryVersionIncompatible(){
         compile("JavaOldVersion.java");
         assertErrors("CeylonNewVersion", 
-                new CompilerError(-1, "Ceylon class com.redhat.ceylon.compiler.java.test.bc.JavaOldVersion was compiled by an incompatible version of the Ceylon compiler\n  The class was compiled using 0.0.\n  This compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+".\n  Please try to recompile your module using a compatible compiler.\n  Binary compatibility will only be supported after Ceylon 1.0."));
+                new CompilerError(-1, "Ceylon class com.redhat.ceylon.compiler.java.test.bc.JavaOldVersion was compiled by an incompatible version of the Ceylon compiler\n  The class was compiled using 0.0.\n  This compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+".\n  Please try to recompile your module using a compatible compiler.\n  Binary compatibility will only be supported after Ceylon 1.2."));
     }
     
     @Test
@@ -160,7 +160,7 @@ public class BcTests extends CompilerTest {
         assertErrors("binaryVersion/module", new CompilerError(21, "This module was compiled for an incompatible version of the Ceylon compiler (0.0).\n"
                 +"  This compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+".\n"
                 +"  Please try to recompile your module using a compatible compiler.\n"
-                +"  Binary compatibility will only be supported after Ceylon 1.0."));
+                +"  Binary compatibility will only be supported after Ceylon 1.2."));
     }
 
     private CompilationTask compileJava(String... sourcePaths) {
