@@ -65,6 +65,9 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
   $defat(that,'declaration',function(){
     return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
+  $defat(that,'caseValues',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.$crtmm$);
   that.getMethod=ClassOrInterface$meta$model.$$.prototype.getMethod;
   that.getDeclaredMethod=ClassOrInterface$meta$model.$$.prototype.getDeclaredMethod;
   that.getAttribute=ClassOrInterface$meta$model.$$.prototype.getAttribute;
@@ -186,6 +189,9 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   $defat(that,'satisfiedTypes',function(){
     return ClassOrInterface$meta$model.$$.prototype.$prop$getSatisfiedTypes.get.call(that);
   },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getExtendedType.$crtmm$);
+  $defat(that,'caseValues',function(){
+    return ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.get.call(that);
+  },undefined,ClassOrInterface$meta$model.$$.prototype.$prop$getCaseValues.$crtmm$);
   $defat(that,'declaration',function(){
     return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
@@ -783,7 +789,8 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
         for (var j=0; j<restraints.length;j++) {
-          if (!extendsType(_ta[tp],restraints[j]))
+          var _r=restraints[j];if (typeof(_r)==='function')_r=getrtmm$$(_r).$t;
+          if (!extendsType(_ta[tp],_r))
             throw TypeApplicationException$meta$model(String$("Type argument for " + tp + " violates type parameter constraints"));
         }
       }
