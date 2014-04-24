@@ -12,7 +12,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -44,14 +47,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
           "If `--set` is present then update the module versions, "
         + "otherwise show the module versions."
         + "\n\n"
-        + "If `--dependencies` is present then show/update the "
+        + "If `--dependencies` is present then show the "
         + "versions of module imports of the given module(s)."
         + "\n\n"
         + "`<modules>` specifies the module names (excluding versions) of "
         + "the modules to show or whose versions should be updated. "
         + "If unspecified then all modules are shown/updated.\n\n"
-        + "**Note:** Other modules may also be updated if "
-        + "the `--dependencies` option is used, even if they're not listed in `<modules>`\n\n"
+        + "**Note:** Other modules may also be updated unless "
+        + "the `--no-update-dependencies` option is used, even if they're not listed in `<modules>`\n\n"
         )
 @RemainingSections(value=""
         + "## Examples"
@@ -66,7 +69,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
         + "\n\n"
         + "Updating the version of ceylon.collection, and the modules that depend on it"
         + "\n\n"
-        + "    ceylon version --set 1.0.1 --dependencies ceylon.collection")
+        + "    ceylon version --set 1.0.1 ceylon.collection")
 public class CeylonVersionTool extends CeylonBaseTool {
 
     // TODO Allow --src to be a :-separated path
@@ -82,6 +85,8 @@ public class CeylonVersionTool extends CeylonBaseTool {
     private String encoding = System.getProperty("file.encoding");
     
     private boolean dependencies = false;
+
+    private boolean noUpdateDependencies = false;
 
     private Confirm confirm = Confirm.all;
     
@@ -106,7 +111,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
     
     @OptionArgument
     @Description("The new version number to set."
-            + "If unspecified then module verions are shown and not updated.")
+            + "If unspecified then module versions are shown and not updated.")
     public void setSet(String newVersion) {
         this.newVersion = newVersion;
     }
@@ -119,22 +124,28 @@ public class CeylonVersionTool extends CeylonBaseTool {
     }
     
     @Option
-    @Description("Update of the version in module imports of the "
+    @Description("Do not update of the version in module imports of the "
             + "target module(s) in other modules in the given `--src` directories. "
             + "For example:\n\n"
             + "    ceylon version --set 1.1 ceylon.collection\n\n"
-            + "would just update the version of `ceylon.collection` to 1.1, "
-            + "leaving dependent modules depending on the old version. "
-            + "Whereas:\n\n"
-            + "    ceylon version --set 1.1 --dependencies ceylon.collection\n\n"
             + "would update the version of ceylon.collection to 1.1 and update "
-            + "the module import version of all dependent modules in `./source` "
+            + "the module import version of all dependent modules in the given `--src` directories "
             + "which depended on `ceylon.collection` __even if those "
-            + "modules are not listed as `<modules>`__.")
+            + "modules are not listed as `<modules>`__.\n\n"
+            + "Whereas:\n\n"
+            + "    ceylon version --set 1.1 --no-update-dependencies ceylon.collection\n\n"
+            + "would just update the version of `ceylon.collection` to 1.1, "
+            + "leaving dependent modules depending on the old version.")
+    public void setNoUpdateDependencies(boolean noUpdateDependencies) {
+        this.noUpdateDependencies = noUpdateDependencies;
+    }
+
+    @Option
+    @Description("Display modules who depend on the given module. Only used when displaying modules, not when setting a new version.")
     public void setDependencies(boolean dependencies) {
         this.dependencies = dependencies;
     }
-    
+
     enum Confirm {
         none,
         all,
@@ -195,41 +206,65 @@ public class CeylonVersionTool extends CeylonBaseTool {
                 return cmp;
             }
         });
+        // first update all module versions and remember which version we assigned to which module
+        // because the user can update every individual version
+        Map<String,String> updatedModuleVersions = new HashMap<String,String>();
         for (Module module : moduleList) {
             boolean isMatch = match(module);
             if (newVersion == null) {
                 output(module, isMatch);
-            } else {
-                if (!update(module, isMatch)) {
-                    break;
+            } else if (isMatch) {
+                if (!updateModuleVersion(module, updatedModuleVersions)) {
+                    return;
+                }
+            }
+        }
+        // now do dependencies because we know which modules we did update
+        if (newVersion != null && !noUpdateDependencies) {
+            for (Module module : moduleList) {
+                if (!updateModuleImports(module, updatedModuleVersions)) {
+                    return;
                 }
             }
         }
     }
 
-    private boolean update(Module module, boolean isMatch) throws IOException,
+    private boolean updateModuleVersion(Module module, Map<String,String> updatedModuleVersions) throws IOException,
             RecognitionException {
         String moduleDescriptorPath = module.getUnit().getFullPath();
         CeylonLexer lexer = new CeylonLexer(new ANTLRFileStream(moduleDescriptorPath, encoding));
         TokenRewriteStream tokenStream = new TokenRewriteStream(lexer);
         CeylonParser parser = new CeylonParser(tokenStream);
         Tree.CompilationUnit cu = parser.compilationUnit();
-        if (isMatch) {
-            String v = this.confirm == Confirm.dependencies ? this.newVersion : confirm("update.module.version", module.getNameAsString(), module.getVersion(), this.newVersion);
+        String v = this.confirm == Confirm.dependencies ? this.newVersion : confirm("update.module.version", module.getNameAsString(), module.getVersion(), this.newVersion);
+        if (v == null) {
+            return false;
+        } else if (!v.isEmpty()) {
+            // record the new version for this module
+            updatedModuleVersions.put(module.getNameAsString(), v);
+            updateModuleVersion(moduleDescriptorPath, tokenStream, cu, v);
+        }
+        return true;
+    }
+
+    private boolean updateModuleImports(Module module, Map<String,String> updatedModuleVersions) throws IOException,
+            RecognitionException {
+        String moduleDescriptorPath = module.getUnit().getFullPath();
+        CeylonLexer lexer = new CeylonLexer(new ANTLRFileStream(moduleDescriptorPath, encoding));
+        TokenRewriteStream tokenStream = new TokenRewriteStream(lexer);
+        CeylonParser parser = new CeylonParser(tokenStream);
+        Tree.CompilationUnit cu = parser.compilationUnit();
+        List<Tree.ImportModule> moduleImports = findUpdatedImport(cu, updatedModuleVersions);
+        for (Tree.ImportModule moduleImport : moduleImports) {
+            String importedModuleName = getModuleName(moduleImport);
+            String newVersion = updatedModuleVersions.get(importedModuleName);
+            if(newVersion == null)
+                newVersion = this.newVersion;
+            String v = confirm("update.dependency.version", importedModuleName, module.getNameAsString(), module.getVersion(), newVersion);
             if (v == null) {
                 return false;
             } else if (!v.isEmpty()) {
-                updateModuleVersion(moduleDescriptorPath, tokenStream, cu, v);
-            }
-        } else if (dependencies) {
-            Tree.ImportModule moduleImport = findImport(cu);
-            if (moduleImport != null) {
-                String v = confirm("update.dependency.version", getModuleName(moduleImport), module.getNameAsString(), module.getVersion(), this.newVersion);
-                if (v == null) {
-                    return false;
-                } else if (!v.isEmpty()) {
-                    updateImportVersion(moduleDescriptorPath, tokenStream, moduleImport, v);
-                }
+                updateImportVersion(moduleDescriptorPath, tokenStream, moduleImport, v);
             }
         }
         return true;
@@ -245,8 +280,8 @@ public class CeylonVersionTool extends CeylonBaseTool {
             CommonTokenStream tokenStream = new CommonTokenStream(lexer);
             CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
-            Tree.ImportModule moduleImport = findImport(cu);
-            if (moduleImport != null) {
+            List<Tree.ImportModule> moduleImports = findImport(cu);
+            for (Tree.ImportModule moduleImport : moduleImports) {
                 outputDependency(module, moduleImport);
             }
         }
@@ -265,10 +300,20 @@ public class CeylonVersionTool extends CeylonBaseTool {
             .append(System.lineSeparator());
         
     }
+    
     private boolean match(Module module) {
-        return this.modules == null
-                || this.modules.isEmpty() 
-                || this.modules.contains(new ModuleSpec(module.getNameAsString(), ""));
+        return match(module.getNameAsString());
+    }
+    
+    private boolean match(String moduleName) {
+        if(this.modules == null
+                || this.modules.isEmpty())
+            return true;
+        for(ModuleSpec spec : this.modules){
+            if(spec.getName().equals(moduleName))
+                return true;
+        }
+        return false;
     }
     private void updateImportVersion(String moduleDescriptorPath, TokenRewriteStream tokenStream,
             Tree.ImportModule moduleImport, String version) 
@@ -297,15 +342,24 @@ public class CeylonVersionTool extends CeylonBaseTool {
         Files.move(temp.toPath(), target.toPath(), 
                 StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
     }
-    private Tree.ImportModule findImport(Tree.CompilationUnit cu) {
-        Tree.ImportModule dependsOnTarget = null;
+    
+    private List<Tree.ImportModule> findImport(Tree.CompilationUnit cu) {
+        List<Tree.ImportModule> dependsOnTarget = new LinkedList<Tree.ImportModule>();
         for (Tree.ImportModule importModule : cu.getModuleDescriptors().get(0).getImportModuleList().getImportModules()) {
             String name = getModuleName(importModule);
-            if (this.modules != null
-                    && !this.modules.isEmpty() 
-                    && this.modules.contains(new ModuleSpec(name, ""))) {
-                dependsOnTarget = importModule;
-                break;
+            if (match(name)) {
+                dependsOnTarget.add(importModule);
+            }
+        }
+        return dependsOnTarget;
+    }
+
+    private List<Tree.ImportModule> findUpdatedImport(Tree.CompilationUnit cu, Map<String,String> updatedModules) {
+        List<Tree.ImportModule> dependsOnTarget = new LinkedList<Tree.ImportModule>();
+        for (Tree.ImportModule importModule : cu.getModuleDescriptors().get(0).getImportModuleList().getImportModules()) {
+            String name = getModuleName(importModule);
+            if (updatedModules.containsKey(name)) {
+                dependsOnTarget.add(importModule);
             }
         }
         return dependsOnTarget;
