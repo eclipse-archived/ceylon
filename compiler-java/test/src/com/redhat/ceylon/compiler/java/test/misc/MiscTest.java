@@ -272,10 +272,14 @@ public class MiscTest extends CompilerTest {
                 "test",
                 "time"
         };
+        String[] extraModules = {
+                "com.redhat.ceylon.test",
+                "com.redhat.ceylon.testjvm",
+        };
 //        System.out.println("Press enter to continue");
 //        System.in.read();
 //        System.out.println("Test started");
-        compileSDKOnly(modules);
+        compileSDKOnly(modules, extraModules);
         compileSDKTests(modules);
 //        System.out.println("Done: Press enter to exit");
 //        System.in.read();
@@ -283,7 +287,7 @@ public class MiscTest extends CompilerTest {
 
     }
 
-    private void compileSDKOnly(String[] modules){
+    private void compileSDKOnly(String[] modules, String[] extraModules){
         String sourceDir = "../ceylon-sdk/source";
         // don't run this if the SDK is not checked out
         File sdkFile = new File(sourceDir);
@@ -293,6 +297,9 @@ public class MiscTest extends CompilerTest {
         java.util.List<String> moduleNames = new ArrayList<String>(modules.length);
         for(String module : modules){
             moduleNames.add("ceylon." + module);
+        }
+        for(String module : extraModules){
+            moduleNames.add(module);
         }
         
         CeyloncTool compiler;
