@@ -2569,9 +2569,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(// for class members we rely on abstract bit
            (klass instanceof Class 
                    && methodMirror.isAbstract())
-           // Java interfaces are formal
+           // Trust the abstract bit for Java interfaces, but not for Ceylon ones
            || (klass instanceof Interface
-                   && !((LazyInterface)klass).isCeylon())
+                   && !((LazyInterface)klass).isCeylon()
+                   && methodMirror.isAbstract())
            // For Ceylon interfaces we rely on annotation
            || methodMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null) {
             decl.setFormal(true);
