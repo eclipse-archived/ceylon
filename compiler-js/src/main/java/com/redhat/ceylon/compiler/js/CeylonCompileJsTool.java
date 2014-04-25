@@ -19,6 +19,7 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.compiler.Options;
 import com.redhat.ceylon.compiler.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -261,7 +262,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                         for (String pe : modpath) {
                             _f = new File(_f, pe);
                             if (!(_f.exists() && _f.isDirectory())) {
-                                System.err.printf("ceylonc-js: Could not find source files for module: %s%n", filedir);
                                 _f=null;
                                 break;
                             }
@@ -276,7 +276,13 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                         }
                     }
                     if (f == null) {
-                        throw new CompilerErrorException(String.format("ceylonc-js: file not found: %s%n", filedir));                        
+                        String msg;
+                        if (ModuleWildcardsHelper.isModuleName(filedir)) {
+                            msg = String.format("ceylonc-js: Could not find source files for module: %s%n", filedir);
+                        } else {
+                            msg = String.format("ceylonc-js: file not found: %s%n", filedir);
+                        }
+                        throw new CompilerErrorException(msg);
                     }
                 }
                 if (f != null) {
