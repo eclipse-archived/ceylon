@@ -46,6 +46,80 @@ public class FileUtil {
     }
     
     /**
+     * Turns the given file into the best absolute representation available 
+     * @param file A file
+     * @return A canonical or absolute file
+     */
+    public static File absoluteFile(File file) {
+        if (file != null) {
+            try {
+                file = file.getCanonicalFile();
+            } catch (IOException e) {
+                file = file.getAbsoluteFile();
+            }
+        }
+        return file;
+    }
+
+    /**
+     * Given a list of files and a "current working directory"
+     * returns the list where the files that were relative are
+     * now absolute after having the "CWD" applied to them
+     * as their parent directory. Files in the list that were
+     * already absolute are returned unmodified.
+     * @param cwd The current working directory
+     * @param files A list of files
+     * @return A list of absolute files
+     */
+    public static List<File> applyCwd(File cwd, List<File> files) {
+        List<File> result = new ArrayList<>(files.size());
+        for (File f : files) {
+            result.add(applyCwd(cwd, f));
+        }
+        return result;
+    }
+
+    /**
+     * Given a file and a "current working directory" returns
+     * an absolute file after having the "CWD" applied to it
+     * first as its parent directory. If the file was already
+     * absolute to begin with it is returned unmodified.
+     * @param cwd The current working directory
+     * @param files A file
+     * @return An absolute file
+     */
+    public static File applyCwd(File cwd, File file) {
+        if (cwd != null && !file.isAbsolute()) {
+            File absCwd = absoluteFile(cwd);
+            file = new File(absCwd, file.getPath());
+        }
+        return file;
+    }
+
+    /**
+     * Given a file and a possible parent folder returns
+     * the file relative to the parent. If the file wasn't
+     * relative to the parent it is returned unmodified.
+     * @param root A possible parent file
+     * @param file A file
+     * @return A file relative to the parent
+     */
+    public static File relativeFile(File root, File file) {
+        if (root != null && file != null) {
+            String absRoot = absoluteFile(root).getPath();
+            String absFile = absoluteFile(file).getPath();
+            if (absFile.startsWith(absRoot)) {
+                String path = absFile.substring(absRoot.length());
+                if (path.startsWith(File.separator)) {
+                    path = path.substring(1);
+                }
+                file = new File(path);
+            }
+        }
+        return file;
+    }
+    
+    /**
      * Turns the given path, if absolute, into a path relative to the
      * VM's current working directory and leaves it alone otherwise 
      * @param f The File to make relative
