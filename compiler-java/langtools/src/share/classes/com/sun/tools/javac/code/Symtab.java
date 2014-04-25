@@ -169,6 +169,8 @@ public class Symtab {
     public final Type suppressWarningsType;
     public final Type inheritedType;
     public final Type proprietaryType;
+    // Ceylon: guess backport from Java 8
+    public final Type jdkProfileType;
     public final Type systemType;
     public final Type autoCloseableType;
     public final Type trustMeType;
@@ -692,6 +694,21 @@ public class Symtab {
         proprietaryType.allparams_field = List.nil();
         proprietaryType.supertype_field = annotationType;
         proprietaryType.interfaces_field = List.nil();
+
+        // Ceylon: guess backport from Java 8
+        // Enter a synthetic class that is used to mark JDK prfiles classes in ct.sym.  This class does not have a
+        // class file.
+        ClassType jdkProfileType = (ClassType)enterClass("jdk.Profile+Annotation");
+        this.jdkProfileType = jdkProfileType;
+        ClassSymbol jdkProfileSymbol = (ClassSymbol)jdkProfileType.tsym;
+        jdkProfileSymbol.completer = null;
+        jdkProfileSymbol.flags_field = PUBLIC|ACYCLIC|ANNOTATION|INTERFACE;
+        jdkProfileSymbol.erasure_field = jdkProfileType;
+        jdkProfileSymbol.members_field = new Scope(jdkProfileSymbol);
+        jdkProfileType.typarams_field = List.nil();
+        jdkProfileType.allparams_field = List.nil();
+        jdkProfileType.supertype_field = annotationType;
+        jdkProfileType.interfaces_field = List.nil();
 
         // Enter a class for arrays.
         // The class implements java.lang.Cloneable and java.io.Serializable.

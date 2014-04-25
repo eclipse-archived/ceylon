@@ -1318,6 +1318,9 @@ public class ClassReader implements Completer {
                 CompoundAnnotationProxy proxy = readCompoundAnnotation();
                 if (proxy.type.tsym == syms.proprietaryType.tsym)
                     sym.flags_field |= PROPRIETARY;
+                else if (proxy.type.tsym == syms.jdkProfileType.tsym)
+                    // Ceylon: skip jdk profiles for now
+                    continue;
                 else
                     proxies.append(proxy);
                 if (majorVersion >= V51.major &&
