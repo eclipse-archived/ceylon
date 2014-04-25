@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -223,7 +224,9 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             tcb = new TypeCheckerBuilder();
             final Set<String> modfilters = new HashSet<>();
             
-            for (String filedir : files) {
+            List<File> srcs = FileUtil.applyCwd(cwd, roots);
+            List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , files);
+            for (String filedir : expandedModulesOrFiles) {
                 File f = new File(filedir);
                 boolean once=false;
                 if (f.exists() && f.isFile()) {
