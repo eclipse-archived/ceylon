@@ -49,6 +49,7 @@ import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -60,6 +61,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -366,8 +368,12 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         // make a destination repo
         outputRepositoryManager = getOutputRepositoryManager();
 
+        // create the actual list of modules to process
+        List<File> srcs = FileUtil.applyCwd(cwd, sourceFolders);
+        List<String> expandedModules = ModuleWildcardsHelper.expandWildcards(srcs , moduleSpecs);
+        final List<ModuleSpec> modules = ModuleSpec.parseEachList(expandedModules);
+        
         // we need to plug in the module manager which can load from .cars
-        final List<ModuleSpec> modules = ModuleSpec.parseEachList(moduleSpecs);
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {

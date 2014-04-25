@@ -28,6 +28,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -39,6 +40,7 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -359,7 +361,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
         
-        for (String moduleOrFile : this.modulesOrFiles) {
+        List<File> srcs = FileUtil.applyCwd(this.cwd, this.sources);
+        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
+        for (String moduleOrFile : expandedModulesOrFiles) {
             if (sourceFileOpt != null) {
                 validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
             }
@@ -389,7 +393,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             System.out.flush();
         }
     }
-    
+
     private static JavacOption getJavacOpt(String optionName) {
         for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
             if (optionName.equals(o.getName().toString())) {
