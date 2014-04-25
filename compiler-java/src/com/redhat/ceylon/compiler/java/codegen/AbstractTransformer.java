@@ -34,6 +34,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.antlr.runtime.Token;
 
@@ -2745,11 +2747,15 @@ public abstract class AbstractTransformer implements Transformation {
         if(localDeclarations.isEmpty() && localInterfaces.isEmpty())
             return List.nil();
         ListBuffer<JCExpression> array = new ListBuffer<JCTree.JCExpression>();
-        for(String val : localDeclarations)
-            array.add(make().Literal(val));
+        // sort them to get the same behaviour on every JDK
+        SortedSet<String> sortedNames = new TreeSet<String>();
+        sortedNames.addAll(localDeclarations);
         for(Interface iface : localInterfaces){
-            array.add(make().Literal("::"+naming.makeTypeDeclarationName(iface)));
+            sortedNames.add("::"+naming.makeTypeDeclarationName(iface));
         }
+        
+        for(String val : sortedNames)
+            array.add(make().Literal(val));
         JCExpression attr = make().Assign(naming.makeUnquotedIdent("value"), 
                                           make().NewArray(null, null, array.toList()));
 
