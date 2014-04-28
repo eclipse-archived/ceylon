@@ -50,8 +50,12 @@ String$proto.equals = function(other) {
         return other.valueOf()===this.valueOf();
     } else if ($is(other, {t:Iterable, a:{Element$Iterable:{t:Character}}})) {
         if (other.size===this.size) {
-            for (var i=0;i<this.size;i++) {
-                if (!this.$get(i).equals(other.$get(i))) return false;
+            var oi=other.iterator();
+            var ti=this.iterator();
+            var oc=oi.next(); var tc;
+            while((tc=ti.next())!=getFinished()){
+                if (!tc.equals(oc))return false;
+                oc=oi.next();
             }
             return true;
         }
