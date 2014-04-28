@@ -50,51 +50,52 @@ void rangeOpIterationOptimizationCorrect() {
         }
         return unoptimized.sequence;
     }
-    checkEq({0, 3, 6, 9}, unoptimizedRangeWithBy(0, 10, 3), "(0, 10, 3)");
-    checkEq({1, 4, 7, 10}, unoptimizedRangeWithBy(1, 10, 3), "(1, 10, 3)");
-    checkEq({2, 5, 8}, unoptimizedRangeWithBy(2, 10, 3), "(2, 10, 3)");
-    checkEq({3, 6, 9}, unoptimizedRangeWithBy(3, 10, 3), "(3, 10, 3)");
-    checkEq({4, 7, 10}, unoptimizedRangeWithBy(4, 10, 3), "(4, 10, 3)");
-    checkEq({5, 8}, unoptimizedRangeWithBy(5, 10, 3), "(5, 10, 3)");
-    checkEq({6, 9}, unoptimizedRangeWithBy(6, 10, 3), "(6, 10, 3)");
-    checkEq({7, 10}, unoptimizedRangeWithBy(7, 10, 3), "(7, 10, 3)");
-    checkEq({8}, unoptimizedRangeWithBy(8, 10, 3), "(8, 10, 3)");
-    checkEq({9}, unoptimizedRangeWithBy(9, 10, 3), "(9, 10, 3)");
-    checkEq({10}, unoptimizedRangeWithBy(10, 10, 3), "(10, 10, 3)");
     
-    checkEq({10, 7, 4, 1}, unoptimizedRangeWithBy(10, 0, 3), "(10, 0, 3)");
-    checkEq({10, 7, 4, 1}, unoptimizedRangeWithBy(10, 1, 3), "(10, 1, 3)");
-    checkEq({10, 7, 4}, unoptimizedRangeWithBy(10, 2, 3), "(10, 2, 3)");
-    checkEq({10, 7, 4}, unoptimizedRangeWithBy(10, 3, 3), "(10, 3, 3)");
-    checkEq({10, 7, 4}, unoptimizedRangeWithBy(10, 4, 3), "(10, 4, 3)");
-    checkEq({10, 7}, unoptimizedRangeWithBy(10, 5, 3), "(10, 5, 3)");
-    checkEq({10, 7}, unoptimizedRangeWithBy(10, 6, 3), "(10, 6, 3)");
-    checkEq({10, 7}, unoptimizedRangeWithBy(10, 7, 3), "(10, 7, 3)");
-    checkEq({10}, unoptimizedRangeWithBy(10, 8, 3), "(10, 8, 3)");
-    checkEq({10}, unoptimizedRangeWithBy(10, 9, 3), "(10, 9, 3)");
-    checkEq({10}, unoptimizedRangeWithBy(10, 10, 3), "(10, 10, 3)");
+    checkEq([0, 3, 6, 9], unoptimizedRangeWithBy(0, 10, 3), "(0, 10, 3)");
+    checkEq([1, 4, 7, 10], unoptimizedRangeWithBy(1, 10, 3), "(1, 10, 3)");
+    checkEq([2, 5, 8], unoptimizedRangeWithBy(2, 10, 3), "(2, 10, 3)");
+    checkEq([3, 6, 9], unoptimizedRangeWithBy(3, 10, 3), "(3, 10, 3)");
+    checkEq([4, 7, 10], unoptimizedRangeWithBy(4, 10, 3), "(4, 10, 3)");
+    checkEq([5, 8], unoptimizedRangeWithBy(5, 10, 3), "(5, 10, 3)");
+    checkEq([6, 9], unoptimizedRangeWithBy(6, 10, 3), "(6, 10, 3)");
+    checkEq([7, 10], unoptimizedRangeWithBy(7, 10, 3), "(7, 10, 3)");
+    checkEq([8], unoptimizedRangeWithBy(8, 10, 3), "(8, 10, 3)");
+    checkEq([9], unoptimizedRangeWithBy(9, 10, 3), "(9, 10, 3)");
+    checkEq([10], unoptimizedRangeWithBy(10, 10, 3), "(10, 10, 3)");
     
-    checkEq({-10}, unoptimizedRangeWithBy(-10, -10, 2), "(-10, -10, 2)");
-    checkEq({-10}, unoptimizedRangeWithBy(-10, -9, 2), "(-10, -9, 2)");
-    checkEq({-10, -8}, unoptimizedRangeWithBy(-10, -8, 2), "(-10, -8, 2)");
-    checkEq({-10, -8}, unoptimizedRangeWithBy(-10, -7, 2), "(-10, -7, 2)");
-    checkEq({-10, -8, -6}, unoptimizedRangeWithBy(-10, -6, 2), "(-10, -6, 2)");
-    checkEq({-10, -8, -6}, unoptimizedRangeWithBy(-10, -5, 2), "(-10, -5, 2)");
-    checkEq({-10, -8, -6, -4}, unoptimizedRangeWithBy(-10, -4, 2), "(-10, -4, 2)");
-    checkEq({-10, -8, -6, -4}, unoptimizedRangeWithBy(-10, -3, 2), "(-10, -3, 2)");
-    checkEq({-10, -8, -6, -4, -2}, unoptimizedRangeWithBy(-10, -2, 2), "(-10, -2, 2)");
-    checkEq({-10, -8, -6, -4, -2}, unoptimizedRangeWithBy(-10, -1, 2), "(-10, -1, 2)");
-    checkEq({-10, -8, -6, -4, -2, 0}, unoptimizedRangeWithBy(-10, -0, 2), "(-10, -0, 2)");
+    checkEq([10, 7, 4, 1], unoptimizedRangeWithBy(10, 0, 3), "(10, 0, 3)");
+    checkEq([10, 7, 4, 1], unoptimizedRangeWithBy(10, 1, 3), "(10, 1, 3)");
+    checkEq([10, 7, 4], unoptimizedRangeWithBy(10, 2, 3), "(10, 2, 3)");
+    checkEq([10, 7, 4], unoptimizedRangeWithBy(10, 3, 3), "(10, 3, 3)");
+    checkEq([10, 7, 4], unoptimizedRangeWithBy(10, 4, 3), "(10, 4, 3)");
+    checkEq([10, 7], unoptimizedRangeWithBy(10, 5, 3), "(10, 5, 3)");
+    checkEq([10, 7], unoptimizedRangeWithBy(10, 6, 3), "(10, 6, 3)");
+    checkEq([10, 7], unoptimizedRangeWithBy(10, 7, 3), "(10, 7, 3)");
+    checkEq([10], unoptimizedRangeWithBy(10, 8, 3), "(10, 8, 3)");
+    checkEq([10], unoptimizedRangeWithBy(10, 9, 3), "(10, 9, 3)");
+    checkEq([10], unoptimizedRangeWithBy(10, 10, 3), "(10, 10, 3)");
+    
+    checkEq([-10], unoptimizedRangeWithBy(-10, -10, 2), "(-10, -10, 2)");
+    checkEq([-10], unoptimizedRangeWithBy(-10, -9, 2), "(-10, -9, 2)");
+    checkEq([-10, -8], unoptimizedRangeWithBy(-10, -8, 2), "(-10, -8, 2)");
+    checkEq([-10, -8], unoptimizedRangeWithBy(-10, -7, 2), "(-10, -7, 2)");
+    checkEq([-10, -8, -6], unoptimizedRangeWithBy(-10, -6, 2), "(-10, -6, 2)");
+    checkEq([-10, -8, -6], unoptimizedRangeWithBy(-10, -5, 2), "(-10, -5, 2)");
+    checkEq([-10, -8, -6, -4], unoptimizedRangeWithBy(-10, -4, 2), "(-10, -4, 2)");
+    checkEq([-10, -8, -6, -4], unoptimizedRangeWithBy(-10, -3, 2), "(-10, -3, 2)");
+    checkEq([-10, -8, -6, -4, -2], unoptimizedRangeWithBy(-10, -2, 2), "(-10, -2, 2)");
+    checkEq([-10, -8, -6, -4, -2], unoptimizedRangeWithBy(-10, -1, 2), "(-10, -1, 2)");
+    checkEq([-10, -8, -6, -4, -2, 0], unoptimizedRangeWithBy(-10, -0, 2), "(-10, -0, 2)");
     
     // check possible overflow cases
-    checkEq({maxInteger-3, maxInteger-1}, unoptimizedRangeWithBy(maxInteger-3, maxInteger, 2), 
+    
+    checkEq([maxInteger-3, maxInteger-1], unoptimizedRangeWithBy(maxInteger-3, maxInteger, 2), 
         "(maxInteger-3, maxInteger, 2)");
-    checkEq({minInteger+3, minInteger+1}, unoptimizedRangeWithBy(minInteger+3, minInteger, 2), 
+    checkEq([minInteger+3, minInteger+1], unoptimizedRangeWithBy(minInteger+3, minInteger, 2), 
         "(minInteger+3, minInteger, 2)");
-    checkEq({minInteger+3, minInteger+1}, unoptimizedRangeWithBy(minInteger+3, minInteger, 2), 
+    checkEq([minInteger+3, minInteger+1], unoptimizedRangeWithBy(minInteger+3, minInteger, 2), 
         "(minInteger+3, minInteger, 2)");
-
-
+    
     // Check that range iteration optimization of a 'for (i in lhs..rhs) { ' 
     // loop produces the same results as an unoptimized range iteration...
     void optimizedMatches(Integer start, Integer end) {
@@ -195,13 +196,13 @@ void rangeOpIterationOptimizationCorrect() {
             for (i in (0..10).by(step)) {
                 fail("Range.by(`` step `` didn't throw");
             }
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             try {
                 @disableOptimization
                 for (i in (0..10).by(step)) {
                     fail("Range.by(`` step `` didn't throw");
                 }
-            } catch (Exception e2) {
+            } catch (AssertionError e2) {
                 check(e.message == e2.message, "Exception messages with step= `` step `` differ: Optimized is '``
                     e.message ``' unoptimized is '`` e2.message ``'");
                 check(e.string == e2.string, "Exception .string values with step= `` step `` differ: Optimized is '``

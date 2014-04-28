@@ -1,4 +1,4 @@
-import java.lang{IntArray, arrays}
+import java.lang{IntArray}
 
 class Correct() {
     value expected = 55;
@@ -93,9 +93,12 @@ class Correct() {
     
     function javaArrayIterationStatic() {
         
-        IntArray array = arrays.toIntArray(1..10);
+        IntArray array = IntArray(10);
+        for (index in 1..10) {
+            array.set(index-1, index);
+        }
         variable value sum = 0;
-        for (i in array.array) {
+        for (i in array.iterable) {
             sum+=i;
         }
         return sum;

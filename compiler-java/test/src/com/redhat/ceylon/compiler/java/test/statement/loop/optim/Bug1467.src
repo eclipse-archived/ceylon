@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1467() {
@@ -76,7 +76,7 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 6)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1467_ {
     

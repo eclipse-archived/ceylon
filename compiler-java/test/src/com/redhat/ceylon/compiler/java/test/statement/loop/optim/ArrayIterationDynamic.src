@@ -25,7 +25,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$7 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$1 = isArraySequence$4 || isArray$3 ? null : iterable$2.iterator();
-        while (isArraySequence$4 || isArray$3 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (isArraySequence$4 || isArray$3 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$4 || isArray$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
             final long element = ((.ceylon.language.Integer)elem$0).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
@@ -52,7 +52,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$15 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Character> element$iterator$$9 = isArraySequence$12 || isArray$11 ? null : iterable$10.iterator();
-        while (isArraySequence$12 || isArray$11 ? i$14 < length$15 : !((elem$8 = element$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+        loop_1: while (isArraySequence$12 || isArray$11 ? i$14 < length$15 : !((elem$8 = element$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$12 || isArray$11) elem$8 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$13, i$14++);
             final int element = ((.ceylon.language.Character)elem$8).intValue();
             .ceylon.language.print_.print(.ceylon.language.Character.instance(element));
@@ -79,7 +79,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$23 = 0;
         }
         .ceylon.language.Iterator<? extends .java.lang.Object> element$iterator$$17 = isArraySequence$20 || isArray$19 ? null : iterable$18.iterator();
-        while (isArraySequence$20 || isArray$19 ? i$22 < length$23 : !((elem$16 = element$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
+        loop_2: while (isArraySequence$20 || isArray$19 ? i$22 < length$23 : !((elem$16 = element$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$20 || isArray$19) elem$16 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$21, i$22++);
             final .java.lang.Object element = (.java.lang.Object)elem$16;
             .ceylon.language.print_.print(element);
@@ -107,7 +107,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$33 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$26 = isArraySequence$30 || isArray$29 ? null : iterable$28.iterator();
-        while (isArraySequence$30 || isArray$29 ? i$32 < length$33 : !((elem$25 = element$iterator$$26.next()) instanceof .ceylon.language.Finished)) {
+        loop_3: while (isArraySequence$30 || isArray$29 ? i$32 < length$33 : !((elem$25 = element$iterator$$26.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$30 || isArray$29) elem$25 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$31, i$32++);
             final long element = ((.ceylon.language.Integer)elem$25).longValue();
             
@@ -123,7 +123,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             final x_ x = new x_();
             if (element == 10L) {
                 doforelse$24 = false;
-                break;
+                break loop_3;
             }
         }
         if (doforelse$24) {
@@ -151,7 +151,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$41 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> i$iterator$$35 = isArraySequence$38 || isArray$37 ? null : iterable$36.iterator();
-        while (isArraySequence$38 || isArray$37 ? i$40 < length$41 : !((elem$34 = i$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
+        loop_4: while (isArraySequence$38 || isArray$37 ? i$40 < length$41 : !((elem$34 = i$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$38 || isArray$37) elem$34 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$39, i$40++);
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)elem$34).getKey().longValue();
             final double f = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)elem$34).getItem().doubleValue();
@@ -174,7 +174,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$48 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$43 = isArray$45 ? null : iterable$44.iterator();
-        while (isArray$45 ? i$47 < length$48 : !((elem$42 = element$iterator$$43.next()) instanceof .ceylon.language.Finished)) {
+        loop_5: while (isArray$45 ? i$47 < length$48 : !((elem$42 = element$iterator$$43.next()) instanceof .ceylon.language.Finished)) {
             if (isArray$45) elem$42 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$46, i$47++);
             final long element = ((.ceylon.language.Integer)elem$42).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
@@ -197,7 +197,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             length$55 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$50 = isArraySequence$52 ? null : iterable$51.iterator();
-        while (isArraySequence$52 ? i$54 < length$55 : !((elem$49 = element$iterator$$50.next()) instanceof .ceylon.language.Finished)) {
+        loop_6: while (isArraySequence$52 ? i$54 < length$55 : !((elem$49 = element$iterator$$50.next()) instanceof .ceylon.language.Finished)) {
             if (isArraySequence$52) elem$49 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$53, i$54++);
             final long element = ((.ceylon.language.Integer)elem$49).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
@@ -207,13 +207,13 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
     private final void arrayOfIntegersDisabled$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> array) {
         .java.lang.Object elem$56;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$57 = array.iterator();
-        while (!((elem$56 = element$iterator$$57.next()) instanceof .ceylon.language.Finished)) {
+        loop_7: while (!((elem$56 = element$iterator$$57.next()) instanceof .ceylon.language.Finished)) {
             final long element = ((.ceylon.language.Integer)elem$56).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
         }
         .java.lang.Object elem$58;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$59 = array.iterator();
-        while (!((elem$58 = element$iterator$$59.next()) instanceof .ceylon.language.Finished)) {
+        loop_8: while (!((elem$58 = element$iterator$$59.next()) instanceof .ceylon.language.Finished)) {
             final long element = ((.ceylon.language.Integer)elem$58).longValue();
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
         }

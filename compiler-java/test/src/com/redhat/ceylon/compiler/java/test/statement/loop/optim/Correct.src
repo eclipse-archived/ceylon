@@ -7,31 +7,31 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Correct() {
         final long expected = 55L;
         if (expected == notOptimizedIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == notOptimizedIteration()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == notOptimizedIteration()"));
         if (expected == rangeOpIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIteration()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIteration()"));
         if (expected == rangeOpIterationReverse$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIterationReverse()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeOpIterationReverse()"));
         if (expected == rangeIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIteration()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIteration()"));
         if (expected == rangeIterationReverse$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationReverse()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationReverse()"));
         if (expected == steppedRangeIteration$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == steppedRangeIteration()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == steppedRangeIteration()"));
         if (expected == steppedRangeIterationReverse$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == steppedRangeIterationReverse()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == steppedRangeIterationReverse()"));
         if (expected == arrayIterationStatic$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationStatic()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationStatic()"));
         if (expected == javaArrayIterationStatic$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == javaArrayIterationStatic()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == javaArrayIterationStatic()"));
         if (expected == arraySequenceIterationStatic$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arraySequenceIterationStatic()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arraySequenceIterationStatic()"));
         if (expected == rangeIterationDynamic$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationDynamic()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationDynamic()"));
         if (expected == arrayIterationDynamic$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationDynamic()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationDynamic()"));
         if (expected == arraySequenceIterationDynamic$priv$()) {
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arraySequenceIterationDynamic()"));
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arraySequenceIterationDynamic()"));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
@@ -39,7 +39,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         long sum = 0L;
         .java.lang.Object elem$0;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
-        while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+        loop_0: while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)elem$0).longValue();
             sum += i;
         }
@@ -53,7 +53,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final long $ceylontmp$end$4 = 10L;
         final boolean $ceylontmp$increasing$5 = $ceylontmp$start$3 <= $ceylontmp$end$4;
         final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
-        for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
+        loop_1: for (long i$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? i$7 - $ceylontmp$end$4 <= 0L : i$7 - $ceylontmp$end$4 >= 0L; i$7 += $ceylontmp$incr$6) {
             final long i = i$7;
             sum += i;
         }
@@ -67,7 +67,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final long $ceylontmp$end$10 = 1L;
         final boolean $ceylontmp$increasing$11 = $ceylontmp$start$9 <= $ceylontmp$end$10;
         final long $ceylontmp$incr$12 = $ceylontmp$increasing$11 ? 1L : -1L;
-        for (long i$13 = $ceylontmp$start$9; $ceylontmp$increasing$11 ? i$13 - $ceylontmp$end$10 <= 0L : i$13 - $ceylontmp$end$10 >= 0L; i$13 += $ceylontmp$incr$12) {
+        loop_2: for (long i$13 = $ceylontmp$start$9; $ceylontmp$increasing$11 ? i$13 - $ceylontmp$end$10 <= 0L : i$13 - $ceylontmp$end$10 >= 0L; i$13 += $ceylontmp$incr$12) {
             final long i = i$13;
             sum += i;
         }
@@ -81,7 +81,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final .ceylon.language.Range<.ceylon.language.Integer> range$15 = range;
         final .ceylon.language.Integer last$16 = range$15.getLast();
         final boolean deceasing$17 = range$15.getDecreasing();
-        for (.ceylon.language.Integer item$18 = range$15.getFirst(); item$18.compare(last$16) != (deceasing$17 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$18 = deceasing$17 ? item$18.getPredecessor() : item$18.getSuccessor()) {
+        loop_3: for (.ceylon.language.Integer item$18 = range$15.getFirst(); item$18.compare(last$16) != (deceasing$17 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$18 = deceasing$17 ? item$18.getPredecessor() : item$18.getSuccessor()) {
             final long i = item$18.longValue();
             sum += i;
         }
@@ -95,7 +95,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final .ceylon.language.Range<.ceylon.language.Integer> range$20 = range;
         final .ceylon.language.Integer last$21 = range$20.getLast();
         final boolean deceasing$22 = range$20.getDecreasing();
-        for (.ceylon.language.Integer item$23 = range$20.getFirst(); item$23.compare(last$21) != (deceasing$22 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$23 = deceasing$22 ? item$23.getPredecessor() : item$23.getSuccessor()) {
+        loop_4: for (.ceylon.language.Integer item$23 = range$20.getFirst(); item$23.compare(last$21) != (deceasing$22 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$23 = deceasing$22 ? item$23.getPredecessor() : item$23.getSuccessor()) {
             final long i = item$23.longValue();
             sum += i;
         }
@@ -126,7 +126,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             return i;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        protected final .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Ordinal$this$;
+        protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Ordinal$this$;
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -134,12 +134,36 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             return $ceylon$language$Ordinal$this$;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        protected final .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Comparable$this$;
+        protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Comparable$this$;
         
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Comparable$impl() {
             return $ceylon$language$Comparable$this$;
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal other) {
+            return $ceylon$language$Comparable$this$.largerThan(other);
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal other) {
+            return $ceylon$language$Comparable$this$.smallerThan(other);
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal other) {
+            return $ceylon$language$Comparable$this$.notSmallerThan(other);
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal other) {
+            return $ceylon$language$Comparable$this$.notLargerThan(other);
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
@@ -161,7 +185,9 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                 @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
         @.java.lang.Override
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                value = "com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal",
+                erased = true)
         @.com.redhat.ceylon.compiler.java.metadata.Transient
         public final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal getSuccessor() {
             return new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(getI() + 1L);
@@ -173,7 +199,9 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared"),
                 @.com.redhat.ceylon.compiler.java.metadata.Annotation("actual")})
         @.java.lang.Override
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                value = "com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal",
+                erased = true)
         @.com.redhat.ceylon.compiler.java.metadata.Transient
         public final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal getPredecessor() {
             return new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(getI() - 1L);
@@ -193,13 +221,13 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range$25 = range;
         final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal last$26 = range$25.getLast();
         final boolean deceasing$27 = range$25.getDecreasing();
-        final long step$30 = 1L;
-        outer$29: for (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal item$28 = range$25.getFirst(); ; ) {
+        final long step$29 = 1L;
+        loop_5: for (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal item$28 = range$25.getFirst(); ; ) {
             final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = item$28;
             sum += i.getI();
-            for (long stepi$31 = 0L; stepi$31 < step$30; stepi$31++) {
+            for (long stepi$30 = 0L; stepi$30 < step$29; stepi$30++) {
                 item$28 = deceasing$27 ? item$28.getPredecessor() : item$28.getSuccessor();
-                if (item$28.compare(last$26) == (deceasing$27 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_())) break outer$29;
+                if (item$28.compare(last$26) == (deceasing$27 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_())) break loop_5;
             }
         }
         return sum;
@@ -209,16 +237,16 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final long steppedRangeIterationReverse$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = new .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L));
-        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range$33 = range;
-        final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal last$34 = range$33.getLast();
-        final boolean deceasing$35 = range$33.getDecreasing();
-        final long step$38 = 1L;
-        outer$37: for (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal item$36 = range$33.getFirst(); ; ) {
-            final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = item$36;
+        final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range$32 = range;
+        final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal last$33 = range$32.getLast();
+        final boolean deceasing$34 = range$32.getDecreasing();
+        final long step$36 = 1L;
+        loop_6: for (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal item$35 = range$32.getFirst(); ; ) {
+            final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = item$35;
             sum += i.getI();
-            for (long stepi$39 = 0L; stepi$39 < step$38; stepi$39++) {
-                item$36 = deceasing$35 ? item$36.getPredecessor() : item$36.getSuccessor();
-                if (item$36.compare(last$34) == (deceasing$35 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_())) break outer$37;
+            for (long stepi$37 = 0L; stepi$37 < step$36; stepi$37++) {
+                item$35 = deceasing$34 ? item$35.getPredecessor() : item$35.getSuccessor();
+                if (item$35.compare(last$33) == (deceasing$34 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_())) break loop_6;
             }
         }
         return sum;
@@ -228,10 +256,10 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final long arrayIterationStatic$priv$() {
         final .ceylon.language.Array<.ceylon.language.Integer> array = new .ceylon.language.Array<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)));
         long sum = 0L;
-        final .java.lang.Object array$41 = array.toArray();
-        final int length$42 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$41);
-        for (int i$43 = 0; i$43 < length$42; i$43++) {
-            final long i = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$41, i$43);
+        final .java.lang.Object array$39 = array.toArray();
+        final int length$40 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$39);
+        loop_7: for (int i$41 = 0; i$41 < length$40; i$41++) {
+            final long i = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$39, i$41);
             sum += i;
         }
         return sum;
@@ -239,11 +267,19 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long javaArrayIterationStatic$priv$() {
-        final int[] array = .com.redhat.ceylon.compiler.java.language.arrays_.get_().toIntArray(new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)));
+        final int[] array = new int[(int)10L];
+        final long $ceylontmp$start$43 = 1L;
+        final long $ceylontmp$end$44 = 10L;
+        final boolean $ceylontmp$increasing$45 = $ceylontmp$start$43 <= $ceylontmp$end$44;
+        final long $ceylontmp$incr$46 = $ceylontmp$increasing$45 ? 1L : -1L;
+        loop_8: for (long index$47 = $ceylontmp$start$43; $ceylontmp$increasing$45 ? index$47 - $ceylontmp$end$44 <= 0L : index$47 - $ceylontmp$end$44 >= 0L; index$47 += $ceylontmp$incr$46) {
+            final long index = index$47;
+            array[(int)(index - 1L)] = (int)index;
+        }
         long sum = 0L;
-        final int[] array$45 = array;
-        for (int i$47 = 0; i$47 < array$45.length; i$47++) {
-            final long i = array$45[i$47];
+        final int[] array$48 = array;
+        loop_9: for (int i$50 = 0; i$50 < array$48.length; i$50++) {
+            final long i = array$48[i$50];
             sum += i;
         }
         return sum;
@@ -251,47 +287,61 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long arraySequenceIterationStatic$priv$() {
-        final .ceylon.language.ArraySequence<.ceylon.language.Integer> array$52;
-        .java.lang.Object array$50 = null;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(array$50 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.ArraySequence<.ceylon.language.Integer> array$55;
+        .java.lang.Object array$53 = null;
+        if ((array$53 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
-                    
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$51 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$51 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$51;
-                            return true;
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                {
+                                    $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)).iterator();
+                                }
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                private .ceylon.language.Integer i;
+                                private boolean i$exhausted$;
+                                
+                                private final boolean i() {
+                                    final .java.lang.Object $ceylontmp$item$54 = $iterator$0.next();
+                                    i$exhausted$ = $ceylontmp$item$54 == .ceylon.language.finished_.get_();
+                                    if (i$exhausted$) {
+                                        return false;
+                                    } else {
+                                        i = (.ceylon.language.Integer)$ceylontmp$item$54;
+                                        return true;
+                                    }
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.i()) {
+                                        final .ceylon.language.Integer i = this.i;
+                                        return i;
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
                         }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return i;
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
-        }.getSequence(), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-            array$52 = (.ceylon.language.ArraySequence)array$50;
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> array = {for (i in 0..10) i}.sequence"));
+        }.getSequence()) instanceof .ceylon.language.ArraySequence && .com.redhat.ceylon.compiler.java.Util.isReified(array$53, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            array$55 = (.ceylon.language.ArraySequence)array$53;
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> array = {for (i in 0..10) i}.sequence"));
         long sum = 0L;
-        final .ceylon.language.ArraySequence<.ceylon.language.Integer> seq$56 = array$52;
-        final .java.lang.Object[] array$53 = seq$56.$getArray$();
-        final int length$54 = seq$56.$getLength$() + seq$56.$getFirst$();
-        for (int i$55 = 0; i$55 < length$54; i$55++) {
-            final long i = ((.ceylon.language.Integer)array$53[i$55]).longValue();
+        final .ceylon.language.ArraySequence<.ceylon.language.Integer> seq$59 = array$55;
+        final .java.lang.Object[] array$56 = seq$59.$getArray$();
+        final int length$57 = seq$59.$getLength$() + seq$59.$getFirst$();
+        loop_10: for (int i$58 = 0; i$58 < length$57; i$58++) {
+            final long i = ((.ceylon.language.Integer)array$56[i$58]).longValue();
             sum += i;
         }
         return sum;
@@ -302,28 +352,28 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
         long sum = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$60 = iterable;
-        final boolean isArray$61 = iterable$60 instanceof .ceylon.language.Array;
-        final boolean isArraySequence$62 = iterable$60 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$58 = null;
-        final .java.lang.Object array$63;
-        int i$64 = 0;
-        final int length$65;
-        if (isArraySequence$62) {
-            array$63 = ((.ceylon.language.ArraySequence)iterable$60).$getArray$();
-            i$64 = ((.ceylon.language.ArraySequence)iterable$60).$getFirst$();
-            length$65 = i$64 + ((.ceylon.language.ArraySequence)iterable$60).$getLength$();
-        } else if (isArray$61) {
-            array$63 = ((.ceylon.language.Array)iterable$60).toArray();
-            length$65 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$63);
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$63 = iterable;
+        final boolean isArray$64 = iterable$63 instanceof .ceylon.language.Array;
+        final boolean isArraySequence$65 = iterable$63 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$61 = null;
+        final .java.lang.Object array$66;
+        int i$67 = 0;
+        final int length$68;
+        if (isArraySequence$65) {
+            array$66 = ((.ceylon.language.ArraySequence)iterable$63).$getArray$();
+            i$67 = ((.ceylon.language.ArraySequence)iterable$63).$getFirst$();
+            length$68 = i$67 + ((.ceylon.language.ArraySequence)iterable$63).$getLength$();
+        } else if (isArray$64) {
+            array$66 = ((.ceylon.language.Array)iterable$63).toArray();
+            length$68 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$66);
         } else {
-            array$63 = null;
-            length$65 = 0;
+            array$66 = null;
+            length$68 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$59 = isArraySequence$62 || isArray$61 ? null : iterable$60.iterator();
-        while (isArraySequence$62 || isArray$61 ? i$64 < length$65 : !((elem$58 = i$iterator$$59.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$62 || isArray$61) elem$58 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$63, i$64++);
-            final long i = ((.ceylon.language.Integer)elem$58).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$62 = isArraySequence$65 || isArray$64 ? null : iterable$63.iterator();
+        loop_11: while (isArraySequence$65 || isArray$64 ? i$67 < length$68 : !((elem$61 = i$iterator$$62.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$65 || isArray$64) elem$61 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$66, i$67++);
+            final long i = ((.ceylon.language.Integer)elem$61).longValue();
             sum += i;
         }
         return sum;
@@ -343,42 +393,56 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long arraySequenceIterationDynamic$priv$() {
-        final .ceylon.language.ArraySequence<.ceylon.language.Integer> iterable$71;
-        .java.lang.Object iterable$69 = null;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(iterable$69 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.ArraySequence<.ceylon.language.Integer> iterable$74;
+        .java.lang.Object iterable$72 = null;
+        if ((iterable$72 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
-                    
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$70 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$70 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$70;
-                            return true;
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                {
+                                    $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)).iterator();
+                                }
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                private .ceylon.language.Integer i;
+                                private boolean i$exhausted$;
+                                
+                                private final boolean i() {
+                                    final .java.lang.Object $ceylontmp$item$73 = $iterator$0.next();
+                                    i$exhausted$ = $ceylontmp$item$73 == .ceylon.language.finished_.get_();
+                                    if (i$exhausted$) {
+                                        return false;
+                                    } else {
+                                        i = (.ceylon.language.Integer)$ceylontmp$item$73;
+                                        return true;
+                                    }
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.i()) {
+                                        final .ceylon.language.Integer i = this.i;
+                                        return i;
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
                         }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return i;
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
+                    };
+                
+                default: 
+                    return null;
+                
+                }
             }
-        }.getSequence(), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-            iterable$71 = (.ceylon.language.ArraySequence)iterable$69;
-        } else throw new .ceylon.language.AssertionException("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> iterable = {for (i in 0..10) i}.sequence"));
-        return iterationDynamic$priv$(iterable$71);
+        }.getSequence()) instanceof .ceylon.language.ArraySequence && .com.redhat.ceylon.compiler.java.Util.isReified(iterable$72, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.ArraySequence.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            iterable$74 = (.ceylon.language.ArraySequence)iterable$72;
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> iterable = {for (i in 0..10) i}.sequence"));
+        return iterationDynamic$priv$(iterable$74);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
