@@ -336,7 +336,9 @@ class IntegerRangeBy(Integer first, Integer last, Integer step)
             variable value current = first; 
             shared actual Integer|Finished next() {
                 if (last<first) {
-                    if (current<last) {
+                    if (current-last < 0) {
+                        // not current < last because current might 
+                        // have overflowed
                         return finished;
                     }
                     value result = current;
@@ -344,7 +346,9 @@ class IntegerRangeBy(Integer first, Integer last, Integer step)
                     return result;
                 }
                 else {
-                    if (current>last) {
+                    if (current-last > 0) {
+                        // not current < last because current might 
+                        // have overflowed
                         return finished;
                     }
                     value result = current;
