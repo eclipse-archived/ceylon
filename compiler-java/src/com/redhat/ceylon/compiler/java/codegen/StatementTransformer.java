@@ -44,12 +44,10 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SwitchStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -1200,9 +1198,39 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     List<JCStatement> transform(Tree.ForStatement stmt) {
-        ForStatementTransformation transformation = arraySequenceIteration(stmt);
+        Tree.Term iterableTerm = ExpressionTransformer.eliminateParens(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTerm());
+        Tree.Term baseIterable = iterableTerm;
+        Tree.Term step = null;
+        if (iterableTerm instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression invocation = (Tree.InvocationExpression)iterableTerm;
+            if (invocation.getPrimary() instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression)invocation.getPrimary();
+                ProducedType primaryType = qme.getPrimary().getTypeModel();
+                ProducedType iterableType = primaryType.getSupertype(typeFact().getIterableDeclaration());
+                if (iterableType != null) {
+                    if ("by".equals(qme.getIdentifier().getText())) {
+                        if (invocation.getPositionalArgumentList() != null) {
+                            Tree.PositionalArgument positionalArgument = invocation.getPositionalArgumentList().getPositionalArguments().get(0);
+                            if (positionalArgument instanceof Tree.ListedArgument) {
+                                step = ((Tree.ListedArgument)positionalArgument).getExpression().getTerm();
+                                baseIterable = ExpressionTransformer.eliminateParens(qme.getPrimary());
+                            }
+                        } else if (invocation.getNamedArgumentList() != null) {
+                            Tree.NamedArgument positionalArgument = invocation.getNamedArgumentList().getNamedArguments().get(0);
+                            if (positionalArgument instanceof Tree.SpecifiedArgument) {
+                                step = ((Tree.SpecifiedArgument)positionalArgument).getSpecifierExpression().getExpression().getTerm();
+                                baseIterable = ExpressionTransformer.eliminateParens(qme.getPrimary());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        ForStatementTransformation transformation = arraySequenceIteration(stmt, baseIterable, step);
         if (transformation == null) {
-            transformation = arrayIteration(stmt);
+            transformation = arrayIteration(stmt, baseIterable, step);
         }
         if (transformation == null) {
             transformation = rangeOpIteration(stmt);
@@ -1223,6 +1251,7 @@ public class StatementTransformer extends AbstractTransformer {
      * iterated using a C-style {@code for}.
      */
     abstract class IndexedAccessIterationOptimization extends ForStatementTransformation {
+        
         protected final ProducedType elementType;
         /** The name of the indexable variable */
         protected final SyntheticName indexableName;
@@ -1230,13 +1259,21 @@ public class StatementTransformer extends AbstractTransformer {
         protected final SyntheticName lengthName;
         /** The name of the index variable */
         protected final SyntheticName indexName;
+        private final Tree.Term baseIterable;
+        private final Tree.Term step;
         
-        IndexedAccessIterationOptimization(Tree.ForStatement stmt, ProducedType elementType, String indexableName) {
+        IndexedAccessIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step, ProducedType elementType, String indexableName) {
             super(stmt);
+            this.baseIterable = baseIterable;
+            this.step = step;
             this.elementType = elementType;
             this.indexableName = naming.alias(indexableName);
             this.lengthName = naming.alias("length");
             this.indexName = naming.alias("i");
+        }
+        
+        protected final Tree.Term getIterable() {
+            return baseIterable;
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
@@ -1246,6 +1283,18 @@ public class StatementTransformer extends AbstractTransformer {
             result.add(makeVar(FINAL, indexableName,
                     makeIndexableType(),
                     makeIndexable()));
+            
+            // int step = ...
+            final SyntheticName stepName;
+            if (this.step != null) {
+                JCExpression stepExpr = makeStepExpr();
+                stepName = naming.alias("step");
+                result.add(makeVar(FINAL, stepName, 
+                        make().Type(syms().intType), 
+                        stepExpr));
+            } else {
+                stepName = null;
+            }
             
             // int length = java.lang.reflect.Array.getLength(array);
             JCExpression lengthExpr = makeLengthExpr();
@@ -1262,7 +1311,7 @@ public class StatementTransformer extends AbstractTransformer {
             // i < length;
             JCExpression iCond = makeCondition();
             // i++
-            JCExpression iIncr = make().Unary(JCTree.POSTINC, indexName.makeIdent());
+            JCExpression iIncr = makeIncrement(stepName);
             
             Tree.ControlClause prevControlClause = currentForClause;
             currentForClause = stmt.getForClause();
@@ -1311,6 +1360,22 @@ public class StatementTransformer extends AbstractTransformer {
                     block)));
             return result;
         }
+
+        /** Makes the expression for incrementing the index */
+        protected final JCExpression makeStepExpr() {
+            ProducedType intType = typeFact().getIntegerDeclaration().getType();
+            intType.setUnderlyingType("int");
+            return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
+                    intType);
+        }
+        
+        protected JCExpression makeIncrement(SyntheticName stepName) {
+            if (stepName == null) {
+                return make().Unary(JCTree.POSTINC, indexName.makeIdent());
+            } else {
+                return make().Assignop(JCTree.PLUS_ASG, indexName.makeIdent(), stepName.makeIdent());
+            }
+        }
         
         protected JCExpression makeCondition() {
             return make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent());
@@ -1342,13 +1407,14 @@ public class StatementTransformer extends AbstractTransformer {
         public static final String OPT_NAME = "ArrayIterationStatic";
         private final boolean unboxed;
         
-        ArrayIterationOptimization(Tree.ForStatement stmt,
-                ProducedType elementType) {
-            super(stmt, elementType, "array");
-            unboxed = isCeylonBoolean(elementType)
-                    || isCeylonFloat(elementType)
-                    || isCeylonInteger(elementType)
-                    || isCeylonCharacter(elementType);
+        ArrayIterationOptimization(Tree.ForStatement stmt, 
+                Tree.Term baseIterable, Tree.Term step,
+                ProducedType arrayType) {
+            super(stmt, baseIterable, step, typeFact().getArrayElementType(arrayType), "array");
+            unboxed = typeFact().getArrayType(typeFact().getBooleanDeclaration().getType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getIntegerDeclaration().getType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getCharacterDeclaration().getType()).isExactly(arrayType)
+                    || typeFact().getArrayType(typeFact().getFloatDeclaration().getType()).isExactly(arrayType);
         }
         
         @Override
@@ -1417,7 +1483,10 @@ public class StatementTransformer extends AbstractTransformer {
                 typeErased = true;
                 exprBoxed = true;
             }
-            elementGet = expressionGen().applyErasureAndBoxing(elementGet, gotType, typeErased, exprBoxed, BoxingStrategy.UNBOXED, elementType, 0);
+            elementGet = expressionGen().applyErasureAndBoxing(
+                    elementGet, gotType, typeErased, exprBoxed, 
+                    CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel()), 
+                    elementType, 0);
             return elementGet;
         }
     }
@@ -1435,10 +1504,10 @@ public class StatementTransformer extends AbstractTransformer {
         private final ProducedType javaArrayType;
         
         JavaArrayIterationOptimization(Tree.ForStatement stmt,
+                Tree.Term baseIterable, Tree.Term step,
                 ProducedType elementType, ProducedType javaArrayType) {
-            super(stmt, elementType, "array");
+            super(stmt, baseIterable, step, elementType, "array");
             this.javaArrayType = javaArrayType;
-            
         }
         
         @Override
@@ -1485,9 +1554,10 @@ public class StatementTransformer extends AbstractTransformer {
         
         private final Naming.SyntheticName seqName;
         
-        ArraySequenceIterationOptimization(Tree.ForStatement stmt,
+        ArraySequenceIterationOptimization(Tree.ForStatement stmt, 
+                Tree.Term baseIterable, Tree.Term step,
                 ProducedType elementType) {
-            super(stmt, elementType, "array");
+            super(stmt, baseIterable, step, elementType, "array");
             seqName = naming.alias("seq");
         }
         
@@ -1531,69 +1601,87 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
     
-    private ForStatementTransformation arrayIteration(Tree.ForStatement stmt) {
+    private ForStatementTransformation arrayIteration(Tree.ForStatement stmt, 
+            Tree.Term baseIterable, 
+            Tree.Term step) {
         
-        ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
-        ProducedType elementType = typeFact().getArrayElementType(iterableType);
+        ProducedType ceylonArrayType = baseIterable.getTypeModel();
+        ProducedType elementType = typeFact().getArrayElementType(ceylonArrayType);
         if (elementType == null) {
-            return optimizationFailed(stmt, 
-                    new Optimization[]{Optimization.ArrayIterationStatic,
-                    Optimization.JavaArrayIterationStatic},
-                    "static type of iterable in for statement is not Array");
-        }
-        // Check for "for (x in javaArray.array)" where javaArray is e.g. IntArray
-        Tree.Term iterable = com.redhat.ceylon.compiler.typechecker.analyzer.Util.unwrapExpressionUntilTerm(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression());
-        if (iterable instanceof Tree.QualifiedMemberExpression) {
-            Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)iterable;
-            if ("array".equals(expr.getIdentifier().getText())) {
-                if (expr.getPrimary() instanceof Tree.BaseMemberExpression) {
-                    if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {
+            // Check for "for (x in javaArray.iterable)" where javaArray is e.g. IntArray
+            
+            if (baseIterable instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)baseIterable;
+                if ("iterable".equals(expr.getIdentifier().getText())) {
+                    if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {// What's this for
                         if (isOptimizationDisabled(stmt, Optimization.JavaArrayIterationStatic)) {
                             return optimizationDisabled(stmt, Optimization.JavaArrayIterationStatic);
                         }
-                        return new JavaArrayIterationOptimization(stmt, elementType, expr.getPrimary().getTypeModel());
+                        elementType = typeFact().getIteratedType(ceylonArrayType);
+                        return new JavaArrayIterationOptimization(stmt, baseIterable, step, elementType, expr.getPrimary().getTypeModel());
                     }
                 }
             }
+        } else {
+            if (isOptimizationRequired(stmt, Optimization.JavaArrayIterationStatic)) {
+                return optimizationFailed(stmt, Optimization.JavaArrayIterationStatic, "iterable expression wasn't of form javaArray.array");
+            }
+            if (isOptimizationDisabled(stmt, Optimization.ArrayIterationStatic)) {
+                return optimizationDisabled(stmt, Optimization.ArrayIterationStatic);
+            }
+            // it's an Ceylon Array
+            return new ArrayIterationOptimization(stmt, baseIterable, step, ceylonArrayType);
         }
         if (isOptimizationRequired(stmt, Optimization.JavaArrayIterationStatic)) {
-            return optimizationFailed(stmt, Optimization.JavaArrayIterationStatic, "iterable expression wasn't of form javaArray.array");
+            return optimizationFailed(stmt, Optimization.JavaArrayIterationStatic, "iterable expression wasn't of form javaArray.iterable");
         }
-        if (isOptimizationDisabled(stmt, Optimization.ArrayIterationStatic)) {
-            return optimizationDisabled(stmt, Optimization.ArrayIterationStatic);
+        if (isOptimizationRequired(stmt, Optimization.ArrayIterationStatic)) {
+            return optimizationFailed(stmt, Optimization.ArrayIterationStatic, "static type of iterable in for statement is not Array");
         }
-        // it's an Ceylon Array
-        return new ArrayIterationOptimization(stmt, elementType);
+        return null;
     }
     
-    private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt) {
+    private ForStatementTransformation arraySequenceIteration(Tree.ForStatement stmt, 
+            Tree.Term baseIterable, Tree.Term step) {
         if (isOptimizationDisabled(stmt, Optimization.ArraySequenceIterationStatic)) {
             return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
                     "optimization explicitly disabled by @disableOptimization");
         }
         
-        ProducedType iterableType = stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel();
+        ProducedType iterableType = baseIterable.getTypeModel();
         if (iterableType.getSupertype(typeFact().getArraySequenceDeclaration()) == null) {
             return optimizationFailed(stmt, Optimization.ArraySequenceIterationStatic, 
                     "static type of iterable in for statement is not ArraySequence");
         }
         // it's an array sequence
-        return new ArraySequenceIterationOptimization(stmt, typeFact().getIteratedType(iterableType));
+        return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
+                typeFact().getIteratedType(iterableType));
     }
     
     /**
-     * Optimized transformation for a {@code for} loop where the iterable is 
+     * <p>Optimized transformation for a {@code for} loop where the iterable is 
      * statically known to be a {@code Range}, and therefore can be 
-     * iterated using a C-style {@code for}.
+     * iterated using a C-style {@code for}.</p>
+     * 
+     * <p>The optimization applies to Ceylon code like this:</p>
      * <pre>
-     * final Range<Element> range = RANGE_EXPR;
-     * final Element last = range.getLast();
-     * ELEMENT_TYPE element = first;
-     * for (Element current = first; 
-     *          current.compare(last) == (range.decreasing ? larger : smaller); 
-     *          current = range.decreasing ? current.predecessor ? current.successor) {
-     *     TRANSFORMED_BLOCK
-     * }
+     *   for (element in first..last) {
+     *   }
+     *   // OR
+     *   for (element in (first..last).by(step)) {
+     *   }
+     * </pre>
+     * 
+     * <p>The transformed code looks something like this:</p>
+     * <pre>
+     *   final Range<Element> range = RANGE_EXPR;
+     *   final Element last = range.getLast();
+     *   ELEMENT_TYPE element = first;
+     *   for (Element current = first; 
+     *            current.compare(last) == (range.decreasing ? larger : smaller); 
+     *            current = range.decreasing ? current.predecessor ? current.successor) {
+     *       TRANSFORMED_BLOCK
+     *   }
      * </pre>
      */
     class RangeIterationOptimization extends ForStatementTransformation {
@@ -1666,7 +1754,7 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.ForIterator iterator = getForIterator();
             if (iterator instanceof Tree.ValueIterator) {
                 ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
-                transformedBlock = transformedBlock.prepend(makeVar(FINAL, getElementOrKeyVariable(), 
+                transformedBlock = transformedBlock.prepend(makeVar(FINAL, getElementOrKeyVariableName(), 
                         makeJavaType(iteratedType), 
                         expressionGen().applyErasureAndBoxing(itemName.makeIdent(),
                                 iteratedType, true, BoxingStrategy.UNBOXED, iteratedType)));
@@ -1802,6 +1890,7 @@ public class StatementTransformer extends AbstractTransformer {
         ProducedType rangeType = range.getTypeModel();
         return typeFact().getRangeType(ofType).isExactly(rangeType);
     }
+
 
     /**
      * Returns null but logs an error with the given reason if an optimization 
@@ -1964,15 +2053,25 @@ public class StatementTransformer extends AbstractTransformer {
             return forIterator;
         }
         
-        protected final Tree.Term getIterable() {
+        protected Tree.Term getIterable() {
             return getForIterator().getSpecifierExpression().getExpression().getTerm();
         }
         
         protected final boolean isValueIterator() {
             return getForIterator() instanceof Tree.ValueIterator;
         }
+
+        protected final Tree.Variable getElementOrKeyVariable() {
+            Tree.ForIterator iterator = getForIterator();
+            if (iterator instanceof Tree.ValueIterator) {
+                return ((Tree.ValueIterator)iterator).getVariable();
+            } else if (iterator instanceof Tree.KeyValueIterator) {
+                return ((Tree.KeyValueIterator)iterator).getKeyVariable();
+            }
+            return null;
+        }
         
-        protected final String getElementOrKeyVariable() {
+        protected final String getElementOrKeyVariableName() {
             Tree.ForIterator iterator = getForIterator();
             if (iterator instanceof Tree.ValueIterator) {
                 return ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
@@ -1982,7 +2081,15 @@ public class StatementTransformer extends AbstractTransformer {
             return null;
         }
         
-        protected final String getValueVariable() {
+        protected final Tree.Variable getValueVariable() {
+            Tree.ForIterator iterator = getForIterator();
+            if (iterator instanceof Tree.KeyValueIterator) {
+                return ((Tree.KeyValueIterator)iterator).getKeyVariable();
+            }
+            return null;
+        }
+        
+        protected final String getValueVariableName() {
             Tree.ForIterator iterator = getForIterator();
             if (iterator instanceof Tree.KeyValueIterator) {
                 return ((Tree.KeyValueIterator)iterator).getKeyVariable().getIdentifier().getText();
