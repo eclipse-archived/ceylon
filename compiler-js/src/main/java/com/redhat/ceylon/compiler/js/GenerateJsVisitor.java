@@ -3348,7 +3348,6 @@ public class GenerateJsVisitor extends Visitor
         } else {
             itemVar = names.createTempVariable();
         }
-        endLine(true);
         out("var ", itemVar, ";for(var ", iterVar,"=");
         iterable.visit(this);
         out(".iterator();(", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished();)");
