@@ -255,6 +255,8 @@ shared void strings() {
     check("EL" == "hElLo".filter((Character c) => c.uppercase), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
     check("hElLo".filter((Character c) => c.uppercase) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
     check("what".sort(byIncreasing(Character))=="ahtw", "string.sort");
+    check("hey"=={'h','e','y'}, "String.equals({Character*})");
+    check({'h','e','y'}.sequence=="hey","[Character*].equals(String)");
     
     check(min(["abc", "xyz", "foo", "bar"])=="abc", "strings min");
     check(max(["abc", "xyz", "foo", "bar"])=="xyz", "strings max");
