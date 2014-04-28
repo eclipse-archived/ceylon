@@ -140,6 +140,7 @@ final class test_booleans_ {
         if ((o$18 = o) instanceof .ceylon.language.Boolean[][]) {
             final .ceylon.language.Boolean[][] o$19 = (.ceylon.language.Boolean[][])o$18;
         }
+        final boolean[] cloned = .com.redhat.ceylon.compiler.java.language.BooleanArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -200,6 +201,7 @@ final class test_bytes_ {
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new byte[$ceylontmp$size], $ceylontmp$element);
             }
         };
+        final byte[] cloned = .com.redhat.ceylon.compiler.java.language.ByteArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -260,6 +262,7 @@ final class test_shorts_ {
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new short[$ceylontmp$size], $ceylontmp$element);
             }
         };
+        final short[] cloned = .com.redhat.ceylon.compiler.java.language.ShortArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -320,6 +323,7 @@ final class test_ints_ {
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new int[$ceylontmp$size], $ceylontmp$element);
             }
         };
+        final int[] cloned = .com.redhat.ceylon.compiler.java.language.IntArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -380,6 +384,7 @@ final class test_longs_ {
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new long[$ceylontmp$size], $ceylontmp$element);
             }
         };
+        final long[] cloned = .com.redhat.ceylon.compiler.java.language.LongArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -440,6 +445,7 @@ final class test_floats_ {
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new float[$ceylontmp$size], $ceylontmp$element);
             }
         };
+        final float[] cloned = .com.redhat.ceylon.compiler.java.language.FloatArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -500,6 +506,7 @@ final class test_doubles_ {
                 return .com.redhat.ceylon.compiler.java.Util.fillArray(new double[$ceylontmp$size], $ceylontmp$element);
             }
         };
+        final double[] cloned = .com.redhat.ceylon.compiler.java.language.DoubleArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -547,6 +554,7 @@ final class test_chars_ {
         final int[] ints = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_ints());
         final .ceylon.language.Array<.java.lang.Integer> chars1 = .com.redhat.ceylon.compiler.java.language.IntArray.getArray(ints);
         final .ceylon.language.Array<.ceylon.language.Character> chars2 = .com.redhat.ceylon.compiler.java.language.IntArray.getCodePointArray(ints);
+        final char[] cloned = .com.redhat.ceylon.compiler.java.language.CharArray.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -594,6 +602,7 @@ final class test_Strings_ {
         final .ceylon.language.String[] ceylonStrings = new .ceylon.language.String[(int)0L];
         final .ceylon.language.Array<.ceylon.language.String> ceylonStringArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<.ceylon.language.String>.getArray(ceylonStrings);
         final .ceylon.language.Array<.java.lang.String> javaStringArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<.java.lang.String>.getArray(items);
+        final .java.lang.String[] cloned = .com.redhat.ceylon.compiler.java.language.ObjectArray<.java.lang.String>.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {
@@ -618,6 +627,7 @@ final class test_Objects_ {
             items[(int)1L] = null;
         }
         java.take_Objects(items);
+        final .java.lang.Object[] cloned = .com.redhat.ceylon.compiler.java.language.ObjectArray<.java.lang.Object>.$clone(items);
     }
     
     public static void main(.java.lang.String[] args) {

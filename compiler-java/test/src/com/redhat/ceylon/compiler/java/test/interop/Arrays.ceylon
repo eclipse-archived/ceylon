@@ -98,6 +98,7 @@ void test_booleans() {
     }
     if(is ObjectArray<ObjectArray<Boolean>> o){
     }
+    value cloned = items.clone();
 }
 
 @noanno
@@ -125,6 +126,8 @@ void test_bytes() {
     
     ByteArray(2);
     Anything(Integer) ctorRef = ByteArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -152,6 +155,8 @@ void test_shorts() {
     
     ShortArray(2);
     Anything(Integer) ctorRef = ShortArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -179,6 +184,8 @@ void test_ints() {
     
     IntArray(2);
     Anything(Integer) ctorRef = IntArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -206,6 +213,8 @@ void test_longs() {
     
     LongArray(2);
     Anything(Integer) ctorRef = LongArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -233,6 +242,8 @@ void test_floats() {
     
     FloatArray(2);
     Anything(Integer) ctorRef = FloatArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -260,6 +271,8 @@ void test_doubles() {
     
     DoubleArray(2);
     Anything(Integer) ctorRef = DoubleArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -288,6 +301,8 @@ void test_chars() {
     IntArray ints = java.return_ints();
     Array<JInteger> chars1 = ints.array;
     Array<Character> chars2 = ints.codePointArray;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -316,6 +331,8 @@ void test_Strings() {
     ObjectArray<String> ceylonStrings = ObjectArray<String>(0);
     Array<String?> ceylonStringArray = ceylonStrings.array;
     Array<JString?> javaStringArray = items.array;
+    
+    value cloned = items.clone();
 }
 
 @noanno
@@ -330,5 +347,7 @@ void test_Objects() {
     }
     //for (Object o2 in items) { print(o2); }
     java.take_Objects(items);
+    
+    value cloned = items.clone();
 }
 
