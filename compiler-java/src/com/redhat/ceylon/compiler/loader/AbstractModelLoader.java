@@ -4389,4 +4389,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected boolean isModuleOrPackageDescriptorName(String name) {
         return name.equals("module_") || name.equals("package_");
     }
+    
+    protected void loadJavaBaseArrays(){
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_OBJECT_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_BOOLEAN_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_BYTE_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_SHORT_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_INT_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_LONG_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_FLOAT_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_DOUBLE_ARRAY, DeclarationType.TYPE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_CHAR_ARRAY, DeclarationType.TYPE);
+    }
 }

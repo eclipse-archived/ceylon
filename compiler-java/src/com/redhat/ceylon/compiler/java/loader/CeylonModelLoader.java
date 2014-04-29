@@ -188,6 +188,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         convertToDeclaration(lookupClassMirror(module, m.getQualifiedName().toString()), DeclarationType.VALUE);
                     }
                 }
+                if(module.getNameAsString().equals(JAVA_BASE_MODULE_NAME)
+                        && packageName.equals("java.lang"))
+                    loadJavaBaseArrays();
             }
             // a bit complicated, but couldn't find better. PackageSymbol.exists() seems to be set only by Enter which
             // might be too late
