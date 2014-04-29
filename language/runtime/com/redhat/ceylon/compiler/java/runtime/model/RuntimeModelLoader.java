@@ -43,9 +43,9 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         
         // make sure the jdk modules are loaded because those are not initialised by jboss modules nor the IDE Launcher
         for(String jdkModule : JDKUtils.getJDKModuleNames())
-            findOrCreateModule(jdkModule, JDK_MODULE_VERSION);
+            findOrCreateModule(jdkModule, JDKUtils.jdk.version);
         for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
-            findOrCreateModule(jdkOracleModule, JDK_MODULE_VERSION);
+            findOrCreateModule(jdkOracleModule, JDKUtils.jdk.version);
     }
     
     @Override
@@ -141,7 +141,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             // to the jdk modules by package
             String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkgName);
             if(jdkModuleName != null)
-                return findModule(jdkModuleName, JDK_MODULE_VERSION);
+                return findModule(jdkModuleName, JDKUtils.jdk.version);
             return lookupModuleByPackageName(pkgName);
         }
     }
