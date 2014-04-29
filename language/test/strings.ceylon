@@ -252,8 +252,8 @@ shared void strings() {
     check(" world".following("hello").sequence=={"hello", ' ','w','o','r','l','d'}.sequence, "string.following: ``" world".following("hello")``");
     check("hello".skipping(3)=="lo", "string.skipping");
     check("hello".taking(2)=="he", "string.taking");
-    check("EL" == "hElLo".filter((Character c) => c.uppercase), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
-    check("hElLo".filter((Character c) => c.uppercase) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
+    check("EL" == String("hElLo".filter((Character c) => c.uppercase)), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
+    check(String("hElLo".filter((Character c) => c.uppercase)) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
     check("what".sort(byIncreasing(Character))=="ahtw", "string.sort");
     
     check(min(["abc", "xyz", "foo", "bar"])=="abc", "strings min");
