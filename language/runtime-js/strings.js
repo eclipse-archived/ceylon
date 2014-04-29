@@ -48,7 +48,7 @@ String$proto.plus.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','St
 String$proto.equals = function(other) {
     if (other.constructor===String) {
         return other.valueOf()===this.valueOf();
-    } else if ($is(other, {t:Iterable, a:{Element$Iterable:{t:Character}}})) {
+    } else if ($is(other, {t:String$})) {
         if (other.size===this.size) {
             var oi=other.iterator();
             var ti=this.iterator();
@@ -70,6 +70,12 @@ String$proto.compare = function(other) {
 }
 String$proto.compare.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Comparison},d:['$','String','$m','compare'],
   $ps:[{$nm:'other',$t:{t:String$}}]};}
+$defat(String$proto,'sequence',function(){
+  return Iterable.$$.prototype.$prop$getSequence.get.call(this);
+},undefined,function(){return{
+  mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$at','sequence'],
+  $an:function(){return[actual(),shared()]}
+};});
 $defat(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','uppercased']}});
 $defat(String$proto, 'lowercased', function(){ return String$(this.toLowerCase()); },undefined,function(){return{
