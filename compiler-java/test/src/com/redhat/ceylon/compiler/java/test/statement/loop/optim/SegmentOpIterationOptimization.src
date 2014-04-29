@@ -1,0 +1,236 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
+
+class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    OptimizedForWithSegment(final long start, final long length) {
+        this.start = start;
+        this.length = length;
+    }
+    private final long start;
+    
+    private final long getStart$priv$() {
+        return start;
+    }
+    private final long length;
+    
+    private final long getLength$priv$() {
+        return length;
+    }
+    
+    private final void literals$priv$() {
+        long sum = 0L;
+        final long start$0 = 0L;
+        final long end$1 = start$0 + .java.lang.Math.max(0L, 10L);
+        loop_0: for (long i$2 = start$0; i$2 < end$1; i$2++) {
+            final long i = i$2;
+            sum += i;
+        }
+        final int start$3 = 97;
+        final int end$4 = (int)(start$3 + .java.lang.Math.max(0L, 26L));
+        loop_1: for (int i$5 = start$3; i$5 < end$4; i$5++) {
+            final int c = i$5;
+            sum += .ceylon.language.Character.getInteger(c);
+        }
+    }
+    
+    private final void expressions$priv$() {
+        long sum = 0L;
+        final long start$6 = getStart$priv$();
+        final long end$7 = start$6 + .java.lang.Math.max(0L, getLength$priv$());
+        loop_2: for (long i$8 = start$6; i$8 < end$7; i$8++) {
+            final long i = i$8;
+            sum += i;
+        }
+        final long start$9 = getStart$priv$() + 10L;
+        final long end$10 = start$9 + .java.lang.Math.max(0L, getLength$priv$() + 10L);
+        loop_3: for (long i$11 = start$9; i$11 < end$10; i$11++) {
+            final long i = i$11;
+            sum += i;
+        }
+    }
+    
+    private final void by$priv$() {
+        long sum = 0L;
+        final long start$12 = 1L;
+        final long step$15 = 3L;
+        if (step$15 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long end$13 = start$12 + .java.lang.Math.max(0L, 10L);
+        loop_4: for (long i$14 = start$12; i$14 < end$13; i$14 += step$15) {
+            final long i = i$14;
+            sum += i;
+        }
+        final long start$16 = 1L;
+        final long step$19 = 3L;
+        if (step$19 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long end$17 = start$16 + .java.lang.Math.max(0L, 10L);
+        loop_5: for (long i$18 = start$16; i$18 < end$17; i$18 += step$19) {
+            final long i = i$18;
+            sum += i;
+        }
+    }
+    
+    private final void disabled$priv$() {
+        long sum = 0L;
+        .java.lang.Object elem$20;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$21 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L).iterator();
+        loop_6: while (!((elem$20 = i$iterator$$21.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$20).longValue();
+            sum += i;
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$24 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L);
+        final boolean isArraySequence$25 = iterable$24 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$22 = null;
+        final .java.lang.Object array$26;
+        int i$27 = 0;
+        final int length$28;
+        if (isArraySequence$25) {
+            array$26 = ((.ceylon.language.ArraySequence)iterable$24).$getArray$();
+            i$27 = ((.ceylon.language.ArraySequence)iterable$24).$getFirst$();
+            length$28 = i$27 + ((.ceylon.language.ArraySequence)iterable$24).$getLength$();
+        } else {
+            array$26 = null;
+            length$28 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$23 = isArraySequence$25 ? null : iterable$24.iterator();
+        loop_7: while (isArraySequence$25 ? i$27 < length$28 : !((elem$22 = i$iterator$$23.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$25) elem$22 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$26, i$27++);
+            final long i = ((.ceylon.language.Integer)elem$22).longValue();
+            sum += i;
+        }
+    }
+    
+    private final void flow$priv$() {
+        long sum = 0L;
+        final long start$29 = 1L;
+        final long end$30 = start$29 + .java.lang.Math.max(0L, 10L);
+        loop_8: for (long i$31 = start$29; i$31 < end$30; i$31++) {
+            final long withElse = i$31;
+            sum += withElse;
+        }
+        sum = 0L;
+        final long start$32 = 1L;
+        final long end$33 = start$32 + .java.lang.Math.max(0L, 10L);
+        loop_9: for (long i$34 = start$32; i$34 < end$33; i$34++) {
+            final long breaks = i$34;
+            sum += breaks;
+            break loop_9;
+        }
+        boolean doforelse$38 = true;
+        final long start$35 = 1L;
+        final long end$36 = start$35 + .java.lang.Math.max(0L, 10L);
+        loop_10: for (long i$37 = start$35; i$37 < end$36; i$37++) {
+            final long breaksWithElse = i$37;
+            sum += breaksWithElse;
+            doforelse$38 = false;
+            break loop_10;
+        }
+        if (doforelse$38) {
+            sum = 0L;
+        }
+        boolean doforelse$42 = true;
+        final long start$39 = 1L;
+        final long end$40 = start$39 + .java.lang.Math.max(0L, 10L);
+        loop_11: for (long i$41 = start$39; i$41 < end$40; i$41++) {
+            final long breaksWithElse = i$41;
+            sum += breaksWithElse;
+            if (breaksWithElse == 5L) {
+                doforelse$42 = false;
+                break loop_11;
+            }
+        }
+        if (doforelse$42) {
+            sum = 0L;
+        }
+        final long start$44 = 1L;
+        final long end$45 = start$44 + .java.lang.Math.max(0L, 10L);
+        loop_12: for (long i$46 = start$44; i$46 < end$45; i$46++) {
+            final long returns = i$46;
+            sum += returns;
+            break loop_12;
+        }
+        boolean doforelse$50 = true;
+        final long start$47 = 1L;
+        final long end$48 = start$47 + .java.lang.Math.max(0L, 10L);
+        loop_13: for (long i$49 = start$47; i$49 < end$48; i$49++) {
+            final long returnsWithElse = i$49;
+            sum += returnsWithElse;
+            doforelse$50 = false;
+            break loop_13;
+        }
+        if (doforelse$50) {
+            sum = 0L;
+        }
+        boolean doforelse$54 = true;
+        final long start$51 = 1L;
+        final long end$52 = start$51 + .java.lang.Math.max(0L, 10L);
+        loop_14: for (long i$53 = start$51; i$53 < end$52; i$53++) {
+            final long returnsWithElse = i$53;
+            sum += returnsWithElse;
+            if (returnsWithElse == 5L) {
+                doforelse$54 = false;
+                break loop_14;
+            }
+        }
+        if (doforelse$54) {
+            sum = 0L;
+        }
+        final long start$56 = 1L;
+        final long end$57 = start$56 + .java.lang.Math.max(0L, 10L);
+        loop_15: for (long i$58 = start$56; i$58 < end$57; i$58++) {
+            final long throws = i$58;
+            sum += throws;
+            break loop_15;
+        }
+        boolean doforelse$62 = true;
+        final long start$59 = 1L;
+        final long end$60 = start$59 + .java.lang.Math.max(0L, 10L);
+        loop_16: for (long i$61 = start$59; i$61 < end$60; i$61++) {
+            final long throwsWithElse = i$61;
+            sum += throwsWithElse;
+            doforelse$62 = false;
+            break loop_16;
+        }
+        if (doforelse$62) {
+            sum = 0L;
+        }
+        boolean doforelse$66 = true;
+        final long start$63 = 1L;
+        final long end$64 = start$63 + .java.lang.Math.max(0L, 10L);
+        loop_17: for (long i$65 = start$63; i$65 < end$64; i$65++) {
+            final long throwsWithElse = i$65;
+            sum += throwsWithElse;
+            if (throwsWithElse == 5L) {
+                doforelse$66 = false;
+                break loop_17;
+            }
+        }
+        if (doforelse$66) {
+            sum = 0L;
+        }
+    }
+    
+    private final void captured$priv$() {
+        final long start$68 = 0L;
+        final long end$69 = start$68 + .java.lang.Math.max(0L, 10L);
+        loop_18: for (long i$70 = start$68; i$70 < end$69; i$70++) {
+            final long i = i$70;
+            
+            final class x_ {
+                
+                private x_() {
+                }
+                
+                long x() {
+                    return i + 10L;
+                }
+            }
+            final x_ x = new x_();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.optim.OptimizedForWithSegment.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.OptimizedForWithSegment.class);
+}

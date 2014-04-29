@@ -38,6 +38,17 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
+    public void testLopSegmentOpIterationOptimization(){
+        compareWithJavaSource("loop/optim/SegmentOpIterationOptimization");
+    }
+    
+    @Test
+    public void testLopSegmentOpIterationOptimizationCorrect(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.segmentOpIterationOptimizationCorrect", 
+                "loop/optim/SegmentOpIterationOptimizationCorrect.ceylon");
+    }
+    
+    @Test
     public void testLopOptimArrayIterationStatic(){
         compareWithJavaSource("loop/optim/ArrayIterationStatic");
     }
