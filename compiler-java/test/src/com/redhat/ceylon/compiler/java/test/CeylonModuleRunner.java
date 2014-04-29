@@ -47,6 +47,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
@@ -354,7 +355,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 Metamodel.resetModuleManager();
                 Metamodel.loadModule("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
                 Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTest.makeArtifactResult(new File("../ceylon-dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
-                Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, AbstractModelLoader.JDK_MODULE_VERSION, CompilerTest.makeArtifactResult(null), cl);
+                Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTest.makeArtifactResult(null), cl);
                 Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
                 // dependencies
                 for (int i = 0; i < deps.length; i++) {

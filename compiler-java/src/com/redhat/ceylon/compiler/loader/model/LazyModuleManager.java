@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.ImportType;
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;

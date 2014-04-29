@@ -129,7 +129,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_LANGUAGE_MODEL_DECLARATION = "ceylon.language.meta.declaration";
     
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
-    public static final String JDK_MODULE_VERSION = "7";
     
     public static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
@@ -442,10 +441,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         // make sure the jdk modules are loaded
         for(String jdkModule : JDKUtils.getJDKModuleNames())
-            findOrCreateModule(jdkModule, JDK_MODULE_VERSION);
+            findOrCreateModule(jdkModule, JDKUtils.jdk.version);
         for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
-            findOrCreateModule(jdkOracleModule, JDK_MODULE_VERSION);
-        Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, JDK_MODULE_VERSION);
+            findOrCreateModule(jdkOracleModule, JDKUtils.jdk.version);
+        Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version);
         
         /*
          * We start by loading java.lang and ceylon.language because we will need them no matter what.
@@ -1471,7 +1470,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(JDKUtils.isJDKAnyPackage(packageName)
                 || JDKUtils.isOracleJDKAnyPackage(packageName)){
             String moduleName = JDKUtils.getJDKModuleNameForPackage(packageName);
-            return findModule(moduleName, JDK_MODULE_VERSION);
+            return findModule(moduleName, JDKUtils.jdk.version);
         }
         if(packageName.startsWith("com.redhat.ceylon.compiler.java.runtime")
                 || packageName.startsWith("com.redhat.ceylon.compiler.java.language")
@@ -4235,7 +4234,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public Module getJDKBaseModule() {
-        return findModule(JAVA_BASE_MODULE_NAME, JDK_MODULE_VERSION);
+        return findModule(JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version);
     }
 
     public Module findModuleForFile(File file){
