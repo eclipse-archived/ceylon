@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -51,18 +50,6 @@ public class CompilerToolTest extends CompilerTest {
         ret.add("--out");
         ret.add(destDir);
         return ret;
-    }
-    
-    @Test
-    public void testNoModules()  throws Exception {
-        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
-        Assert.assertNotNull(model);
-        try {
-            pluginFactory.bindArguments(model, Collections.<String>emptyList());
-            Assert.fail();
-        } catch (OptionArgumentException e) {
-            Assert.assertEquals("Argument moduleOrFile should appear at least 1 time(s)", e.getMessage());
-        }
     }
     
     @Test
