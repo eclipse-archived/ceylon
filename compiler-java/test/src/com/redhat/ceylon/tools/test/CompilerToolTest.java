@@ -95,7 +95,7 @@ public class CompilerToolTest extends CompilerTest {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, 
-                Arrays.asList("--out=" + destDir, "--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
+                options("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
         tool.run();
         assertTrue(carFile1.exists() && carFile2.exists());
     }
