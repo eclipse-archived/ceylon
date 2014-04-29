@@ -130,7 +130,7 @@ public class ModuleManager {
         for (Module current : moduleList) {
             final List<String> names = current.getName();
             if (moduleName.equals(names)
-                    && compareVersions(version, current.getVersion())) {
+                    && compareVersions(current, version, current.getVersion())) {
                 module = current;
                 break;
             }
@@ -143,7 +143,7 @@ public class ModuleManager {
         return module;
     }
 
-    private boolean compareVersions(String version, String currentVersion) {
+    protected boolean compareVersions(Module current, String version, String currentVersion) {
         return currentVersion == null || version == null || currentVersion.equals(version);
     }
 
