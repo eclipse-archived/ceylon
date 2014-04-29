@@ -34,8 +34,32 @@ import java.util.Set;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class JDKUtils {
-    private final static String JDK7 = "package-list.jdk7";
-    private final static String JDK7_ORACLE = "package-list.oracle.jdk7";
+    
+    public enum JDK {
+        JDK7("package-list.jdk7", "package-list.oracle.jdk7", "7"),
+        JDK8("package-list.jdk8", "package-list.oracle.jdk8", "8");
+        
+        public final String packageList;
+        public final String packageListOracle;
+        public final String version;
+        
+        private JDK(String packageList, String packageListOracle, String version) {
+            this.packageList = packageList;
+            this.packageListOracle = packageListOracle;
+            this.version = version;
+        }
+    }
+    
+    public final static JDK jdk;
+    
+    static {
+        String version = System.getProperty("java.version");
+        if(version != null && version.startsWith("1.8")){
+            jdk = JDK.JDK8;
+        }else{
+            jdk = JDK.JDK7;
+        }
+    }
 
     private static Map<String, Tuple> jdkModules;
     private static Map<String, Tuple> jdkOracleModules;
@@ -63,8 +87,8 @@ public class JDKUtils {
     private static synchronized void loadPackageList() {
         if (jdkModules != null)
             return;
-        jdkModules = loadModularPackageList(JDK7);
-        jdkOracleModules = loadModularPackageList(JDK7_ORACLE);
+        jdkModules = loadModularPackageList(jdk.packageList);
+        jdkOracleModules = loadModularPackageList(jdk.packageListOracle);
     }
 
     private static Map<String, Tuple> loadModularPackageList(String file) {
