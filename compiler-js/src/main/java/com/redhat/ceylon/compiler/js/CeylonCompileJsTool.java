@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +47,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private String encoding;
 
     private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
-    private List<String> files = Collections.emptyList();
+    private List<String> files = Arrays.asList("*");
 
     public CeylonCompileJsTool() {
         super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
@@ -142,7 +143,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         return skipSrc;
     }
 
-    @Argument(argumentName="moduleOrFile", multiplicity="+")
+    @Argument(argumentName="moduleOrFile", multiplicity="*")
     public void setModule(List<String> moduleOrFile) {
         this.files = moduleOrFile;
     }
