@@ -870,11 +870,13 @@ StringBuilder$proto.$delete.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringB
 StringBuilder$proto.deleteInitial=function(c){
   return this.$delete(0,c);
 }
-StringBuilder$proto.deleteInitial.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','deleteInitial']};};
+StringBuilder$proto.deleteInitial.$crtmm$=function(){return{
+  mod:$CCMM$,d:['$','StringBuilder','$m','deleteInitial'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};
 StringBuilder$proto.deleteTerminal=function(c){
   return this.$delete(this.size-c,c);
 }
-StringBuilder$proto.deleteTerminal.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','deleteTerminal']};};
+StringBuilder$proto.deleteTerminal.$crtmm$=function(){return{
+  mod:$CCMM$,d:['$','StringBuilder','$m','deleteTerminal'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};
 
 exports.String=String$;
 exports.Character=Character;
