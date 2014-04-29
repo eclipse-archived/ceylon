@@ -161,7 +161,7 @@ public abstract class ModuleWildcardsHelper {
         } else {
             File[] files = dir.listFiles();
             for (File f : files) {
-                if (f.isDirectory() && f.canRead()) {
+                if (f.isDirectory() && f.canRead() && isModuleName(f.getName())) {
                     findModules(modules, root, f);
                 }
             }
