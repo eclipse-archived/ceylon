@@ -1,0 +1,10 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+final class bug1604_ {
+    
+    private bug1604_() {
+    }
+    
+    static void bug1604(final int[] arr) {
+    }
+}
