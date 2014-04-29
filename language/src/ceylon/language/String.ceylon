@@ -20,7 +20,7 @@
    
        value char = "hello world"[5];
    
-   They are [[ranged||Ranged]]:
+   They are [[ranged|Ranged]]:
    
        String who = "hello world"[6...];
    

@@ -18,7 +18,7 @@
      for (i in min..max) { ... }
      if (char in 'A'..'Z') { ... }
  
- See [[the documentation for `Ordinal`|Ordinal]] for more
+ See the documentation for [[Ordinal]] for more
  information about the span and segment operators."
 by ("Gavin")
 see (`interface Ordinal`)
