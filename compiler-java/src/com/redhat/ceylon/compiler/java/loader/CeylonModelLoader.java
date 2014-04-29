@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
+import com.redhat.ceylon.compiler.java.loader.mirror.JavacType;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -50,6 +51,7 @@ import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
+import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Scope;
 import com.redhat.ceylon.langtools.tools.javac.code.Scope.Entry;
@@ -59,6 +61,7 @@ import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeVariableSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
@@ -67,6 +70,7 @@ import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
@@ -79,7 +83,10 @@ import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.TypeParser;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.FunctionalInterface;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeKind;
+import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
@@ -797,5 +804,53 @@ public class CeylonModelLoader extends AbstractModelLoader {
         if(hasJavaAndCeylonSources == null)
             hasJavaAndCeylonSources = ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().isCompilingJavaAndCeylonSources();
         return hasJavaAndCeylonSources;
+    }
+
+    @Override
+    protected FunctionalInterface getFunctionalInterface(TypeMirror typeMirror) {
+        if(typeMirror.getKind() != TypeKind.DECLARED)
+            return null;
+        Type type = ((JavacType)typeMirror).type;
+        if(type.tsym instanceof ClassSymbol == false)
+            return null;
+        final ClassSymbol classSymbol = (ClassSymbol) type.tsym;
+        if(!classSymbol.isInterface())
+            return null;
+        // FIXME: look in superinterfaces too
+        MethodSymbol method = null;
+        for(Symbol sym : classSymbol.getEnclosedElements()){
+            // look for public abstract methods
+            if(sym instanceof MethodSymbol
+                    && !sym.isConstructor()
+                    && (sym.flags() & Flags.PRIVATE) == 0
+                    && (sym.flags() & Flags.ABSTRACT) != 0){
+                if(method == null)
+                    method = (MethodSymbol) sym;
+                else
+                    return null; // more than one
+            }
+        }
+        if(method == null)
+            return null;
+        
+        Type returnType = method.getReturnType();
+        List<Type> typeArguments = type.getTypeArguments();
+        List<TypeVariableSymbol> typeParameters = classSymbol.getTypeParameters();
+        ListBuffer<Type> typeParameterTypeBuffer = new ListBuffer<Type>();
+        for(TypeSymbol typeParameter : typeParameters){
+            typeParameterTypeBuffer.add(typeParameter.type);
+        }
+        List<Type> typeParameterTypes = typeParameterTypeBuffer.toList();
+        
+        Type returnTypeSubst = types.subst(returnType, typeParameterTypes, typeArguments);
+        
+        ListBuffer<TypeMirror> substitutedParameterTypes = new ListBuffer<TypeMirror>();
+        for(Symbol.VarSymbol parameter : method.getParameters()){
+            Type parameterType = types.subst(parameter.type, typeParameterTypes, typeArguments);
+            substitutedParameterTypes.add(new JavacType(parameterType));
+        }
+        JavacClass classMirror = new JavacClass(classSymbol);
+        return new com.redhat.ceylon.model.loader.mirror.FunctionalInterface(classMirror, new JavacMethod(classMirror, method), 
+                new JavacType(returnTypeSubst), substitutedParameterTypes.toList());
     }
 }

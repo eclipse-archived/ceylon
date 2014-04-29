@@ -1565,15 +1565,24 @@ public class CallableBuilder {
             callableType = typeModel;
         }
         
-        JCNewClass callableInstance = gen.at(node).NewClass(null, 
-                null, 
-                gen.makeJavaType(callableType, JT_EXTENDS | JT_CLASS_NEW), 
-                List.<JCExpression>of(gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(0)),
-                        gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(1)),
-                                      gen.make().Literal(callableType.asString(true)),
-                                      gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
-                classDef);
-        
+        JCNewClass callableInstance;
+        if(functionalInterface == null){
+            callableInstance = gen.at(node).NewClass(null, 
+                    null, 
+                    gen.makeJavaType(callableType, JT_EXTENDS | JT_CLASS_NEW), 
+                    List.<JCExpression>of(gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(0)),
+                            gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(1)),
+                                          gen.make().Literal(callableType.asString(true)),
+                                          gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
+                    classDef);
+        }else{
+            callableInstance = gen.make().NewClass(null, 
+                    null, 
+                    gen.makeJavaType(functionalInterface, JT_EXTENDS | JT_CLASS_NEW), 
+                    List.<JCExpression>nil(),
+                    classDef);
+        }
+
         JCExpression result;
         if (typeModel.isTypeConstructor()) {
             result = buildTypeConstructor(callableType, callableInstance);
@@ -1766,6 +1775,11 @@ public class CallableBuilder {
 
 
     //Target target = new Target(null);
+    Target target = new Target(null);
+
+    private TypedReference functionalInterfaceMethod;
+
+    private Type functionalInterface;
     
     class Target {
         Tree.Term forwardCallTo;
@@ -1776,6 +1790,12 @@ public class CallableBuilder {
         
     }
     
-    
-    
+    /**
+     * @param other
+     * @param functionalInterface
+     */
+    public void functionalInterface(Type interfaceType, TypedReference method) {
+        this.functionalInterface = interfaceType;
+        this.functionalInterfaceMethod = method;
+    }
 }

@@ -376,6 +376,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transform(Tree.FunctionArgument functionArg, Type expectedType) {
+        System.err.println("Function "+functionArg+" return "+expectedType);
         Function model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
@@ -410,11 +411,61 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Collections.singletonList(functionArg.getParameterLists().get(0)),
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         
+        TypeDeclaration expectedDeclaration = expectedType.getDeclaration();
+        if(expectedDeclaration instanceof UnionType){
+            // ignore Callable and Null
+            Type other = null;
+            boolean skip = false;
+            for(Type caseType : expectedDeclaration.getCaseTypes()){
+                // FIXME: fast-case
+                if(caseType.isExactly(typeFact().getNullDeclaration().getType())
+                        || caseType.isSubtypeOf(typeFact().getCallableDeclaration().getType()))
+                    continue;
+                if(other == null)
+                    other = caseType;
+                else{
+                    skip = true;
+                    break;
+                }
+            }
+            if(!skip && other != null){
+                TypedReference functionalInterface = isFunctionalInterface(other);
+                if(functionalInterface != null){
+                    System.err.println("Got functional interface: "+other+" / "+functionalInterface);
+                    callableBuilder.functionalInterface(other, functionalInterface);
+                }
+            }
+        }
+        
         JCExpression result = callableBuilder.build();
         result = applyErasureAndBoxing(result, callableType, true, BoxingStrategy.BOXED, expectedType);
         return result;
     }
     
+    private TypedReference isFunctionalInterface(Type type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof Interface == false)
+            return null;
+        if(!declaration.getSatisfiedTypes().isEmpty())
+            return null;
+        Function method = null;
+        for(Declaration d : declaration.getMembers()){
+            if(d instanceof Function == false)
+                return null;
+            // ignore non-formal methods
+            if(!d.isFormal())
+                continue;
+            // allow only one
+            if(method == null)
+                method = (Function) d;
+            else
+                return null;
+        }
+        if(method == null)
+            return null;
+        return method.appliedTypedReference(type, Collections.<Type>emptyList());
+    }
+
     //
     // Boxing and erasure of expressions
     
