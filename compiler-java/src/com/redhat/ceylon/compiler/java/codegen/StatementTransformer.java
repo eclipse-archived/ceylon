@@ -1233,6 +1233,9 @@ public class StatementTransformer extends AbstractTransformer {
             transformation = arrayIteration(stmt, baseIterable, step);
         }
         if (transformation == null) {
+            transformation = segmentOpIteration(stmt, baseIterable, step);
+        }
+        if (transformation == null) {
             transformation = rangeOpIteration(stmt);
         }
         if (transformation == null) {
@@ -1259,17 +1262,21 @@ public class StatementTransformer extends AbstractTransformer {
         protected final SyntheticName lengthName;
         /** The name of the index variable */
         protected final SyntheticName indexName;
-        private final Tree.Term baseIterable;
-        private final Tree.Term step;
+        protected final Tree.Term baseIterable;
+        protected final Tree.Term step;
         
         IndexedAccessIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step, ProducedType elementType, String indexableName) {
+            this(stmt, baseIterable, step, elementType, indexableName, "length", "i");
+        }
+        
+        IndexedAccessIterationOptimization(Tree.ForStatement stmt, Tree.Term baseIterable, Tree.Term step, ProducedType elementType, String indexableName, String lengthName, String indexName) {
             super(stmt);
             this.baseIterable = baseIterable;
             this.step = step;
             this.elementType = elementType;
             this.indexableName = naming.alias(indexableName);
-            this.lengthName = naming.alias("length");
-            this.indexName = naming.alias("i");
+            this.lengthName = naming.alias(lengthName);
+            this.indexName = naming.alias(indexName);
         }
         
         protected final Tree.Term getIterable() {
@@ -1290,8 +1297,18 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression stepExpr = makeStepExpr();
                 stepName = naming.alias("step");
                 result.add(makeVar(FINAL, stepName, 
-                        make().Type(syms().intType), 
+                        makeIndexType(), 
                         stepExpr));
+                result.add(
+                make().If(
+                        make().Binary(JCTree.LE, stepName.makeIdent(), make().Literal(0)),
+                        makeThrowAssertionException(
+                                new AssertionExceptionMessageBuilder(null)
+                                    .appendViolatedCondition("step > 0")
+                                    .prependAssertionDoc("step size must be greater than zero")
+                                    .build()),
+                        null));
+                
             } else {
                 stepName = null;
             }
@@ -1300,13 +1317,13 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression lengthExpr = makeLengthExpr();
             if (lengthExpr != null) {
                 result.add(makeVar(FINAL, lengthName, 
-                        make().Type(syms().intType), 
+                        makeIndexType(), 
                         lengthExpr));
             }
             
             // int i = 0;
             JCStatement iVar = makeVar(indexName, 
-                    make().Type(syms().intType), 
+                    makeIndexType(), 
                     makeIndexInit());
             // i < length;
             JCExpression iCond = makeCondition();
@@ -1361,8 +1378,12 @@ public class StatementTransformer extends AbstractTransformer {
             return result;
         }
 
+        protected JCExpression makeIndexType() {
+            return make().Type(syms().intType);
+        }
+
         /** Makes the expression for incrementing the index */
-        protected final JCExpression makeStepExpr() {
+        protected JCExpression makeStepExpr() {
             ProducedType intType = typeFact().getIntegerDeclaration().getType();
             intType.setUnderlyingType("int");
             return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
@@ -1383,7 +1404,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected abstract JCExpression makeIndexableType();
         
-        protected JCLiteral makeIndexInit() {
+        protected JCExpression makeIndexInit() {
             return make().Literal(0);
         }
         
@@ -2034,6 +2055,100 @@ public class StatementTransformer extends AbstractTransformer {
         return new RangeOpIterationOptimization(stmt, 
                 range.getLeftTerm(), range.getRightTerm(), 
                 increment, type);
+    }
+    
+    /**
+     * <p>Transformation of {@code for} loops over {@code Range<Integer>} 
+     * or {@code Range<Character>} which avoids allocating a {@code Range} and
+     * using an {@code Iterator} like 
+     * {@link #ForStatementTransformation} but instead outputs a C-style 
+     * {@code for} loop.</p> 
+     */
+    private class SegmentOpIteration extends IndexedAccessIterationOptimization {
+
+        private final Tree.Term start;
+        private final Tree.Term length;
+
+        SegmentOpIteration(Tree.ForStatement stmt, Tree.SegmentOp op, Tree.Term step, Tree.Term start, Tree.Term length) {
+            super(stmt, op, step, typeFact().getIteratedType(op.getTypeModel()), "start", "end", "i");
+            this.start = start;
+            this.length = length;
+            // TODO If length if < 0 we need to not loop at all
+        }
+
+        @Override
+        protected JCExpression makeIndexableType() {
+            return makeJavaType(this.elementType);
+        }
+        
+        @Override
+        protected JCExpression makeIndexable() {
+            return expressionGen().transformExpression(start, BoxingStrategy.UNBOXED, length.getTypeModel());
+        }
+
+        protected JCExpression makeIndexType() {
+            return makeJavaType(this.elementType);
+        }
+        
+        protected JCExpression makeIndexInit() {
+            return indexableName.makeIdent();
+        }
+        
+        @Override
+        protected JCExpression makeIndexedAccess() {
+            return indexName.makeIdent();
+        }
+
+        @Override
+        protected JCExpression makeLengthExpr() {
+            JCExpression result = make().Binary(JCTree.PLUS,
+                    indexableName.makeIdent(),
+                    make().Apply(null, 
+                            naming.makeQuotedFQIdent("java.lang.Math.max"), 
+                            List.<JCExpression>of(
+                                    make().Literal(0L), 
+                                    expressionGen().transformExpression(length, 
+                                            BoxingStrategy.UNBOXED, length.getTypeModel()))));
+            if (isCeylonCharacter(elementType)) {
+                result = make().TypeCast(syms().intType, result);
+            }
+            return result;
+        }
+        
+        protected JCExpression makeStepExpr() {
+            return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
+                    elementType);
+        }
+        
+    }
+    
+    private ForStatementTransformation segmentOpIteration(Tree.ForStatement stmt, 
+            Tree.Term baseIterable, Tree.Term step) {
+        if (!(baseIterable instanceof Tree.SegmentOp)) {
+            return optimizationFailed(stmt, Optimization.SegmentOpIteration, 
+                    "base iterable is no a segment op");
+        }
+        
+        
+        final Tree.SegmentOp op = (Tree.SegmentOp)baseIterable;
+        ProducedType iteratedType = typeFact().getIteratedType(op.getTypeModel()); 
+        if (iteratedType.isExactly(typeFact().getIntegerDeclaration().getType())) {
+            
+        } else if (iteratedType.isExactly(typeFact().getCharacterDeclaration().getType())) {
+            
+        } else {
+            return optimizationFailed(stmt, Optimization.SegmentOpIteration, 
+                    "base iterable is neither Range<Integer> not Range<Character>");
+        }
+        
+        Tree.Term start = op.getLeftTerm();
+        Tree.Term length = op.getRightTerm();
+        
+        if (isOptimizationDisabled(stmt, Optimization.SegmentOpIteration)) {
+            return optimizationDisabled(stmt, Optimization.SegmentOpIteration);
+        }
+        
+        return new SegmentOpIteration(stmt, op, step, start, length);
     }
     
     private Tree.ControlClause currentForClause = null;
