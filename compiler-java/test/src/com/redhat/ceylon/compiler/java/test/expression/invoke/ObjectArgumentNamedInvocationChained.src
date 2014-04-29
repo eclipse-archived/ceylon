@@ -32,6 +32,9 @@ class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compile
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1o_",
+        "2o_"})
 public final class objectArgumentNamedInvocationChained_ {
     
     private objectArgumentNamedInvocationChained_() {
@@ -52,7 +55,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
                         @.com.redhat.ceylon.compiler.java.metadata.Name("o")
                         @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
-                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
                         final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                             
@@ -121,7 +124,7 @@ public final class objectArgumentNamedInvocationChained_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("o")
                 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
