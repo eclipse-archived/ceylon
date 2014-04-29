@@ -47,14 +47,12 @@ public class CompilerToolTest extends CompilerTest {
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     
-    private final static String out = "build/compiler-tool-test";
-
     private List<String> options(String... strings){
         List<String> ret = new ArrayList<String>(strings.length+2);
         for(String s : strings)
             ret.add(s);
         ret.add("--out");
-        ret.add(out);
+        ret.add(destDir);
         return ret;
     }
     
