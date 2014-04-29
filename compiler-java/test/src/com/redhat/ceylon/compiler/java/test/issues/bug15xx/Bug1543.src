@@ -7,24 +7,10 @@ final class bug1543_ {
     
     static void bug1543() {
         .ceylon.language.Sequence<? extends .ceylon.language.Integer> chain = new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Sequential<? extends .ceylon.language.Integer>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$2 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>spreadOp(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), 100000L);
-        final boolean isArraySequence$3 = iterable$2 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$4;
-        int i$5 = 0;
-        final int length$6;
-        if (isArraySequence$3) {
-            array$4 = ((.ceylon.language.ArraySequence)iterable$2).$getArray$();
-            i$5 = ((.ceylon.language.ArraySequence)iterable$2).$getFirst$();
-            length$6 = i$5 + ((.ceylon.language.ArraySequence)iterable$2).$getLength$();
-        } else {
-            array$4 = null;
-            length$6 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = isArraySequence$3 ? null : iterable$2.iterator();
-        loop_0: while (isArraySequence$3 ? i$5 < length$6 : !((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
-            final long i = ((.ceylon.language.Integer)elem$0).longValue();
+        final long start$0 = 0L;
+        final long end$1 = start$0 + .java.lang.Math.max(0L, 100000L);
+        loop_0: for (long i$2 = start$0; i$2 < end$1; i$2++) {
+            final long i = i$2;
             chain = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)chain.<.ceylon.language.Integer>following(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(i));
         }
     }
