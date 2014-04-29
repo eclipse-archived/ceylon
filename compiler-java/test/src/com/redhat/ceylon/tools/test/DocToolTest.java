@@ -19,34 +19,31 @@
  */
 package com.redhat.ceylon.tools.test;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
-import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
+import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
-public class DocToolTest {
+public class DocToolTest extends CompilerTest {
     
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
     
-    @Test
-    public void testNoModules()  throws Exception {
-        ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
-        Assert.assertNotNull(model);
-        try {
-            pluginFactory.bindArguments(model, Collections.<String>emptyList());
-            Assert.fail();
-        } catch (OptionArgumentException e) {
-            Assert.assertEquals("Argument 'modules' to command 'doc' should appear at least 1 time(s)", e.getMessage());
-        }
+    private List<String> options(String... strings){
+        List<String> ret = new ArrayList<String>(strings.length+2);
+        for(String s : strings)
+            ret.add(s);
+        ret.add("--out");
+        ret.add(destDir);
+        return ret;
     }
     
     @Test
@@ -54,7 +51,16 @@ public class DocToolTest {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, 
-                Arrays.asList("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+        tool.run();
+    }
+    
+    @Test
+    public void testDocMultiple()  throws Exception {
+        ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
+        Assert.assertNotNull(model);
+        CeylonDocTool tool = pluginFactory.bindArguments(model, 
+                options("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
         tool.run();
     }
     
@@ -63,7 +69,7 @@ public class DocToolTest {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, 
-                Arrays.asList("--non-shared", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                options("--non-shared", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
@@ -72,7 +78,7 @@ public class DocToolTest {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, 
-                Arrays.asList("--source-code", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                options("--source-code", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
