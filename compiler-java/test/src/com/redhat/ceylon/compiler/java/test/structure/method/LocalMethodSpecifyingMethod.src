@@ -17,7 +17,7 @@ class LocalMethodSpecifyingMethod implements .com.redhat.ceylon.compiler.java.ru
             }
             
             long foo(final .java.lang.String x) {
-                return bar$priv$(x);
+                return .com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.this.bar$priv$(x);
             }
         }
         final foo_ foo = new foo_();

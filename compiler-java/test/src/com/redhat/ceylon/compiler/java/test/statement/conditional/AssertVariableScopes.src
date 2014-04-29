@@ -39,13 +39,13 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
             void m_local() {
                 final .java.lang.String x$2;
                 .java.lang.Object x$1 = null;
-                if ((x$1 = getX$priv$()) instanceof .ceylon.language.String) {
+                if ((x$1 = .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.this.getX$priv$()) instanceof .ceylon.language.String) {
                     x$2 = ((.ceylon.language.String)x$1).toString();
                 } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
                 .ceylon.language.String.terminal(x$2, 1L);
                 final .java.lang.String y$5;
                 .java.lang.Object y$4 = null;
-                if ((y$4 = getY$priv$()) instanceof .ceylon.language.String) {
+                if ((y$4 = .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.this.getY$priv$()) instanceof .ceylon.language.String) {
                     y$5 = ((.ceylon.language.String)y$4).toString();
                 } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
                 .ceylon.language.String.terminal(y$5, 1L);
