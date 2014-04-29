@@ -23,9 +23,11 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -601,9 +603,9 @@ public class IssuesTest_1000_1499 extends CompilerTest {
 
     @Test
     public void testBug1347() {
-        assertErrors("bug13xx/bug1347/bug1347",
-                new CompilerError(2, "unsupported JDK module version: the only supported version is '7' which you get with Java 7")
-        );
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
+        ErrorCollector c = new ErrorCollector();
+        assertCompilesOk(c, getCompilerTask(Arrays.asList("-rep", "test/java8/modules"), c, "bug13xx/bug1347/bug1347.ceylon").call2());
     }
 
     @Test

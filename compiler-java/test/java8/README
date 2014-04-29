@@ -1,0 +1,9 @@
+This contains all you need to compile a Java 8 jar to be tested in IssuesTest_1000_1499.testBug1347().
+
+Just build the jar (using Java 8):
+
+    $ ant
+
+And install it:
+
+    $ ceylon import-jar --descriptor module.properties com.ceylon.java8/1 java8.jar

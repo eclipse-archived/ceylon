@@ -1,0 +1,19 @@
+<project name="Java 8 jar" default="jar" basedir=".">
+	
+	<property name="classes.dir" value="classes"/>
+    <property name="sources.dir" value="src"/>
+    <property name="jar.file" value="java8.jar"/>
+	
+    <target name="classes">
+    	<mkdir dir="${classes.dir}"/>
+        <javac srcdir="${sources.dir}" includeantruntime="false" destdir="${classes.dir}" source="1.8">
+            <include name="com/**"/>
+        </javac>
+    </target>
+
+	<target name="jar" depends="classes">
+		<jar basedir="${classes.dir}" file="${jar.file}">
+			<include name="com/**"/>
+		</jar>    
+	</target>
+</project>
