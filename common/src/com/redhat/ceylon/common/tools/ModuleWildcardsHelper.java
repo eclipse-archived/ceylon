@@ -16,7 +16,7 @@ import com.redhat.ceylon.common.FileUtil;
  */
 public abstract class ModuleWildcardsHelper {
 
-    private static final Pattern idPattern = Pattern.compile("\\p{Lower}[\\p{Alnum}_]*");
+    private static final Pattern idPattern = Pattern.compile("\\p{IsLowercase}[\\p{IsAlphabetic}\\p{IsDigit}_]*");
     
     /**
      * Given a source directory and a list of ModuleSpecs
