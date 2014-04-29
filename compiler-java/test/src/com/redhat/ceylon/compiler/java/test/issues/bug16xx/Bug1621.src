@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1621 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1621() {
+    }
+    
+    private final void f$priv$() {
+        
+        final class x_ {
+            
+            private x_() {
+            }
+            
+            void x() {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621 f = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this;
+                .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this.g$priv$(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this);
+                .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this.g$priv$(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this);
+            }
+        }
+        final x_ x = new x_();
+    }
+    
+    private final void g$priv$(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621 c) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.class);
+}
