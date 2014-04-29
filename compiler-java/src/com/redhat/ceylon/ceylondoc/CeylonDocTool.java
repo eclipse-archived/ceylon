@@ -154,7 +154,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private boolean haltOnError = true;
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
-    private List<String> moduleSpecs = new LinkedList<String>();
+    private List<String> moduleSpecs = Arrays.asList("*");
     private List<String> links = new LinkedList<String>();
     
     private TypeChecker typeChecker;
@@ -287,7 +287,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         this.docFolders = docFolders;
     }
 
-    @Argument(argumentName="modules", multiplicity="+")
+    @Argument(argumentName="modules", multiplicity="*")
     public void setModuleSpecs(List<String> moduleSpecs) {
         this.moduleSpecs = moduleSpecs;
     }

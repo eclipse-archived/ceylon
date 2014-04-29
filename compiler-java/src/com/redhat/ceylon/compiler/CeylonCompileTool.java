@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -158,7 +159,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
-    private List<String> modulesOrFiles = Collections.emptyList();
+    private List<String> modulesOrFiles = Arrays.asList("*");
     private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
     private String encoding;
@@ -217,8 +218,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     @Argument(argumentName="moduleOrFile", multiplicity="*")
-    // multiplicity=* because of --javac=-help and --javac=-Xhelp are allowed 
-    // on their own
     public void setModule(List<String> moduleOrFile) {
         this.modulesOrFiles = moduleOrFile;
     }
