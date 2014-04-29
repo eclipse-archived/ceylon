@@ -3,11 +3,11 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
-        "4Local",
-        "5Local",
+        "1Local",
         "2Local",
         "3Local",
-        "1Local"})
+        "4Local",
+        "5Local"})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

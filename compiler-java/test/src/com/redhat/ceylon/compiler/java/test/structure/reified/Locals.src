@@ -3,30 +3,30 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
-        "3localMethod_",
-        "7LocalClass",
-        "3LocalClass2",
-        "5LocalClass2",
-        "1LocalClass2",
-        "1localAttribute$getter$_",
+        "1Inner",
+        "1Local",
         "1LocalClass",
-        "5LocalClass",
-        "8LocalClass",
+        "1LocalClass2",
+        "1LocalClassInLocalAttribute",
+        "1localAttribute$getter$_",
+        "1localMethod_",
+        "2Local",
+        "2LocalClass",
         "2LocalClass2",
         "2LocalClassInLocalAttribute",
-        "1LocalClassInLocalAttribute",
-        "3localAttribute$getter$_",
         "2localAttribute$getter$_",
-        "1Inner",
-        "4LocalClass2",
-        "2Local",
-        "6LocalClass",
-        "4LocalClass",
-        "2LocalClass",
         "2localMethod_",
-        "1localMethod_",
-        "1Local",
-        "3LocalClass"})
+        "3LocalClass",
+        "3LocalClass2",
+        "3localAttribute$getter$_",
+        "3localMethod_",
+        "4LocalClass",
+        "4LocalClass2",
+        "5LocalClass",
+        "5LocalClass2",
+        "6LocalClass",
+        "7LocalClass",
+        "8LocalClass"})
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Outer",
@@ -1332,20 +1332,20 @@ interface OuterInterface$privateMethodForLocalInterfaces$LocalI1<Outer> {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1Inner",
+        "1Local",
         "1LocalC",
+        "1LocalClass",
         "1LocalClass2",
         "1localAttribute$getter$_",
-        "1LocalClass",
+        "1localMethod_",
+        "2Local",
+        "2LocalClass",
         "2LocalClass2",
         "2localAttribute$getter$_",
-        "1Inner",
-        "2Local",
-        "4LocalClass",
-        "2LocalClass",
         "2localMethod_",
-        "1localMethod_",
-        "1Local",
         "3LocalClass",
+        "4LocalClass",
         "::OuterInterface$privateMethodForLocalInterfaces$LocalI1"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Outer",
@@ -2128,9 +2128,9 @@ interface metamodelEquality$metamodelEquality$4$2getter$I_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
-        "2getter$getter$_",
-        "1m_",
         "1getter$getter$_",
+        "1m_",
+        "2getter$getter$_",
         "2m_"})
 final class metamodelEquality_ {
     
@@ -3601,9 +3601,9 @@ final class classDecl4_ {
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("toplevelAttribute")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
-        "1LocalClassInLocalAttribute",
-        "1LocalClass2",
         "1LocalClass",
+        "1LocalClass2",
+        "1LocalClassInLocalAttribute",
         "2LocalClass",
         "2LocalClass2",
         "2LocalClassInLocalAttribute"})
