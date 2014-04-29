@@ -135,4 +135,11 @@ public class LocalTypeVisitor extends Visitor {
         if(model != null)
             collect(that, model.getTypeDeclaration());
     }
+
+    @Override
+    public void visit(Tree.ObjectArgument that){
+        Value model = that.getDeclarationModel();
+        if(model != null)
+            collect(that, model.getTypeDeclaration());
+    }
 }

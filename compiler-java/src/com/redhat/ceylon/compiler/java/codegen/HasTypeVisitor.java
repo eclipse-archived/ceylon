@@ -66,4 +66,11 @@ public class HasTypeVisitor extends Visitor {
         if(model != null)
             throw new HasTypeException();
     }
+
+    @Override
+    public void visit(Tree.ObjectArgument that){
+        Value model = that.getDeclarationModel();
+        if(model != null)
+            throw new HasTypeException();
+    }
 }
