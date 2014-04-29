@@ -45,20 +45,6 @@ public class LiteralVisitor extends Visitor {
     public void visit(StringLiteral that) {
         int type = that.getToken().getType();
         String text = that.getText();
-        if (type==AVERBATIM_STRING ||
-            type==ASTRING_LITERAL) {
-            Matcher m = DOC_LINK_PATTERN.matcher(text);
-            while (m.find()) {
-                String group = m.group(1);
-                int start = that.getStartIndex()+m.start(1);
-                int end = that.getStartIndex()+m.end(1);
-                CommonToken token = new CommonToken(ASTRING_LITERAL, group);
-                token.setStartIndex(start);
-                token.setStopIndex(end-1);
-                token.setTokenIndex(that.getToken().getTokenIndex());
-                that.addDocLink(new Tree.DocLink(token));
-            }
-        }
         if (type!=STRING_MID && 
             type!=STRING_END) {
             indent = getIndentPosition(that);
@@ -93,6 +79,20 @@ public class LiteralVisitor extends Visitor {
             type!=STRING_START) {
             indent = 0;
         }
+        
+        if (type==AVERBATIM_STRING || type==ASTRING_LITERAL) {
+            Matcher m = DOC_LINK_PATTERN.matcher(that.getText());
+            while (m.find()) {
+                String group = m.group(1);
+                int start = that.getStartIndex()+m.start(1);
+                int end = that.getStartIndex()+m.end(1);
+                CommonToken token = new CommonToken(ASTRING_LITERAL, group);
+                token.setStartIndex(start);
+                token.setStopIndex(end-1);
+                token.setTokenIndex(that.getToken().getTokenIndex());
+                that.addDocLink(new Tree.DocLink(token));
+            }
+        }        
     }
 
     @Override
