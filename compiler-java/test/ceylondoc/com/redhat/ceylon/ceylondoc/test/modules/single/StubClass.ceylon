@@ -231,7 +231,7 @@ shared class StubClass(
      1. parameter stubTopLevelMethod.numbers = [[stubTopLevelMethod.numbers]] 
      
      "
-    shared void methodWithLinksInDoc(String s) {}
+    shared default void methodWithLinksInDoc(String s) {}
         
     shared actual void formalMethodFromStubInterface() {}
     

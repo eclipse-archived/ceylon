@@ -297,34 +297,28 @@ public class LinkRenderer {
     }
 
     private String processWikiLink(final String docLinkText) {
-        Node scopeNode = ceylonDocTool.getNode(scope);
-        if( scopeNode != null ) {
-            final Tree.DocLink[] docLinks = new Tree.DocLink[1];
-            scopeNode.visit(new Visitor() {
-                @Override
-                public void visit(Tree.DocLink docLink) {
-                    if (docLink.getText().equals(docLinkText)) {
-                        docLinks[0] = docLink;
-                        return;
-                    }
-                }
-            });
-            Tree.DocLink docLink = docLinks[0];
-            if (docLink != null) {
-                if (docLink.getQualified() != null && docLink.getQualified().size() > 0) {
-                    return processDeclaration(docLink.getQualified().get(docLink.getQualified().size() - 1));
-                } else if (docLink.getBase() != null) {
-                    return processDeclaration(docLink.getBase());
-                } else if (docLink.getModule() != null) {
-                    return processModule(docLink.getModule());
-                } else if (docLink.getPkg() != null) {
-                    return processPackage(docLink.getPkg());
-                }
+        Tree.DocLink docLink = findDocLink(docLinkText, scope);
+        if (docLink == null && scope instanceof Declaration) {
+            Declaration refinedDeclaration = ((Declaration) scope).getRefinedDeclaration();
+            if (refinedDeclaration != scope) {
+                docLink = findDocLink(docLinkText, refinedDeclaration);
             }
         }
-        
+
+        if (docLink != null) {
+            if (docLink.getQualified() != null && docLink.getQualified().size() > 0) {
+                return processDeclaration(docLink.getQualified().get(docLink.getQualified().size() - 1));
+            } else if (docLink.getBase() != null) {
+                return processDeclaration(docLink.getBase());
+            } else if (docLink.getModule() != null) {
+                return processModule(docLink.getModule());
+            } else if (docLink.getPkg() != null) {
+                return processPackage(docLink.getPkg());
+            }
+        }
+
         ceylonDocTool.warningBrokenLink(docLinkText, scope);
-        
+
         return getUnresolvableLink(docLinkText);
     }
 
@@ -862,6 +856,23 @@ public class LinkRenderer {
         sb.append("</li>");
 
         return sb.toString();
+    }
+    
+    private Tree.DocLink findDocLink(final String docLinkText, Referenceable referenceable) {
+        final Tree.DocLink[] docLinks = new Tree.DocLink[1];
+        Node scopeNode = ceylonDocTool.getNode(referenceable);
+        if (scopeNode != null) {
+            scopeNode.visit(new Visitor() {
+                @Override
+                public void visit(Tree.DocLink docLink) {
+                    if (docLink.getText().equals(docLinkText)) {
+                        docLinks[0] = docLink;
+                        return;
+                    }
+                }
+            });
+        }
+        return docLinks[0];
     }
     
 }

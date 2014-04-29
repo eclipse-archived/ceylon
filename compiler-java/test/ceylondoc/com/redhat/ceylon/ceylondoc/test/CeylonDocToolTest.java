@@ -261,6 +261,7 @@ public class CeylonDocToolTest {
         assertBug839(destDir);
         assertBug927LoadingAndSortingInheritedMembers(destDir);
         assertBug968(destDir);
+        assertBug1619BrokenLinkFromInheritedDoc(destDir);
     }
 
     @Test
@@ -1229,6 +1230,13 @@ public class CeylonDocToolTest {
                 Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-class'><i class='icon-decoration-abstract'></i></i><span title='ceylon.language::Object'>Object</span><div class='inherited-members'>hash, string</div></td>")));
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile(Pattern.quote("<td>Attributes inherited from: <i class='icon-interface'></i><a class='link' href='StubInterface.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface'>StubInterface</a><div class='inherited-members'><a class='link' href='StubInterface.type.html#string' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.string'>string</a></div></td>")));
+    }
+    
+    private void assertBug1619BrokenLinkFromInheritedDoc(File destDir) throws Exception {
+        assertMatchInFile(destDir, "a/StubClassExtended.type.html", 
+                Pattern.compile("StubClass = <a class='link' href='../StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>"));
+        assertMatchInFile(destDir, "a/StubClassExtended.type.html", 
+                Pattern.compile("imported A1 = <a class='link' href='../a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'>A1</a>"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {
