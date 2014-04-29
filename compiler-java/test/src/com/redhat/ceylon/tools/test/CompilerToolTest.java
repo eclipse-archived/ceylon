@@ -23,12 +23,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.OptionArgumentException;
@@ -37,7 +35,6 @@ import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
-import com.redhat.ceylon.compiler.CompilerBugException;
 import com.redhat.ceylon.compiler.CompilerErrorException;
 import com.redhat.ceylon.compiler.SystemErrorException;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
