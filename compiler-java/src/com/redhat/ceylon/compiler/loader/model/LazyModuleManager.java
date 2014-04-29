@@ -55,10 +55,16 @@ public abstract class LazyModuleManager extends ModuleManager {
         String nameAsString = module.getNameAsString();
         String version = module.getVersion();
         if(version != null
-                && version.equals(AbstractModelLoader.JDK_MODULE_VERSION)
                 && AbstractModelLoader.isJDKModule(nameAsString)){
-            module.setAvailable(true);
-            module.setJava(true);
+            // substitute Java 8 for Java 7 if we're running on Java 8
+            if(JDKUtils.jdk == JDKUtils.JDK.JDK8 && version.equals(JDKUtils.JDK.JDK7.version)){
+                version = JDKUtils.JDK.JDK8.version;
+                module.setVersion(version);
+            }
+            if(version.equals(JDKUtils.jdk.version)){
+                module.setAvailable(true);
+                module.setJava(true);
+            }
         }
     }
 
@@ -180,8 +186,21 @@ public abstract class LazyModuleManager extends ModuleManager {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         if(AbstractModelLoader.isJDKModule(name)){
-            error = "unsupported JDK module version: the only supported version is '" + AbstractModelLoader.JDK_MODULE_VERSION + "' which you get with Java 7";
+            error = "unsupported JDK module version: the only supported version is '" + JDKUtils.jdk.version + "' which you get with Java "+JDKUtils.jdk.version;
         }
         super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error);
+    }
+
+    @Override
+    protected boolean compareVersions(Module current, String version, String currentVersion) {
+        String name = current.getNameAsString();
+        if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
+            // if we're running JDK8, pretend that it provides JDK7 modules
+            if(JDKUtils.jdk == JDKUtils.JDK.JDK8
+                    && JDKUtils.JDK.JDK7.version.equals(version)
+                    && JDKUtils.JDK.JDK8.version.equals(currentVersion))
+                return true;
+        }
+        return currentVersion == null || version == null || currentVersion.equals(version);
     }
 }
