@@ -20,6 +20,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.CeylondMessages.msg;
+import static com.redhat.ceylon.ceylondoc.Util.normalizeSpaces;
 import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateCallable;
 import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateEntry;
 import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateIterable;
@@ -865,7 +866,9 @@ public class LinkRenderer {
             scopeNode.visit(new Visitor() {
                 @Override
                 public void visit(Tree.DocLink docLink) {
-                    if (docLink.getText().equals(docLinkText)) {
+                    String s1 = normalizeSpaces(docLinkText);
+                    String s2 = normalizeSpaces(docLink.getText());
+                    if (s1.equals(s2)) {
                         docLinks[0] = docLink;
                         return;
                     }

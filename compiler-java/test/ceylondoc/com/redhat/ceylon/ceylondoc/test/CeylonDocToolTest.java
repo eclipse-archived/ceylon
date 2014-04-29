@@ -262,6 +262,7 @@ public class CeylonDocToolTest {
         assertBug927LoadingAndSortingInheritedMembers(destDir);
         assertBug968(destDir);
         assertBug1619BrokenLinkFromInheritedDoc(destDir);
+        assertBug1619BrokenLinkWithNewLine(destDir);
     }
 
     @Test
@@ -1237,6 +1238,11 @@ public class CeylonDocToolTest {
                 Pattern.compile("StubClass = <a class='link' href='../StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>StubClass</a>"));
         assertMatchInFile(destDir, "a/StubClassExtended.type.html", 
                 Pattern.compile("imported A1 = <a class='link' href='../a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'>A1</a>"));
+    }
+    
+    private void assertBug1619BrokenLinkWithNewLine(File destDir) throws Exception {
+        assertMatchInFile(destDir, "StubClass.type.html", 
+                Pattern.compile("bug1619BrokenLinkWithNewLine\\(\\)</div><div class='description'><div class='doc section'><p><a class='link-custom-text' href='StubClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass'>foo\nbar"));
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

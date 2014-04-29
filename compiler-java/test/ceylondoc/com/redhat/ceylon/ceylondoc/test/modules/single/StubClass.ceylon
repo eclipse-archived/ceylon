@@ -283,6 +283,10 @@ shared class StubClass(
     
     "Documented setter"
     assign getter => print(getter);
+    
+    "[[foo
+     bar|StubClass]]"
+    shared void bug1619BrokenLinkWithNewLine() {}
 }
 
 shared abstract class StubAbstractClass() {}

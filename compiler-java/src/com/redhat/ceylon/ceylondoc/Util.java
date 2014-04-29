@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import com.github.rjeschke.txtmark.BlockEmitter;
 import com.github.rjeschke.txtmark.Configuration;
@@ -49,17 +50,26 @@ import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class Util {
     
-    private static final Set<String> abbreviatedTypes = new HashSet<String>();
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("(?: |\\u00A0|\\s|[\\s&&[^ ]])\\s*");
+    
+    private static final Set<String> ABBREVIATED_TYPES = new HashSet<String>();
     static {
-        abbreviatedTypes.add("ceylon.language::Empty");
-        abbreviatedTypes.add("ceylon.language::Entry");
-        abbreviatedTypes.add("ceylon.language::Sequence");
-        abbreviatedTypes.add("ceylon.language::Sequential");
-        abbreviatedTypes.add("ceylon.language::Iterable");
+        ABBREVIATED_TYPES.add("ceylon.language::Empty");
+        ABBREVIATED_TYPES.add("ceylon.language::Entry");
+        ABBREVIATED_TYPES.add("ceylon.language::Sequence");
+        ABBREVIATED_TYPES.add("ceylon.language::Sequential");
+        ABBREVIATED_TYPES.add("ceylon.language::Iterable");
     }
+    
+    public static String normalizeSpaces(String str) {
+        if (str == null) {
+            return null;
+        }
+        return WHITESPACE_PATTERN.matcher(str).replaceAll(" ");
+    } 
 
     public static boolean isAbbreviatedType(Declaration decl) {
-        return abbreviatedTypes.contains(decl.getQualifiedNameString());
+        return ABBREVIATED_TYPES.contains(decl.getQualifiedNameString());
     }
 	
 	public static String join(String separator, List<String> parts) {
