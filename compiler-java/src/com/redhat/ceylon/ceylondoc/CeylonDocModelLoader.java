@@ -31,7 +31,9 @@ import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.LoaderJULLogger;
 import com.redhat.ceylon.model.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.FunctionalInterface;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
@@ -151,5 +153,11 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     @Override
     protected void makeInteropAnnotationConstructorInvocation(AnnotationProxyMethod ctor, AnnotationProxyClass klass, List<Parameter> ctorParams) {
         // nothing to do
+    }
+
+    @Override
+    protected FunctionalInterface getFunctionalInterface(TypeMirror type) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

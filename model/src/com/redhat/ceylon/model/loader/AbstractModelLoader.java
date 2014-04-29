@@ -33,6 +33,7 @@ import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.FieldMirror;
+import com.redhat.ceylon.model.loader.mirror.FunctionalInterface;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.mirror.PackageMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeKind;
@@ -85,6 +86,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -5104,9 +5106,45 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (ret.getUnderlyingType() == null) {
             ret.setUnderlyingType(getUnderlyingType(originalType, location));
         }
+        if(location == TypeLocation.TOPLEVEL 
+                && variance == VarianceLocation.CONTRAVARIANT){
+            Type callableType = getFunctionalInterfaceType(moduleScope, scope, type);
+            if(callableType != null){
+                System.err.println(type+" is a FunctionalInterface: "+callableType);
+                UnionType pt = new UnionType(typeFactory);
+                List<Type> caseTypes = new ArrayList<Type>(2);
+                caseTypes.add(ret);
+                caseTypes.add(callableType);
+                pt.setCaseTypes(caseTypes);
+                ret = pt.getType();
+            }
+        }
         return ret;
     }
     
+    private Type getFunctionalInterfaceType(Module moduleScope, Scope scope, TypeMirror type) {
+        //        System.err.println("getfunctional for "+type);
+        if(type instanceof SimpleReflType)
+            return null;
+        FunctionalInterface functionalInterface = getFunctionalInterface(type);
+        if(functionalInterface == null)
+            return null;
+        // we found one
+        Type returnType = obtainType(moduleScope, functionalInterface.returnType, scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
+        List<TypeMirror> parameters = functionalInterface.parameterTypes;
+        List<Type> parameterTypes = new ArrayList<Type>(parameters.size());
+        for(TypeMirror parameter : parameters){
+            Type parameterType = obtainType(moduleScope, parameter, scope, 
+                    TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+            parameterTypes.add(parameterType);
+        }
+        Type parameterTuple = typeFactory.getTupleType(parameterTypes, false, false, -1);
+        Type callableType = typeFactory.getCallableDeclaration().appliedType(null, Arrays.asList(returnType, parameterTuple));
+        return callableType;
+    }
+
+    protected abstract FunctionalInterface getFunctionalInterface(TypeMirror type);
+        
     private TypeMirror applyTypeMapping(TypeMirror type, TypeLocation location) {
         // don't erase to c.l.String if in a type param location
         if (sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM) {

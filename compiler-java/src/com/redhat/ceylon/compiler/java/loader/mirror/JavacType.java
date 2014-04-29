@@ -36,7 +36,7 @@ import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 
 public class JavacType implements TypeMirror {
 
-    private Type type;
+    public final Type type;
     private List<TypeMirror> typeArguments;
     private boolean componentTypeSet;
     private TypeMirror componentType;
