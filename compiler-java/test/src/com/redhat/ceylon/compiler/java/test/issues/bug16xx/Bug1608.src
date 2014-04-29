@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1a_",
+        "1param_",
+        "2param_"})
+final class bug1608_ {
+    
+    private bug1608_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1608(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object param) {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.Object
+        final class a_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private a_() {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1608_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(a_.class));
+            }
+        }
+        final a_ a = new a_();
+        (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("param")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                final class param_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private param_() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1608_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(param_.class));
+                    }
+                }
+                final param_ arg$0$0 = new param_();
+                .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1608_.bug1608(arg$0$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("param")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                final class param_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private param_() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1608_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(param_.class));
+                    }
+                }
+                final param_ arg$1$0 = new param_();
+                .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1608_.bug1608(arg$1$0);
+            }
+            returning null;
+        );
+    }
+}
