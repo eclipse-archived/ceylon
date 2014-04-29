@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.tools.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,8 +40,9 @@ import com.redhat.ceylon.compiler.CeylonCompileTool;
 import com.redhat.ceylon.compiler.CompilerBugException;
 import com.redhat.ceylon.compiler.CompilerErrorException;
 import com.redhat.ceylon.compiler.SystemErrorException;
+import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
-public class CompilerToolTest {
+public class CompilerToolTest extends CompilerTest {
     
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
@@ -83,6 +86,20 @@ public class CompilerToolTest {
         CeylonCompileTool tool = pluginFactory.bindArguments(model, 
                 options("--verbose", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
+    }
+    
+    @Test
+    public void testCompileMultiple()  throws Exception {
+        File carFile1 = getModuleArchive("com.redhat.ceylon.tools.test.multiple.sub1", "1.0");
+        carFile1.delete();
+        File carFile2 = getModuleArchive("com.redhat.ceylon.tools.test.multiple.sûb2", "1.0");
+        carFile2.delete();
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                Arrays.asList("--out=" + destDir, "--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
+        tool.run();
+        assertTrue(carFile1.exists() && carFile2.exists());
     }
     
     @Test
