@@ -181,7 +181,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         if (d instanceof Value) {
             Setter setter = ((Value) d).getSetter();
             if (setter != null && Util.getAnnotation(setter.getAnnotations(), "doc") != null) {
-                tool.warningSetterDoc(d.getQualifiedNameString());
+                tool.warningSetterDoc(d.getQualifiedNameString(), d);
             }
         }
         close("div");
@@ -244,7 +244,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         writeDeprecated(d);
         String doc = getDoc(d, linkRenderer());
         if (isEmpty(doc)) {
-            tool.warningMissingDoc(d.getQualifiedNameString());
+            tool.warningMissingDoc(d.getQualifiedNameString(), d);
         }
         around("div class='doc section'", doc);
         if( d instanceof MethodOrValue ) {

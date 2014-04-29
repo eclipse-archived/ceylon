@@ -86,6 +86,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -755,6 +756,11 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                     }
                     super.visit(that);
                 }
+                public void visit(Tree.SpecifierStatement that) {
+                    modelUnitMap.put(that.getDeclaration(), pu);
+                    modelNodeMap.put(that.getDeclaration(), that);
+                    super.visit(that);
+                }
                 public void visit(Tree.Parameter param) {
                     parameterUnitMap.put(param.getParameterModel(), pu);
                     parameterNodeMap.put(param.getParameterModel(), param);
@@ -1174,20 +1180,20 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         return log;
     }
 
-    protected void warningMissingDoc(String name) {
+    protected void warningMissingDoc(String name, Referenceable scope) {
         if (!ignoreMissingDoc) {
-            log.warning(CeylondMessages.msg("warn.missingDoc", name));
+            log.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(scope)));
         }
     }
-    
+
     protected void warningBrokenLink(String link, Referenceable scope) {
         if (!ignoreBrokenLink) {
-            log.warning(CeylondMessages.msg("warn.brokenLink", link, getWhere(scope)));
+            log.warning(CeylondMessages.msg("warn.brokenLink", link, getWhere(scope), getPosition(scope)));
         }
     }
     
-    protected void warningSetterDoc(String name) {
-        log.warning(CeylondMessages.msg("warn.setterDoc", name));
+    protected void warningSetterDoc(String name, TypedDeclaration scope) {
+        log.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(scope)));
     }
 
     protected void warningMissingThrows(Declaration d) {
@@ -1239,7 +1245,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 }
             }
             if (!isDocumented) {
-                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.getProducedTypeName(), getWhere(d)));
+                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.getProducedTypeName(), getWhere(d), getPosition(d)));
             }
         }
     }
@@ -1279,6 +1285,17 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             where += scope.getNameAsString();            
         }
         return where;
+    }
+    
+    private String getPosition(Referenceable scope) {
+        Node node = getNode(scope);
+        if (node != null && 
+                node.getToken() != null && 
+                node.getUnit() != null && 
+                node.getUnit().getFilename() != null) {
+            return "(" + node.getUnit().getFilename() + ":" + node.getToken().getLine() + ")";
+        }
+        return "";
     }
     
 }

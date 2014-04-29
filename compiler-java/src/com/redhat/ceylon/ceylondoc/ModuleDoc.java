@@ -80,7 +80,7 @@ public class ModuleDoc extends CeylonDoc {
         writeLinkSourceCode(module);
         String doc = getDoc(module, linkRenderer());
         if (isEmpty(doc)) {
-            tool.warningMissingDoc(module.getNameAsString());
+            tool.warningMissingDoc(module.getNameAsString(), module);
         }
         around("div class='doc section'", doc);
 

@@ -179,7 +179,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         open("div class='package-description'");
         String doc = getDoc(pkg, linkRenderer());
         if (isEmpty(doc)) {
-            tool.warningMissingDoc(pkg.getQualifiedNameString());
+            tool.warningMissingDoc(pkg.getQualifiedNameString(), pkg);
         }
         around("div class='doc'", doc);
         writeAnnotations(pkg);
