@@ -22,11 +22,41 @@ class Foo(){
     shared class Bar() satisfies I{}
 }
 
+class NonBasicNonIdentifiable() extends Object() {
+    equals(Object o) => false;
+    hash => 1;
+}
+object nonBasicNonIdentifiable extends Object() {
+    equals(Object o) => false;
+    hash => 1;
+}
+class NonBasicButIdentifiable() extends Object() satisfies Identifiable {
+    equals(Object o) => false;
+    hash => 1;
+}
+object nonBasicButIdentifiable extends Object() satisfies Identifiable {
+    equals(Object o) => false;
+    hash => 1;
+}
+
 shared void bug706() {
     Anything x1 = Foo().Bar();
-    if (is Identifiable x1) {}
+    assert(is Identifiable x1, is Basic x1);
+    
     class C() {}
     object obj extends C() {}        
     Anything x = obj;
-    if (is Identifiable x) {}
+    assert(is Identifiable x, is Basic x);
+    
+    Anything x2 = NonBasicButIdentifiable();
+    assert(is Identifiable x2, !is Basic x2);
+
+    Anything x2o = nonBasicButIdentifiable;
+    assert(is Identifiable x2o, !is Basic x2o);
+    
+    Anything x3 = NonBasicNonIdentifiable();
+    assert(!is Identifiable x3, !is Basic x3);
+
+    Anything x3o = nonBasicNonIdentifiable;
+    assert(!is Identifiable x3o, !is Basic x3o);
 }
