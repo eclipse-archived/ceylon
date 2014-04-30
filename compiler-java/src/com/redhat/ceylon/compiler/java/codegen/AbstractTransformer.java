@@ -4110,10 +4110,6 @@ public abstract class AbstractTransformer implements Transformation {
         return makeAtTypeParameter(param.getDeclarationModel());
     }
     
-    final List<JCExpression> typeArguments(Tree.AnyClass type) {
-        return typeArguments(type);
-    }
-    
     final List<JCExpression> typeArguments(Functional method) {
         return typeArguments(method.getTypeParameters(), method.getType().getTypeArguments());
     }
