@@ -1230,6 +1230,9 @@ public class StatementTransformer extends AbstractTransformer {
         
         ForStatementTransformation transformation = arraySequenceIteration(stmt, baseIterable, step);
         if (transformation == null) {
+            transformation = tupleIteration(stmt, baseIterable, step);
+        }
+        if (transformation == null) {
             transformation = arrayIteration(stmt, baseIterable, step);
         }
         if (transformation == null) {
@@ -1675,6 +1678,24 @@ public class StatementTransformer extends AbstractTransformer {
                     "static type of iterable in for statement is not ArraySequence");
         }
         // it's an array sequence
+        return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
+                typeFact().getIteratedType(iterableType));
+    }
+    
+    private ForStatementTransformation tupleIteration(Tree.ForStatement stmt, 
+            Tree.Term baseIterable, Tree.Term step) {
+        if (isOptimizationDisabled(stmt, Optimization.TupleIterationStatic)) {
+            return optimizationFailed(stmt, Optimization.TupleIterationStatic, 
+                    "optimization explicitly disabled by @disableOptimization");
+        }
+        
+        ProducedType iterableType = baseIterable.getTypeModel();
+        if (iterableType.getSupertype(typeFact().getTupleDeclaration()) == null) {
+            return optimizationFailed(stmt, Optimization.TupleIterationStatic, 
+                    "static type of iterable in for statement is not Tuple");
+        }
+        // it's a tuple, and the java impl of Tuple handily inherits from 
+        // ArraySequence, so we can reuse that optimization.
         return new ArraySequenceIterationOptimization(stmt, baseIterable, step, 
                 typeFact().getIteratedType(iterableType));
     }

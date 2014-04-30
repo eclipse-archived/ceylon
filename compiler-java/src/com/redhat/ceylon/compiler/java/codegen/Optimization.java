@@ -12,6 +12,7 @@ public enum Optimization {
     ArrayIterationStatic,
     JavaArrayIterationStatic,
     ArraySequenceIterationStatic,
+    TupleIterationStatic,
     ArrayIterationDynamic,
     ArraySequenceIterationDynamic,
     
