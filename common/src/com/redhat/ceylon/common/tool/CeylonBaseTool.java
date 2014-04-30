@@ -3,6 +3,8 @@ package com.redhat.ceylon.common.tool;
 import java.io.File;
 import java.util.List;
 
+import com.redhat.ceylon.common.FileUtil;
+
 public abstract class CeylonBaseTool implements Tool {
     protected File cwd;
     public String verbose;
@@ -52,4 +54,11 @@ public abstract class CeylonBaseTool implements Tool {
         }
     }
 
+    protected List<File> applyCwd(List<File> files) {
+        return FileUtil.applyCwd(getCwd(), files);
+    }
+
+    protected File applyCwd(File file) {
+        return FileUtil.applyCwd(getCwd(), file);
+    }
 }
