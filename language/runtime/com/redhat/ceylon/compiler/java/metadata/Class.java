@@ -16,4 +16,14 @@ public @interface Class {
      * Defaults to your Java super class, or ceylon.language::Basic if it is java.lang.Object
      */
     String extendsType() default "";
+    
+    /**
+     * Set to false if this class does not extend ceylon.language::Basic. Defaults to true.
+     */
+    boolean basic() default true;
+
+    /**
+     * Set to false if this class does not implement ceylon.language::Identifiable. Defaults to true.
+     */
+    boolean identifiable() default true;
 }

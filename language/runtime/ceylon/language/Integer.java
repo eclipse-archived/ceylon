@@ -19,7 +19,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::Binary<ceylon.language::Integer>",
     "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>"
 })
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @ValueType
 public final class Integer
     implements Scalar<Integer>, Integral<Integer>,

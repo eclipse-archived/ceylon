@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",

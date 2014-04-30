@@ -1,10 +1,6 @@
 package com.redhat.ceylon.compiler.java;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
@@ -21,10 +17,8 @@ import ceylon.language.finished_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.compiler.java.language.ArrayIterable;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -63,140 +57,36 @@ public class Util {
      * Returns true if the given object satisfies ceylon.language.Identifiable
      */
     public static boolean isIdentifiable(java.lang.Object o){
-        return satisfiesInterface(o, "ceylon.language.Identifiable");
+        if(o == null)
+            return false;
+        Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(o);
+        // unless marked as NOT identifiable, every instance is Identifiable
+        return classAnnotation != null ? classAnnotation.identifiable() : true;
     }
     
+    private static Class getClassAnnotationForIdentifiableOrBasic(Object o) {
+        java.lang.Class<? extends Object> klass = o.getClass();
+        while(klass != null && klass != java.lang.Object.class){
+            Class classAnnotation = klass.getAnnotation(Class.class);
+            if(classAnnotation != null){
+                return classAnnotation;
+            }
+            // else keep looking up
+            klass = klass.getSuperclass();
+        }
+        // no annotation found
+        return null;
+    }
+
     /**
      * Returns true if the given object extends ceylon.language.Basic
      */
     public static boolean isBasic(java.lang.Object o){
-        return extendsClass(o, "ceylon.language.Basic");
-    }
-    
-    /**
-     * Returns true if the given object extends the given class
-     */
-    public static boolean extendsClass(java.lang.Object o, String className) {
         if(o == null)
             return false;
-        if(className == null)
-            throw new AssertionError("Type name cannot be null");
-        return classExtendsClass(o.getClass(), className);
-    }
-    
-    private static boolean classExtendsClass(java.lang.Class<?> klass, String className) {
-        if(klass == null)
-            return false;
-        if (klass.getName().equals(className))
-            return true;
-        if ((className.equals("ceylon.language.Basic"))
-                && klass!=java.lang.Object.class
-                //&& klass!=java.lang.String.class
-        		&& !klass.isAnnotationPresent(Class.class)
-        		&& (!klass.isInterface() || !klass.isAnnotationPresent(Ceylon.class))) {
-        	//TODO: this is broken for a Java class that
-        	//      extends a Ceylon class
-        	return true;
-        }
-        return classExtendsClass(getCeylonSuperClass(klass), className);
-    }
-    
-    private static java.lang.Class<?> getCeylonSuperClass(java.lang.Class<?> klass) {
-        Class classAnnotation = klass.getAnnotation(Class.class);
-        // only consider Class.extendsType() if non-empty
-        if (classAnnotation != null && !classAnnotation.extendsType().isEmpty()) {
-            String superclassName = declClassName(classAnnotation.extendsType());
-            int i = superclassName.indexOf('<');
-            if (i>0) {
-                superclassName = superclassName.substring(0, i);
-            }
-            if (superclassName.isEmpty()) {
-                throw new RuntimeException("Malformed @Class.extendsType() annotation value: "+classAnnotation.extendsType());
-            }
-            try {
-                return java.lang.Class.forName(superclassName, true, klass.getClassLoader()); 
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        // we consider that subclasses of Object that do not have any @Ceylon.extendsType() are in fact subclasses of Basic
-        if(klass.getSuperclass() != java.lang.Object.class)
-            return klass.getSuperclass();
-        // Anything has no super class
-        if(klass == ceylon.language.Anything.class)
-            return null;
-        // The default super class is Basic
-        return ceylon.language.Basic.class;
-    }
-
-    /**
-     * Returns true if the given object satisfies the given interface
-     */
-    public static boolean satisfiesInterface(java.lang.Object o, String className){
-        if(o == null)
-            return false;
-        if(className == null)
-            throw new AssertionError("Type name cannot be null");
-        // we use a hash set to speed things up for interfaces, to avoid looking at them twice
-        Set<java.lang.Class<?>> alreadyVisited = new HashSet<java.lang.Class<?>>();
-        return classSatisfiesInterface(o.getClass(), className, alreadyVisited);
-    }
-
-    private static boolean classSatisfiesInterface(java.lang.Class<?> klass, String className, 
-            Set<java.lang.Class<?>> alreadyVisited) {
-        if(klass == null
-                || klass == ceylon.language.Anything.class)
-            return false;
-        if ((className.equals("ceylon.language.Identifiable"))
-                && klass!=java.lang.Object.class
-                //&& klass!=java.lang.String.class
-                && !klass.isAnnotationPresent(Ceylon.class)) {
-            //TODO: this is broken for a Java class that
-            //      extends a Ceylon class
-            return true;
-        }
-        // try the interfaces
-        if(lookForInterface(klass, className, alreadyVisited))
-            return true;
-        // try its superclass
-        return classSatisfiesInterface(getCeylonSuperClass(klass), className, alreadyVisited);
-    }
-
-    private static boolean lookForInterface(java.lang.Class<?> klass, String className, 
-            Set<java.lang.Class<?>> alreadyVisited){
-        if (klass.getName().equals(className))
-            return true;
-        // did we already visit this type?
-        if(!alreadyVisited.add(klass))
-            return false;
-        // first see if it satisfies it directly
-        SatisfiedTypes satisfiesAnnotation = klass.getAnnotation(SatisfiedTypes.class);
-        if (satisfiesAnnotation!=null){
-            for (String satisfiedType : satisfiesAnnotation.value()){
-                satisfiedType = declClassName(satisfiedType);
-                int i = satisfiedType.indexOf('<');
-                if (i>0) {
-                    satisfiedType = satisfiedType.substring(0, i);
-                }
-                try {
-                    if (lookForInterface(
-                            java.lang.Class.forName(satisfiedType, true, klass.getClassLoader()), 
-                            className, alreadyVisited)) {
-                        return true;
-                    }
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }else{
-            // otherwise look at this class's interfaces
-            for (java.lang.Class<?> intrface : klass.getInterfaces()){
-                if (lookForInterface(intrface, className, alreadyVisited))
-                    return true;
-            }
-        }
-        // no luck
-        return false;
+        Class classAnnotation = getClassAnnotationForIdentifiableOrBasic(o);
+        // unless marked as NOT identifiable, every instance is Basic
+        return classAnnotation != null ? classAnnotation.basic() : true;
     }
     
     //

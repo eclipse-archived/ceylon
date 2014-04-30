@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @SatisfiedTypes({
     "ceylon.language::Scalar<ceylon.language::Float>",
     "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>"

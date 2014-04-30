@@ -16,7 +16,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
-@Class(extendsType="ceylon.language::Object")
+@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",

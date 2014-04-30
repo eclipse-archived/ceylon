@@ -17,7 +17,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
-@Class(extendsType="ceylon.language::Object")
+@Class
 @SatisfiedTypes("ceylon.language::Sequence<Element>")
 @TypeParameters(@TypeParameter(value = "Element"))
 public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
