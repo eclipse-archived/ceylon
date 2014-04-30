@@ -162,6 +162,8 @@ public class LazyPackage extends Package {
     public String getQualifiedName(final String pkgName, String name) {
         // FIXME: some refactoring needed
         name = Naming.quoteIfModuleOrPackageName(name);
+        // no need to quote the name itself as java keywords are lower-cased and we append a _ to every
+        // lower-case toplevel so they can never be java keywords
         String className = pkgName.isEmpty() ? name : Util.quoteJavaKeywords(pkgName) + "." + name;
         return className;
     }

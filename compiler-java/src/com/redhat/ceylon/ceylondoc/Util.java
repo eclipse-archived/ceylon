@@ -348,8 +348,9 @@ public class Util {
 
     public static String getQuotedFQN(String pkgName, com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
         String name = decl.getIdentifier().getText();
-        String qualifiedName = pkgName.isEmpty() ? name : pkgName + "." + name;
-        return com.redhat.ceylon.compiler.java.util.Util.quoteJavaKeywords(qualifiedName);
+        // no need to quote the name itself as java keywords are lower-cased and we append a _ to every
+        // lower-case toplevel so they can never be java keywords
+        return pkgName.isEmpty() ? name : com.redhat.ceylon.compiler.java.util.Util.quoteJavaKeywords(pkgName) + "." + name;
     }
     
     private static class CeylondocBlockEmitter implements BlockEmitter {
