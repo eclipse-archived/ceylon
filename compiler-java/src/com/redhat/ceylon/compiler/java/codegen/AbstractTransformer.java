@@ -2600,6 +2600,25 @@ public abstract class AbstractTransformer implements Transformation {
             JCExpression extendsAttribute = make().Assign(naming.makeUnquotedIdent("extendsType"), extendsValue);
             attributes = attributes.prepend(extendsAttribute);
         }
+        boolean isBasic = true;
+        boolean isIdentifiable = true;
+        if(extendedType == null){
+            // special for Anything
+            isBasic = isIdentifiable = false;
+        }else if(thisType != null){
+            isBasic = thisType.getSupertype(typeFact.getBasicDeclaration()) != null;
+            // if isBasic, then isIdentifiable remains true
+            if(!isBasic)
+                isIdentifiable = thisType.getSupertype(typeFact.getIdentifiableDeclaration()) != null;
+        }
+        if (!isBasic) {
+            JCExpression basicAttribute = make().Assign(naming.makeUnquotedIdent("basic"), makeBoolean(false));
+            attributes = attributes.prepend(basicAttribute);
+        }
+        if (!isIdentifiable) {
+            JCExpression identifiableAttribute = make().Assign(naming.makeUnquotedIdent("identifiable"), makeBoolean(false));
+            attributes = attributes.prepend(identifiableAttribute);
+        }
         return makeModelAnnotation(syms().ceylonAtClassType, attributes);
     }
 
