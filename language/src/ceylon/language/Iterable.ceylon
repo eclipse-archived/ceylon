@@ -650,15 +650,31 @@ shared interface Iterable<out Element, out Absent=Null>
      If the stream is very long, the list of elements might 
      be truncated, as indicated by an ellipse."
     shared actual default String string {
-        if (empty) {
-            return "{}";
+        value sb = StringBuilder();
+        sb.append("{");
+        value it = iterator();
+        variable value current = it.next();
+        if (!is Finished c1 = current) {
+            sb.append(" ");
+            sb.append(current?.string else "<null>");
+            variable value count = 1;
+            while (true) {
+                current = it.next();
+                if (is Finished c2 = current) {
+                    sb.append(" ");
+                    break;
+                } else if (count == 30) {
+                    sb.append(", ... "); // TODO use Unicode ellipse '…'?
+                    break;
+                } else {
+                    sb.append(", ");
+                    sb.append(current?.string else "<null>");
+                    count++;
+                }
+            }
         }
-        else {
-            String list = commaList(taking(30));
-            return "{ `` longerThan(30) 
-                        then list + ", ..." 
-                        else list `` }"; 
-        }
+        sb.append("}");
+        return sb.string;
     }
     
     "An infinite stream that produces the elements of this 
