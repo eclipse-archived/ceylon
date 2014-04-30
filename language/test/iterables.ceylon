@@ -87,8 +87,8 @@ shared void testIterables() {
     check(myEmpty.sort((Integer a, Integer b) => larger).sequence=={}, "empty.sort");
     check(myEmpty.every((Integer x) => true), "empty.every");
     check(!myEmpty.any((Integer x) => true), "empty.any");
-    check(myEmpty.skipping(1).sequence=={}, "empty.skipping");
-    check(myEmpty.taking(1).sequence=={}, "empty.taking");
+    check(myEmpty.skip(1).sequence=={}, "empty.skip");
+    check(myEmpty.take(1).sequence=={}, "empty.take");
 
     Integer[] vacio = {};
     check(vacio.map((Integer i) => i).empty, "empty.map");
@@ -100,8 +100,8 @@ shared void testIterables() {
     check(vacio.sort((Integer a, Integer b) => larger).sequence=={}, "empty.sort");
     check(vacio.every((Integer x) => true), "empty.every");
     check(!vacio.any((Integer x) => true), "empty.any");
-    check(vacio.skipping(1).sequence=={}, "empty.skipping");
-    check(vacio.taking(1).sequence=={}, "empty.taking");
+    check(vacio.skip(1).sequence=={}, "empty.skip");
+    check(vacio.take(1).sequence=={}, "empty.take");
  
     //Singleton optimized implementations 
     check(Singleton(5).map((Integer i) => i.float).sequence=={5.0}.sequence, "Singleton.map");
@@ -113,10 +113,10 @@ shared void testIterables() {
     check(Singleton(5).sort((Integer x, Integer y) => x<=>y) == Singleton(5), "Singleton.sort");
     check(Singleton(1).any((Integer x) => x == 1), "Singleton.any");
     check(Singleton(1).every((Integer x) => x>0), "Singleton.every");
-    check(Singleton(1).skipping(0).sequence=={1}.sequence, "Singleton.skipping [1]");
-    check(Singleton(1).skipping(1).sequence=={}, "Singleton.skipping [2]");
-    check(Singleton(1).skipping(9).sequence=={}, "Singleton.skipping [3]");
-    check(Singleton(1).taking(5).sequence=={1}.sequence, "Singleton.taking");
+    check(Singleton(1).skip(0).sequence=={1}.sequence, "Singleton.skip [1]");
+    check(Singleton(1).skip(1).sequence=={}, "Singleton.skip [2]");
+    check(Singleton(1).skip(9).sequence=={}, "Singleton.skip [3]");
+    check(Singleton(1).take(5).sequence=={1}.sequence, "Singleton.take");
     check(Singleton(1).by(1).sequence=={1}.sequence, "Singleton.by [1]");
     check(Singleton(1).by(5).sequence=={1}.sequence, "Singleton.by [2]");
     //Let's test by(0) with Singleton
@@ -142,24 +142,24 @@ shared void testIterables() {
     check("hola".sort((Character a, Character b) => a<=>b) == "ahlo", "String.sort");
 
     //Skipping
-    check({1,2,3,4,5}.skipping(3).sequence=={4,5}.sequence, "skipping [1]");
-    check(!{1,2,3,4,5}.skipping(9).sequence nonempty, "skipping [2]");
-    check((1..10).skipping(5)==6..10, "Range.skipping [3]");
-    check(!(1..5).skipping(9).sequence nonempty, "skipping [4]");
-    check((5..1).skipping(2)==3..1, "Range.skipping [5]");
-    check("hola".skipping(2)=="la", "String.skipping");
-    check({for(i in 1..10) i}.skipping(8).sequence=={9,10}.sequence, "comprehension.skipping");
+    check({1,2,3,4,5}.skip(3).sequence=={4,5}.sequence, "skip [1]");
+    check(!{1,2,3,4,5}.skip(9).sequence nonempty, "skip [2]");
+    check((1..10).skip(5)==6..10, "Range.skip [3]");
+    check(!(1..5).skip(9).sequence nonempty, "skip [4]");
+    check((5..1).skip(2)==3..1, "Range.skip [5]");
+    check("hola".skip(2)=="la", "String.skip");
+    check({for(i in 1..10) i}.skip(8).sequence=={9,10}.sequence, "comprehension.skip");
 
     //Taking
-    check({1,2,3,4,5}.taking(3).sequence=={1,2,3}.sequence, "taking [1]");
-    check(!{1,2,3,4,5}.taking(0).sequence nonempty, "taking [2]");
-    check((1..10).taking(5)==1..5, "Range.taking [3]");
-    check(!(1..5).taking(0).sequence nonempty, "Range.taking [4]");
-    check((1..10).taking(100)==1..10, "Range.taking [5]");
-    check({1,2,3,4,5}.taking(100).sequence=={1,2,3,4,5}.sequence, "taking [6]");
-    check((5..1).taking(3)==5..3, "Range.taking [7]");
-    check("hola".taking(2)=="ho", "String.taking");
-    check({for (i in 1..10) i}.taking(2).sequence=={1,2}.sequence, "comprehension.taking");
+    check({1,2,3,4,5}.take(3).sequence=={1,2,3}.sequence, "take [1]");
+    check(!{1,2,3,4,5}.take(0).sequence nonempty, "take [2]");
+    check((1..10).take(5)==1..5, "Range.take [3]");
+    check(!(1..5).take(0).sequence nonempty, "Range.take [4]");
+    check((1..10).take(100)==1..10, "Range.take [5]");
+    check({1,2,3,4,5}.take(100).sequence=={1,2,3,4,5}.sequence, "take [6]");
+    check((5..1).take(3)==5..3, "Range.take [7]");
+    check("hola".take(2)=="ho", "String.take");
+    check({for (i in 1..10) i}.take(2).sequence=={1,2}.sequence, "comprehension.take");
 
     //By
     check({1,2,3,4,5}.by(1).sequence=={1,2,3,4,5}.sequence, "by [1]");
@@ -311,7 +311,7 @@ shared void testIterables() {
             return "{}";
         }
         else {
-            String list = commaList(self.taking(30));
+            String list = commaList(self.take(30));
             return "{ `` self.longerThan(30)
                         then list + ", ..."
                         else list `` }";
@@ -324,14 +324,14 @@ shared void testIterables() {
         return t;
     }
     for (i in 0..64) {
-        value cur = { for (t in { "x", null }) counting(t) }.cycled.taking(i);
+        value cur = { for (t in { "x", null }) counting(t) }.cycled.take(i);
         value lazinessProtecting = cur.string;
         value expectedCount = min { i, 31 };
         check(count == expectedCount, "Iterable.string, evaluate only ``count`` of ``i`` elements  (expecting ``expectedCount``)");
         value breakingLaziness = oldString(cur);
         // count is now higher than 2 * min { i, 31 }
         // because the old string implementation evaluates elements multiple times
-        check(lazinessProtecting.replace("[]", "{}" /* taking(0) returns empty */) == breakingLaziness, "Iterable.string, ``i`` elements");
+        check(lazinessProtecting.replace("[]", "{}" /* take(0) returns empty */) == breakingLaziness, "Iterable.string, ``i`` elements");
         count = 0;
     }
 }

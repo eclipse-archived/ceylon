@@ -16,7 +16,7 @@ shared class LazyList<out Element>(elements)
     
     shared actual Element? get(Integer index) {
         if (index >= 0) {
-            return elements.skipping(index).first;
+            return elements.skip(index).first;
         }
         else {
             return null;
@@ -51,35 +51,35 @@ shared class LazyList<out Element>(elements)
         Integer fromIndex = largest(from,0);
         if (toIndex >= fromIndex) {
             value els = fromIndex > 0 
-                    then elements.skipping(fromIndex)
+                    then elements.skip(fromIndex)
                     else elements;
-            return LazyList(els.taking(toIndex-fromIndex+1));
+            return LazyList(els.take(toIndex-fromIndex+1));
         } 
         else {
             //reversed
             value seq = toIndex > 0 
-                    then elements.skipping(toIndex)
+                    then elements.skip(toIndex)
                     else elements;
-            return seq.taking(fromIndex-toIndex+1)
+            return seq.take(fromIndex-toIndex+1)
                     .sequence.reversed;
         }
     }
     
     spanTo(Integer to) => to < 0
             then []
-            else LazyList(elements.taking(to+1));
+            else LazyList(elements.take(to+1));
     
     spanFrom(Integer from) => from > 0
-            then LazyList(elements.skipping(from))
+            then LazyList(elements.skip(from))
             else this;
     
     shared actual List<Element> segment
             (Integer from, Integer length) {
         if (length > 0) {
             value els = from > 0 
-                    then elements.skipping(from)
+                    then elements.skip(from)
                     else elements;
-            return LazyList(els.taking(length));
+            return LazyList(els.take(length));
         } 
         else {
             return [];

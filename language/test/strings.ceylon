@@ -250,8 +250,8 @@ shared void strings() {
     check("hello world".terminal(11)=="hello world", "string terminal 6");
     check("hello".by(2)=="hlo", "string.by");
     check(" world".following("hello").sequence=={"hello", ' ','w','o','r','l','d'}.sequence, "string.following: ``" world".following("hello")``");
-    check("hello".skipping(3)=="lo", "string.skipping");
-    check("hello".taking(2)=="he", "string.taking");
+    check("hello".skip(3)=="lo", "string.skip");
+    check("hello".take(2)=="he", "string.take");
     check("EL" == String("hElLo".filter((Character c) => c.uppercase)), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
     check(String("hElLo".filter((Character c) => c.uppercase)) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
     check("what".sort(byIncreasing(Character))=="ahtw", "string.sort");

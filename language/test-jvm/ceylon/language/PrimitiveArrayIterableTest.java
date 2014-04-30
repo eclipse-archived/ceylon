@@ -11,7 +11,7 @@ public class PrimitiveArrayIterableTest {
 
     @Test
     public void testIntArrayIterable() {
-        IntArrayIterable zero_ten = IntArray.getIterable(new int[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}).skipping(1).taking(11);
+        IntArrayIterable zero_ten = IntArray.getIterable(new int[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}).skip(1).take(11);
         IntArrayIterable zero_five = IntArray.getIterable(new int[]{0, 1, 2, 3, 4, 5});
         IntArrayIterable five_ten = IntArray.getIterable(new int[]{5, 6, 7, 8, 9, 10});
         IntArrayIterable empty = IntArray.getIterable(new int[]{});
@@ -138,11 +138,11 @@ public class PrimitiveArrayIterableTest {
         Assert.assertFalse(zero_ten.contains(ceylon.language.Integer.instance(-1)));
         
         // taking
-        IntArrayIterable zero_seven = zero_ten.taking(8);
+        IntArrayIterable zero_seven = zero_ten.take(8);
         Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.getSequence().toString());
         
         // skipping
-        IntArrayIterable two_seven = zero_ten.taking(8).skipping(2);
+        IntArrayIterable two_seven = zero_ten.take(8).skip(2);
         Assert.assertEquals("[2, 3, 4, 5, 6, 7]", two_seven.getSequence().toString());
         
         // by
@@ -160,7 +160,7 @@ public class PrimitiveArrayIterableTest {
         Assert.assertEquals("[0, 4, 8]", zero_ten_evens.by(2).getSequence().toString());
         Assert.assertEquals(3, zero_ten_evens.by(2).getSize());
         
-        Assert.assertEquals("[2, 4, 6, 8]", zero_ten_evens.taking(5).skipping(1).getSequence().toString());
+        Assert.assertEquals("[2, 4, 6, 8]", zero_ten_evens.take(5).skip(1).getSequence().toString());
         
     }
     
