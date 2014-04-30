@@ -61,6 +61,11 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
+    public void testLopOptimJavaArrayIterationStatic(){
+        compareWithJavaSource("loop/optim/JavaArrayIterationStatic");
+    }
+    
+    @Test
     @Ignore
     public void testLopOptimArrayIterationStaticBench(){
         compile("loop/optim/ArrayIterationStaticBench.ceylon");

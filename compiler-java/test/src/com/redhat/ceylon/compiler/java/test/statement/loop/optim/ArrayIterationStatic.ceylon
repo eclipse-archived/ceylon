@@ -18,16 +18,6 @@
  * MA  02110-1301, USA.
  */
 
-import java.lang{
-    IntArray, 
-    ByteArray, 
-    DoubleArray, 
-    FloatArray, 
-    CharArray, 
-    BooleanArray,
-    ObjectArray
-}
-
 @noanno
 class ArrayIterationStatic() {
     void arrayOfIntegers(Array<Integer> array) {
@@ -56,103 +46,13 @@ class ArrayIterationStatic() {
             print(element);
         }
     }
-    void arrayOfInts(IntArray array) {
-        for (element in array.iterable) {
-            print(element + 5);
-        }
-    }
-    void arrayOfIntsBy(IntArray array) {
-        for (element in array.iterable by 2) {
-            print(element + 5);
-        }
-    }
-    void arrayOfIntsDisabled(IntArray array) {
-        @disableOptimization:"JavaArrayIterationStatic"
-        @disableOptimization:"ArrayIterationDynamic"
-        for (element in array.iterable) {
-            print(element + 5);
-        }
-        @disableOptimization
-        for (element in array.iterable) {
-            print(element + 5);
-        }
-    }
-    void arrayOfChars(CharArray array) {
-        for (element in array.iterable) {
-            print(element);
-        }
-    }
+   
     void arrayOfObjects(Array<Object> array) {
         for (element in array) {
             print(element);
         }
     }
-    // native arrays
-    void nativeArrayOfObjects(ObjectArray<Object> array) {
-        for (element in array.array) {
-            print(element);
-        }
-    }
-    void nativeArrayOfObjectsIterable(ObjectArray<Object> array) {
-        for (element in array.iterable) {
-            print(element);
-        }
-    }
-    void nativeArrayOfObjectsOpt(ObjectArray<Object?> array) {
-        for (element in array.array) {
-            print(element else "null");
-        }
-    }
-    void nativeArrayOfObjectsOptIterable(ObjectArray<Object?> array) {
-        for (element in array.iterable) {
-            print(element else "null");
-        }
-    }
-    void nativeArrayOfObjectsTp<T>(ObjectArray<T> array) {
-        for (element in array.array) {
-            print(element);
-        }
-    }
-    void nativeArrayOfObjectsTpIterable<T>(ObjectArray<T> array) {
-        for (element in array.iterable) {
-            print(element);
-        }
-    }
-    
-    void nativeArrayOfObjectsTpOpt<T>(ObjectArray<T?> array) {
-        for (element in array.array) {
-            print(element else "null");
-        }
-    }
-    void nativeArrayOfObjectsTpOptIterable<T>(ObjectArray<T?> array) {
-        for (element in array.iterable) {
-            print(element else "null");
-        }
-    }
-    
-    void nativeArrayOfIntegers(ObjectArray<Integer> array) {
-        for (element in array.array) {
-            print(element);
-        }
-    }
-    void nativeArrayOfIntegersIterable(ObjectArray<Integer> array) {
-        for (element in array.iterable) {
-            print(element);
-        }
-    }
-    
-    void nativeArrayOfIntegersOpt(ObjectArray<Integer> array) {
-        for (element in array.array) {
-            print(element else 0);
-        }
-    }
-    void nativeArrayOfIntegersOptIterable(ObjectArray<Integer?> array) {
-        for (element in array.iterable) {
-            print(element else 0);
-        }
-    }
-    
-    void arrayOfIntegersWithBreak(Array<Integer> array) {
+   void arrayOfIntegersWithBreak(Array<Integer> array) {
         for (element in array) {
             function x() {
                 return element + 10;
