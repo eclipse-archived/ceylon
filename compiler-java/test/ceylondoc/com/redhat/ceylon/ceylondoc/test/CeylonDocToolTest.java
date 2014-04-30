@@ -590,6 +590,24 @@ public class CeylonDocToolTest {
         return module;
     }
 
+    @Test
+    public void bug1622() throws Exception{
+        File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
+        
+        String pathname = "test/ceylondoc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug1622";
+        
+        compile(pathname, dir.getPath(), moduleName);
+
+        CeylonDocTool tool = 
+                tool(Arrays.asList(new File(pathname)),
+                        Arrays.asList(new File("doc")),
+                        Arrays.asList(moduleName),
+                        true, false);
+        tool.setIncludeNonShared(true);
+        tool.run();
+    }
+    
     private void assertFileExists(File destDir, boolean includeNonShared) {
         assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip");
         assertFileExists(destDir, "../com.redhat.ceylon.ceylondoc.test.modules.single-3.1.4.doc.zip.sha1");
@@ -1251,9 +1269,14 @@ public class CeylonDocToolTest {
                 "module-doc");
     }
 
+        
     private void compile(String pathname, String moduleName) throws Exception {
+        compile(pathname, "build/ceylon-cars", moduleName);
+    }
+    
+    private void compile(String pathname, String destDir, String moduleName) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-cp", CompilerTest.getClassPathAsPath());
+        List<String> options = Arrays.asList("-src", pathname, "-out", destDir, "-cp", CompilerTest.getClassPathAsPath());
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
