@@ -220,9 +220,15 @@ public final class CharArray implements ReifiedType {
     public static class CharArrayIterable implements ReifiedType, Iterable<ceylon.language.Character, ceylon.language.Null> {
         private final Category$impl<Object> $ceylon$language$Category$this = new Category$impl<Object>(ceylon.language.Object.$TypeDescriptor$, this);
         private final Iterable$impl<ceylon.language.Character, Null> $ceylon$language$Iterable$this = new Iterable$impl<ceylon.language.Character, Null>(ceylon.language.Character.$TypeDescriptor$, Null.$TypeDescriptor$, this);
-        //private final Correspondence$impl<ceylon.language.Integer, ceylon.language.Character> $ceylon$language$Correspondence$this = new Correspondence$impl<ceylon.language.Integer, ceylon.language.Character>(ceylon.language.Integer.$TypeDescriptor$, ceylon.language.Character.$TypeDescriptor$, this);
         
+        /** The array over which we iterate */
         private final char[] array;
+        /** The index where iteration starts */
+        private final int start;
+        /** The step size of iteration */
+        private final int step;
+        /** The index one beyond where iteration ends */
+        private final int end;
         
         @Override
         public TypeDescriptor $getType$() {
@@ -231,36 +237,44 @@ public final class CharArray implements ReifiedType {
         
         @Ignore
         public CharArrayIterable(char[] array) {
-            this.array = array;
+            this(array, 0, array.length, 1);
         }
         
         @Ignore
-        public char[] arrayValue() {
-            return array;
+        private CharArrayIterable(char[] array, int start, int end, int step) {
+            if (start < 0) {
+                throw new ceylon.language.AssertionError("start must be positive");
+            }
+            if (end < 0) {
+                throw new ceylon.language.AssertionError("end must be positive");
+            }
+            if (step <= 0) {
+                throw new ceylon.language.AssertionError("step size must be greater than zero");
+            }
+            
+            this.array = array;
+            this.start = start;
+            this.end = end;
+            this.step = step;
         }
         
         @Override
         public Category$impl<? super Object> $ceylon$language$Category$impl() {
             return $ceylon$language$Category$this;
         }
-    
+        
         @Override
         public Iterable$impl<? extends ceylon.language.Character, ? extends Null> $ceylon$language$Iterable$impl() {
             return $ceylon$language$Iterable$this;
         }
         
-        //@Override
-        //public Correspondence$impl<ceylon.language.Integer, ceylon.language.Character> $ceylon$language$Correspondence$impl() {
-        //    return $ceylon$language$Correspondence$this;
-        //}
-    
         @Override
         public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
             Iterator<? extends Object> iter = arg0.iterator();
             Object item;
             while (!((item = iter.next()) instanceof Finished)) {
                 if (item instanceof ceylon.language.Character) {
-                    for (int ii = 0; ii < array.length; ii++) {
+                    for (int ii = this.start; ii < this.end; ii+=this.step) {
                         if (array[ii] == ((ceylon.language.Character)item).intValue()) {
                             return true;
                         }
@@ -269,7 +283,7 @@ public final class CharArray implements ReifiedType {
             }
             return false;
         }
-    
+        
         @Override
         public boolean containsEvery(
                 Iterable<? extends Object, ? extends Object> arg0) {
@@ -277,7 +291,7 @@ public final class CharArray implements ReifiedType {
             Object item;
             OUTER: while (!((item = iter.next()) instanceof Finished)) {
                 if (item instanceof ceylon.language.Character) {
-                    for (int ii = 0; ii < array.length; ii++) {
+                    for (int ii = this.start; ii < this.end; ii+=this.step) {
                         if (array[ii] == ((ceylon.language.Character)item).intValue()) {
                             continue OUTER;
                         }
@@ -287,23 +301,187 @@ public final class CharArray implements ReifiedType {
             }
             return true;
         }
-    
+        
         @Override
         public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            for (int ii=0; ii < array.length; ii++) {
+            for (int ii=this.start; ii < this.end; ii+=this.step) {
                 if (arg0.$call$(ceylon.language.Character.instance(array[ii])).booleanValue()) {
                     return true;
                 }
             }
             return false;
         }
-    
+        
         @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Null> by(long step) {
-            // TODO optimizable by allocating a new array, and filling it in a for loop
-            return $ceylon$language$Iterable$this.by(step);
+        public boolean contains(Object item) {
+            for (int ii = this.start; ii < this.end; ii+=this.step) {
+                if (item instanceof ceylon.language.Character 
+                        && array[ii] == ((ceylon.language.Character)item).intValue()) {
+                    return true;
+                }
+            }
+            return false;
         }
-    
+        
+        @Override
+        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
+                @Ignore
+                TypeDescriptor $reified$Default, 
+                Default defaultValue) {
+            return this;
+        }
+        
+        @Override
+        public Iterable<? extends ceylon.language.Character, ? extends Object> getCoalesced() {
+            return this;
+        }
+        
+        @Override
+        public boolean getEmpty() {
+            return this.end <= this.start;
+        }
+        
+        @Override
+        public long getSize() {
+            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
+        }
+        
+        @Override
+        public ceylon.language.Character getFirst() {
+            return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.start]);
+        }
+        
+        
+        @Override
+        public ceylon.language.Character getLast() {
+            return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.end-1]);
+        }
+        
+        @Override
+        public CharArrayIterable getRest() {
+            return new CharArrayIterable(this.array, this.start+1, this.end, this.step);
+        }
+        
+        @Override
+        public Sequential<? extends ceylon.language.Character> getSequence() {
+            // Note: Sequential is immutable, and we don't know where the array
+            // came from, so however we create the sequence we must take a copy
+            return this.getEmpty() ? empty_.get_() : new ArraySequence(ceylon.language.Character.$TypeDescriptor$, this);
+        }
+        
+        @Override
+        public Iterator<? extends ceylon.language.Character> iterator() {
+            if (this.getEmpty()) {
+                return (Iterator)ceylon.language.emptyIterator_.get_();
+            }
+            return new Iterator<ceylon.language.Character>() {
+                
+                private int index = CharArrayIterable.this.start;
+                
+                private final Iterator$impl<ceylon.language.Character> $ceylon$language$Iterator$this = new Iterator$impl<ceylon.language.Character>(ceylon.language.Character.$TypeDescriptor$, this);
+                
+                @Override
+                public Iterator$impl<? extends ceylon.language.Character> $ceylon$language$Iterator$impl() {
+                    return $ceylon$language$Iterator$this;
+                }
+                
+                @Override
+                public Object next() {
+                    if (index < CharArrayIterable.this.end) {
+                        ceylon.language.Character result = ceylon.language.Character.instance(CharArrayIterable.this.array[index]);
+                        index += CharArrayIterable.this.step;
+                        return result;
+                    } else {
+                        return finished_.get_();
+                    }
+                }
+            };
+        }
+        
+        @Override
+        public boolean longerThan(long length) {
+            return this.getSize() > length;
+        }
+        
+        @Override
+        public boolean shorterThan(long length) {
+            return this.getSize() < length;
+        }
+        
+        @Override
+        public CharArrayIterable by(long step) {
+            return new CharArrayIterable(this.array, 
+                    this.start, 
+                    this.end, 
+                    this.step*(int)step);
+        }
+        
+        @Override
+        public CharArrayIterable skipping(long skip) {
+            if (skip <= 0) {
+                return this;
+            }
+            return new CharArrayIterable(this.array, 
+                    this.start+(int)skip*this.step, 
+                    this.end, 
+                    this.step);
+        }
+        
+        @Override
+        public CharArrayIterable taking(long take) {
+            if (take >= this.getSize()) {
+                return this;
+            }
+            return new CharArrayIterable(this.array, 
+                    this.start, 
+                    (int)take*this.step+1, 
+                    this.step);
+        }
+        
+        @Override
+        public Sequential<? extends ceylon.language.Character> sort(
+                final Callable<? extends Comparison> comparing) {
+            return $ceylon$language$Iterable$this.sort(comparing);
+        }
+        
+        @Override
+        public Iterable<? extends ceylon.language.Character, ? extends Object> skippingWhile(
+                Callable<? extends ceylon.language.Boolean> skip) {
+            return $ceylon$language$Iterable$this.skippingWhile(skip);
+        }
+        
+        @Override
+        public Iterable<? extends ceylon.language.Character, ? extends Object> takingWhile(
+                Callable<? extends ceylon.language.Boolean> take) {
+            return $ceylon$language$Iterable$this.takingWhile(take);
+        }
+        
+        @Override
+        public Sequential<? extends ceylon.language.Character> select(Callable<? extends ceylon.language.Boolean> selecting) {
+            return $ceylon$language$Iterable$this.select(selecting);
+        }
+        
+        @Override
+        public <Result> Iterable<? extends Result, ? extends Null> map(
+                @Ignore
+                TypeDescriptor $reified$Result, 
+                Callable<? extends Result> collecting) {
+            return $ceylon$language$Iterable$this.map($reified$Result, collecting);
+        }
+        
+        @Override
+        public <Result> Object reduce(
+                @Ignore
+                TypeDescriptor $reified$Result,
+                Callable<? extends Result> accumulating) {
+            return $ceylon$language$Iterable$this.reduce($reified$Result, accumulating);
+        }
+        
+        @Override
+        public List<? extends ceylon.language.Character> repeat(long times) {
+            return $ceylon$language$Iterable$this.repeat(times);
+        }
+        
         @Override
         public <Other, OtherAbsent> Iterable<?,?> chain(
                 @Ignore
@@ -323,55 +501,36 @@ public final class CharArray implements ReifiedType {
         }
         
         @Override
-        public boolean contains(Object item) {
-            for (int ii = 0; ii < array.length; ii++) {
-                if (item instanceof ceylon.language.Character 
-                        && array[ii] == ((ceylon.language.Character)item).intValue()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
         public long count(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.count(selecting);
         }
-    
+        
         @Override
         public Iterable<? extends ceylon.language.Character, ? extends Null> cycle(long times) {
             return $ceylon$language$Iterable$this.cycle(times);
         }
-    
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
-            return this;
-        }
-    
+        
         @Override
         public boolean every(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.every(selecting);
         }
-    
+        
         @Override
         public Iterable<? extends ceylon.language.Character, ? extends Object> filter(
                 Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.filter(selecting);
         }
-    
+        
         @Override
         public ceylon.language.Character find(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.find(selecting);
         }
-    
+        
         @Override
         public ceylon.language.Character findLast(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.findLast(selecting);
         }
-    
+        
         @Override
         public <Result> Result fold(
                 @Ignore
@@ -380,7 +539,7 @@ public final class CharArray implements ReifiedType {
                 Callable<? extends Result> accumulating) {
             return $ceylon$language$Iterable$this.fold($reified$Result, initial, accumulating);
         }
-    
+        
         @Override
         public <Other> Iterable<? extends Object, ? extends Object> following(
                 @Ignore
@@ -388,188 +547,16 @@ public final class CharArray implements ReifiedType {
                 Other head) {
             return $ceylon$language$Iterable$this.following($reified$Other, head);
         }
-    
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> getCoalesced() {
-            return this;
-        }
-    
+        
         @Override
         public Iterable<? extends ceylon.language.Character, ? extends Null> getCycled() {
             return $ceylon$language$Iterable$this.getCycled();
         }
-    
-        @Override
-        public boolean getEmpty() {
-            return array.length == 0;
-        }
-    
-        @Override
-        public Object getFirst() {
-            return array.length == 0 ? null : array[0];
-        }
-    
+        
         @Override
         public Iterable<? extends Entry<? extends ceylon.language.Integer, ? extends ceylon.language.Character>, ? extends Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
-    
-        @Override
-        public Object getLast() {
-            return array.length == 0 ? null : array[array.length-1];
-        }
-    
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> getRest() {
-            return $ceylon$language$Iterable$this.getRest();
-        }
-    
-        @Override
-        public Sequential<? extends ceylon.language.Character> getSequence() {
-            return array.length == 0 ? empty_.get_() : new ArraySequence(ceylon.language.Character.$TypeDescriptor$, this);
-        }
-    
-        @Ignore
-        @Override
-        public long getSize() {
-            return array.length;
-        }
-    
-        @Override
-        public Iterator<? extends ceylon.language.Character> iterator() {
-            return new Iterator<ceylon.language.Character>() {
-    
-                private int index = 0;
-                
-                private final Iterator$impl<ceylon.language.Character> $ceylon$language$Iterator$this = new Iterator$impl<ceylon.language.Character>(ceylon.language.Character.$TypeDescriptor$, this);
-                
-                @Override
-                public Iterator$impl<? extends ceylon.language.Character> $ceylon$language$Iterator$impl() {
-                    return $ceylon$language$Iterator$this;
-                }
-    
-                @Override
-                public Object next() {
-                    if (index < array.length) {
-                        return ceylon.language.Character.instance(array[index++]);
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-    
-        @Override
-        public boolean longerThan(long length) {
-            return array.length > length;
-        }
-    
-        @Override
-        public <Result> Iterable<? extends Result, ? extends Null> map(
-                @Ignore
-                TypeDescriptor $reified$Result, 
-                Callable<? extends Result> collecting) {
-            return $ceylon$language$Iterable$this.map($reified$Result, collecting);
-        }
-    
-        @Override
-        public <Result> Object reduce(
-                @Ignore
-                TypeDescriptor $reified$Result,
-                Callable<? extends Result> accumulating) {
-            return $ceylon$language$Iterable$this.reduce($reified$Result, accumulating);
-        }
-    
-        @Override
-        public List<? extends ceylon.language.Character> repeat(long times) {
-            return $ceylon$language$Iterable$this.repeat(times);
-        }
-    
-        @Override
-        public Sequential<? extends ceylon.language.Character> select(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.select(selecting);
-        }
-    
-        @Override
-        public boolean shorterThan(long length) {
-            return array.length < length;
-        }
-    
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> skipping(long skip) {
-            return $ceylon$language$Iterable$this.skipping(skip);
-        }
-    
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> skippingWhile(
-                Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
-        }
-    
-        @Override
-        public Sequential<? extends ceylon.language.Character> sort(
-                final Callable<? extends Comparison> comparing) {
-            return $ceylon$language$Iterable$this.sort(comparing);
-        }
-    
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> taking(long take) {
-            return $ceylon$language$Iterable$this.taking(take);
-        }
-    
-        @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> takingWhile(
-                Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
-        }
-        
-        /* Implement Correspondence */
-        /*
-        @Override
-        @Ignore
-        @TypeInfo("ceylon.language::Character|ceylon.language::Null")
-        public ceylon.language.Character get(
-                @Name("key")
-                ceylon.language.Integer key) {
-            return ceylon.language.Character.instance(array[(int)key.longValue()]);
-        }
-        
-        @Override
-        public boolean defines(
-                @Name("key")
-                ceylon.language.Integer key) {
-            int index = (int)key.longValue();
-            return 0 <= index && index < array.length;
-        }
-       
-        @Override
-        @TypeInfo("ceylon.language::Sequential<ceylon.language.Integer>")
-        public ceylon.language.Sequential<ceylon.language.Integer> getKeys() {
-            if (array.length == 0) {
-                return (ceylon.language.Sequential)ceylon.language.empty_.get_();
-            } else {
-                return new ceylon.language.Range(ceylon.language.Integer.$TypeDescriptor$, 
-                        ceylon.language.Integer.instance(0), 
-                        ceylon.language.Integer.instance(array.length-1));
-            }
-        }
-        
-        @Override
-        public boolean definesEvery(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends Object> keys) {
-            return $ceylon$language$Correspondence$this.definesEvery(keys);
-        }
-        
-        @Override
-        public boolean definesAny(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends Object> keys) {
-            return $ceylon$language$Correspondence$this.definesAny(keys);
-        }
-        
-        @Override
-        @TypeInfo("ceylon.language::Sequential<ceylon.language::Character|ceylon.language.Null>")
-        public ceylon.language.Sequential<? extends ceylon.language.Character> items(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends Object> keys) {
-            return $ceylon$language$Correspondence$this.items(keys);
-        }*/
     }
-   
-
+    
 }

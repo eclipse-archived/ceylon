@@ -220,9 +220,15 @@ public final class @Classname@ implements ReifiedType {
     public static class @Classname@Iterable implements ReifiedType, Iterable<@BoxedType@, ceylon.language.Null> {
         private final Category$impl<Object> $ceylon$language$Category$this = new Category$impl<Object>(ceylon.language.Object.$TypeDescriptor$, this);
         private final Iterable$impl<@BoxedType@, Null> $ceylon$language$Iterable$this = new Iterable$impl<@BoxedType@, Null>(@BoxedType@.$TypeDescriptor$, Null.$TypeDescriptor$, this);
-        //private final Correspondence$impl<ceylon.language.Integer, @BoxedType@> $ceylon$language$Correspondence$this = new Correspondence$impl<ceylon.language.Integer, @BoxedType@>(ceylon.language.Integer.$TypeDescriptor$, @BoxedType@.$TypeDescriptor$, this);
         
+        /** The array over which we iterate */
         private final @PrimitiveType@[] array;
+        /** The index where iteration starts */
+        private final int start;
+        /** The step size of iteration */
+        private final int step;
+        /** The index one beyond where iteration ends */
+        private final int end;
         
         @Override
         public TypeDescriptor $getType$() {
@@ -231,36 +237,44 @@ public final class @Classname@ implements ReifiedType {
         
         @Ignore
         public @Classname@Iterable(@PrimitiveType@[] array) {
-            this.array = array;
+            this(array, 0, array.length, 1);
         }
         
         @Ignore
-        public @PrimitiveType@[] arrayValue() {
-            return array;
+        private @Classname@Iterable(@PrimitiveType@[] array, int start, int end, int step) {
+            if (start < 0) {
+                throw new ceylon.language.AssertionError("start must be positive");
+            }
+            if (end < 0) {
+                throw new ceylon.language.AssertionError("end must be positive");
+            }
+            if (step <= 0) {
+                throw new ceylon.language.AssertionError("step size must be greater than zero");
+            }
+            
+            this.array = array;
+            this.start = start;
+            this.end = end;
+            this.step = step;
         }
         
         @Override
         public Category$impl<? super Object> $ceylon$language$Category$impl() {
             return $ceylon$language$Category$this;
         }
-    
+        
         @Override
         public Iterable$impl<? extends @BoxedType@, ? extends Null> $ceylon$language$Iterable$impl() {
             return $ceylon$language$Iterable$this;
         }
         
-        //@Override
-        //public Correspondence$impl<ceylon.language.Integer, @BoxedType@> $ceylon$language$Correspondence$impl() {
-        //    return $ceylon$language$Correspondence$this;
-        //}
-    
         @Override
         public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
             Iterator<? extends Object> iter = arg0.iterator();
             Object item;
             while (!((item = iter.next()) instanceof Finished)) {
                 if (item instanceof @BoxedType@) {
-                    for (int ii = 0; ii < array.length; ii++) {
+                    for (int ii = this.start; ii < this.end; ii+=this.step) {
                         if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
                             return true;
                         }
@@ -269,7 +283,7 @@ public final class @Classname@ implements ReifiedType {
             }
             return false;
         }
-    
+        
         @Override
         public boolean containsEvery(
                 Iterable<? extends Object, ? extends Object> arg0) {
@@ -277,7 +291,7 @@ public final class @Classname@ implements ReifiedType {
             Object item;
             OUTER: while (!((item = iter.next()) instanceof Finished)) {
                 if (item instanceof @BoxedType@) {
-                    for (int ii = 0; ii < array.length; ii++) {
+                    for (int ii = this.start; ii < this.end; ii+=this.step) {
                         if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
                             continue OUTER;
                         }
@@ -287,23 +301,187 @@ public final class @Classname@ implements ReifiedType {
             }
             return true;
         }
-    
+        
         @Override
         public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            for (int ii=0; ii < array.length; ii++) {
+            for (int ii=this.start; ii < this.end; ii+=this.step) {
                 if (arg0.$call$(@BoxedType@.instance(array[ii])).booleanValue()) {
                     return true;
                 }
             }
             return false;
         }
-    
+        
         @Override
-        public Iterable<? extends @BoxedType@, ? extends Null> by(long step) {
-            // TODO optimizable by allocating a new array, and filling it in a for loop
-            return $ceylon$language$Iterable$this.by(step);
+        public boolean contains(Object item) {
+            for (int ii = this.start; ii < this.end; ii+=this.step) {
+                if (item instanceof @BoxedType@ 
+                        && array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
+                    return true;
+                }
+            }
+            return false;
         }
-    
+        
+        @Override
+        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
+                @Ignore
+                TypeDescriptor $reified$Default, 
+                Default defaultValue) {
+            return this;
+        }
+        
+        @Override
+        public Iterable<? extends @BoxedType@, ? extends Object> getCoalesced() {
+            return this;
+        }
+        
+        @Override
+        public boolean getEmpty() {
+            return this.end <= this.start;
+        }
+        
+        @Override
+        public long getSize() {
+            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
+        }
+        
+        @Override
+        public @BoxedType@ getFirst() {
+            return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.start]);
+        }
+        
+        
+        @Override
+        public @BoxedType@ getLast() {
+            return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.end-1]);
+        }
+        
+        @Override
+        public @Classname@Iterable getRest() {
+            return new @Classname@Iterable(this.array, this.start+1, this.end, this.step);
+        }
+        
+        @Override
+        public Sequential<? extends @BoxedType@> getSequence() {
+            // Note: Sequential is immutable, and we don't know where the array
+            // came from, so however we create the sequence we must take a copy
+            return this.getEmpty() ? empty_.get_() : new ArraySequence(@BoxedType@.$TypeDescriptor$, this);
+        }
+        
+        @Override
+        public Iterator<? extends @BoxedType@> iterator() {
+            if (this.getEmpty()) {
+                return (Iterator)ceylon.language.emptyIterator_.get_();
+            }
+            return new Iterator<@BoxedType@>() {
+                
+                private int index = @Classname@Iterable.this.start;
+                
+                private final Iterator$impl<@BoxedType@> $ceylon$language$Iterator$this = new Iterator$impl<@BoxedType@>(@BoxedType@.$TypeDescriptor$, this);
+                
+                @Override
+                public Iterator$impl<? extends @BoxedType@> $ceylon$language$Iterator$impl() {
+                    return $ceylon$language$Iterator$this;
+                }
+                
+                @Override
+                public Object next() {
+                    if (index < @Classname@Iterable.this.end) {
+                        @BoxedType@ result = @BoxedType@.instance(@Classname@Iterable.this.array[index]);
+                        index += @Classname@Iterable.this.step;
+                        return result;
+                    } else {
+                        return finished_.get_();
+                    }
+                }
+            };
+        }
+        
+        @Override
+        public boolean longerThan(long length) {
+            return this.getSize() > length;
+        }
+        
+        @Override
+        public boolean shorterThan(long length) {
+            return this.getSize() < length;
+        }
+        
+        @Override
+        public @Classname@Iterable by(long step) {
+            return new @Classname@Iterable(this.array, 
+                    this.start, 
+                    this.end, 
+                    this.step*(int)step);
+        }
+        
+        @Override
+        public @Classname@Iterable skipping(long skip) {
+            if (skip <= 0) {
+                return this;
+            }
+            return new @Classname@Iterable(this.array, 
+                    this.start+(int)skip*this.step, 
+                    this.end, 
+                    this.step);
+        }
+        
+        @Override
+        public @Classname@Iterable taking(long take) {
+            if (take >= this.getSize()) {
+                return this;
+            }
+            return new @Classname@Iterable(this.array, 
+                    this.start, 
+                    (int)take*this.step+1, 
+                    this.step);
+        }
+        
+        @Override
+        public Sequential<? extends @BoxedType@> sort(
+                final Callable<? extends Comparison> comparing) {
+            return $ceylon$language$Iterable$this.sort(comparing);
+        }
+        
+        @Override
+        public Iterable<? extends @BoxedType@, ? extends Object> skippingWhile(
+                Callable<? extends ceylon.language.Boolean> skip) {
+            return $ceylon$language$Iterable$this.skippingWhile(skip);
+        }
+        
+        @Override
+        public Iterable<? extends @BoxedType@, ? extends Object> takingWhile(
+                Callable<? extends ceylon.language.Boolean> take) {
+            return $ceylon$language$Iterable$this.takingWhile(take);
+        }
+        
+        @Override
+        public Sequential<? extends @BoxedType@> select(Callable<? extends ceylon.language.Boolean> selecting) {
+            return $ceylon$language$Iterable$this.select(selecting);
+        }
+        
+        @Override
+        public <Result> Iterable<? extends Result, ? extends Null> map(
+                @Ignore
+                TypeDescriptor $reified$Result, 
+                Callable<? extends Result> collecting) {
+            return $ceylon$language$Iterable$this.map($reified$Result, collecting);
+        }
+        
+        @Override
+        public <Result> Object reduce(
+                @Ignore
+                TypeDescriptor $reified$Result,
+                Callable<? extends Result> accumulating) {
+            return $ceylon$language$Iterable$this.reduce($reified$Result, accumulating);
+        }
+        
+        @Override
+        public List<? extends @BoxedType@> repeat(long times) {
+            return $ceylon$language$Iterable$this.repeat(times);
+        }
+        
         @Override
         public <Other, OtherAbsent> Iterable<?,?> chain(
                 @Ignore
@@ -323,55 +501,36 @@ public final class @Classname@ implements ReifiedType {
         }
         
         @Override
-        public boolean contains(Object item) {
-            for (int ii = 0; ii < array.length; ii++) {
-                if (item instanceof @BoxedType@ 
-                        && array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        @Override
         public long count(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.count(selecting);
         }
-    
+        
         @Override
         public Iterable<? extends @BoxedType@, ? extends Null> cycle(long times) {
             return $ceylon$language$Iterable$this.cycle(times);
         }
-    
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
-            return this;
-        }
-    
+        
         @Override
         public boolean every(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.every(selecting);
         }
-    
+        
         @Override
         public Iterable<? extends @BoxedType@, ? extends Object> filter(
                 Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.filter(selecting);
         }
-    
+        
         @Override
         public @BoxedType@ find(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.find(selecting);
         }
-    
+        
         @Override
         public @BoxedType@ findLast(Callable<? extends ceylon.language.Boolean> selecting) {
             return $ceylon$language$Iterable$this.findLast(selecting);
         }
-    
+        
         @Override
         public <Result> Result fold(
                 @Ignore
@@ -380,7 +539,7 @@ public final class @Classname@ implements ReifiedType {
                 Callable<? extends Result> accumulating) {
             return $ceylon$language$Iterable$this.fold($reified$Result, initial, accumulating);
         }
-    
+        
         @Override
         public <Other> Iterable<? extends Object, ? extends Object> following(
                 @Ignore
@@ -388,188 +547,16 @@ public final class @Classname@ implements ReifiedType {
                 Other head) {
             return $ceylon$language$Iterable$this.following($reified$Other, head);
         }
-    
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> getCoalesced() {
-            return this;
-        }
-    
+        
         @Override
         public Iterable<? extends @BoxedType@, ? extends Null> getCycled() {
             return $ceylon$language$Iterable$this.getCycled();
         }
-    
-        @Override
-        public boolean getEmpty() {
-            return array.length == 0;
-        }
-    
-        @Override
-        public Object getFirst() {
-            return array.length == 0 ? null : array[0];
-        }
-    
+        
         @Override
         public Iterable<? extends Entry<? extends ceylon.language.Integer, ? extends @BoxedType@>, ? extends Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
         }
-    
-        @Override
-        public Object getLast() {
-            return array.length == 0 ? null : array[array.length-1];
-        }
-    
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> getRest() {
-            return $ceylon$language$Iterable$this.getRest();
-        }
-    
-        @Override
-        public Sequential<? extends @BoxedType@> getSequence() {
-            return array.length == 0 ? empty_.get_() : new ArraySequence(@BoxedType@.$TypeDescriptor$, this);
-        }
-    
-        @Ignore
-        @Override
-        public long getSize() {
-            return array.length;
-        }
-    
-        @Override
-        public Iterator<? extends @BoxedType@> iterator() {
-            return new Iterator<@BoxedType@>() {
-    
-                private int index = 0;
-                
-                private final Iterator$impl<@BoxedType@> $ceylon$language$Iterator$this = new Iterator$impl<@BoxedType@>(@BoxedType@.$TypeDescriptor$, this);
-                
-                @Override
-                public Iterator$impl<? extends @BoxedType@> $ceylon$language$Iterator$impl() {
-                    return $ceylon$language$Iterator$this;
-                }
-    
-                @Override
-                public Object next() {
-                    if (index < array.length) {
-                        return @BoxedType@.instance(array[index++]);
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-    
-        @Override
-        public boolean longerThan(long length) {
-            return array.length > length;
-        }
-    
-        @Override
-        public <Result> Iterable<? extends Result, ? extends Null> map(
-                @Ignore
-                TypeDescriptor $reified$Result, 
-                Callable<? extends Result> collecting) {
-            return $ceylon$language$Iterable$this.map($reified$Result, collecting);
-        }
-    
-        @Override
-        public <Result> Object reduce(
-                @Ignore
-                TypeDescriptor $reified$Result,
-                Callable<? extends Result> accumulating) {
-            return $ceylon$language$Iterable$this.reduce($reified$Result, accumulating);
-        }
-    
-        @Override
-        public List<? extends @BoxedType@> repeat(long times) {
-            return $ceylon$language$Iterable$this.repeat(times);
-        }
-    
-        @Override
-        public Sequential<? extends @BoxedType@> select(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.select(selecting);
-        }
-    
-        @Override
-        public boolean shorterThan(long length) {
-            return array.length < length;
-        }
-    
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> skipping(long skip) {
-            return $ceylon$language$Iterable$this.skipping(skip);
-        }
-    
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> skippingWhile(
-                Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
-        }
-    
-        @Override
-        public Sequential<? extends @BoxedType@> sort(
-                final Callable<? extends Comparison> comparing) {
-            return $ceylon$language$Iterable$this.sort(comparing);
-        }
-    
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> taking(long take) {
-            return $ceylon$language$Iterable$this.taking(take);
-        }
-    
-        @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> takingWhile(
-                Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
-        }
-        
-        /* Implement Correspondence */
-        /*
-        @Override
-        @Ignore
-        @TypeInfo("@BoxedTypeName@|ceylon.language::Null")
-        public @BoxedType@ get(
-                @Name("key")
-                ceylon.language.Integer key) {
-            return @BoxedType@.instance(array[(int)key.longValue()]);
-        }
-        
-        @Override
-        public boolean defines(
-                @Name("key")
-                ceylon.language.Integer key) {
-            int index = (int)key.longValue();
-            return 0 <= index && index < array.length;
-        }
-       
-        @Override
-        @TypeInfo("ceylon.language::Sequential<ceylon.language.Integer>")
-        public ceylon.language.Sequential<ceylon.language.Integer> getKeys() {
-            if (array.length == 0) {
-                return (ceylon.language.Sequential)ceylon.language.empty_.get_();
-            } else {
-                return new ceylon.language.Range(ceylon.language.Integer.$TypeDescriptor$, 
-                        ceylon.language.Integer.instance(0), 
-                        ceylon.language.Integer.instance(array.length-1));
-            }
-        }
-        
-        @Override
-        public boolean definesEvery(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends Object> keys) {
-            return $ceylon$language$Correspondence$this.definesEvery(keys);
-        }
-        
-        @Override
-        public boolean definesAny(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends Object> keys) {
-            return $ceylon$language$Correspondence$this.definesAny(keys);
-        }
-        
-        @Override
-        @TypeInfo("ceylon.language::Sequential<@BoxedTypeName@|ceylon.language.Null>")
-        public ceylon.language.Sequential<? extends @BoxedType@> items(ceylon.language.Iterable<? extends ceylon.language.Integer, ? extends Object> keys) {
-            return $ceylon$language$Correspondence$this.items(keys);
-        }*/
     }
-   
-
+    
 }

@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.java.TypeDescriptorTest;
     SequenceBuilderTest.class,
     ArrayBuilderTest.class,
     TypeDescriptorTest.class,
+    PrimitiveArrayIterableTest.class
 })
 public class LanguageUnitTestSuite {
 
