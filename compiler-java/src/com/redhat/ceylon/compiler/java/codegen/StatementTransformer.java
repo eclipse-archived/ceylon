@@ -1610,6 +1610,13 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
+        protected JCExpression makeIndexInit() {
+            return make().Apply(null,
+                    naming.makeQualIdent(seqName.makeIdent(), "$getFirst$"),
+                    List.<JCExpression>nil());
+        }
+        
+        @Override
         protected JCExpression makeIndexedAccess() {
             JCArrayAccess expr = make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
             return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, elementType);
