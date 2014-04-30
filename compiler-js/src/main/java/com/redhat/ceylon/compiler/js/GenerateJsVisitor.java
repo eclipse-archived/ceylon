@@ -3319,52 +3319,8 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override public void visit(ForStatement that) {
-        if (opts.isComment() && !opts.isMinify()) {
-            out("//'for' statement at ", that.getUnit().getFilename(), " (", that.getLocation(), ")");
-            if (that.getExits()) out("//EXITS!");
-            endLine();
-        }
-        ForIterator foriter = that.getForClause().getForIterator();
-        final String itemVar = generateForLoop(foriter);
-
-        boolean hasElse = that.getElseClause() != null && !that.getElseClause().getBlock().getStatements().isEmpty();
-        visitStatements(that.getForClause().getBlock().getStatements());
-        //If there's an else block, check for normal termination
-        endBlock();
-        if (hasElse) {
-            endLine();
-            out("if(", clAlias, "getFinished() === ", itemVar, ")");
-            encloseBlockInFunction(that.getElseClause().getBlock());
-        }
-    }
-
-    /** Generates code for the beginning of a "for" loop, returning the name of the variable used for the item. */
-    private String generateForLoop(ForIterator that) {
-        SpecifierExpression iterable = that.getSpecifierExpression();
-        final String iterVar = names.createTempVariable();
-        final String itemVar;
-        if (that instanceof ValueIterator) {
-            itemVar = names.name(((ValueIterator)that).getVariable().getDeclarationModel());
-        } else {
-            itemVar = names.createTempVariable();
-        }
-        out("var ", itemVar, ";for(var ", iterVar,"=");
-        iterable.visit(this);
-        out(".iterator();(", itemVar, "=", iterVar, ".next())!==", clAlias, "getFinished();)");
-        beginBlock();
-        if (that instanceof ValueIterator) {
-            directAccess.add(((ValueIterator)that).getVariable().getDeclarationModel());
-        } else if (that instanceof KeyValueIterator) {
-            String keyvar = names.name(((KeyValueIterator)that).getKeyVariable().getDeclarationModel());
-            String valvar = names.name(((KeyValueIterator)that).getValueVariable().getDeclarationModel());
-            out("var ", keyvar, "=", itemVar, ".key");
-            endLine(true);
-            out("var ", valvar, "=", itemVar, ".item");
-            endLine(true);
-            directAccess.add(((KeyValueIterator)that).getKeyVariable().getDeclarationModel());
-            directAccess.add(((KeyValueIterator)that).getValueVariable().getDeclarationModel());
-        }
-        return itemVar;
+        if (errVisitor.hasErrors(that))return;
+        new ForGenerator(this, directAccess).generate(that);
     }
 
     public void visit(InOp that) {
