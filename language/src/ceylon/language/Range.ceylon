@@ -69,7 +69,7 @@ shared final class Range<Element>(first, last)
     "The rest of the range, without the start of the
      range."
     shared actual Element[] rest {
-        if (size==1) { return []; }
+        if (first==last) { return []; }
         Element n = next(first);
         return Range<Element>(n,last);
     }
