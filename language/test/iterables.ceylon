@@ -75,6 +75,21 @@ shared void testIterables() {
     check({ 1, 3, 7, 10 }.reduce((Integer i, Integer j) => i*j)==210, "reduce 4");
  
     //Empty optimized implementations
+    object myEmpty satisfies {Integer*} {
+        shared actual Iterator<Integer> iterator() => emptyIterator;
+    }
+    check(myEmpty.map((Integer i) => i).empty, "empty.map");
+    check(myEmpty.filter((Integer i) => true).empty, "empty.filter");
+    check(!myEmpty.find((Integer i) => i>5) exists, "find 3");
+    check(!myEmpty.findLast((Integer i) => i>5) exists, "findLast 3");
+    check(myEmpty.fold(0, (Integer i, Integer j) => i)==0, "empty.fold");
+    check(!myEmpty.reduce((Integer i, Integer j) => i) exists, "empty.reduce");
+    check(myEmpty.sort((Integer a, Integer b) => larger).sequence=={}, "empty.sort");
+    check(myEmpty.every((Integer x) => true), "empty.every");
+    check(!myEmpty.any((Integer x) => true), "empty.any");
+    check(myEmpty.skipping(1).sequence=={}, "empty.skipping");
+    check(myEmpty.taking(1).sequence=={}, "empty.taking");
+
     Integer[] vacio = {};
     check(vacio.map((Integer i) => i).empty, "empty.map");
     check(vacio.filter((Integer i) => true).empty, "empty.filter");
@@ -83,7 +98,7 @@ shared void testIterables() {
     check(vacio.fold(0, (Integer i, Integer j) => i)==0, "empty.fold");
     check(!vacio.reduce((Integer i, Integer j) => i) exists, "empty.reduce");
     check(vacio.sort((Integer a, Integer b) => larger).sequence=={}, "empty.sort");
-    check(!vacio.every((Integer x) => true), "empty.every");
+    check(vacio.every((Integer x) => true), "empty.every");
     check(!vacio.any((Integer x) => true), "empty.any");
     check(vacio.skipping(1).sequence=={}, "empty.skipping");
     check(vacio.taking(1).sequence=={}, "empty.taking");
