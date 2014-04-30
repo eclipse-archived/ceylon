@@ -22,8 +22,8 @@ void literals<T>() {
     Function<Float,[Float,Float]> ftimes = `times<Float>`;
     check(ftimes(2.0,2.0)==4.0, "metamodel function w/type params 2 yields ``ftimes(2.0,2.0)`` expected 4.0");
     Method<String,String,[Integer]> finitial = `String.initial`;
-    Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.taking`;
-    FunctionDeclaration fdecl = `function Iterable.taking`;
+    Method<Iterable<String>,Iterable<String>,[Integer]> ftaking = `Iterable<String>.take`;
+    FunctionDeclaration fdecl = `function Iterable.take`;
     /*value taking1 = fdecl.bindAndApply({1,2,3,4,5});
     check(!taking1 is Function<String,[String]>, "taking1 is NOT String(String)");
     check(!taking1 is Function<{Integer*},[String]>, "taking1 is NOT {Integer*}(String)");
