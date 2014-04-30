@@ -88,7 +88,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
     private CeylonConfig readConfig() throws IOException {
         if (file != null) {
             if (file.exists()) {
-                return ConfigParser.loadConfigFromFile(file);
+                return ConfigParser.loadConfigFromFile(applyCwd(file));
             } else {
                 return new CeylonConfig();
             }
@@ -100,7 +100,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
                 return ConfigParser.loadUserConfig();
             }
             if (local) {
-                return ConfigParser.loadConfigFromFile(ConfigParser.findLocalConfig(new File(".")));
+                return ConfigParser.loadConfigFromFile(ConfigParser.findLocalConfig(applyCwd(new File("."))));
             }
             return CeylonConfig.get();
         }
@@ -109,14 +109,14 @@ public class CeylonConfigTool extends CeylonBaseTool {
     private void writeConfig(CeylonConfig config) throws IOException {
         File cfgFile;
         if (file != null) {
-            cfgFile = file;
+            cfgFile = applyCwd(file);
         } else {
             if (system) {
                 cfgFile = ConfigParser.findSystemConfig();
             } else if (user) {
                 cfgFile = ConfigParser.findUserConfig();
             } else if (local) {
-                cfgFile = ConfigParser.findLocalConfig(new File("."));
+                cfgFile = ConfigParser.findLocalConfig(applyCwd(new File(".")));
             } else {
                 throw new IllegalStateException("A configuration must be specified");
             }
