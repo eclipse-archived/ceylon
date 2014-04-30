@@ -3382,7 +3382,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         String name = model.getName();
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
-                this, name);
+                this, name).forDefinition(klass);
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
