@@ -2752,7 +2752,10 @@ final class MapTestBase$impl<Key, Item> {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
-@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Object")
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        identifiable = false,
+        basic = false,
+        extendsType = "ceylon.language::Object")
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::MapTestBase<Key,Item>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
