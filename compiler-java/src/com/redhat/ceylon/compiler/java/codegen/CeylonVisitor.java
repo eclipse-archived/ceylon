@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
@@ -245,7 +246,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     }
 
     public void visit(Tree.ExtendedType extendedType) {
-        classBuilder.extending(extendedType.getType().getTypeModel());
+        ClassOrInterface forDefinition = classBuilder.getForDefinition();
+        classBuilder.extending(forDefinition != null ? forDefinition.getType() : null, extendedType.getType().getTypeModel());
         gen.expressionGen().transformSuperInvocation(extendedType, classBuilder);
     }
 

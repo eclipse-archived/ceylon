@@ -70,8 +70,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -145,7 +143,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private boolean inStatement = false;
     private boolean withinInvocation = false;
     private boolean withinSyntheticClassBody = false;
-    private Tree.ClassOrInterface withinSuperInvocation = null;
+    private ClassOrInterface withinSuperInvocation = null;
     private ClassOrInterface withinDefaultParameterExpression = null;
     
     /** 
@@ -3142,7 +3140,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // generated inner to the companion and we need to qualify the 
                     // super(), *unless* the subclass is nested within the same 
                     // interface as it's superclass.
-                    Scope outer = builder.getSub().getDeclarationModel().getContainer();
+                    Scope outer = builder.getSub().getContainer();
                     while (!(outer instanceof Package)) {
                         if (outer == builder.getPrimaryDeclaration().getContainer()) {
                             expr = naming.makeSuper();
@@ -3153,7 +3151,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if (expr == null) {                    
                         Interface iface = (Interface)builder.getPrimaryDeclaration().getContainer();
                         JCExpression superQual;
-                        if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition().getDeclarationModel(), false) instanceof Interface) {
+                        if (Decl.getClassOrInterfaceContainer(classBuilder.getForDefinition(), false) instanceof Interface) {
                             superQual = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), iface);
                         } else {
                             superQual = naming.makeCompanionFieldName(iface);
@@ -3867,7 +3865,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 mustUseField = Decl.isJavaField(decl)
                         || (isWithinSuperInvocation() 
                                 && primaryExpr == null
-                                && withinSuperInvocation.getDeclarationModel() == decl.getContainer());
+                                && withinSuperInvocation == decl.getContainer());
                 mustUseParameter = (primaryExpr == null && isWithinDefaultParameterExpression(decl.getContainer()));
                 if (mustUseField || mustUseParameter){
                     if(decl instanceof FieldValue) {
@@ -5066,7 +5064,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return withinSuperInvocation != null;
     }
 
-    void withinSuperInvocation(Tree.ClassOrInterface forDefinition) {
+    void withinSuperInvocation(ClassOrInterface forDefinition) {
         this.withinSuperInvocation = forDefinition;
     }
 

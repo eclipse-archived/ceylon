@@ -790,10 +790,10 @@ class SuperInvocation extends PositionalInvocation {
         return declaration;
     }
     
-    private final Tree.ClassOrInterface sub;
+    private final ClassOrInterface sub;
     
     SuperInvocation(AbstractTransformer gen,
-            Tree.ClassOrInterface sub,
+            ClassOrInterface sub,
             Tree.InvocationExpression invocation,
             ParameterList parameterList) {
         super(gen, 
@@ -805,7 +805,7 @@ class SuperInvocation extends PositionalInvocation {
         this.sub = sub;
     }
 
-    Tree.ClassOrInterface getSub() {
+    ClassOrInterface getSub() {
         return sub;
     }
 

@@ -146,12 +146,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
                 .klass(this, javaClassName, ceylonClassName)
-                .forDefinition(def);
+                .forDefinition(model);
         TypeParameterList typeParameterList = def.getTypeParameterList();
 
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
-            classBuilder.extending(null);
+            classBuilder.extending(model.getType(), null);
         }
         
         if (def instanceof Tree.AnyClass) {

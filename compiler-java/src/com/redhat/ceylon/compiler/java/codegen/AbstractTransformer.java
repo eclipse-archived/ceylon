@@ -2588,7 +2588,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtObjectType);
     }
 
-    List<JCAnnotation> makeAtClass(ProducedType extendedType) {
+    List<JCAnnotation> makeAtClass(ProducedType thisType, ProducedType extendedType) {
         List<JCExpression> attributes = List.nil();
         JCExpression extendsValue = null;
         if (extendedType == null) {

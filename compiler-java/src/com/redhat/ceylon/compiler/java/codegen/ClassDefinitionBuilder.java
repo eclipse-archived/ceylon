@@ -28,18 +28,17 @@ import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
@@ -369,10 +368,10 @@ public class ClassDefinitionBuilder
         return typeParameter(param.getDeclarationModel());
     }
 
-    public ClassDefinitionBuilder extending(ProducedType extendingType) {
+    public ClassDefinitionBuilder extending(ProducedType thisType, ProducedType extendingType) {
         if (!isAlias) {
             this.extending = getSuperclass(extendingType);
-            annotations(gen.makeAtClass(extendingType));
+            annotations(gen.makeAtClass(thisType, extendingType));
         }
         return this;
     }
@@ -568,7 +567,7 @@ public class ClassDefinitionBuilder
     }
 
 
-    public ClassDefinitionBuilder forDefinition(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def) {
+    public ClassDefinitionBuilder forDefinition(ClassOrInterface def) {
         this.forDefinition = def;
         return this;
     }
