@@ -17,6 +17,7 @@
 package com.redhat.ceylon.common.tools.config;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
@@ -93,14 +94,18 @@ public class CeylonConfigTool extends CeylonBaseTool {
                 return new CeylonConfig();
             }
         } else {
-            if (system) {
-                return ConfigParser.loadSystemConfig();
-            }
-            if (user) {
-                return ConfigParser.loadUserConfig();
-            }
-            if (local) {
-                return ConfigParser.loadConfigFromFile(ConfigParser.findLocalConfig(applyCwd(new File("."))));
+            try {
+                if (system) {
+                    return ConfigParser.loadSystemConfig();
+                }
+                if (user) {
+                    return ConfigParser.loadUserConfig();
+                }
+                if (local) {
+                    return ConfigParser.loadConfigFromFile(ConfigParser.findLocalConfig(applyCwd(new File("."))));
+                }
+            } catch (FileNotFoundException ex) {
+                return new CeylonConfig();
             }
             return CeylonConfig.get();
         }
