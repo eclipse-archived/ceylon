@@ -106,7 +106,7 @@ class Correct() {
     assert(expected == javaArrayIterationStatic());
     
     function arraySequenceIterationStatic() {
-        assert(is ArraySequence<Integer> array = {for (i in 0..10) i}.sequence);
+        assert(is ArraySequence<Integer> array = {for (i in -1..11) i}.sequence.segment(1, 11));
         variable value sum = 0;
         for (i in array) {
             sum+=i;
