@@ -15,6 +15,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -116,18 +117,18 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 && src == null
                 && docs == null
                 && all == null;
-        if(js == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE) || defaults)
+        if(BooleanUtil.isTrue(js) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js)) || defaults)
             artifacts.add(ArtifactContext.JS);
-        if(jvm == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE) || defaults){
+        if(BooleanUtil.isTrue(jvm) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js)) || defaults){
             // put the CAR first since its presence will shortcut the other three
             artifacts.add(ArtifactContext.CAR);
             artifacts.add(ArtifactContext.JAR);
             artifacts.add(ArtifactContext.MODULE_PROPERTIES);
             artifacts.add(ArtifactContext.MODULE_XML);
         }
-        if(src == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE))
+        if(BooleanUtil.isTrue(src) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js)))
             artifacts.add(ArtifactContext.SRC);
-        if(docs == Boolean.TRUE || (all == Boolean.TRUE && js != Boolean.FALSE)){
+        if(BooleanUtil.isTrue(docs) || (BooleanUtil.isTrue(all) && BooleanUtil.isNotFalse(js))){
             artifacts.add(ArtifactContext.DOCS_ZIPPED);
             artifacts.add(ArtifactContext.DOCS);
         }

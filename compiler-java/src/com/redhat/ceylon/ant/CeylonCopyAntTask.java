@@ -31,6 +31,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Constants;
 
 
@@ -176,23 +177,23 @@ public class CeylonCopyAntTask extends RepoUsingCeylonAntTask {
             appendOption(cmd, "--recursive");
         }
 
-        if (js == Boolean.TRUE) {
+        if (BooleanUtil.isTrue(js)) {
             appendOption(cmd, "--js");
         }
 
-        if (jvm == Boolean.TRUE) {
+        if (BooleanUtil.isTrue(jvm)) {
             appendOption(cmd, "--jvm");
         }
 
-        if (src == Boolean.TRUE) {
+        if (BooleanUtil.isTrue(src)) {
             appendOption(cmd, "--src");
         }
 
-        if (docs == Boolean.TRUE) {
+        if (BooleanUtil.isTrue(docs)) {
             appendOption(cmd, "--docs");
         }
 
-        if (all == Boolean.TRUE) {
+        if (BooleanUtil.isTrue(all)) {
             appendOption(cmd, "--all");
         }
 

@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -124,7 +125,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                 decl.setUntrustedType(true);
                 decl.setTypeErased(true);
             }
-            if(decl.getTypeErased() != Boolean.TRUE
+            if(!BooleanUtil.isTrue(decl.getTypeErased())
                     && decl.isActual()
                     && decl.getContainer() instanceof ClassOrInterface){
                 // make sure we did not lose type information due to non-widening

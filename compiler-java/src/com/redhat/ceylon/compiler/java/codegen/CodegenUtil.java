@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
@@ -72,7 +73,7 @@ class CodegenUtil {
 
     static boolean isUnBoxed(TypedDeclaration decl){
         // null is considered boxed
-        return decl.getUnboxed() == Boolean.TRUE;
+        return BooleanUtil.isTrue(decl.getUnboxed());
     }
 
     static void markUnBoxed(Term node) {

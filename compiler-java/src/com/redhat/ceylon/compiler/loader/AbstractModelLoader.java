@@ -37,6 +37,7 @@ import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationArgument;
@@ -2893,7 +2894,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void markTypeErased(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
-        if (getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "erased") == Boolean.TRUE) {
+        if (BooleanUtil.isTrue(getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "erased"))) {
             decl.setTypeErased(true);
         } else {
             decl.setTypeErased(sameType(type, OBJECT_TYPE));
@@ -2904,7 +2905,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private void markDeclaredVoid(Method decl, MethodMirror methodMirror) {
         if (methodMirror.isDeclaredVoid() || 
-                getAnnotationBooleanValue(methodMirror, CEYLON_TYPE_INFO_ANNOTATION, "declaredVoid") == Boolean.TRUE) {
+                BooleanUtil.isTrue(getAnnotationBooleanValue(methodMirror, CEYLON_TYPE_INFO_ANNOTATION, "declaredVoid"))) {
             decl.setDeclaredVoid(true);
         }
     }
