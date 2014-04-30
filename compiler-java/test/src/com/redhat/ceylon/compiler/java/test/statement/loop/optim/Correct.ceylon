@@ -115,6 +115,15 @@ class Correct() {
     }
     assert(expected == arraySequenceIterationStatic());
     
+    function tupleIterationStatic() {
+        [Integer, Integer, Integer*] array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        variable value sum = 0;
+        for (i in array) {
+            sum+=i;
+        }
+        return sum;
+    }
+    assert(expected == tupleIterationStatic());
     
     function iterationDynamic(Iterable<Integer> iterable) {
         variable value sum = 0;

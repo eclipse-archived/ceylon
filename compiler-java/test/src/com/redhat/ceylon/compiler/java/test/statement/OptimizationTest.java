@@ -120,6 +120,11 @@ public class OptimizationTest extends CompilerTest {
     }
     
     @Test
+    public void testLopOptimTupleIterationStatic(){
+        compareWithJavaSource("loop/optim/TupleIterationStatic");
+    }
+    
+    @Test
     public void testLopOptimRangeIterationStatic(){
         compareWithJavaSource("loop/optim/RangeIterationStatic");
     }
