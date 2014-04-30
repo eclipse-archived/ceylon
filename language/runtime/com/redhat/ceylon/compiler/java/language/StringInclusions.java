@@ -144,14 +144,14 @@ public class StringInclusions implements Iterable<Integer,java.lang.Object>, Rei
 
     @Override @Ignore
     public Iterable<? extends Integer, ?> 
-    takingWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+    takeWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
     @Override @Ignore
     public Iterable<? extends Integer, ?> 
-    skippingWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    skipWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
     
     @Override
@@ -220,13 +220,13 @@ public class StringInclusions implements Iterable<Integer,java.lang.Object>, Rei
     }
     @Override @Ignore
     public Iterable<? extends Integer, ?> 
-    skipping(long n) {
-        return $ceylon$language$Iterable$this.skipping(n);
+    skip(long n) {
+        return $ceylon$language$Iterable$this.skip(n);
     }
     @Override @Ignore
     public Iterable<? extends Integer, ?> 
-    taking(long n) {
-        return $ceylon$language$Iterable$this.taking(n);
+    take(long n) {
+        return $ceylon$language$Iterable$this.take(n);
     }
     @Override @Ignore
     public boolean longerThan(long length) {

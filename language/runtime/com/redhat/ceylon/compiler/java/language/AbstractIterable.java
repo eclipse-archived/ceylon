@@ -160,13 +160,13 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
 
     @Override @Ignore
-    public final Iterable<? extends Element, ?> takingWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+    public final Iterable<? extends Element, ?> takeWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
     @Override @Ignore
-    public final Iterable<? extends Element, ?> skippingWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    public final Iterable<? extends Element, ?> skipWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
     
     @Override 
@@ -199,12 +199,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.shorterThan(length);
     }
     @Override @Ignore
-    public final Iterable<? extends Element, ?> skipping(long skip) {
-        return $ceylon$language$Iterable$this.skipping(skip);
+    public final Iterable<? extends Element, ?> skip(long skip) {
+        return $ceylon$language$Iterable$this.skip(skip);
     }
     @Override @Ignore
-    public final Iterable<? extends Element, ?> taking(long take) {
-        return $ceylon$language$Iterable$this.taking(take);
+    public final Iterable<? extends Element, ?> take(long take) {
+        return $ceylon$language$Iterable$this.take(take);
     }
     @Override @Ignore
     public final Iterable<? extends Element, ? extends Absent> by(long step) {

@@ -417,7 +417,7 @@ public final class CharArray implements ReifiedType {
         }
         
         @Override
-        public CharArrayIterable skipping(long skip) {
+        public CharArrayIterable skip(long skip) {
             if (skip <= 0) {
                 return this;
             }
@@ -428,7 +428,7 @@ public final class CharArray implements ReifiedType {
         }
         
         @Override
-        public CharArrayIterable taking(long take) {
+        public CharArrayIterable take(long take) {
             if (take >= this.getSize()) {
                 return this;
             }
@@ -445,15 +445,15 @@ public final class CharArray implements ReifiedType {
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> skippingWhile(
+        public Iterable<? extends ceylon.language.Character, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
+            return $ceylon$language$Iterable$this.skipWhile(skip);
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Character, ? extends Object> takingWhile(
+        public Iterable<? extends ceylon.language.Character, ? extends Object> takeWhile(
                 Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
+            return $ceylon$language$Iterable$this.takeWhile(take);
         }
         
         @Override

@@ -252,14 +252,14 @@ public class StringTokens
 
     @Override @Ignore
     public Iterable<? extends String, ?> 
-    takingWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+    takeWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
     @Override @Ignore
     public Iterable<? extends String, ?> 
-    skippingWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    skipWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
     
     @Override
@@ -346,13 +346,13 @@ public class StringTokens
     }
     @Override @Ignore
     public Iterable<? extends String, ?> 
-    skipping(long n) {
-        return $ceylon$language$Iterable$this.skipping(n);
+    skip(long n) {
+        return $ceylon$language$Iterable$this.skip(n);
     }
     @Override @Ignore
     public Iterable<? extends String, ?> 
-    taking(long n) {
-        return $ceylon$language$Iterable$this.taking(n);
+    take(long n) {
+        return $ceylon$language$Iterable$this.take(n);
     }
     @Override @Ignore
     public Iterable<? extends String, ?> 

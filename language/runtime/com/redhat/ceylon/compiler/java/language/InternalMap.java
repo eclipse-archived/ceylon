@@ -322,25 +322,25 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<Key,Item>,ceylon.language::Null>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> skipping(
+    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> skip(
             long skip) {
-        return $ceylon$language$Iterable$this.skipping(skip);
+        return $ceylon$language$Iterable$this.skip(skip);
     }
 
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<Key,Item>,ceylon.language::Null>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> skippingWhile(
+    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> skipWhile(
             Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
 
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<Key,Item>,ceylon.language::Null>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> takingWhile(
+    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> takeWhile(
             Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
 
     @Override @Ignore
@@ -356,9 +356,9 @@ public class InternalMap<Key, Item> implements Map<Key, Item>, ReifiedType {
     @Override
     @Annotations(@Annotation("default"))
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Entry<Key,Item>,ceylon.language::Null>")
-    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> taking(
+    public Iterable<? extends Entry<? extends Key, ? extends Item>, ?> take(
             long take) {
-        return $ceylon$language$Iterable$this.taking(take);
+        return $ceylon$language$Iterable$this.take(take);
     }
 
     @Override

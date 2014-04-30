@@ -417,7 +417,7 @@ public final class @Classname@ implements ReifiedType {
         }
         
         @Override
-        public @Classname@Iterable skipping(long skip) {
+        public @Classname@Iterable skip(long skip) {
             if (skip <= 0) {
                 return this;
             }
@@ -428,7 +428,7 @@ public final class @Classname@ implements ReifiedType {
         }
         
         @Override
-        public @Classname@Iterable taking(long take) {
+        public @Classname@Iterable take(long take) {
             if (take >= this.getSize()) {
                 return this;
             }
@@ -445,15 +445,15 @@ public final class @Classname@ implements ReifiedType {
         }
         
         @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> skippingWhile(
+        public Iterable<? extends @BoxedType@, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
+            return $ceylon$language$Iterable$this.skipWhile(skip);
         }
         
         @Override
-        public Iterable<? extends @BoxedType@, ? extends Object> takingWhile(
+        public Iterable<? extends @BoxedType@, ? extends Object> takeWhile(
                 Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
+            return $ceylon$language$Iterable$this.takeWhile(take);
         }
         
         @Override

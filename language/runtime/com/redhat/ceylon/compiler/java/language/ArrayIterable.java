@@ -231,12 +231,12 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ?> skipping(long skip) {
-        return $ceylon$language$Iterable$this.skipping(skip);
+    public Iterable<? extends Element, ?> skip(long skip) {
+        return $ceylon$language$Iterable$this.skip(skip);
     }
     @Override @Ignore
-    public Iterable<? extends Element, ?> taking(long take) {
-        return $ceylon$language$Iterable$this.taking(take);
+    public Iterable<? extends Element, ?> take(long take) {
+        return $ceylon$language$Iterable$this.take(take);
     }
     
     @Override @Ignore
@@ -345,13 +345,13 @@ public class ArrayIterable<Element,Absent> implements Iterable<Element,Absent>, 
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ?> takingWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+    public Iterable<? extends Element, ?> takeWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
     @Override @Ignore
-    public Iterable<? extends Element, ?> skippingWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    public Iterable<? extends Element, ?> skipWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
     
     @Override @Ignore

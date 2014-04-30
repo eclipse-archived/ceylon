@@ -417,7 +417,7 @@ public final class BooleanArray implements ReifiedType {
         }
         
         @Override
-        public BooleanArrayIterable skipping(long skip) {
+        public BooleanArrayIterable skip(long skip) {
             if (skip <= 0) {
                 return this;
             }
@@ -428,7 +428,7 @@ public final class BooleanArray implements ReifiedType {
         }
         
         @Override
-        public BooleanArrayIterable taking(long take) {
+        public BooleanArrayIterable take(long take) {
             if (take >= this.getSize()) {
                 return this;
             }
@@ -445,15 +445,15 @@ public final class BooleanArray implements ReifiedType {
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Boolean, ? extends Object> skippingWhile(
+        public Iterable<? extends ceylon.language.Boolean, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
+            return $ceylon$language$Iterable$this.skipWhile(skip);
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Boolean, ? extends Object> takingWhile(
+        public Iterable<? extends ceylon.language.Boolean, ? extends Object> takeWhile(
                 Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
+            return $ceylon$language$Iterable$this.takeWhile(take);
         }
         
         @Override

@@ -417,7 +417,7 @@ public final class LongArray implements ReifiedType {
         }
         
         @Override
-        public LongArrayIterable skipping(long skip) {
+        public LongArrayIterable skip(long skip) {
             if (skip <= 0) {
                 return this;
             }
@@ -428,7 +428,7 @@ public final class LongArray implements ReifiedType {
         }
         
         @Override
-        public LongArrayIterable taking(long take) {
+        public LongArrayIterable take(long take) {
             if (take >= this.getSize()) {
                 return this;
             }
@@ -445,15 +445,15 @@ public final class LongArray implements ReifiedType {
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Integer, ? extends Object> skippingWhile(
+        public Iterable<? extends ceylon.language.Integer, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
+            return $ceylon$language$Iterable$this.skipWhile(skip);
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Integer, ? extends Object> takingWhile(
+        public Iterable<? extends ceylon.language.Integer, ? extends Object> takeWhile(
                 Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
+            return $ceylon$language$Iterable$this.takeWhile(take);
         }
         
         @Override

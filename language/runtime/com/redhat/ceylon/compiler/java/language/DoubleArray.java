@@ -417,7 +417,7 @@ public final class DoubleArray implements ReifiedType {
         }
         
         @Override
-        public DoubleArrayIterable skipping(long skip) {
+        public DoubleArrayIterable skip(long skip) {
             if (skip <= 0) {
                 return this;
             }
@@ -428,7 +428,7 @@ public final class DoubleArray implements ReifiedType {
         }
         
         @Override
-        public DoubleArrayIterable taking(long take) {
+        public DoubleArrayIterable take(long take) {
             if (take >= this.getSize()) {
                 return this;
             }
@@ -445,15 +445,15 @@ public final class DoubleArray implements ReifiedType {
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Float, ? extends Object> skippingWhile(
+        public Iterable<? extends ceylon.language.Float, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
+            return $ceylon$language$Iterable$this.skipWhile(skip);
         }
         
         @Override
-        public Iterable<? extends ceylon.language.Float, ? extends Object> takingWhile(
+        public Iterable<? extends ceylon.language.Float, ? extends Object> takeWhile(
                 Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
+            return $ceylon$language$Iterable$this.takeWhile(take);
         }
         
         @Override

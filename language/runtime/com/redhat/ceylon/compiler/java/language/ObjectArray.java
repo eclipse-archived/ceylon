@@ -479,14 +479,14 @@ public final class ObjectArray<T> implements ReifiedType {
         }
     
         @Override
-        public Iterable<? extends T, ? extends Object> skipping(long skip) {
-            return $ceylon$language$Iterable$this.skipping(skip);
+        public Iterable<? extends T, ? extends Object> skip(long skip) {
+            return $ceylon$language$Iterable$this.skip(skip);
         }
     
         @Override
-        public Iterable<? extends T, ? extends Object> skippingWhile(
+        public Iterable<? extends T, ? extends Object> skipWhile(
                 Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skippingWhile(skip);
+            return $ceylon$language$Iterable$this.skipWhile(skip);
         }
     
         @Override
@@ -496,14 +496,14 @@ public final class ObjectArray<T> implements ReifiedType {
         }
     
         @Override
-        public Iterable<? extends T, ? extends Object> taking(long take) {
-            return $ceylon$language$Iterable$this.taking(take);
+        public Iterable<? extends T, ? extends Object> take(long take) {
+            return $ceylon$language$Iterable$this.take(take);
         }
     
         @Override
-        public Iterable<? extends T, ? extends Object> takingWhile(
+        public Iterable<? extends T, ? extends Object> takeWhile(
                 Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takingWhile(take);
+            return $ceylon$language$Iterable$this.takeWhile(take);
         }
     }
    
