@@ -1691,13 +1691,13 @@ public final class String
 
     @Override @Ignore
     public Iterable<? extends Character, ?> 
-    skipping(long skip) {
+    skip(long skip) {
         return this.segment(Integer.instance(skip), this.getSize());
     }
     
     @Ignore
     public static Iterable<? extends Character, ?> 
-    skipping(java.lang.String value, long skip) {
+    skip(java.lang.String value, long skip) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1707,13 +1707,13 @@ public final class String
 
     @Override @Ignore
     public Iterable<? extends Character, ?> 
-    taking(long take) {
+    take(long take) {
         return this.segment(Integer.instance(0), take);
     }
     
     @Ignore
     public static Iterable<? extends Character, ?> 
-    taking(java.lang.String value, long take) {
+    take(java.lang.String value, long take) {
         if (value.isEmpty()) {
             return instance(value);
         } else {
@@ -1723,26 +1723,26 @@ public final class String
     
     @Override @Ignore
     public Iterable<? extends Character, ?> 
-    takingWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+    takeWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
     @Override @Ignore
     public Iterable<? extends Character, ?> 
-    skippingWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    skipWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
     
     @Ignore
     public static Iterable<? extends Character, ?> 
-    takingWhile(java.lang.String value, Callable<? extends Boolean> take) {
-        return instance(value).takingWhile(take);
+    takeWhile(java.lang.String value, Callable<? extends Boolean> take) {
+        return instance(value).takeWhile(take);
     }
     
     @Ignore
     public static Iterable<? extends Character, ?> 
-    skippingWhile(java.lang.String value, Callable<? extends Boolean> skip) {
-        return instance(value).skippingWhile(skip);
+    skipWhile(java.lang.String value, Callable<? extends Boolean> skip) {
+        return instance(value).skipWhile(skip);
     }
     
     @Override @Ignore

@@ -1198,14 +1198,14 @@ public final class Array<Element>
     
     @Override @Ignore
 	public Iterable<? extends Element, ?> 
-    skipping(long skip) {
-		return $ceylon$language$Iterable$this.skipping(skip);
+    skip(long skip) {
+		return $ceylon$language$Iterable$this.skip(skip);
 	}
 
 	@Override @Ignore
 	public Iterable<? extends Element, ?> 
-	taking(long take) {
-		return $ceylon$language$Iterable$this.taking(take);
+	take(long take) {
+		return $ceylon$language$Iterable$this.take(take);
 	}
 
 	@Override @Ignore
@@ -1680,14 +1680,14 @@ public final class Array<Element>
     
     @Override @Ignore
     public Iterable<? extends Element, ?> 
-    takingWhile(Callable<? extends Boolean> take) {
-        return $ceylon$language$Iterable$this.takingWhile(take);
+    takeWhile(Callable<? extends Boolean> take) {
+        return $ceylon$language$Iterable$this.takeWhile(take);
     }
     
     @Override @Ignore
     public Iterable<? extends Element, ?> 
-    skippingWhile(Callable<? extends Boolean> skip) {
-        return $ceylon$language$Iterable$this.skippingWhile(skip);
+    skipWhile(Callable<? extends Boolean> skip) {
+        return $ceylon$language$Iterable$this.skipWhile(skip);
     }
     
     @Override
