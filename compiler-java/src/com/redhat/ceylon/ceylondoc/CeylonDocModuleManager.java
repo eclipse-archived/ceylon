@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     private List<ModuleSpec> modulesSpecs;
-    private Logger log;
     private CeylonDocTool tool;
     private RepositoryManager outputRepositoryManager;
 
@@ -53,7 +52,6 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         super(context);
         this.outputRepositoryManager = outputRepositoryManager;
         this.modulesSpecs = modules;
-        this.log = log;
         this.tool = tool;
     }
 
