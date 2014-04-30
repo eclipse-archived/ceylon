@@ -169,7 +169,7 @@ shared interface Iterable<out Element, out Absent=Null>
      order, the stream `{ i.first, *i.rest }` might not have
      the same elements as `i`."
     see (`value first`)
-    shared default {Element*} rest => skipping(1);
+    shared default {Element*} rest => skip(1);
     
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
@@ -356,7 +356,7 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the elements of this 
-     stream, after skipping the first [[skip]] elements
+     stream, after skipping the first [[skipit]] elements
      produced by its iterator.
      
      If this stream does not contain more elements than the 
@@ -364,8 +364,8 @@ shared interface Iterable<out Element, out Absent=Null>
      stream has no elements. If the specified number of 
      elements to skip is zero or fewer, the resulting stream 
      contains the same elements as this stream."
-    shared default {Element*} skipping(Integer skip) {
-        if (skip <= 0) { 
+    shared default {Element*} skip(Integer skipit) {
+        if (skipit <= 0) {
             return this;
         }
         else {
@@ -374,7 +374,7 @@ shared interface Iterable<out Element, out Absent=Null>
                 shared actual Iterator<Element> iterator() {
                     value iter = outer.iterator();
                     variable value i=0;
-                    while (i++<skip && 
+                    while (i++<skipit &&
                             !iter.next() is Finished) {}
                     return iter;
                 }
@@ -383,7 +383,7 @@ shared interface Iterable<out Element, out Absent=Null>
         }
     }
     
-    "Produces a stream containing the first [[take]]
+    "Produces a stream containing the first [[num]]
      elements of this stream.
      
      If the specified number of elements to take is larger 
@@ -391,8 +391,8 @@ shared interface Iterable<out Element, out Absent=Null>
      resulting stream contains the same elements as this 
      stream. If the specified number of elements to take is
      fewer than one, the resulting stream has no elements."
-    shared default {Element*} taking(Integer take) {
-        if (take <= 0) { 
+    shared default {Element*} take(Integer num) {
+        if (num <= 0) {
             return {}; 
         }
         else {
@@ -404,7 +404,7 @@ shared interface Iterable<out Element, out Absent=Null>
                             satisfies Iterator<Element> {
                         variable value i=0;
                         actual shared Element|Finished next() {
-                            return ++i>take then finished 
+                            return ++i>num then finished
                                     else iter.next();
                         }
                     }
@@ -418,14 +418,14 @@ shared interface Iterable<out Element, out Absent=Null>
     
     "Produces a stream containing the elements of this 
      stream, after skipping the leading elements until the 
-     [[given predicate function|skip]] returns `false`."
-    shared default {Element*} skippingWhile(Boolean skip(Element elem)) {
+     [[given predicate function|skipit]] returns `false`."
+    shared default {Element*} skipWhile(Boolean skipit(Element elem)) {
         object iterable 
                 satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
                 value iter = outer.iterator();
                 while (!is Finished elem=iter.next()) {
-                    if (!skip(elem)) {
+                    if (!skipit(elem)) {
                         object iterator 
                                 satisfies Iterator<Element> {
                             variable Boolean first=true;
@@ -449,9 +449,9 @@ shared interface Iterable<out Element, out Absent=Null>
     }
     
     "Produces a stream containing the leading elements of 
-     this stream until the [[given predicate function|take]] 
+     this stream until the [[given predicate function|taking]]
      returns `false`."
-    shared default {Element*} takingWhile(Boolean take(Element elem)) {
+    shared default {Element*} takeWhile(Boolean taking(Element elem)) {
         object iterable 
                 satisfies {Element*} {
             shared actual Iterator<Element> iterator() {
@@ -461,7 +461,7 @@ shared interface Iterable<out Element, out Absent=Null>
                     variable Boolean alive = true;
                     actual shared Element|Finished next() {
                         if (alive, !is Finished next = iter.next()) {
-                            if (take(next)) {
+                            if (taking(next)) {
                                 return next;
                             }
                             else {

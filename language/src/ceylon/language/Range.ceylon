@@ -295,25 +295,25 @@ shared final class Range<Element>(first, last)
     "Reverse this range, returning a new range."
     shared actual Range<Element> reversed => Range(last,first);
     
-    shared actual Range<Element>|Empty skipping(Integer skip) {
-        if (skip <= 0) {
+    shared actual Range<Element>|Empty skip(Integer skipit) {
+        if (skipit <= 0) {
             return this;
         }
         variable value x=0;
         variable value e = first;
-        while (x++<skip) {
+        while (x++<skipit) {
             e=next(e);
         }
         return containsElement(e) then Range(e, last) else {};
     }
     
-    shared actual Range<Element>|Empty taking(Integer take) {
-        if (take <= 0) {
+    shared actual Range<Element>|Empty take(Integer taking) {
+        if (taking <= 0) {
             return {};
         }
         variable value x=0;
         variable value e=first;
-        while (++x<take) {
+        while (++x<taking) {
             e=next(e);
         }
         return containsElement(e) then Range(first, e) else this;

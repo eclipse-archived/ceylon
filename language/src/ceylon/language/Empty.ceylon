@@ -116,9 +116,9 @@ shared interface Empty of e
     shared actual Boolean every
             (Boolean selecting(Nothing element)) => true;
     
-    shared actual [] skipping(Integer skip) => this;
+    shared actual [] skip(Integer skipit) => this;
     
-    shared actual [] taking(Integer take) => this;
+    shared actual [] take(Integer taking) => this;
     
     shared actual [] by(Integer step) => this;
     

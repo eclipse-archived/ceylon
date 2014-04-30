@@ -204,8 +204,8 @@ shared object emptyMap
             (Boolean selecting(Nothing->Nothing element)) 
             => true;
     
-    skipping(Integer skip) => emptyMap;
-    taking(Integer take) => emptyMap;
+    skip(Integer skipit) => emptyMap;
+    take(Integer taking) => emptyMap;
     by(Integer step) => emptyMap;
     
 }
