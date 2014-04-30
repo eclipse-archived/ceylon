@@ -571,17 +571,17 @@ String$proto.following=function(o,$mpt) {
   return Iterable.$$.prototype.following.call(this,o,$mpt);
 }
 String$proto.$filter.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','filter']};}
-String$proto.skipping = function(skip) {
+String$proto.skip = function(skip) {
     if (skip==0) return this;
     return this.segment(skip, this.size);
 }
-String$proto.skipping.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','skipping'],
+String$proto.skip.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','skip'],
   $ps:[{$nm:'skip',$t:{t:Integer}}]};}
-String$proto.taking = function(take) {
+String$proto.take = function(take) {
     if (take==0) return getEmpty();
     return this.segment(0, take);
 }
-String$proto.taking.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','taking'],
+String$proto.take.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','take'],
   $ps:[{$nm:'take',$t:{t:Integer}}]};}
 String$proto.by = function(step) {
     var r = Iterable.$$.prototype.by.call(this, step);
