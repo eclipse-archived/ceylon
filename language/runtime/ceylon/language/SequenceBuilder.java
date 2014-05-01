@@ -47,8 +47,8 @@ public class SequenceBuilder<Element> implements ReifiedType {
     @Ignore
     private void ensureCapacity$priv$(long capacity) {
         
-        if ((array == null && capacity > 0) 
-                || (capacity > array.length)) {
+        if ((array == null && capacity > 0)
+                || (array != null && capacity > array.length)) {
             // Always have about 50% more capacity than requested
             long newcapacity = capacity+(capacity>>1);
             if (newcapacity < MIN_CAPACITY) {
