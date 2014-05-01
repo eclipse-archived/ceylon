@@ -51,8 +51,7 @@ public abstract class Throwable extends java.lang.Object {
     
     @TypeInfo("ceylon.language::String")
     public java.lang.String getMessage() {
-        if (description != null
-                && description != null) {
+        if (description != null) {
             return description.toString();
         } 
         else if (getCause() != null 
