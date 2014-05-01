@@ -3517,25 +3517,38 @@ public class GenerateJsVisitor extends Visitor
         out("(function(){var ", rhs, "=");
         that.getRightTerm().visit(this);
         endLine(true);
-        out("if(", rhs, ">0){");
-        if (!opts.isMinify())endLine();
-        String lhs = names.createTempVariable();
+        String lhs = leftNat ? Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)left)) : names.createTempVariable();
         String end = names.createTempVariable();
-        out("var ", lhs, "=");
-        that.getLeftTerm().visit(this);
-        endLine(true);
-        out("var ", end, "=", lhs);
-        endLine(true);
-        out("for(var i=1; i<", rhs, "; i++){", end, "=", end, ".successor;}");
-        endLine();
-        out("return ", clAlias, "Range(");
-        out(lhs, ",", end, ",");
+        if (leftNat) {
+            out("return ", rhs, ">0?");
+        } else {
+            out("if(", rhs, ">0){");
+            endLine();
+            out("var ", lhs, "=");
+            that.getLeftTerm().visit(this);
+            out(",", end, "=", lhs);
+            endLine(true);
+            out("for(var i=1; i<", rhs, "; i++)", end, "=", end, ".successor;");
+            endLine();
+            out("return ");
+        }
+        out(clAlias, "Range(");
+        out(lhs, ",");
+        if (leftNat) {
+            out(lhs, "+", rhs, "-1,");
+        } else {
+            out(end, ",");
+        }
         TypeUtils.printTypeArguments(that,
                 that.getTypeModel().getTypeArguments(),
                 GenerateJsVisitor.this, false);
         out(")");
-        endLine();
-        out("}else return ", clAlias, "getEmpty();}())");
+        if (leftNat) {
+            out(":", clAlias, "getEmpty();}())");
+        } else {
+            endLine();
+            out("}else return ", clAlias, "getEmpty();}())");
+        }
     }
 
     /** Encloses the block in a function, IF NEEDED. */
