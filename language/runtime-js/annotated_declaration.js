@@ -8,7 +8,7 @@ AnnotatedDeclaration$meta$declaration.$$.prototype.annotations=function ($$$mpty
     _mdl.$an=_ans;
   }
   for (var i=0; i<_ans.length;i++) {
-    if ($is(_ans[i], $$$mptypes.Annotation$annotations)) {
+    if (is$(_ans[i], $$$mptypes.Annotation$annotations)) {
       ans.push(_ans[i]);
     }
   }

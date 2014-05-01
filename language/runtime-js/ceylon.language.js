@@ -180,7 +180,7 @@ Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCM
 function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
-    return $is(that, {t:Identifiable}) && (that===this);
+    return is$(that, {t:Identifiable}) && (that===this);
 }
 $defat(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$CCMM$,d:['ceylon.language','Identifiable','$at','hash']};});
