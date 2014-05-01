@@ -162,7 +162,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredClassOrInterface=function ge
 ClassOrInterface$meta$model.$$.prototype.getClass=function getClass(name,types,$mptypes) {
   var rv=this.getClassOrInterface(name,types,{Container$getClassOrInterface:$mptypes.Container$getClass,
     Kind$getClassOrInterface:Class$meta$model});
-  if (rv && !$is(rv, {t:AppliedMemberClass})) {
+  if (rv && !is$(rv, {t:AppliedMemberClass})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not a class");
   }
   return rv;
@@ -170,7 +170,7 @@ ClassOrInterface$meta$model.$$.prototype.getClass=function getClass(name,types,$
 ClassOrInterface$meta$model.$$.prototype.getDeclaredClass=function getClass(name,types,$mptypes) {
   var rv=this.getDeclaredClassOrInterface(name,types,{Container$getDeclaredClassOrInterface:$mptypes.Container$getClass,
     Kind$getDeclaredClassOrInterface:Class$meta$model});
-  if (rv && !$is(rv, {t:AppliedMemberClass})) {
+  if (rv && !is$(rv, {t:AppliedMemberClass})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not a class");
   }
   return rv;
@@ -178,7 +178,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredClass=function getClass(name
 ClassOrInterface$meta$model.$$.prototype.getInterface=function(name,types,$mptypes) {
   var rv=this.getClassOrInterface(name,types,{Container$getClassOrInterface:$mptypes.Container$getInterface,
     Kind$getClassOrInterface:Interface$meta$model});
-  if (rv && !$is(rv, {t:AppliedMemberInterface})) {
+  if (rv && !is$(rv, {t:AppliedMemberInterface})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not an interface");
   }
   return rv;
@@ -186,7 +186,7 @@ ClassOrInterface$meta$model.$$.prototype.getInterface=function(name,types,$mptyp
 ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface=function(name,types,$mptypes) {
   var rv=this.getDeclaredClassOrInterface(name,types,{Container$getDeclaredClassOrInterface:$mptypes.Container$getDeclaredInterface,
     Kind$getDeclaredClassOrInterface:Interface$meta$model});
-  if (rv && !$is(rv, {t:AppliedMemberInterface})) {
+  if (rv && !is$(rv, {t:AppliedMemberInterface})) {
     throw IncompatibleTypeException$meta$model("Member " + name + " is not an interface");
   }
   return rv;
@@ -196,7 +196,7 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredInterface=function(name,type
 ClassOrInterface$meta$model.$$.prototype.typeOf=function typeOf(instance$8){
   var _t={t:this.tipo};
   if (this.$targs)_t.a=this.$targs;
-  return $is(instance$8,_t);
+  return is$(instance$8,_t);
 };
 ClassOrInterface$meta$model.$$.prototype.typeOf.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'instance',$mt:'prm',$t:{t:Anything},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Type','$m','typeOf']};};
 ClassOrInterface$meta$model.$$.prototype.supertypeOf=function supertypeOf(type$9){
