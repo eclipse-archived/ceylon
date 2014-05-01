@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ceylon.language.Anything;
@@ -43,8 +44,23 @@ public abstract class TypeDescriptor {
     
     public abstract java.lang.Class<?> getArrayElementClass();
     
-    
     public abstract boolean containsNull();
+    
+    public abstract boolean equals(Object other);
+    
+    public abstract int hashCode();
+    
+    /**
+     * Returns a hashcode for the given elements 
+     * computed so that the order of the elements doesn't matter
+     */
+    static int unorderedHashCode(TypeDescriptor[] array) {
+        int hash = 0;
+        for (int i = 0; i < array.length; i++) {
+            hash ^= array[i].hashCode();
+        }
+        return hash;
+    }
 	
 
     //
@@ -111,6 +127,11 @@ public abstract class TypeDescriptor {
                 return false;
             // now compare type arguments
             return super.equals(other);
+        }
+        
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(typeArguments) ^ klass.hashCode();
         }
         
         @Override
@@ -284,6 +305,11 @@ public abstract class TypeDescriptor {
         }
         
         @Override
+        public int hashCode() {
+            return Arrays.hashCode(typeArguments) ^ klass.hashCode() ^ name.hashCode();
+        }
+        
+        @Override
         public String toString() {
             StringBuilder b = new StringBuilder();
             b.append(name);
@@ -323,6 +349,11 @@ public abstract class TypeDescriptor {
         }
 
         @Override
+        public int hashCode() {
+            return container.hashCode() ^ member.hashCode();
+        }
+
+        @Override
         public String toString() {
             StringBuilder b = new StringBuilder();
             b.append(container);
@@ -352,6 +383,11 @@ public abstract class TypeDescriptor {
         @Override
         public boolean equals(Object obj) {
             return obj == this;
+        }
+        
+        @Override
+        public int hashCode() {
+            return 0;
         }
 
         @Override
@@ -435,6 +471,11 @@ public abstract class TypeDescriptor {
         }
 
         @Override
+        public int hashCode() {
+            return unorderedHashCode(members) ^ '|';
+        }
+
+        @Override
         public String toString() {
             return super.toString("|");
         }
@@ -492,6 +533,11 @@ public abstract class TypeDescriptor {
             if(obj == null || obj instanceof Intersection == false)
                 return false;
             return super.equals((Intersection)obj);
+        }
+        
+        @Override
+        public int hashCode() {
+            return unorderedHashCode(members) ^ '&';
         }
 
         @Override
