@@ -1507,7 +1507,7 @@ public final class Array<Element>
                     	java.lang.Object val = ((java.lang.Object[]) array)[sourcei];
                     	if (val instanceof String) {
                     		String s = (String) val;
-							target[desti] = s==null ? null : s.value;
+							target[desti] = s.value;
                     	}
                     	else {
                     		target[desti] = (java.lang.String) val;
