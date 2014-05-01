@@ -387,7 +387,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
         
         @Subtool(argumentName="action", classes={GetPassword.class, SetPassword.class, UnsetPassword.class})
         public void setAction(Tool action) {
-            this.tool = tool;
+            this.tool = action;
         }
         
         @Override
