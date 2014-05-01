@@ -41,31 +41,22 @@ public final class I1$impl<T1A, T1B> {
     public final class I2$impl<T2A, T2B> {
         
         public I2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2B, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$I2<T1A, T1B, T2A, T2B> $this) {
-            this.$reified$T2A = $reified$T2A;
-            this.$reified$T2B = $reified$T2B;
             this.$this = $this;
         }
-        private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2A;
-        private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2B;
         private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$I2<T1A, T1B, T2A, T2B> $this;
         
         public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2B) {
-            this.$reified$T2B = $reified$T2B;
-            this.$reified$T2A = $reified$T2A;
         }
     }
     
     public final class I2Hiding$impl<T1A> {
         
         public I2Hiding$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1A, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$I2Hiding<T1B, T1A> $this) {
-            this.$reified$T1A = $reified$T1A;
             this.$this = $this;
         }
-        private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1A;
         private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$I2Hiding<T1B, T1A> $this;
         
         public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1A) {
-            this.$reified$T1A = $reified$T1A;
         }
     }
 }

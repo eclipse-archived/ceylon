@@ -24,21 +24,13 @@ public final class CompositeInterface$impl<Key, Value> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public CompositeInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this) {
-        this.$reified$Key = $reified$Key;
-        this.$reified$Value = $reified$Value;
         this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-        this.$reified$Value = $reified$Value;
-        this.$reified$Key = $reified$Key;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

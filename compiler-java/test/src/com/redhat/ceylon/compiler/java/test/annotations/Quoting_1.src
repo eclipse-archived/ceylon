@@ -9,14 +9,11 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
 public final class Cloneable$impl<Clone extends .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone>> {
     
     public Cloneable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone, .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone> $this) {
-        this.$reified$Clone = $reified$Clone;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone;
     private final .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone) {
-        this.$reified$Clone = $reified$Clone;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

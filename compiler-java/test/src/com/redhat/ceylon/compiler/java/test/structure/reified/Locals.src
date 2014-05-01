@@ -2734,21 +2734,13 @@ final class MapTestBase$impl<Key, Item> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     MapTestBase$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase<? extends Key, ? extends Item> $this) {
-        this.$reified$Key = $reified$Key;
-        this.$reified$Item = $reified$Item;
         this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase<? extends Key, ? extends Item> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
-        this.$reified$Item = $reified$Item;
-        this.$reified$Key = $reified$Key;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

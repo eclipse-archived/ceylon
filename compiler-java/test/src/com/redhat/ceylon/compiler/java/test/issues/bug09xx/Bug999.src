@@ -27,17 +27,11 @@ interface Bug999Interface<Key, Value> {
 final class Bug999Interface$impl<Key, Value> {
     
     Bug999Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this) {
-        this.$reified$Key = $reified$Key;
-        this.$reified$Value = $reified$Value;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-        this.$reified$Value = $reified$Value;
-        this.$reified$Key = $reified$Key;
     }
 }
 class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {

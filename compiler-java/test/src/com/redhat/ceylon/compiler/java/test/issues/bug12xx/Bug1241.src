@@ -12,14 +12,11 @@ public class Bug1241 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     final class I$impl<L> {
         
         I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241$I<L> $this) {
-            this.$reified$L = $reified$L;
             this.$this = $this;
         }
-        private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L;
         private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241$I<L> $this;
         
         public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L) {
-            this.$reified$L = $reified$L;
         }
     }
     

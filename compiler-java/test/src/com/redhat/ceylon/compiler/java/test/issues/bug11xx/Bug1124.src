@@ -13,17 +13,11 @@ interface Bug1124Interface<Key, Value> {
 final class Bug1124Interface$impl<Key, Value> {
     
     Bug1124Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<? super Key, ? extends Value> $this) {
-        this.$reified$Key = $reified$Key;
-        this.$reified$Value = $reified$Value;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<? super Key, ? extends Value> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-        this.$reified$Value = $reified$Value;
-        this.$reified$Key = $reified$Key;
     }
 }
 class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {

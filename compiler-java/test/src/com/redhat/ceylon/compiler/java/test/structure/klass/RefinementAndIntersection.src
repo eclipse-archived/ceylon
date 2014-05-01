@@ -43,14 +43,11 @@ interface RefinementAndIntersection_Co<T> {
 final class RefinementAndIntersection_Co$impl<T> {
     
     RefinementAndIntersection_Co$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<? extends T> $this) {
-        this.$reified$T = $reified$T;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<? extends T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-        this.$reified$T = $reified$T;
     }
 }
 class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> {

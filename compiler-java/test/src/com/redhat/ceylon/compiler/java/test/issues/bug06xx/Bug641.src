@@ -27,13 +27,10 @@ interface Bug641Set<Element> {
 final class Bug641Set$impl<Element> {
     
     Bug641Set$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug641Set<? extends Element> $this) {
-        this.$reified$Element = $reified$Element;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug641Set<? extends Element> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
-        this.$reified$Element = $reified$Element;
     }
 }

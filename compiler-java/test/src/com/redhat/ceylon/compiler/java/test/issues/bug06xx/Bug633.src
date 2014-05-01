@@ -9,17 +9,11 @@ interface Bug633Ranged<Index, Span> {
 final class Bug633Ranged$impl<Index, Span> {
     
     Bug633Ranged$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this) {
-        this.$reified$Index = $reified$Index;
-        this.$reified$Span = $reified$Span;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span) {
-        this.$reified$Span = $reified$Span;
-        this.$reified$Index = $reified$Index;
     }
 }
 interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<.ceylon.language.Integer, .java.lang.Object> {

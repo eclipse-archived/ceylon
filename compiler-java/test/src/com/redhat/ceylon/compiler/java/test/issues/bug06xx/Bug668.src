@@ -9,17 +9,11 @@ public interface Bug668_X<Element, Nada> {
 public final class Bug668_X$impl<Element, Nada> {
     
     public Bug668_X$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this) {
-        this.$reified$Element = $reified$Element;
-        this.$reified$Nada = $reified$Nada;
         this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada;
     private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada) {
-        this.$reified$Nada = $reified$Nada;
-        this.$reified$Element = $reified$Element;
     }
 }
 public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<Element, .java.lang.Object> {
