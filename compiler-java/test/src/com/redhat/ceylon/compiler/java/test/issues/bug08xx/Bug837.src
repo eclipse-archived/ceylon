@@ -255,23 +255,23 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> skipping(final long skip) {
-        return $ceylon$language$Iterable$this$.skipping(skip);
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> skip(final long skipit) {
+        return $ceylon$language$Iterable$this$.skip(skipit);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> taking(final long take) {
-        return $ceylon$language$Iterable$this$.taking(take);
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> take(final long num) {
+        return $ceylon$language$Iterable$this$.take(num);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> skippingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skip) {
-        return $ceylon$language$Iterable$this$.skippingWhile(skip);
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> skipWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> skipit) {
+        return $ceylon$language$Iterable$this$.skipWhile(skipit);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> takingWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> take) {
-        return $ceylon$language$Iterable$this$.takingWhile(take);
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> takeWhile(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> taking) {
+        return $ceylon$language$Iterable$this$.takeWhile(taking);
     }
     
     @.java.lang.Override

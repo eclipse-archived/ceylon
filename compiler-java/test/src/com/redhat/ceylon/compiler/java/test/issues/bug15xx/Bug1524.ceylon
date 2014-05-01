@@ -2,7 +2,7 @@
         => {0,1,*mapPairs(plus<Integer>,bug1524_fib.rest,bug1524_fib)};
 
 shared void bug1524() {
-    print(bug1524_fib.taking(10));
+    print(bug1524_fib.take(10));
 }
 */
 
