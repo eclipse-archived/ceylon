@@ -921,8 +921,9 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 && !dir.mkdirs()) {
             throw new IOException();
         }
-        InputStream resource = getClass().getResourceAsStream(path);
-        copy(resource, file);
+        try (InputStream resource = getClass().getResourceAsStream(path)) {
+            copy(resource, file);
+        }
     }
 
     private void copy(InputStream resource, File file)
