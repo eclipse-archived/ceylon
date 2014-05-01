@@ -98,9 +98,9 @@ shared native final class String(characters)
     "The rest of the string, without the first element."
     shared actual native String rest;
     
-    "Join the given [[strings]], using this string as a 
-     separator."
-    shared native String join({String*} strings);
+    "Join the [[strings|Object.string]] of the given [[objects]],
+     using this string as a separator."
+    shared native String join({Object*} objects);
     
     "Split the string into lines of text."
     shared native {String*} lines => split('\n'.equals);

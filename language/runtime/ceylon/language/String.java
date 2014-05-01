@@ -1048,17 +1048,17 @@ public final class String
     }
 
     @TypeInfo("ceylon.language::String")
-    public java.lang.String join(@Name("strings") 
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
-    Iterable<? extends String,?> strings) {
-        return join(value, strings);
+    public java.lang.String join(@Name("objects") 
+    @TypeInfo("ceylon.language::Iterable<ceylon.language::Object,ceylon.language::Null>")
+    Iterable<? extends java.lang.Object,?> objects) {
+        return join(value, objects);
     }
 
     @Ignore
     public static java.lang.String join(java.lang.String value, 
-    		Iterable<? extends String, ?> strings) {
+    		Iterable<? extends java.lang.Object, ?> objects) {
         java.lang.StringBuilder result = new java.lang.StringBuilder();
-        Iterator<? extends String> it = strings.iterator();
+        Iterator<? extends java.lang.Object> it = objects.iterator();
         java.lang.Object elem = it.next();
         if (elem != finished_.get_()) {
             result.append(elem);
