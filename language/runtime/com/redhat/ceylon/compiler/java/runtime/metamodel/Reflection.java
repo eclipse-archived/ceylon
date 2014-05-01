@@ -23,7 +23,7 @@ class Reflection {
     static Method getDeclaredMethod(Class<?> cls, String name, 
             java.lang.Class<?>... parameterTypes) {
         for (Method method : cls.getDeclaredMethods()) {
-            if (method.getName() == name
+            if (method.getName().equals(name)
                     && !method.isSynthetic()
                     && !method.isBridge()
                     && Arrays.equals(method.getParameterTypes(), parameterTypes)) {
