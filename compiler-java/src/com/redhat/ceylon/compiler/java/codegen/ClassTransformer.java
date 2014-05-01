@@ -1776,7 +1776,7 @@ public class ClassTransformer extends AbstractTransformer {
                     // Generate setter in main class or interface (when shared)
                     classBuilder.attribute(makeSetter(decl, false, lazy));
                 }
-                if (withinInterface) {
+                if (withinInterface && lazy) {
                     // Generate setter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true, lazy));
                 }
