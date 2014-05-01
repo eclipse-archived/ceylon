@@ -163,8 +163,8 @@ $defat(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',fun
         if (typeof(_t)==='function')_t=getrtmm$$(_t).$t;
         var ot=_openTypeFromTarg(_t);
         ct.push(ot);
-        if ($is(ot,{t:OpenClassType$meta$declaration}) && !ta.contains(OpenClassType$meta$declaration))ta.push(OpenClassType$meta$declaration);
-        else if ($is(ot,{t:OpenInterfaceType$meta$declaration})&&!ta.contains(OpenInterfaceType$meta$declaration))ta.push(OpenInterfaceType$meta$declaration);
+        if (is$(ot,{t:OpenClassType$meta$declaration}) && !ta.contains(OpenClassType$meta$declaration))ta.push(OpenClassType$meta$declaration);
+        else if (is$(ot,{t:OpenInterfaceType$meta$declaration})&&!ta.contains(OpenInterfaceType$meta$declaration))ta.push(OpenInterfaceType$meta$declaration);
       }
     }
     if (ta.length===0)ta={t:OpenType$meta$declaration};
@@ -222,7 +222,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclara
       var anns = mm&&mm.$an;
       if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
       if (anns) for (var j=0; j<anns.length; j++) {
-        if ($is(anns[j],$$$mptypes.Annotation$annotatedMemberDeclarations)) {
+        if (is$(anns[j],$$$mptypes.Annotation$annotatedMemberDeclarations)) {
           rv.push(list[i]);
           break;
         }

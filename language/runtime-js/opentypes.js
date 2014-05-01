@@ -3,7 +3,7 @@ function $findAnnotation(cont,ant) {
   if (!(_m && _m.$an))return null;
   if (typeof(_m.$an)==='function')_m.$an=_m.$an();
   for (var i=0; i < _m.$an.length; i++) {
-    if ($is(_m.$an[i],{t:ant}))return _m.$an[i];
+    if (is$(_m.$an[i],{t:ant}))return _m.$an[i];
   }
   return null;
 }
@@ -76,7 +76,7 @@ function $init$FreeClass(){
    initTypeProto(FreeClass,'ceylon.language.meta.declaration::FreeClass',Basic,OpenClassType$meta$declaration);
    (function($$freeClass){
     $$freeClass.equals=function(other) {
-      return $is(other,{t:FreeClass}) && other.declaration.equals(this.declaration) && this.typeArguments.equals(other.typeArguments);
+      return is$(other,{t:FreeClass}) && other.declaration.equals(this.declaration) && this.typeArguments.equals(other.typeArguments);
     }
    })(FreeClass.$$.prototype);
   }
@@ -102,7 +102,7 @@ function $init$FreeInterface(){
     initTypeProto(FreeInterface,'ceylon.language.meta.declaration::FreeInterface',Basic,OpenInterfaceType$meta$declaration);
     (function($$freeInterface){
     $$freeInterface.equals=function(other) {
-      return $is(other,{t:FreeInterface}) && other.declaration.equals(this.declaration) && this.typeArguments.equals(other.typeArguments);
+      return is$(other,{t:FreeInterface}) && other.declaration.equals(this.declaration) && this.typeArguments.equals(other.typeArguments);
     }
             
     })(FreeInterface.$$.prototype);
@@ -140,7 +140,7 @@ function $init$OpenFunction(){
     initTypeProto(OpenFunction,'ceylon.language.meta.declaration::OpenFunction',Basic,FunctionDeclaration$meta$declaration);
     (function($$openFunction){
 $$openFunction.equals=function(o) {
-  if ($is(o,{t:OpenFunction})) {
+  if (is$(o,{t:OpenFunction})) {
     return o.tipo === this.tipo;
   }
   return false;
@@ -300,7 +300,7 @@ $defat($$openValue,'containingModule',function(){return this._pkg.container;},un
 $defat($$openValue,'toplevel',function(){return this.toplevel_;},undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','toplevel']};});
 
   $$openValue.equals=function(other) {
-    if ($is(other, {t:OpenValue}) && other.name.equals(this.name) && other.toplevel===this.toplevel && other.containingPackage.equals(this.containingPackage)) {
+    if (is$(other, {t:OpenValue}) && other.name.equals(this.name) && other.toplevel===this.toplevel && other.containingPackage.equals(this.containingPackage)) {
       return other.meta==this.meta;
     }
     return false;
@@ -310,8 +310,8 @@ $defat($$openValue,'toplevel',function(){return this.toplevel_;},undefined,funct
     return $qname(this.tipo);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
     $$openValue.memberSet=function(c,v) {
-      if (!$is(c,{t:this.tipo.$crtmm$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
-      if (!$is(v,this.tipo.$crtmm$.$t))throw IncompatibleTypeException$meta$model("Incompatible value type");
+      if (!is$(c,{t:this.tipo.$crtmm$.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
+      if (!is$(v,this.tipo.$crtmm$.$t))throw IncompatibleTypeException$meta$model("Incompatible value type");
       if (!this.tipo.set)throw MutationException$meta$model($qname(this.tipo.$crtmm$)+" is not writable");
       c[this.name]=v;
     };
@@ -362,7 +362,7 @@ $defat($$openSetter,'name',function(){return this.variable.name;},undefined,func
   $defat($$openSetter,'string',function(){return "setter " + this.qualifiedName;},undefined,function(){return{$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']};});
   $defat($$openSetter,'qualifiedName',function(){return this.variable.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
       $$openSetter.equals=function(o) {
-        return $is(o,{t:OpenSetter}) && o.variable.equals(this.variable);
+        return is$(o,{t:OpenSetter}) && o.variable.equals(this.variable);
       }
     })(OpenSetter.$$.prototype);
   }
@@ -488,7 +488,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
     },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
 
       $$openClass.equals=function(other) {
-        return $is(other, {t:OpenClass}) && other.tipo===this.tipo;
+        return is$(other, {t:OpenClass}) && other.tipo===this.tipo;
       }
     })(OpenClass.$$.prototype);
   }
@@ -525,7 +525,7 @@ function $init$OpenInterface(){
     initTypeProto(OpenInterface,'ceylon.language.meta.declaration::OpenInterface',Basic,InterfaceDeclaration$meta$declaration);
     (function($$openInterface){
       $$openInterface.equals=function(other) {
-        return $is(other, {t:OpenInterface}) && other.tipo==this.tipo;
+        return is$(other, {t:OpenInterface}) && other.tipo==this.tipo;
       }
 $$openInterface.memberInterfaceApply=function(cont,targs,$mptypes){
   var mm=this.tipo.$crtmm$;
@@ -661,7 +661,7 @@ function $init$OpenAlias(){
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','name']};});
       $defat($$openAlias,'string',function(){return "alias "+this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenAlias,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','AliasDeclaration','$at','string']};});
   $$openAlias.equals=function equals(o) {
-    if (o && $is(o, {t:OpenAlias})) {
+    if (o && is$(o, {t:OpenAlias})) {
       if (o._alias.a) {
         return o._alias.a == this._alias.a;
       }
@@ -754,7 +754,7 @@ function $init$OpenTypeParam(){
 $defat($$openTypeParam,'hash',function(){return this.string.hash;},undefined,function(){return {mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
       $defat($$openTypeParam,'string',function(){return "given " + this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','string']};});
       $$openTypeParam.equals=function(o) {
-        return $is(o,{t:OpenTypeParam}) && o._cont==this._cont && o._fname==this._fname;
+        return is$(o,{t:OpenTypeParam}) && o._cont==this._cont && o._fname==this._fname;
       }
     })(OpenTypeParam.$$.prototype);
   }
@@ -783,7 +783,7 @@ function $init$OpenTvar(){
                 return this.p$2;
             },undefined,function(){return{mod:$CCMM$,$t:{t:TypeParameter$meta$declaration},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenTypeVariable','$at','declaration']};});
 $$openTvar.equals=function(o) {
-  return $is(o, {t:OpenTvar}) && this.p$2.equals(o.p$2);
+  return is$(o, {t:OpenTvar}) && this.p$2.equals(o.p$2);
 }
 $defat($$openTvar,'hash',function(){return this.string.hash;},undefined,function(){return{mod:$$CCMM$,$t:{t:Integer},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object','$at','string']};});
         })(OpenTvar.$$.prototype);
@@ -809,7 +809,7 @@ function $init$FreeUnion(){
     initTypeProto(FreeUnion,'ceylon.language.meta.declaration::FreeUnion',Basic,OpenUnion$meta$declaration);
     (function($$freeUnion){
       $$freeUnion.equals=function(u) {
-        if($is(u,{t:FreeUnion})) {
+        if(is$(u,{t:FreeUnion})) {
           var mine=this.caseTypes;
           var his=u.caseTypes;
           if (mine.size==his.size) {
@@ -865,7 +865,7 @@ function $init$FreeIntersection(){
     (function($$freeIntersection){
 
 $$freeIntersection.equals=function(u) {
-  if($is(u,{t:FreeIntersection})) {
+  if(is$(u,{t:FreeIntersection})) {
     var mine=this.satisfiedTypes;
     var his=u.satisfiedTypes;
     if (mine.size==his.size) {
