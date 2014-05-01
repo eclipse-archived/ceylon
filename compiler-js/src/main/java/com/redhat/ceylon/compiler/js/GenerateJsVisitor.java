@@ -2012,8 +2012,7 @@ public class GenerateJsVisitor extends Visitor
         out(clAlias, "Float(", that.getText(), ")");
     }
 
-    @Override
-    public void visit(NaturalLiteral that) {
+    public long parseNaturalLiteral(Tree.NaturalLiteral that) throws NumberFormatException {
         char prefix = that.getText().charAt(0);
         int radix = 10;
         String nt = that.getText();
@@ -2021,8 +2020,13 @@ public class GenerateJsVisitor extends Visitor
             radix = prefix == '$' ? 2 : 16;
             nt = nt.substring(1);
         }
+        return new java.math.BigInteger(nt, radix).longValue();
+    }
+
+    @Override
+    public void visit(NaturalLiteral that) {
         try {
-            out("(", new java.math.BigInteger(nt, radix).toString(), ")");
+            out("(", Long.toString(parseNaturalLiteral(that)), ")");
         } catch (NumberFormatException ex) {
             that.addError("Invalid numeric literal " + that.getText());
         }
