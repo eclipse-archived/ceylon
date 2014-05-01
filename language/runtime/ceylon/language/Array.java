@@ -730,15 +730,15 @@ public final class Array<Element>
     public Element unsafeItem(int index) {
         if (array instanceof char[]) {
             char val = ((char[])array)[index];
-            return (Element) new java.lang.Character(val);
+            return (Element) java.lang.Character.valueOf(val);
         } 
         else if (array instanceof byte[]) {
         	byte val = ((byte[])array)[index];
-        	return (Element) new java.lang.Byte(val);
+        	return (Element) java.lang.Byte.valueOf(val);
         } 
         else if (array instanceof short[]) {
         	short val = ((short[])array)[index];
-        	return (Element) new java.lang.Short(val);
+        	return (Element) java.lang.Short.valueOf(val);
         } 
         else if (array instanceof int[]) {
             int val = ((int[])array)[index];
@@ -746,7 +746,7 @@ public final class Array<Element>
                 return (Element) Character.instance(val);
             }
             else {
-                return (Element) new java.lang.Integer(val);
+                return (Element) java.lang.Integer.valueOf(val);
             }
         } 
         else if (array instanceof long[]) {
@@ -755,12 +755,12 @@ public final class Array<Element>
             	return (Element) Integer.instance(val);
             }
             else {
-            	return (Element) new java.lang.Long(val);
+            	return (Element) java.lang.Long.valueOf(val);
             }
         } 
         else if (array instanceof float[]) {
         	float val = ((float[])array)[index];
-        	return (Element) new java.lang.Float(val);
+        	return (Element) java.lang.Float.valueOf(val);
         } 
         else if (array instanceof double[]) {
         	double val = ((double[])array)[index];
@@ -768,7 +768,7 @@ public final class Array<Element>
             	return (Element) Float.instance(val);
             }
             else {
-            	return (Element) new java.lang.Double(val);
+            	return (Element) java.lang.Double.valueOf(val);
             }
         } 
         else if (array instanceof boolean[]) {
@@ -777,7 +777,7 @@ public final class Array<Element>
             	return (Element) Boolean.instance(val);
             }
             else {
-            	return (Element) new java.lang.Boolean(val);
+            	return (Element) java.lang.Boolean.valueOf(val);
             }
         } 
         else if (array instanceof java.lang.String[]) {
@@ -1256,7 +1256,7 @@ public final class Array<Element>
             }
             else {
             	for (int i=0; i<size; i++) {
-            		result[i] = new java.lang.Long(arr[i]);
+            		result[i] = java.lang.Long.valueOf(arr[i]);
             	}
             }
         }
@@ -1269,14 +1269,14 @@ public final class Array<Element>
             }
             else {
             	for (int i=0; i<size; i++) {
-            		result[i] = new java.lang.Double(arr[i]);
+            		result[i] = java.lang.Double.valueOf(arr[i]);
             	}
             }
         }
         else if (array instanceof char[]) {
             char[] arr = (char[]) array;
             for (int i=0; i<size; i++) {
-                result[i] = new java.lang.Character(arr[i]);
+                result[i] = java.lang.Character.valueOf(arr[i]);
             }
         }
         else if (array instanceof int[]) {
@@ -1288,26 +1288,26 @@ public final class Array<Element>
             }
             else {
             	for (int i=0; i<size; i++) {
-            		result[i] = new java.lang.Integer(arr[i]);
+            		result[i] = java.lang.Integer.valueOf(arr[i]);
             	}
             }
         }
         else if (array instanceof short[]) {
             short[] arr = (short[]) array;
             for (int i=0; i<size; i++) {
-                result[i] = new java.lang.Short(arr[i]);
+                result[i] = java.lang.Short.valueOf(arr[i]);
             }
         }
         else if (array instanceof byte[]) {
             byte[] arr = (byte[]) array;
             for (int i=0; i<size; i++) {
-                result[i] = new java.lang.Byte(arr[i]);
+                result[i] = java.lang.Byte.valueOf(arr[i]);
             }
         }
         else if (array instanceof float[]) {
             float[] arr = (float[]) array;
             for (int i=0; i<size; i++) {
-                result[i] = new java.lang.Float(arr[i]);
+                result[i] = java.lang.Float.valueOf(arr[i]);
             }
         }
         else if (array instanceof boolean[]) {
@@ -1319,7 +1319,7 @@ public final class Array<Element>
             }
             else {
             	for (int i=0; i<size; i++) {
-            		result[i] = new java.lang.Boolean(arr[i]);
+            		result[i] = java.lang.Boolean.valueOf(arr[i]);
             	}
             }
         }
@@ -1524,7 +1524,7 @@ public final class Array<Element>
                     		target[desti] = Integer.instance(((long[])array)[sourcei]);
                     	}
                     	else {
-                    		target[desti] = new java.lang.Long(((long[])array)[sourcei]);
+                    		target[desti] = java.lang.Long.valueOf(((long[])array)[sourcei]);
                     	}
                     }
                     else if (array instanceof int[]) {
@@ -1532,36 +1532,36 @@ public final class Array<Element>
                     		target[desti] = Character.instance(((int[])array)[sourcei]);
                     	}
                     	else {
-                    		target[desti] = new java.lang.Integer(((int[])array)[sourcei]);
+                    		target[desti] = java.lang.Integer.valueOf(((int[])array)[sourcei]);
                     	}
                     }
                     else if (array instanceof short[]) {
-                    	target[desti] = new java.lang.Short(((short[])array)[sourcei]);
+                    	target[desti] = java.lang.Short.valueOf(((short[])array)[sourcei]);
                     }
                     else if (array instanceof byte[]) {
-                    	target[desti] = new java.lang.Byte(((byte[])array)[sourcei]);
+                    	target[desti] = java.lang.Byte.valueOf(((byte[])array)[sourcei]);
                     }
                     else if (array instanceof double[]) {
                     	if ($reifiedElement==Float.$TypeDescriptor$) {
                     		target[desti] = Float.instance(((double[])array)[sourcei]);
                     	}
                     	else {
-                    		target[desti] = new java.lang.Double(((double[])array)[sourcei]);
+                    		target[desti] = java.lang.Double.valueOf(((double[])array)[sourcei]);
                     	}
                     }
                     else if (array instanceof float[]) {
-                    	target[desti] = new java.lang.Float(((float[])array)[sourcei]);
+                    	target[desti] = java.lang.Float.valueOf(((float[])array)[sourcei]);
                     }
                     else if (array instanceof boolean[]) {
                     	if ($reifiedElement==Boolean.$TypeDescriptor$) {
                     		target[desti] = Boolean.instance(((boolean[])array)[sourcei]);
                     	}
                     	else {
-                    		target[desti] = new java.lang.Boolean(((boolean[])array)[sourcei]);
+                    		target[desti] = java.lang.Boolean.valueOf(((boolean[])array)[sourcei]);
                     	}
                     }
                     else if (array instanceof char[]) {
-                    	target[desti] = new java.lang.Character(((char[])array)[sourcei]);
+                    	target[desti] = java.lang.Character.valueOf(((char[])array)[sourcei]);
                     }
                     else if (array instanceof java.lang.String[]) {
                     	if ($reifiedElement==String.$TypeDescriptor$) {
