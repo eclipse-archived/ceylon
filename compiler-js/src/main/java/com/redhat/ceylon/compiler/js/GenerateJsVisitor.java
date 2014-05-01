@@ -2125,7 +2125,7 @@ public class GenerateJsVisitor extends Visitor
         if (isMethod) {
             out(clAlias, "JsCallable(", lhsVar, ",");
         }
-        out(clAlias,"$nn(", lhsVar, ")?", memberAccess(that, lhsVar), ":null)");
+        out(clAlias,"nn$(", lhsVar, ")?", memberAccess(that, lhsVar), ":null)");
         if (isMethod) {
             out(")");
         }
@@ -3185,7 +3185,7 @@ public class GenerateJsVisitor extends Visitor
        String lhsVar = createRetainedTempVar();
        out("(", lhsVar, "=");
        box(that.getLeftTerm());
-       out(",", clAlias, "$nn(", lhsVar, ")?", lhsVar, ":");
+       out(",", clAlias, "nn$(", lhsVar, ")?", lhsVar, ":");
        box(that.getRightTerm());
        out(")");
    }
