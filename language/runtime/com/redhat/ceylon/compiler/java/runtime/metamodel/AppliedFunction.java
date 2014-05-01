@@ -185,8 +185,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 }
             }
             if(method == null){
-                if(!Modifier.isPublic(found.getModifiers()));
-                    found.setAccessible(true);
+                found.setAccessible(true);
                 method = MethodHandles.lookup().unreflect(found);
             }
         } catch (IllegalAccessException e) {
