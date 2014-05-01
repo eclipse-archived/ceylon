@@ -3277,7 +3277,7 @@ public class GenerateJsVisitor extends Visitor
         if (negate) {
             out("!");
         }
-        out(clAlias, "$is(");
+        out(clAlias, "is$(");
         if (term instanceof Term) {
             conds.specialConditionRHS((Term)term, tmpvar);
         } else {
