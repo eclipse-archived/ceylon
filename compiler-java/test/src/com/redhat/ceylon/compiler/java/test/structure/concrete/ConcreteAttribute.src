@@ -35,10 +35,6 @@ final class ConcreteAttribute$impl<A> {
         return getANonShared$priv$();
     }
     
-    public final void setAVariableFormal(final A aVariableFormal) {
-        $this.setAVariableFormal(aVariableFormal);
-    }
-    
     public final A getADefault() {
         return null;
     }

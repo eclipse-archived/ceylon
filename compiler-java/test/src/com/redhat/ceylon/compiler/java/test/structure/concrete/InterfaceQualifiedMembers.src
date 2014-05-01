@@ -34,10 +34,6 @@ final class InterfaceQualifiedIncrement$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $this;
     
-    public final void setI1(final long i1) {
-        $this.setI1(i1);
-    }
-    
     public final long getI2() {
         return 0L;
     }

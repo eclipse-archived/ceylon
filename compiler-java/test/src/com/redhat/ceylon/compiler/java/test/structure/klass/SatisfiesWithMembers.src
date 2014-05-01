@@ -19,10 +19,6 @@ final class SatisfiesWithMembers$impl {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this;
-    
-    public final void setB2(final boolean b2) {
-        $this.setB2(b2);
-    }
 }
 class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
     

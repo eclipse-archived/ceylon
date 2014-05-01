@@ -26,10 +26,6 @@ public final class Bug903$impl {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $this;
     
-    public final void setI(final long i) {
-        $this.setI(i);
-    }
-    
     public .java.lang.Object foo() {
         
         final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

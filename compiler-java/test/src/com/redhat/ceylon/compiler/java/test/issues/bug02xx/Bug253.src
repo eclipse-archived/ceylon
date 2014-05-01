@@ -21,14 +21,6 @@ final class Boxer$impl<T> {
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
-    
-    public final void setOne(final T one) {
-        $this.setOne(one);
-    }
-    
-    public final void setTwo(final T two) {
-        $this.setTwo(two);
-    }
 }
 class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
     

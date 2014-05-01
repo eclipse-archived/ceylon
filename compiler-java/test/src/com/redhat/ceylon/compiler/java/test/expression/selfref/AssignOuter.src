@@ -47,19 +47,11 @@ final class AssignOuter$impl {
     private final void setA$priv$(final long a) {
     }
     
-    public final void setB(final long b) {
-        $this.setB(b);
-    }
-    
     public final long getC() {
         return 0L;
     }
     
     public final void setC(final long c) {
-    }
-    
-    public final void setD(final .ceylon.language.Integer d) {
-        $this.setD(d);
     }
     
     final class I$impl {
