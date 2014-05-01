@@ -945,7 +945,7 @@ public final class Array<Element>
         Iterator<Element> iter = iterator();
         java.lang.Object elem;
         while (!((elem = iter.next()) instanceof Finished)) {
-            if (elem != null && element.equals(element)) {
+            if (elem != null && elem.equals(element)) {
                 return true;
             }
         }
