@@ -78,17 +78,13 @@ public class ForGenerator {
     }
 
     boolean optimizeRange(final Tree.RangeOp range, final String itemVar) {
-        boolean menor = true;
         final Tree.Term left = range.getLeftTerm();
         final Tree.Term right = range.getRightTerm();
         if (left instanceof Tree.NaturalLiteral && right instanceof NaturalLiteral) {
             try {
                 long una = gen.parseNaturalLiteral((Tree.NaturalLiteral)left);
                 long dos = gen.parseNaturalLiteral((Tree.NaturalLiteral)right);
-                menor = una<dos;
-                gen.out("for(var ",itemVar,"=", Long.toString(una), ";", itemVar,
-                        menor ? "<=" : ">=", Long.toString(dos), ";", itemVar,
-                        menor ? "++" : "--", ")");
+                optimizeNaturals(una, dos, itemVar);
                 return true;
             } catch (NumberFormatException ex) {
                 return false;
@@ -108,7 +104,39 @@ public class ForGenerator {
     }
 
     boolean optimizeSegment(Tree.SegmentOp that, final String itemVar) {
-        return false;
+        final Tree.Term left = that.getLeftTerm();
+        final Tree.Term right = that.getRightTerm();
+        final boolean leftNat = left instanceof Tree.NaturalLiteral;
+        final boolean rightNat = right instanceof Tree.NaturalLiteral;
+        if (leftNat && rightNat) {
+            try {
+                long una = gen.parseNaturalLiteral((Tree.NaturalLiteral)left);
+                long dos = gen.parseNaturalLiteral((Tree.NaturalLiteral)right);
+                optimizeNaturals(una, una+dos-1, itemVar);
+                return true;
+            } catch (NumberFormatException ex) {
+                return false;
+            }
+        }
+        final String limvar = rightNat ? Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)right))
+                : gen.getNames().createTempVariable();
+        gen.out("var ", itemVar, "=");
+        left.visit(gen);
+        if (!rightNat) {
+            gen.out(",", limvar, "=");
+            right.visit(gen);
+        }
+        gen.out(";");
+        final String tmpvar = gen.getNames().createTempVariable();
+        gen.out("for(var ", tmpvar, "=0;", tmpvar,"<", limvar, ";", tmpvar, "++,(", itemVar, "=", itemVar, ".successor))");
+        return true;
+    }
+
+    void optimizeNaturals(final long from, final long to, final String itemVar) {
+        final boolean menor = from<to;
+        gen.out("for(var ",itemVar,"=", Long.toString(from), ";", itemVar,
+                menor ? "<=" : ">=", Long.toString(to), ";", itemVar,
+                menor ? "++" : "--", ")");
     }
 
 }
