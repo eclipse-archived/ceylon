@@ -29,6 +29,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -398,6 +399,8 @@ public class ClassDefinitionBuilder
     private boolean ignoreAnnotations = false;
     private boolean noAnnotations = false;
 
+    private boolean hasConcreteMembers = true;
+
     /** 
      * The class will be generated with the {@code @Ignore} annotation only
      */
@@ -518,6 +521,16 @@ public class ClassDefinitionBuilder
             concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName())
                 .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;
+            concreteInterfaceMemberDefs.hasConcreteMembers = false;
+            for (Declaration member : decl.getMembers()) {
+                if (member instanceof TypeParameter) {
+                    continue;
+                }
+                if (!member.isFormal()) {
+                    concreteInterfaceMemberDefs.hasConcreteMembers = true;
+                    break;
+                }
+            }
         }
         return concreteInterfaceMemberDefs;
     }
@@ -580,16 +593,18 @@ public class ClassDefinitionBuilder
     public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getDeclarationModel());
         parameter(makeReifiedParameter(descriptorName));
-        long flags = PRIVATE;
-        if(!isCompanion)
-            flags |= FINAL;
-        List<JCAnnotation> annotations = gen.makeAtIgnore();
-        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
-                gen.makeTypeDescriptorType(), null);
-        defs(localVar);
-        init(gen.make().Exec(gen.make().Assign(
-                gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
-                gen.naming.makeQualIdent(null, descriptorName))));
+        if (hasConcreteMembers) {
+            long flags = PRIVATE;
+            if(!isCompanion)
+                flags |= FINAL;
+            List<JCAnnotation> annotations = gen.makeAtIgnore();
+            JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
+                    gen.makeTypeDescriptorType(), null);
+            defs(localVar);
+            init(gen.make().Exec(gen.make().Assign(
+                    gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
+                    gen.naming.makeQualIdent(null, descriptorName))));
+        }
         return this;
     }
 
@@ -637,8 +652,10 @@ public class ClassDefinitionBuilder
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
             String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getDeclarationModel());
             method.parameter(makeReifiedParameter(descriptorName));
-            body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
-                                                                  gen.naming.makeQualIdent(null, descriptorName))));
+            if (hasConcreteMembers) {
+                body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
+                                                                      gen.naming.makeQualIdent(null, descriptorName))));
+            }
         }
         method.body(body);
         defs(method.build());
