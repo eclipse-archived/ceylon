@@ -425,4 +425,10 @@ shared void strings() {
     check("helloworld".slice(-1)==["","helloworld"], "string slice 3");
     check("helloworld".slice(10)==["helloworld",""], "string slice 4");
     check("helloworld".slice(100)==["helloworld",""], "string slice 5");
+    
+    check(", ".join({["foo"]})=="[foo]", "string join one object");
+    check(", ".join({["foo"], ["bar"], ["baz"]})=="[foo], [bar], [baz]", "string join three objects");
+    check(",".join({for (c in "") {c.string}})=="", "string join empty object comprehension");
+    check(",".join({for (c in "A") {c.string}})=="{ A }", "string join object comprehension 1");
+    check(",".join({for (c in "ABC") {c.string}})=="{ A },{ B },{ C }", "string join object comprehension 2");
 }
