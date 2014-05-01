@@ -2442,10 +2442,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (specifierExpression != null
                 && specifierExpression.getExpression() != null) {
             term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
-        }
-        HasErrorException error = errors().getFirstExpressionError(term);
-        if (error != null) {
-            return List.<JCStatement>of(error.makeThrow(this));
+            HasErrorException error = errors().getFirstExpressionError(term);
+            if (error != null) {
+                return List.<JCStatement>of(error.makeThrow(this));
+            }
         }
         if (!isLazy && term instanceof Tree.FunctionArgument) {
             // Method specified with lambda: Don't bother generating a 
