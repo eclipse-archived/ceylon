@@ -31,4 +31,4 @@ annotations$meta.$crtmm$=function(){return{mod:$CCMM$,$t:'Values$annotations',$p
   {$nm:'annotationType',$mt:'prm',$t:{t:Class$meta$model,a:{Type$Class:{t:ConstrainedAnnotation,a:{Values$ConstrainedAnnotation:'Values$annotations',Value$ConstrainedAnnotation:'Value$annotations',ProgramElement$ConstrainedAnnotation:'ProgramElement$annotations'}}}}},{$nm:'programElement',$mt:'prm',$t:'ProgramElement$annotations'}],
   $tp:{Value$annotations:{'satisfies':[{t:ConstrainedAnnotation$meta$model,a:{Values$ConstrainedAnnotation:'Values$annotations',Value$ConstrainedAnnotation:'Value$annotations',ProgramElement$ConstrainedAnnotation:'ProgramElement$annotations'}}]},Values$annotations:{},ProgramElement$annotations:{'var':'in','satisfies':[{t:Annotated$meta$model}]}},
   $an:function(){return[shared(),$native()];},d:['ceylon.language.meta','annotations']};};
-exports.annotations$meta=annotations$meta;
+ex$.annotations$meta=annotations$meta;

@@ -5,12 +5,12 @@ function getSmaller(){return smaller}
 var equal=Comparison("equal");
 function getEqual(){return equal}
 
-exports.getLarger=getLarger;
-exports.getSmaller=getSmaller;
-exports.getEqual=getEqual;
-exports.$prop$getLarger={get:getLarger,$crtmm$:function(){return{mod:$CCMM$,d:['$','larger'],$t:{t:Comparison}};}};
-exports.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['$','smaller'],$t:{t:Comparison}};}};
-exports.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['$','equal'],$t:{t:Comparison}};}};
+ex$.getLarger=getLarger;
+ex$.getSmaller=getSmaller;
+ex$.getEqual=getEqual;
+ex$.$prop$getLarger={get:getLarger,$crtmm$:function(){return{mod:$CCMM$,d:['$','larger'],$t:{t:Comparison}};}};
+ex$.$prop$getSmaller={get:getSmaller,$crtmm$:function(){return{mod:$CCMM$,d:['$','smaller'],$t:{t:Comparison}};}};
+ex$.$prop$getEqual={get:getEqual,$crtmm$:function(){return{mod:$CCMM$,d:['$','equal'],$t:{t:Comparison}};}};
 
 //These are operators for handling nulls
 function exists(value){
@@ -346,13 +346,13 @@ function throwexc(e,loc,file) {
 function nn$(e) {
   return e!==null&&e!==undefined;
 }
-exports.set_type_args=set_type_args;
-exports.add_type_arg=add_type_arg;
-exports.exists=exists;
-exports.nonempty=nonempty;
-exports.is$=is$;
-exports.className=className;
-exports.identityHash=identityHash;
-exports.throwexc=throwexc;
-exports.wrapexc=wrapexc;
-exports.nn$=nn$;
+ex$.set_type_args=set_type_args;
+ex$.add_type_arg=add_type_arg;
+ex$.exists=exists;
+ex$.nonempty=nonempty;
+ex$.is$=is$;
+ex$.className=className;
+ex$.identityHash=identityHash;
+ex$.throwexc=throwexc;
+ex$.wrapexc=wrapexc;
+ex$.nn$=nn$;

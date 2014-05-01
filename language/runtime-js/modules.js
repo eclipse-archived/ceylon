@@ -1,10 +1,10 @@
 /* Metamodel module and package objects */
 var $loadedModules$={};
-exports.$loadedModules$=$loadedModules$;
+ex$.$loadedModules$=$loadedModules$;
 function $addmod$(mod, modname) {
   $loadedModules$[modname] = mod;
 }
-exports.$addmod$=$addmod$;
+ex$.$addmod$=$addmod$;
 function modules$2(){
     var $$modules=new modules$2.$$;
     $defat($$modules,'list',function(){
@@ -46,13 +46,13 @@ function $init$modules$meta(){
     }
     return modules$2;
 }
-exports.$init$modules$meta=$init$modules$meta;
+ex$.$init$modules$meta=$init$modules$meta;
 $init$modules$meta();
 var modules$meta=modules$2();
 var getModules$meta=function(){
     return modules$meta;
 }
-exports.getModules$meta=getModules$meta;
+ex$.getModules$meta=getModules$meta;
 
 function Modulo(meta, $$modulo){
   $init$Modulo();
@@ -186,14 +186,14 @@ function Modulo(meta, $$modulo){
   return $$modulo;
 }
 Modulo.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Module$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Module']};
-exports.Modulo=Modulo;
+ex$.Modulo=Modulo;
 function $init$Modulo(){
     if (Modulo.$$===undefined){
         initTypeProto(Modulo,'Modulo',Basic,Module$meta$declaration);
     }
     return Modulo;
 }
-exports.$init$Modulo=$init$Modulo;
+ex$.$init$Modulo=$init$Modulo;
 $init$Modulo();
 function Importa(name,version,mod,anns,$$importa){
   $init$Importa();
@@ -229,14 +229,14 @@ return version;},undefined,{mod:$CCMM$,$t:{t:Boolean$},$cont:Importa,$an:functio
     return $$importa;
 }
 Importa.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Import$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Import']};
-exports.Importa=Importa;
+ex$.Importa=Importa;
 function $init$Importa(){
     if (Importa.$$===undefined){
         initTypeProto(Importa,'Importa',Basic,Import$meta$declaration);
     }
     return Importa;
 }
-exports.$init$Importa=$init$Importa;
+ex$.$init$Importa=$init$Importa;
 $init$Importa();
 function Paquete(name, container, pkg, $$paquete){
     $init$Paquete();
@@ -418,13 +418,13 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
     return $$paquete;
 }
 Paquete.$crtmm$={mod:$CCMM$,'super':{t:Basic},satisfies:[{t:Package$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','Package']};
-exports.Paquete=Paquete;
+ex$.Paquete=Paquete;
 function $init$Paquete(){
     if (Paquete.$$===undefined){
         initTypeProto(Paquete,'Paquete',Basic,Package$meta$declaration);
     }
     return Paquete;
 }
-exports.$init$Paquete=$init$Paquete;
+ex$.$init$Paquete=$init$Paquete;
 $init$Paquete();
 

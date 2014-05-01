@@ -82,7 +82,7 @@ function $init$FreeClass(){
   }
   return FreeClass;
 }
-exports.$init$FreeClass=$init$FreeClass;
+ex$.$init$FreeClass=$init$FreeClass;
 $init$FreeClass();
 
 //ClassDefinition FreeInterface at X (170:0-177:0)
@@ -109,7 +109,7 @@ function $init$FreeInterface(){
   }
   return FreeInterface;
 }
-exports.$init$FreeInterface=$init$FreeInterface;
+ex$.$init$FreeInterface=$init$FreeInterface;
 $init$FreeInterface();
 
 //ClassDefinition OpenFunction at X (18:0-36:0)
@@ -214,7 +214,7 @@ $defat($$openFunction,'annotation',function(){
   }
   return OpenFunction;
 }
-exports.$init$OpenFunction=$init$OpenFunction;
+ex$.$init$OpenFunction=$init$OpenFunction;
 $init$OpenFunction();
 
 //ClassDefinition OpenValue at X (38:0-45:0)
@@ -334,7 +334,7 @@ $defat($$openValue,'toplevel',function(){return this.toplevel_;},undefined,funct
   }
   return OpenValue;
 }
-exports.$init$OpenValue=$init$OpenValue;
+ex$.$init$OpenValue=$init$OpenValue;
 $init$OpenValue();
 
 //ClassDefinition OpenSetter at opentypes.ceylon (63:0-63:90)
@@ -368,7 +368,7 @@ $defat($$openSetter,'name',function(){return this.variable.name;},undefined,func
   }
   return OpenSetter;
 }
-exports.$init$OpenSetter=$init$OpenSetter;
+ex$.$init$OpenSetter=$init$OpenSetter;
 $init$OpenSetter();
 
 //ClassDefinition OpenClass at X (47:0-70:0)
@@ -494,7 +494,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
   }
   return OpenClass;
 }
-exports.$init$OpenClass=$init$OpenClass;
+ex$.$init$OpenClass=$init$OpenClass;
 $init$OpenClass();
 
 //ClassDefinition OpenInterface at X (72:0-92:0)
@@ -581,7 +581,7 @@ $defat($$openInterface,'string',function(){
     }
     return OpenInterface;
 }
-exports.$init$OpenInterface=$init$OpenInterface;
+ex$.$init$OpenInterface=$init$OpenInterface;
 $init$OpenInterface();
 
 function OpenAlias(alias, $$openAlias){
@@ -673,7 +673,7 @@ function $init$OpenAlias(){
   }
   return OpenAlias;
 }
-exports.$init$OpenAlias=$init$OpenAlias;
+ex$.$init$OpenAlias=$init$OpenAlias;
 $init$OpenAlias();
 
 function OpenTypeParam(cont, nom, that){
@@ -687,7 +687,7 @@ function OpenTypeParam(cont, nom, that){
   return that;
 }
 OpenTypeParam.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:TypeParameter$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','TypeParameter']};};
-exports.OpenTypeParam=OpenTypeParam;
+ex$.OpenTypeParam=OpenTypeParam;
 function $init$OpenTypeParam(){
   if (OpenTypeParam.$$===undefined){
     initTypeProto(OpenTypeParam,'ceylon.language.meta.declaration::OpenTypeParam',Basic,TypeParameter$meta$declaration);
@@ -760,7 +760,7 @@ $defat($$openTypeParam,'hash',function(){return this.string.hash;},undefined,fun
   }
   return OpenTypeParam;
 }
-exports.$init$OpenTypeParam=$init$OpenTypeParam;
+ex$.$init$OpenTypeParam=$init$OpenTypeParam;
 $init$OpenTypeParam();
 
 function OpenTvar(p$2, $$openTvar){
@@ -773,7 +773,7 @@ function OpenTvar(p$2, $$openTvar){
     return $$openTvar;
 }
 OpenTvar.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:OpenTypeVariable$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','OpenTvar']};};
-exports.OpenTvar=OpenTvar;
+ex$.OpenTvar=OpenTvar;
 function $init$OpenTvar(){
   if (OpenTvar.$$===undefined){
     initTypeProto(OpenTvar,'ceylon.language.meta.declaration::OpenTvar',Basic,$init$OpenTypeVariable$meta$declaration());
@@ -790,7 +790,7 @@ $defat($$openTvar,'hash',function(){return this.string.hash;},undefined,function
     }
     return OpenTvar;
 }
-exports.$init$OpenTvar=$init$OpenTvar;
+ex$.$init$OpenTvar=$init$OpenTvar;
 $init$OpenTvar();
 
 function FreeUnion(ts$2, $$freeUnion){
@@ -803,7 +803,7 @@ function FreeUnion(ts$2, $$freeUnion){
     return $$freeUnion;
 }
 FreeUnion.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:OpenUnion$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','OpenUnion']};};
-exports.FreeUnion=FreeUnion;
+ex$.FreeUnion=FreeUnion;
 function $init$FreeUnion(){
   if (FreeUnion.$$===undefined){
     initTypeProto(FreeUnion,'ceylon.language.meta.declaration::FreeUnion',Basic,OpenUnion$meta$declaration);
@@ -846,7 +846,7 @@ $defat($$freeUnion,'hash',function(){
     }
     return FreeUnion;
 }
-exports.$init$FreeUnion=$init$FreeUnion;
+ex$.$init$FreeUnion=$init$FreeUnion;
 $init$FreeUnion();
 function FreeIntersection(ts$3, $$freeIntersection){
     $init$FreeIntersection();
@@ -858,7 +858,7 @@ function FreeIntersection(ts$3, $$freeIntersection){
     return $$freeIntersection;
 }
 FreeIntersection.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},satisfies:[{t:OpenIntersection$meta$declaration}],$an:function(){return[shared()];},d:['ceylon.language.meta.declaration','OpenIntersection']};};
-exports.FreeIntersection=FreeIntersection;
+ex$.FreeIntersection=FreeIntersection;
 function $init$FreeIntersection(){
   if (FreeIntersection.$$===undefined){
     initTypeProto(FreeIntersection,'ceylon.language.meta.declaration::FreeIntersection',Basic,OpenIntersection$meta$declaration);
@@ -905,7 +905,7 @@ $defat($$freeIntersection,'hash',function(){
     }
     return FreeIntersection;
 }
-exports.$init$FreeIntersection=$init$FreeIntersection;
+ex$.$init$FreeIntersection=$init$FreeIntersection;
 $init$FreeIntersection();
 
 function FunParamDecl(cont,param,$$funParamDecl){
@@ -1002,7 +1002,7 @@ function $init$FunParamDecl(){
   }
   return FunParamDecl;
 }
-exports.$init$FunParamDecl=$init$FunParamDecl;
+ex$.$init$FunParamDecl=$init$FunParamDecl;
 $init$FunParamDecl();
 
 function ValParamDecl(cont,param,$$valParamDecl){
@@ -1076,5 +1076,5 @@ function $init$ValParamDecl(){
   }
   return ValParamDecl;
 }
-exports.$init$ValParamDecl=$init$ValParamDecl;
+ex$.$init$ValParamDecl=$init$ValParamDecl;
 $init$ValParamDecl();

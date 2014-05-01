@@ -29,8 +29,8 @@ $defat(lang$proto, 'string', function() {
 
 var language$ = languageClass();
 function getLanguage() { return language$; }
-exports.getLanguage=getLanguage;
-exports.$prop$getLanguage={get:getLanguage,$crtmm$:function(){
+ex$.getLanguage=getLanguage;
+ex$.$prop$getLanguage={get:getLanguage,$crtmm$:function(){
   return {mod:$CCMM$,d:['$','language'],$t:{t:languageClass}};
 }};
 function processClass() {
@@ -209,8 +209,8 @@ function getProcess() { return process$; }
 getProcess.$crtmm$=function(){return{
   mod:$CCMM$,$t:{t:processClass},$an:function(){return[shared(),$native()];},d:['$','process']};
 }
-exports.getProcess=getProcess;
-exports.$prop$getProcess={get:getProcess,$crtmm$:function(){return{mod:$CCMM$,d:['$','process'],$t:{t:processClass}
+ex$.getProcess=getProcess;
+ex$.$prop$getProcess={get:getProcess,$crtmm$:function(){return{mod:$CCMM$,d:['$','process'],$t:{t:processClass}
 }}};
 getProcess.$crtmm$=exports.$prop$getProcess.$crtmm$;
 // system
@@ -243,8 +243,8 @@ $defat(system$proto, 'string', function() {
 
 var system$ = systemClass();
 function getSystem() { return system$; }
-exports.getSystem=getSystem;
-exports.$prop$getSystem={get:getSystem,$crtmm$:function(){return{
+ex$.getSystem=getSystem;
+ex$.$prop$getSystem={get:getSystem,$crtmm$:function(){return{
   mod:$CCMM$,d:['$','system'],$t:{t:systemClass}
 };}};
 getSystem.$crtmm$=exports.$prop$getSystem.$crtmm$;
@@ -298,8 +298,8 @@ $defat(runtime$proto, 'string', function() {
 
 var runtime$ = runtimeClass();
 function getRuntime() { return runtime$; }
-exports.getRuntime=getRuntime;
-exports.$prop$getRuntime={get:getRuntime,$crtmm$:function(){
+ex$.getRuntime=getRuntime;
+ex$.$prop$getRuntime={get:getRuntime,$crtmm$:function(){
   return{mod:$CCMM$,d:['$','runtime'],$t:{t:runtimeClass}};}};
 getRuntime.$crtmm$=exports.$prop$getRuntime.$crtmm$;
 // operatingSystem
@@ -335,8 +335,8 @@ $defat(operatingSystem$proto, 'string', function() {
 
 var operatingSystem$ = operatingSystemClass();
 function getOperatingSystem() { return operatingSystem$; }
-exports.getOperatingSystem=getOperatingSystem;
-exports.$prop$getOperatingSystem={get:getOperatingSystem,$crtmm$:function(){
+ex$.getOperatingSystem=getOperatingSystem;
+ex$.$prop$getOperatingSystem={get:getOperatingSystem,$crtmm$:function(){
   return {mod:$CCMM$,d:['$','operatingSystem'],$t:{t:operatingSystemClass}};
 }};
 getOperatingSystem.$crtmm$=exports.$prop$getOperatingSystem.$crtmm$;

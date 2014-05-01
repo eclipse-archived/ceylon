@@ -140,7 +140,7 @@ function $init$AppliedClass(){
   }
   return AppliedClass;
 }
-exports.$init$AppliedClass$meta$model=$init$AppliedClass;
+ex$.$init$AppliedClass$meta$model=$init$AppliedClass;
 $init$AppliedClass();
 
 function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
@@ -205,7 +205,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   return that;
 }
 AppliedMemberClass.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{Container$MemberClass:{'var':'in'},Type$MemberClass:{'var':'out','def':{t:Anything}},Arguments$MemberClass:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$MemberClass',Type$MemberClass:'Type$MemberClass',Container$MemberClass:'Container$MemberClass'}}],$an:function(){return[shared(),abstract()];},d:['','AppliedMemberClass']};};
-exports.AppliedMemberClass=AppliedMemberClass;
+ex$.AppliedMemberClass=AppliedMemberClass;
 function $init$AppliedMemberClass(){
   if (AppliedMemberClass.$$===undefined){
     initTypeProto(AppliedMemberClass,'ceylon.language.meta.model::AppliedMemberClass',Basic,MemberClass$meta$model);
@@ -224,7 +224,7 @@ function $init$AppliedMemberClass(){
   }
   return AppliedMemberClass;
 }
-exports.$init$AppliedMemberClass$meta$model=$init$AppliedMemberClass;
+ex$.$init$AppliedMemberClass$meta$model=$init$AppliedMemberClass;
 $init$AppliedMemberClass();
 
 function AppliedInterface(tipo,$$targs$$,that,myTargs) {
@@ -279,7 +279,7 @@ function AppliedInterface(tipo,$$targs$$,that,myTargs) {
   return that;
 }
 AppliedInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$tp:{Type$Interface:{'var':'out','def':{t:Anything}}},satisfies:[{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Interface']};};
-exports.AppliedInterface=AppliedInterface;
+ex$.AppliedInterface=AppliedInterface;
 
 function $init$AppliedInterface(){
   if (AppliedInterface.$$===undefined){
@@ -290,7 +290,7 @@ function $init$AppliedInterface(){
     }
     return AppliedInterface;
 }
-exports.$init$AppliedInterface$meta$model=$init$AppliedInterface;
+ex$.$init$AppliedInterface$meta$model=$init$AppliedInterface;
 $init$AppliedInterface();
 
 function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
@@ -359,7 +359,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   return that;
 }
 AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{Container$MemberInterface:{'var':'in'},Type$MemberInterface:{'var':'out','def':{t:Anything}}},satisfies:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],$an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
-exports.AppliedMemberInterface=AppliedMemberInterface;
+ex$.AppliedMemberInterface=AppliedMemberInterface;
 function $init$AppliedMemberInterface(){
   if (AppliedMemberInterface.$$===undefined){
     initTypeProto(AppliedMemberInterface,'ceylon.language.meta.model::AppliedMemberInterface',Basic,MemberInterface$meta$model);
@@ -372,7 +372,7 @@ function $init$AppliedMemberInterface(){
   }
   return AppliedMemberInterface;
 }
-exports.$init$AppliedMemberInterface$meta$model=$init$AppliedMemberInterface;
+ex$.$init$AppliedMemberInterface$meta$model=$init$AppliedMemberInterface;
 $init$AppliedMemberInterface();
     
 
@@ -474,7 +474,7 @@ $defat($$appliedUnionType,'hash',function(){
   }
   return AppliedUnionType;
 }
-exports.$init$AppliedUnionType$meta$model=$init$AppliedUnionType;
+ex$.$init$AppliedUnionType$meta$model=$init$AppliedUnionType;
 $init$AppliedUnionType();
 
 function AppliedIntersectionType(tipo,types$3, $$targs$$, that) {
@@ -574,7 +574,7 @@ $defat($$appliedIntersectionType,'hash',function(){
   }
   return AppliedIntersectionType;
 }
-exports.$init$AppliedIntersectionType$meta$model=$init$AppliedIntersectionType;
+ex$.$init$AppliedIntersectionType$meta$model=$init$AppliedIntersectionType;
 $init$AppliedIntersectionType();
 
 function AppliedFunction(m,$$targs$$,o,mptypes) {
@@ -673,7 +673,7 @@ f.namedApply=function(args) {
   return f;
 }
 AppliedFunction.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.model','Function'],satisfies:{t:Function$meta$model,a:{Type$Function:'Type$Function',Arguments$Function:'Arguments$Function'}},$an:function(){return [shared(),actual()];}};};
-exports.AppliedFunction$meta$model=AppliedFunction;
+ex$.AppliedFunction$meta$model=AppliedFunction;
 initTypeProto(AppliedFunction,'ceylon.language.meta.model::AppliedFunction',Basic,Function$meta$model);
 
 function AppliedValue(obj,attr,$$targs$$,$$appliedValue){
@@ -711,7 +711,7 @@ $defat($$appliedValue,'string',function(){
 }
 AppliedValue.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$tp:{Get:{'var':'out'},Set:{'var':'in'}},
   satisfies:[{t:Value$meta$model,a:{Get:'Get',Set:'Set'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Value']};};
-exports.AppliedValue$meta$model=AppliedValue;
+ex$.AppliedValue$meta$model=AppliedValue;
 function $init$AppliedValue(){
   if (AppliedValue.$$===undefined){
     initTypeProto(AppliedValue,'ceylon.language.meta.model::AppliedValue',Basic,Value$meta$model);
@@ -769,7 +769,7 @@ $$appliedValue.setIfAssignable=function(v) {
   }
   return AppliedValue;
 }
-exports.$init$AppliedValue$meta$model=$init$AppliedValue;
+ex$.$init$AppliedValue$meta$model=$init$AppliedValue;
 $init$AppliedValue();
 
 //ClassDefinition AppliedMethod at X (10:0-21:0)
@@ -842,7 +842,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   return $$appliedMethod;
 }
 AppliedMethod.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$tp:{Container$Method:{'var':'in'},Type$Method:{'var':'out','def':{t:Anything}},Arguments$Method:{'var':'in','satisfies':[{t:Sequential,a:{Element$Iterable:{t:Anything}}}],'def':{t:Nothing}}},satisfies:[{t:Method$meta$model,a:{Arguments$Method:'Arguments$Method',Type$Method:'Type$Method',Container$Method:'Container$Method'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Method']};};
-exports.AppliedMethod$meta$model=AppliedMethod;
+ex$.AppliedMethod$meta$model=AppliedMethod;
 function $init$AppliedMethod(){
     if (AppliedMethod.$$===undefined){
         initTypeProto(AppliedMethod,'ceylon.language.meta.model::AppliedMethod',Basic,Method$meta$model);
@@ -852,7 +852,7 @@ function $init$AppliedMethod(){
     }
     return AppliedMethod;
 }
-exports.$init$AppliedMethod$meta$model=$init$AppliedMethod;
+ex$.$init$AppliedMethod$meta$model=$init$AppliedMethod;
 $init$AppliedMethod();
 
 //ClassDefinition AppliedAttribute at X (96:0-101:0)
@@ -913,7 +913,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
   return $$appliedAttribute;
 }
 AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$tp:{Get:{'var':'out','def':{t:Anything}},Set:{'var':'in','def':{t:Nothing}},Container:{'var':'in'}},satisfies:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],$an:function(){return[shared()];},d:['ceylon.language.meta.model','Attribute']};};
-exports.AppliedAttribute=AppliedAttribute;
+ex$.AppliedAttribute=AppliedAttribute;
 function $init$AppliedAttribute(){
     if (AppliedAttribute.$$===undefined){
         initTypeProto(AppliedAttribute,'ceylon.language.meta.model::AppliedAttribute',Basic,Attribute$meta$model);
@@ -923,6 +923,6 @@ function $init$AppliedAttribute(){
     }
     return AppliedAttribute;
 }
-exports.$init$AppliedAttribute$meta$model=$init$AppliedAttribute;
+ex$.$init$AppliedAttribute$meta$model=$init$AppliedAttribute;
 $init$AppliedAttribute();
 

@@ -3,7 +3,7 @@ function Number$(wat) {
 }
 initType(Number$, 'ceylon.language::Number');
 Number$.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['ceylon.language','Number']};}
-exports.Number=Number$;
+ex$.Number=Number$;
 function $init$Number$() {
     if (Number$.$$===undefined) {
         initType(Number$, 'ceylon.language::Number');
@@ -182,9 +182,9 @@ $defat(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 &
 
 var $infinity = Float(Infinity);
 function getInfinity() { return $infinity; }
-exports.$prop$getInfinity={get:getInfinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['ceylon.language','infinity']};}};
+ex$.$prop$getInfinity={get:getInfinity,$crtmm$:function(){return{mod:$CCMM$,$t:{t:Float},d:['ceylon.language','infinity']};}};
 
-exports.Integer=Integer;
-exports.Float=Float;
-exports.getInfinity=getInfinity;
-exports.parseFloat=$parseFloat;
+ex$.Integer=Integer;
+ex$.Float=Float;
+ex$.getInfinity=getInfinity;
+ex$.parseFloat=$parseFloat;

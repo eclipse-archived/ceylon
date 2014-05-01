@@ -24,7 +24,7 @@ Array$proto.reifyCeylonType = function(typeParameters) {
     this.$$targs$$ = typeParameters;
     return this;
 }
-exports.$Array=Array$;
+ex$.$Array=Array$;
 
 function ArraySequence(/* js array */value, $$targs$$) {
 if (value.length===0)return getEmpty();
@@ -157,7 +157,7 @@ Array$proto.longerThan = function(len) {
 }
 Array$proto.longerThan.$crtmm$={mod:$CCMM$,d:['ceylon.language','Iterable','$m','longerThan']};
 
-exports.arrayOfSize=function(size, elem, $$$mptypes) {
+ex$.arrayOfSize=function(size, elem, $$$mptypes) {
     if (size > 0) {
         var elems = [];
         for (var i = 0; i < size; i++) {
@@ -167,7 +167,7 @@ exports.arrayOfSize=function(size, elem, $$$mptypes) {
         return elems;
     } else return [];
 }
-exports.arrayOfSize.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','arrayOfSize']};
+ex$.arrayOfSize.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','arrayOfSize']};
 
 function TypeCategory(seq, type) {
     var that = new TypeCategory.$$;
@@ -226,10 +226,10 @@ SequenceAppender.$crtmm$=function(){return{$ps:[{$nm:'elements',$t:{t:Sequence,a
 
 initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
 
-exports.Sequence=Sequence;
-exports.SequenceBuilder=SequenceBuilder;
-exports.SequenceAppender=SequenceAppender;
-exports.ArraySequence=ArraySequence;
+ex$.Sequence=Sequence;
+ex$.SequenceBuilder=SequenceBuilder;
+ex$.SequenceAppender=SequenceAppender;
+ex$.ArraySequence=ArraySequence;
 
 //for sequenced enumerations
 function $sarg(elems,spread,$$targs$$){
@@ -242,7 +242,7 @@ function $sarg(elems,spread,$$targs$$){
   return that;
 }
 $sarg.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{T$LazyIterable:{'var':'out'}},satisfies:[{t:Iterable,a:{Element$Iterable:'T$LazyIterable',Absent$Iterable:{t:Null}}}],$an:function(){return[shared()];},d:['$','LazyIterable']};};
-exports.$sarg=$sarg;
+ex$.$sarg=$sarg;
 function $init$sarg(){if($sarg.$$===undefined){
   initTypeProto($sarg,'ceylon.language::LazyIterable',Basic,Iterable);
   (function(that){
@@ -280,6 +280,6 @@ function $init$sarg(){if($sarg.$$===undefined){
 return $sarg;
 }
 $init$sarg();
-exports.$init$sarg=$init$sarg;
+ex$.$init$sarg=$init$sarg;
 $init$sarg();
 

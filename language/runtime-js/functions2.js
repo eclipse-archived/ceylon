@@ -99,8 +99,8 @@ unflatten.$crtmm$=function(){return{
   $ps:[{$nm:'flatFunction',$t:{t:Callable,a:{Return$Callable:'Return$unflatten',Arguments$Callable:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}}},$mt:'prm'}],
   $t:{t:Callable,a:{Return$Callable:'Return$unflatten',Arguments$Callable:{t:'T',l:[{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Anything}}}]}}}
 }};
-exports.flatten=flatten;
-exports.unflatten=unflatten;
+ex$.flatten=flatten;
+ex$.unflatten=unflatten;
 
 //internal
 function toTuple(iterable) {
@@ -108,4 +108,4 @@ function toTuple(iterable) {
   return Tuple(seq.first, seq.rest.sequence,
     {First$Tuple:seq.$$targs$$.Element$Iterable, Element$Tuple:seq.$$targs$$.Element$Iterable, Rest$Tuple:{t:Sequential, a:seq.$$targs$$}});
 }
-exports.toTuple=toTuple;
+ex$.toTuple=toTuple;

@@ -1,5 +1,5 @@
 function getNull() { return null }
-exports.$prop$getNull={get:getNull,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','null'],$t:{t:Null}};}};
+ex$.$prop$getNull={get:getNull,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','null'],$t:{t:Null}};}};
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
 Boolean$.$crtmm$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Boolean']};
@@ -46,8 +46,8 @@ Boolean.prototype.clear = function(index) {
 
 function getTrue() {return true;}
 function getFalse() {return false;}
-exports.$prop$getTrue={get:getTrue,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','true'],$t:{t:Boolean$}};}};
-exports.$prop$getFalse={get:getFalse,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','false'],$t:{t:Boolean$}};}};
+ex$.$prop$getTrue={get:getTrue,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','true'],$t:{t:Boolean$}};}};
+ex$.$prop$getFalse={get:getFalse,$crtmm$:function(){return{mod:$CCMM$,d:['ceylon.language','false'],$t:{t:Boolean$}};}};
 var $true = true;
 var $false = false;
 
@@ -83,7 +83,7 @@ function Mapita(o,$$targs$$,$$mapita){
     return $$mapita;
 }
 Mapita.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{K$Mapita:{'var':'out','satisfies':[{t:Object$}]},V$Mapita:{'var':'out','satisfies':[{t:Object$}]}},satisfies:[{t:Map,a:{Item$Map:'V$Mapita',Key$Map:'K$Mapita'}}],$an:function(){return[shared()];},d:['','Mapita']};};
-exports.Mapita=Mapita;
+ex$.Mapita=Mapita;
 function $init$Mapita(){
     if(Mapita.$$===undefined){
         initTypeProto(Mapita,'Mapita',Basic,$init$Map());
@@ -163,5 +163,5 @@ function $init$Mapita(){
     }
     return Mapita;
 }
-exports.$init$Mapita=$init$Mapita;
+ex$.$init$Mapita=$init$Mapita;
 $init$Mapita();

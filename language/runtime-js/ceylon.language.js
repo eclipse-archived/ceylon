@@ -1,5 +1,5 @@
 (function(define) {
-    define(function(require, exports, module) {
+    define(function(rq$, ex$, module) {
 
 //the Ceylon language module
 //#METAMODEL
@@ -119,16 +119,16 @@ function attrGetter(type, name) {
 function attrSetter(type, name, value) {
     return Object.getOwnPropertyDescriptor(type.$$.prototype, name).set;
 }
-exports.initType=initType;
-exports.initTypeProto=initTypeProto;
-exports.initTypeProtoI=initTypeProtoI;
-exports.initExistingType=initExistingType;
-exports.initExistingTypeProto=initExistingTypeProto;
-exports.inheritProto=inheritProto;
-exports.$defat=$defat;
-exports.copySuperAttr=copySuperAttr;
-exports.attrGetter=attrGetter;
-exports.attrSetter=attrSetter;
+ex$.initType=initType;
+ex$.initTypeProto=initTypeProto;
+ex$.initTypeProtoI=initTypeProtoI;
+ex$.initExistingType=initExistingType;
+ex$.initExistingTypeProto=initExistingTypeProto;
+ex$.inheritProto=inheritProto;
+ex$.$defat=$defat;
+ex$.copySuperAttr=copySuperAttr;
+ex$.attrGetter=attrGetter;
+ex$.attrSetter=attrSetter;
 
 function Anything(wat) {
     return wat;
@@ -205,18 +205,18 @@ function NativeException(e) {
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
 NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Exception']};}
-exports.Identifiable=Identifiable;
-exports.identityHash=$identityHash;
-exports.$Object=Object$;
-exports.Anything=Anything;
-exports.Null=Null;
-exports.Nothing=Nothing;
-exports.$Boolean=Boolean$;
-exports.Comparison=Comparison;
-exports.getNull=getNull;
-exports.getTrue=getTrue;
-exports.getFalse=getFalse;
-exports.NativeException=NativeException;
+ex$.Identifiable=Identifiable;
+ex$.identityHash=$identityHash;
+ex$.$Object=Object$;
+ex$.Anything=Anything;
+ex$.Null=Null;
+ex$.Nothing=Nothing;
+ex$.$Boolean=Boolean$;
+ex$.Comparison=Comparison;
+ex$.getNull=getNull;
+ex$.getTrue=getTrue;
+ex$.getFalse=getFalse;
+ex$.NativeException=NativeException;
     });
 }(typeof define==='function' && define.amd ? 
     define : function (factory) {

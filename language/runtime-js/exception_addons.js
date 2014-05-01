@@ -48,7 +48,7 @@ printStackTrace.$crtmm$=function(){
   return{mod:$CCMM$,d:['ceylon.language','printStackTrace'],$t:{t:Anything},$ps:[
     {$nm:'exception',$t:{t:Throwable},$mt:'prm'},{$nm:'write',$t:{t:Callable,a:{Return:{t:Anything},Arguments:{t:'T',l:[{t:String$}]}}},$mt:'prm','$def':1}
   ]};};
-exports.printStackTrace=printStackTrace;
+ex$.printStackTrace=printStackTrace;
 
 $defat(Throwable.$$.prototype, 'suppressed', function(){
   return this.$sups$||getEmpty();

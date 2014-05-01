@@ -5,14 +5,14 @@ function addSuppressedException(/*Exception*/sup,/*Exception*/e) {
     if (sup.getT$name === undefined) sup = NativeException(sup);
     e.$sups$.push(sup);
 }
-exports.addSuppressedException=addSuppressedException;
+ex$.addSuppressedException=addSuppressedException;
 function suppressedExceptions(/*Exception*/e) {
     return e.$sups$===undefined?getEmpty():e.$sups$;
 }
 suppressedExceptions.$crtmm$=function(){
   return {mod:$CCMM$,d:['ceylon.language','suppressedExceptions'],$t:{t:Sequential,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Exception}}},$ps:[{$nm:'exception',$mt:'prm',$t:{t:Exception}}]};
 }
-exports.suppressedExceptions=suppressedExceptions;
+ex$.suppressedExceptions=suppressedExceptions;
 
 function $retuple(t) { //receives {t:'T',l:[...]}
   if (t.t!=='T')return t;
@@ -167,4 +167,4 @@ function getrtmm$$(x) {
   if (typeof(x.$crtmm$)==='function')x.$crtmm$=x.$crtmm$();
   return x.$crtmm$;
 }
-exports.getrtmm$$=getrtmm$$;
+ex$.getrtmm$$=getrtmm$$;

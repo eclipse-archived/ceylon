@@ -646,7 +646,7 @@ function codepointFromString(str, index) {
     var second = str.charCodeAt(index+1);
     return isNaN(second) ? first : ((first<<10) + second - 0x35fdc00);
 }
-exports.codepointFromString=codepointFromString;
+ex$.codepointFromString=codepointFromString;
 
 var _cacheChr={};
 function Character(value,cache) {
@@ -884,6 +884,6 @@ StringBuilder$proto.deleteTerminal=function(c){
 StringBuilder$proto.deleteTerminal.$crtmm$=function(){return{
   mod:$CCMM$,d:['$','StringBuilder','$m','deleteTerminal'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};
 
-exports.String=String$;
-exports.Character=Character;
-exports.StringBuilder=StringBuilder;
+ex$.String=String$;
+ex$.Character=Character;
+ex$.StringBuilder=StringBuilder;

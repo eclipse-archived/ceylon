@@ -61,7 +61,7 @@ type$meta.$crtmm$=function(){return{
   $ps:[{$nm:'instance',$t:'Type'}],$an:function(){return[shared(),$native()];},
   $t:{t:ClassModel$meta$model,a:{Type$Class:'Type', Arguments$Class:{t:Nothing}}}, $tp:{Type$type:{satisfies:{t:Anything}}},
   mod:$CCMM$,d:['ceylon.language.meta','type']};}
-exports.type$meta=type$meta;
+ex$.type$meta=type$meta;
 
 function typeLiteral$meta($$targs$$) {
   if ($$targs$$ === undefined || $$targs$$.Type$typeLiteral === undefined) {
@@ -132,7 +132,7 @@ function typeLiteral$meta($$targs$$) {
   throw new Error("typeLiteral UNIMPLEMENTED for " + /*require('util').inspect(*/$$targs$$);
 }
 typeLiteral$meta.$crtmm$={$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language.meta','typeLiteral']};
-exports.typeLiteral$meta=typeLiteral$meta;
+ex$.typeLiteral$meta=typeLiteral$meta;
 
 function pushTypes(list, types) {
   for (var i=0; i<types.length; i++) {

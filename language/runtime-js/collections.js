@@ -23,7 +23,7 @@ $defat(Comprehension$proto, 'sequence', function() {
     sb.appendAll(this);
     return sb.sequence;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Iterable','$at','sequence']});
-exports.Comprehension=Comprehension;
+ex$.Comprehension=Comprehension;
 
 function ComprehensionIterator(nextFunc, $$targs$$, it) {
     $init$ComprehensionIterator();
