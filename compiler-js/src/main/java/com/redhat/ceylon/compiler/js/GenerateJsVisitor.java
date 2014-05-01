@@ -275,11 +275,11 @@ public class GenerateJsVisitor extends Visitor
         }
         if (!that.getModuleDescriptors().isEmpty()) {
             ModuleDescriptor md = that.getModuleDescriptors().get(0);
-            out("exports.$mod$ans$=");
+            out("ex$.$mod$ans$=");
             TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), null, this);
             endLine(true);
             if (md.getImportModuleList() != null && !md.getImportModuleList().getImportModules().isEmpty()) {
-                out("exports.$mod$imps=function(){return{");
+                out("ex$.$mod$imps=function(){return{");
                 if (!opts.isMinify())endLine();
                 boolean first=true;
                 for (ImportModule im : md.getImportModuleList().getImportModules()) {
@@ -310,7 +310,7 @@ public class GenerateJsVisitor extends Visitor
         }
         if (!that.getPackageDescriptors().isEmpty()) {
             final String pknm = that.getUnit().getPackage().getNameAsString().replaceAll("\\.", "\\$");
-            out("exports.$pkg$ans$", pknm, "=");
+            out("ex$.$pkg$ans$", pknm, "=");
             TypeUtils.outputAnnotationsFunction(that.getPackageDescriptors().get(0).getAnnotationList(), null, this);
             endLine(true);
         }
@@ -336,7 +336,7 @@ public class GenerateJsVisitor extends Visitor
         final String path = scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
         if (jsout.requires.put(path, modAlias) == null) {
-            out("var ", modAlias, "=require('", path, "')");
+            out("var ", modAlias, "=rq$('", path, "')");
             endLine(true);
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clAlias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "')");
@@ -1265,7 +1265,7 @@ public class GenerateJsVisitor extends Visitor
             out(names.getter(c), "=", names.getter(d), ";$prop$", names.getter(c), "=", names.getter(d));
             endLine(true);
             if (d.isToplevel()) {
-                out("exports.$prop$", names.getter(d), "=$prop$", names.getter(d));
+                out("ex$.$prop$", names.getter(d), "=$prop$", names.getter(d));
                 endLine(true);
             }
         }
@@ -1723,7 +1723,7 @@ public class GenerateJsVisitor extends Visitor
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
             out("}"); endLine(true);
             if (d.isToplevel()) {
-                out("exports.$prop$", pname, "=$prop$", pname);
+                out("ex$.$prop$", pname, "=$prop$", pname);
                 endLine(true);
             }
             generatedAttributes.add(d);
@@ -2791,7 +2791,7 @@ public class GenerateJsVisitor extends Visitor
 
     private boolean outerSelf(Declaration d) {
         if (d.isToplevel()) {
-            out("exports");
+            out("ex$");
             return true;
         }
         else if (d.isClassOrInterfaceMember()) {

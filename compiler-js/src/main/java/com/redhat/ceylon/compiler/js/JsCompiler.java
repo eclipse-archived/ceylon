@@ -406,7 +406,7 @@ public class JsCompiler {
 
     /** Writes the beginning of the wrapper function for a JS module. */
     public void beginWrapper(Writer writer) throws IOException {
-        writer.write("(function(define) { define(function(require, exports, module) {\n");
+        writer.write("(function(define) { define(function(rq$, ex$, module) {\n");
     }
 
     /** Writes the ending of the wrapper function for a JS module. */
