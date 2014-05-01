@@ -398,6 +398,62 @@ void testAssignmentOperator() {
     check(o2.x==3, "assignment 12");
 }
 
+void testRangeOps() {
+    value seq = [ "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" ];
+    check(seq[1..2] == ["two", "three" ], "seq[1:2] ``seq[1..2]``");
+    check(seq[3..5] == ["four", "five", "six"], "seq[3..5] ``seq[3..5]``");
+    check("test"[1..2] == "es", "test[1..2] ``("test"[1..2])``");
+    check("hello"[2..2] == "l", "hello[2..2] ``("hello"[2..2])``");
+    value s2 = 0..3;
+    value s3 = 2..5;
+    check(s2.size == 4, "0..3 [1]");
+    check(s2[0] == 0, "0..3 [2.1]");
+    check(s2.first == 0, "0..3 [2.2]");
+    if (exists x=s2[2]) {
+        check(x == 2, "0..3 [3]");
+    } else { fail("0..3 [3]"); }
+    check(s3.size == 4, "2..5 [1]");
+    check(s3[0] == 2, "2..5 [1]");
+    if (exists x=s3[2]) {
+        check(x == 4, "2..5 [2]");
+    } else { fail("2..5 [2]"); }
+    if (exists x=s3[3]) {
+        check(x == 5, "2..5 [3]");
+    } else { fail("2..5 [3]"); }
+    if (exists x=s3[4]) {
+        fail("2..5 [3]");
+    }
+    check((1..-1).decreasing, "1..-1 decreasing");
+    check((1..-1).size==3, "1..-1 size");
+    variable value rounds=0;
+    for (i in 0..10) { rounds++; }
+    check(rounds==11, "for(range) 1");
+    rounds=0;
+    variable value testChar='.';
+    for (i in 'a'..'e') {
+        rounds++;
+        testChar=i;
+    }
+    check(rounds==5, "for(range) 2");
+    check(testChar=='e', "for(range) 2");
+    rounds=-1;
+    variable value testInt=0;
+    for (i in 1..rounds) {
+        testInt++;
+    }
+    check(testInt==3, "for(range) 3");
+    rounds=0;
+    for (i in testInt..5) {
+        rounds++;
+    }
+    check(rounds==3, "for(range) 4");
+    rounds=0;
+    for (i in testInt..0) {
+        rounds++;
+    }
+    check(rounds==4, "for(range) 5");
+}
+
 void testSegments() {
     value seq = [ "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" ];
     check(seq[1:2] == ["two", "three" ], "seq[1:2] ``seq[1:2]``");
@@ -426,6 +482,27 @@ void testSegments() {
     } else { fail("2:5 [3]"); }
     check(!1:0 nonempty, "1:0 empty");
     check(!1:-1 nonempty, "1:-1 empty");
+    variable value rounds=0;
+    for (i in 0:10) { rounds++; }
+    check(rounds==10, "for(segment) 1");
+    rounds=0;
+    variable value testChar='.';
+    for (i in 'a':5) {
+        rounds++;
+        testChar=i;
+    }
+    check(rounds==5, "for(segment) 2");
+    check(testChar=='e', "for(segment) 2");
+    rounds=-1;
+    for (i in 'a':rounds) {
+        testChar=i;
+    }
+    check(testChar=='e', "for(segment) 3");
+    rounds=2;
+    for (i in 'a':rounds) {
+        testChar=i;
+    }
+    check(testChar=='b', "for(segment) 4");
 }
 
 void compareStringNumber() {
@@ -502,6 +579,7 @@ shared void test() {
     testArithmeticAssignOperators();
     testAssignmentOperator();
     testSetOperators();
+    testRangeOps();
     testSegments();
     testEnumerations();
     compareStringNumber();
