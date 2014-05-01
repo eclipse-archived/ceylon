@@ -178,7 +178,7 @@ function TypeCategory(seq, type) {
 initTypeProto(TypeCategory, 'ceylon.language::TypeCategory', $init$Basic(), Category);
 var TypeCategory$proto = TypeCategory.$$.prototype;
 TypeCategory$proto.contains = function(k) {
-    return $is(k, this.type) && this.seq.defines(k);
+    return is$(k, this.type) && this.seq.defines(k);
 }
 
 function SequenceBuilder($$targs$$,that) {

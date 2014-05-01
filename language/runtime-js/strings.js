@@ -48,7 +48,7 @@ String$proto.plus.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','St
 String$proto.equals = function(other) {
     if (other.constructor===String) {
         return other.valueOf()===this.valueOf();
-    } else if ($is(other, {t:String$})) {
+    } else if (is$(other, {t:String$})) {
         if (other.size===this.size) {
             var oi=other.iterator();
             var ti=this.iterator();
@@ -408,7 +408,7 @@ String$proto.$split = function(sep, discard, group) {
     function pushToken(tokenEnd) {
         tokens.push(String$(value.substring(tokenBegin, tokenEnd), count-tokenBeginCount));
     }
-    if ($is(sep, {t:Iterable})) {
+    if (is$(sep, {t:Iterable})) {
         var sepChars = {}
         var it = sep.iterator();
         var c; while ((c=it.next()) !== getFinished()) {sepChars[c.value] = true}

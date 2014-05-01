@@ -20,7 +20,7 @@ function nonempty(value){
   return value!==null&&value!==undefined&&!value.empty;
 }
 
-function $is(obj,type){
+function is$(obj,type){
   if(type && type.t){
     if(type.t==='i'||type.t==='u'){
       return isOfTypes(obj, type);
@@ -178,7 +178,7 @@ function isOfTypes(obj, types) {
   var objTypes = obj.getT$all();
   for (var i = 0; i < types.l.length; i++) {
     var t = types.l[i];
-    var partial = $is(obj, t);
+    var partial = is$(obj, t);
     if (types.t==='u') {
       unions = partial || unions;
     } else {
@@ -350,7 +350,7 @@ exports.set_type_args=set_type_args;
 exports.add_type_arg=add_type_arg;
 exports.exists=exists;
 exports.nonempty=nonempty;
-exports.$is=$is;
+exports.is$=is$;
 exports.className=className;
 exports.identityHash=identityHash;
 exports.throwexc=throwexc;

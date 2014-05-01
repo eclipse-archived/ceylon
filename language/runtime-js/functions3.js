@@ -148,14 +148,14 @@ function convert$params(mm,a) {
       val_t=sarg.$$targs$$.a.Element$Sequential;
       if (typeof(val_t)==='string')val_t=resolve$typearg(val_t,mm);
       for (var j=i; j<a.size;j++){
-        if (!$is(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[j]));
+        if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[j]));
         sarg.push(a[j]);
       }
       i=j;
     } else {
       fa.push(a[i]);
     }
-    if (a[i]!==undefined && !$is(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[i]));
+    if (a[i]!==undefined && !is$(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t}).string + " got " + className(a[i]));
   }
   if (a.size>i)throw InvocationException$meta$model("Too many arguments");
   a = fa;
