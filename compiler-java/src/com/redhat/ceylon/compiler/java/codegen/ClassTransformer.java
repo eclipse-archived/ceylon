@@ -1304,11 +1304,14 @@ public class ClassTransformer extends AbstractTransformer {
         if ((mods & PRIVATE) == 0) {
             concreteWrapper.isOverride(true);
         }
-        if(typeParameters != null)
+        if(typeParameters != null) {
             concreteWrapper.reifiedTypeParametersFromModel(typeParameters);
+        }
         Iterator<java.util.List<ProducedType>> iterator = producedTypeParameterBounds.iterator();
-        for (TypeParameter tp : typeParameters) {
-            concreteWrapper.typeParameter(tp, iterator.next());
+        if(typeParameters != null) {
+            for (TypeParameter tp : typeParameters) {
+                concreteWrapper.typeParameter(tp, iterator.next());
+            }
         }
         boolean explicitReturn = false;
         Declaration member = typedMember.getDeclaration();
@@ -1651,6 +1654,8 @@ public class ClassTransformer extends AbstractTransformer {
                             Tree.FunctionalParameterDeclaration tfpd = new Tree.FunctionalParameterDeclaration(null);
                             tfpd.setParameterModel(p);
                             tp = tfpd;
+                        } else {
+                            throw Assert.fail();
                         }
                         tp.setScope(p.getDeclaration().getContainer());
                         //tp.setIdentifier(makeIdentifier(p.getName()));
@@ -2434,7 +2439,7 @@ public class ClassTransformer extends AbstractTransformer {
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
         final Method model = def.getDeclarationModel();
         List<JCStatement> body;
-        MethodDeclaration methodDecl = (MethodDeclaration)def;
+        Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
         boolean returnNull = false;
         JCExpression bodyExpr;

@@ -1147,6 +1147,9 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (doc.getNamedArgumentList() != null) {
                 Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)doc.getNamedArgumentList().getNamedArguments().get(0);
                 expression = arg.getSpecifierExpression().getExpression();
+            } else {
+                // Impossible on a well-formed tree
+                return null;
             }
             Tree.Literal literal = (Tree.Literal)expression.getTerm();
             docText = literal.getText();
