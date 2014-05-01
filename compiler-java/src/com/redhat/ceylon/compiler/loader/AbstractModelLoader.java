@@ -1370,7 +1370,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(pkg == null){
                 pkg = new LazyPackage(this);
                 // FIXME: some refactoring needed
-                pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
+                pkg.setName(Arrays.asList(pkgName.split("\\.")));
             }
             packagesByName.put(cacheKeyByModule(module, quotedPkgName), pkg);
 
