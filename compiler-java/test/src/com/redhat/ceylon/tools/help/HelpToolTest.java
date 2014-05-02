@@ -40,8 +40,8 @@ public class HelpToolTest {
     @Test
     public void testHelp() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");
-        Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
+        Assert.assertTrue(model.isPorcelain());
         CeylonHelpTool tool = pluginFactory.bindArguments(model, Collections.<String>emptyList());
         tool.run();
     }
