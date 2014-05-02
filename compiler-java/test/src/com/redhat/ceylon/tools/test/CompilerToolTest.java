@@ -49,6 +49,7 @@ public class CompilerToolTest extends CompilerTest {
             ret.add(s);
         ret.add("--out");
         ret.add(destDir);
+        ret.add("--javac=-cp="+getClassPathAsPath());
         return ret;
     }
     
