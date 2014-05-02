@@ -177,6 +177,22 @@ public class IssuesTest_1500_1999 extends CompilerTest {
         compareWithJavaSource("bug15xx/Bug1571");
     }
 
+    @Test
+    public void testBug1576() {
+        assertErrors("bug15xx/Bug1576",
+                new CompilerError(21, "native declaration not found"),
+                new CompilerError(26, "native declaration not found"),
+                new CompilerError(29, "native declaration not found"),
+                new CompilerError(32, "native declaration not found"),
+                new CompilerError(36, "native declaration not found"),
+                new CompilerError(40, "native declaration not found"),
+                new CompilerError(45, "native declaration not found"),
+                new CompilerError(50, "native declaration not found"),
+                new CompilerError(55, "native declaration not found")
+                );
+    }
+
+    @Test
     public void testBug1578() {
         compareWithJavaSource("bug15xx/Bug1578");
     }
