@@ -60,8 +60,8 @@ public class DocToolToolTest {
 
     private void runDocTool(String toolName, String... otherArgs) throws IOException {
         ToolModel<CeylonDocToolTool> model = pluginLoader.loadToolModel("doc-tool");
-        Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
+        Assert.assertTrue(model.isPorcelain());
         List<String> toolArgs = new ArrayList<>();
         toolArgs.addAll(Arrays.asList(toolName, "--output=" + dir.getAbsolutePath()));
         toolArgs.addAll(Arrays.asList(otherArgs));

@@ -104,8 +104,8 @@ public class NewProjectToolTest {
     @Test
     public void testHelloWorld() throws Exception {
         ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
-        Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
+        Assert.assertTrue(model.isPorcelain());
         Path tmpPath = Files.createTempDirectory("ceylon-new");
         File tmpDir = tmpPath.toFile();
         try {
@@ -134,8 +134,8 @@ public class NewProjectToolTest {
     @Test
     public void testHelloWorldNoAntNoEclipse() throws Exception {
         ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
-        Assert.assertTrue(model.isPorcelain());
         Assert.assertNotNull(model);
+        Assert.assertTrue(model.isPorcelain());
         Path tmpPath = Files.createTempDirectory("ceylon-new");
         File tmpDir = tmpPath.toFile();
         try {
@@ -163,8 +163,8 @@ public class NewProjectToolTest {
     @Test
     public void testHelloWorldNoAntNoEclipseCompiles() throws Exception {
         ToolModel<CeylonNewTool> newModel = pluginLoader.loadToolModel("new");
-        Assert.assertTrue(newModel.isPorcelain());
         Assert.assertNotNull(newModel);
+        Assert.assertTrue(newModel.isPorcelain());
         Path tmpPath = Files.createTempDirectory("ceylon-new");
         File tmpDir = tmpPath.toFile();
         try {
