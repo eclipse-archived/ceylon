@@ -39,7 +39,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     boolean inInitializer = false;
     final LabelVisitor lv;
     private final GetterSetterPairingVisitor getterSetterPairing;
-    
+
     /** For compilation units 
      * @param lv */
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder, LabelVisitor lv, GetterSetterPairingVisitor gspv) {
@@ -51,22 +51,22 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         this.lv = lv;
         this.getterSetterPairing = gspv;
     }
-    
-    
-    
+
+
+
     public void handleException(Exception e, Node that) {
         that.addError(new CodeGenError(that, e.getMessage(), e)); 
     }
-    
+
     /*
      * Compilation Unit
      */
-    
+
     public void visit(Tree.TypeAliasDeclaration decl){
         if(gen.errors().hasDeclarationError(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
-        
+
         if (Decl.withinClassOrInterface(decl)) {
             if (Decl.withinInterface(decl)) {
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl));
@@ -78,18 +78,18 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         gen.resetCompilerAnnotations(annots);
     }
-    
+
     public void visit(Tree.ImportList that) {
         //append(gen.transform(that));
     }
-    
+
     public void visit(Tree.ClassOrInterface decl) {
         if(gen.errors().hasDeclarationError(decl))
             return;
-    	if (Decl.isNative(decl) && Decl.isToplevel(decl))
-    		return;
+        if (Decl.isNative(decl) && Decl.isToplevel(decl))
+            return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
-        
+
         if (Decl.withinClassOrInterface(decl)) {
             if (Decl.withinInterface(decl)) {
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).defs(gen.classGen().transform(decl));
@@ -101,7 +101,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         gen.resetCompilerAnnotations(annots);
     }
-    
+
     public void visit(Tree.ClassBody that) {
         for (Tree.Statement stmt : that.getStatements()) {
             HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
@@ -112,12 +112,12 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
         }
     }
-    
+
     public void visit(Tree.ObjectDefinition decl) {
         if(gen.errors().hasDeclarationError(decl))
             return;
-    	if (Decl.isNative(decl) && Decl.isToplevel(decl))
-    		return;
+        if (Decl.isNative(decl) && Decl.isToplevel(decl))
+            return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl)) {
             classBuilder.defs(gen.classGen().transformObjectDefinition(decl, classBuilder));
@@ -126,7 +126,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         gen.resetCompilerAnnotations(annots);
     }
-    
+
     public void visit(Tree.AttributeDeclaration decl){
         if (gen.errors().hasDeclarationError(decl)) {
             return;
@@ -136,9 +136,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
         } else if (Decl.isToplevel(decl)) {
-        	if (!Decl.isNative(decl)) {
-        		topattrBuilder.add(decl);
-        	}
+            if (!Decl.isNative(decl)) {
+                topattrBuilder.add(decl);
+            }
         } else if ((Decl.isLocal(decl)) 
                 && ((Decl.isCaptured(decl) && Decl.isVariable(decl))
                         || Decl.isTransient(decl)
@@ -194,9 +194,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
             classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
-        	if (!Decl.isNative(decl)) {
-        		topattrBuilder.add(decl);
-        	}
+            if (!Decl.isNative(decl)) {
+                topattrBuilder.add(decl);
+            }
         } else {
             appendList(gen.transform(decl));
         }
@@ -206,8 +206,8 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.AnyMethod decl) {
         if(gen.errors().hasDeclarationError(decl))
             return;
-    	if (Decl.isNative(decl) && Decl.isToplevel(decl))
-    		return;
+        if (Decl.isNative(decl) && Decl.isToplevel(decl))
+            return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl)
                 && (!Decl.isDeferred(decl) || Decl.isCaptured(decl))) {
@@ -217,11 +217,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         gen.resetCompilerAnnotations(annots);
     }
-    
+
     /*
      * Class or Interface
      */
-    
+
     // Class Initializer parameter
     public void visit(Tree.Parameter param) {
         // Ignore
@@ -266,7 +266,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // we do need to avoid visiting its children since that leads to invalid code otherwise as
         // other node types are handled as if they were the body of the class
     }
-    
+
     /*
      * Statements
      */
@@ -283,9 +283,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         appendList(gen.statementGen().transform(stat));
     }
 
-//    public void visit(Tree.DoWhileStatement stat) {
-//        append(gen.statementGen().transform(stat));
-//    }
+    //    public void visit(Tree.DoWhileStatement stat) {
+    //        append(gen.statementGen().transform(stat));
+    //    }
 
     public void visit(Tree.ForStatement stat) {
         appendList(gen.statementGen().transform(stat));
@@ -325,15 +325,15 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ExpressionStatement tree) {
         append(gen.expressionGen().transform(tree));
     }
-    
+
     /*
      * Expression - Invocations
      */
-    
+
     public void visit(Tree.InvocationExpression expr) {
         append(gen.expressionGen().transform(expr));
     }
-    
+
     public void visit(Tree.QualifiedMemberExpression access) {
         append(gen.expressionGen().transform(access));
     }
@@ -341,11 +341,11 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.BaseMemberExpression access) {
         append(gen.expressionGen().transform(access));
     }
-    
+
     public void visit(Tree.QualifiedTypeExpression access) {
         append(gen.expressionGen().transform(access));
     }
-    
+
     public void visit(Tree.BaseTypeExpression access) {
         append(gen.expressionGen().transform(access));
     }
@@ -353,7 +353,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     /*
      * Expression - Terms
      */
-    
+
     public void visit(Tree.IndexExpression access) {
         append(gen.expressionGen().transform(access));
     }
@@ -373,7 +373,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.Package that) {
         // this is only used as qualifier, and we can consider it a empty qualifier, so we ignore it
     }
-    
+
     public void visit(Tree.IdenticalOp op) {
         append(gen.expressionGen().transform(op));
     }
@@ -422,7 +422,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.RangeOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.SegmentOp op) {
         append(gen.expressionGen().transform(op));
     }
@@ -450,19 +450,19 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.BinaryOperatorExpression op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.ScaleOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.BitwiseOp op) {
-    	append(gen.expressionGen().transform(op));
+        append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.ComparisonOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.CompareOp op) {
         append(gen.expressionGen().transform(op));
     }
@@ -470,23 +470,23 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ArithmeticOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.PowerOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.SumOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.DifferenceOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.RemainderOp op) {
         append(gen.expressionGen().transform(op));
     }
-    
+
     public void visit(Tree.WithinOp op) {
         append(gen.expressionGen().transform(op));
     }
@@ -563,19 +563,19 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.StringTemplate expr) {
         append(gen.expressionGen().transformStringExpression(expr));
     }
-    
+
     public void visit(Tree.Throw throw_) {
         append(gen.statementGen().transform(throw_));
     }
-    
+
     public void visit(Tree.TryCatchStatement t) {
         append(gen.statementGen().transform(t));
     }
-    
+
     public void visit(Tree.SwitchStatement switch_) {
         append(gen.statementGen().transform(switch_));
     }
-    
+
     public void visit(Tree.FunctionArgument fn) {
         append(gen.expressionGen().transform(fn, fn.getTypeModel()));
     }
@@ -611,7 +611,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         // replaced with a throw.
         append(gen.at(that).Exec(gen.makeErroneous(that, "dynamic is not yet supported on this platform")));
     }
-    
+
     public void visit(Tree.CompilationUnit cu) {
         // Figure out all the local ids
         gen.naming.assignNames(cu);
@@ -636,7 +636,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
             }
         }
     }
-    
+
     public void visit(Tree.CompilerAnnotation ca) {
         // Don't end up visiting the String literal argument of the compiler annotation!
     }
@@ -650,7 +650,7 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public ListBuffer<? extends JCTree> getResult() {
         return defs;
     }
-    
+
     /**
      * Returns the single result, or null if there was more than one result
      * @return The result
@@ -664,17 +664,17 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         }
         return (K) defs.first();
     }
-    
+
     public boolean hasResult() {
         return (defs.size() > 0);
     }
-    
+
     void append(JCTree x) {
-    	if (inInitializer) {
-    		classBuilder.init((JCTree.JCStatement)x);
-    	} else {
-    		defs.append(x);
-    	}
+        if (inInitializer) {
+            classBuilder.init((JCTree.JCStatement)x);
+        } else {
+            defs.append(x);
+        }
     }
 
     void appendList(List<? extends JCTree> xs) {
