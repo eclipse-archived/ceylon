@@ -114,9 +114,17 @@ function tpl$(elems,types,spread){
       elems.push(e);
     }
   }
+  var _t=types.Element$Tuple;
+  if (_t===undefined)_t=types.Element$Sequence;
+  if (_t===undefined)_t=types.Element$List;
+  if (_t===undefined)_t=types.Element$Collection;
+  if (_t===undefined)_t=types.Element$Iterable;
+  _t={t:_t};
+  elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
+    Element$Collection:_t,Key$Correspondence:{t:Integer},Item$Correspondence:_t};
   that.$elems=elems;
   that.first_=elems[0];
-  that.$get=function(i) { return elems[i]; }
+  that.$get=function(i) { return elems[i]||null; }
   that.$get.$crtmm$=Tuple.$$.prototype.$get.$crtmm$;
   that.iterator=function(){ return elems.iterator(); }
   that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
@@ -132,8 +140,21 @@ function tpl$(elems,types,spread){
   that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
   that.segment=function(a,b){ return elems.segment(a,b); }
   that.segment.$crtmm$=Tuple.$$.prototype.segment.$crtmm$;
-  $defat(that,'rest',function(){ 
-    return elems.length==1?getEmpty():elems.slice(1);
+  that.equals=function(o){return elems.equals(o);}
+  that.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
+  that.withTrailing=function(a,b){return elems.withTrailing(a,b);}
+  that.withTrailing.$crtmm$=List.$$.prototype.withTrailing.$crtmm$;
+  that.chain=function(a,b){return elems.chain(a,b);}
+  that.chain.$crtmm$=Iterable.$$.prototype.chain.$crtmm$;
+  that.longerThan=function(i){return elems.longerThan(i);}
+  that.longerThan.$crtmm$=Iterable.$$.prototype.longerThan.$crtmm$;
+  that.shorterThan=function(i){return elems.shorterThan(i);}
+  that.shorterThan.$crtmm$=Iterable.$$.prototype.shorterThan.$crtmm$;
+  $defat(that,'hash',function(){
+    return elems.hash;
+  },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
+  $defat(that,'rest',function(){
+    return elems.length==1?getEmpty():elems.slice(1).reifyCeylonType({Element$Sequence:_t.t==='u'?{t:'u',l:_t.l.slice(1)}:_t});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   $defat(that,'size',function(){
     return elems.length;
