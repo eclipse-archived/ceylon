@@ -103,9 +103,50 @@ ex$.flatten=flatten;
 ex$.unflatten=unflatten;
 
 //internal
-function toTuple(iterable) {
-  var seq = iterable.sequence;
-  return Tuple(seq.first, seq.rest.sequence,
-    {First$Tuple:seq.$$targs$$.Element$Iterable, Element$Tuple:seq.$$targs$$.Element$Iterable, Rest$Tuple:{t:Sequential, a:seq.$$targs$$}});
+function tpl$(elems.types,spread){
+  $init$Tuple();
+  var that=new Tuple.$$;
+  that.$$targs$$=types;
+  that.$opt=1;
+  if (spread!==undefined) {
+    var iter=spread.iterator();
+    for (var e=iter.next();e!==getFinished();e=iter.next()) {
+      elems.push(e);
+    }
+  }
+  that.$elems=elems;
+  that.first_=elems[0];
+  that.$get=function(i) { return elems[i]; }
+  that.$get.$crtmm$=Tuple.$$.prototype.$get.$crtmm$;
+  that.iterator=function(){ return elems.iterator(); }
+  that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
+  that.contains=function(i) { return elems.contains(i); }
+  that.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
+  that.withLeading=function(a,b) { return elems.withLeading(a,b); }
+  that.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
+  that.span=function(a,b){ return elems.span(a,b); }
+  that.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
+  that.spanTo=function(x){ return elems.spanTo(x); }
+  that.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
+  that.spanFrom=function(x){ return elems.spanFrom(x); }
+  that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
+  that.segment=function(a,b){ return elems.segment(a,b); }
+  that.segment.$crtmm$=Tuple.$$.prototype.segment.$crtmm$;
+  $defat(that,'rest',function(){ 
+    return elems.length==1?getEmpty():elems.slice(1);
+  },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
+  $defat(that,'size',function(){
+    return elems.length;
+  },undefined,Tuple.$$.prototype.$prop$getSize.$crtmm$);
+  $defat(that,'lastIndex',function(){
+    return elems.length-1;
+  },undefined,Tuple.$$.prototype.$prop$getLastIndex.$crtmm$);
+  $defat(that,'last',function(){
+    return elems[elems.length-1];
+  },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
+  $defat(that,'reversed',function(){
+    return elems.reversed;
+  },undefined,Tuple.$$.prototype.$prop$getReversed.$crtmm$);
+  return that;
 }
-ex$.toTuple=toTuple;
+ex$.tpl$=tpl$;
