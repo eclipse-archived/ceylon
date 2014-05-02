@@ -26,9 +26,7 @@ final class Bug1570$impl<T> {
     public final class If$impl {
         
         public If$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T> $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T> $this;
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$() {

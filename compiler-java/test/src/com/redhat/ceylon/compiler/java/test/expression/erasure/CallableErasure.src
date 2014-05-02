@@ -73,9 +73,7 @@ public interface CE_MethodInterface {
 public final class CE_MethodInterface$impl {
     
     public CE_MethodInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface $this;
 }
 public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface {
     

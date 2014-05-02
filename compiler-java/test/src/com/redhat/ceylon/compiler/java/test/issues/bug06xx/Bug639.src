@@ -10,9 +10,7 @@ interface Bug639Widening {
 final class Bug639Widening$impl {
     
     Bug639Widening$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening $this;
 }
 class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     

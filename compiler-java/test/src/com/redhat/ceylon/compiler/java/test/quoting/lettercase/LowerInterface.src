@@ -56,10 +56,7 @@ public final class i$impl_ {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public ii$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_ $this) {
-            this.$this = $this;
         }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_ $this;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -70,10 +67,7 @@ public final class i$impl_ {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             mi$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ $this) {
-                this.$this = $this;
             }
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ $this;
         }
         final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_).ceylon.language.nothing_.get_();
     }

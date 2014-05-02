@@ -15,9 +15,7 @@ interface Boxer<T> {
 final class Boxer$impl<T> {
     
     Boxer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }

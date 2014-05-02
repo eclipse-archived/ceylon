@@ -8,9 +8,7 @@ interface BasicOperatorsA {
 final class BasicOperatorsA$impl {
     
     BasicOperatorsA$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsA $this;
 }
 interface BasicOperatorsB {
     
@@ -20,9 +18,7 @@ interface BasicOperatorsB {
 final class BasicOperatorsB$impl {
     
     BasicOperatorsB$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB $this;
 }
 public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
     

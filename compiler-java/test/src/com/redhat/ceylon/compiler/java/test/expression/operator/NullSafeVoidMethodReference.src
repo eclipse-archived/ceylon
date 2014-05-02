@@ -10,9 +10,7 @@ interface NullSafeAnythingMethodReference {
 final class NullSafeAnythingMethodReference$impl {
     
     NullSafeAnythingMethodReference$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference $this;
 }
 final class test_ {
     

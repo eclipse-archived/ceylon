@@ -31,9 +31,7 @@ interface Bug310 {
 final class Bug310$impl {
     
     Bug310$impl(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug310 $this;
 }
 final class bug310_ {
     

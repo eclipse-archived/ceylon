@@ -12,9 +12,7 @@ interface TPETop {
 final class TPETop$impl {
     
     TPETop$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop $this;
 }
 interface TPELeft extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
     
@@ -28,9 +26,7 @@ interface TPELeft extends .com.redhat.ceylon.compiler.java.test.expression.erasu
 final class TPELeft$impl {
     
     TPELeft$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft $this;
 }
 interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPETop {
     
@@ -44,9 +40,7 @@ interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.eras
 final class TPERight$impl {
     
     TPERight$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight $this;
 }
 class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft {
     

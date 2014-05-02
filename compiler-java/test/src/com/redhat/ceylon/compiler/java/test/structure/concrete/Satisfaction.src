@@ -145,9 +145,7 @@ interface I3 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.I1
 final class I3$impl {
     
     I3$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I3 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I3 $this;
 }
 interface I4 {
     

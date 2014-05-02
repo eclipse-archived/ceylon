@@ -129,9 +129,7 @@ interface ISats {
 final class ISats$impl {
     
     ISats$impl(.com.redhat.ceylon.compiler.java.test.structure.type.ISats $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats $this;
 }
 class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -276,9 +274,7 @@ interface ISats2 {
 final class ISats2$impl {
     
     ISats2$impl(.com.redhat.ceylon.compiler.java.test.structure.type.ISats2 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.type.ISats2 $this;
 }
 class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

@@ -10,9 +10,7 @@ interface I {
 final class I$impl {
     
     I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this;
 }
 class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
     

@@ -7,9 +7,7 @@ public interface TestInterface<Key, Value> {
 public final class TestInterface$impl<Key, Value> {
     
     public TestInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
     }
@@ -21,9 +19,7 @@ public interface TestInterface2<Key, Value> {
 public final class TestInterface2$impl<Key, Value> {
     
     public TestInterface2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
     }

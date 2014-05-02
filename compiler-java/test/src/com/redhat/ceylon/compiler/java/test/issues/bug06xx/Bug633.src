@@ -9,9 +9,7 @@ interface Bug633Ranged<Index, Span> {
 final class Bug633Ranged$impl<Index, Span> {
     
     Bug633Ranged$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super Index, ? extends Span> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Index, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Span) {
     }
@@ -24,9 +22,7 @@ interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06
 final class Bug633Empty$impl {
     
     Bug633Empty$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty $this;
 }
 class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty {
     

@@ -24,9 +24,7 @@ public final class Bug1545ISignal$impl<T> {
     public final class IListener$impl {
         
         public IListener$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<T> $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<T> $this;
     }
 }
 public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<.ceylon.language.Integer> {

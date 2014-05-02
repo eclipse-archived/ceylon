@@ -8,7 +8,5 @@ interface Interface {
 final class Interface$impl {
     
     Interface$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.Interface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Interface $this;
 }

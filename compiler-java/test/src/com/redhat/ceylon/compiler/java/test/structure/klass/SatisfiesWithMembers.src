@@ -16,9 +16,7 @@ interface SatisfiesWithMembers {
 final class SatisfiesWithMembers$impl {
     
     SatisfiesWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this;
 }
 class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
     

@@ -278,9 +278,7 @@ public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08x
 public final class Tag$impl {
     
     public Tag$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag $this;
 }
 public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
     
@@ -290,9 +288,7 @@ public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.
 public final class InlineTag$impl {
     
     public InlineTag$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag $this;
 }
 public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     

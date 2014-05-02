@@ -13,10 +13,7 @@ final class LocalInterfaceAlias_Toplevel$impl {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     LocalInterfaceAlias_Toplevel$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
@@ -48,10 +45,7 @@ final class localInterfaceAliasMethod_ {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             InterfaceAlias_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_ $this) {
-                this.$this = $this;
             }
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .com.redhat.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_ $this;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

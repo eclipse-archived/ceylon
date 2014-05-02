@@ -18,9 +18,7 @@ final class bug674_ {
         final class X$impl<T> {
             
             X$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<T> $this) {
-                this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<T> $this;
             
             public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
             }
@@ -29,9 +27,7 @@ final class bug674_ {
         final class Y$impl {
             
             Y$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_ $this) {
-                this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_ $this;
         }
         final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_).ceylon.language.nothing_.get_();
     }

@@ -8,9 +8,7 @@ interface RIC_A {
 final class RIC_A$impl {
     
     RIC_A$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A $this;
 }
 interface RIC_B {
     
@@ -20,9 +18,7 @@ interface RIC_B {
 final class RIC_B$impl {
     
     RIC_B$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B $this;
 }
 interface RIC_C {
     
@@ -32,9 +28,7 @@ interface RIC_C {
 final class RIC_C$impl {
     
     RIC_C$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_C $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_C $this;
 }
 interface RIC_Top<T> {
     
@@ -47,9 +41,7 @@ interface RIC_Top<T> {
 final class RIC_Top$impl<T> {
     
     RIC_Top$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<? extends T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<? extends T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
@@ -80,9 +72,7 @@ interface RIC_Left extends .com.redhat.ceylon.compiler.java.test.structure.klass
 final class RIC_Left$impl {
     
     RIC_Left$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left $this;
 }
 interface RIC_Right extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_C> {
     
@@ -92,9 +82,7 @@ interface RIC_Right extends .com.redhat.ceylon.compiler.java.test.structure.klas
 final class RIC_Right$impl {
     
     RIC_Right$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right $this;
 }
 class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Middle implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
     

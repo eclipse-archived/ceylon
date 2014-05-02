@@ -8,9 +8,7 @@ interface Bug476A {
 final class Bug476A$impl {
     
     Bug476A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A $this;
 }
 interface Bug476B extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A {
     
@@ -20,9 +18,7 @@ interface Bug476B extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.B
 final class Bug476B$impl {
     
     Bug476B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B $this;
 }
 interface Bug476C {
     
@@ -32,9 +28,7 @@ interface Bug476C {
 final class Bug476C$impl {
     
     Bug476C$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C $this;
 }
 abstract class Bug476Top<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

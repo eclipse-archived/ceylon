@@ -8,9 +8,7 @@ interface AbstractSatisfier_I extends .ceylon.language.Iterable<.java.lang.Objec
 final class AbstractSatisfier_I$impl {
     
     AbstractSatisfier_I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I $this;
 }
 abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
     

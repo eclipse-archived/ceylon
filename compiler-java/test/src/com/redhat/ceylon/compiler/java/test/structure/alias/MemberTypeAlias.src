@@ -51,10 +51,7 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface $this) {
-            this.$this = $this;
         }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface $this;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -217,10 +214,7 @@ public final class MemberTypeAliasInterface$impl {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface $this) {
-            this.$this = $this;
         }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface $this;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

@@ -10,9 +10,7 @@ public interface Bug693_Interface {
 public final class Bug693_Interface$impl {
     
     public Bug693_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface $this;
 }
 public class Bug693_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface {
     

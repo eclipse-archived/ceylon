@@ -8,9 +8,7 @@ interface VarianceTop {
 final class VarianceTop$impl {
     
     VarianceTop$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this;
 }
 interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop {
     
@@ -20,9 +18,7 @@ interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure
 final class VarianceMiddle$impl {
     
     VarianceMiddle$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this;
 }
 interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
     
@@ -32,9 +28,7 @@ interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure
 final class VarianceBottom$impl {
     
     VarianceBottom$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this;
 }
 class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

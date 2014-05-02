@@ -110,9 +110,7 @@ public interface ICaseTypes {
 public final class ICaseTypes$impl {
     
     public ICaseTypes$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes $this;
 }
 public interface IFoo extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
     
@@ -122,9 +120,7 @@ public interface IFoo extends .com.redhat.ceylon.compiler.java.test.structure.kl
 public final class IFoo$impl {
     
     public IFoo$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.IFoo $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.IFoo $this;
 }
 public interface IBar extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
     
@@ -134,7 +130,5 @@ public interface IBar extends .com.redhat.ceylon.compiler.java.test.structure.kl
 public final class IBar$impl {
     
     public IBar$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.IBar $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.IBar $this;
 }

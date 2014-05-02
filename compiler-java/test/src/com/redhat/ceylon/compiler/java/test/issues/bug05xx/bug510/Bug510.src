@@ -32,10 +32,7 @@ final class Bug510$impl {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         Bug510inner$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this) {
-            this.$this = $this;
         }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

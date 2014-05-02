@@ -16,7 +16,5 @@ interface InterfaceWithMembers {
 final class InterfaceWithMembers$impl {
     
     InterfaceWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers $this;
 }

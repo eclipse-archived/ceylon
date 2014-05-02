@@ -68,9 +68,7 @@ interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java
 final class D$impl {
     
     D$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.D $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.D $this;
 }
 final class selfTypeTest_ {
     

@@ -24,9 +24,7 @@ public interface TypeAliasWithTypeParametersInterface<T> {
 public final class TypeAliasWithTypeParametersInterface$impl<T> {
     
     public TypeAliasWithTypeParametersInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }

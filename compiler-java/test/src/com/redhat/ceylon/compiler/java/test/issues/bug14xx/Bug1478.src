@@ -8,9 +8,7 @@ public interface Bug1478Bla {
 public final class Bug1478Bla$impl {
     
     public Bug1478Bla$impl(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla $this;
 }
 public interface Bug1478AbstractFoo$InnerInterface<T> {
     
@@ -43,9 +41,7 @@ public abstract class Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compil
     public final class InnerInterface$impl {
         
         public InnerInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo$InnerInterface<T> $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo$InnerInterface<T> $this;
     }
     
     @.java.lang.Override

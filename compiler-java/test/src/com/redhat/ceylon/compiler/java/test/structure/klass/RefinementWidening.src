@@ -113,9 +113,7 @@ interface RWTopI {
 final class RWTopI$impl {
     
     RWTopI$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI $this;
 }
 interface RWLeft extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
     
@@ -125,9 +123,7 @@ interface RWLeft extends .com.redhat.ceylon.compiler.java.test.structure.klass.R
 final class RWLeft$impl {
     
     RWLeft$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft $this;
 }
 interface RWRight extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
     
@@ -137,9 +133,7 @@ interface RWRight extends .com.redhat.ceylon.compiler.java.test.structure.klass.
 final class RWRight$impl {
     
     RWRight$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWRight $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RWRight $this;
 }
 abstract class RWTop<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

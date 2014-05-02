@@ -86,7 +86,5 @@ interface MangledMembers_interface {
 final class MangledMembers_interface$impl {
     
     MangledMembers_interface$impl(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface $this;
 }

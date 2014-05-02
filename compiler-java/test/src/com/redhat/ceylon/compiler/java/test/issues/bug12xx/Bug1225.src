@@ -8,9 +8,7 @@ public interface Bug1225Availability {
 public final class Bug1225Availability$impl {
     
     public Bug1225Availability$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability $this;
 }
 public final class bug1225available_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     

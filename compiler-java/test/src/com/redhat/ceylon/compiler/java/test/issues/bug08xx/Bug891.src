@@ -10,9 +10,7 @@ interface Bug891_Interface {
 final class Bug891_Interface$impl {
     
     Bug891_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface $this;
 }
 class Bug891_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface {
     

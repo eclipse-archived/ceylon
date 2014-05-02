@@ -365,10 +365,7 @@ final class LitInterface$impl {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public Member$impl(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member $this) {
-            this.$this = $this;
         }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        private final .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member $this;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
@@ -421,10 +418,7 @@ final class LitParameterisedInterface$impl<T> {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public Member$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member<T, X> $this) {
-            this.$this = $this;
         }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        private final .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member<T, X> $this;
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {

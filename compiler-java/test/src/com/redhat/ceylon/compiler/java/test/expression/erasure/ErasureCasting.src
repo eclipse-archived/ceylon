@@ -10,9 +10,7 @@ interface EC_A {
 final class EC_A$impl {
     
     EC_A$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A $this;
 }
 interface EC_B {
     
@@ -22,9 +20,7 @@ interface EC_B {
 final class EC_B$impl {
     
     EC_B$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B $this;
 }
 interface EC_C {
     
@@ -34,9 +30,7 @@ interface EC_C {
 final class EC_C$impl {
     
     EC_C$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C $this;
 }
 interface EC_ABC extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C {
     
@@ -46,9 +40,7 @@ interface EC_ABC extends .com.redhat.ceylon.compiler.java.test.expression.erasur
 final class EC_ABC$impl {
     
     EC_ABC$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC $this;
 }
 interface EC_Parameterised<T> {
     
@@ -59,9 +51,7 @@ interface EC_Parameterised<T> {
 final class EC_Parameterised$impl<T> {
     
     EC_Parameterised$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
@@ -75,9 +65,7 @@ interface EC_ParameterisedSelfBound<T> {
 final class EC_ParameterisedSelfBound$impl<T> {
     
     EC_ParameterisedSelfBound$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound<? extends T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound<? extends T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
@@ -89,9 +77,7 @@ interface EC_DoubleParameters<T1, T2> extends .com.redhat.ceylon.compiler.java.t
 final class EC_DoubleParameters$impl<T1, T2> {
     
     EC_DoubleParameters$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<T1, T2> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<T1, T2> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2) {
     }
@@ -323,9 +309,7 @@ interface EC_ParameterisedTOrString<T> {
 final class EC_ParameterisedTOrString$impl<T> {
     
     EC_ParameterisedTOrString$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }

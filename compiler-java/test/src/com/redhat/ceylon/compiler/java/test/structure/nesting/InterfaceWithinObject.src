@@ -13,9 +13,7 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     public final class Z$impl {
         
         public Z$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this;
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI ZI$new$() {

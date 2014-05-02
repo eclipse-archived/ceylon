@@ -75,9 +75,7 @@ interface MultipleInheritanceSub extends .com.redhat.ceylon.compiler.java.test.s
 final class MultipleInheritanceSub$impl {
     
     MultipleInheritanceSub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub $this;
 }
 class MultipleInheritanceSubImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub {
     

@@ -9,9 +9,7 @@ interface IntersectionSatisfier_X<T, N> {
 final class IntersectionSatisfier_X$impl<T, N> {
     
     IntersectionSatisfier_X$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<? extends T, ? extends N> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<? extends T, ? extends N> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N) {
     }
@@ -48,9 +46,7 @@ interface IntersectionSatisfier_I2 extends .com.redhat.ceylon.compiler.java.test
 final class IntersectionSatisfier_I2$impl {
     
     IntersectionSatisfier_I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2 $this;
 }
 class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T> {
     

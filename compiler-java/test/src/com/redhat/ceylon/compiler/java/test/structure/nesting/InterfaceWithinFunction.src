@@ -14,9 +14,7 @@ final class interfaceWithinFunction_ {
         final class Foo$impl {
             
             Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction$Foo_ $this) {
-                this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction$Foo_ $this;
         }
     }
     

@@ -9,9 +9,7 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.i
 public final class Cloneable$impl<Clone extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone>> {
     
     public Cloneable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone) {
     }
@@ -24,9 +22,7 @@ interface IBug441 extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.C
 final class IBug441$impl {
     
     IBug441$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441 $this;
 }
 class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441> {
     

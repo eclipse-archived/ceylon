@@ -7,9 +7,7 @@ interface SatisfiesGeneric_Foo<T> {
 final class SatisfiesGeneric_Foo$impl<T> {
     
     SatisfiesGeneric_Foo$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Foo<? super T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
@@ -21,9 +19,7 @@ interface SatisfiesGeneric_Bar<T> {
 final class SatisfiesGeneric_Bar$impl<T> {
     
     SatisfiesGeneric_Bar$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Bar<? extends T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
@@ -35,9 +31,7 @@ interface SatisfiesGeneric_Baz<T> {
 final class SatisfiesGeneric_Baz$impl<T> {
     
     SatisfiesGeneric_Baz$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<T> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric_Baz<T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
     }
@@ -49,9 +43,7 @@ interface SatisfiesGeneric<X, Y, Z> {
 final class SatisfiesGeneric$impl<X, Y, Z> {
     
     SatisfiesGeneric$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric<? extends X, ? super Y, Z> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesGeneric<? extends X, ? super Y, Z> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
     }

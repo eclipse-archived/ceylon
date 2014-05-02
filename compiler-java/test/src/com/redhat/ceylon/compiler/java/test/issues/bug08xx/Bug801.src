@@ -19,9 +19,7 @@ public final class Bug801_Interface$impl {
     public final class MemberInterface$impl {
         
         public MemberInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface $this;
     }
 }
 public interface Bug801_Class$MemberInterface {
@@ -36,9 +34,7 @@ public class Bug801_Class implements .com.redhat.ceylon.compiler.java.runtime.mo
     public final class MemberInterface$impl {
         
         public MemberInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface $this;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -97,9 +93,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
     public final class MemberInterface2$impl {
         
         public MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$MemberInterface2 $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$MemberInterface2 $this;
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo Foo$new$() {
@@ -206,9 +200,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
         final class MemberInterface2$impl {
             
             MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$method$MemberInterface2 $this) {
-                this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass$method$MemberInterface2 $this;
         }
     }
     
@@ -262,9 +254,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
     public final class MemberInterface2$impl {
         
         public MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$MemberInterface2 $this) {
-            this.$this = $this;
         }
-        private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$MemberInterface2 $this;
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo Foo$new$() {
@@ -371,9 +361,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         final class MemberInterface2$impl {
             
             MemberInterface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$method$MemberInterface2 $this) {
-                this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2$method$MemberInterface2 $this;
         }
     }
     

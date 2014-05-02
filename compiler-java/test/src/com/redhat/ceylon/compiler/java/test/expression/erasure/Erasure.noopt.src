@@ -16,9 +16,7 @@ interface Top {
 final class Top$impl {
     
     Top$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.Top $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top $this;
 }
 interface Left extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
     
@@ -32,9 +30,7 @@ interface Left extends .com.redhat.ceylon.compiler.java.test.expression.erasure.
 final class Left$impl {
     
     Left$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $this;
 }
 interface Right extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
     
@@ -48,9 +44,7 @@ interface Right extends .com.redhat.ceylon.compiler.java.test.expression.erasure
 final class Right$impl {
     
     Right$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.Right $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right $this;
 }
 class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right {
     
@@ -211,9 +205,7 @@ interface EmptyInterface {
 final class EmptyInterface$impl {
     
     EmptyInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface $this;
 }
 class MyException extends .ceylon.language.Exception implements .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface {
     
@@ -242,9 +234,7 @@ interface MyNumeric extends .ceylon.language.Numeric<.com.redhat.ceylon.compiler
 final class MyNumeric$impl {
     
     MyNumeric$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric $this;
 }
 class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

@@ -10,9 +10,7 @@ public interface Bug1235I {
 public final class Bug1235I$impl {
     
     public Bug1235I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I $this;
 }
 public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I {
     

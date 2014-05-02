@@ -10,9 +10,7 @@ interface Bug1188 {
 final class Bug1188$impl {
     
     Bug1188$impl(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188 $this;
 }
 abstract class AbstractBug1188 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188 {
     

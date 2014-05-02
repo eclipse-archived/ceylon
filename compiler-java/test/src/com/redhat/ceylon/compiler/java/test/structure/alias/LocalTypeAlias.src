@@ -43,10 +43,7 @@ final class localTypeAliasMethod_ {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ $this) {
-                this.$this = $this;
             }
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            private final .com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ $this;
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

@@ -22,9 +22,7 @@ interface Bug260_Interface {
 final class Bug260_Interface$impl {
     
     Bug260_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface $this;
 }
 interface Bug260_Interface2 {
     
@@ -34,9 +32,7 @@ interface Bug260_Interface2 {
 final class Bug260_Interface2$impl {
     
     Bug260_Interface2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 $this;
 }
 interface Bug260_Interface3 {
     
@@ -46,9 +42,7 @@ interface Bug260_Interface3 {
 final class Bug260_Interface3$impl {
     
     Bug260_Interface3$impl(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 $this;
 }
 class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 {
     

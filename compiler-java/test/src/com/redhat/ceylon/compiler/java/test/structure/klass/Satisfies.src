@@ -8,9 +8,7 @@ interface Satisfies {
 final class Satisfies$impl {
     
     Satisfies$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies $this;
 }
 class SatisfiesClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.Satisfies {
     

@@ -45,9 +45,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final class DummyI$impl {
             
             DummyI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this) {
-                this.$this = $this;
             }
-            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this;
         }
         
         @.java.lang.Override

@@ -64,10 +64,7 @@ public final class Interface$impl<Key> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key) {
@@ -89,10 +86,7 @@ public final class SubInterface1$impl {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public SubInterface1$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
@@ -110,10 +104,7 @@ public final class SubInterface2$impl {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public SubInterface2$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$

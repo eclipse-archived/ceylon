@@ -38,9 +38,7 @@ public interface XSequential893<Element> extends .com.redhat.ceylon.compiler.jav
 public final class XSequential893$impl<Element> {
     
     public XSequential893$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<? extends Element> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<? extends Element> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
     }
@@ -61,9 +59,7 @@ public interface XSequence893<Element> extends .com.redhat.ceylon.compiler.java.
 public final class XSequence893$impl<Element> {
     
     public XSequence893$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<? extends Element> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<? extends Element> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
     }
@@ -76,9 +72,7 @@ public interface XEmpty893 extends .com.redhat.ceylon.compiler.java.test.issues.
 public final class XEmpty893$impl {
     
     public XEmpty893$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893 $this;
 }
 public abstract class XSingleton893<Element> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element> {
     

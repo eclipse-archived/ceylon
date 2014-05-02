@@ -32,9 +32,7 @@ interface A {
 final class A$impl {
     
     A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.A $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A $this;
 }
 interface B {
     
@@ -44,9 +42,7 @@ interface B {
 final class B$impl {
     
     B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B $this;
 }
 interface C extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B {
     
@@ -56,9 +52,7 @@ interface C extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A, .com
 final class C$impl {
     
     C$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C $this;
 }
 final class cmp_ {
     

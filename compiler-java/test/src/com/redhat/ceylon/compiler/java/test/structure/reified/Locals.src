@@ -1920,10 +1920,7 @@ final class OuterInterface$impl<Outer> {
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     LocalI2$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$privateMethodForLocalInterfaces$LocalI1$privateMethod$LocalI2<Outer> $this) {
-                        this.$this = $this;
                     }
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$privateMethodForLocalInterfaces$LocalI1$privateMethod$LocalI2<Outer> $this;
                 }
                 if (((.ceylon.language.meta.declaration.Declaration)((.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$privateMethodForLocalInterfaces$LocalI1$privateMethod$LocalI2.class)).getContainer()).getName().equals("privateMethod")) {
                 } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`interface LocalI2`.container.name == \"privateMethod\""));
@@ -2186,10 +2183,7 @@ final class metamodelEquality_ {
                         
                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
                         I$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$0$1getter$I_ $this) {
-                            this.$this = $this;
                         }
-                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                        private final .com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$0$1getter$I_ $this;
                     }
                     class1.ref = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(C.class);
                     interface1.ref = (.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$0$1getter$I_.class);
@@ -2300,10 +2294,7 @@ final class metamodelEquality_ {
                         
                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
                         I$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$4$2getter$I_ $this) {
-                            this.$this = $this;
                         }
-                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                        private final .com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$4$2getter$I_ $this;
                     }
                     class2.ref = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(C.class);
                     interface2.ref = (.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$4$2getter$I_.class);
@@ -2734,10 +2725,7 @@ final class MapTestBase$impl<Key, Item> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     MapTestBase$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase<? extends Key, ? extends Item> $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase<? extends Key, ? extends Item> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {

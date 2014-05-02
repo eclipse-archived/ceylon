@@ -10,9 +10,7 @@ interface Bug329_Something {
 final class Bug329_Something$impl {
     
     Bug329_Something$impl(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something $this;
 }
 final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     

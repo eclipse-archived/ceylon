@@ -9,9 +9,7 @@ interface Bug1328_Factory<Things> {
 final class Bug1328_Factory$impl<Things> {
     
     Bug1328_Factory$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Things, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory<Things> $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory<Things> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Things) {
     }

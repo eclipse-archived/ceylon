@@ -8,9 +8,7 @@ interface Iterable {
 final class Iterable$impl {
     
     Iterable$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable $this;
 }
 class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable, .ceylon.language.Iterable<.ceylon.language.Integer, .java.lang.Object> {
     

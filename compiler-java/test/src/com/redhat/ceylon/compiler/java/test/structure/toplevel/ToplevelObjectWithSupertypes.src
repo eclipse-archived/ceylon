@@ -21,9 +21,7 @@ public interface I {
 public final class I$impl {
     
     public I$impl(.com.redhat.ceylon.compiler.java.test.structure.toplevel.I $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.toplevel.I $this;
 }
 public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.compiler.java.test.structure.toplevel.C implements .com.redhat.ceylon.compiler.java.test.structure.toplevel.I {
     

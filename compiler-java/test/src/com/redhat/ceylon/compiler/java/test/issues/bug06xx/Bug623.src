@@ -25,9 +25,7 @@ interface Bug623 {
 final class Bug623$impl {
     
     Bug623$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623 $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623 $this;
 }
 class Bug623Indirect extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug623 {
     

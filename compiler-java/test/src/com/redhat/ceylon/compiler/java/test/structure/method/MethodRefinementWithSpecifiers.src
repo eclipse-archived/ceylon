@@ -44,9 +44,7 @@ interface MethodRefinementWithSpecifiers_Interface {
 final class MethodRefinementWithSpecifiers_Interface$impl {
     
     MethodRefinementWithSpecifiers_Interface$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface $this;
 }
 final class methodRefinementWithSpecifiers_returnsMethod_ {
     

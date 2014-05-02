@@ -10,9 +10,7 @@ interface Common {
 final class Common$impl {
     
     Common$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common $this;
 }
 interface FooInterface {
     
@@ -24,9 +22,7 @@ interface FooInterface {
 final class FooInterface$impl {
     
     FooInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface $this;
 }
 class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface {
     
@@ -99,9 +95,7 @@ interface BarInterface {
 final class BarInterface$impl {
     
     BarInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface $this;
 }
 class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface {
     

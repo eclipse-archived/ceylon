@@ -15,10 +15,7 @@ public final class InterfaceAlias_Foo$impl {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public InterfaceAlias_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAlias_Foo $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAlias_Foo $this;
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$

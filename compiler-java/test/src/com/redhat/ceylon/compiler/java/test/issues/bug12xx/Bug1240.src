@@ -37,9 +37,7 @@ interface A {
 final class A$impl {
     
     A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A $this;
 }
 interface B {
     
@@ -49,9 +47,7 @@ interface B {
 final class B$impl {
     
     B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B $this;
 }
 interface Left extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> {
     
@@ -61,9 +57,7 @@ interface Left extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<
 final class Left$impl {
     
     Left$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left $this;
 }
 interface Middle<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<T> {
     
@@ -104,9 +98,7 @@ interface Right extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Mid
 final class Right$impl {
     
     Right$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right $this) {
-        this.$this = $this;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right $this;
 }
 class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right {
     

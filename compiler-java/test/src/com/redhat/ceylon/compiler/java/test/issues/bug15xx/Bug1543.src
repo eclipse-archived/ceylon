@@ -98,10 +98,7 @@ public final class My1543Sequential$impl<Element> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public My1543Sequential$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<? extends Element> $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<? extends Element> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
@@ -147,10 +144,7 @@ public final class My1543Sequence$impl<Element> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public My1543Sequence$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence<? extends Element> $this) {
-        this.$this = $this;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence<? extends Element> $this;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
