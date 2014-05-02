@@ -1,6 +1,8 @@
 package com.redhat.ceylon.cmr.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,7 +10,11 @@ import java.util.Enumeration;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
+import java.util.jar.Pack200;
+import java.util.jar.Pack200.Packer;
+import java.util.jar.Pack200.Unpacker;
 import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -28,6 +34,13 @@ public final class JarUtils {
             JarOutputStream jarOutputStream, JarEntryFilter filter,
             RepositoryManager repoManager, boolean verbose, Logger log,
             Set<String> folders) throws IOException {
+        finishUpdatingJar(originalFile, outputFile, context, jarOutputStream, filter, repoManager, verbose, log, folders, false);
+    }
+    
+    public static void finishUpdatingJar(File originalFile, File outputFile, ArtifactContext context, 
+            JarOutputStream jarOutputStream, JarEntryFilter filter,
+            RepositoryManager repoManager, boolean verbose, Logger log,
+            Set<String> folders, boolean pack200) throws IOException {
         // now copy all previous jar entries
         if (originalFile != null) {
             JarFile jarFile = new JarFile(originalFile);
@@ -66,6 +79,11 @@ public final class JarUtils {
             log.info("[done writing to jar: "+outputFile.getPath()+"]");
             //Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
         }
+        
+        if (pack200) {
+            repack(outputFile, log);
+        }
+        
         File sha1File = ShaSigner.sign(outputFile, log, verbose);
         try {
             context.setForceOperation(true);
@@ -82,6 +100,37 @@ public final class JarUtils {
             outputFile.delete();
             sha1File.delete();
         }
+    }
+
+    /**
+     * Takes the jar generated file and repacks it using pack200 in an attempt 
+     * to reduce the file size. This is only worth doing on jars containing class files.
+     */
+    private static void repack(File outputFile, Logger log) throws IOException,
+            FileNotFoundException {
+        Packer packer = Pack200.newPacker();
+        packer.properties().put(Packer.EFFORT, "9");
+        packer.properties().put(Packer.KEEP_FILE_ORDER, Packer.FALSE);
+        packer.properties().put(Packer.DEFLATE_HINT, Packer.TRUE);
+        packer.properties().put(Packer.SEGMENT_LIMIT, "-1");
+        packer.properties().put(Packer.MODIFICATION_TIME, Packer.LATEST);
+        File tmp = File.createTempFile("ceylon", "pack200", outputFile.getParentFile());
+        try {
+            try (OutputStream out = new FileOutputStream(tmp)) {
+                try (JarFile in = new JarFile(outputFile)) {
+                    packer.pack(in, out);
+                }
+            }
+            
+            try (JarOutputStream outStream = new JarOutputStream(new FileOutputStream(outputFile))) {
+                outStream.setLevel(9);
+                Unpacker unpacker = Pack200.newUnpacker();
+                unpacker.unpack(tmp, outStream);
+            }
+        } finally {
+            tmp.delete();
+        }
+        log.debug("[repacked jar: "+outputFile.getPath()+"]");
     }
 
     public static String toPlatformIndependentPath(Iterable<? extends File> sourcePaths, String prefixedSourceFile) {
