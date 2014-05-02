@@ -95,6 +95,11 @@ shared final class Range<Element>(first, last)
     
     "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator() {
+        if (is Integer first,
+            is Integer last) {
+            assert (is {Element*} result = IntegerRangeBy(first, last, 1));
+            return result.iterator();
+        } 
         object iterator
                 satisfies Iterator<Element> {
             variable Element|Finished current = first;
