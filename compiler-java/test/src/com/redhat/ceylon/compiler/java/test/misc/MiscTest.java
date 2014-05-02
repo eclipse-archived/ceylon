@@ -99,8 +99,9 @@ public class MiscTest extends CompilerTest {
                 for (String s : new String[]{"Boolean", "Integer", "Float", "Character", "String", 
                 		"Array", "ArraySequence", "Tuple", "Exception", "Error", "Callable", 
                 		"flatten", "className", "identityHash", "internalSort", "integerRangeByIterable",
-                        "language", "metamodel", "modules", "operatingSystem", "process", "runtime", "system", 
-                        "SequenceBuilder", "SequenceAppender", "StringBuilder",
+                        "language", "metamodel", "modules", "operatingSystem", 
+                        "printStackTrace", "process", "runtime", "system", 
+                        "SequenceBuilder", "SequenceAppender", "StringBuilder", "Throwable",
                         "infinity", "parseFloat", "arrayOfSize", "unflatten"}) {
                     if (s.equals(filename)) {
                         return true;
