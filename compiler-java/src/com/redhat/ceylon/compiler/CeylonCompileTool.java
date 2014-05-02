@@ -30,7 +30,6 @@ import java.util.List;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -163,8 +162,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
     private String encoding;
-    private boolean noOsgi;
-    private boolean pack200;
+    private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
+    private boolean pack200 = DefaultToolOptions.getCompilerPack200();
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -305,11 +304,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(mavenOverrides);
         }
 
-        if (noOsgi){
+        if (noOsgi) {
             arguments.add("-noosgi");
         }
         
-        if (pack200){
+        if (pack200) {
             arguments.add("-pack200");
         }
         
@@ -337,7 +336,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
         String fileEncoding = encoding;
         if (fileEncoding == null) {
-            fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
+            fileEncoding = DefaultToolOptions.getDefaultEncoding();
         }
         if (fileEncoding != null) {
             JavacOption encodingOpt = getJavacOpt(OptionName.ENCODING.toString());
