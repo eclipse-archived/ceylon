@@ -7,14 +7,9 @@ interface Buffer<X> {
 final class Buffer$impl<X> {
     
     Buffer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<X> $this) {
-        this.$reified$X = $reified$X;
-        this.$this = $this;
     }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<X> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
-        this.$reified$X = $reified$X;
     }
 }
 interface OutStream<T> {
