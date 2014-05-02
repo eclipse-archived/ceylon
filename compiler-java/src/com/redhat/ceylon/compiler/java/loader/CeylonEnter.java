@@ -44,6 +44,7 @@ import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DeferredVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DefiniteAssignmentVisitor;
+import com.redhat.ceylon.compiler.java.codegen.MissingNativeVisitor;
 import com.redhat.ceylon.compiler.java.codegen.UnsupportedVisitor;
 import com.redhat.ceylon.compiler.java.codegen.LocalInterfaceVisitor;
 import com.redhat.ceylon.compiler.java.codegen.TypeParameterCaptureVisitor;
@@ -440,6 +441,7 @@ public class CeylonEnter extends Enter {
         }
         
         UnsupportedVisitor uv = new UnsupportedVisitor();
+        MissingNativeVisitor mnv = new MissingNativeVisitor(modelLoader);
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
         DeferredVisitor deferredVisitor = new DeferredVisitor();
@@ -459,6 +461,7 @@ public class CeylonEnter extends Enter {
         // the others can run at the same time
         for (PhasedUnit pu : listOfUnits) {
             CompilationUnit compilationUnit = pu.getCompilationUnit();
+            compilationUnit.visit(mnv);
             compilationUnit.visit(boxingVisitor);
             compilationUnit.visit(deferredVisitor);
             compilationUnit.visit(amv);
