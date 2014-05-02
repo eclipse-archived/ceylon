@@ -147,6 +147,7 @@ public class RecognizedOptions {
         CEYLONUSER,
         CEYLONPASS,
         CEYLONNOOSGI,
+        CEYLONPACK200,
         SOURCEPATH,
         CEYLONSOURCEPATH,
         CEYLONRESOURCEPATH,
@@ -214,6 +215,7 @@ public class RecognizedOptions {
         CEYLONUSER,
         CEYLONPASS,
         CEYLONNOOSGI,
+        CEYLONPACK200,
         SOURCEPATH,
         CEYLONSOURCEPATH,
         CEYLONRESOURCEPATH,
@@ -380,6 +382,7 @@ public class RecognizedOptions {
         new COption(CEYLONUSER,             "opt.arg.value",     "opt.ceylonuser"),
         new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
         new COption(CEYLONNOOSGI,                                "opt.ceylonnoosgi"),
+        new COption(CEYLONPACK200,                               "opt.ceylonpack200"),
         new COption(CEYLONDISABLEOPT,                            "opt.ceylondisableopt"),
         new COption(CEYLONDISABLEOPT_CUSTOM,                     "opt.ceylondisableopt.suboptlist"),
         new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){

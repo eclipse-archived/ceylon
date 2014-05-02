@@ -87,6 +87,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private FileSet files;
     private List<JavacOption> javacOptions = new ArrayList<JavacOption>(0);
     private Boolean noOsgi;
+    private Boolean pack200;
 
     public CeylonCompileAntTask() {
         super("compile");
@@ -101,6 +102,17 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     
     public boolean getNoOsgi() {
         return noOsgi;
+    }
+    
+    public Boolean getPack200() {
+        return pack200;
+    }
+    
+    /**
+     * Set to true to enable repacking the generated car file using pack200.
+     */
+    public void setPack200(Boolean pack200) {
+        this.pack200 = pack200;
     }
 
     /**
@@ -406,6 +418,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         
         if (noOsgi != null && noOsgi.booleanValue())
             appendOption(cmd, "--no-osgi");
+        
+        if (pack200!= null && pack200.booleanValue())
+            appendOption(cmd, "--pack200");
         
         if(classpath != null){
             throw new RuntimeException("-classpath not longer supported");

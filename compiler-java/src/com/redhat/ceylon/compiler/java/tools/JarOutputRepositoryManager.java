@@ -164,7 +164,7 @@ public class JarOutputRepositoryManager {
             JarUtils.finishUpdatingJar(
                     originalJarFile, outputJarFile, carContext, jarOutputStream,
                     getJarFilter(previousMapping, copiedSourceFiles),
-                    repoManager, options.get(OptionName.VERBOSE) != null, cmrLog, folders);
+                    repoManager, options.get(OptionName.VERBOSE) != null, cmrLog, folders, options.isSet(OptionName.CEYLONPACK200));
             
             String info;
             if(module.isDefault())

@@ -164,6 +164,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private List<String> javac = Collections.emptyList();
     private String encoding;
     private boolean noOsgi;
+    private boolean pack200;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -173,6 +174,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Indicates that the generated car file should not contain OSGi module declarations.")
     public void setNoOsgi(boolean noOsgi) {
         this.noOsgi = noOsgi;
+    }
+    
+    @Option(longName="pack200")
+    @Description("Try to make the generated car file smaller by repacking it using `pack200`.")
+    public void setPack200(boolean pack200) {
+        this.pack200 = pack200;
     }
 
     @OptionArgument(longName="src", argumentName="dirs")
@@ -300,6 +307,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
         if (noOsgi){
             arguments.add("-noosgi");
+        }
+        
+        if (pack200){
+            arguments.add("-pack200");
         }
         
         if (verbose != null) {
