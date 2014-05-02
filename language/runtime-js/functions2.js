@@ -103,7 +103,7 @@ ex$.flatten=flatten;
 ex$.unflatten=unflatten;
 
 //internal
-function tpl$(elems.types,spread){
+function tpl$(elems,types,spread){
   $init$Tuple();
   var that=new Tuple.$$;
   that.$$targs$$=types;
