@@ -711,13 +711,12 @@ public class Naming implements LocalId {
         if(!pkgName.isEmpty()){
             b.append(pkgName).append('.');
         }
-        appendClassName(b, declaration, declaration, true);
+        appendClassName(b, declaration);
         return b.toString();
 
     }
     
-    private static void appendClassName(StringBuilder b, com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl, 
-            com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration lastDeclaration, boolean isLast) {
+    private static void appendClassName(StringBuilder b, com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
         if (decl instanceof Tree.AnyClass) {
             Tree.AnyClass klass = (Tree.AnyClass)decl;
             b.append(klass.getIdentifier().getText());
@@ -727,23 +726,33 @@ public class Naming implements LocalId {
         } else if (decl instanceof Tree.AnyInterface) {
             Tree.AnyInterface iface = (Tree.AnyInterface)decl;
             b.append(iface.getIdentifier().getText());
-            // FIXME: IMO this is wrong, and in appendDeclName2 as well, since for Interface>Class>Interface 
-            // we also have to have the $impl, no? Ask Tom 
-            if (lastDeclaration instanceof Tree.AnyClass) {
-                b.append(IMPL_POSTFIX);
-            }
         } else if (decl instanceof Tree.TypedDeclaration){
             b.append(decl.getIdentifier().getText());
             b.append('_');
         } else {
             throw new RuntimeException("Don't know how to get a class name for tree of type " + decl.getClass());
         }
-        if (!isLast) {
-            if (decl instanceof Tree.AnyInterface) {
-                b.append('$');
-            } else {
-                b.append('.');
-            }
+    }
+
+    public static String toplevelClassName(String pkgName, Declaration declaration){
+        StringBuilder b = new StringBuilder();
+        if(!pkgName.isEmpty()){
+            b.append(pkgName).append('.');
+        }
+        appendClassName(b, declaration);
+        return b.toString();
+
+    }
+    
+    private static void appendClassName(StringBuilder b, Declaration decl) {
+        if (decl instanceof ClassOrInterface
+                || decl instanceof TypeAlias) {
+            b.append(decl.getName());
+        } else if (decl instanceof TypedDeclaration){
+            b.append(decl.getName());
+            b.append('_');
+        } else {
+            throw new RuntimeException("Don't know how to get a class name for tree of type " + decl.getClass());
         }
     }
 
