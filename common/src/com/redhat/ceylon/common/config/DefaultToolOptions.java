@@ -16,6 +16,8 @@ public class DefaultToolOptions {
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
     public final static String COMPILER_DOC = "compiler.doc";
+    public final static String COMPILER_NOOSGI = "compiler.noosgi";
+    public final static String COMPILER_PACK200 = "compiler.pack200";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String TESTTOOL_COMPILE = "testtool.compile";
@@ -84,6 +86,22 @@ public class DefaultToolOptions {
 
     public static File getCompilerOutDir(CeylonConfig config) {
         return new File(Repositories.withConfig(config).getOutputRepository().getUrl());
+    }
+    
+    public static boolean getCompilerNoOsgi() {
+        return getCompilerNoOsgi(CeylonConfig.get());
+    }
+    
+    public static boolean getCompilerNoOsgi(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_NOOSGI, false);
+    }
+    
+    public static boolean getCompilerPack200() {
+        return getCompilerPack200(CeylonConfig.get());
+    }
+    
+    public static boolean getCompilerPack200(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_PACK200, false);
     }
     
     public static String getRunToolCompileFlags() {
