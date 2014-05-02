@@ -1549,34 +1549,7 @@ public class ClassTransformer extends AbstractTransformer {
             TypeParameterList typeParameterList) {
         at(def);
         // Give the $impl companion a $this field...
-        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(model);
-
-        // make sure we get fields and init code for reified params
-        if(typeParameterList != null)
-            companionBuilder.reifiedTypeParameters(typeParameterList);
-        ProducedType thisType = model.getType();
-        companionBuilder.field(PRIVATE | FINAL, 
-                "$this", 
-                makeJavaType(thisType), 
-                null, false, makeAtIgnore());
-        MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
-        ctor.ignoreModelAnnotations();
-        if(typeParameterList != null)
-            ctor.reifiedTypeParameters(typeParameterListModel(typeParameterList));
-        ctor.modifiers(model.isShared() ? PUBLIC : 0);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "$this");
-        pdb.type(makeJavaType(thisType), null);
-        // ...initialize the $this field from a ctor parameter...
-        ctor.parameter(pdb);
-        ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
-                make().Exec(
-                        make().Assign(
-                                makeSelect(naming.makeThis(), "$this"), 
-                                naming.makeQuotedThis())));
-        ctor.body(bodyStatements.toList());
-        
-        if(typeParameterList != null)
-            companionBuilder.addRefineReifiedTypeParametersMethod(typeParameterList);
+        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(model, typeParameterList);
     }
 
     private List<JCAnnotation> makeLocalContainerPath(Interface model) {
@@ -2735,7 +2708,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     final DaoSuper daoSuper = new DaoSuper();
     
-    private java.util.List<TypeParameter> typeParameterListModel(Tree.TypeParameterList typeParameterList) {
+    java.util.List<TypeParameter> typeParameterListModel(Tree.TypeParameterList typeParameterList) {
         java.util.List<TypeParameter> tpList = null;
         if (typeParameterList != null) {
             tpList = new ArrayList<TypeParameter>();

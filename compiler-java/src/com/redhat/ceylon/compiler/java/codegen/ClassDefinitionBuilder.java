@@ -30,7 +30,10 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -401,6 +404,8 @@ public class ClassDefinitionBuilder
 
     private boolean hasConcreteMembers = true;
 
+    private boolean hasMemberWithDefaultedParameter;
+
     /** 
      * The class will be generated with the {@code @Ignore} annotation only
      */
@@ -522,17 +527,64 @@ public class ClassDefinitionBuilder
                 .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;
             concreteInterfaceMemberDefs.hasConcreteMembers = false;
+            concreteInterfaceMemberDefs.hasMemberWithDefaultedParameter = false;
             for (Declaration member : decl.getMembers()) {
                 if (member instanceof TypeParameter) {
                     continue;
                 }
+                if (member instanceof Functional) {
+                    PLS: for (ParameterList pl : ((Functional)member).getParameterLists()) {
+                        for (Parameter p : pl.getParameters()) {
+                            if (p.isDefaulted()) {
+                                concreteInterfaceMemberDefs.hasMemberWithDefaultedParameter = true;
+                                break PLS;
+                            }
+                        }
+                    }
+                }
                 if (!member.isFormal()) {
                     concreteInterfaceMemberDefs.hasConcreteMembers = true;
-                    break;
                 }
             }
         }
         return concreteInterfaceMemberDefs;
+    }
+    
+    public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl, TypeParameterList typeParameterList) {
+        ClassDefinitionBuilder companionBuilder = getCompanionBuilder(decl);
+        // make sure we get fields and init code for reified params
+        if(typeParameterList != null) {
+            companionBuilder.reifiedTypeParameters(typeParameterList);
+        }
+        ProducedType thisType = decl.getType();
+        if (companionBuilder.hasConcreteMembers || companionBuilder.hasMemberWithDefaultedParameter) {
+            companionBuilder.field(PRIVATE | FINAL, 
+                    "$this", 
+                    gen.makeJavaType(thisType), 
+                    null, false, gen.makeAtIgnore());
+        }
+        MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
+        ctor.ignoreModelAnnotations();
+        if(typeParameterList != null)
+            ctor.reifiedTypeParameters(gen.classGen().typeParameterListModel(typeParameterList));
+        ctor.modifiers(decl.isShared() ? PUBLIC : 0);
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
+        pdb.type(gen.makeJavaType(thisType), null);
+        // ...initialize the $this field from a ctor parameter...
+        ctor.parameter(pdb);
+        if (companionBuilder.hasConcreteMembers || companionBuilder.hasMemberWithDefaultedParameter) {
+            ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
+                    gen.make().Exec(
+                            gen.make().Assign(
+                                    gen.makeSelect(gen.naming.makeThis(), "$this"), 
+                                    gen.naming.makeQuotedThis())));
+            ctor.body(bodyStatements.toList());
+        }
+        
+        if(typeParameterList != null)
+            companionBuilder.addRefineReifiedTypeParametersMethod(typeParameterList);
+        
+        return companionBuilder;
     }
 
     public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal) {
