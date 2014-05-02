@@ -323,7 +323,7 @@ public class ModuleManager {
         for(int index = 0 ; index < leftName.size(); index++) {
             if (!leftName.get(index).equals(rightName.get(index))) return false;
         }
-        if (exactVersionMatch && left.getVersion()!=right.getVersion()) return false;
+        if (exactVersionMatch && !left.getVersion().equals(right.getVersion())) return false;
         return true;
     }
 
