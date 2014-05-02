@@ -128,6 +128,8 @@ public class CeylonTransformer extends AbstractTransformer {
         t.visit(new SourceDeclarationVisitor(){
             @Override
             public void loadFromSource(Declaration decl) {
+                if(isNative(decl))
+                    return;
                 long flags = decl instanceof Tree.AnyInterface ? Flags.INTERFACE : 0;
                 String name = Naming.toplevelClassName("", decl);
                 
