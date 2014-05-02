@@ -32,10 +32,12 @@ import java.util.Properties;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
+import com.redhat.ceylon.compiler.CeylonCompileTool;
 
 public class NewProjectToolTest {
 
@@ -88,7 +90,7 @@ public class NewProjectToolTest {
         Assert.assertTrue(file + " should not exist", !file.exists());
     }
 
-    private void runTool(CeylonNewTool tool) throws Exception {
+    private void runTool(CeylonBaseTool tool) throws Exception {
         // In an attempt for a little test isolation, we restore the system properties 
         // we set
         Map<String, String> oldMap = setProperties(Collections.singletonMap("ceylon.home", "foo"));
@@ -157,6 +159,33 @@ public class NewProjectToolTest {
             delete(tmpDir);
         }
     }
-
     
+    @Test
+    public void testHelloWorldNoAntNoEclipseCompiles() throws Exception {
+        ToolModel<CeylonNewTool> newModel = pluginLoader.loadToolModel("new");
+        Assert.assertTrue(newModel.isPorcelain());
+        Assert.assertNotNull(newModel);
+        Path tmpPath = Files.createTempDirectory("ceylon-new");
+        File tmpDir = tmpPath.toFile();
+        try {
+            CeylonNewTool newTool = pluginFactory.bindArguments(newModel, 
+                    args("--from=../ceylon-dist/templates", 
+                            "hello-world",
+                            "--module-name=org.example.hello",
+                            "--module-version=1",
+                            "--ant=false",
+                            "--eclipse=false",
+                            tmpDir.getAbsolutePath()));
+            runTool(newTool);
+            ToolModel<CeylonCompileTool> compileModel = pluginLoader.loadToolModel("compile");
+            Assert.assertNotNull(compileModel);
+            CeylonCompileTool compileTool = pluginFactory.bindArguments(compileModel, 
+                    args("--src=" + tmpDir.getAbsolutePath() + "/source",
+                            "--out=" + tmpDir.getAbsolutePath(),
+                            "org.example.hello"));
+            runTool(compileTool);
+        } finally {
+            delete(tmpDir);
+        }
+    }
 }
