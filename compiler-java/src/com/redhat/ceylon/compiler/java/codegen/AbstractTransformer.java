@@ -1022,7 +1022,7 @@ public abstract class AbstractTransformer implements Transformation {
             for(ProducedType refinedSatisfiedType : satRefinedTP){
                 // if we found it, remove it from the second list to not match it again
                 if(satisfiedType.isExactly(refinedSatisfiedType)){
-                    satRefinedTP.remove(satRefinedTP);
+                    satRefinedTP.remove(refinedSatisfiedType);
                     continue OUT;
                 }
             }
