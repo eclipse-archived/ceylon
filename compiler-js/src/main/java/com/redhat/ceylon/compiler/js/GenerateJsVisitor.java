@@ -3605,61 +3605,7 @@ public class GenerateJsVisitor extends Visitor
 
     @Override
     public void visit(Tuple that) {
-        int count = 0;
-        SequencedArgument sarg = that.getSequencedArgument();
-        if (sarg == null) {
-        	out(clAlias, "getEmpty()");
-        } else {
-        	List<Map<TypeParameter,ProducedType>> targs = new ArrayList<Map<TypeParameter,ProducedType>>(3);
-        	List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
-        	final boolean spread = SequenceGenerator.isSpread(positionalArguments);
-        	int lim = positionalArguments.size()-1;
-        	for (PositionalArgument expr : positionalArguments) {
-        		if (count > 0) {
-        			out(",");
-        		}
-        		ProducedType exprType = expr.getTypeModel();
-        		if (count==lim && spread) {
-        			if (exprType.getDeclaration().inherits(types.tuple)) {
-        				expr.visit(this);
-        			} else {
-        				expr.visit(this);
-        				out(".sequence");
-        			}
-        		} else {
-        			out(clAlias, "Tuple(");
-        			if (count > 0) {
-        			    for (Map.Entry<TypeParameter,ProducedType> e : targs.get(0).entrySet()) {
-        			        if (e.getKey().getName().equals("Rest")) {
-                                targs.add(0, e.getValue().getTypeArguments());
-        			        }
-        			    }
-        			} else {
-        				targs.add(that.getTypeModel().getTypeArguments());
-        			}
-        			if (dynblock > 0 && TypeUtils.isUnknown(exprType) && expr instanceof ListedArgument) {
-                        exprType = types.anything.getType();
-        			    TypeUtils.generateDynamicCheck(((ListedArgument)expr).getExpression(), exprType, this, false);
-        			} else {
-                        expr.visit(this);
-        			}
-        		}
-        		count++;
-        	}
-        	if (!spread) {
-        		if (count > 0) {
-        			out(",");
-        		}
-        		out(clAlias, "getEmpty()");
-        	} else {
-        		count--;
-        	}
-        	for (Map<TypeParameter,ProducedType> t : targs) {
-        		out(",");
-        		TypeUtils.printTypeArguments(that, t, this, false);
-        		out(")");
-        	}
-        }
+        SequenceGenerator.tuple(that, this);
     }
 
     @Override
