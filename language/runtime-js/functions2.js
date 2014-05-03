@@ -104,24 +104,37 @@ ex$.unflatten=unflatten;
 
 //internal
 function tpl$(elems,types,spread){
-  $init$Tuple();
-  var that=new Tuple.$$;
-  that.$$targs$$=types;
-  that.$opt=1;
   if (spread!==undefined) {
     var iter=spread.iterator();
     for (var e=iter.next();e!==getFinished();e=iter.next()) {
       elems.push(e);
     }
   }
-  var _t=types.Element$Tuple;
-  if (_t===undefined)_t=types.Element$Sequence;
-  if (_t===undefined)_t=types.Element$List;
-  if (_t===undefined)_t=types.Element$Collection;
-  if (_t===undefined)_t=types.Element$Iterable;
-  _t={t:_t};
+  if (elems.length===0)return getEmpty();
+  if (types===undefined || types.t!=='T') {
+    types=[];
+    for (var i=0; i < elems.length; i++){
+      if (elems[i]===null) {
+        types.push({t:Null});
+      } else if (elems[i].getT$all && elems[i].getT$name) {
+        types.push({t:elems[i].getT$all()[elems[i].getT$name()]});
+      } else {
+        console.log("WTF que hago con " + elems[i]);
+        types.push({t:Anything});
+      }
+    }
+    types={t:'T',l:types};
+  }
+  $init$Tuple();
+  var that=new Tuple.$$;
+  that.$$targs$$=types;
+  that.$opt=1;
+  $Object(that);
+  var _t={t:'u',l:types.l};
+  Sequence({Element$Sequence:_t},that);
   elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
     Element$Collection:_t,Key$Correspondence:{t:Integer},Item$Correspondence:_t};
+  set_type_args(that,elems.$$targs$$);
   that.$elems=elems;
   that.first_=elems[0];
   that.$get=function(i) { return elems[i]||null; }
@@ -154,7 +167,7 @@ function tpl$(elems,types,spread){
     return elems.hash;
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   $defat(that,'rest',function(){
-    return elems.length==1?getEmpty():elems.slice(1).reifyCeylonType({Element$Sequence:_t.t==='u'?{t:'u',l:_t.l.slice(1)}:_t});
+    return elems.length==1?getEmpty():elems.slice(1).reifyCeylonType({Element$Sequence:{t:'u',l:_t.l.slice(1)}});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   $defat(that,'size',function(){
     return elems.length;
