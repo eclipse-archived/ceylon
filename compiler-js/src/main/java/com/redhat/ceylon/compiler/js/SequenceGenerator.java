@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ListedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 
 public class SequenceGenerator {
 
@@ -161,6 +165,40 @@ public class SequenceGenerator {
         gen.out("].reifyCeylonType(");
         TypeUtils.printTypeArguments(that, types, gen, false);
         gen.out(")");
+    }
+
+    static void tuple(final Tree.Tuple that, final GenerateJsVisitor gen) {
+        SequencedArgument sarg = that.getSequencedArgument();
+        if (sarg == null) {
+            gen.out(GenerateJsVisitor.getClAlias(), "getEmpty()");
+        } else {
+            final List<PositionalArgument> positionalArguments = sarg.getPositionalArguments();
+            final boolean spread = SequenceGenerator.isSpread(positionalArguments);
+            int lim = positionalArguments.size()-1;
+            gen.out(GenerateJsVisitor.getClAlias(), "tpl$([");
+            int count = 0;
+            for (PositionalArgument expr : positionalArguments) {
+                if (!(count==lim && spread)) {
+                    if (count > 0) {
+                        gen.out(",");
+                    }
+                    expr.visit(gen);
+                }
+                count++;
+            }
+            gen.out("],");
+            if (that.getTypeModel().getProducedTypeQualifiedName().startsWith("ceylon.language::Tuple")) {
+                TypeUtils.outputTypeList(that, that.getTypeModel(), gen, false);
+            } else {
+                //Let the function calculate it at runtime
+                gen.out("undefined");
+            }
+            if (spread) {
+                gen.out(",");
+                positionalArguments.get(lim).visit(gen);
+            }
+            gen.out(")");
+        }
     }
 
 }
