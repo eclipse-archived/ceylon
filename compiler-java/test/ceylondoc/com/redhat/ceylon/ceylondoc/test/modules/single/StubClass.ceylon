@@ -209,6 +209,7 @@ shared class StubClass(
      1. stubObject.stubInnerObject.fooInner = [[stubObject.stubInnerObject.fooInner]]
      1. unresolvable1 = [[unresolvable]]
      1. unresolvable2 = [[unresolvable with custom name|unresolvable]]
+     1. unresolvable3 = [[com.redhat.ceylon.ceylondoc.test.modules.single::]]
      1. imported A1 = [[A1]]
      1. imported AliasA2 = [[AliasA2]]
      1. StubClassWithGenericTypeParams = [[StubClassWithGenericTypeParams]]
