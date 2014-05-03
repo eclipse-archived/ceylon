@@ -167,8 +167,8 @@ void test_concatenate() {
 void test_zip() {
     value keys = { 1, 2, 3, 4, 5, 6 };
     value items = { "one", "two", "three", "four", "five" };
-    value z1 = zipEntries(keys, items);
-    value z2 = zipEntries(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
+    {<Integer->String>+} z1 = zipEntries(keys, items);
+    {<Integer->String>+} z2 = zipEntries(keys, { "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete" });
     check(z1.size==5, "zip 1:`` z1 ``");
     check(z2.size==6, "zip 2:`` z2 ``");
 }
@@ -530,12 +530,8 @@ shared void sequences() {
     value sequenceEntries = entries { "X1", "X2", "X3" };
     check(sequenceEntries.sequence.size==3, "entries size");
     check(sequenceEntries.sequence nonempty, "nonempty entries");
-    if (exists primero=sequenceEntries.first) {
-        check(primero==Entry(0, "X1"), "entries first");
-    }
-    else {
-        fail("entries first");
-    }
+    value primero = sequenceEntries.first;
+    check(primero==Entry(0, "X1"), "entries first");
     for (nat->str in sequenceEntries) {
         check("X"+(nat+1).string==str, "entries iteration");
     }
