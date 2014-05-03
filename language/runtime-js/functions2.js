@@ -19,36 +19,16 @@ internalSort.$crtmm$=function(){return{
 
 function flatten(tf, $$$mptypes) {
   function rf() {
-    var t = getEmpty();
-    var e = null;
     var argc = arguments.length;
     var last = argc>0 ? arguments[argc-1] : undefined;
     if (typeof(last) === 'object' && typeof(last.Args$flatten) === 'object' && (last.Args$flatten.t==='T'||typeof(last.Args$flatten.t) === 'function')) {
       argc--;
     }
-    for (var i=argc-1; i>=0; i--) {
-      var c = arguments[i]===null ? Null :
-        arguments[i] === undefined ? Empty :
-        arguments[i].getT$all ? arguments[i].getT$all() :
-        Anything;
-      if (e === null) {
-        e = c;
-      } else if (e.t === 'u' && e.l.length > 0) {
-        var l = [c];
-        for (var j=0; j < e.l.length; j++) {
-          l[j+1] = e.l[j];
-        }
-      } else {
-        e = {t:'u', l:[e, c]};
-      }
-      var rest;
-      if (t === getEmpty()) {
-        rest={t:Empty};
-      } else {
-        rest={t:Tuple, a:t.$$targs$$};
-      }
-      t = Tuple(arguments[i], t, {First$Tuple:c, Element$Tuple:e, Rest$Tuple:rest});
+    var t = [];
+    for (var i=0;i<argc;i++) {
+      t.push(arguments[i]);
     }
+    t=tpl$(t);
     return tf(t, t.$$targs$$);
   };
   rf.$$targs$$={Return$Callable:$$$mptypes.Return$flatten,Arguments$Callable:$$$mptypes.Args$flatten};
@@ -119,7 +99,7 @@ function tpl$(elems,types,spread){
       } else if (elems[i].getT$all && elems[i].getT$name) {
         types.push({t:elems[i].getT$all()[elems[i].getT$name()]});
       } else {
-        console.log("WTF que hago con " + elems[i]);
+        console.log("WTF do I use for the type of " + elems[i]);
         types.push({t:Anything});
       }
     }
@@ -137,7 +117,10 @@ function tpl$(elems,types,spread){
   set_type_args(that,elems.$$targs$$);
   that.$elems=elems;
   that.first_=elems[0];
-  that.$get=function(i) { return elems[i]||null; }
+  that.$get=function(i){
+    var e=elems[i]
+    return e===undefined?null:e;
+  };
   that.$get.$crtmm$=Tuple.$$.prototype.$get.$crtmm$;
   that.iterator=function(){ return elems.iterator(); }
   that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
