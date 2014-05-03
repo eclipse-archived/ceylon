@@ -24,8 +24,6 @@ function is$(obj,type){
   if(type && type.t){
     if(type.t==='i'||type.t==='u'){
       return isOfTypes(obj, type);
-    } else if(type.t==='T'){
-      type=$retuple(type);
     }
     if(obj===null||obj===undefined){
       return type.t===Null||type.t===Anything;
@@ -62,6 +60,25 @@ function is$(obj,type){
         }
       }
       return false;
+    }
+    if (type.t==='T') {
+      if (is$(obj,{t:Tuple})) {
+        if (obj.$$targs$$ && obj.$$targs$$.t==='T') {
+          if (type.l.length===obj.$$targs$$.l.length) {
+            for (var i=0;i<type.l.length;i++) {
+              if (!extendsType(obj.$$targs$$.l[i],type.l[i]))return false;
+            }
+            return true;
+            console.log("vamos bien");
+          } else {
+            return false;
+          }
+        } else {
+          type=$retuple(type);
+        }
+      } else {
+        return false;
+      }
     }
     if(type.t.$$.T$name in obj.getT$all()){
       if(type.t==Callable&&!(obj.$$targs$$ && obj.$$targs$$.Return$Callable && obj.$$targs$$.Arguments$Callable)
