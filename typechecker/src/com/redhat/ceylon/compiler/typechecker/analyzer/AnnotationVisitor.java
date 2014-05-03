@@ -472,7 +472,7 @@ public class AnnotationVisitor extends Visitor {
         }
                 
         String path = scopeIndex < 0 ? text : text.substring(scopeIndex + 2);
-        String[] names = path.split("\\.");
+        String[] names = path.isEmpty() ? new String[0] : path.split("\\.");
         Declaration base = null;
         if (packageName==null) {
             if (names.length > 0) {
@@ -509,7 +509,7 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         if (base==null) {
-            that.addUsageWarning("declaration does not exist: " + names[0]);
+            that.addUsageWarning("declaration does not exist: " + (names.length > 0 ? names[0] : text));
         }
         else {
             that.setBase(base);
