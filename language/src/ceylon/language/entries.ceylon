@@ -4,6 +4,7 @@
  of form `key->item` where `key` is the index at which
  the item occurs in the stream of items."
 see (`value Iterable.indexed`)
-shared {<Integer->Element&Object>*} entries<Element>
-            ({Element*} elements) 
+shared Iterable<<Integer->Element&Object>,Element&Null|Absent> entries<Element,Absent>
+            (Iterable<Element,Absent> elements)
+        given Absent satisfies Null
                     => elements.indexed;
