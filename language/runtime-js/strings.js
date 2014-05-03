@@ -600,8 +600,7 @@ String$proto.$slice=function(idx) {
   var s1 = idx>0 ? this.segment(0,idx) : String$('',0);
   if (idx<0)idx=0;
   var s2 = idx<this.size ? this.segment(idx,this.size) : String$('',0);
-  return Tuple(s1, Tuple(s2, getEmpty(), {Element$Tuple:{t:String$},First$Tuple:{t:String$},Rest$Tuple:{t:Empty}}),
-    {Element$Tuple:{t:String$}, First$Tuple:{t:String$}, Rest$Tuple:{t:Tuple,a:{Element$Tuple:{t:String$},First$Tuple:{t:String$},Rest$Tuple:{t:Empty}}}});
+  return tpl$([s1,s2],{t:'T',l:[{t:String$},{t:String$}]);
 }
 String$proto.$slice.$crtmm$=function(){return{mod:$CCMM$,d:['$','String','$m','slice'],
   $t:{t:Tuple,a:{Element$Tuple:{t:String$}, First$Tuple:{t:String$}, Rest$Tuple:{t:Tuple,a:{Element$Tuple:{t:String$},First$Tuple:{t:String$},Rest$Tuple:{t:Empty}}}}}};}
