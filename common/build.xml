@@ -45,6 +45,7 @@
             srcdir="${src}"
             destdir="${build.classes}"
             debug="true"
+            encoding="UTF8"
             classpathref="classpath">
             <include name="**/*.java" />
         </javac>
@@ -128,6 +129,7 @@
             srcdir="${test.src}"
             destdir="${build.classes}"
             debug="true"
+            encoding="UTF8"
             classpathref="test.run.classpath">
             <include name="**/*.java" />
         </javac>
