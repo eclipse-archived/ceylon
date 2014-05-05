@@ -57,6 +57,7 @@ import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.api.VisibilityType;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
@@ -69,6 +70,7 @@ import com.redhat.ceylon.compiler.java.util.RepositoryLister;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
+import com.redhat.ceylon.launcher.Launcher;
 import com.sun.source.util.TaskEvent;
 import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
@@ -798,5 +800,23 @@ public abstract class CompilerTest {
         artifactName += "."+extension;
         File archiveFile = new File(destDir, artifactName);
         return archiveFile;
+    }
+
+    protected void runInJBossModules(String module) throws Throwable {
+        // JBoss modules fucks up just about everything. We force loading the Module class, which fucks up the JAXP
+        // system properties
+        org.jboss.modules.Module.getStartTime();
+        // So we restore them immediatly
+        __redirected.__JAXPRedirected.restorePlatformFactory();
+
+        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
+        Launcher.run("run", "--rep", getOutPath(), module);
+
+        // Now the TCCL is fucked up, so restore it too
+        Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
+
+        // And restore JAXP again because Launcher reloaded the Module class (and static init) in its own class
+        // loader, which re-fucked up the JAXP System properties
+        __redirected.__JAXPRedirected.restorePlatformFactory();
     }
 }
