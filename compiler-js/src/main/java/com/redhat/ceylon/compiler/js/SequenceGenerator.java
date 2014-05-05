@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ListedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 
@@ -163,7 +161,24 @@ public class SequenceGenerator {
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,ProducedType> types,
             final GenerateJsVisitor gen) {
         gen.out("].reifyCeylonType(");
-        TypeUtils.printTypeArguments(that, types, gen, false);
+        boolean nonempty=false;
+        ProducedType elem = null;
+        for (Map.Entry<TypeParameter,ProducedType> e : types.entrySet()) {
+            if (e.getKey().getName().equals("Element")) {
+                elem = e.getValue();
+            } else if (e.getKey().equals(gen.getTypeUtils().iterable.getTypeParameters().get(1))) {
+                //If it's Nothing, it's nonempty
+                nonempty = "ceylon.language::Nothing".equals(e.getValue().getProducedTypeQualifiedName());
+            }
+        }
+        if (elem == null) {
+            gen.out("/*WARNING no Element found* /");
+            elem = gen.getTypeUtils().anything.getType();
+        }
+        TypeUtils.typeNameOrList(that, elem, gen, false);
+        if (nonempty) {
+            gen.out(",1");
+        }
         gen.out(")");
     }
 
