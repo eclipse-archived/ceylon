@@ -151,10 +151,10 @@ function pushTypes(list, types) {
 function applyUnionType(ut) { //return AppliedUnionType
   var cases = [];
   pushTypes(cases, ut.l);
-  return AppliedUnionType(ut, cases.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:Type$meta$model}}), {Union$UnionType:{t:Anything}});
+  return AppliedUnionType(ut, cases.reifyCeylonType({t:Type$meta$model}), {Union$UnionType:{t:Anything}});
 }
 function applyIntersectionType(it) { //return AppliedIntersectionType
   var sats = [];
   pushTypes(sats, it.l);
-  return AppliedIntersectionType(it, sats.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:Type$meta$model}}), {Intersection$IntersectionType:{t:Anything}});
+  return AppliedIntersectionType(it, sats.reifyCeylonType({t:Type$meta$model}), {Intersection$IntersectionType:{t:Anything}});
 }

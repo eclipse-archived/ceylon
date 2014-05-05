@@ -140,7 +140,7 @@ function Modulo(meta, $$modulo){
       var an = anns[i];
       if (is$(an, $$$mptypes.Annotation$annotations)) r.push(an);
     }
-    return r.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
+    return r.reifyCeylonType($$$mptypes.Annotation$annotations);
   }
   $$modulo.annotations=annotations;
   $defat($$modulo,'string',function(){return String$("module " + this.name+"/" + this.version);},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
@@ -282,7 +282,7 @@ function Paquete(name, container, pkg, $$paquete){
           }
         }
       }
-      return r.reifyCeylonType({Element$Iterable:$$$mptypes.Kind$members});
+      return r.reifyCeylonType($$$mptypes.Kind$members);
     }
     $$paquete.members=members;
     members.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},$ps:[],$cont:Paquete,$tp:{Kind:{'satisfies':[{t:NestableDeclaration$meta$declaration}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','members']};
@@ -303,7 +303,7 @@ function Paquete(name, container, pkg, $$paquete){
           }
         }
       }
-      return rv.reifyCeylonType({Element$Iterable:$$$mptypes.Kind$annotatedMembers});
+      return rv.reifyCeylonType($$$mptypes.Kind$annotatedMembers);
     }
     return getEmpty();
   }
@@ -410,7 +410,7 @@ console.log("WTF do I do with this " + name$3 + " Kind " + className($$$mptypes.
         var an = anns[i];
         if (is$(an, $$$mptypes.Annotation$annotations)) r.push(an);
       }
-      return r.reifyCeylonType({Element$Iterable:$$$mptypes.Annotation$annotations});
+      return r.reifyCeylonType($$$mptypes.Annotation$annotations);
     }
     $$paquete.annotations=annotations;
     annotations.$crtmm$={mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Annotation'}},$ps:[],$cont:Paquete,$tp:{Annotation:{'var':'out','satisfies':[{t:Annotation,a:{Value:'Annotation'}}]}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Package','$m','annotations']};

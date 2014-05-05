@@ -27,7 +27,7 @@ $defat(ClassOrInterface$meta$model.$$.prototype,'satisfiedTypes',function(){
         rv.push(AppliedInterface(ifc.t, {Type$Interface:ifc}));
       }
     }
-    return rv.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}}});
+    return rv.reifyCeylonType({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
   }
   return getEmpty();
 },undefined,function(){

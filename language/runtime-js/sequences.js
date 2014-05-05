@@ -20,8 +20,9 @@ var Array$proto = Array.prototype;
 var origArrToString = Array$proto.toString;
 inheritProto(Array$, Object$, Ranged, $init$List());
 Array$proto.toString = origArrToString;
-Array$proto.reifyCeylonType = function(typeParameters) {
-    this.$$targs$$ = typeParameters;
+Array$proto.reifyCeylonType=function(t,ne) {
+    this.$$targs$$ = {Element$Iterable:t, Element$Array:t, Element$List:t, Element$Sequential:t,
+      Absent$Iterable:ne?{t:Nothing}:{t:Null}};
     return this;
 }
 ex$.$Array=Array$;

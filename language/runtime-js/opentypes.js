@@ -44,7 +44,7 @@ function _openTypeFromTarg(targ,o) {
         tl.push(_ct.t?_openTypeFromTarg(_ct,o):_ct);
       }
     }
-    return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({Element$Iterable:{t:OpenType$meta$declaration}}));
+    return (targ.t==='u'?FreeUnion:FreeIntersection)(tl.reifyCeylonType({t:OpenType$meta$declaration}));
   } else if (targ.t==='T') {
     targ=$retuple(targ);
   }
