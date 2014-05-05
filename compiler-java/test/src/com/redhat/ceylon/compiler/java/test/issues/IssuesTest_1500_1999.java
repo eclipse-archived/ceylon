@@ -290,6 +290,14 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
+    public void testBug1618() throws Throwable {
+        compile("bug16xx/bug1618/dep/Foo.ceylon", "bug16xx/bug1618/dep/module.ceylon", "bug16xx/bug1618/dep/package.ceylon",
+                "bug16xx/bug1618/launcher/module.ceylon", "bug16xx/bug1618/launcher/run.ceylon",
+                "bug16xx/bug1618/main/module.ceylon", "bug16xx/bug1618/main/foo.ceylon");
+        runInJBossModules("com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1618.launcher");
+    }
+
+    @Test
     public void testBug1621() {
         compareWithJavaSource("bug16xx/Bug1621");
     }
