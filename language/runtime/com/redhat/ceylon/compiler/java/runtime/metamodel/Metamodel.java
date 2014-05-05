@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,6 +82,7 @@ import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
@@ -290,11 +292,16 @@ public class Metamodel {
     }
 
     public static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Module declaration){
+        return getOrCreateMetamodel(declaration, null);
+    }
+
+    private static com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule getOrCreateMetamodel(com.redhat.ceylon.compiler.typechecker.model.Module declaration,
+            Set<com.redhat.ceylon.compiler.typechecker.model.Module> visitedModules){
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule ret = typeCheckModulesToRuntimeModel.get(declaration);
             if(ret == null){
                 // make sure it is loaded
-                loadModule(declaration);
+                loadModule(declaration, visitedModules);
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule(declaration); 
                 typeCheckModulesToRuntimeModel.put(declaration, ret);
             }
@@ -302,7 +309,8 @@ public class Metamodel {
         }
     }
 
-    private static void loadModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration) {
+    private static void loadModule(com.redhat.ceylon.compiler.typechecker.model.Module declaration, 
+            Set<com.redhat.ceylon.compiler.typechecker.model.Module> visitedModules) {
         // don't do if not running JBoss modules
         if(!isJBossModules()){
             return;
@@ -336,6 +344,17 @@ public class Metamodel {
                         }
                     }
                 }
+            }
+            if(visitedModules == null)
+                visitedModules = new HashSet<com.redhat.ceylon.compiler.typechecker.model.Module>();
+            // do not visit this module again
+            visitedModules.add(declaration);
+            // make sure its imports are also loaded
+            for(ModuleImport mi : declaration.getImports()){
+                com.redhat.ceylon.compiler.typechecker.model.Module importedModule = mi.getModule();
+                // make sure we don't run in circles
+                if(importedModule != null && !visitedModules.contains(importedModule))
+                    getOrCreateMetamodel(importedModule);
             }
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
