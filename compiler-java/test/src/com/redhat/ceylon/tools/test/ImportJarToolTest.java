@@ -249,5 +249,22 @@ public class ImportJarToolTest {
         Assert.assertTrue(!f1.exists() && !f2.exists());
         Assert.assertTrue(!f3.exists());
     }
+    
+    @Test
+    public void testBug1630() throws IOException {
+        FileUtil.delete(new File("modules/importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        try {
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                    "--dry-run",
+                    "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties", 
+                    "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test2.jar"));
+            tool.run();
+            Assert.fail();
+        } catch (ToolUsageError e) {
+            Assert.assertEquals("Problems were found, aborting.", e.getMessage());
+        }
+    }
 
 }
