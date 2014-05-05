@@ -13,9 +13,17 @@ public class Operators {
         if (before != null) {
             gen.out(before);
         }
-        gen.box(exp.getLeftTerm());
+        if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm())));
+        } else {
+            gen.box(exp.getLeftTerm());
+        }
         gen.out(op);
-        gen.box(exp.getRightTerm());
+        if (exp.getRightTerm() instanceof Tree.NaturalLiteral) {
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm())));
+        } else {
+            gen.box(exp.getRightTerm());
+        }
         if (after != null) {
             gen.out(after);
         }
@@ -23,9 +31,17 @@ public class Operators {
 
     static void genericBinaryOp(final Tree.BinaryOperatorExpression exp, final String op,
             final Map<TypeParameter, ProducedType> targs, final GenerateJsVisitor gen) {
-        gen.box(exp.getLeftTerm());
+        if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm())));
+        } else {
+            gen.box(exp.getLeftTerm());
+        }
         gen.out(op);
-        gen.box(exp.getRightTerm());
+        if (exp.getRightTerm() instanceof Tree.NaturalLiteral) {
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm())));
+        } else {
+            gen.box(exp.getRightTerm());
+        }
         if (targs != null) {
             gen.out(",");
             TypeUtils.printTypeArguments(exp, targs, gen, false);
@@ -38,10 +54,14 @@ public class Operators {
         if (before != null) {
             gen.out(before);
         }
-        final int boxTypeLeft = gen.boxStart(exp.getTerm());
-        exp.getTerm().visit(gen);
-        if (boxTypeLeft == 4) gen.out("/*TODO: callable targs 9*/");
-        gen.boxUnboxEnd(boxTypeLeft);
+        if ((after==null || after.charAt(0)!='.' ) && exp.getTerm() instanceof Tree.NaturalLiteral) {
+            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getTerm())));
+        } else {
+            final int boxTypeLeft = gen.boxStart(exp.getTerm());
+            exp.getTerm().visit(gen);
+            if (boxTypeLeft == 4) gen.out("/*TODO: callable targs 9*/");
+            gen.boxUnboxEnd(boxTypeLeft);
+        }
         if (after != null) {
             gen.out(after);
         }

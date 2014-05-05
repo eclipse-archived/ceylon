@@ -2663,10 +2663,14 @@ public class GenerateJsVisitor extends Visitor
         
         BmeGenerator.generateMemberAccess(lhsExpr, new GenerateCallback() {
             @Override public void generateValue() {
-                int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
-                that.getRightTerm().visit(GenerateJsVisitor.this);
-                if (boxType == 4) out("/*TODO: callable targs 7*/");
-                boxUnboxEnd(boxType);
+                if (that.getRightTerm() instanceof Tree.NaturalLiteral) {
+                    out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getRightTerm())));
+                } else {
+                    int boxType = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
+                    that.getRightTerm().visit(GenerateJsVisitor.this);
+                    if (boxType == 4) out("/*TODO: callable targs 7*/");
+                    boxUnboxEnd(boxType);
+                }
             }
         }, null, this);
         
@@ -2888,7 +2892,11 @@ public class GenerateJsVisitor extends Visitor
                     } else {
                         out(getLHS, ".", functionName, "(");
                     }
-                    that.getRightTerm().visit(GenerateJsVisitor.this);
+                    if (that.getRightTerm() instanceof Tree.NaturalLiteral) {
+                        out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getRightTerm())));
+                    } else {
+                        that.getRightTerm().visit(GenerateJsVisitor.this);
+                    }
                     if (!isNative) {
                         if (targs != null) {
                             out(",");
@@ -2915,7 +2923,11 @@ public class GenerateJsVisitor extends Visitor
                 if (boxType == 4) out("/*TODO: callable targs 8*/");
                 boxUnboxEnd(boxType);
                 out(".", functionName, "(");
-                that.getRightTerm().visit(this);
+                if (that.getRightTerm() instanceof Tree.NaturalLiteral) {
+                    out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getRightTerm())));
+                } else {
+                    that.getRightTerm().visit(this);
+                }
                 out("))");
                 
             } else {
@@ -2927,7 +2939,11 @@ public class GenerateJsVisitor extends Visitor
                 BmeGenerator.generateMemberAccess(lhsQME, new GenerateCallback() {
                     @Override public void generateValue() {
                         out(getLHS, ".", functionName, "(");
-                        that.getRightTerm().visit(GenerateJsVisitor.this);
+                        if (that.getRightTerm() instanceof Tree.NaturalLiteral) {
+                            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getRightTerm())));
+                        } else {
+                            that.getRightTerm().visit(GenerateJsVisitor.this);
+                        }
                         out(")");
                     }
                 }, lhsPrimaryVar, this);
@@ -3177,7 +3193,11 @@ public class GenerateJsVisitor extends Visitor
 
    @Override public void visit(Element that) {
        out(".$get(");
-       that.getExpression().visit(this);
+       if (that.getExpression().getTerm() instanceof Tree.NaturalLiteral) {
+           out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getExpression().getTerm())));
+       } else {
+           that.getExpression().visit(this);
+       }
        out(")");
    }
 
@@ -3330,7 +3350,11 @@ public class GenerateJsVisitor extends Visitor
     public void visit(InOp that) {
         box(that.getRightTerm());
         out(".contains(");
-        box(that.getLeftTerm());
+        if (that.getLeftTerm() instanceof Tree.NaturalLiteral) {
+            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getLeftTerm())));
+        } else {
+            box(that.getLeftTerm());
+        }
         out(")");
     }
 
@@ -3354,15 +3378,21 @@ public class GenerateJsVisitor extends Visitor
         that.getPrimary().visit(this);
         ElementOrRange eor = that.getElementOrRange();
         if (eor instanceof Element) {
+            final Tree.Expression _elemexpr = ((Tree.Element)eor).getExpression();
+            final String _end;
             if (TypeUtils.isUnknown(that.getPrimary().getTypeModel()) && dynblock > 0) {
                 out("[");
-                ((Element)eor).getExpression().visit(this);
-                out("]");
+                _end = "]";
             } else {
                 out(".$get(");
-                ((Element)eor).getExpression().visit(this);
-                out(")");
+                _end = ")";
             }
+            if (_elemexpr.getTerm() instanceof Tree.NaturalLiteral) {
+                out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)_elemexpr.getTerm())));
+            } else {
+                _elemexpr.visit(this);
+            }
+            out(_end);
         } else {//range, or spread?
             ElementRange er = (ElementRange)eor;
             Expression sexpr = er.getLength();
@@ -3378,13 +3408,21 @@ public class GenerateJsVisitor extends Visitor
                 out(".segment(");
             }
             if (er.getLowerBound() != null) {
-                er.getLowerBound().visit(this);
+                if (er.getLowerBound().getTerm() instanceof Tree.NaturalLiteral) {
+                    out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)er.getLowerBound().getTerm())));
+                } else {
+                    er.getLowerBound().visit(this);
+                }
                 if (er.getUpperBound() != null || sexpr != null) {
                     out(",");
                 }
             }
             if (er.getUpperBound() != null) {
-                er.getUpperBound().visit(this);
+                if (er.getUpperBound().getTerm() instanceof Tree.NaturalLiteral) {
+                    out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)er.getUpperBound().getTerm())));
+                } else {
+                    er.getUpperBound().visit(this);
+                }
             } else if (sexpr != null) {
                 sexpr.visit(this);
             }
@@ -3416,18 +3454,21 @@ public class GenerateJsVisitor extends Visitor
             boolean first = true;
             for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
                 if (!first) out(" || ");
-                if (exp.getTerm() instanceof Tree.Literal) {
-                    if (switchTerm.getTypeModel().isUnknown()) {
-                        out(expvar, "==");
-                        exp.visit(this);
+                if (exp.getTerm() instanceof Tree.StringLiteral || exp.getTerm() instanceof Tree.NaturalLiteral
+                        || switchTerm.getTypeModel().isUnknown()) {
+                    out(expvar, "===");
+                    if (exp.getTerm() instanceof Tree.NaturalLiteral) {
+                        out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)exp.getTerm())));
                     } else {
-                        if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
-                            out(expvar,"!==null&&");
-                        }
-                        out(expvar, ".equals(");
                         exp.visit(this);
-                        out(")");
                     }
+                } else if (exp.getTerm() instanceof Tree.Literal) {
+                    if (switchTerm.getUnit().isOptionalType(switchTerm.getTypeModel())) {
+                        out(expvar,"!==null&&");
+                    }
+                    out(expvar, ".equals(");
+                    exp.visit(this);
+                    out(")");
                 } else {
                     out(expvar, "===");
                     exp.visit(this);
@@ -3450,7 +3491,7 @@ public class GenerateJsVisitor extends Visitor
         //Put the expression in a tmp var
         final String expvar = names.createTempVariable();
         out("var ", expvar, "=");
-        Expression expr = that.getSwitchClause().getExpression();
+        final Expression expr = that.getSwitchClause().getExpression();
         expr.visit(this);
         endLine(true);
         //For each case, do an if
@@ -3714,4 +3755,13 @@ public class GenerateJsVisitor extends Visitor
     public int getExitCode() {
         return exitCode;
     }
+
+    @Override public void visit(Tree.ListedArgument that) {
+        if (that.getExpression().getTerm() instanceof Tree.NaturalLiteral) {
+            out(Long.toString(parseNaturalLiteral((Tree.NaturalLiteral)that.getExpression().getTerm())));
+        } else {
+            super.visit(that);
+        }
+    }
+
 }
