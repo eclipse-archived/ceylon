@@ -26,5 +26,5 @@ ClassModel$meta$model.$$.prototype.equals=function(o){
 return is$(o,{t:AppliedClass}) && o.tipo===this.tipo && this.typeArguments.equals(o.typeArguments);
 };
 ClassModel$meta$model.$$.prototype.equals.$crtmm$=function(){return{
-  mod:$CCMM$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},$ps:[{$nm:'other',$t:{t:Object$},$mt:'prm'}]
+  mod:$CCMM$,d:['$','Object','$m','equals'],$t:{t:Boolean$},$ps:[{$nm:'other',$t:{t:Object$},$mt:'prm'}]
 }};

@@ -71,4 +71,4 @@ $defat(FunctionModel$meta$model.$$.prototype,'string',function(){
     qn+=">";
   }
   return String$(qn);
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string'],$cont:FunctionModel$meta$model};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string'],$cont:FunctionModel$meta$model};});

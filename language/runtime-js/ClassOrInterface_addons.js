@@ -262,7 +262,7 @@ $defat(ClassOrInterface$meta$model.$$.prototype,'string',function(){
       qn+=">";
     }
     return String$(qn);
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 $defat(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   var mm = getrtmm$$(this.tipo);
   var h=String$($qname(mm)).hash;
@@ -284,7 +284,7 @@ $defat(ClassOrInterface$meta$model.$$.prototype,'hash',function(){
   }
   if (this.$bound)h+=this.$bound.hash;
   return h;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
 $defat(ClassOrInterface$meta$model.$$.prototype,'extendedType',function(){
   var sc = this.tipo.$crtmm$['super'];
   if (sc === undefined)return null;

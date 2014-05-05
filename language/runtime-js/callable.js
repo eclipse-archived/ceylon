@@ -1,7 +1,7 @@
 function Callable(wat) {
     return wat;
 }
-Callable.$crtmm$={mod:$CCMM$,$an:function(){return[shared()];},$tp:{Arguments$Callable:{'var':'out'},Return$Callable:{'var':'out'}},d:['ceylon.language','Callable']};
+Callable.$crtmm$={mod:$CCMM$,$an:function(){return[shared()];},$tp:{Arguments$Callable:{'var':'out'},Return$Callable:{'var':'out'}},d:['$','Callable']};
 ex$.Callable=Callable;
 function $init$Callable() {
     if (Callable.$$===undefined) {
@@ -18,7 +18,7 @@ function $JsCallable(callable,parms,targs) {
     }
     var set_meta = callable.$crtmm$ === undefined;
     if (set_meta) {
-        callable.$crtmm$={$ps:[],mod:$CCMM$,d:['ceylon.language','Callable']};
+        callable.$crtmm$={$ps:[],mod:$CCMM$,d:['$','Callable']};
         if (parms !== undefined) {
             callable.$crtmm$['$ps']=parms;
         }
@@ -43,7 +43,7 @@ function JsCallable(o,f) {
     return f2;
 }
 JsCallable.$crtmm$=function(){return{ 'satisfies':[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
-  $tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Callable']};}
+  $tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};}
 
 //This is used for spread method references
 function JsCallableList(value) {
@@ -56,7 +56,7 @@ function JsCallableList(value) {
         return ArraySequence(rval,{Element$Iterable:{t:Callable}});
     };
 }
-JsCallableList.$crtmm$={$tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Callable']};
+JsCallableList.$crtmm$={$tp:{Return$Callable:{'var':'out'}, Arguments$Callable:{'var':'in'}},$an:function(){return[shared()];},mod:$CCMM$,d:['$','Callable']};
 
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;

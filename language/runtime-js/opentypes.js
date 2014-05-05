@@ -145,7 +145,7 @@ $$openFunction.equals=function(o) {
   }
   return false;
 }
-$$openFunction.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['ceylon.language','Object','$m','equals']};}
+$$openFunction.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['$','Object','$m','equals']};}
 $defat($$openFunction,'container',function(){
   if (this.$parent)return this.$parent;
   if (this.toplevel)return this.containingPackage;
@@ -305,7 +305,7 @@ $defat($$openValue,'toplevel',function(){return this.toplevel_;},undefined,funct
     }
     return false;
   }
-  $defat($$openValue,'string',function(){return "value " + this.qualifiedName;},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']});
+  $defat($$openValue,'string',function(){return "value " + this.qualifiedName;},undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
   $defat($$openValue,'qualifiedName',function(){
     return $qname(this.tipo);
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
@@ -359,7 +359,7 @@ function $init$OpenSetter(){
       $defat($$openSetter,'variable',function(){return this.variable_;},undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','variable']};});
       $defat($$openSetter,'name',function(){return this.variable_.name;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','SetterDeclaration','$at','name']};});
 $defat($$openSetter,'name',function(){return this.variable.name;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','name']};});
-  $defat($$openSetter,'string',function(){return "setter " + this.qualifiedName;},undefined,function(){return{$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['ceylon.language','Object','$at','string']};});
+  $defat($$openSetter,'string',function(){return "setter " + this.qualifiedName;},undefined,function(){return{$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']};});
   $defat($$openSetter,'qualifiedName',function(){return this.variable.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenSetter,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
       $$openSetter.equals=function(o) {
         return is$(o,{t:OpenSetter}) && o.variable.equals(this.variable);
@@ -424,7 +424,7 @@ $$openClass.memberClassApply=function(cont,targs,$mptypes){
 
       $defat($$openClass,'string',function(){
         return "class " + this.qualifiedName;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
+      },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['$','Object']};}); 
       $defat($$openClass,'anonymous',function(){
         return this.meta.$mt==='o';
       },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenClass,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassDeclaration','$at','anonymous']};});
@@ -543,7 +543,7 @@ $$openInterface.interfaceApply=function(targs,$mptypes) {
             
 $defat($$openInterface,'string',function(){
   return "interface " + this.qualifiedName;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object']};}); 
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenInterface,$an:function(){return[shared(),actual()];},d:['$','Object']};}); 
            
             $defat($$openInterface,'openType',function(){
               return FreeInterface(this);
@@ -751,7 +751,7 @@ function $init$OpenTypeParam(){
       $defat($$openTypeParam,'qualifiedName',function(){
         return $qname(this._cont)+"."+this._name;
       },undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
-$defat($$openTypeParam,'hash',function(){return this.string.hash;},undefined,function(){return {mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+$defat($$openTypeParam,'hash',function(){return this.string.hash;},undefined,function(){return {mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
       $defat($$openTypeParam,'string',function(){return "given " + this.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenTypeParam,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','Declaration','$at','string']};});
       $$openTypeParam.equals=function(o) {
         return is$(o,{t:OpenTypeParam}) && o._cont==this._cont && o._fname==this._fname;
@@ -778,14 +778,14 @@ function $init$OpenTvar(){
   if (OpenTvar.$$===undefined){
     initTypeProto(OpenTvar,'ceylon.language.meta.declaration::OpenTvar',Basic,$init$OpenTypeVariable$meta$declaration());
     (function($$openTvar){
-      $defat($$openTvar,'string',function(){return this.p$2.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object','$at','string']};});
+      $defat($$openTvar,'string',function(){return this.p$2.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['$','Object','$at','string']};});
             $defat($$openTvar,'declaration',function(){
                 return this.p$2;
             },undefined,function(){return{mod:$CCMM$,$t:{t:TypeParameter$meta$declaration},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','OpenTypeVariable','$at','declaration']};});
 $$openTvar.equals=function(o) {
   return is$(o, {t:OpenTvar}) && this.p$2.equals(o.p$2);
 }
-$defat($$openTvar,'hash',function(){return this.string.hash;},undefined,function(){return{mod:$$CCMM$,$t:{t:Integer},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['ceylon.language','Object','$at','string']};});
+$defat($$openTvar,'hash',function(){return this.string.hash;},undefined,function(){return{mod:$$CCMM$,$t:{t:Integer},$cont:OpenTvar,$an:function(){return[shared(),actual()];},d:['$','Object','$at','string']};});
         })(OpenTvar.$$.prototype);
     }
     return OpenTvar;
@@ -829,14 +829,14 @@ $defat($$freeUnion,'string',function(){
     s+=this.ts$2.$get(i).string;
   }
   return s;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 $defat($$freeUnion,'hash',function(){
   var s=this.ts$2.size;
   for (var i=0;i<this.ts$2.size;i++) {
     s+=this.ts$2.$get(i).string.hash;
   }
   return s;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
             $defat($$freeUnion,'caseTypes',function(){
                 var $$freeUnion=this;
                 return $$freeUnion.ts$2;
@@ -887,14 +887,14 @@ $defat($$freeIntersection,'string',function(){
     s+=this.ts$3.$get(i).string;
   }
   return s;
-},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['ceylon.language','Object','$at','string']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
 $defat($$freeIntersection,'hash',function(){
   var s=this.ts$3.size;
   for (var i=0;i<this.ts$3.size;i++) {
     s+=this.ts$3.$get(i).string.hash;
   }
   return s;
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['ceylon.language','Object','$at','hash']};});
+},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Object','$at','hash']};});
 
             $defat($$freeIntersection,'satisfiedTypes',function(){
                 var $$freeIntersection=this;

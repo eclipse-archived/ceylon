@@ -3,18 +3,18 @@ function JsResource(uri,$$jsResource){
   if($$jsResource===undefined)$$jsResource=new JsResource.$$;
   $$jsResource.uri_=uri;
   Resource($$jsResource);
-  $$jsResource.$prop$getUri={$crtmm$:function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['ceylon.language','Resource','$at','uri']};}};
+  $$jsResource.$prop$getUri={$crtmm$:function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};}};
   $$jsResource.$prop$getUri.get=function(){return uri};
-  $$jsResource.$prop$getSize={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Integer},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['ceylon.language','Resource','$at','size']};}};
+  $$jsResource.$prop$getSize={$crtmm$:function(){return{mod:$CCMM$,$t:{t:Integer},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','size']};}};
   $$jsResource.$prop$getSize.get=function(){return size};
   return $$jsResource;
 }
-JsResource.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[{$nm:'uri',$mt:'prm',$t:{t:String$},$an:function(){return[shared(),actual()];}}],satisfies:[{t:Resource}],d:['ceylon.language','Resource']};};
+JsResource.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[{$nm:'uri',$mt:'prm',$t:{t:String$},$an:function(){return[shared(),actual()];}}],satisfies:[{t:Resource}],d:['$','Resource']};};
 function $init$JsResource(){
   if(JsResource.$$===undefined){
     initTypeProto(JsResource,'JsResource',Basic,Resource);
     (function($$jsResource){
-      $defat($$jsResource,'uri',function(){return this.uri_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['ceylon.language','Resource','$at','uri']};});
+      $defat($$jsResource,'uri',function(){return this.uri_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};});
             
       $defat($$jsResource,'size',function(){
         var $elf=this;
@@ -29,7 +29,7 @@ function $init$JsResource(){
           print("Resource handling unsupported in this JS platform.");
         }
         return -1;
-      },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['ceylon.language','Resource','$at','size']};});
+      },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','size']};});
             
       $$jsResource.textContent=function textContent(encoding$2){
         var $elf=this;
@@ -48,7 +48,7 @@ function $init$JsResource(){
         } else {
           throw Error("Resource handling unsupported in this JS platform");
         }
-      };$$jsResource.textContent.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},$ps:[{$nm:'encoding',$mt:'prm',$def:1,$t:{t:String$},$an:function(){return[];}}],$cont:JsResource,$an:function(){return[shared(),actual()];},d:['ceylon.language','Resource','$m','textContent']};};
+      };$$jsResource.textContent.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},$ps:[{$nm:'encoding',$mt:'prm',$def:1,$t:{t:String$},$an:function(){return[];}}],$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$m','textContent']};};
         })(JsResource.$$.prototype);
     }
     return JsResource;

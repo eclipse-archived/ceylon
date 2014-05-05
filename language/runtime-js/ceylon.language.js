@@ -134,32 +134,32 @@ function Anything(wat) {
     return wat;
 }
 initType(Anything, 'ceylon.language::Anything');
-Anything.$crtmm$=function(){return{$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Anything']};}
+Anything.$crtmm$=function(){return{$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Anything']};}
 function Null(wat) {
     return null;
 }
 initType(Null, 'ceylon.language::Null', Anything);
-Null.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Null']};}
+Null.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Null']};}
 function Nothing(wat) {
     throw "Nothing";
 }
 initType(Nothing, 'ceylon.language::Nothing');
 //This is quite a special case, since Nothing is not in the model, we need to insert it there
 $CCMM$['ceylon.language']["Nothing"]={"$mt":"c","$an":{"shared":[]},"$nm":"Nothing"};
-Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['ceylon.language','Nothing']};}
+Nothing.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()]},mod:$CCMM$,d:['$','Nothing']};}
 
 function Object$(wat) {
     return wat;
 }
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
-Object$.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['ceylon.language','Object']};}
+Object$.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Object']};}
 var Object$proto = Object$.$$.prototype;
 $defat(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
-},undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','string']});
-Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$at','hash'],$t:{t:Integer},$an:function(){return[shared(),formal()]}};}};
+},undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','string']});
+Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['$','Object','$at','hash'],$t:{t:Integer},$an:function(){return[shared(),formal()]}};}};
 Object$proto.toString=function() { return this.string.valueOf(); }
-Object$proto.equals={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['ceylon.language','Object','$m','equals'],$t:{t:Boolean$},
+Object$proto.equals={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['$','Object','$m','equals'],$t:{t:Boolean$},
   $ps:[{$nm:'other',$mt:'prm',$t:{t:Object$}}],$an:function(){return[shared(),formal()];}};}};
 function $init$Object$() { return Object$; }
 function $init$Object() { return Object$; }
@@ -173,17 +173,17 @@ function $identityHash(x) {
     return (hash !== undefined)
             ? hash : (x.BasicID = BasicID++);
 }
-$identityHash.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['ceylon.language','identityHash']};}
+$identityHash.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['$','identityHash']};}
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable", Object$);
-Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['ceylon.language','Identifiable']};}
+Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['$','Identifiable']};}
 function $init$Identifiable() { return Identifiable; }
 var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return is$(that, {t:Identifiable}) && (that===this);
 }
 $defat(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
-    undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$CCMM$,d:['ceylon.language','Identifiable','$at','hash']};});
+    undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
 //INTERFACES
 //Compiled from Ceylon sources
@@ -204,7 +204,7 @@ function NativeException(e) {
     return that;
 }
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
-NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['ceylon.language','Exception']};}
+NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
 ex$.Identifiable=Identifiable;
 ex$.identityHash=$identityHash;
 ex$.$Object=Object$;
