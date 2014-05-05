@@ -83,7 +83,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private boolean showSuggestions;
     
     private Set<String> jarClassNames;
-    private Set<String> checkedClassNames;
+    private Set<Type> checkedTypes;
     private boolean hasErrors;
 
     public CeylonImportJarTool() {
@@ -234,7 +234,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // public API of the classes in the JAR we're importing and that are
     // not part of the JAR itself
     private Set<String> gatherExternalClasses() {
-        checkedClassNames = new HashSet<>();
+        checkedTypes = new HashSet<>();
         HashSet<String> externalClasses = new HashSet<>();
         try {
             File jar = new File(jarFile);
@@ -392,6 +392,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     // Check if the type is external to the JAR we're importing, if so add it to the given set
     private void checkType(Set<String> externalClasses, Type type) {
         if (type != null) {
+            if (checkedTypes.contains(type)) {
+                return;
+            }
+            checkedTypes.add(type);
             if (type instanceof Class) {
                 checkClass(externalClasses, (Class<?>)type);
             } else if (type instanceof GenericArrayType) {
@@ -454,16 +458,6 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             // Internal to the JAR so it's okay
             return;
         }
-        if (checkedClassNames.contains(name)) {
-            // Already checked it
-            return;
-        }
-        checkedClassNames.add(name);
-//        String pkgName = clazz.getPackage().getName();
-//        if (JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName)) {
-//            externalClasses.add(name);
-//            return;
-//        }
         // FIXME Do we need to do more?
         externalClasses.add(name);
     }
