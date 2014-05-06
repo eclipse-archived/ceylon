@@ -413,14 +413,13 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
-            initSelf(that.getScope(), false);
             visitStatements(stmnts);
             endBlock();
         }
     }
 
     void initSelf(Scope scope, boolean force) {
-        if (force || (scope != null && prototypeOwner == scope.getContainer()) &&
+        if ((force && prototypeOwner!=null) || (scope != null && prototypeOwner == scope.getContainer()) &&
                     ((scope instanceof MethodOrValue)
                      || (scope instanceof TypeDeclaration)
                      || (scope instanceof Specification))) {
@@ -1498,19 +1497,13 @@ public class GenerateJsVisitor extends Visitor
         comment(that);
         if (defineAsProperty(d)) {
             defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
-            super.visit(that);
+            AttributeGenerator.getter(that, this);
             final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
             if (setterDef == null) {
                 out(",undefined");
             } else {
                 out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-                if (setterDef.getSpecifierExpression() == null) {
-                    super.visit(setterDef);
-                } else {
-                    out("{return ");
-                    setterDef.getSpecifierExpression().visit(this);
-                    out(";}");
-                }
+                AttributeGenerator.setter(setterDef, this);
             }
             out(",");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -1522,7 +1515,7 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             out(function, names.getter(d), "()");
-            super.visit(that);
+            AttributeGenerator.getter(that, this);
             endLine();
             out(names.getter(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(that, d, this);
@@ -1537,19 +1530,13 @@ public class GenerateJsVisitor extends Visitor
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         defineAttribute(names.self(outer), names.name(d));
-        super.visit(that);
+        AttributeGenerator.getter(that, this);
         final AttributeSetterDefinition setterDef = associatedSetterDefinition(d);
         if (setterDef == null) {
             out(",undefined");
         } else {
             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-            if (setterDef.getSpecifierExpression() == null) {
-                super.visit(setterDef);
-            } else {
-                out("{return ");
-                setterDef.getSpecifierExpression().visit(this);
-                out(";}");
-            }
+            AttributeGenerator.setter(setterDef, this);
         }
         out(",");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -1596,13 +1583,7 @@ public class GenerateJsVisitor extends Visitor
         if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) || defineAsProperty(d)) return;
         comment(that);
         out("function ", names.setter(d.getGetter()), "(", names.name(d.getParameter()), ")");
-        if (that.getSpecifierExpression() == null) {
-            that.getBlock().visit(this);
-        } else {
-            out("{return ");
-            that.getSpecifierExpression().visit(this);
-            out(";}");
-        }
+        AttributeGenerator.setter(that, this);
         if (!shareSetter(d)) { out(";"); }
         if (!d.isToplevel())outerSelf(d);
         out(names.setter(d.getGetter()), ".$crtmm$=");
@@ -1672,10 +1653,12 @@ public class GenerateJsVisitor extends Visitor
                 final boolean property = defineAsProperty(d);
                 if (property) {
                     defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
-                    out("{return ");
+                    out("{");
                 } else {
-                    out(function, names.getter(d), "(){return ");
+                    out(function, names.getter(d), "(){");
                 }
+                initSelf(d, true);
+                out("return ");
                 int boxType = boxStart(specInitExpr.getExpression().getTerm());
                 specInitExpr.getExpression().visit(this);
                 if (boxType == 4) out("/*TODO: callable targs 1*/");
@@ -1687,13 +1670,7 @@ public class GenerateJsVisitor extends Visitor
                         setterDef = associatedSetterDefinition(d);
                         if (setterDef != null) {
                             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-                            if (setterDef.getSpecifierExpression() == null) {
-                                super.visit(setterDef);
-                            } else {
-                                out("{return ");
-                                setterDef.getSpecifierExpression().visit(this);
-                                out(";}");
-                            }
+                            AttributeGenerator.setter(setterDef, this);
                         }
                     }
                     if (setterDef == null) {
@@ -1934,15 +1911,7 @@ public class GenerateJsVisitor extends Visitor
                         setterDef = associatedSetterDefinition(d);
                         if (setterDef != null) {
                             out(",function(", names.name(setterDef.getDeclarationModel().getParameter()), ")");
-                            if (setterDef.getSpecifierExpression() == null) {
-                                super.visit(setterDef);
-                            } else {
-                                out("{");
-                                initSelf(that.getScope(), true);
-                                out("return ");
-                                setterDef.getSpecifierExpression().visit(this);
-                                out(";}");
-                            }
+                            AttributeGenerator.setter(setterDef, this);
                         }
                     }
                     if (setterDef == null) {
