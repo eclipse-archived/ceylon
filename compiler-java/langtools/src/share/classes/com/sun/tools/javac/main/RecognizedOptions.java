@@ -401,7 +401,7 @@ public class RecognizedOptions {
                 return false;
             }
         },
-        new COption(CEYLONRESOURCEPATH,     "opt.arg.url",      "opt.ceylonresource"){
+        new COption(CEYLONRESOURCEPATH,     "opt.arg.url",      "opt.ceylonresourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {
                 if(options != null)
