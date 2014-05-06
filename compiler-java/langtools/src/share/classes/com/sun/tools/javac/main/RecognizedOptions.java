@@ -151,6 +151,7 @@ public class RecognizedOptions {
         SOURCEPATH,
         CEYLONSOURCEPATH,
         CEYLONRESOURCEPATH,
+        CEYLONRESOURCEROOT,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -219,6 +220,7 @@ public class RecognizedOptions {
         SOURCEPATH,
         CEYLONSOURCEPATH,
         CEYLONRESOURCEPATH,
+        CEYLONRESOURCEROOT,
         BOOTCLASSPATH,
         XBOOTCLASSPATH_PREPEND,
         XBOOTCLASSPATH_APPEND,
@@ -383,6 +385,7 @@ public class RecognizedOptions {
         new COption(CEYLONPASS,             "opt.arg.value",     "opt.ceylonpass"),
         new COption(CEYLONNOOSGI,                                "opt.ceylonnoosgi"),
         new COption(CEYLONPACK200,                               "opt.ceylonpack200"),
+        new COption(CEYLONRESOURCEROOT,     "opt.arg.path",      "opt.ceylonresourceroot"),
         new COption(CEYLONDISABLEOPT,                            "opt.ceylondisableopt"),
         new COption(CEYLONDISABLEOPT_CUSTOM,                     "opt.ceylondisableopt.suboptlist"),
         new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){

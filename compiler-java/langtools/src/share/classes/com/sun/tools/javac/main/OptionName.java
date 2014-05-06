@@ -59,6 +59,7 @@ public enum OptionName {
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
     CEYLONRESOURCEPATH("-res"),
+    CEYLONRESOURCEROOT("-resroot"),
     CEYLONDISABLEOPT("-disableOptimization"),
     // Keep the following list in sync with Optimization
     CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{RangeOpIteration,SegmentOpIteration,RangeIterationStatic,ArrayIterationStatic,JavaArrayIterationStatic,ArraySequenceIterationStatic,TupleIterationStatic,IterationDynamic}"),
