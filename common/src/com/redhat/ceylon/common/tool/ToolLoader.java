@@ -7,10 +7,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,8 @@ public abstract class ToolLoader {
     protected static final String SCRIPT_PREFIX = "SCRIPT:";
 
     protected final ClassLoader loader;
+
+    private Map<String, ToolModel<? extends Tool>> toolModels = new HashMap<String, ToolModel<? extends Tool>>();
     
     public ToolLoader() {
         this(ToolLoader.class.getClassLoader());
@@ -75,7 +76,17 @@ public abstract class ToolLoader {
      * Returns a ToolModel given the name of the tool, or null if no such tool is 
      * know to this tool loader.
      */
-    public <T extends Tool> ToolModel<T> loadToolModel(String toolName) {
+    public synchronized <T extends Tool> ToolModel<T> loadToolModel(String toolName) {
+        @SuppressWarnings("unchecked")
+        ToolModel<T> loadedModel = (ToolModel<T>) toolModels.get(toolName);
+        if(loadedModel == null){
+            loadedModel = loadToolModelMemoised(toolName);
+            toolModels.put(toolName, loadedModel);
+        }
+        return loadedModel;
+    }
+    
+    private <T extends Tool> ToolModel<T> loadToolModelMemoised(String toolName) {
         String className = getToolClassName(toolName);
         if(className != null && className.startsWith(SCRIPT_PREFIX)){
             return loadScriptTool(className, toolName);
