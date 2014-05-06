@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.ConditionScope;
 import com.redhat.ceylon.compiler.typechecker.model.ControlBlock;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -69,7 +70,6 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCIf;
-import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCThrow;
@@ -261,6 +261,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected List<JCStatement> transformList(java.util.List<Tree.Condition> conditions) {
             Tree.Condition condition = conditions.get(0);
+            at(condition);
             if (conditions.size() == 1) {
                 return transformInnermost(condition);
             } else {
@@ -404,7 +405,7 @@ public class StatementTransformer extends AbstractTransformer {
                 for (Cond unassigned : unassignedResultVars.keySet()) {
                     assignDefault = assignDefault.append(
                             make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
-                            ((SpecialFormCond)unassigned).makeDefaultExpr())));
+                            ((SpecialFormCond<?>)unassigned).makeDefaultExpr())));
                 }
                 elsePart = assignDefault.isEmpty() ? null : make().Block(0, assignDefault);
             } else {
@@ -624,6 +625,7 @@ public class StatementTransformer extends AbstractTransformer {
     class AssertCondList extends BlockCondList {
         private final Tree.Assertion ass;
         private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+        private final ListBuffer<JCStatement> fieldDecls = ListBuffer.lb();
         private final SyntheticName messageSb = naming.temp("assert");
         private LinkedHashMap<Cond, CName> unassignedResultVars = new LinkedHashMap<Cond, CName>();
         
@@ -632,6 +634,7 @@ public class StatementTransformer extends AbstractTransformer {
             this.ass = ass;
         }
         
+        /** Determines whether there's more than one Condition in the ConditionList */
         private boolean isMulti() {
             return this.conditions.size() > 1;
         }
@@ -666,7 +669,7 @@ public class StatementTransformer extends AbstractTransformer {
                 for (Cond unassigned : unassignedResultVars.keySet()) {
                     elseStmts = elseStmts.prepend(
                             make().Exec(make().Assign(unassignedResultVars.get(unassigned).makeIdent(), 
-                            ((SpecialFormCond)unassigned).makeDefaultExpr())));
+                            ((SpecialFormCond<?>)unassigned).makeDefaultExpr())));
                 }
                 elseBlock = make().Block(0, elseStmts);
             }
@@ -690,7 +693,8 @@ public class StatementTransformer extends AbstractTransformer {
                         cond.makeTypeExpr(), 
                         null);
                 unassignedResultVars.put(cond, cond.getVariableName());
-                varDecls.append(resultVarDecl);
+                (Decl.getDeclarationContainer(cond.getCondition().getScope()) instanceof ClassOrInterface
+                        && cond.getVariable().getDeclarationModel().isCaptured() ? fieldDecls : varDecls).append(resultVarDecl);
                 stmts = stmts.prepend(make().Exec(make().Assign(cond.getVariableName().makeIdent(), cond.makeResultExpr())));
             }
             return stmts;
@@ -701,13 +705,14 @@ public class StatementTransformer extends AbstractTransformer {
             if (definitelyNotSatisfied(conditions)) {
                 return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(conditions.get(0)));
             }
-            at(this.ass);
             List<JCStatement> stmts = transformList(conditions);
+            at(this.ass);
             ListBuffer<JCStatement> result = ListBuffer.lb();
             if (isMulti()) {
                 result.append(makeVar(messageSb, make().Type(syms().stringType), makeNull()));
             }
             result.appendList(varDecls);
+            current().defs((List)fieldDecls.toList());
             result.appendList(stmts);
             JCExpression message = new AssertionExceptionMessageBuilder(
                     messageSb.makeIdent()).prependAssertionDoc(ass).build();

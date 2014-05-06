@@ -4717,8 +4717,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     JCExpression test, List<JCStatement> stmts,
                     SyntheticName resultVarName) {
                 
-                if (transformedCond.makeTestVarDecl(0, true) != null) {
-                    varDecls.append(transformedCond.makeTestVarDecl(0, true));
+                JCStatement decl = transformedCond.makeTestVarDecl(0, true);
+                if (decl != null) {
+                    varDecls.append(decl);
                 }
                 if (transformedCond.hasResultDecl()) {
                     fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), 

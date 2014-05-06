@@ -823,4 +823,12 @@ public class Decl {
     public static ProducedType getPrivateAccessType(Tree.StaticMemberOrTypeExpression qmte) {
         return ((TypeDeclaration)qmte.getDeclaration().getRefinedDeclaration().getContainer()).getType();
     }
+
+    public static Declaration getDeclarationContainer(Scope scope) {
+        while (scope != null &&
+                !(scope instanceof Declaration)) {
+            scope = scope.getContainer();
+        }
+        return (Declaration)scope;
+    }
 }
