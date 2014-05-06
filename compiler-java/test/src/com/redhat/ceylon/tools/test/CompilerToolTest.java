@@ -29,6 +29,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.OptionArgumentException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
@@ -342,6 +343,20 @@ public class CompilerToolTest extends CompilerTest {
             Assert.fail("Tool should have thrown an exception");
         } catch (CompilerErrorException e) {
             // We expect this, not a FatalToolError
+        }
+        
+    }
+    
+    @Test
+    public void testBug1623()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, 
+                    options("--src=test/src/com/redhat/ceylon/tools/test/empty"));
+            Assert.fail("Tool should have thrown an exception");
+        } catch (ToolInitializationException e) {
+            Assert.assertEquals("No modules or source files to compile", e.getMessage());
         }
         
     }
