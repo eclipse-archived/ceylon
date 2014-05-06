@@ -21,7 +21,7 @@ String$.$crtmm$=function(){return{'super':{t:Object$},
   $ps:[{$nm:'characters',$t:{t:Iterable,a:{Element$Iterable:{t:Character},Absent$Iterable:{t:Null}}},$mt:'prm'}],
   'satisfies':[{t:List,a:{Element$List:{t:Character}}}, {t:Comparable,a:{Other$Comparable:{t:String$}}},
     {t:Summable,a:{Other$Summable:{t:String$}}}, {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:String$}}}],
-  $an:function(){return[shared(),$native(),$final()];},
+  $an:function(){return[shared(),$_native(),$_final()];},
   mod:$CCMM$,d:['$','String']};};
 
 initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential, Comparable,
@@ -152,7 +152,7 @@ String$proto.iterator= function() {
 	return this.length === 0 ? getEmptyIterator() : StringIterator(this);
 }
 String$proto.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Character}}},d:['$','String','$m','iterator']};}
-String$proto.$get=function(index){
+String$proto.$_get=function(index){
   if (index<0 || index>=this.length) {return null;}
   if (this._bumps===undefined)this._bumps=[];
   var cnt=0;
@@ -176,7 +176,7 @@ String$proto.$get=function(index){
   if (this._maxidx===undefined || mb>this._maxidx)this._maxidx=mb;
   return Character(codepointFromString(this, mb));
 }
-String$proto.$get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','String','$m','get'],
+String$proto.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','String','$m','get'],
   $ps:[{$nm:'index',$t:{t:Integer}}]};}
 atr$(String$proto, 'trimmed', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
@@ -196,10 +196,10 @@ atr$(String$proto, 'trimmed', function() {
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$at','trimmed']}});
 String$proto.trim = function(/*Category*/chars) {
     var from = 0;
-    while (from<this.length && chars(this.$get(from))) {++from}
+    while (from<this.length && chars(this.$_get(from))) {++from}
     var to = this.length;
     if (from < to) {
-        do {--to} while (from<to && chars(this.$get(to)));
+        do {--to} while (from<to && chars(this.$_get(to)));
         ++to;
     }
     if (from===0 && to===this.length) {return this;}
@@ -212,7 +212,7 @@ String$proto.trim = function(/*Category*/chars) {
 String$proto.trim.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','trim']};}
 String$proto.trimLeading = function(/*Category*/chars) {
     var from = 0;
-    while (from<this.length && chars(this.$get(from))) {++from}
+    while (from<this.length && chars(this.$_get(from))) {++from}
     if (from===0) {return this;}
     var result = String$(this.substring(from, this.length));
     if (this.codePoints !== undefined) {
@@ -224,7 +224,7 @@ String$proto.trimLeading.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:[
 String$proto.trimTrailing = function(/*Category*/chars) {
     var to = this.length;
     if (to > 0) {
-        do {--to} while (to>=0 && chars(this.$get(to)));
+        do {--to} while (to>=0 && chars(this.$_get(to)));
         ++to;
     }
     if (to===this.length) {return this;}
@@ -365,9 +365,9 @@ String$proto.lastOccurrence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t
 atr$(String$proto, 'characters', function() {
     return this.size>0 ? this:getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Character}}},d:['$','String','$at','characters']}});
-atr$(String$proto, 'first', function() { return this.$get(0); },undefined,function(){return{
+atr$(String$proto, 'first', function() { return this.$_get(0); },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','Iterable','$at','first']}});
-atr$(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
+atr$(String$proto, 'last', function(){ return this.size>0?this.$_get(this.size.predecessor):null; },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','Iterable','$at','last']}});
 atr$(String$proto, 'keys', function() {
     return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
@@ -389,7 +389,7 @@ String$proto.join = function(strings) {
 String$proto.join.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','join'],
   $ps:[{$nm:'strings',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}}}]};}
 function isWhitespace(c) { return c.value in Character.WS$; }
-String$proto.$split = function(sep, discard, group) {
+String$proto.$_split = function(sep, discard, group) {
     // shortcut for empty input
     if (this.length === 0) {return Singleton(this, {Element$Singleton:{t:String$}}); }
 
@@ -507,7 +507,7 @@ String$proto.$split = function(sep, discard, group) {
     this.codePoints = count;
     return tokens.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:String$}});
 }
-String$proto.$split.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$m','split']};}
+String$proto.$_split.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$m','split']};}
 atr$(String$proto, 'reversed', function() {
     var result = "";
     for (var i=this.length; i>0;) {
@@ -520,7 +520,7 @@ atr$(String$proto, 'reversed', function() {
     }
     return String$(result);
 },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$at','reversed']}});
-String$proto.$replace = function(sub, repl) {
+String$proto.$_replace = function(sub, repl) {
     if (this.indexOf(sub) < 0) {
       return this;
     }
@@ -530,7 +530,7 @@ String$proto.$replace = function(sub, repl) {
     }
     return String$(ns);
 }
-String$proto.$replace.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','replace'],
+String$proto.$_replace.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','replace'],
   $ps:[{$nm:'substring',$t:{t:String$}},{$nm:'replacement',$t:{t:String$}}]};}
 String$proto.replaceFirst = function(sub, repl) {
     return String$(this.replace(sub, repl));
@@ -548,7 +548,7 @@ String$proto.repeat.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','
   $ps:[{$nm:'times',$t:{t:Integer}}]};}
 function isNewline(c) { return c.value===10; }
 atr$(String$proto, 'lines', function() {
-    return this.$split(isNewline, true);
+    return this.$_split(isNewline, true);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$at','lines']}});
 String$proto.occurrences = function(sub) {
     if (sub.length == 0) {return 0}
@@ -563,14 +563,14 @@ String$proto.occurrences = function(sub) {
     return ocs.length > 0 ? ocs : getEmpty();
 }
 String$proto.occurrences.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Integer}}},d:['$','List','$m','occurrences']};}
-String$proto.$filter = function(f) {
-    var r = Iterable.$$.prototype.$filter.call(this, f);
+String$proto.$_filter = function(f) {
+    var r = Iterable.$$.prototype.$_filter.call(this, f);
     return String$(r);
 }
 String$proto.following=function(o,$mpt) {
   return Iterable.$$.prototype.following.call(this,o,$mpt);
 }
-String$proto.$filter.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','filter']};}
+String$proto.$_filter.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','filter']};}
 String$proto.skip = function(skip) {
     if (skip==0) return this;
     return this.segment(skip, this.size);
@@ -589,20 +589,20 @@ String$proto.by = function(step) {
 }
 String$proto.by.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','by'],
   $ps:[{$nm:'step',$t:{t:Integer}}]};}
-String$proto.$sort = function(f) {
-    var r = Iterable.$$.prototype.$sort.call(this, f);
+String$proto.$_sort = function(f) {
+    var r = Iterable.$$.prototype.$_sort.call(this, f);
     return String$(r);
 }
-String$proto.$sort.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','sort']};}
+String$proto.$_sort.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','sort']};}
 atr$(String$proto, 'coalesced', function(){ return this; },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','coalesced']}});
-String$proto.$slice=function(idx) {
+String$proto.$_slice=function(idx) {
   var s1 = idx>0 ? this.segment(0,idx) : '';
   if (idx<0)idx=0;
   var s2 = idx<this.size ? this.segment(idx,this.size) : '';
   return tpl$([s1,s2],{t:'T',l:[{t:String$},{t:String$}]});
 }
-String$proto.$slice.$crtmm$=function(){return{mod:$CCMM$,d:['$','String','$m','slice'],cont:String$,
+String$proto.$_slice.$crtmm$=function(){return{mod:$CCMM$,d:['$','String','$m','slice'],cont:String$,
   $ps:[{$nm:'index',$mt:'prm',$t:{t:Integer}}],
   $t:{t:'T',l:[{t:String$},{t:String$}]}};}
 
@@ -668,7 +668,7 @@ function Character(value,cache) {
 }
 Character.$crtmm$=function(){return{'super':{t:Object$}, 'satisfies':[
     {t:Comparable,a:{Other:{t:Character}}}, {t:Enumerable,a:{Other:{t:Character}}}],
-  $an:function(){return[shared(),$native(),$final()];},mod:$CCMM$,d:['$','Character']};}
+  $an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Character']};}
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
@@ -794,7 +794,7 @@ function StringBuilder(/*String...*/comps) {
     return that;
 }
 StringBuilder.$crtmm$=function(){return{'super':{t:Basic},$ps:[],
-  $an:function(){return[shared(),$native()];},mod:$CCMM$,d:['$','StringBuilder']};};
+  $an:function(){return[shared(),$_native()];},mod:$CCMM$,d:['$','StringBuilder']};};
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
@@ -863,23 +863,23 @@ StringBuilder$proto.insertCharacter = function(pos, c) {
 StringBuilder$proto.insertCharacter.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','insertCharacter'],
   $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'character',$t:{t:Character},$mt:'prm'}]
 };};
-StringBuilder$proto.$delete = function(pos, count) {
+StringBuilder$proto.$_delete = function(pos, count) {
     if (pos < 0) pos=0; else if (pos>this.size) return this;
     if (count > 0) {
         this.value = this.value.slice(0, pos) + this.value.slice(pos+count);
     }
     return this;
 }
-StringBuilder$proto.$delete.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','delete'],
+StringBuilder$proto.$_delete.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','delete'],
   $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'count',$t:{t:Integer},$mt:'prm'}]
 };};
 StringBuilder$proto.deleteInitial=function(c){
-  return this.$delete(0,c);
+  return this.$_delete(0,c);
 }
 StringBuilder$proto.deleteInitial.$crtmm$=function(){return{
   mod:$CCMM$,d:['$','StringBuilder','$m','deleteInitial'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};
 StringBuilder$proto.deleteTerminal=function(c){
-  return this.$delete(this.size-c,c);
+  return this.$_delete(this.size-c,c);
 }
 StringBuilder$proto.deleteTerminal.$crtmm$=function(){return{
   mod:$CCMM$,d:['$','StringBuilder','$m','deleteTerminal'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};

@@ -10,7 +10,7 @@ function Array$(elems,$$targs$$) {
     List({Element$List:$$targs$$.Element$Array}, e);
     return e;
 }
-Array$.$crtmm$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$Array'}}}],$an:function(){return[shared(),$final(),$native()];},mod:$CCMM$,d:['$','Array'],
+Array$.$crtmm$={$ps:[{$nm:'elements',$mt:'prm',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:'Element$Array'}}}],$an:function(){return[shared(),$_final(),$_native()];},mod:$CCMM$,d:['$','Array'],
   'super':{t:Object$}, $tp:{Element$Array:{}}, satisfies:[{t:List,a:{Element$List:'Element$Array'}},
     {t:Ranged,a:{Index$Ranged:{t:Integer},Span$Ranged:{t:Array$,a:{Element$Array:'Element$Array'}}}}]};
 
@@ -25,7 +25,7 @@ Array$proto.reifyCeylonType=function(t,ne) {
       Absent$Iterable:ne?{t:Nothing}:{t:Null}};
     return this;
 }
-ex$.$Array=Array$;
+ex$.$_Array=Array$;
 
 function ArraySequence(/* js array */value, $$targs$$) {
 if (value.length===0)return getEmpty();
@@ -59,11 +59,11 @@ Array$proto.set = function(idx,elem) {
     }
 }
 Array$proto.set.$crtmm$=function(){return{mod:$CCMM$,d:['$','Array','$m','set'],$t:{t:Anything},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'},{$nm:'element',$mt:'prm',$t:'Element$Array'}]};}
-Array$proto.$get = function(idx) {
+Array$proto.$_get = function(idx) {
     var result = this[idx];
     return result!==undefined ? result:null;
 }
-Array$proto.$get.$crtmm$=function(){
+Array$proto.$_get.$crtmm$=function(){
   return{mod:$CCMM$,d:['$','List','$m','get'],$t:{t:'u',l:[{t:Null},'Element$Array']},$ps:[{$nm:'index',$t:{t:Integer},$mt:'prm'}]};
 }
 atr$(Array$proto, 'lastIndex', function() {
@@ -110,8 +110,8 @@ Array$proto.items = function(keys) {
     if (keys === undefined) return getEmpty();
     var seq = [];
     for (var i = 0; i < keys.size; i++) {
-        var key = keys.$get(i);
-        seq.push(this.$get(key));
+        var key = keys.$_get(i);
+        seq.push(this.$_get(key));
     }
     return ArraySequence(seq,this.$$targs$$||{Element$Iterable:{t:Anything}});
 }

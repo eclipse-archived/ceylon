@@ -57,7 +57,7 @@ function validate$typeparams(t,tparms,types) {
     var i=0;
     t.a={};
     for (var tp in tparms) {
-      var _type=types.$get(i);
+      var _type=types.$_get(i);
       if (_type===undefined)
         throw TypeApplicationException$meta$model(String$("Missing type argument for " + tp));
       var _tp = tparms[tp];

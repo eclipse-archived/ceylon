@@ -32,8 +32,8 @@ function AppliedClass(tipo,$$targs$$,that,classTargs){
       var eq=is$(o,{t:AppliedClass}) && o.tipo===tipo;
       return eq;
     };
-    that.$apply=function(x){return AppliedClass.$$.prototype.$apply.call(that,x);};
-    that.$apply.$crtmm$=AppliedClass.$$.prototype.$apply.$crtmm$;
+    that.$_apply=function(x){return AppliedClass.$$.prototype.$_apply.call(that,x);};
+    that.$_apply.$crtmm$=AppliedClass.$$.prototype.$_apply.$crtmm$;
     that.namedApply=function(x){return AppliedClass.$$.prototype.namedApply.call(that,x);};
     that.namedApply.$crtmm$=AppliedClass.$$.prototype.namedApply.$crtmm$;
   }
@@ -94,13 +94,13 @@ function $init$AppliedClass(){
     initTypeProto(AppliedClass,'ceylon.language.meta.model::AppliedClass',Basic,Class$meta$model);
     (function($$clase){
 
-      $$clase.$apply=function(a){
+      $$clase.$_apply=function(a){
         var mdl=get_model(this.tipo.$crtmm$);
         if (mdl&&mdl.$mt==='o')throw InvocationException$meta$model("Cannot instantiate anonymous class");
         a=convert$params(this.tipo.$crtmm$,a);
         if (this.$targs)a.push(this.$targs);
         return this.tipo.apply(undefined,a);
-      };$$clase.$apply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',$ps:[{$nm:'arguments',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Anything}}},$an:function(){return[];}}],$cont:Applicable$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].Applicable.$m.apply.$an.doc[0]),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','apply']};};
+      };$$clase.$_apply.$crtmm$=function(){return{mod:$CCMM$,$t:'Type$Applicable',$ps:[{$nm:'arguments',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Anything}}},$an:function(){return[];}}],$cont:Applicable$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].Applicable.$m.apply.$an.doc[0]),$throws("IncompatibleTypeException",""),$throws("InvocationException",""),shared(),formal()];},d:['ceylon.language.meta.model','Applicable','$m','apply']};};
 
       $$clase.namedApply=function(args){
         var mdl=get_model(this.tipo.$crtmm$);
@@ -195,7 +195,7 @@ function AppliedMemberClass(tipo,$$targs$$,that,myTargs){
   atr$(that,'declaration',function(){
     return ClassModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
   },undefined,ClassModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-  that.$bind=function(){return AppliedMemberClass.$$.prototype.$bind.apply(that,arguments);}
+  that.$_bind=function(){return AppliedMemberClass.$$.prototype.$_bind.apply(that,arguments);}
   atr$(that,'string',function(){
     return String$($qname(mm));
   },undefined,function(){return{mod:$CCMM$,$t:{t:String$},d:['$','Object','$at','string']};});
@@ -212,14 +212,14 @@ function $init$AppliedMemberClass(){
     (function($$amc){
       
       //MethodDef bind at caca.ceylon (5:4-5:107)
-      $$amc.$bind=function $bind(cont){
+      $$amc.$_bind=function $_bind(cont){
         var ot=cont.getT$name ? cont.getT$all()[cont.getT$name()]:throwexc(IncompatibleTypeException$meta$model("Container does not appear to be a Ceylon object"));
         if (!ot)throw IncompatibleTypeException$meta$model("Incompatible Container (has no metamodel information");
         var omm=getrtmm$$(ot);
         var mm=getrtmm$$(this.tipo);
         if (!extendsType({t:ot},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible container type");
         return this(cont);
-      };$$amc.$bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Class$meta$model,a:{Arguments$Class:'Arguments',Type$Class:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
+      };$$amc.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Class$meta$model,a:{Arguments$Class:'Arguments',Type$Class:'Type'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberClass$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberClass','$m','bind']};};
     })(AppliedMemberClass.$$.prototype);
   }
   return AppliedMemberClass;
@@ -355,7 +355,7 @@ function AppliedMemberInterface(tipo,$$targs$$,that,myTargs){
   atr$(that,'declaration',function(){
     return InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.get.call(that);
   },undefined,InterfaceModel$meta$model.$$.prototype.$prop$getDeclaration.$crtmm$);
-  that.$bind=function(x){return AppliedMemberInterface.$$.prototype.$bind.call(that,x);}
+  that.$_bind=function(x){return AppliedMemberInterface.$$.prototype.$_bind.call(that,x);}
   return that;
 }
 AppliedMemberInterface.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$ps:[],$tp:{Container$MemberInterface:{'var':'in'},Type$MemberInterface:{'var':'out','def':{t:Anything}}},satisfies:[{t:MemberInterface$meta$model,a:{Type$MemberInterface:'Type$MemberInterface',Container$MemberInterface:'Container$MemberInterface'}}],$an:function(){return[shared(),abstract()];},d:['ceylon.language.meta.model','MemberInterface']};};
@@ -364,10 +364,10 @@ function $init$AppliedMemberInterface(){
   if (AppliedMemberInterface.$$===undefined){
     initTypeProto(AppliedMemberInterface,'ceylon.language.meta.model::AppliedMemberInterface',Basic,MemberInterface$meta$model);
     (function($$appliedMemberInterface){
-      $$appliedMemberInterface.$bind=function $bind(container$2){
+      $$appliedMemberInterface.$_bind=function $_bind(container$2){
         var $$appliedMemberInterface=this;
         throw Exception(String$("IMPL MemberInterface.bind"));
-      };$$appliedMemberInterface.$bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
+      };$$appliedMemberInterface.$_bind.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Interface$meta$model,a:{Type$Interface:'Type$Interface'}},$ps:[{$nm:'container',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:MemberInterface,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','MemberInterface','$m','bind']};};
     })(AppliedMemberInterface.$$.prototype);
   }
   return AppliedMemberInterface;
@@ -584,7 +584,7 @@ function AppliedFunction(m,$$targs$$,o,mptypes) {
     if (!mptypes || mptypes.size<1)throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
     var i=0;ttargs={};
     for (var tp in mm.$tp) {
-      var _ta=mptypes.$get?mptypes.$get(i):mptypes[i];
+      var _ta=mptypes.$_get?mptypes.$_get(i):mptypes[i];
       if(_ta&&_ta.tipo)ttargs[tp]={t:_ta.tipo};
       else if (_ta) console.log("TODO assign type arg " + _ta + " to " + tp);
       else if (mptypes[tp])ttargs[tp]=mptypes[tp];
@@ -632,11 +632,11 @@ atr$(f,'declaration',function(){
   f._decl = OpenFunction(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), m);
   return f._decl;
 },undefined,function(){return{mod:$CCMM$,$t:{t:FunctionDeclaration$meta$declaration},d:['ceylon.language.meta.model','FunctionModel','$at','declaration']};});
-  f.$apply=function(a){
+  f.$_apply=function(a){
     a=convert$params(mm,a);
     if (ttargs) {
       var _a=[];
-      for (var i=0;i<a.size;i++)_a.push(a.$get(i));
+      for (var i=0;i<a.size;i++)_a.push(a.$_get(i));
       _a.push(ttargs);
       a=_a;
     }
@@ -726,13 +726,13 @@ atr$($$appliedValue,'string',function(){
         return OpenValue(_pkg, $$av.tipo);
       },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$at','declaration']};});
 
-      $$appliedValue.$get=function $get(){
+      $$appliedValue.$_get=function $_get(){
         if (this.obj) {
           var mm=this.tipo.$crtmm$;
           return (mm&&mm.d&&this.obj[mm.d[mm.d.length-1]])||this.tipo.get.call(this.obj);
         }
         return this.tipo.get();
-      };$$appliedValue.$get.$crtmm$=function(){return{mod:$CCMM$,$t:'Get',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
+      };$$appliedValue.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:'Get',$ps:[],$cont:AppliedValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Value','$m','get']};};
       $$appliedValue.set=function set(newValue$26){
         if (!this.tipo.set)throw MutationException$meta$model("Value is not writable");
         return this.obj?this.tipo.set.call(this.obj,newValue$26):this.tipo.set(newValue$26);
@@ -781,10 +781,10 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
       throw TypeApplicationException$meta$model(String$("Missing type arguments in call to FunctionDeclaration.apply"));
     var _ta={}; var i=0;
     for (var tp in mm.$tp) {
-      if (typeArgs.$get(i)===undefined)
+      if (typeArgs.$_get(i)===undefined)
         throw TypeApplicationException$meta$model(String$("Missing type argument for "+tp));
       var _tp = mm.$tp[tp];
-      var _t = typeArgs.$get(i).tipo;
+      var _t = typeArgs.$_get(i).tipo;
       _ta[tp]={t:_t};
       if ((_tp.satisfies && _tp.satisfies.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.satisfies && _tp.satisfies.length>0)?_tp.satisfies:_tp.of;
@@ -832,7 +832,7 @@ function AppliedMethod(tipo,typeArgs,$$targs$$,$$appliedMethod){
   $$appliedMethod.equals=function(o){
     return is$(o,{t:AppliedMethod}) && o.tipo===tipo && o.typeArguments.equals(this.typeArguments);
   }
-  $$appliedMethod.$bind=function(o){
+  $$appliedMethod.$_bind=function(o){
     if (!is$(o,{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Cannot bind " + $$appliedMethod.string + " to "+o);
     return $$appliedMethod(o);
   }
@@ -882,7 +882,7 @@ function AppliedAttribute(pname, atr,$$targs$$,$$appliedAttribute){
     var pkg = getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]);
     return OpenValue(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
-  $$appliedAttribute.$bind=function(cont){
+  $$appliedAttribute.$_bind=function(cont){
     return AppliedValue(cont,atr,{Get$Value:$$targs$$.Get$Attribute,Set$Value:$$targs$$.Set$Attribute,
       Container$Value:$$targs$$.Container$Attribute});
   }

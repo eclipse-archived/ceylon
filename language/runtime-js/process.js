@@ -207,7 +207,7 @@ atr$(process$proto, 'string', function() {
 var process$ = processClass();
 function getProcess() { return process$; }
 getProcess.$crtmm$=function(){return{
-  mod:$CCMM$,$t:{t:processClass},$an:function(){return[shared(),$native()];},d:['$','process']};
+  mod:$CCMM$,$t:{t:processClass},$an:function(){return[shared(),$_native()];},d:['$','process']};
 }
 ex$.getProcess=getProcess;
 ex$.$prop$getProcess={get:getProcess,$crtmm$:function(){return{mod:$CCMM$,d:['$','process'],$t:{t:processClass}

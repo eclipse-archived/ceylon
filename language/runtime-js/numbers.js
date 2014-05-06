@@ -30,7 +30,7 @@ function Integer(value) {
 }
 initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
         $init$Integral(), Exponentiable, Binary);
-Integer.$crtmm$=function(){return{$an:function(){return[shared(),$native(),$final()];},mod:$CCMM$,d:['$','Integer']};}
+Integer.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
 function Float(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Float') {
@@ -41,7 +41,7 @@ function Float(value) {
     return that;
 }
 initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
-Float.$crtmm$=function(){return{$an:function(){return[shared(),$native(),$final()];},mod:$CCMM$,d:['$','Float']};}
+Float.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
 
 var JSNum$proto = Number.prototype;
 JSNum$proto.getT$all = function() {
@@ -97,7 +97,7 @@ JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
 }
-atr$(JSNum$proto, '$float', function(){ return Float(this.valueOf()); },
+atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','float']};});
 atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','integer']};});
@@ -138,7 +138,7 @@ JSNum$proto.rightArithmeticShift = function(i) { return this >>> i; }
 JSNum$proto.and = function(x) { return this & x; }
 JSNum$proto.or = function(x) { return this | x; }
 JSNum$proto.xor = function(x) { return this ^ x; }
-JSNum$proto.$get = function(idx) {
+JSNum$proto.$_get = function(idx) {
     if (idx < 0 || idx >31) {
         return false;
     } 

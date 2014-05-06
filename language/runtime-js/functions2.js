@@ -53,7 +53,7 @@ function unflatten(ff, $$$mptypes) {
           a.push(seq.skip(i).sequence);
           break;//we're done
         } else if (seq.size > i) {
-          a.push(seq.$get(i));
+          a.push(seq.$_get(i));
         }
       }
       if ($mptypes && ff.$crtmm$.$tp)a.push($mptypes);
@@ -64,7 +64,7 @@ function unflatten(ff, $$$mptypes) {
       if (seq===undefined || seq.size === 0) { return ff(); }
       var a = [];
       for (var i = 0; i < seq.size; i++) {
-        a[i] = seq.$get(i);
+        a[i] = seq.$_get(i);
       }
       a[i]=ru.$$targs$$;
       return ff.apply(ru, a);
@@ -109,7 +109,7 @@ function tpl$(elems,types,spread){
   var that=new Tuple.$$;
   that.$$targs$$=types;
   that.$opt=1;
-  $Object(that);
+  Object$(that);
   var _t={t:'u',l:types.l};
   Sequence({Element$Sequence:_t},that);
   elems.$$targs$$={Element$Iterable:_t,Element$Sequential:_t,Element$List:_t,Element$Array:_t,Element$Sequence:_t,Absent$Iterable:{t:Nothing},
@@ -117,11 +117,11 @@ function tpl$(elems,types,spread){
   set_type_args(that,elems.$$targs$$);
   that.$elems=elems;
   that.first_=elems[0];
-  that.$get=function(i){
+  that.$_get=function(i){
     var e=elems[i]
     return e===undefined?null:e;
   };
-  that.$get.$crtmm$=Tuple.$$.prototype.$get.$crtmm$;
+  that.$_get.$crtmm$=Tuple.$$.prototype.$_get.$crtmm$;
   that.iterator=function(){ return elems.iterator(); }
   that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
   that.contains=function(i) { return elems.contains(i); }

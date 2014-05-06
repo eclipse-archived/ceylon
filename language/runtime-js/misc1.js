@@ -3,7 +3,7 @@ ex$.$prop$getNull={get:getNull,$crtmm$:function(){return{mod:$CCMM$,d:['$','null
 function Boolean$(value) {return Boolean(value)}
 initExistingTypeProto(Boolean$, Boolean, 'ceylon.language::Boolean');
 Boolean$.$crtmm$={$ps:[],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Boolean']};
-var $Boolean=Boolean$;
+var $_Boolean=Boolean$;
 function trueClass() {}
 initType(trueClass, "ceylon.language::true", Boolean$);
 function falseClass() {}
@@ -30,7 +30,7 @@ Boolean.prototype.rightArithmeticShift = function(i) { return this.valueOf(); }
 Boolean.prototype.and = function(x) { return this.valueOf() && x.valueOf(); }
 Boolean.prototype.or = function(x) { return this.valueOf() || x.valueOf(); }
 Boolean.prototype.xor = function(x) { return this.valueOf()?!x.valueOf():x.valueOf(); }
-Boolean.prototype.$get = function(idx) {
+Boolean.prototype.$_get = function(idx) {
     return idx === 0 ? this.valueOf() : false;
 }
 Boolean.prototype.set = function(idx,bit) {
@@ -155,10 +155,10 @@ function $init$Mapita(){
             };$$mapita.iterator.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterator,a:{Element$Iterator:{t:Entry,a:{Item$Entry:'V$Mapita',Key$Entry:'K$Mapita'}}}},$ps:[],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','iterator']};};
             
             //MethodDef get at caca.ceylon (11:2-13:2)
-            $$mapita.$get=function $get(k$3){
+            $$mapita.$_get=function $_get(k$3){
               var v=this.o[k$3];
               return v||null;
-            };$$mapita.$get.$crtmm$=function(){return{mod:$CCMM$,$t:'V$Mapita',$ps:[{$nm:'k',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','get']};};
+            };$$mapita.$_get.$crtmm$=function(){return{mod:$CCMM$,$t:'V$Mapita',$ps:[{$nm:'k',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['','Mapita','$m','get']};};
         })(Mapita.$$.prototype);
     }
     return Mapita;

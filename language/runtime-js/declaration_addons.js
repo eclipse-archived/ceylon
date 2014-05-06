@@ -14,7 +14,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
   }
   if (!_m && extendsType($$$mptypes.Kind$getMemberDeclaration, {t:FunctionDeclaration$meta$declaration})) {
     var nom=name$20;
-    if (this.tipo===String$ && ['split','replace','filter','every','map','sort','slice'].indexOf(nom)>=0)nom='$'+nom;
+    if (this.tipo===String$ && ['split','replace','filter','every','map','sort','slice','reduce'].indexOf(nom)>=0)nom='$_'+nom;
     var _d = this.tipo.$$.prototype[nom];
     if (_d===undefined) {
       //Let's just look for this thing everywhere
@@ -177,7 +177,7 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
   }
   return getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,$an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,$mptypes){
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types,$mptypes){
   var _t = {t:this.tipo};
   var _m = getrtmm$$(this.tipo);
   validate$typeparams(_t,_m.$tp,types);
@@ -188,7 +188,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply=function(types,
   if (_t.a)rv.$targs=_t.a;
   return rv;
 }
-ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$apply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
+ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply.$crtmm$=function(){return{mod:$CCMM$,d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','apply']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberApply=function(cont, types,$mptypes) {
   var mm=getrtmm$$(this.tipo);
   if (!extendsType({t:cont.tipo},{t:mm.$cont}))throw IncompatibleTypeException$meta$model("Incompatible Container type");

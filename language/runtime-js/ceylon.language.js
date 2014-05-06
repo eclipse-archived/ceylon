@@ -156,16 +156,14 @@ Object$.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[sha
 var Object$proto = Object$.$$.prototype;
 atr$(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
-},undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','string']});
+},undefined,{$an:function(){return[shared(),$_default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','string']});
 Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['$','Object','$at','hash'],$t:{t:Integer},$an:function(){return[shared(),formal()]}};}};
 Object$proto.toString=function() { return this.string.valueOf(); }
 Object$proto.equals={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['$','Object','$m','equals'],$t:{t:Boolean$},
   $ps:[{$nm:'other',$mt:'prm',$t:{t:Object$}}],$an:function(){return[shared(),formal()];}};}};
-function $init$Object$() { return Object$; }
-function $init$Object() { return Object$; }
-function $init$$Object() { return Object$; }
+function $init$$_Object() { return Object$; }
 
-var $Object=Object$;
+var $_Object=Object$;
 
 var BasicID=1;
 function identityHash$(x) {
@@ -183,7 +181,7 @@ Identifiable$proto.equals = function(that) {
     return is$(that, {t:Identifiable}) && (that===this);
 }
 atr$(Identifiable$proto, 'hash', function(){ return identityHash$(this); },
-    undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
+    undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
 //INTERFACES
 //Compiled from Ceylon sources
@@ -207,11 +205,11 @@ initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Excepti
 NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
 ex$.Identifiable=Identifiable;
 ex$.identityHash=identityHash$;
-ex$.$Object=Object$;
+ex$.$_Object=Object$;
 ex$.Anything=Anything;
 ex$.Null=Null;
 ex$.Nothing=Nothing;
-ex$.$Boolean=Boolean$;
+ex$.$_Boolean=Boolean$;
 ex$.Comparison=Comparison;
 ex$.getNull=getNull;
 ex$.getTrue=getTrue;

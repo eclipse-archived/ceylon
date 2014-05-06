@@ -77,7 +77,7 @@ ClassOrInterface$meta$model.$$.prototype.getAttribute=function getAttribute(name
   var nom = '$prop$get' + name$15[0].toUpperCase() + name$15.substring(1);
   var at = this.tipo.$$.prototype[nom];
   if (!at) {
-    nom = '$prop$get$' + name$15;
+    nom = '$prop$get$_' + name$15;
     at = this.tipo.$$.prototype[nom];
     if (!at)return null;
   }

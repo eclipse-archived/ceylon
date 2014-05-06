@@ -35,7 +35,7 @@ function modules$2(){
     }
     $$modules.find=find;
     find.$crtmm$={mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Module$meta$declaration}]},$ps:[{$nm:'name',$mt:'prm',$t:{t:String$}},{$nm:'version',$mt:'prm',$t:{t:String$}}],$cont:modules$2,$an:function(){return[shared()];},d:['ceylon.language.meta','modules','$m','find']};
-    atr$($$modules,'$default',function(){
+    atr$($$modules,'$_default',function(){
         return find('default',"unversioned");
     },undefined,{mod:$CCMM$,$t:{ t:'u', l:[{t:Null},{t:Module$meta$declaration}]},$cont:modules$2,$an:function(){return[shared()];},d:['ceylon.language.meta','modules','$at','default']});
     return $$modules;
