@@ -335,7 +335,7 @@ public class GenerateJsVisitor extends Visitor
         final String path = scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
         if (jsout.requires.put(path, modAlias) == null) {
-            out("var ", modAlias, "=rq$('", path, "')");
+            out("var ", modAlias, "=require('", path, "')");
             endLine(true);
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clAlias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "')");

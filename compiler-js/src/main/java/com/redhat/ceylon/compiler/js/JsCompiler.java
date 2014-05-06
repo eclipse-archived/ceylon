@@ -90,10 +90,12 @@ public class JsCompiler {
         public void visit(Tree.ImportModule that) {
             if (hasErrors(that)) {
                 exitCode = 1;
-            } else if (((Module)that.getImportPath().getModel()).isJava()) {
+            } else if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module &&
+                    ((Module)that.getImportPath().getModel()).isJava()) {
                 that.getImportPath().addUnexpectedError("cannot import Java modules in Javascript");
+            } else {
+                super.visit(that);
             }
-            super.visit(that);
         }
         @Override
         public void visit(Tree.BaseMemberOrTypeExpression that) {
@@ -233,7 +235,7 @@ public class JsCompiler {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
                     e.getValue().getWriter().write("var $CCMM$=");
                     e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
-                    e.getValue().getWriter().write(";\nexports.$CCMM$=function(){return $CCMM$;};\n");
+                    e.getValue().getWriter().write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
                 }
             }
 
@@ -406,7 +408,7 @@ public class JsCompiler {
 
     /** Writes the beginning of the wrapper function for a JS module. */
     public void beginWrapper(Writer writer) throws IOException {
-        writer.write("(function(define) { define(function(rq$, ex$, module) {\n");
+        writer.write("(function(define) { define(function(require, ex$, module) {\n");
     }
 
     /** Writes the ending of the wrapper function for a JS module. */
