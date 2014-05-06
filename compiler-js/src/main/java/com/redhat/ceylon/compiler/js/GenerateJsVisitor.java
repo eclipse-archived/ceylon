@@ -3195,7 +3195,7 @@ public class GenerateJsVisitor extends Visitor
    }
 
    @Override public void visit(Element that) {
-       out(".$get(");
+       out(".$_get(");
        if (!isNaturalLiteral(that.getExpression().getTerm())) {
            that.getExpression().visit(this);
        }
@@ -3383,7 +3383,7 @@ public class GenerateJsVisitor extends Visitor
                 out("[");
                 _end = "]";
             } else {
-                out(".$get(");
+                out(".$_get(");
                 _end = ")";
             }
             if (!isNaturalLiteral(_elemexpr.getTerm())) {

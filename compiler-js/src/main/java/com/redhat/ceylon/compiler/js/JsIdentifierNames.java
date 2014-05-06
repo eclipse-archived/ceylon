@@ -107,6 +107,7 @@ public class JsIdentifierNames {
         reservedWords.add("Array");
         reservedWords.add("Boolean");
         reservedWords.add("Error");
+        reservedWords.add("push");
 
         // The names of the following members also have to be escaped to avoid
         // collisions with members of native JavaScript classes in the
@@ -146,13 +147,13 @@ public class JsIdentifierNames {
                 name += suffix;
             } else if (reservedWords.contains(name)) {
                 // JavaScript keyword
-                name = '$' + name;
+                name = "$_" + name;
             } else {
                 Declaration refinedDecl = originalDeclaration(decl);
                 if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
                     // member name that could collide with the name of a native
                     // JavaScript class
-                    name = '$' + name;
+                    name = "$_" + name;
                 }
             }
         }
@@ -226,7 +227,7 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = "$" + Long.toString(getUID(decl), 36);
         }
-        return String.format("$%c%s", Character.toLowerCase(name.charAt(0)),
+        return String.format("%c%s$", Character.toLowerCase(name.charAt(0)),
                     name.substring(1));
     }
 
@@ -297,13 +298,13 @@ public class JsIdentifierNames {
                 name += suffix;
             } else if (!forGetterSetter && reservedWords.contains(name)) {
                 // JavaScript keyword
-                name = '$' + name;
+                name = "$_" + name;
             } else {
                 Declaration refinedDecl = originalDeclaration(decl);
                 if (substitutedMemberNames.contains(refinedDecl.getQualifiedNameString())) {
                     // member name that could collide with the name of a native
                     // JavaScript class
-                    name = '$' + name;
+                    name = "$_" + name;
                 }
             }
         }
