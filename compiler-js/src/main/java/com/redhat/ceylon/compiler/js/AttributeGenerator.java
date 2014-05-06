@@ -4,14 +4,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class AttributeGenerator {
 
-    static void getter(final Tree.AttributeGetterDefinition that, GenerateJsVisitor gen) {
+    static void getter(final Tree.AttributeGetterDefinition that, final GenerateJsVisitor gen) {
         gen.beginBlock();
         gen.initSelf(that.getDeclarationModel(), false);
         gen.visitStatements(that.getBlock().getStatements());
         gen.endBlock();
     }
 
-    static void setter(final Tree.AttributeSetterDefinition that, GenerateJsVisitor gen) {
+    static void setter(final Tree.AttributeSetterDefinition that, final GenerateJsVisitor gen) {
         if (that.getSpecifierExpression() == null) {
             gen.beginBlock();
             gen.initSelf(that.getDeclarationModel(), false);
