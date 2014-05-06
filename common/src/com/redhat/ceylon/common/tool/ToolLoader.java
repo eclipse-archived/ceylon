@@ -117,18 +117,6 @@ public abstract class ToolLoader {
         return model;
     }
 
-    private static URL[] makeClasspath(File... jars) {
-        URL[] urls = new URL[jars.length];
-        for (int ii = 0; ii <jars.length; ii++) {
-            try {
-                urls[ii] = jars[ii].toURI().toURL();
-            } catch (MalformedURLException e) {
-                throw new ToolException(e);
-            }
-        }
-        return urls;
-    }
-    
     private <T extends Tool> ToolModel<T> loadModel(Class<T> cls, String toolName) {
         checkClass(cls);
         ToolModel<T> model = new ToolModel<T>();
