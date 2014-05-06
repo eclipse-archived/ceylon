@@ -10,6 +10,7 @@ import org.jboss.modules.ModuleClassLoader;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
+import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
@@ -121,7 +122,13 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             Module ret = moduleCache.get(cacheKey);
             if(ret == null){
                 // there's a good chance we didn't get the module loaded in time, wait until that classloader is
-                // registered then
+                // registered then, but give it a nudge:
+
+                if(cl instanceof CeylonModuleClassLoader){
+                    // this can complete in another thread or this thread
+                    ((CeylonModuleClassLoader) cl).registerInMetaModel();
+                }
+
                 Object lock = getLock();
                 synchronized(lock){
                     int tries = MAX_JBOSS_MODULES_WAITS;
