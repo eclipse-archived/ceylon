@@ -311,4 +311,18 @@ public class FileUtil {
         return path;
     }
 
+    public static boolean sameFile(File a, File b) {
+        if(a == null)
+            return b == null;
+        if(b == null)
+            return false;
+        try {
+            String aPath = a.getCanonicalPath();
+            String bPath = b.getCanonicalPath();
+            return aPath.equals(bPath);
+        } catch (IOException e) {
+            return a.equals(b);
+        }
+    }
+
 }
