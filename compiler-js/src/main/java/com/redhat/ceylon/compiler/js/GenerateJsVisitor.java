@@ -420,9 +420,9 @@ public class GenerateJsVisitor extends Visitor
 
     void initSelf(Scope scope, boolean force) {
         if ((force && prototypeOwner!=null) || (scope != null && prototypeOwner == scope.getContainer()) &&
-                    ((scope instanceof MethodOrValue)
-                     || (scope instanceof TypeDeclaration)
-                     || (scope instanceof Specification))) {
+                    (scope instanceof MethodOrValue
+                     || scope instanceof TypeDeclaration
+                     || scope instanceof Specification)) {
             out("var ", names.self(prototypeOwner), "=this");
             endLine(true);
         }
@@ -1897,7 +1897,7 @@ public class GenerateJsVisitor extends Visitor
                     // attribute is defined by a lazy expression ("=>" syntax)
                     defineAttribute(names.self(outer), names.name(d));
                     beginBlock();
-                    initSelf(that.getScope(), true);
+                    initSelf(d, false);
                     out("return ");
                     Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                     int boxType = boxStart(expr.getTerm());

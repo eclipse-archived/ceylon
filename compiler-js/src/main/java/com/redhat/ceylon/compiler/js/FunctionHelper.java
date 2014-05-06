@@ -170,9 +170,9 @@ public class FunctionHelper {
     static void functionArgument(Tree.FunctionArgument that, final GenerateJsVisitor gen) {
         gen.out("(");
         if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getScope(), gen);
+            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getDeclarationModel(), gen);
         } else {
-            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getScope(), gen);
+            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getDeclarationModel(), gen);
         }
         gen.out(")");
     }
@@ -197,7 +197,7 @@ public class FunctionHelper {
             }
             gen.out(gen.getNames().name(m), "=");            
             singleExprFunction(that.getParameterLists(),
-                    that.getSpecifierExpression().getExpression(), that.getScope(), gen);
+                    that.getSpecifierExpression().getExpression(), that.getDeclarationModel(), gen);
             gen.endLine(true);
             if (outer != null) {
                 gen.out(gen.getNames().self(outer), ".");
