@@ -372,6 +372,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         List<File> srcs = FileUtil.applyCwd(this.cwd, this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles);
+        if (expandedModulesOrFiles.isEmpty()) {
+            throw new IllegalArgumentException("No modules or source files to compile");
+        }
         for (String moduleOrFile : expandedModulesOrFiles) {
             if (sourceFileOpt != null) {
                 validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
