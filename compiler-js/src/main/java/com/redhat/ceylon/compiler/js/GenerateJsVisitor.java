@@ -413,15 +413,12 @@ public class GenerateJsVisitor extends Visitor
         }
         else {
             beginBlock();
-            initSelf(that);
+            initSelf(that.getScope(), false);
             visitStatements(stmnts);
             endBlock();
         }
     }
 
-    void initSelf(Block block) {
-        initSelf(block.getScope(), false);
-    }
     void initSelf(Scope scope, boolean force) {
         if (force || (scope != null && prototypeOwner == scope.getContainer()) &&
                     ((scope instanceof MethodOrValue)
@@ -429,6 +426,44 @@ public class GenerateJsVisitor extends Visitor
                      || (scope instanceof Specification))) {
             out("var ", names.self(prototypeOwner), "=this");
             endLine(true);
+        }
+    }
+
+    /** Visitor that determines if a method definition will need the "this" reference. */
+    private class NeedsThisVisitor extends Visitor {
+        private boolean refs=false;
+        public NeedsThisVisitor(Node n) {
+            n.visit(this);
+        }
+        @Override public void visit(Tree.This that) {
+            refs = true;
+        }
+        public void visit(Tree.MemberOrTypeExpression that) {
+            if (refs)return;
+            final Scope origScope = that.getDeclaration().getContainer();
+            Scope s = origScope;
+            while (s != null) {
+                if (s == prototypeOwner || (s instanceof TypeDeclaration && prototypeOwner.inherits((TypeDeclaration)s))) {
+                    refs = true;
+                    return;
+                }
+                s = s.getContainer();
+            }
+            //Check the other way around as well
+            s = prototypeOwner;
+            while (s != null) {
+                if (s == origScope ||
+                        (s instanceof TypeDeclaration && origScope instanceof TypeDeclaration
+                                && ((TypeDeclaration)s).inherits((TypeDeclaration)origScope))) {
+                    refs = true;
+                    return;
+                }
+                s = s.getContainer();
+            }
+            super.visit(that);
+        }
+        public boolean refersToThis() {
+            return refs;
         }
     }
 
