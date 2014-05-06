@@ -810,7 +810,8 @@ public abstract class CompilerTest {
         __redirected.__JAXPRedirected.restorePlatformFactory();
 
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
-        Launcher.run("run", "--rep", getOutPath(), module);
+        int exit = Launcher.run("run", "--rep", getOutPath(), module);
+        Assert.assertEquals(0, exit);
 
         // Now the TCCL is fucked up, so restore it too
         Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
