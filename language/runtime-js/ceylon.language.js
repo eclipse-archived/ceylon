@@ -91,7 +91,7 @@ function inheritProto(type) {
 }
 // Define a property on the given object (which may be a prototype).
 // "get" and "set" are getter/setter functions, and the latter is optional.
-function $defat(obj, name, get, set, metamodel,settermm) {
+function atr$(obj, name, get, set, metamodel,settermm) {
   Object.defineProperty(obj, name, {get: get, set: set, configurable: true, enumerable: true});
   //if (name[0]==='$')name=name.substring(1);//names matching reserved words are prefixed with $
   obj['$prop$get'+name[0].toUpperCase()+name.substring(1)] = {get:get, set:set, $crtmm$:metamodel};
@@ -125,7 +125,7 @@ ex$.initTypeProtoI=initTypeProtoI;
 ex$.initExistingType=initExistingType;
 ex$.initExistingTypeProto=initExistingTypeProto;
 ex$.inheritProto=inheritProto;
-ex$.$defat=$defat;
+ex$.atr$=atr$;
 ex$.copySuperAttr=copySuperAttr;
 ex$.attrGetter=attrGetter;
 ex$.attrSetter=attrSetter;
@@ -154,7 +154,7 @@ function Object$(wat) {
 initTypeProto(Object$, 'ceylon.language::Object', Anything);
 Object$.$crtmm$=function(){return{'super':{t:Anything},$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Object']};}
 var Object$proto = Object$.$$.prototype;
-$defat(Object$proto, 'string', function(){
+atr$(Object$proto, 'string', function(){
     return String$(className(this) + "@" + this.hash);
 },undefined,{$an:function(){return[shared(),$default()]},$t:{t:String$},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','string']});
 Object$proto.$prop$getHash={$fml:1,$crtmm$:function(){return{mod:$CCMM$,$cont:Object$,d:['$','Object','$at','hash'],$t:{t:Integer},$an:function(){return[shared(),formal()]}};}};
@@ -182,7 +182,7 @@ var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return is$(that, {t:Identifiable}) && (that===this);
 }
-$defat(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
+atr$(Identifiable$proto, 'hash', function(){ return $identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
 //INTERFACES

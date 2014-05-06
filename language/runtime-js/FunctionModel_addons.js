@@ -1,4 +1,4 @@
-$defat(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
+atr$(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
   var ps=this.tipo.$crtmm$.$ps;
   if (!ps || ps.length==0)return getEmpty();
   var r=[];
@@ -13,7 +13,7 @@ $defat(FunctionModel$meta$model.$$.prototype,'parameterTypes',function(){
   }
   return ArraySequence(r,{Element$Iterable:{t:Type$meta$model,a:{t:Anything}}});
 },undefined,function(){return{mod:$CCMM$,$cont:FunctionModel$meta$model,d:['ceylon.language.meta.model','FunctionModel','$at','parameterTypes'],$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type:{t:Anything}}},Absent:{t:Null}}}};});
-$defat(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
+atr$(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
   var mm = this.tipo.$crtmm$;
   if (mm) {
     if (mm.$tp) {
@@ -35,7 +35,7 @@ $defat(FunctionModel$meta$model.$$.prototype,'typeArguments',function(){
   }
   throw Exception(String$("FunctionModel.typeArguments-we don't have a metamodel!"));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Map,a:{Key:{t:TypeParameter$meta$declaration},Item:{t:Type$meta$model,a:{Type:{t:Anything}}}}},$cont:FunctionModel$meta$model,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Generic','$at','typeArguments']};});
-$defat(FunctionModel$meta$model.$$.prototype,'string',function(){
+atr$(FunctionModel$meta$model.$$.prototype,'string',function(){
   var mm=this.tipo.$crtmm$;
   var qn;
   if (mm.$cont) {

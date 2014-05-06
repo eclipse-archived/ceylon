@@ -7,23 +7,23 @@ function languageClass() {
 languageClass.$crtmm$={$nm:'languageClass',$mt:'c',$ps:[],$an:function(){return[shared()];},mod:$CCMM$,d:['$','language']};
 initTypeProto(languageClass, "ceylon.language::language", $init$Basic());
 var lang$proto=languageClass.$$.prototype;
-$defat(lang$proto, 'version', function() {
+atr$(lang$proto, 'version', function() {
     return String$("1.1.0",3);
 },undefined,{$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','version']});
-$defat(lang$proto, 'majorVersion', function(){ return 1; },undefined,
+atr$(lang$proto, 'majorVersion', function(){ return 1; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','majorVersion']});
-$defat(lang$proto, 'minorVersion', function(){ return 1; },undefined,
+atr$(lang$proto, 'minorVersion', function(){ return 1; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','minorVersion']});
-$defat(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
+atr$(lang$proto, 'releaseVersion', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','releaseVersion']});
-$defat(lang$proto, 'versionName', function(){ return String$("Unflatzburged",13); },undefined,
+atr$(lang$proto, 'versionName', function(){ return String$("Unflatzburged",13); },undefined,
   {$t:{t:String$}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','versionName']});
-$defat(lang$proto, 'majorVersionBinary', function(){ return 7; },undefined,
+atr$(lang$proto, 'majorVersionBinary', function(){ return 7; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','majorVersionBinary']});
-$defat(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
+atr$(lang$proto, 'minorVersionBinary', function(){ return 0; },undefined,
   {$t:{t:Integer}, $cont:lang$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','language','$at','minorVersionBinary']});
 var languageString = String$("language", 8);
-$defat(lang$proto, 'string', function() {
+atr$(lang$proto, 'string', function() {
     return languageString;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
@@ -93,7 +93,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         }
     }
 }
-$defat(process$proto, 'arguments', function(){ return argv; },undefined,
+atr$(process$proto, 'arguments', function(){ return argv; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','process','$at','arguments']});
 process$proto.namedArgumentPresent = function(name) {
     return (name in namedArgs);
@@ -199,7 +199,7 @@ if ((typeof process !== "undefined") && (process.exit !== undefined)) {
 }
 
 var processString = String$("process", 7);
-$defat(process$proto, 'string', function() {
+atr$(process$proto, 'string', function() {
     return processString;
 },undefined,{$t:{t:String$},$cont:process$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
@@ -224,20 +224,20 @@ systemClass.$crtmm$={$nm:'systemClass',$mt:'c',$ps:[],$an:function(){return[shar
 initTypeProto(systemClass, "ceylon.language::system", $init$Basic());
 var system$proto = systemClass.$$.prototype;
 
-$defat(system$proto, 'milliseconds', function() {
+atr$(system$proto, 'milliseconds', function() {
     return Date.now();
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','system','$at','milliseconds']});
-$defat(system$proto, 'nanoseconds', function() {
+atr$(system$proto, 'nanoseconds', function() {
     return Date.now()*1000000;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','system','$at','nanoseconds']});
-$defat(system$proto, 'timezoneOffset', function(){
+atr$(system$proto, 'timezoneOffset', function(){
   return new Date().getTimezoneOffset()*60000;
 },undefined,{$t:{t:Integer}, $cont:system$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','system','$at','timezoneOffset']});
-$defat(system$proto, 'locale', function(){
+atr$(system$proto, 'locale', function(){
   return properties["user.locale"] || String$("Unknown",7);
 },undefined,{$t:{t:String$}, $cont:system$proto, $an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','system','$at','locale']});
 var systemString = String$("system", 7);
-$defat(system$proto, 'string', function() {
+atr$(system$proto, 'string', function() {
     return systemString;
 },undefined,{$t:{t:String$},$cont:system$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
@@ -259,7 +259,7 @@ runtimeClass.$crtmm$={$nm:'runtimeClass',$mt:'c',$ps:[],$an:function(){return[sh
 initTypeProto(runtimeClass, "ceylon.language::runtime", $init$Basic());
 var runtime$proto = runtimeClass.$$.prototype;
 
-$defat(runtime$proto, 'name', function() {
+atr$(runtime$proto, 'name', function() {
     if (typeof process !== "undefined" && process.execPath && process.execPath.match(/node(js)?(\.exe)?$/)) {
         return String$("node.js", 7);
     } else if (typeof window === 'object') {
@@ -267,32 +267,32 @@ $defat(runtime$proto, 'name', function() {
     }
     return String$("Unknown JavaScript environment", 30);
 },undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','name']});
-$defat(runtime$proto, 'version', function() {
+atr$(runtime$proto, 'version', function() {
     if (typeof process !== "undefined" && typeof process.version === 'string') {
         return String$(process.version);
     }
     return String$("Unknown");
 },undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','version']});
-$defat(runtime$proto, 'integerSize', function() {
+atr$(runtime$proto, 'integerSize', function() {
     return 53;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','integerSize']});
-$defat(runtime$proto, 'integerAddressableSize', function() {
+atr$(runtime$proto, 'integerAddressableSize', function() {
     return 32;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','integerAddressableSize']});
 var $minIntegerValue = Integer(-9007199254740991); //-(2^53-1)
-$defat(runtime$proto, 'minIntegerValue', function() {
+atr$(runtime$proto, 'minIntegerValue', function() {
     return $minIntegerValue;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','minIntegerValue']});
 var $maxIntegerValue = Integer(9007199254740989); //(2^53-3) => ((2^53)-2 is NaN)
-$defat(runtime$proto, 'maxIntegerValue', function() {
+atr$(runtime$proto, 'maxIntegerValue', function() {
     return $maxIntegerValue;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','maxIntegerValue']});
 var $maxArraySize = Integer(4294967295); //(2^32-1)
-$defat(runtime$proto, 'maxArraySize', function() {
+atr$(runtime$proto, 'maxArraySize', function() {
     return $maxArraySize;
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','runtime','$at','maxArraySize']});
 var runtimeString = String$("runtime", 7);
-$defat(runtime$proto, 'string', function() {
+atr$(runtime$proto, 'string', function() {
     return runtimeString;
 },undefined,{$t:{t:String$},$cont:runtime$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
@@ -313,23 +313,23 @@ operatingSystemClass.$crtmm$={$nm:'operatingSystemClass',$mt:'c',$ps:[],$an:func
 initTypeProto(operatingSystemClass, "ceylon.language::operatingSystem", $init$Basic());
 var operatingSystem$proto = operatingSystemClass.$$.prototype;
 
-$defat(operatingSystem$proto, 'name',function() {
+atr$(operatingSystem$proto, 'name',function() {
     if (typeof process !== "undefined" && typeof process.platform === 'string') {
         return String$(process.platform);
     }
     return String$("Unknown");
 },undefined,{$t:{t:String$},$cont:operatingSystem$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','operatingSystem','$at','name']});
-$defat(operatingSystem$proto, 'version', function() {
+atr$(operatingSystem$proto, 'version', function() {
     return String$("Unknown");
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','operatingSystem','$at','version']});
-$defat(operatingSystem$proto, 'newline', function(){ return linesep; },undefined,
+atr$(operatingSystem$proto, 'newline', function(){ return linesep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','operatingSystem','$at','newline']});
-$defat(operatingSystem$proto, 'fileSeparator', function(){ return filesep; },undefined,
+atr$(operatingSystem$proto, 'fileSeparator', function(){ return filesep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','operatingSystem','$at','fileSeparator']});
-$defat(operatingSystem$proto, 'pathSeparator', function(){ return pathsep; },undefined,
+atr$(operatingSystem$proto, 'pathSeparator', function(){ return pathsep; },undefined,
   {$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','operatingSystem','$at','pathSeparator']});
 var operatingSystemString = String$("operatingSystem", 7);
-$defat(operatingSystem$proto, 'string', function() {
+atr$(operatingSystem$proto, 'string', function() {
     return operatingSystemString;
 },undefined,{$t:{t:String$},$cont:operatingSystem$proto,$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 

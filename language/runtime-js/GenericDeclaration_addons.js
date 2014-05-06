@@ -1,5 +1,5 @@
 //Addendum to GenericDeclaration
-$defat(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclarations',function(){
+atr$(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclarations',function(){
   if (this.tipo) {
     var mm=getrtmm$$(this.tipo);
     var tps=mm.$tp;

@@ -15,14 +15,14 @@ Boolean.prototype.getT$all = function() {
     return (this.valueOf()?trueClass:falseClass).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
-$defat(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
+atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','hash']});
 var trueString = String$("true", 4);
 var falseString = String$("false", 5);
-$defat(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
+atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?trueString:falseString; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
-$defat(Boolean.prototype, 'not', function(){ return !this.valueOf(); },
+atr$(Boolean.prototype, 'not', function(){ return !this.valueOf(); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
 Boolean.prototype.leftLogicalShift = function(i) { return this.valueOf(); }
 Boolean.prototype.rightLogicalShift = function(i) { return this.valueOf(); }
@@ -59,7 +59,7 @@ function Comparison(name) {
 initTypeProto(Comparison, 'ceylon.language::Comparison', $init$Basic());
 Comparison.$crtmm$={$ps:[{t:String$}],$an:function(){return[shared(),abstract()]},mod:$CCMM$,d:['$','Comparison']};
 var Comparison$proto = Comparison.$$.prototype;
-$defat(Comparison$proto, 'string', function(){ return this.name; },
+atr$(Comparison$proto, 'string', function(){ return this.name; },
   undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']});
 
 
@@ -97,7 +97,7 @@ function $init$Mapita(){
             $$mapita.equals.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},$ps:[{$nm:'other',$mt:'prm',$t:{t:Object$},$an:function(){return[];}}],$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$m','equals']};};
             
             //AttributeDecl hash at caca.ceylon (6:2-6:56)
-            $defat($$mapita,'hash',function(){
+            atr$($$mapita,'hash',function(){
                 var $$mapita=this;
                 return attrGetter($$mapita.getT$all()['ceylon.language::Map'],'hash').call(this);
             },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:Mapita,$an:function(){return[shared(),actual()];},d:['$','Map','$at','hash']};});

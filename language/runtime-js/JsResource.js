@@ -14,9 +14,9 @@ function $init$JsResource(){
   if(JsResource.$$===undefined){
     initTypeProto(JsResource,'JsResource',Basic,Resource);
     (function($$jsResource){
-      $defat($$jsResource,'uri',function(){return this.uri_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};});
+      atr$($$jsResource,'uri',function(){return this.uri_;},undefined,function(){return{mod:$CCMM$,$t:{t:String$},$cont:JsResource,$an:function(){return[shared(),actual()];},d:['$','Resource','$at','uri']};});
             
-      $defat($$jsResource,'size',function(){
+      atr$($$jsResource,'size',function(){
         var $elf=this;
         if (getRuntime().name === 'node.js') {
           var _fr=rq$;

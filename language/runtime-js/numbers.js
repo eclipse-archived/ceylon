@@ -51,7 +51,7 @@ JSNum$proto.getT$name = function() {
     return (this.float$ ? Float : Integer).$$.T$name;
 }
 JSNum$proto.toString = origNumToString;
-$defat(JSNum$proto, 'string', function(){ return String$(this.toString()); },
+atr$(JSNum$proto, 'string', function(){ return String$(this.toString()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','string']};});
 JSNum$proto.plus = function(other) {
     return (this.float$||other.float$) ? Float(this+other) : (this+other);
@@ -83,13 +83,13 @@ JSNum$proto.power = function(exp) {
     }
     return toInt(Math.pow(this, exp));
 }
-$defat(JSNum$proto, 'negated', function() {
+atr$(JSNum$proto, 'negated', function() {
     return this.float$ ? Float(-this) : -this;
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertable,d:['$','Invertable','$at','negated']};});
-$defat(JSNum$proto, 'negative', function(){
+atr$(JSNum$proto, 'negative', function(){
   return this.float$ ? this < 0.0 : this.valueOf() < 0;
 },undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','negative']};});
-$defat(JSNum$proto, 'positive', function(){
+atr$(JSNum$proto, 'positive', function(){
   return this.float$ ? this > 0.0 : this.valueOf() > 0;
 },undefined,function(){return{$t:{t:Boolean$},$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','positive']};});
 JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other.constructor===Number) && other==this.valueOf(); }
@@ -97,40 +97,40 @@ JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
 }
-$defat(JSNum$proto, '$float', function(){ return Float(this.valueOf()); },
+atr$(JSNum$proto, '$float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','float']};});
-$defat(JSNum$proto, 'integer', function(){ return toInt(this); },
+atr$(JSNum$proto, 'integer', function(){ return toInt(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','integer']};});
-$defat(JSNum$proto, 'integerValue', function(){ return toInt(this); },
+atr$(JSNum$proto, 'integerValue', function(){ return toInt(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','integerValue']};});
-$defat(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
+atr$(JSNum$proto, 'character', function(){ return Character(this.valueOf()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integer,d:['$','Integer','$at','character']};});
-$defat(JSNum$proto, 'successor', function(){ return this+1; },
+atr$(JSNum$proto, 'successor', function(){ return this+1; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','successor']};});
-$defat(JSNum$proto, 'predecessor', function(){ return this-1; },
+atr$(JSNum$proto, 'predecessor', function(){ return this-1; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Ordinal,d:['$','Ordinal','$at','predecessor']};});
-$defat(JSNum$proto, 'unit', function(){ return this == 1; },
+atr$(JSNum$proto, 'unit', function(){ return this == 1; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','unit']};});
-$defat(JSNum$proto, 'zero', function(){ return this == 0; },
+atr$(JSNum$proto, 'zero', function(){ return this == 0; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Integral,d:['$','Integral','$at','zero']};});
-$defat(JSNum$proto, 'fractionalPart', function() {
+atr$(JSNum$proto, 'fractionalPart', function() {
     if (!this.float$) { return 0; }
     return Float(this - (this>=0 ? Math.floor(this) : Math.ceil(this)));
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','fractionalPart']};});
-$defat(JSNum$proto, 'wholePart', function() {
+atr$(JSNum$proto, 'wholePart', function() {
     if (!this.float$) { return this.valueOf(); }
     return Float(this>=0 ? Math.floor(this) : Math.ceil(this));
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','wholePart']};});
-$defat(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
+atr$(JSNum$proto, 'sign', function(){ return this > 0 ? 1 : this < 0 ? -1 : 0; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','sign']};});
-$defat(JSNum$proto, 'hash', function() {
+atr$(JSNum$proto, 'hash', function() {
     return this.float$ ? String$(this.toPrecision()).hash : this.valueOf();
 },undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Object$,d:['$','Object','$at','hash']};});
 JSNum$proto.distanceFrom = function(other) {
     return (this.float$ ? this.wholePart : this) - other;
 }
 //Binary interface
-$defat(JSNum$proto, 'not', function(){ return ~this; },
+atr$(JSNum$proto, 'not', function(){ return ~this; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Binary,d:['$','Binary','$at','not']};});
 JSNum$proto.leftLogicalShift = function(i) { return this << i; }
 JSNum$proto.rightLogicalShift = function(i) { return this >> i; }
@@ -163,21 +163,21 @@ JSNum$proto.flip = function(idx) {
 JSNum$proto.clear = function(index) {
     return this.set(index, false);
 }
-$defat(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
+atr$(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','magnitude']};});
 
 function $parseFloat(s) { return Float(parseFloat(s)); }
 $parseFloat.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Float}]},$ps:[{$nm:'string',$t:{t:String$}}],d:['$','parseFloat']};}
 
-$defat(JSNum$proto, 'undefined', function(){ return isNaN(this); },
+atr$(JSNum$proto, 'undefined', function(){ return isNaN(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','undefined']};});
-$defat(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
+atr$(JSNum$proto, 'finite', function(){ return this!=Infinity && this!=-Infinity && !isNaN(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','finite']};});
-$defat(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
+atr$(JSNum$proto, 'infinite', function(){ return this==Infinity || this==-Infinity; },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','infinite']};});
-$defat(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
+atr$(JSNum$proto, 'strictlyPositive', function(){ return this>0 || (this==0 && (1/this==Infinity)); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyPositive']};});
-$defat(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
+atr$(JSNum$proto, 'strictlyNegative', function() { return this<0 || (this==0 && (1/this==-Infinity)); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Float,d:['$','Float','$at','strictlyNegative']};});
 
 var $infinity = Float(Infinity);

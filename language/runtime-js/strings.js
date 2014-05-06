@@ -37,7 +37,7 @@ String$proto.getT$all = function() {
     return String$.$$.T$all;
 }
 String$proto.toString = origStrToString;
-$defat(String$proto, 'string', function(){ return this; },undefined,function(){return{mod:$CCMM$,
+atr$(String$proto, 'string', function(){ return this; },undefined,function(){return{mod:$CCMM$,
   $t:{t:String$},d:['$','Object','$at','string']}});
 String$proto.plus = function(other) {
     var size = this.codePoints + other.codePoints;
@@ -70,23 +70,23 @@ String$proto.compare = function(other) {
 }
 String$proto.compare.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Comparison},d:['$','String','$m','compare'],
   $ps:[{$nm:'other',$t:{t:String$}}]};}
-$defat(String$proto,'sequence',function(){
+atr$(String$proto,'sequence',function(){
   return Iterable.$$.prototype.$prop$getSequence.get.call(this);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$at','sequence'],
   $an:function(){return[actual(),shared()]}
 };});
-$defat(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
+atr$(String$proto, 'uppercased', function(){ return String$(this.toUpperCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','uppercased']}});
-$defat(String$proto, 'lowercased', function(){ return String$(this.toLowerCase()); },undefined,function(){return{
+atr$(String$proto, 'lowercased', function(){ return String$(this.toLowerCase()); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','lowercased']}});
-$defat(String$proto, 'size', function() {
+atr$(String$proto, 'size', function() {
   if (this.codePoints===undefined) {
     this.codePoints = countCodepoints(this);
   }
   return this.codePoints;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','Iterable','$at','size']}});
-$defat(String$proto, 'lastIndex', function(){ return this.size.equals(0) ? null : this.size.predecessor; },undefined,function(){return{
+atr$(String$proto, 'lastIndex', function(){ return this.size.equals(0) ? null : this.size.predecessor; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','List','$at','lastIndex']}});
 String$proto.span = function(from, to) {
     if (from > to) {
@@ -127,7 +127,7 @@ String$proto.segment = function(from, len) {
 }
 String$proto.segment.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','segment'],
   $ps:[{$nm:'from',$t:{t:Integer}},{$nm:'length',$t:{t:Integer}}]};}
-$defat(String$proto, 'empty', function() {
+atr$(String$proto, 'empty', function() {
     return this.length===0;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['$','Sequential','$at','empty']}});
 String$proto.longerThan = function(length) {
@@ -178,7 +178,7 @@ String$proto.$get=function(index){
 }
 String$proto.$get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','String','$m','get'],
   $ps:[{$nm:'index',$t:{t:Integer}}]};}
-$defat(String$proto, 'trimmed', function() {
+atr$(String$proto, 'trimmed', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var from = 0;
     while (from<this.length && (this.charCodeAt(from) in $WS)) {++from}
@@ -267,7 +267,7 @@ String$proto.terminal = function(length) {
 }
 String$proto.terminal.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','terminal'],
   $ps:[{$nm:'length',$t:{t:Integer}}]};}
-$defat(String$proto, 'hash', function() {
+atr$(String$proto, 'hash', function() {
   if (this._hash === undefined) {
     var h=0;
     for (var i = 0; i < this.length; i++) {
@@ -307,7 +307,7 @@ String$proto.contains = function(sub) {
 }
 String$proto.contains.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},d:['$','String','$m','contains'],
   $ps:[{$nm:'substring',$t:{t:String$}}]};}
-$defat(String$proto, 'normalized', function() {
+atr$(String$proto, 'normalized', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var result = "";
     var len = 0;
@@ -362,14 +362,14 @@ String$proto.lastOccurrence = function(subc) {
     return null;
 }
 String$proto.lastOccurrence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Integer}]},d:['$','String','$m','lastOccurrence']};}
-$defat(String$proto, 'characters', function() {
+atr$(String$proto, 'characters', function() {
     return this.size>0 ? this:getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Character}}},d:['$','String','$at','characters']}});
-$defat(String$proto, 'first', function() { return this.$get(0); },undefined,function(){return{
+atr$(String$proto, 'first', function() { return this.$get(0); },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','Iterable','$at','first']}});
-$defat(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
+atr$(String$proto, 'last', function(){ return this.size>0?this.$get(this.size.predecessor):null; },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','Iterable','$at','last']}});
-$defat(String$proto, 'keys', function() {
+atr$(String$proto, 'keys', function() {
     return this.size > 0 ? Range(0, this.size.predecessor, {Element$Range:{t:Integer}}) : getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Category},d:['$','Category','$at','keys']}});
 String$proto.join = function(strings) {
@@ -508,7 +508,7 @@ String$proto.$split = function(sep, discard, group) {
     return tokens.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:String$}});
 }
 String$proto.$split.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$m','split']};}
-$defat(String$proto, 'reversed', function() {
+atr$(String$proto, 'reversed', function() {
     var result = "";
     for (var i=this.length; i>0;) {
         var cc = this.charCodeAt(--i);
@@ -547,7 +547,7 @@ String$proto.repeat = function(times) {
 String$proto.repeat.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','repeat'],
   $ps:[{$nm:'times',$t:{t:Integer}}]};}
 function isNewline(c) { return c.value===10; }
-$defat(String$proto, 'lines', function() {
+atr$(String$proto, 'lines', function() {
     return this.$split(isNewline, true);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$at','lines']}});
 String$proto.occurrences = function(sub) {
@@ -594,7 +594,7 @@ String$proto.$sort = function(f) {
     return String$(r);
 }
 String$proto.$sort.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','sort']};}
-$defat(String$proto, 'coalesced', function(){ return this; },undefined,function(){return{
+atr$(String$proto, 'coalesced', function(){ return this; },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','String','$at','coalesced']}});
 String$proto.$slice=function(idx) {
   var s1 = idx>0 ? this.segment(0,idx) : '';
@@ -672,7 +672,7 @@ Character.$crtmm$=function(){return{'super':{t:Object$}, 'satisfies':[
 
 initTypeProto(Character, 'ceylon.language::Character', Object$, Comparable, $init$Enumerable());
 var Character$proto = Character.$$.prototype;
-$defat(Character$proto, 'string', function(){
+atr$(Character$proto, 'string', function(){
   if (this._str===undefined) {
     this._str=String$(codepointToString(this.value));
   }
@@ -682,21 +682,21 @@ $defat(Character$proto, 'string', function(){
 Character$proto.equals = function(other) {
     return other.constructor===Character.$$ && other.value===this.value;
 }
-$defat(Character$proto, 'hash', function(){ return this.value; },undefined,function(){return{
+atr$(Character$proto, 'hash', function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','Character','$at','hash']}});
 Character$proto.compare = function(other) {
     return this.value===other.value ? equal
                                     : (this.value<other.value ? smaller:larger);
 }
-$defat(Character$proto, 'uppercased', function() {
+atr$(Character$proto, 'uppercased', function() {
     var ucstr = codepointToString(this.value).toUpperCase();
     return Character(codepointFromString(ucstr, 0));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['$','Character','$at','uppercased']}});
-$defat(Character$proto, 'lowercased', function() {
+atr$(Character$proto, 'lowercased', function() {
     var lcstr = codepointToString(this.value).toLowerCase();
     return Character(codepointFromString(lcstr, 0));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['$','Character','$at','lowercased']}});
-$defat(Character$proto, 'titlecased', function() {
+atr$(Character$proto, 'titlecased', function() {
     var tc = $toTitlecase[this.value];
     return tc===undefined ? this.uppercased : Character(tc);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['$','Character','$at','titlecased']}});
@@ -731,11 +731,11 @@ var $toTitlecase={
     0x1f97:0x1f9f, 0x1fa0:0x1fa8, 0x1fa1:0x1fa9, 0x1fa2:0x1faa, 0x1fa3:0x1fab, 0x1fa4:0x1fac,
     0x1fa5:0x1fad, 0x1fa6:0x1fae, 0x1fa7:0x1faf, 0x1fb3:0x1fbc, 0x1fc3:0x1fcc, 0x1ff3:0x1ffc
 }
-$defat(Character$proto, 'whitespace', function(){ return this.value in $WS; },undefined,function(){return{
+atr$(Character$proto, 'whitespace', function(){ return this.value in $WS; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','whitespace']}});
-$defat(Character$proto, 'control', function(){ return this.value<32 || this.value===127; },undefined,function(){return{
+atr$(Character$proto, 'control', function(){ return this.value<32 || this.value===127; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','control']}});
-$defat(Character$proto, 'digit', function() {
+atr$(Character$proto, 'digit', function() {
     var check = this.value & 0xfffffff0;
     if (check in $digit) {
         return (this.value&0xf) <= 9;
@@ -746,34 +746,34 @@ $defat(Character$proto, 'digit', function() {
     return this.value>=0x1d7ce && this.value<=0x1d7ff;
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','digit']}});
-$defat(Character$proto, 'integerValue', function(){ return this.value; },undefined,function(){return{
+atr$(Character$proto, 'integerValue', function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','Enumerable','$at','integerValue']}});
-$defat(Character$proto, 'integer',function(){ return this.value; },undefined,function(){return{
+atr$(Character$proto, 'integer',function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','Character','$at','integer']}});
-$defat(Character$proto, 'uppercase', function() {
+atr$(Character$proto, 'uppercase', function() {
     var str = codepointToString(this.value);
     return str.toLowerCase()!==str && !(this.value in $titlecase);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','uppercase']}});
-$defat(Character$proto, 'lowercase', function() {
+atr$(Character$proto, 'lowercase', function() {
     var str = codepointToString(this.value);
     return str.toUpperCase()!==str && !(this.value in $titlecase);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','lowercase']}});
-$defat(Character$proto, 'titlecase', function(){ return this.value in $titlecase; },undefined,function(){return{
+atr$(Character$proto, 'titlecase', function(){ return this.value in $titlecase; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','titlecase']}});
-$defat(Character$proto, 'letter', function() {
+atr$(Character$proto, 'letter', function() {
     //TODO: this captures only letters that have case
     var str = codepointToString(this.value);
     return str.toUpperCase()!==str || str.toLowerCase()!==str || (this.value in $titlecase);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','letter']}});
-$defat(Character$proto, 'successor', function() {
+atr$(Character$proto, 'successor', function() {
     var succ = this.value+1;
     if ((succ&0xf800) === 0xd800) {return Character(0xe000)}
     return Character((succ<=0x10ffff) ? succ:0);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['$','Ordinal','$at','successor']}});
-$defat(Character$proto, 'predecessor', function() {
+atr$(Character$proto, 'predecessor', function() {
     var succ = this.value-1;
     if ((succ&0xf800) === 0xd800) {return Character(0xd7ff)}
     return Character((succ>=0) ? succ:0x10ffff);
@@ -798,7 +798,7 @@ StringBuilder.$crtmm$=function(){return{'super':{t:Basic},$ps:[],
 
 initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
 var StringBuilder$proto = StringBuilder.$$.prototype;
-$defat(StringBuilder$proto, 'string', function(){ return String$(this.value, this.size); },undefined,function(){return{
+atr$(StringBuilder$proto, 'string', function(){ return String$(this.value, this.size); },undefined,function(){return{
   mod:$CCMM$,$t:{t:String$},d:['$','StringBuilder','$at','string'],$cont:StringBuilder}});
 StringBuilder$proto.append = function(s) {
     this.value = this.value.concat(s);
@@ -828,7 +828,7 @@ StringBuilder$proto.appendSpace=function(){return this.append(" ");}
 StringBuilder$proto.appendSpace.$crtmm$=function(){return{mod:$$CCMM$,d:['$','StringBuilder','$m','appendSpace'],
   $t:{t:StringBuilder},$ps:[],$cont:StringBuilder
 };};
-$defat(StringBuilder$proto, 'size', function() {
+atr$(StringBuilder$proto, 'size', function() {
     return countCodepoints(this.value);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','StringBuilder','$at','size'],$cont:StringBuilder}});
 StringBuilder$proto.reset = function() {

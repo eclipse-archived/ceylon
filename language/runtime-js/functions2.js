@@ -146,22 +146,22 @@ function tpl$(elems,types,spread){
   that.longerThan.$crtmm$=Iterable.$$.prototype.longerThan.$crtmm$;
   that.shorterThan=function(i){return elems.shorterThan(i);}
   that.shorterThan.$crtmm$=Iterable.$$.prototype.shorterThan.$crtmm$;
-  $defat(that,'hash',function(){
+  atr$(that,'hash',function(){
     return elems.hash;
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
-  $defat(that,'rest',function(){
+  atr$(that,'rest',function(){
     return elems.length==1?getEmpty():elems.slice(1).reifyCeylonType({t:'u',l:_t.l.slice(1)});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
-  $defat(that,'size',function(){
+  atr$(that,'size',function(){
     return elems.length;
   },undefined,Tuple.$$.prototype.$prop$getSize.$crtmm$);
-  $defat(that,'lastIndex',function(){
+  atr$(that,'lastIndex',function(){
     return elems.length-1;
   },undefined,Tuple.$$.prototype.$prop$getLastIndex.$crtmm$);
-  $defat(that,'last',function(){
+  atr$(that,'last',function(){
     return elems[elems.length-1];
   },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
-  $defat(that,'reversed',function(){
+  atr$(that,'reversed',function(){
     return elems.reversed;
   },undefined,Tuple.$$.prototype.$prop$getReversed.$crtmm$);
   return that;

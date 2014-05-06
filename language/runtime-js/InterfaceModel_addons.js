@@ -1,4 +1,4 @@
-$defat(InterfaceModel$meta$model.$$.prototype,'declaration',function(){
+atr$(InterfaceModel$meta$model.$$.prototype,'declaration',function(){
 if (this._decl)return this._decl;
 var mm = getrtmm$$(this.tipo);
 this._decl = OpenInterface(getModules$meta().find(mm.mod['$mod-name'],mm.mod['$mod-version']).findPackage(mm.d[0]), this.tipo);
