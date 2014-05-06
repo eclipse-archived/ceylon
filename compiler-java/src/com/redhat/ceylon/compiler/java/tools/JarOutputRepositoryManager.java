@@ -46,6 +46,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.util.JarUtils;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
@@ -107,6 +108,7 @@ public class JarOutputRepositoryManager {
         private Set<String> folders = new HashSet<String>();
         private boolean manifestWritten = false;
         private boolean writeOsgiManifest;
+        private final String resourceRootPath;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.options = options;
@@ -117,6 +119,19 @@ public class JarOutputRepositoryManager {
                     module.getNameAsString(), module.getVersion(), options.get(OptionName.VERBOSE) != null, cmrLog);
             this.module = module;
             this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
+            
+            // Determine the special path that signals that the files it contains
+            // should be moved to the root of the output JAR/CAR
+            String rrp = module.getNameAsString().replace('.', '/');
+            if (!rrp.isEmpty() && !rrp.endsWith("/")) {
+                rrp = rrp + "/";
+            }
+            String rootName = options.get(OptionName.CEYLONRESOURCEROOT);
+            if (rootName == null) {
+                rootName = Constants.DEFAULT_RESOURCE_ROOT;
+            }
+            this.resourceRootPath = rrp + rootName + "/";
+            
             setupJarOutput();
         }
 
@@ -243,9 +258,17 @@ public class JarOutputRepositoryManager {
 
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
             fileName = fileName.replace(File.separatorChar, '/');
+            
+            if (!resourceRootPath.isEmpty() && fileName.startsWith(resourceRootPath)) {
+                // Files in the special "resource root path" get moved
+                // to the root of the output JAR/CAR
+                fileName = fileName.substring(resourceRootPath.length());
+            }
+            
             String folder = JarUtils.getFolder(fileName);
-            if(folder != null)
+            if (folder != null) {
                 folders.add(folder);
+            }
 
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
