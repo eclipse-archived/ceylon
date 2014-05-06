@@ -246,7 +246,9 @@ public class FunctionHelper {
             Tree.ParameterList paramList = that.getParameterLists().get(0);
             paramList.visit(gen);
             gen.beginBlock();
-            gen.initSelf(that);
+            if (d.getContainer() instanceof TypeDeclaration) {
+                gen.initSelf(that);
+            }
             gen.initParameters(paramList, null, d);
             gen.visitStatements(that.getBlock().getStatements());
             gen.endBlock();
@@ -260,7 +262,7 @@ public class FunctionHelper {
                 }
                 paramList.visit(gen);
                 gen.beginBlock();
-                if (count==0) {
+                if (count==0 && d.getContainer() instanceof TypeDeclaration) {
                     gen.initSelf(that);
                 }
                 gen.initParameters(paramList, null, d);
