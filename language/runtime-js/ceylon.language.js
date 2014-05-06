@@ -166,12 +166,12 @@ function $init$$_Object() { return Object$; }
 var $_Object=Object$;
 
 var BasicID=1;
-function identityHash$(x) {
+function identityHash(x) {
     var hash = x.BasicID;
     return (hash !== undefined)
             ? hash : (x.BasicID = BasicID++);
 }
-identityHash$.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['$','identityHash']};}
+identityHash.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},$ps:[{$nm:'x',$t:{t:Identifiable},$mt:'prm'}],d:['$','identityHash']};}
 function Identifiable(obj) {}
 initType(Identifiable, "ceylon.language::Identifiable", Object$);
 Identifiable.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['$','Identifiable']};}
@@ -180,7 +180,7 @@ var Identifiable$proto = Identifiable.$$.prototype;
 Identifiable$proto.equals = function(that) {
     return is$(that, {t:Identifiable}) && (that===this);
 }
-atr$(Identifiable$proto, 'hash', function(){ return identityHash$(this); },
+atr$(Identifiable$proto, 'hash', function(){ return identityHash(this); },
     undefined,function(){return{$an:function(){return[shared(),$_default()]},$cont:Identifiable,mod:$CCMM$,d:['$','Identifiable','$at','hash']};});
 
 //INTERFACES
@@ -204,7 +204,7 @@ function NativeException(e) {
 initTypeProto(NativeException, 'ceylon.language::NativeException', $init$Exception());
 NativeException.$crtmm$=function(){return{$nm:'NativeException',$mt:'c',$ps:[{t:Exception}],$an:function(){return[shared()];},mod:$CCMM$,d:['$','Exception']};}
 ex$.Identifiable=Identifiable;
-ex$.identityHash=identityHash$;
+ex$.identityHash=identityHash;
 ex$.$_Object=Object$;
 ex$.Anything=Anything;
 ex$.Null=Null;
