@@ -16,7 +16,7 @@ public class SequenceGenerator {
     static void lazyEnumeration(final List<Tree.PositionalArgument> args, final Node node, final ProducedType seqType,
             final boolean spread, final GenerateJsVisitor gen) {
         final String idxvar = gen.getNames().createTempVariable();
-        gen.out(GenerateJsVisitor.getClAlias(), "$sarg(function(", idxvar,"){switch(",idxvar,"){");
+        gen.out(GenerateJsVisitor.getClAlias(), "sarg$(function(", idxvar,"){switch(",idxvar,"){");
         int count=0;
         Tree.PositionalArgument seqarg = spread ? args.get(args.size()-1) : null;
         for (Tree.PositionalArgument expr : args) {
