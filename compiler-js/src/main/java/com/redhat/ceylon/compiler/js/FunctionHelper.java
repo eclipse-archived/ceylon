@@ -22,7 +22,7 @@ public class FunctionHelper {
             @Override
             public void completeFunction() {
                 gen.beginBlock();
-                if (paramLists.size() == 1) { gen.initSelf(scope, false); }
+                if (paramLists.size() == 1 && scope!=null) { gen.initSelf(block); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 gen.visitStatements(block.getStatements());
@@ -36,7 +36,7 @@ public class FunctionHelper {
             @Override
             public void completeFunction() {
                 gen.beginBlock();
-                if (paramLists.size() == 1) { gen.initSelf(scope, false); }
+                if (paramLists.size() == 1 && scope != null) { gen.initSelf(expr); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Method ? (Method)scope : null);
                 gen.out("return ");
@@ -170,9 +170,9 @@ public class FunctionHelper {
     static void functionArgument(Tree.FunctionArgument that, final GenerateJsVisitor gen) {
         gen.out("(");
         if (that.getBlock() == null) {
-            singleExprFunction(that.getParameterLists(), that.getExpression(), that.getDeclarationModel(), gen);
+            singleExprFunction(that.getParameterLists(), that.getExpression(), null, gen);
         } else {
-            multiStmtFunction(that.getParameterLists(), that.getBlock(), that.getDeclarationModel(), gen);
+            multiStmtFunction(that.getParameterLists(), that.getBlock(), null, gen);
         }
         gen.out(")");
     }
@@ -241,7 +241,7 @@ public class FunctionHelper {
             Tree.ParameterList paramList = that.getParameterLists().get(0);
             paramList.visit(gen);
             gen.beginBlock();
-            gen.initSelf(d, false);
+            gen.initSelf(that);
             gen.initParameters(paramList, null, d);
             gen.visitStatements(that.getBlock().getStatements());
             gen.endBlock();
@@ -256,7 +256,7 @@ public class FunctionHelper {
                 paramList.visit(gen);
                 gen.beginBlock();
                 if (count==0) {
-                    gen.initSelf(d, false);
+                    gen.initSelf(that);
                 }
                 gen.initParameters(paramList, null, d);
                 count++;

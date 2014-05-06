@@ -6,7 +6,7 @@ public class AttributeGenerator {
 
     static void getter(final Tree.AttributeGetterDefinition that, final GenerateJsVisitor gen) {
         gen.beginBlock();
-        gen.initSelf(that.getDeclarationModel(), false);
+        gen.initSelf(that);
         gen.visitStatements(that.getBlock().getStatements());
         gen.endBlock();
     }
@@ -14,12 +14,12 @@ public class AttributeGenerator {
     static void setter(final Tree.AttributeSetterDefinition that, final GenerateJsVisitor gen) {
         if (that.getSpecifierExpression() == null) {
             gen.beginBlock();
-            gen.initSelf(that.getDeclarationModel(), false);
+            gen.initSelf(that);
             gen.visitStatements(that.getBlock().getStatements());
             gen.endBlock();
         } else {
             gen.out("{");
-            gen.initSelf(that.getDeclarationModel(), true);
+            gen.initSelf(that);
             gen.out("return ");
             that.getSpecifierExpression().visit(gen);
             gen.out(";}");
