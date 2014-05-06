@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.minidev.json.JSONObject;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
@@ -234,7 +232,7 @@ public class JsCompiler {
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
                     e.getValue().getWriter().write("var $CCMM$=");
-                    e.getValue().getWriter().write(JSONObject.toJSONString(e.getValue().mmg.getModel()));
+                    e.getValue().encodeModel();
                     e.getValue().getWriter().write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
                 }
             }

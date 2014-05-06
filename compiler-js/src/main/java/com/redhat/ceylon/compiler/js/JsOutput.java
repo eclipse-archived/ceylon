@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 /** A container for things we need to keep per-module. */
@@ -41,4 +42,9 @@ public class JsOutput {
         s.add(src);
     }
     Set<String> getSources() { return s; }
+
+    public void encodeModel() throws IOException {
+        new ModelEncoder(mmg.getModel()).encode(writer);
+    }
+
 }

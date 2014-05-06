@@ -12,13 +12,12 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minidev.json.JSONObject;
-
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.compiler.Options;
+import com.redhat.ceylon.compiler.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -134,8 +133,7 @@ public class Stitcher {
                             pu.getCompilationUnit().visit(mmg);
                         }
                         writer.write("var $CCMM$=");
-                        clModel = JSONObject.toJSONString(mmg.getModel());
-                        writer.write(clModel);
+                        new ModelEncoder(mmg.getModel()).encode(writer);
                         writer.write(";\nex$.$CCMM$=function(){return $CCMM$;};\n");
                         writer.flush();
                     } else if (line.equals("//#COMPILED")) {

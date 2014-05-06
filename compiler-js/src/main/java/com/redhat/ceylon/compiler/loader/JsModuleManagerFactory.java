@@ -28,4 +28,5 @@ public class JsModuleManagerFactory implements ModuleManagerFactory {
     public static boolean isVerbose() {
         return verbose;
     }
+
 }
