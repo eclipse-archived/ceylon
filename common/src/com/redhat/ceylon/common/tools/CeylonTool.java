@@ -208,7 +208,6 @@ public class CeylonTool implements Tool {
         // WARNING: NEVER CALL EXIT IF WE STILL HAVE DAEMON THREADS RUNNING AND WE'VE NO REASON TO EXIT WITH A NON-ZERO CODE
         if(exit != 0)
             System.exit(exit);
-        start(args);
     }
 
     public static int start(String... args) throws Exception {
