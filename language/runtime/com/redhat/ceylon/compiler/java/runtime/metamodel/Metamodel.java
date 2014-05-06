@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
@@ -336,12 +337,15 @@ public class Metamodel {
                 // perhaps it is being loaded in another thread, wait for it
                 Object lock = getLock();
                 synchronized(lock){
+                    int tries = RuntimeModelLoader.MAX_JBOSS_MODULES_WAITS;
                     while(!declaration.isAvailable()){
                         try {
                             lock.wait(5000);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+                        if(tries-- < 0)
+                            throw new RuntimeException("JBoss modules failed to make module available: "+declaration.getNameAsString());
                     }
                 }
             }

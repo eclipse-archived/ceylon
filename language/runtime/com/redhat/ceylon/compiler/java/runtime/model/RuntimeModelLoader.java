@@ -24,6 +24,8 @@ import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class RuntimeModelLoader extends ReflectionModelLoader {
 
+    public static final int MAX_JBOSS_MODULES_WAITS = 1;
+    
     private Map<Module,ClassLoader> classLoaders = new HashMap<Module,ClassLoader>();
     private Map<String, Module> moduleCache = new HashMap<String, Module>();
     private CachedTOCJars jars = new CachedTOCJars();
@@ -122,12 +124,15 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                 // registered then
                 Object lock = getLock();
                 synchronized(lock){
+                    int tries = MAX_JBOSS_MODULES_WAITS;
                     while(!classLoaders.containsValue(cl)){
                         try {
                             lock.wait(5000);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+                        if(tries-- < 0)
+                            throw new RuntimeException("Failed to find registered classloader for "+klass);
                     }
                     ret = moduleCache.get(cacheKey);
                 }
