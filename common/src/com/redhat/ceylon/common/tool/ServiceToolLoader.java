@@ -2,10 +2,12 @@ package com.redhat.ceylon.common.tool;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -108,11 +110,13 @@ public abstract class ServiceToolLoader extends ToolLoader {
 
     private void findPluginInPath(File dir, final Set<String> names) {
         if(dir.isDirectory() && dir.canRead()){
-            File[] matches = dir.listFiles(new FileFilter(){
-                @Override
-                public boolean accept(File f) {
-                    if(f.isFile() && f.canExecute() && f.getName().toLowerCase().startsWith("ceylon-")){
-                        String name = f.getName().substring(7);
+            // listing /usr/bin with >2k entries takes about 100ms using File.listFiles(Filter) and 39ms with NIO2
+            // and checking for file name before file type
+            DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+                public boolean accept(Path f) throws IOException {
+                    String fileName = f.getFileName().toString();
+                    if(fileName.toLowerCase().startsWith("ceylon-") && Files.isRegularFile(f) && Files.isExecutable(f)){
+                        String name = fileName.substring(7);
                         if(OSUtil.isWindows()){
                             // script must end with ".bat"
                             if(!name.toLowerCase().endsWith(".bat"))
@@ -131,10 +135,16 @@ public abstract class ServiceToolLoader extends ToolLoader {
                     }
                     return false;
                 }
-            });
-            for(File sub : matches){
-                String name = SCRIPT_PREFIX+sub.getAbsolutePath();
-                pathPlugins.add(name);
+            };
+            
+            try (DirectoryStream<Path>  stream = Files.newDirectoryStream(dir.toPath(), filter)){
+                for(Path sub : stream){
+                    String name = SCRIPT_PREFIX+sub.toAbsolutePath().toString();
+                    pathPlugins.add(name);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // too bad, give up
             }
         }
     }
