@@ -15,6 +15,7 @@ public class DefaultToolOptions {
     
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
+    public final static String COMPILER_RESOURCE_ROOT = "compiler.resourceroot";
     public final static String COMPILER_DOC = "compiler.doc";
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
     public final static String COMPILER_PACK200 = "compiler.pack200";
@@ -65,6 +66,14 @@ public class DefaultToolOptions {
         } else {
             return Collections.singletonList(new File(Constants.DEFAULT_RESOURCE_DIR));
         }
+    }
+
+    public static String getCompilerResourceRootName() {
+        return getCompilerResourceRootName(CeylonConfig.get());
+    }
+
+    public static String getCompilerResourceRootName(CeylonConfig config) {
+        return config.getOption(COMPILER_RESOURCE_ROOT, Constants.DEFAULT_RESOURCE_ROOT);
     }
 
     public static List<File> getCompilerDocDirs() {
