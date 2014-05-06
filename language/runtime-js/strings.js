@@ -181,10 +181,10 @@ String$proto.$get.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:
 atr$(String$proto, 'trimmed', function() {
     // make use of the fact that all WS characters are single UTF-16 code units
     var from = 0;
-    while (from<this.length && (this.charCodeAt(from) in $WS)) {++from}
+    while (from<this.length && (this.charCodeAt(from) in Character.WS$)) {++from}
     var to = this.length;
     if (from < to) {
-        do {--to} while (from<to && (this.charCodeAt(to) in $WS));
+        do {--to} while (from<to && (this.charCodeAt(to) in Character.WS$));
         ++to;
     }
     if (from===0 && to===this.length) {return this;}
@@ -314,7 +314,7 @@ atr$(String$proto, 'normalized', function() {
     var first = true;
     var i1 = 0;
     while (i1 < this.length) {
-        while (this.charCodeAt(i1) in $WS) {
+        while (this.charCodeAt(i1) in Character.WS$) {
             if (++i1 >= this.length) {return String$(result)}
         }
         var i2 = i1;
@@ -324,7 +324,7 @@ atr$(String$proto, 'normalized', function() {
             if ((cc&0xfc00) === 0xd800) {++i2}
             ++len;
             cc = this.charCodeAt(i2);
-        } while (i2<this.length && !(cc in $WS));
+        } while (i2<this.length && !(cc in Character.WS$));
         if (!first) {
             result += " ";
             ++len;
@@ -388,7 +388,7 @@ String$proto.join = function(strings) {
 }
 String$proto.join.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','join'],
   $ps:[{$nm:'strings',$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}}}]};}
-function isWhitespace(c) { return c.value in $WS; }
+function isWhitespace(c) { return c.value in Character.WS$; }
 String$proto.$split = function(sep, discard, group) {
     // shortcut for empty input
     if (this.length === 0) {return Singleton(this, {Element$Singleton:{t:String$}}); }
@@ -697,21 +697,21 @@ atr$(Character$proto, 'lowercased', function() {
     return Character(codepointFromString(lcstr, 0));
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['$','Character','$at','lowercased']}});
 atr$(Character$proto, 'titlecased', function() {
-    var tc = $toTitlecase[this.value];
+    var tc = Character.toTitlecase$[this.value];
     return tc===undefined ? this.uppercased : Character(tc);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Character},d:['$','Character','$at','titlecased']}});
-var $WS={0x9:true, 0xa:true, 0xb:true, 0xc:true, 0xd:true, 0x20:true, 0x85:true,
+Character.WS$={0x9:true, 0xa:true, 0xb:true, 0xc:true, 0xd:true, 0x20:true, 0x85:true,
     0x1680:true, 0x180e:true, 0x2028:true, 0x2029:true, 0x205f:true, 0x3000:true,
     0x1c:true, 0x1d:true, 0x1e:true, 0x1f:true};
-for (var i=0x2000; i<0x2007; i++) { $WS[i]=true; }
-for (var i=0x2008; i<=0x200a; i++) { $WS[i]=true; }
-var $digit={0x30:true, 0x660:true, 0x6f0:true, 0x7c0:true, 0x966:true, 0x9e6:true, 0xa66:true,
+for (var i=0x2000; i<0x2007; i++) { Character.WS$[i]=true; }
+for (var i=0x2008; i<=0x200a; i++) { Character.WS$[i]=true; }
+Character.dig$={0x30:true, 0x660:true, 0x6f0:true, 0x7c0:true, 0x966:true, 0x9e6:true, 0xa66:true,
     0xae6:true, 0xb66:true, 0xbe6:true, 0xc66:true, 0xce6:true, 0xd66:true, 0xe50:true,
     0xed0:true, 0xf20:true, 0x1040:true, 0x1090:true, 0x17e0:true, 0x1810:true, 0x1946:true,
     0x19d0:true, 0x1a80:true, 0x1a90:true, 0x1b50:true, 0x1bb0:true, 0x1c40:true, 0x1c50:true,
     0xa620:true, 0xa8d0:true, 0xa900:true, 0xa9d0:true, 0xaa50:true, 0xabf0:true, 0xff10:true,
     0x104a0:true, 0x11066:true, 0x110f0:true, 0x11136:true, 0x111d0:true, 0x116c0:true}
-var $titlecase={
+Character.titlecase$={
     0x1c5: [0x1c4, 0x1c6], 0x1c8: [0x1c7, 0x1c9], 0x1cb: [0x1ca, 0x1cc], 0x1f2: [0x1f1, 0x1f3],
     0x1f88: [undefined, 0x1f80], 0x1f89: [undefined, 0x1f81], 0x1f8a: [undefined, 0x1f82],
     0x1f8b: [undefined, 0x1f83], 0x1f8c: [undefined, 0x1f84], 0x1f8d: [undefined, 0x1f85],
@@ -723,7 +723,7 @@ var $titlecase={
     0x1fad: [undefined, 0x1fa5], 0x1fae: [undefined, 0x1fa6], 0x1faf: [undefined, 0x1fa7],
     0x1fbc: [undefined, 0x1fb3], 0x1fcc: [undefined, 0x1fc3], 0x1ffc: [undefined, 0x1ff3]
 }
-var $toTitlecase={
+Character.toTitlecase$={
     0x1c6:0x1c5, 0x1c7:0x1c8, 0x1ca:0x1cb, 0x1f1:0x1f2,
     0x1c4:0x1c5, 0x1c9:0x1c8, 0x1cc:0x1cb, 0x1f3:0x1f2, 0x1f80:0x1f88, 0x1f81:0x1f89, 0x1f82:0x1f8a,
     0x1f83:0x1f8b, 0x1f84:0x1f8c, 0x1f85:0x1f8d, 0x1f86:0x1f8e, 0x1f87:0x1f8f, 0x1f90:0x1f98,
@@ -731,16 +731,16 @@ var $toTitlecase={
     0x1f97:0x1f9f, 0x1fa0:0x1fa8, 0x1fa1:0x1fa9, 0x1fa2:0x1faa, 0x1fa3:0x1fab, 0x1fa4:0x1fac,
     0x1fa5:0x1fad, 0x1fa6:0x1fae, 0x1fa7:0x1faf, 0x1fb3:0x1fbc, 0x1fc3:0x1fcc, 0x1ff3:0x1ffc
 }
-atr$(Character$proto, 'whitespace', function(){ return this.value in $WS; },undefined,function(){return{
+atr$(Character$proto, 'whitespace', function(){ return this.value in Character.WS$; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','whitespace']}});
 atr$(Character$proto, 'control', function(){ return this.value<32 || this.value===127; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','control']}});
 atr$(Character$proto, 'digit', function() {
     var check = this.value & 0xfffffff0;
-    if (check in $digit) {
+    if (check in Character.dig$) {
         return (this.value&0xf) <= 9;
     }
-    if ((check|6) in $digit) {
+    if ((check|6) in Character.dig$) {
         return (this.value&0xf) >= 6;
     }
     return this.value>=0x1d7ce && this.value<=0x1d7ff;
@@ -752,20 +752,20 @@ atr$(Character$proto, 'integer',function(){ return this.value; },undefined,funct
   mod:$CCMM$,$t:{t:Integer},d:['$','Character','$at','integer']}});
 atr$(Character$proto, 'uppercase', function() {
     var str = codepointToString(this.value);
-    return str.toLowerCase()!==str && !(this.value in $titlecase);
+    return str.toLowerCase()!==str && !(this.value in Character.titlecase$);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','uppercase']}});
 atr$(Character$proto, 'lowercase', function() {
     var str = codepointToString(this.value);
-    return str.toUpperCase()!==str && !(this.value in $titlecase);
+    return str.toUpperCase()!==str && !(this.value in Character.titlecase$);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','lowercase']}});
-atr$(Character$proto, 'titlecase', function(){ return this.value in $titlecase; },undefined,function(){return{
+atr$(Character$proto, 'titlecase', function(){ return this.value in Character.titlecase$; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','titlecase']}});
 atr$(Character$proto, 'letter', function() {
     //TODO: this captures only letters that have case
     var str = codepointToString(this.value);
-    return str.toUpperCase()!==str || str.toLowerCase()!==str || (this.value in $titlecase);
+    return str.toUpperCase()!==str || str.toLowerCase()!==str || (this.value in Character.titlecase$);
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Boolean$},d:['$','Character','$at','letter']}});
 atr$(Character$proto, 'successor', function() {
