@@ -27,11 +27,13 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 
@@ -61,21 +63,69 @@ class ModuleDescriptorReader {
     
     private final Module moduleDescriptor;
 
-    public ModuleDescriptorReader(String moduleName, File srcDir) {
+    public ModuleDescriptorReader(String moduleName, File srcDir) throws NoSuchModuleException {
         RepositoryManagerBuilder builder = new RepositoryManagerBuilder(new NullLogger(), false);
         RepositoryManager repoManager = builder.buildRepository();
         VFS vfs = new VFS();
         Context context = new Context(repoManager, vfs);
         PhasedUnits pus = new PhasedUnits(context);
-        pus.parseUnit(vfs.getFromFile(srcDir));
+        List<String> name = ModuleManager.splitModuleName(moduleName);
+        ModuleManager moduleManager = pus.getModuleManager();
+        if(Module.DEFAULT_MODULE_NAME.equals(moduleName)){
+            // visit every folder and skip modules
+            boolean exists = findDefaultModuleSource(srcDir);
+            if(!exists)
+                throw new NoSuchModuleException("No source found for default module");
+        }else{
+            visitModule(vfs, pus, name, srcDir, vfs.getFromFile(srcDir), moduleManager);
+        }
         for (PhasedUnit pu : pus.getPhasedUnits()) {
             pu.visitSrcModulePhase();
         }
-        ModuleManager moduleManager = pus.getModuleManager();
-        List<String> name = ModuleManager.splitModuleName(moduleName);
         this.moduleDescriptor = moduleManager.getOrCreateModule(name, null);
     }
     
+    private void visitModule(VFS vfs, PhasedUnits pus, List<String> name, File srcDir, VirtualFile virtualSourceDirectory, ModuleManager moduleManager) throws NoSuchModuleException {
+        for(String part : name){
+            File child = new File(srcDir, part);
+            if(child.exists() && child.isDirectory()){
+                moduleManager.push(part);
+                srcDir = child;
+            }else{
+                throw new NoSuchModuleException("Failed to find module name part "+part+" in "+srcDir);
+            }
+        }
+        File moduleFile = new File(srcDir, ModuleManager.MODULE_FILE);
+        if(moduleFile.exists()){
+            moduleManager.visitModuleFile();
+            pus.parseUnit(vfs.getFromFile(moduleFile), virtualSourceDirectory);
+        }else{
+            throw new NoSuchModuleException("No module file in "+srcDir);
+        }
+    }
+
+    private boolean findDefaultModuleSource(File sourceFile) {
+        if(sourceFile.isDirectory()){
+            File moduleFile = new File(sourceFile, ModuleManager.MODULE_FILE);
+            // skip modules entirely
+            if(moduleFile.exists())
+                return false;
+            // recurse down normal folders
+            for(File f : sourceFile.listFiles()){
+                boolean found = findDefaultModuleSource(f);
+                if(found)
+                    return true;
+            }
+            return false;
+        }else{
+            String name = sourceFile.getName().toLowerCase();
+            // did we find a source file?
+            return name.endsWith(".ceylon")
+                    || name.endsWith(".java")
+                    || name.endsWith(".js");
+        }
+    }
+
     /**
      * Gets the module version
      * @return The module version, or null if no version could be found
