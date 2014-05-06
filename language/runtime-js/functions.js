@@ -74,7 +74,7 @@ function is$(obj,type){
             return false;
           }
         } else {
-          type=$retuple(type);
+          type=retpl$(type);
         }
       } else {
         return false;
@@ -254,10 +254,10 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
           return true;
         } else return false;
       } else {
-        t1=$retuple(t1);
+        t1=retpl$(t1);
       }
     } else if (t2.t==='T') {
-      t2=$retuple(t2);
+      t2=retpl$(t2);
     }
     for (t in t1.t.$$.T$all) {
         if (t === t2.t.$$.T$name || t === 'ceylon.language::Nothing') {

@@ -39,7 +39,7 @@ function type$meta(x,$$targs$$) {
   }
   var c;
   if ($$targs$$.Type$type.t==='T') {
-    var rt=$retuple($$targs$$.Type$type);
+    var rt=retpl$($$targs$$.Type$type);
     c=AppliedClass(Tuple,{Type$Class:$$targs$$.Type$type, Arguments$Class:{t:'T',l:[$$targs$$.Type$type.l[0],rt.Rest$Tuple]}});
   } else {
     var _ta={T:{t:x.getT$all()[x.getT$name()]}, A:{t:Sequential,a:{Element$Iterable:{t:Anything}}}};
@@ -81,7 +81,7 @@ function typeLiteral$meta($$targs$$) {
       return t === 'u' ? applyUnionType($$targs$$.Type$typeLiteral) : applyIntersectionType($$targs$$.Type$typeLiteral);
     } else if (t === 'T') {
       //TODO arguments
-      var _tt=$retuple($$targs$$.Type$typeLiteral);
+      var _tt=retpl$($$targs$$.Type$typeLiteral);
       return AppliedClass(Tuple,{Type$Class:$$targs$$.Type$typeLiteral,Arguments$Class:{t:'T',l:[_tt.a.First$Tuple,_tt.a.Rest$Tuple]}});
     } else if (t.$crtmm$ === undefined) {
       throw new Error("JS Interop not supported / incomplete metamodel for " + /*require('util').inspect(*/t);

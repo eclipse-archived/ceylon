@@ -14,12 +14,12 @@ suppressedExceptions.$crtmm$=function(){
 }
 ex$.suppressedExceptions=suppressedExceptions;
 
-function $retuple(t) { //receives {t:'T',l:[...]}
+function retpl$(t) { //receives {t:'T',l:[...]}
   if (t.t!=='T')return t;
   var e;
   var r={t:Empty};
   for (var i=t.l.length-1;i>=0;i--){
-    var f=$retuple(t.l[i]);
+    var f=retpl$(t.l[i]);
     var e=(r.a&&r.a.Element$Tuple)||f;
     if (r.a&&r.a.Element$Tuple){
       if (e.l) {
