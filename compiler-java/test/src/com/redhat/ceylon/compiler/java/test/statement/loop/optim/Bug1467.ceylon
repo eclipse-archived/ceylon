@@ -1,7 +1,7 @@
 import java.lang{IntArray}
 
 class Bug1467() {
-    Integer size = 1024*1024*1024/4;
+    Integer size = 1024*1024/4;
     IntArray buff = IntArray(size);
 
     void bufferTest() {

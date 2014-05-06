@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug1467() {
-        this.size = 1024L * 1024L * 1024L / 4L;
+        this.size = 1024L * 1024L / 4L;
         this.buff = new int[(int)getSize$priv$()];
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
