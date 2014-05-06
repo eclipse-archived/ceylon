@@ -25,7 +25,7 @@ function modules$2(){
           } else {
             mpath = name.replace(/\./g,'/') + '/' + version + "/" + name + "-" + version;
           }
-          try {lm = rq$(mpath);}catch(e){return null;}
+          try {lm = require(mpath);}catch(e){return null;}
         }
         if (lm && lm.$CCMM$) {
           lm = Modulo(lm);
@@ -161,7 +161,7 @@ function Modulo(meta, $$modulo){
       mpath += sep + _path;
     }
     if (getRuntime().name === 'node.js') {
-      var _fr=rq$;//this is so that requirejs leaves us the fuck alone
+      var _fr=require;//this is so that requirejs leaves us the fuck alone
       var pm=_fr('path');
       var mods=process.env.NODE_PATH.split(getOperatingSystem().pathSeparator);
       var fs=_fr('fs');
@@ -175,7 +175,7 @@ function Modulo(meta, $$modulo){
         }
       }
     } else if (getRuntime().name === 'Browser') {
-      return JsResource(rq$.toUrl(mpath));
+      return JsResource(require.toUrl(mpath));
     } else {
       print("Resources unsupported in this environment.");
     }

@@ -19,7 +19,7 @@ function $init$JsResource(){
       atr$($$jsResource,'size',function(){
         var $elf=this;
         if (getRuntime().name === 'node.js') {
-          var _fr=rq$;
+          var _fr=require;
           var _fp=$elf.uri;
           if (_fp.substring(0,5)==='file:')_fp=_fp.substring(_fp.indexOf(':')+1);
           return _fr('fs').statSync(_fp).size;
@@ -35,7 +35,7 @@ function $init$JsResource(){
         var $elf=this;
         if(encoding$2===undefined){encoding$2=$elf.textContent$defs$encoding(encoding$2);}
         if (getRuntime().name === 'node.js') {
-          var _fr=rq$;
+          var _fr=require;
           var fs=_fr('fs');
           encoding$2=encoding$2.toLowerCase();
           if(encoding$2.initial(4)==="utf-")encoding$2='utf'+encoding$2.substring(4);
