@@ -1302,7 +1302,7 @@ public class GenerateJsVisitor extends Visitor
             }
         }
         else {
-            out(clAlias, "$defat(");
+            out(clAlias, "atr$(");
             outerSelf(d);
             out(",'", names.name(d), "',function(){return ");
             if (addToPrototype) {
@@ -1817,7 +1817,7 @@ public class GenerateJsVisitor extends Visitor
             if (isCaptured(decl) || decl.isToplevel()) {
                 final boolean isLate = decl.isLate();
                 if (defineAsProperty(decl)) {
-                    out(clAlias, "$defat(");
+                    out(clAlias, "atr$(");
                     outerSelf(decl);
                     out(",'", varName, "',function(){");
                     if (isLate) {
@@ -3740,7 +3740,7 @@ public class GenerateJsVisitor extends Visitor
 
     /** Outputs the initial part of an attribute definition. */
     void defineAttribute(final String owner, final String name) {
-        out(clAlias, "$defat(", owner, ",'", name, "',function()");
+        out(clAlias, "atr$(", owner, ",'", name, "',function()");
     }
 
     public int getExitCode() {
