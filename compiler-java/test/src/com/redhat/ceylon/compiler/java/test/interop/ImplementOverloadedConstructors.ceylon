@@ -19,13 +19,13 @@
  */
 
 @noanno
-class ImplementOverloadedConstructor1() extends JavaWithOverloadedMembers() {
+class ImplementOverloadedConstructor1() extends JavaWithOverloadedMembers<Integer>() {
 }
 
 @noanno
-class ImplementOverloadedConstructor2() extends JavaWithOverloadedMembers(2) {
+class ImplementOverloadedConstructor2() extends JavaWithOverloadedMembers<Integer>(2) {
 }
 
 @noanno
-class ImplementOverloadedConstructor3(Integer i) extends JavaWithOverloadedMembers(i) {
+class ImplementOverloadedConstructor3(Integer i) extends JavaWithOverloadedMembers<Integer>(i) {
 }

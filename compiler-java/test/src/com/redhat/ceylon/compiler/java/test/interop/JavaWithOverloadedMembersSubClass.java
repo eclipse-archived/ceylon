@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.interop;
 
-public class JavaWithOverloadedMembersSubClass extends JavaWithOverloadedMembers {
+public class JavaWithOverloadedMembersSubClass extends JavaWithOverloadedMembers<String> {
     public JavaWithOverloadedMembersSubClass(){}
     public JavaWithOverloadedMembersSubClass(long param){super(param);}
 

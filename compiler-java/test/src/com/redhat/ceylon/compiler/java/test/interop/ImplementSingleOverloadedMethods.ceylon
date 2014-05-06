@@ -17,20 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@noanno
-void variadicOverloadedMethods() {
-    //T box<T>(T t){return t;}
-    JavaWithOverloadedMembers<Integer> java = JavaWithOverloadedMembers<Integer>();
+import java.lang {Integer, Double}
 
-    java.variadic();
-    java.variadic(1);
-    java.variadic(1, 2);
-    java.variadic(1, 2, 3);
-    java.variadic(*[1, 2, 3]);
-    java.variadic(1.0);
-    java.variadic(1.0, 2.0);
-    java.variadic(1.0, 2.0, 3.0);
-    java.variadic("a");
-    java.variadic("a", "b");
-    java.variadic(*["a", "b"]);
+@noanno
+class ImplementSingleOverloadedMethods1() extends JavaWithOverloadedMembers<Integer>() {
+    shared actual void bug1575(Integer? t, Double? double) {}
+}
+
+@noanno
+class ImplementSingleOverloadedMethods2() extends JavaWithOverloadedMembers<Integer>() {
+    shared actual void bug1575(Integer t, Double double) {}
 }

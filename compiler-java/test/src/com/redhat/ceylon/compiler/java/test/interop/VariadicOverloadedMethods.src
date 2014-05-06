@@ -6,7 +6,7 @@ final class variadicOverloadedMethods_ {
     }
     
     static void variadicOverloadedMethods() {
-        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers java = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> java = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer>();
         java.variadic();
         java.variadic(1L);
         java.variadic(1L, 2L);

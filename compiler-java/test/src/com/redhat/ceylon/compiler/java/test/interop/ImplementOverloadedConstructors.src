@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ImplementOverloadedConstructor1() {
         super();
@@ -17,7 +17,7 @@ class ImplementOverloadedConstructor1 extends .com.redhat.ceylon.compiler.java.t
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.class);
 }
-class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ImplementOverloadedConstructor2() {
         super(2L);
@@ -34,7 +34,7 @@ class ImplementOverloadedConstructor2 extends .com.redhat.ceylon.compiler.java.t
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.class);
 }
-class ImplementOverloadedConstructor3 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ImplementOverloadedConstructor3 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     ImplementOverloadedConstructor3(final long i) {
         super(i);

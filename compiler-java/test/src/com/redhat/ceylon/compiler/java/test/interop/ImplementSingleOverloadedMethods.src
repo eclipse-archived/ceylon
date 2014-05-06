@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class ImplementSingleOverloadedMethods1 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.java.lang.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImplementSingleOverloadedMethods1() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final void bug1575(final .java.lang.Integer t, final .java.lang.Double double) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.ImplementSingleOverloadedMethods1();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ImplementSingleOverloadedMethods1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementSingleOverloadedMethods1.class);
+}
+class ImplementSingleOverloadedMethods2 extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.java.lang.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImplementSingleOverloadedMethods2() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final void bug1575(final .java.lang.Integer t, final .java.lang.Double double) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.interop.ImplementSingleOverloadedMethods2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ImplementSingleOverloadedMethods2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementSingleOverloadedMethods2.class);
+}

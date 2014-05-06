@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.interop;
 
-public class JavaWithOverloadedMembers {
+public class JavaWithOverloadedMembers<T> {
     
     public JavaWithOverloadedMembers(){}
     public JavaWithOverloadedMembers(long param){}
@@ -40,4 +40,7 @@ public class JavaWithOverloadedMembers {
     public void variadic(Object param){}
     public void variadic(Object... params){}
     public void variadic(String... params){}
+    
+    public void bug1575(String i){}
+    public void bug1575(T t, Double d){}
 }
