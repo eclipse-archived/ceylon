@@ -329,11 +329,6 @@ function className(obj) {
 }
 className.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['$','className']};
 
-function identityHash(obj) {
-    return obj.BasicID;
-}
-identityHash.$crtmm$={$an:function(){return[shared()];},mod:$CCMM$,d:['$','identityHash']};
-
 function set_type_args(obj, targs) {
     if (obj===undefined)return;
     if (obj.$$targs$$ === undefined) {
@@ -369,7 +364,6 @@ ex$.exists=exists;
 ex$.nonempty=nonempty;
 ex$.is$=is$;
 ex$.className=className;
-ex$.identityHash=identityHash;
 ex$.throwexc=throwexc;
 ex$.wrapexc=wrapexc;
 ex$.nn$=nn$;
