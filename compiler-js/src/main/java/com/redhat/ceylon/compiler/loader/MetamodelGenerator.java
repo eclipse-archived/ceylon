@@ -171,12 +171,12 @@ public class MetamodelGenerator {
             return m;
         }
         com.redhat.ceylon.compiler.typechecker.model.Package pkg = d.getUnit().getPackage();
-        if (pkg.equals(from.getUnit().getPackage())) {
+        if (pkg == null || pkg.equals(from.getUnit().getPackage())) {
             addPackage(m, ".");
         } else {
             addPackage(m, pkg.getNameAsString());
         }
-        if (!pkg.getModule().equals(module)) {
+        if (pkg != null && !pkg.getModule().equals(module)) {
             m.put(KEY_MODULE, pkg.getModule().getNameAsString());
         }
         putTypeParameters(m, pt, from);

@@ -437,6 +437,11 @@ public class GenerateJsVisitor extends Visitor
         }
         public void visit(Tree.MemberOrTypeExpression that) {
             if (refs)return;
+            if (that.getDeclaration() == null) {
+                //Some expressions in dynamic blocks can have null declarations
+                super.visit(that);
+                return;
+            }
             final Scope origScope = that.getDeclaration().getContainer();
             Scope s = origScope;
             while (s != null) {
