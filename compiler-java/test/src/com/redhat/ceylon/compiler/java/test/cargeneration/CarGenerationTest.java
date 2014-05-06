@@ -188,4 +188,70 @@ public class CarGenerationTest extends CompilerTest {
         assertNotNull(moduleClass);
         car.close();
     }
+
+    @Test
+    public void testCarResourceRoot() throws IOException{
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath() + "resmodules/rootdir/source");
+        options.add("-res");
+        options.add(getPackagePath() + "resmodules/rootdir/resource");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Arrays.asList("test.rootdir"));
+        Boolean ret = task.call();
+        assertTrue(ret);
+        
+        File carFile = getModuleArchive("test.rootdir", "1.0");
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry carEntry = car.getEntry("test/rootdir/README.txt");
+        assertNotNull(carEntry);
+
+        carEntry = car.getEntry("rootfile");
+        assertNotNull(carEntry);
+
+        carEntry = car.getEntry("rootdir/rootsubdirfile");
+        assertNotNull(carEntry);
+
+        carEntry = car.getEntry("test/rootdir/module_.class");
+        assertNotNull(carEntry);
+        car.close();
+    }
+
+    @Test
+    public void testCarResourceAlternativeRoot() throws IOException{
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath() + "resmodules/altrootdir/source");
+        options.add("-res");
+        options.add(getPackagePath() + "resmodules/altrootdir/resource");
+        options.add("-resroot");
+        options.add("ALTROOT");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                null,
+                Arrays.asList("test.altrootdir"));
+        Boolean ret = task.call();
+        assertTrue(ret);
+        
+        File carFile = getModuleArchive("test.altrootdir", "1.0");
+        assertTrue(carFile.exists());
+
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry carEntry = car.getEntry("test/altrootdir/README.txt");
+        assertNotNull(carEntry);
+
+        carEntry = car.getEntry("rootfile");
+        assertNotNull(carEntry);
+
+        carEntry = car.getEntry("test/altrootdir/module_.class");
+        assertNotNull(carEntry);
+        car.close();
+    }
+    
 }
