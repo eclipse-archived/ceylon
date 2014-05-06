@@ -326,4 +326,9 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         }
         return outDir;
     }
+    
+    @Override
+    protected boolean isValidDirectory(String s) {
+        return true;
+    }
 }

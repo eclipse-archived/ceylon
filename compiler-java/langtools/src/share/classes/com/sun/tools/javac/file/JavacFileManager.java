@@ -294,7 +294,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
         for (File f: files) {
             String fname = f.getName();
             if (f.isDirectory()) {
-                if (recurse && SourceVersion.isIdentifier(fname)) {
+                if (recurse && isValidDirectory(fname)) {
                     listDirectory(directory,
                                   new RelativeDirectory(subdirectory, fname),
                                   fileKinds,
@@ -383,6 +383,10 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
     private boolean isValidFile(String s, Set<JavaFileObject.Kind> fileKinds) {
         JavaFileObject.Kind kind = getKind(s);
         return fileKinds.contains(kind);
+    }
+
+    protected boolean isValidDirectory(String s) {
+        return SourceVersion.isIdentifier(s);
     }
 
     private static final boolean fileSystemIsCaseSensitive =
