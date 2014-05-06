@@ -67,6 +67,9 @@ public class CeylonModuleLoader extends ModuleLoader {
     private static final ModuleIdentifier JANDEX;
     private static final ModuleIdentifier LOGMANAGER;
     private static final ModuleIdentifier RUNTIME;
+    private static final ModuleIdentifier ANTLR_ANTLR;
+    private static final ModuleIdentifier ANTLR_STRINGTEMPLATE;
+    private static final ModuleIdentifier ANTLR_RUNTIME;
 
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
@@ -88,6 +91,9 @@ public class CeylonModuleLoader extends ModuleLoader {
         JANDEX = ModuleIdentifier.create("org.jboss.jandex", "1.0.3.Final");
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", "1.4.0.Final");
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
+        ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
+        ANTLR_STRINGTEMPLATE = ModuleIdentifier.create("org.antlr.stringtemplate", "3.2.1");
+        ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.4");
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 
@@ -142,8 +148,10 @@ public class CeylonModuleLoader extends ModuleLoader {
     protected void init() throws Exception {
         // The runtime model needs knowledge of these modules existing at runtime, since the language module
         // implementation contains types from these modules
-        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR)) {
-            org.jboss.modules.Module module = org.jboss.modules.Module.getBootModuleLoader().loadModule(initialModule);
+        ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
+        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, TYPECHECKER, COMPILER, CMR, 
+                ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE)) {
+            org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module));
         }
