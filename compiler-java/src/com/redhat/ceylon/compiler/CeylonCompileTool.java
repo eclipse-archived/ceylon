@@ -162,6 +162,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean continueOnErrors;
     private List<String> javac = Collections.emptyList();
     private String encoding;
+    private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
 
@@ -207,6 +208,13 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             " (default: `./resource`)")
     public void setResource(List<File> resource) {
         this.resources = resource;
+    }
+
+    @OptionArgument(argumentName="folder-name")
+    @Description("Sets the special resource folder name whose files will " +
+            "end up in the root of the resulting module CAR file (default: ROOT).")
+    public void setResourceRoot(String resourceRoot) {
+        this.resourceRoot = resourceRoot;
     }
     
     @Hidden
@@ -289,6 +297,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-res");
             arguments.add(resource.getPath());
             //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
+        }
+        
+        if (resourceRoot != null) {
+            arguments.add("-resroot");
+            arguments.add(resourceRoot);
         }
         
         if (continueOnErrors) {
