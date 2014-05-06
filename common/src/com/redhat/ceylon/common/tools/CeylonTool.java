@@ -102,6 +102,7 @@ public class CeylonTool implements Tool {
     private ToolLoader pluginLoader;
     private ToolFactory pluginFactory;
     private boolean version;
+    private Tool toolCache;
     
     public CeylonTool() {
     }
@@ -278,8 +279,10 @@ public class CeylonTool implements Tool {
         Exception error = null;
         CeylonConfig oldConfig = null;
         try {
-            oldConfig = setupConfig();
-            run();
+            ToolModel<Tool> model = getToolModel();
+            Tool tool = getTool(model);
+            oldConfig = setupConfig(tool);
+            run(model, tool);
             result = SC_OK;
         } catch (NoSuchToolException e) {
             error = e;
@@ -309,8 +312,7 @@ public class CeylonTool implements Tool {
         return result;
     }
 
-    private CeylonConfig setupConfig() {
-        Tool tool = getTool(getToolModel());
+    private CeylonConfig setupConfig(Tool tool) {
         if (tool instanceof CeylonBaseTool) {
             CeylonBaseTool cbt = (CeylonBaseTool)tool;
             File cwd = cbt.getCwd();
@@ -325,19 +327,21 @@ public class CeylonTool implements Tool {
     @Override
     public void initialize() {
     }
-
+    
     @Override
     public void run() throws Exception {
+        // do nothing?
+    }
+
+    private void run(ToolModel<Tool> model, Tool tool) throws Exception {
         if (version) {
             // --version is also handled in main(), so that you can at least do 
             // --version with a Java <7 JVM, but also do it here for consistency
             version(System.out);
         } else {
-            final ToolModel<?> model = getToolModel();
             if(model.isScript()){
                 runScript(model);
             }else{
-                Tool tool = getTool(model);
                 // Run the tool
                 tool.run();
             }
@@ -412,7 +416,14 @@ public class CeylonTool implements Tool {
         }
         if(model.isScript())
             return null;
+        boolean useCache = false;
+        if(toolName != null && toolName.equals(model.getName()))
+            useCache = true;
+        if(useCache && toolCache != null)
+            return toolCache;
         tool = getPluginFactory().bindArguments(model, toolArgs);
+        if(useCache)
+            toolCache = tool;
         return tool;
     }
 
