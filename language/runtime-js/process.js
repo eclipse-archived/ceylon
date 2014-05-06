@@ -212,7 +212,7 @@ getProcess.$crtmm$=function(){return{
 ex$.getProcess=getProcess;
 ex$.$prop$getProcess={get:getProcess,$crtmm$:function(){return{mod:$CCMM$,d:['$','process'],$t:{t:processClass}
 }}};
-getProcess.$crtmm$=exports.$prop$getProcess.$crtmm$;
+getProcess.$crtmm$=ex$.$prop$getProcess.$crtmm$;
 // system
 
 function systemClass() {
@@ -247,7 +247,7 @@ ex$.getSystem=getSystem;
 ex$.$prop$getSystem={get:getSystem,$crtmm$:function(){return{
   mod:$CCMM$,d:['$','system'],$t:{t:systemClass}
 };}};
-getSystem.$crtmm$=exports.$prop$getSystem.$crtmm$;
+getSystem.$crtmm$=ex$.$prop$getSystem.$crtmm$;
 // runtime
 
 function runtimeClass() {
@@ -301,7 +301,7 @@ function getRuntime() { return runtime$; }
 ex$.getRuntime=getRuntime;
 ex$.$prop$getRuntime={get:getRuntime,$crtmm$:function(){
   return{mod:$CCMM$,d:['$','runtime'],$t:{t:runtimeClass}};}};
-getRuntime.$crtmm$=exports.$prop$getRuntime.$crtmm$;
+getRuntime.$crtmm$=ex$.$prop$getRuntime.$crtmm$;
 // operatingSystem
 
 function operatingSystemClass() {
@@ -339,4 +339,4 @@ ex$.getOperatingSystem=getOperatingSystem;
 ex$.$prop$getOperatingSystem={get:getOperatingSystem,$crtmm$:function(){
   return {mod:$CCMM$,d:['$','operatingSystem'],$t:{t:operatingSystemClass}};
 }};
-getOperatingSystem.$crtmm$=exports.$prop$getOperatingSystem.$crtmm$;
+getOperatingSystem.$crtmm$=ex$.$prop$getOperatingSystem.$crtmm$;
