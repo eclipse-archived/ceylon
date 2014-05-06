@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 
 public class FunctionHelper {
@@ -18,43 +19,41 @@ public class FunctionHelper {
 
     static void multiStmtFunction(final List<Tree.ParameterList> paramLists,
             final Tree.Block block, final Scope scope, final GenerateJsVisitor gen) {
-        generateParameterLists(paramLists, scope, new ParameterListCallback() {
+        generateParameterLists(block, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                gen.beginBlock();
                 if (paramLists.size() == 1 && scope!=null) { gen.initSelf(block); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         scope instanceof TypeDeclaration ? (TypeDeclaration)scope : null, null);
                 gen.visitStatements(block.getStatements());
-                gen.endBlock();
             }
         }, gen);
     }
     static void singleExprFunction(final List<Tree.ParameterList> paramLists,
                                     final Tree.Expression expr, final Scope scope, final GenerateJsVisitor gen) {
-        generateParameterLists(paramLists, scope, new ParameterListCallback() {
+        generateParameterLists(expr, paramLists, scope, new ParameterListCallback() {
             @Override
             public void completeFunction() {
-                gen.beginBlock();
                 if (paramLists.size() == 1 && scope != null) { gen.initSelf(expr); }
                 gen.initParameters(paramLists.get(paramLists.size()-1),
                         null, scope instanceof Method ? (Method)scope : null);
                 gen.out("return ");
                 expr.visit(gen);
                 gen.out(";");
-                gen.endBlock();
             }
         }, gen);
     }
 
     /** Generates the code for single or multiple parameter lists, with a callback function to generate the function blocks. */
-    static void generateParameterLists(final List<Tree.ParameterList> plist, final Scope scope,
+    static void generateParameterLists(final Node context, final List<Tree.ParameterList> plist, final Scope scope,
                 final ParameterListCallback callback, final GenerateJsVisitor gen) {
         if (plist.size() == 1) {
             gen.out(GenerateJsVisitor.function);
             Tree.ParameterList paramList = plist.get(0);
             paramList.visit(gen);
+            gen.beginBlock();
             callback.completeFunction();
+            gen.endBlock();
         } else {
             int count=0;
             for (Tree.ParameterList paramList : plist) {
@@ -67,7 +66,7 @@ public class FunctionHelper {
                 paramList.visit(gen);
                 if (count == 0) {
                     gen.beginBlock();
-                    gen.initSelf(scope, false);
+                    gen.initSelf(context);
                     Scope parent = scope == null ? null : scope.getContainer();
                     gen.initParameters(paramList, parent instanceof TypeDeclaration ? (TypeDeclaration)parent : null,
                             scope instanceof Method ? (Method)scope:null);
@@ -149,7 +148,7 @@ public class FunctionHelper {
     }
 
     static void methodArgument(final Tree.MethodArgument that, final GenerateJsVisitor gen) {
-        generateParameterLists(that.getParameterLists(), that.getScope(),
+        generateParameterLists(that, that.getParameterLists(), that.getScope(),
                 new ParameterListCallback() {
             @Override
             public void completeFunction() {

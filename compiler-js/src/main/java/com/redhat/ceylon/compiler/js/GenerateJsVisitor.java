@@ -31,7 +31,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Scope;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
-import com.redhat.ceylon.compiler.typechecker.model.Specification;
 import com.redhat.ceylon.compiler.typechecker.model.TypeAlias;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -415,16 +414,6 @@ public class GenerateJsVisitor extends Visitor
             beginBlock();
             visitStatements(stmnts);
             endBlock();
-        }
-    }
-
-    void initSelf(Scope scope, boolean force) {
-        if ((force && prototypeOwner!=null) || (scope != null && prototypeOwner == scope.getContainer()) &&
-                    (scope instanceof MethodOrValue
-                     || scope instanceof TypeDeclaration
-                     || scope instanceof Specification)) {
-            out("var ", names.self(prototypeOwner), "=this");
-            endLine(true);
         }
     }
 
