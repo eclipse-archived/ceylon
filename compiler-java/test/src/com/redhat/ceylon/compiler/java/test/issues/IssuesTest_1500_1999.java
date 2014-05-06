@@ -178,6 +178,12 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     }
 
     @Test
+    public void testBug1572() throws Throwable {
+        compile("bug15xx/bug1572/module.ceylon", "bug15xx/bug1572/run.ceylon");
+        runInJBossModules("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1572/1");
+    }
+
+    @Test
     public void testBug1576() {
         assertErrors("bug15xx/Bug1576",
                 new CompilerError(21, "native declaration not found"),
