@@ -21,7 +21,9 @@ public class AttributeGenerator {
             gen.out("{");
             gen.initSelf(that);
             gen.out("return ");
-            that.getSpecifierExpression().visit(gen);
+            if (!gen.isNaturalLiteral(that.getSpecifierExpression().getExpression().getTerm())) {
+                that.getSpecifierExpression().visit(gen);
+            }
             gen.out(";}");
         }
     }

@@ -73,7 +73,10 @@ class ComprehensionGenerator {
                 gen.out(exhaustionVarName, "=true");
                 gen.endLine(true);
                 gen.out("return ");
-                ((Tree.ExpressionComprehensionClause)startClause).getExpression().visit(gen);
+                final Tree.Expression _expr = ((Tree.ExpressionComprehensionClause)startClause).getExpression();
+                if (!gen.isNaturalLiteral(_expr.getTerm())) {
+                    _expr.visit(gen);
+                }
                 gen.endBlockNewLine(true);
                 for (int i = 0; i < initialIfClauses; i++) {
                     gen.endBlock();
