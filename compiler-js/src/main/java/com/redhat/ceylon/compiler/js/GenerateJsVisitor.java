@@ -428,11 +428,20 @@ public class GenerateJsVisitor extends Visitor
         }
     }
 
+    void initSelf(Node node) {
+        if (new NeedsThisVisitor(node).needsThisReference()) {
+            out("var ", names.self(prototypeOwner), "=this");
+            endLine(true);
+        }
+    }
+
     /** Visitor that determines if a method definition will need the "this" reference. */
-    private class NeedsThisVisitor extends Visitor {
+    class NeedsThisVisitor extends Visitor {
         private boolean refs=false;
-        public NeedsThisVisitor(Node n) {
-            n.visit(this);
+        NeedsThisVisitor(Node n) {
+            if (prototypeOwner != null) {
+                n.visit(this);
+            }
         }
         @Override public void visit(Tree.This that) {
             refs = true;
@@ -461,7 +470,7 @@ public class GenerateJsVisitor extends Visitor
             }
             super.visit(that);
         }
-        public boolean refersToThis() {
+        boolean needsThisReference() {
             return refs;
         }
     }
@@ -1409,7 +1418,7 @@ public class GenerateJsVisitor extends Visitor
                 out(names.name(container), "$defs$", pd.getName(), "=function");
                 params.visit(this);
                 out("{");
-                initSelf(container, false);
+                initSelf(expr);
                 out("return ");
                 if (param instanceof ParameterDeclaration &&
                         ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
@@ -1657,7 +1666,7 @@ public class GenerateJsVisitor extends Visitor
                 } else {
                     out(function, names.getter(d), "(){");
                 }
-                initSelf(d, true);
+                initSelf(that);
                 out("return ");
                 int boxType = boxStart(specInitExpr.getExpression().getTerm());
                 specInitExpr.getExpression().visit(this);
@@ -1897,7 +1906,7 @@ public class GenerateJsVisitor extends Visitor
                     // attribute is defined by a lazy expression ("=>" syntax)
                     defineAttribute(names.self(outer), names.name(d));
                     beginBlock();
-                    initSelf(d, false);
+                    initSelf(that);
                     out("return ");
                     Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                     int boxType = boxStart(expr.getTerm());
@@ -2495,7 +2504,7 @@ public class GenerateJsVisitor extends Visitor
                     out(names.getter(bmeDecl), "=function()");
                 }
                 beginBlock();
-                if (outer != null) { initSelf(specStmt.getScope(), true); }
+                if (outer != null) { initSelf(specStmt); }
                 out ("return ");
                 specStmt.getSpecifierExpression().visit(this);
                 out(";");
@@ -2562,7 +2571,6 @@ public class GenerateJsVisitor extends Visitor
                         }
                         out(paramNames.toString());
                         out("){");
-                        initSelf(moval.getContainer(), false);
                         for (com.redhat.ceylon.compiler.typechecker.model.Parameter p : params) {
                             if (p.isDefaulted()) {
                                 out("if(", names.name(p), "===undefined)", names.name(p),"=");
