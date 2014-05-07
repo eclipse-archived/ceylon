@@ -148,10 +148,10 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
         sync = .ceylon.language.Boolean.instance(n1.equals(n2));
         sync = .ceylon.language.Boolean.instance(!n1.equals(n2));
         final .ceylon.language.Comparison c = n1.compare(n2);
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).smallerThan());
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).largerThan());
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).asSmallAs());
-        sync = .ceylon.language.Boolean.instance(n1.compare(n2).asLargeAs());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2) == .ceylon.language.smaller_.get_());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2) == .ceylon.language.larger_.get_());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2) != .ceylon.language.larger_.get_());
+        sync = .ceylon.language.Boolean.instance(n1.compare(n2) != .ceylon.language.smaller_.get_());
     }
     
     private final void testInBoxed$priv$(final long n1, final long n2) {
@@ -268,28 +268,28 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger middle$13 = x;
             }
-            returning l.compare(middle$13).smallerThan() && middle$13.compare(u).smallerThan();
+            returning l.compare(middle$13) == .ceylon.language.smaller_.get_() && middle$13.compare(u) == .ceylon.language.smaller_.get_();
         );
         sync = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger middle$14 = x;
             }
-            returning l.compare(middle$14).asSmallAs() && middle$14.compare(u).smallerThan();
+            returning l.compare(middle$14) != .ceylon.language.larger_.get_() && middle$14.compare(u) == .ceylon.language.smaller_.get_();
         );
         sync = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger middle$15 = x;
             }
-            returning l.compare(middle$15).smallerThan() && middle$15.compare(u).asSmallAs();
+            returning l.compare(middle$15) == .ceylon.language.smaller_.get_() && middle$15.compare(u) != .ceylon.language.larger_.get_();
         );
         sync = (
             let
             {
                 .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger middle$16 = x;
             }
-            returning l.compare(middle$16).asSmallAs() && middle$16.compare(u).asSmallAs();
+            returning l.compare(middle$16) != .ceylon.language.larger_.get_() && middle$16.compare(u) != .ceylon.language.larger_.get_();
         );
     }
     

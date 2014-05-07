@@ -443,10 +443,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.Integer.instance(n1).equals(n2);
         sync = !.ceylon.language.Integer.instance(n1).equals(n2);
         final .ceylon.language.Comparison c = .ceylon.language.Integer.instance(n1).compare(n2);
-        sync = .ceylon.language.Integer.instance(n1).compare(n2).smallerThan();
-        sync = .ceylon.language.Integer.instance(n1).compare(n2).largerThan();
-        sync = .ceylon.language.Integer.instance(n1).compare(n2).asSmallAs();
-        sync = .ceylon.language.Integer.instance(n1).compare(n2).asLargeAs();
+        sync = .ceylon.language.Integer.instance(n1).compare(n2) == .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.Integer.instance(n1).compare(n2) == .ceylon.language.larger_.get_();
+        sync = .ceylon.language.Integer.instance(n1).compare(n2) != .ceylon.language.larger_.get_();
+        sync = .ceylon.language.Integer.instance(n1).compare(n2) != .ceylon.language.smaller_.get_();
         return null;
     }
     
@@ -470,10 +470,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.Float.instance(n1).equals(n2);
         sync = !.ceylon.language.Float.instance(n1).equals(n2);
         final .ceylon.language.Comparison c = .ceylon.language.Float.instance(n1).compare(n2);
-        sync = .ceylon.language.Float.instance(n1).compare(n2).smallerThan();
-        sync = .ceylon.language.Float.instance(n1).compare(n2).largerThan();
-        sync = .ceylon.language.Float.instance(n1).compare(n2).asSmallAs();
-        sync = .ceylon.language.Float.instance(n1).compare(n2).asLargeAs();
+        sync = .ceylon.language.Float.instance(n1).compare(n2) == .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.Float.instance(n1).compare(n2) == .ceylon.language.larger_.get_();
+        sync = .ceylon.language.Float.instance(n1).compare(n2) != .ceylon.language.larger_.get_();
+        sync = .ceylon.language.Float.instance(n1).compare(n2) != .ceylon.language.smaller_.get_();
         return null;
     }
     
@@ -497,10 +497,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.Character.instance(n1).equals(n2);
         sync = !.ceylon.language.Character.instance(n1).equals(n2);
         final .ceylon.language.Comparison c = .ceylon.language.Character.instance(n1).compare(n2);
-        sync = .ceylon.language.Character.instance(n1).compare(n2).smallerThan();
-        sync = .ceylon.language.Character.instance(n1).compare(n2).largerThan();
-        sync = .ceylon.language.Character.instance(n1).compare(n2).asSmallAs();
-        sync = .ceylon.language.Character.instance(n1).compare(n2).asLargeAs();
+        sync = .ceylon.language.Character.instance(n1).compare(n2) == .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.Character.instance(n1).compare(n2) == .ceylon.language.larger_.get_();
+        sync = .ceylon.language.Character.instance(n1).compare(n2) != .ceylon.language.larger_.get_();
+        sync = .ceylon.language.Character.instance(n1).compare(n2) != .ceylon.language.smaller_.get_();
         return null;
     }
     
@@ -530,10 +530,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = s1.equals(s2);
         sync = !s1.equals(s2);
         final .ceylon.language.Comparison c = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2));
-        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)).smallerThan();
-        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)).largerThan();
-        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)).asSmallAs();
-        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)).asLargeAs();
+        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)) == .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)) == .ceylon.language.larger_.get_();
+        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)) != .ceylon.language.larger_.get_();
+        sync = .ceylon.language.String.instance(s1).compare(.ceylon.language.String.instance(s2)) != .ceylon.language.smaller_.get_();
     }
     
     @.java.lang.Override
@@ -543,10 +543,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.String.instance(s1).equals(s2);
         sync = !.ceylon.language.String.instance(s1).equals(s2);
         final .ceylon.language.Comparison c = .ceylon.language.String.instance(s1).compare(s2);
-        sync = .ceylon.language.String.instance(s1).compare(s2).smallerThan();
-        sync = .ceylon.language.String.instance(s1).compare(s2).largerThan();
-        sync = .ceylon.language.String.instance(s1).compare(s2).asSmallAs();
-        sync = .ceylon.language.String.instance(s1).compare(s2).asLargeAs();
+        sync = .ceylon.language.String.instance(s1).compare(s2) == .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.String.instance(s1).compare(s2) == .ceylon.language.larger_.get_();
+        sync = .ceylon.language.String.instance(s1).compare(s2) != .ceylon.language.larger_.get_();
+        sync = .ceylon.language.String.instance(s1).compare(s2) != .ceylon.language.smaller_.get_();
         return null;
     }
     
