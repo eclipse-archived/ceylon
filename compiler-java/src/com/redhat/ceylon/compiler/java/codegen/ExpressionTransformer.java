@@ -1957,7 +1957,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         result = make().Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
 
         if (loseComparison) {
-            result = make().Apply(null, makeSelect(result, originalOperator.ceylonMethod), List.<JCExpression> nil());
+            // We cheat slightly bu using == instead of equals, but since those values
+            // don't override equals the effect is the same
+            result = make().Binary(originalOperator.javacValueOperator, result, makeLanguageValue(originalOperator.ceylonValue));
         }
 
         return result;

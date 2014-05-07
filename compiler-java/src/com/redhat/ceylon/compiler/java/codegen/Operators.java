@@ -147,10 +147,10 @@ public class Operators {
         BINARY_COMPARE(Tree.CompareOp.class, 2, "compare"),
 
         // Binary operators that act on intermediary Comparison objects
-        BINARY_LARGER(Tree.LargerOp.class, 2, "largerThan", JCTree.GT, IntegerFloatCharacter),
-        BINARY_SMALLER(Tree.SmallerOp.class, 2, "smallerThan", JCTree.LT, IntegerFloatCharacter),
-        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, "asLargeAs", JCTree.GE, IntegerFloatCharacter),
-        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, "asSmallAs", JCTree.LE, IntegerFloatCharacter),
+        BINARY_LARGER(Tree.LargerOp.class, 2, JCTree.EQ, "larger", JCTree.GT, IntegerFloatCharacter),
+        BINARY_SMALLER(Tree.SmallerOp.class, 2, JCTree.EQ, "smaller", JCTree.LT, IntegerFloatCharacter),
+        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, JCTree.NE, "smaller",  JCTree.GE, IntegerFloatCharacter),
+        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, JCTree.NE, "larger", JCTree.LE, IntegerFloatCharacter),
         ;
 
         // we can have either a mapping from Tree operator class
@@ -159,9 +159,14 @@ public class Operators {
         String optimisedMethod;
         
         int arity;
+        /** The name of the method which the boxed transformation invokes */
         String ceylonMethod;
         int javacOperator;
         PrimitiveType[] optimisableTypes;
+        /** The name of a top level value from the language module */
+        String ceylonValue;
+        /** The operator with which to compare against {@link #ceylonValue} */
+        int javacValueOperator;
         
         OperatorTranslation(int arity, String ceylonMethod, 
                 int javacOperator, PrimitiveType... optimisableTypes) {
@@ -179,6 +184,16 @@ public class Operators {
                 int arity, String ceylonMethod, 
                 int javacOperator, PrimitiveType... optimisableTypes) {
             this(arity, ceylonMethod, javacOperator, optimisableTypes);
+            this.operatorClass = operatorClass;
+        }
+        OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
+                int arity, int javacOperator1, String ceylonValue, 
+                int javacOperator, PrimitiveType... optimisableTypes) {
+            this.ceylonValue = ceylonValue;
+            this.javacValueOperator = javacOperator1;
+            this.javacOperator = javacOperator;
+            this.optimisableTypes = optimisableTypes;
+            this.arity = arity;
             this.operatorClass = operatorClass;
         }
         OperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> operatorClass, 
