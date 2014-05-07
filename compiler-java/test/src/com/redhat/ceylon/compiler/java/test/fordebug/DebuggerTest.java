@@ -10,13 +10,14 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 
 public class DebuggerTest extends CompilerTest {
     
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {
         List<File> files = getClassPathAsFiles(modules);
-        files.add(new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language/1.0.0/ceylon.language-1.0.0.car"));
+        files.add(new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language/" + Versions.CEYLON_VERSION_NUMBER + "/ceylon.language-" + Versions.CEYLON_VERSION_NUMBER + ".car"));
         return toPath(files);
     }
 
