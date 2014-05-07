@@ -34,6 +34,7 @@ import java.lang.reflect.WildcardType;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -698,7 +699,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             if (!dryRun) {
                 msg("info.noProblems.publishing").newline();
                 publish();
-                msg("info.ok");
+                String repoString = this.getOutputRepositoryManager().getRepositoriesDisplayString().toString();
+                
+                msg("info.published", this.module.toString(), repoString.substring(1, repoString.length()-1));
             }
             append(".").newline();
         } else {
