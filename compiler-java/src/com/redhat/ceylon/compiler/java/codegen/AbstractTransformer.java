@@ -3327,18 +3327,19 @@ public abstract class AbstractTransformer implements Transformation {
         return makeEmpty();
     }
     
-    JCExpression makeEmpty() {
+    JCExpression makeLanguageValue(String valueName) {
         return make().Apply(
                 List.<JCTree.JCExpression>nil(),
-                naming.makeLanguageValue("empty"),
+                naming.makeLanguageValue(valueName),
                 List.<JCTree.JCExpression>nil());
     }
     
+    JCExpression makeEmpty() {
+        return makeLanguageValue("empty");
+    }
+    
     JCExpression makeFinished() {
-        return make().Apply(
-                List.<JCTree.JCExpression>nil(),
-                naming.makeLanguageValue("finished"),
-                List.<JCTree.JCExpression>nil());
+        return makeLanguageValue("finished");
     }
 
     /**
