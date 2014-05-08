@@ -8,7 +8,7 @@
    approximately 5\{#00D7}10<sup>-324</sup>.
  
  Zero is represented by distinct instances `+0`, `-0`, but 
- these instances are equal. 
+ these instances are equal.
  
  In addition, the following special values exist:
  
@@ -17,6 +17,19 @@
  
  An undefined value is not equal to any other value, not 
  even to itself.
+ 
+ Literal floating point values are written with a decimal
+ point and, optionally, a magnitude or exponent:
+ 
+     1.0
+     1.0E6
+     1.0M
+     1.0E-6
+     1.0u
+ 
+ In the case of a fractional magnitude, the decimal point is
+ optional. Underscores may be used to group digits into 
+ groups of three.
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf"
 shared native final class Float(float)

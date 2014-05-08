@@ -2,6 +2,18 @@
    [[32-bit Unicode character|Character]]. The internal 
    UTF-16 encoding is hidden from clients.
    
+   Literal strings may be written between double quotes:
+   
+       "hello world"
+       "\r\n"
+       "\{#03C0} \{#2248} 3.14159"
+       "\{GREEK SMALL LETTER PI} \{ALMOST EQUAL TO} 3.14159"
+   
+   Alternatively, a _verbatim string_ may be written between
+   tripled double quotes.
+   
+   The _empty string_, `""`, is a string with no characters.
+   
    A string is a [[Category]] of its [[characters]], and of 
    its substrings:
    
@@ -57,10 +69,15 @@ shared native final class String(characters)
     "This string, with all characters in uppercase."
     shared native String uppercased;
     
-    "Split the string into tokens, using the given predicate
-     to determine which characters are separator characters.
+    "Split the string into tokens, using the given 
+     [[predicate function|splitting]] to determine which 
+     characters are separator characters.
      
-         value pathElements = path.split('/'.equals);"
+         value pathElements = path.split('/'.equals);
+     
+     The flags [[discardSeparators]] and [[groupSeparators]]
+     determine how separator characters should occur in the
+     resulting stream."
     shared native {String*} split(
             "A predicate that determines if a character is a
              separator characters at which to split. Default 
@@ -81,7 +98,7 @@ shared native final class String(characters)
     "The rest of the string, without the first element."
     shared actual native String rest;
     
-    "Join the given strings, using this string as a 
+    "Join the given [[strings]], using this string as a 
      separator."
     shared native String join({String*} strings);
     
@@ -94,8 +111,8 @@ shared native final class String(characters)
     shared native String trimmed => trim(Character.whitespace);
     
     "This string, after discarding the characters matching
-     the given predicate function from the beginning and end 
-     of the string.
+     the given [[predicate function|trimming]] from the 
+     beginning and end of the string.
      
          value trimmed = name.trim('_'.equals);"
     shared actual native String trim(
@@ -104,16 +121,16 @@ shared native final class String(characters)
             Boolean trimming(Character elem));
     
     "This string, after discarding the characters matching
-     the given predicate function from the beginning of the 
-     string."
+     the given [[predicate function|trimming]] from the 
+     beginning of the string."
     shared actual native String trimLeading(
             "The predicate function that determines whether
              a character should be trimmed"
             Boolean trimming(Character elem));
     
     "This string, after discarding the characters matching
-     the given predicate function from the end of the 
-     string."
+     the given [[predicate function|trimming]] from the end 
+     of the string."
     shared actual native String trimTrailing(
             "The predicate function that determines whether
              a character should be trimmed"
@@ -129,16 +146,18 @@ shared native final class String(characters)
     shared native actual String reversed;
     
     "Select the characters between the given indexes. If the 
-     start index is the same as the end index, return a 
-     string with a single character. If the start index is 
-     larger than the end index, return the characters in the 
+     [[start index|from]] is the same as the 
+     [[end index|to]], return a string with a single 
+     character. If the start index is larger than the end 
+     index, return the characters in the 
      reverse order from the order in which they appear in 
      this string. If both the start index and the end index 
-     are larger than the last index in the string, return 
-     the empty string. Otherwise, if the last index is 
-     larger than the last index in the sequence, return all 
-     characters from the start index to last character of 
-     the string."
+     are larger than the last index in the string, or if 
+     both the start index and the end index are smaller than
+     the first index in the string, return the empty string. 
+     Otherwise, if the last index is larger than the last 
+     index in the string, return all characters from the 
+     start index to last character of the string."
     shared actual native String span(Integer from, Integer to);
 
 	shared actual String spanFrom(Integer from)
@@ -148,27 +167,27 @@ shared native final class String(characters)
             => to>0 then span(0, to) else "";
     
     "Select the characters of this string beginning at the 
-     given index, returning a string no longer than the 
-     given length. If the portion of this string starting at 
-     the given index is shorter than the given length, 
-     return the portion of this string from the given index 
-     until the end of this string. Otherwise, return a 
-     string of the given length. If the start index is 
-     larger than the last index of the string, return the 
-     empty string."
+     given [[start index|from]], returning a string no 
+     longer than the given [[length]]. If the portion of 
+     this string starting at the given index is shorter than 
+     the given length, return the portion of this string 
+     from the given index until the end of this string. 
+     Otherwise, return a string of the given length. If the 
+     start index is larger than the last index of the 
+     string, return the empty string."
     shared native actual String segment(Integer from, 
                                         Integer length);
     
     "Select the first characters of this string, returning a 
-     string no longer than the given length. If this string 
-     is shorter than the given length, return this string. 
-     Otherwise, return a string of the given length."
+     string no longer than the given [[length]]. If this 
+     string is shorter than the given length, return this 
+     string. Otherwise, return a string of the given length."
     shared native actual String initial(Integer length);
     
     "Select the last characters of the string, returning a 
-     string no longer than the given length. If this string 
-     is shorter than the given length, return this string. 
-     Otherwise, return a string of the given length."
+     string no longer than the given [[length]]. If this 
+     string is shorter than the given length, return this 
+     string. Otherwise, return a string of the given length."
     shared native actual String terminal(Integer length);
     
     "Return two strings, the first containing the characters
@@ -192,7 +211,9 @@ shared native final class String(characters)
      `null` if the string has no characters. Note that this 
      operation is potentially costly for long strings, since 
      the underlying representation of the characters uses a 
-     UTF-16 encoding."
+     UTF-16 encoding. For any nonempty string:
+     
+         string.lastIndex == string.size-1"
     shared actual Integer? lastIndex {
         if (size==0) {
             return null;
@@ -205,10 +226,11 @@ shared native final class String(characters)
     "An iterator for the characters of the string."
     shared actual native Iterator<Character> iterator();
     
-    "Returns the character at the given index in the string, 
-     or `null` if the index is past the end of string. The 
-     first character in the string occurs at index zero. The 
-     last character in the string occurs at index 
+    "Returns the character at the given [[index]] in the 
+     string, or `null` if the index is before the start of 
+     the string or past the end of string. The first 
+     character in the string occurs at index zero. The last 
+     character in the string occurs at index 
      `string.size-1`."
     shared actual native Character? get(Integer index);
     
@@ -219,25 +241,25 @@ shared native final class String(characters)
      of its substrings and of its characters."
     shared actual native Boolean contains(Object element);
     
-    "Returns the concatenation of this string with the
-     given string."
+    "Returns the concatenation of this string with the given
+     [[other]] string."
     shared actual native String plus(String other);
     
     "Returns a string formed by repeating this string the 
-     given number of times, or the empty string if
+     given number of [[times]], or the empty string if
      `times<=0`."
     shared actual native String repeat(Integer times);
     
     "Returns a string formed by replacing every occurrence 
-     in this string of the given substring with the given 
-     replacement string, working from the start of this 
-     string to the end."
+     in this string of the given [[substring]] with the 
+     given [[replacement]] string, working from the start of
+     this string to the end."
     shared native String replace(String substring, 
                                  String replacement);
     
     "Returns a string formed by replacing the first 
-     occurrence in this string of the given substring, if
-     any, with the given replacement string."
+     occurrence in this string of the given [[substring]], 
+     if any, with the given [[replacement]] string."
     shared native String replaceFirst(String substring, 
                                       String replacement);
     
@@ -247,20 +269,21 @@ shared native final class String(characters)
     shared actual native Comparison compare(String other);
     
     "Determines if this string is longer than the given
-     length. This is a more efficient operation than
+     [[length]]. This is a more efficient operation than
      `string.size>length`."
     see (`value size`)
     shared actual native Boolean longerThan(Integer length);
     
     "Determines if this string is shorter than the given
-     length. This is a more efficient operation than
+     [[length]]. This is a more efficient operation than
      `string.size>length`."
     see (`value size`)
     shared actual native Boolean shorterThan(Integer length);
     
-    "Determines if the given object is a string, and if so, 
-     if this string has the same length, and the same 
-     characters, in the same order, as the given string."
+    "Determines if the given object is a `String`, and if 
+     so, if this string has the same [[length|size]], and 
+     the same [[characters]], in the same order, as the 
+     given [[string|that]]."
     shared actual native Boolean equals(Object that);
     
     shared actual native Integer hash;
@@ -269,8 +292,8 @@ shared native final class String(characters)
     shared actual String string => this;
     
     "Determines if this string has no characters, that is, 
-     if it has zero `size`. This is a _much_ more efficient 
-     operation than `string.size==0`."
+     if it has zero [[size]]. This is a _much_ more 
+     efficient operation than `string.size==0`."
     see (`value size`)
     shared actual native Boolean empty;
     

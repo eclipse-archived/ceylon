@@ -1,5 +1,14 @@
-"""A 32-bit [Unicode][] character. Every `Character` has a 
-   unique [[Integer]]-valued Unicode _code point_.
+"""A 32-bit [Unicode][] character.
+   
+   Literal characters may be written between single quotes:
+   
+       ' '
+       '\n'
+       '\{#03C0}'
+       '\{GREEK SMALL LETTER PI}'
+   
+   Every `Character` has a unique [[Integer]]-valued Unicode 
+   _code point_.
    
        Integer piCodePoint = '\{GREEK SMALL LETTER PI}'.integer; // #03C0
        Character pi = #03C0.character; // GREEK SMALL LETTER PI

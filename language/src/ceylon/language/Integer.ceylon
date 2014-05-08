@@ -20,7 +20,19 @@
  
  - For the JavaScript runtime, the bits at indices 0 to 31 are 
    addressable.
- "
+ 
+ Literal integers may be written in decimal, hexadecimal, or
+ binary notation:
+ 
+     8660
+     #21D4
+     $10000111010100
+ 
+ Underscores may be used to group digits.
+ 
+     8660
+     #21_D4
+     $10_0001_1101_0100"
 see (`value runtime`)
 shared native final class Integer(integer)
         extends Object()
