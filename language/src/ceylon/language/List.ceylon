@@ -101,8 +101,14 @@ shared interface List<out Element>
      
      - the lists both have the element `null`, or
      - the lists both have a non-null element, and the
-       two elements are equal."
+       two elements are equal.
+     
+     As a special exception, a [[String]] is not equal to 
+     any list which is not also a [[String]]."
     shared actual default Boolean equals(Object that) {
+        if (is String that) {
+            return false;
+        }
         if (is List<Anything> that) {
             if (that.size==size) {
                 for (i in 0..size-1) {
