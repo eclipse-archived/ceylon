@@ -436,6 +436,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 return true;
             }
         }
+        if (method.owner.getQualifiedName().contentEquals("ceylon.language.Object")) {
+            if (method.name.contentEquals("equals") || method.name.contentEquals("hashCode") || method.name.contentEquals("toString")) {
+                return false;
+            }
+        }
         return getOverriddenMethod(method, types) != null;
     }
 
