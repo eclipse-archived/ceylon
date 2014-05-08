@@ -3,8 +3,7 @@
 see (`interface Comparable`)
 by ("Gavin")
 shared abstract class Comparison(shared actual String string) 
-        of larger | smaller | equal {
-}
+        of larger | smaller | equal {}
 
 "The value is exactly equal to the given value."
 shared object equal extends Comparison("equal") {}
