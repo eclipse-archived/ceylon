@@ -2579,6 +2579,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             if (// for class members we rely on final/static bits
                 (klass instanceof Class
+                        && !klass.isFinal() // a final class necessarily has final members
                         && !methodMirror.isFinal() 
                         && !methodMirror.isStatic())
                 // Java interfaces are never final
