@@ -1026,6 +1026,7 @@ public final class Array<Element>
     
     @Override
     @Annotations({ @Annotation("actual") })
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getFirst() {
         if (getSize()>0) {
             return unsafeItem(0);
@@ -1037,6 +1038,7 @@ public final class Array<Element>
     
     @Override
     @Annotations({ @Annotation("actual") })
+    @TypeInfo("ceylon.language::Null|Element")
     public Element getLast() {
         final long size = getSize();
         return size > 0 ? unsafeItem((int)size-1) : null;

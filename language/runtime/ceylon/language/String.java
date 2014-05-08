@@ -320,7 +320,7 @@ public final class String
     }
 
     @Override
-    @TypeInfo("ceylon.language::Character|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character get(@Name("index") Integer key) {
         return get(value, key.longValue());
     }

@@ -88,7 +88,6 @@ shared native final class Float(float)
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;
     shared actual native Comparison compare(Float other);
-    
     shared actual native Float plus(Float other);
     shared actual native Float minus(Float other);
     shared actual native Float times(Float other);

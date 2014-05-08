@@ -190,6 +190,8 @@ shared native final class String(characters)
     "This string, with the characters in reverse order."
     shared native actual String reversed;
     
+    shared native actual Boolean defines(Integer index);
+    
     "Select the characters between the given indexes. If the 
      [[start index|from]] is the same as the 
      [[end index|to]], return a string with a single 
@@ -286,8 +288,12 @@ shared native final class String(characters)
      of its substrings and of its characters."
     shared actual native Boolean contains(Object element);
     
-    "Returns the concatenation of this string with the given
-     [[other]] string."
+    shared actual native Boolean startsWith(List<Anything> sublist);
+    
+    shared actual native Boolean endsWith(List<Anything> sublist);
+    
+    "Returns the concatenation of this string with the
+     given string."
     shared actual native String plus(String other);
     
     "Returns a string formed by repeating this string the 

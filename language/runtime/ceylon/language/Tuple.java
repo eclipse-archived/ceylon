@@ -266,8 +266,7 @@ public final class Tuple<Element, First extends Element,
     
     @Annotations({
             @Annotation("shared"),
-            @Annotation("actual"),
-            @Annotation("default")})
+            @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Iterator<Element>")
     public ceylon.language.Iterator<Element> iterator() {
@@ -276,14 +275,26 @@ public final class Tuple<Element, First extends Element,
     
     @Annotations({
             @Annotation("shared"),
-            @Annotation("actual"),
-            @Annotation("default")})
+            @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Boolean")
     public boolean contains(@Name("element")
     @TypeInfo("ceylon.language::Object")
     final java.lang.Object element) {
         return super.contains(element);
+    }
+    
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
+    public final <Other>Tuple 
+    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+        return new Tuple(
+                $reifiedOther, 
+                $reifiedOther, $reifiedOther, 
+                e, this);
     }
     
     @Ignore

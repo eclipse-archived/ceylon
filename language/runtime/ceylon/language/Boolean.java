@@ -38,7 +38,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     abstract public boolean booleanValue();
     
     @Override
-    public Boolean getNot() {
+    public final Boolean getNot() {
         return instance(getNot(booleanValue()));
     }
     
@@ -48,7 +48,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
     
     @Override
-    public Boolean and(@Name("other") Boolean other) {
+    public final Boolean and(@Name("other") Boolean other) {
         return instance(and(booleanValue(), other.booleanValue()));
     }
     
@@ -58,7 +58,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean clear(@Name("index") long index) {
+    public final Boolean clear(@Name("index") long index) {
         return instance(clear(booleanValue(), index));
     }
     @Ignore
@@ -70,7 +70,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean flip(@Name("index") long index) {
+    public final Boolean flip(@Name("index") long index) {
         return instance(flip(booleanValue(), index));
     }
     
@@ -83,7 +83,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public boolean get(@Name("index") long index) {
+    public final boolean get(@Name("index") long index) {
         return get(booleanValue(), index);
     }
     
@@ -96,7 +96,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean leftLogicalShift(@Name("shift") long arg0) {
+    public final Boolean leftLogicalShift(@Name("shift") long arg0) {
         return this;
     }
     
@@ -106,7 +106,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean or(@Name("other") Boolean other) {
+    public final Boolean or(@Name("other") Boolean other) {
         return instance(or(booleanValue(), other.booleanValue()));
     }
     
@@ -116,7 +116,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean rightArithmeticShift(@Name("shift") long arg0) {
+    public final Boolean rightArithmeticShift(@Name("shift") long arg0) {
         return this;
     }
     
@@ -126,7 +126,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean rightLogicalShift(@Name("shift") long arg0) {
+    public final Boolean rightLogicalShift(@Name("shift") long arg0) {
         return this;
     }
     
@@ -137,7 +137,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
 
     @Override
     @Ignore
-    public Boolean set(@Name("index") long index) {
+    public final Boolean set(@Name("index") long index) {
         return instance(set(booleanValue(), index));
     }
     
@@ -147,7 +147,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public Boolean set(@Name("index") long index, @Name("big") @Defaulted boolean bit) {
+    public final Boolean set(@Name("index") long index, @Name("big") @Defaulted boolean bit) {
         return instance(set(booleanValue(), index, bit));
     }
     
@@ -161,12 +161,12 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
 
     @Ignore
     @Override
-    public boolean set$bit(long index) {
+    public final boolean set$bit(long index) {
         return true;
     }
 
     @Override
-    public Boolean xor(@Name("other") Boolean other) {
+    public final Boolean xor(@Name("other") Boolean other) {
         return instance(xor(booleanValue(), other.booleanValue()));
     }
     

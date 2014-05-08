@@ -14,7 +14,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @SatisfiedTypes({
-    "ceylon.language::Scalar<ceylon.language::Integer>",
     "ceylon.language::Integral<ceylon.language::Integer>",
     "ceylon.language::Binary<ceylon.language::Integer>",
     "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>"
@@ -22,7 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @ValueType
 public final class Integer
-    implements Scalar<Integer>, Integral<Integer>,
+    implements Integral<Integer>,
                Binary<Integer>,
                Exponentiable<Integer,Integer>, ReifiedType {
 
@@ -335,7 +334,8 @@ public final class Integer
     }
 
     @Override
-    public boolean divides(@Name("other") Integer other) {
+    @Ignore
+    public final boolean divides(@Name("other") Integer other) {
         return other.value % value == 0;
     }
 
@@ -352,15 +352,6 @@ public final class Integer
     @Ignore
     public static long getNegated(long value) {
         return -value;
-    }
-
-    public boolean test(Integer op) {
-        return value == op.value;
-    }
-
-    @Ignore
-    public static boolean test(long value, long otherValue) {
-        return value == otherValue;
     }
 
     @Override
