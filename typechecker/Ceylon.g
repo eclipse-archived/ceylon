@@ -3939,7 +3939,7 @@ fragment
 Letter
     : 'a'..'z' 
     | 'A'..'Z' 
-    | '\u00c0'..'\ufffe'
+    | '\u0080'..'\uffff'
     ;
 
 fragment
