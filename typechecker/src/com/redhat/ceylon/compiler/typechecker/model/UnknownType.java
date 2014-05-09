@@ -60,7 +60,6 @@ public class UnknownType extends TypeDeclaration {
     public void reportErrors() {
         if(errorReporter != null){
             errorReporter.run();
-            errorReporter = null;
         }
     }
 
