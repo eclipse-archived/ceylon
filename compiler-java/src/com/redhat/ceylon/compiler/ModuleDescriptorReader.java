@@ -92,7 +92,7 @@ class ModuleDescriptorReader {
                 moduleManager.push(part);
                 srcDir = child;
             }else{
-                throw new NoSuchModuleException("Failed to find module name part "+part+" in "+srcDir);
+                throw new NoSuchModuleException("Failed to find module name part "+part+" of "+name+" in "+srcDir);
             }
         }
         File moduleFile = new File(srcDir, ModuleManager.MODULE_FILE);
