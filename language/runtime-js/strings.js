@@ -550,6 +550,10 @@ function isNewline(c) { return c.value===10; }
 atr$(String$proto, 'lines', function() {
     return this.$_split(isNewline, true);
 },undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$at','lines']}});
+atr$(String$proto, 'coalesced', function(){return this;},undefined,function(){return{
+  mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$at','coalesced'],
+  $an:[shared(),actual()]
+};});
 String$proto.occurrences = function(sub) {
     if (sub.length == 0) {return 0}
     var ocs = [];
@@ -567,10 +571,10 @@ String$proto.$_filter = function(f) {
     var r = Iterable.$$.prototype.$_filter.call(this, f);
     return String$(r);
 }
+String$proto.$_filter.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','filter']};}
 String$proto.following=function(o,$mpt) {
   return Iterable.$$.prototype.following.call(this,o,$mpt);
 }
-String$proto.$_filter.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','filter']};}
 String$proto.skip = function(skip) {
     if (skip==0) return this;
     return this.segment(skip, this.size);
@@ -589,13 +593,6 @@ String$proto.by = function(step) {
 }
 String$proto.by.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','by'],
   $ps:[{$nm:'step',$t:{t:Integer}}]};}
-String$proto.$_sort = function(f) {
-    var r = Iterable.$$.prototype.$_sort.call(this, f);
-    return String$(r);
-}
-String$proto.$_sort.$crtmm$=function(){return{mod:$CCMM$,$t:{t:String$},d:['$','String','$m','sort']};}
-atr$(String$proto, 'coalesced', function(){ return this; },undefined,function(){return{
-  mod:$CCMM$,$t:{t:String$},d:['$','String','$at','coalesced']}});
 String$proto.$_slice=function(idx) {
   var s1 = idx>0 ? this.segment(0,idx) : '';
   if (idx<0)idx=0;
