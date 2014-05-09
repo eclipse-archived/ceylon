@@ -13,14 +13,14 @@ shared void testIterables() {
     check(String("h o l a".filter((Character c) => c.letter)) == "hola", "String.filter");
 
     //Collect (like map, but it's already T[])
-    check(s1.collect((Integer i) => i*2) == { 2, 4, 6, 8, 10 }.sequence, "Iterable.map 1");
-    check(s2.collect((String s) => s.reversed) == { "olleH", "dlroW" }.sequence, "Iterable.map 2");
-    check("hola".collect((Character c) => c.uppercased) == {'H', 'O', 'L', 'A'}.sequence, "String.map");
+    check(s1.collect((Integer i) => i*2) == [2, 4, 6, 8, 10], "Iterable.map 1");
+    check(s2.collect((String s) => s.reversed) == ["olleH", "dlroW"], "Iterable.map 2");
+    check("hola".collect((Character c) => c.uppercased) == ['H', 'O', 'L', 'A'], "String.map");
 
     //Select
-    check(s1.select((Integer i) => i%2==0) == { 2, 4 }.sequence, "Iterable.select 1");
-    check(s2.select((String s) => "e" in s) == { "Hello" }.sequence, "Iterable.select 2");
-    check("h o l a".select((Character c) => c.letter) == "hola", "String.select");
+    check(s1.select((Integer i) => i%2==0) == [2, 4], "Iterable.select 1");
+    check(s2.select((String s) => "e" in s) == ["Hello"], "Iterable.select 2");
+    check("h o l a".select((Character c) => c.letter) == "hola".sequence, "String.select");
 
     //Fold
     check(s1.fold(0, (Integer a, Integer b) => a+b) == 15, "Iterable.fold 1");
@@ -139,7 +139,7 @@ shared void testIterables() {
     //Sorted
     check({5,4,3,2,1}.sort((Integer x, Integer y) => x<=>y).sequence == {1,2,3,4,5}.sequence, "sort [1]");
     check({"tt","aaa","z"}.sort((String a, String b) => a<=>b).sequence == {"aaa", "tt", "z"}.sequence, "sort [2]");
-    check("hola".sort((Character a, Character b) => a<=>b) == "ahlo", "String.sort");
+    check("hola".sort((Character a, Character b) => a<=>b) == "ahlo".sequence, "String.sort");
 
     //Skipping
     check({1,2,3,4,5}.skip(3).sequence=={4,5}.sequence, "skip [1]");

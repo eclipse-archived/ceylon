@@ -249,12 +249,12 @@ shared void strings() {
     check("hello world".initial(11)=="hello world", "string initial 6");
     check("hello world".terminal(11)=="hello world", "string terminal 6");
     check("hello".by(2)=="hlo", "string.by");
-    check(" world".following("hello").sequence=={"hello", ' ','w','o','r','l','d'}.sequence, "string.following: ``" world".following("hello")``");
+    check(" world".following("hello").sequence==["hello", ' ','w','o','r','l','d'], "string.following: ``" world".following("hello")``");
     check("hello".skip(3)=="lo", "string.skip");
     check("hello".take(2)=="he", "string.take");
     check("EL" == String("hElLo".filter((Character c) => c.uppercase)), "string.filter 1: ``"hElLo".filter((Character c) => c.uppercase)``");
     check(String("hElLo".filter((Character c) => c.uppercase)) == "EL", "string.filter 2: ``"hElLo".filter((Character c) => c.uppercase)``");
-    check("what".sort(byIncreasing(Character))=="ahtw", "string.sort");
+    check("what".sort(byIncreasing(Character))=="ahtw".sequence, "string.sort");
     
     check(min(["abc", "xyz", "foo", "bar"])=="abc", "strings min");
     check(max(["abc", "xyz", "foo", "bar"])=="xyz", "strings max");
