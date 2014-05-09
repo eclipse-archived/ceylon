@@ -20,6 +20,7 @@
 package com.redhat.ceylon.ant;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.apache.tools.ant.BuildException;
@@ -72,4 +73,21 @@ public class Util {
         return script.getAbsolutePath();
     }
 
+    // duplicated from /ceylon-common/src/com/redhat/ceylon/common/FileUtil.java because it's not in Ant's classpath :(
+    public static boolean isChildOfOrEquals(File parent, File child){
+        // doing a single comparison is likely cheaper than walking up to the root
+        try {
+            String parentPath = parent.getCanonicalPath();
+            String childPath = child.getCanonicalPath();
+            if(parentPath.equals(childPath))
+                return true;
+            // make sure we compare with a separator, otherwise /foo would be considered a parent of /foo-bar
+            if(!parentPath.endsWith(File.separator))
+                parentPath += File.separator;
+            return childPath.startsWith(parentPath);
+        } catch (IOException e) {
+            return false;
+        }
+        
+    }
 }

@@ -186,7 +186,7 @@ abstract class LazyHelper {
     private Module inferModule(File file) {
         if (file.exists()) {
             for (File src : task.getSrc()) {
-                if (file.getAbsolutePath().startsWith(src.getAbsolutePath())) {
+                if (Util.isChildOfOrEquals(src, file)) {
                     while (!file.equals(src)) {
                         File moduleDescriptor = file.isDirectory() ? new File(file, "module.ceylon") : file;
                         if (moduleDescriptor.exists()
