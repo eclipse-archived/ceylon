@@ -8,12 +8,14 @@
      mapPairs(fun,xs,ys)[i]==fun(xs[i],ys[i])
  
  for every `0<=i<min({xs.size,ys.size})`."
-shared {Result*} mapPairs<Result,FirstArgument,SecondArgument>(
+shared Iterable<Result,FirstAbsent|SecondAbsent> mapPairs<Result,FirstArgument,SecondArgument,FirstAbsent,SecondAbsent>(
     Result collecting(FirstArgument firstArg, SecondArgument secondArg),
-    {FirstArgument*} firstArguments, 
-    {SecondArgument*} secondArguments
-) {
-    object iterable satisfies {Result*} {
+    Iterable<FirstArgument,FirstAbsent> firstArguments,
+    Iterable<SecondArgument,SecondAbsent> secondArguments
+)
+        given FirstAbsent satisfies Null
+        given SecondAbsent satisfies Null {
+    object iterable satisfies Iterable<Result,FirstAbsent|SecondAbsent> {
         shared actual Iterator<Result> iterator() {
             value first = firstArguments.iterator();
             value second = secondArguments.iterator();

@@ -555,9 +555,9 @@ shared interface Iterable<out Element, out Absent=Null>
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 2->\"world\" }`."
-    shared default {<Integer->Element&Object>*} indexed {
+    shared default Iterable<<Integer->Element&Object>,Element&Null|Absent> indexed {
         object indexes
-                satisfies {<Integer->Element&Object>*} {
+                satisfies Iterable<<Integer->Element&Object>,Element&Null|Absent> {
             value orig => outer;
             shared actual Iterator<Integer->Element&Object> iterator() {
                 object iterator satisfies Iterator<Integer->Element&Object> {

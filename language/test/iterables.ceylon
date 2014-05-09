@@ -262,8 +262,8 @@ shared void testIterables() {
 	value ib = { 1, 2, 3, 4, 5 };
 	value ic = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
 	value ix = mapPairs(plus<Integer>, ia, ia);
-	value iy = mapPairs(plus<Integer>, ib, ib);
-	value iz = mapPairs(plus<Integer>, ic, ic);
+	{Integer+} iy = mapPairs(plus<Integer>, ib, ib);
+	{Integer+} iz = mapPairs(plus<Integer>, ic, ic);
 	print(ix);
 	print(iy);
     check(ix.string=="{}", "Iterable.string [1]");

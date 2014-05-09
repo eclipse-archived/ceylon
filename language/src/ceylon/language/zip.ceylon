@@ -11,10 +11,12 @@
      zipEntries(keys,items)[i]==keys[i]->items[i]
  
  for every `0<=i<min({keys.size,items.size})`."
-shared {<Key->Item>*} zipEntries<Key,Item>
-        ({Key*} keys, {Item*} items)
+shared Iterable<<Key->Item>,KeyAbsent|ItemAbsent> zipEntries<Key,Item,KeyAbsent,ItemAbsent>
+        (Iterable<Key,KeyAbsent> keys, Iterable<Item,ItemAbsent> items)
         given Key satisfies Object
         given Item satisfies Object
+        given KeyAbsent satisfies Null
+        given ItemAbsent satisfies Null
         => mapPairs(Entry<Key,Item>, keys, items);
 
 "Given two streams, form a new stream consisting of
@@ -31,8 +33,10 @@ shared {<Key->Item>*} zipEntries<Key,Item>
      zipPairs(xs,ys)[i]==[xs[i],ys[i]]
  
  for every `0<=i<min({xs.size,ys.size})`."
-shared {[First,Second]*} zipPairs<First,Second>
-        ({First*} firstElements, {Second*} secondElements)
+shared Iterable<[First,Second],FirstAbsent|SecondAbsent> zipPairs<First,Second,FirstAbsent,SecondAbsent>
+        (Iterable<First,FirstAbsent> firstElements, Iterable<Second,SecondAbsent> secondElements)
+        given FirstAbsent satisfies Null
+        given SecondAbsent satisfies Null
         => mapPairs((First first,Second second) => [first,second],
                 firstElements, secondElements);
 
@@ -47,7 +51,9 @@ shared {[First,Second]*} zipPairs<First,Second>
      zip(heads, tails)[i]==[heads[i],*tails[i]]
  
  for every `0<=i<min({heads.size,tails.size})`."
-shared {Tuple<Element|Head,Head,Tail>*} zip<Element,Head,Tail>
-        ({Head*} heads, {Tail*} tails)
+shared Iterable<Tuple<Element|Head,Head,Tail>,HeadAbsent|TailAbsent> zip<Element,Head,Tail,HeadAbsent,TailAbsent>
+        (Iterable<Head,HeadAbsent> heads, Iterable<Tail,TailAbsent> tails)
         given Tail satisfies Element[]
+        given HeadAbsent satisfies Null
+        given TailAbsent satisfies Null
         => mapPairs(Tuple<Element|Head,Head,Tail>, heads, tails);
