@@ -1467,7 +1467,7 @@ TypeConstraints?
             <title>Anonymous classes</title>
             
             <para>An <literal>object</literal> declaration makes it possible to define
-            a class, instantiate the class, and declare an attribute referring to the 
+            a class, instantiate the class, and declare a value referring to the 
             resulting class instance in a single declaration.</para>
             
             <synopsis>ObjectDeclaration: Annotations ObjectHeader ClassBody</synopsis>
@@ -1481,7 +1481,7 @@ TypeConstraints?
             <synopsis>ObjectInheritance: ExtendedType? SatisfiedTypes?</synopsis>
             
             <para>An <literal>object</literal> declaration specifies the name of the
-            attribute and the schema, supertypes, and implementation of the class. It
+            value and the schema, supertypes, and implementation of the class. It
             does not specify a type name. Instead, the type has a name assigned 
             internally by the compiler that is not available at compilation time.</para>
             
@@ -1511,7 +1511,8 @@ TypeConstraints?
             are replaced with the intersection of the extended type with all satisfied
             types.</para>
             
-            <para>An <literal>object</literal> attribute:</para>
+            <para>An <literal>object</literal> value is a reference, as defined in
+            <xref linkend="references"/>, and:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1523,7 +1524,7 @@ TypeConstraints?
             </itemizedlist>
              
             <para>If the <literal>object</literal> is annotated <literal>shared</literal>, 
-            the attribute is <literal>shared</literal>. If the <literal>object</literal>
+            the value is <literal>shared</literal>. If the <literal>object</literal>
             is annotated <literal>actual</literal>, it refines an attribute of a 
             supertype.</para>
             
