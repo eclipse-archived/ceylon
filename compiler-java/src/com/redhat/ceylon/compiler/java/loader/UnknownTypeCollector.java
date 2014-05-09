@@ -89,7 +89,10 @@ public class UnknownTypeCollector extends Visitor {
         if(visited.put(declaration, declaration) != null)
             return;
         if(declaration instanceof UnknownType){
-            ((UnknownType) declaration).reportErrors();
+            UnknownType ut = (UnknownType) declaration;
+            ut.reportErrors();
+            // don't report it twice
+            ut.setErrorReporter(null);
         }else if(declaration instanceof UnionType){
             for(ProducedType t : declaration.getCaseTypes()){
                 collectUnknownTypesResolved(t, visited);
