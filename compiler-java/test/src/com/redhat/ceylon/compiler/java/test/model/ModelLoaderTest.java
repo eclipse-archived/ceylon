@@ -218,8 +218,11 @@ public class ModelLoaderTest extends CompilerTest {
         if(name.startsWith("java."))
             return;
         // only compare parameter names for public methods
-        if(!(validDeclaration instanceof MethodOrValue) || !((MethodOrValue)validDeclaration).isParameter() || validDeclaration.isShared())
+        if(!(validDeclaration instanceof MethodOrValue) 
+                || !((MethodOrValue)validDeclaration).isParameter() 
+                || (validDeclaration.getContainer() instanceof Declaration && ((Declaration)validDeclaration.getContainer()).isShared())) {
             Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
+        }
         Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         Assert.assertEquals(name+" [annotation]", validDeclaration.isAnnotation(), modelDeclaration.isAnnotation());
         // if they're not shared, stop at making sure they are the same type of object
