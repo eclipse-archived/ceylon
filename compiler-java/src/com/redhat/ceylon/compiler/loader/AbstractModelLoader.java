@@ -2870,27 +2870,63 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             if(exceptionMessage != null)
                 sb.append(":\n ").append(exceptionMessage);
-            errorReporter = new Runnable(){
-                public void run(){
-                    moduleManager.attachErrorToOriginalModuleImport(module, sb.toString());
-                }
-            };
+            errorReporter = makeModelErrorReporter(module, sb.toString());
         }else if(exceptionMessage == null){
-            errorReporter = new Runnable(){
-                public void run(){
-                    logError(message);
-                } 
-            };
+            errorReporter = makeModelErrorReporter(message);
         }else{
-            errorReporter = new Runnable(){
-                public void run(){
-                    logError(message+": "+exceptionMessage);
-                } 
-            };
+            errorReporter = makeModelErrorReporter(message+": "+exceptionMessage);
         }
         UnknownType ret = new UnknownType(typeFactory);
         ret.setErrorReporter(errorReporter);
         return ret.getType();
+    }
+
+    /**
+     * To be overridden by subclasses
+     */
+    protected Runnable makeModelErrorReporter(String message) {
+        return new LogErrorRunnable(this, message);
+    }
+    
+    /**
+     * To be overridden by subclasses
+     */
+    protected Runnable makeModelErrorReporter(Module module, String message) {
+        return new ModuleErrorAttacherRunnable(moduleManager, module, message);
+    }
+
+    private static class ModuleErrorAttacherRunnable implements Runnable {
+
+        private Module module;
+        private String message;
+        private ModuleManager moduleManager;
+
+        public ModuleErrorAttacherRunnable(ModuleManager moduleManager, Module module, String message) {
+            this.moduleManager = moduleManager;
+            this.module = module;
+            this.message = message;
+        }
+
+        @Override
+        public void run() {
+            moduleManager.attachErrorToOriginalModuleImport(module, message);
+        }
+    }
+
+    private static class LogErrorRunnable implements Runnable {
+
+        private String message;
+        private AbstractModelLoader modelLoader;
+
+        public LogErrorRunnable(AbstractModelLoader modelLoader, String message) {
+            this.modelLoader = modelLoader;
+            this.message = message;
+        }
+
+        @Override
+        public void run() {
+            modelLoader.logError(message);
+        }
     }
 
     private void markTypeErased(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
