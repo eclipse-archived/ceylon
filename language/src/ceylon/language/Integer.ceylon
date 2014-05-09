@@ -124,9 +124,9 @@ shared native final class Integer(integer)
     
     shared actual native String string;
 
-    shared actual native Boolean largerThan(String other); 
-    shared actual native Boolean smallerThan(String other); 
-    shared actual native Boolean notSmallerThan(String other); 
-    shared actual native Boolean notLargerThan(String other); 
+    shared actual native Boolean largerThan(Integer other); 
+    shared actual native Boolean smallerThan(Integer other); 
+    shared actual native Boolean notSmallerThan(Integer other); 
+    shared actual native Boolean notLargerThan(Integer other); 
     
 }
