@@ -205,7 +205,17 @@ public class ModelLoaderTest extends CompilerTest {
         Boolean success = task2.call();
         Assert.assertTrue("Compilation failed", success);
     }
-
+    private boolean isUltimatelyVisible(Declaration d) {
+        if (d instanceof MethodOrValue && 
+                ((MethodOrValue)d).isParameter()) {
+            Scope container = d.getContainer();
+            if (container instanceof Declaration) {
+                return isUltimatelyVisible((Declaration)container);
+            }
+        }
+        return d.isShared();
+    }
+        
     protected void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
         if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
             return;
@@ -220,18 +230,20 @@ public class ModelLoaderTest extends CompilerTest {
         // only compare parameter names for public methods
         if(!(validDeclaration instanceof MethodOrValue) 
                 || !((MethodOrValue)validDeclaration).isParameter() 
-                || (validDeclaration.getContainer() instanceof Declaration && ((Declaration)validDeclaration.getContainer()).isShared())) {
+                || isUltimatelyVisible(validDeclaration)) {
             Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
         }
         Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
         Assert.assertEquals(name+" [annotation]", validDeclaration.isAnnotation(), modelDeclaration.isAnnotation());
         // if they're not shared, stop at making sure they are the same type of object
-        if(!validDeclaration.isShared() && !(validDeclaration instanceof TypeParameter)){
+        if(!validDeclaration.isShared()
+                && !isUltimatelyVisible(validDeclaration)
+                && !(validDeclaration instanceof TypeParameter)){
             boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
             // we may replace Getter or Setter with Value, no harm done
             sameType |= validDeclaration instanceof Value && modelDeclaration instanceof Value;
             sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
-            Assert.assertTrue(name+" [type]", sameType);
+            Assert.assertTrue(name+" [type] " + validDeclaration + " is not the same as " + modelDeclaration, sameType);
             return;
         }
         compareAnnotations(validDeclaration, modelDeclaration);
