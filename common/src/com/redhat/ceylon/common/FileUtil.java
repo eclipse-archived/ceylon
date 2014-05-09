@@ -325,4 +325,20 @@ public class FileUtil {
         }
     }
 
+    // duplicated in /ceylon-compiler/src/com/redhat/ceylon/ant/Util.java because FileUtil is not in Ant's ClassPath
+    public static boolean isChildOfOrEquals(File parent, File child){
+        // doing a single comparison is likely cheaper than walking up to the root
+        try {
+            String parentPath = parent.getCanonicalPath();
+            String childPath = child.getCanonicalPath();
+            if(parentPath.equals(childPath))
+                return true;
+            // make sure we compare with a separator, otherwise /foo would be considered a parent of /foo-bar
+            if(!parentPath.endsWith(File.separator))
+                parentPath += File.separator;
+            return childPath.startsWith(parentPath);
+        } catch (IOException e) {
+            return false;
+        }
+    }
 }
