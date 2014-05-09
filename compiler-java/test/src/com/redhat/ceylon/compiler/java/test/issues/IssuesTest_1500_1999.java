@@ -179,8 +179,9 @@ public class IssuesTest_1500_1999 extends CompilerTest {
 
     @Test
     public void testBug1572() throws Throwable {
-        compile("bug15xx/bug1572/module.ceylon", "bug15xx/bug1572/run.ceylon");
-        runInJBossModules("com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1572/1");
+        compile("bug15xx/bug1572/mod/module.ceylon", "bug15xx/bug1572/mod/run.ceylon",
+                "bug15xx/bug1572/test/module.ceylon", "bug15xx/bug1572/test/run.ceylon");
+        runInJBossModules("test", "com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1572.mod/1");
     }
 
     @Test
