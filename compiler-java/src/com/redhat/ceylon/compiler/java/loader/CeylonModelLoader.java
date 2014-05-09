@@ -339,11 +339,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                         // ignore some methods
                         if(isIgnored(e.sym))
                             continue;
-                        if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true) &&
-                                // FIXME: I suspect the following requires a
-                                // subst() for a parametric return type.
-                                types.isSameType(method.type.getReturnType(),
-                                        types.memberType(method.owner.type, e.sym).getReturnType())) {
+                        if (method.overrides(e.sym, (TypeSymbol)method.owner, types, true)) {
                             impl = (MethodSymbol) e.sym;
                         }
                     }
