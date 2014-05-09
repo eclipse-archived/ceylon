@@ -33,10 +33,10 @@ shared final native class Array<Element>({Element*} elements)
     "Efficiently copy the elements in the segment
      `sourcePosition:length` of this array to the segment 
      `destinationPosition:length` of the given 
-     [[array|other]]."
+     [[array|destination]]."
     shared native void copyTo(
         "The array into which to copy the elements." 
-        Array<Element> other,
+        Array<Element> destination,
         "The index of the first element in this array to copy."  
         Integer sourcePosition = 0, 
         "The index in the given array into which to 

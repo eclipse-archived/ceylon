@@ -21,11 +21,11 @@ public class Exception extends RuntimeException implements ReifiedType {
 	private String description;
     
     public Exception(
-            @TypeInfo("ceylon.language::String|ceylon.language::Null")
+            @TypeInfo("ceylon.language::Null|ceylon.language::String")
             @Name("description")
             @Defaulted
             String description,
-            @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
+            @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
             @Name("cause")
             @Defaulted
             java.lang.Throwable cause) {

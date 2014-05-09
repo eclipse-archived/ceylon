@@ -9,7 +9,7 @@ shared final native class ArraySequence<out Element>({Element+} elements)
     
     shared native actual Element first;
     
-    shared native actual Integer size;  
+    shared native actual Integer size;
     
     shared native actual Integer lastIndex;
     
@@ -27,8 +27,8 @@ shared final native class ArraySequence<out Element>({Element+} elements)
     
     shared native actual Boolean defines(Integer key);
     
-    shared actual Boolean equals(Object other) 
-            => (super of List<Element>).equals(other);
+    shared actual Boolean equals(Object that) 
+            => (super of List<Element>).equals(that);
     
     shared actual Integer hash 
             => (super of List<Element>).hash;

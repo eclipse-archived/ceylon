@@ -22,4 +22,6 @@ shared native object language {
     "The minor version of the code generated for the underlying runtime."
     shared native Integer minorVersionBinary;
     
+    shared native actual String string;
+    
 }

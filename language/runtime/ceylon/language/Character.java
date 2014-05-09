@@ -208,26 +208,6 @@ public final class Character
             ((x == y) ? equal_.get_() : larger_.get_());
     }
 
-	/*@Override
-	public boolean largerThan(@Name("other") Character other) {
-		return codePoint>other.codePoint;
-	}
-
-	@Override
-	public boolean smallerThan(@Name("other") Character other) {
-		return codePoint<other.codePoint;
-	}
-
-	@Override
-	public boolean asLargeAs(@Name("other") Character other) {
-		return codePoint>=other.codePoint;
-	}
-
-	@Override
-	public boolean asSmallAs(@Name("other") Character other) {
-		return codePoint<=other.codePoint;
-	}*/
-
     @Override
     public Character getPredecessor() {
     	return new Character(codePoint-1);
@@ -281,7 +261,7 @@ public final class Character
     }
     
     @Override
-    public boolean largerThan(Character other) {
+    public boolean largerThan(@Name("other") Character other) {
     	return codePoint>other.codePoint;
     }
 
@@ -294,7 +274,7 @@ public final class Character
     }
 
     @Override
-    public boolean notSmallerThan(Character other) {
+    public boolean notSmallerThan(@Name("other") Character other) {
     	return codePoint>=other.codePoint;
     }
 
@@ -307,7 +287,7 @@ public final class Character
     }
 
     @Override
-    public boolean smallerThan(Character other) {
+    public boolean smallerThan(@Name("other") Character other) {
     	return codePoint<other.codePoint;
     }
 
@@ -320,7 +300,7 @@ public final class Character
     }
 
     @Override
-    public boolean notLargerThan(Character other) {
+    public boolean notLargerThan(@Name("other") Character other) {
     	return codePoint<=other.codePoint;
     }
     

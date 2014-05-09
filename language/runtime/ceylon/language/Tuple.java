@@ -290,7 +290,7 @@ public final class Tuple<Element, First extends Element,
     @Override
     @TypeInfo("ceylon.language::Tuple<Element|Other,Other,ceylon.language::Tuple<Element,First,Rest>>")
     public final <Other>Tuple 
-    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
         return new Tuple(
                 $reifiedOther, 
                 $reifiedOther, $reifiedOther, 

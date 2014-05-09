@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7)
 @Class(extendsType = "ceylon.language::Basic")
-@CaseTypes({"ceylon.language::Error", "ceylon.language::Exception"})
+@CaseTypes({"ceylon.language::Exception", "ceylon.language::Error"})
 public abstract class Throwable extends java.lang.Object {
 
     @Ignore
@@ -22,11 +22,11 @@ public abstract class Throwable extends java.lang.Object {
 	private java.lang.String description;
     
     public Throwable(
-            @TypeInfo("ceylon.language::String|ceylon.language::Null")
+            @TypeInfo("ceylon.language::Null|ceylon.language::String")
             @Name("description")
             @Defaulted
             java.lang.String description,
-            @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
+            @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
             @Name("cause")
             @Defaulted
             java.lang.Throwable cause) {
@@ -44,8 +44,8 @@ public abstract class Throwable extends java.lang.Object {
         this($default$description());
     }
         
-    @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
-    public java.lang.Throwable getCause() {
+    @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
+    public final java.lang.Throwable getCause() {
         return null;//super.getCause();
     }
     

@@ -35,13 +35,13 @@ public class SequenceAppender<Element> extends SequenceBuilder<Element> {
     }
     
     @Override
-    public SequenceAppender<Element> append(@Name("element") Element element) {
+    public final SequenceAppender<Element> append(@Name("element") Element element) {
     	super.append(element);
     	return this;
     }
     
     @Override
-    public SequenceAppender<Element> appendAll(@Name("elements") 
+    public final SequenceAppender<Element> appendAll(@Name("elements") 
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
     Iterable<? extends Element, ?> elements) {
     	super.appendAll(elements);

@@ -19,9 +19,11 @@ public class SequenceBuilder<Element> implements ReifiedType {
     private final static int MAX_CAPACITY = java.lang.Integer.MAX_VALUE;
     
     /** What will become the backing array of the ArraySequence we're building */
+    @Ignore
     java.lang.Object[] array;
     
     /** The number of elements (from start) currently in {@link array} */
+    @Ignore
     int length = 0;
     
     /* Invariant: 0 <= start <= array.length */

@@ -9,7 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 @Ceylon(major = 7)
 @TypeParameters({
 	@TypeParameter(value="Return", variance=Variance.OUT),
-	@TypeParameter(value="CallableArgument", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)
+	@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)
 })
 public interface Callable<Return> {
     

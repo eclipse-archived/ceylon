@@ -518,26 +518,6 @@ public final class Integer
         return (int)(value ^ (value >>> 32));
     }
 
-    /*@Override
-    public boolean largerThan(@Name("other") Integer other) {
-        return value > other.value;
-    }
-
-    @Override
-    public boolean smallerThan(@Name("other") Integer other) {
-        return value < other.value;
-    }
-
-    @Override
-    public boolean asLargeAs(@Name("other") Integer other) {
-        return value >= other.value;
-    }
-
-    @Override
-    public boolean asSmallAs(@Name("other") Integer other) {
-        return value <= other.value;
-    }*/
-
     @Override
     public Integer getNot() {
         return instance(~value);
@@ -696,7 +676,7 @@ public final class Integer
     }
     
     @Override
-    public boolean largerThan(Integer other) {
+    public boolean largerThan(@Name("other") Integer other) {
     	return value>other.value;
     }
 
@@ -709,7 +689,7 @@ public final class Integer
     }
 
     @Override
-    public boolean notSmallerThan(Integer other) {
+    public boolean notSmallerThan(@Name("other") Integer other) {
     	return value>=other.value;
     }
 
@@ -722,7 +702,7 @@ public final class Integer
     }
 
     @Override
-    public boolean smallerThan(Integer other) {
+    public boolean smallerThan(@Name("other") Integer other) {
     	return value<other.value;
     }
 
@@ -735,12 +715,12 @@ public final class Integer
     }
 
     @Override
-    public boolean notLargerThan(Integer other) {
+    public boolean notLargerThan(@Name("other") Integer other) {
     	return value<=other.value;
     }
 
     @Override
-    public Integer timesInteger(long integer) {
+    public Integer timesInteger(@Name("integer") long integer) {
     	return instance(value*integer);
     }
     
@@ -749,7 +729,7 @@ public final class Integer
     }
     
     @Override
-    public Integer plusInteger(long integer) {
+    public Integer plusInteger(@Name("integer") long integer) {
     	return instance(value+integer);
     }
     

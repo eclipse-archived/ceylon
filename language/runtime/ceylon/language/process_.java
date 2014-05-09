@@ -12,6 +12,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 @Ceylon(major = 7) @Object
 public final class process_ {
 
+    private java.io.BufferedReader stdinReader = null;
+    
     @SuppressWarnings("unchecked")
     private Sequential<? extends String> args = (Sequential)empty_.get_();
     
@@ -75,18 +77,22 @@ public final class process_ {
         java.lang.System.err.flush();
     }
     
-    public java.lang.String readLine() {
+    @TypeInfo("ceylon.language::Null|ceylon.language::String")
+    public ceylon.language.String readLine() {
         try {
-            return new java.io.BufferedReader( 
-                    new java.io.InputStreamReader(java.lang.System.in))
-                .readLine();
+            if (stdinReader == null) {
+                stdinReader = new java.io.BufferedReader( 
+                        new java.io.InputStreamReader(java.lang.System.in));
+            }
+            java.lang.String read = stdinReader.readLine();
+            return read == null ? null : ceylon.language.String.instance(read);
         } 
         catch (IOException e) {
             throw new Exception(String.instance("could not read line from standard input"), e);
         }
     }
     
-    public void exit(long code) {
+    public void exit(@Name("code") long code) {
         System.exit((int) code);
     }
     

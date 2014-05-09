@@ -288,9 +288,9 @@ shared native final class String(characters)
      of its substrings and of its characters."
     shared actual native Boolean contains(Object element);
     
-    shared actual native Boolean startsWith(List<Anything> sublist);
+    shared actual native Boolean startsWith(List<Anything> substring);
     
-    shared actual native Boolean endsWith(List<Anything> sublist);
+    shared actual native Boolean endsWith(List<Anything> substring);
     
     "Returns the concatenation of this string with the
      given string."

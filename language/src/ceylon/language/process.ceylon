@@ -56,7 +56,7 @@ shared native object process {
     "Read a line of input text from the standard input 
      of the virtual machine process. Returns a line of
      text after removal of line-termination characters,
-     or `null` to indicate the EOT character."
+     or `null` to indicate the standard input has been closed."
     shared native String? readLine();
     
     "Force the virtual machine to terminate with 

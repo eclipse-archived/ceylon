@@ -16,6 +16,7 @@ public class StringBuilder implements ReifiedType {
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(StringBuilder.class);
 
+    @Ignore
     final java.lang.StringBuilder builder = new java.lang.StringBuilder();
     
     public StringBuilder() {}
@@ -137,7 +138,7 @@ public class StringBuilder implements ReifiedType {
     }
 
     @TypeInfo("ceylon.language::Integer")
-    public int getSize() {
+    public final int getSize() {
         return builder.length();
     }
 

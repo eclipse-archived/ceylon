@@ -1558,7 +1558,7 @@ public final class String
     Tuple<String,? extends String,
     		? extends Tuple<String,? extends String,
     				? extends Sequential<? extends String>>>
-    slice(long index) {
+    slice(@Name("index") long index) {
     	return slice(value,index);
     }
     
@@ -2104,7 +2104,7 @@ public final class String
     }
     
     @Override
-    public boolean largerThan(String other) {
+    public boolean largerThan(@Name("other") String other) {
     	return value.compareTo(other.value)>0;
     }
 
@@ -2119,7 +2119,7 @@ public final class String
     }
 
     @Override
-    public boolean notSmallerThan(String other) {
+    public boolean notSmallerThan(@Name("other") String other) {
     	return value.compareTo(other.value)>=0;
     }
 
@@ -2134,7 +2134,7 @@ public final class String
     }
 
     @Override
-    public boolean smallerThan(String other) {
+    public boolean smallerThan(@Name("other") String other) {
     	return value.compareTo(other.value)<0;
     }
 
@@ -2149,7 +2149,7 @@ public final class String
     }
 
     @Override
-    public boolean notLargerThan(String other) {
+    public boolean notLargerThan(@Name("other") String other) {
     	return value.compareTo(other.value)<=0;
     }
 

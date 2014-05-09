@@ -370,26 +370,6 @@ public final class Float
         return Double.isInfinite(value);
     }
     
-    /*@Override
-    public boolean largerThan(@Name("other") Float other) {
-        return value > other.value;
-    }
-    
-    @Override
-    public boolean smallerThan(@Name("other") Float other) {
-        return value < other.value;
-    }
-    
-    @Override
-    public boolean asLargeAs(@Name("other") Float other) {
-        return value >= other.value;
-    }
-    
-    @Override
-    public boolean asSmallAs(@Name("other") Float other) {
-        return value <= other.value;
-    }*/
-    
     @Override
     public boolean equals(@Name("that") java.lang.Object that) {
         return equals(value, that);
@@ -439,7 +419,7 @@ public final class Float
     }
     
     @Override
-    public boolean largerThan(Float other) {
+    public boolean largerThan(@Name("other")Float other) {
     	return value>other.value;
     }
 
@@ -452,7 +432,7 @@ public final class Float
     }
 
     @Override
-    public boolean notSmallerThan(Float other) {
+    public boolean notSmallerThan(@Name("other") Float other) {
     	return value>=other.value;
     }
 
@@ -465,7 +445,7 @@ public final class Float
     }
 
     @Override
-    public boolean smallerThan(Float other) {
+    public boolean smallerThan(@Name("other") Float other) {
     	return value<other.value;
     }
 
@@ -478,12 +458,12 @@ public final class Float
     }
 
     @Override
-    public boolean notLargerThan(Float other) {
+    public boolean notLargerThan(@Name("other") Float other) {
     	return value<=other.value;
     }
     
     @Override
-    public Float timesInteger(long integer) {
+    public Float timesInteger(@Name("integer") long integer) {
     	return instance(value*integer);
     }
     
@@ -492,7 +472,7 @@ public final class Float
     }
     
     @Override
-    public Float plusInteger(long integer) {
+    public Float plusInteger(@Name("integer") long integer) {
     	return instance(value+integer);
     }
     

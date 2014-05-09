@@ -21,11 +21,11 @@ public class Error extends java.lang.Error implements ReifiedType {
 	private String description;
     
     public Error(
-            @TypeInfo("ceylon.language::String|ceylon.language::Null")
+            @TypeInfo("ceylon.language::Null|ceylon.language::String")
             @Name("description")
             @Defaulted
             String description,
-            @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
+            @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
             @Name("cause")
             @Defaulted
             java.lang.Throwable cause) {
@@ -43,12 +43,13 @@ public class Error extends java.lang.Error implements ReifiedType {
         this($default$description());
     }
         
-    @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
+    @Ignore
     public java.lang.Throwable getCause() {
         return super.getCause();
     }
     
-    @TypeInfo("ceylon.language::String")
+    @Override
+    @Ignore
     public java.lang.String getMessage() {
         if (description != null) {
             return description.toString();

@@ -28,12 +28,12 @@ public final class modules_ {
         return Metamodel.getModuleList();
     }
     
-    @TypeInfo("ceylon.language.meta.declaration::Module|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Module")
     public Module find(@Name("name") String name, @Name("version") String version){
         return Metamodel.findLoadedModule(name, version);
     }
 
-    @TypeInfo("ceylon.language.meta.declaration::Module|ceylon.language::Null")
+    @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Module")
     public Module getDefault(){
         return Metamodel.getDefaultModule();
     }

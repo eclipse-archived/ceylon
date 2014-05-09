@@ -17,8 +17,8 @@ shared native class SequenceAppender<Element>({Element+} elements)
         return this;
     }
     
-    shared actual SequenceAppender<Element> appendAll({Element*} element) {
-        super.appendAll(element);
+    shared actual SequenceAppender<Element> appendAll({Element*} elements) {
+        super.appendAll(elements);
         return this;
     }
     

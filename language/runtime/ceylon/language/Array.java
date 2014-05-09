@@ -671,7 +671,7 @@ public final class Array<Element>
     }
 
     @Override
-    public boolean defines(@Name("key") Integer key) {
+    public boolean defines(@Name("index") Integer key) {
         long ind = key.longValue();
         return ind >= 0 && ind < getSize();
     }
@@ -714,7 +714,7 @@ public final class Array<Element>
 
     @TypeInfo("ceylon.language::Null|Element")
     @Override
-    public Element get(@Name("key") Integer key) {
+    public Element get(@Name("index") Integer key) {
         long i = key.longValue();
         return get((int)i);
     }
@@ -1336,13 +1336,13 @@ public final class Array<Element>
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
     public <Other> Sequence 
-    withLeading(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
     @Override @SuppressWarnings("rawtypes")
     @Annotations({ @Annotation("actual") })
     public <Other> Sequence 
-    withTrailing(@Ignore TypeDescriptor $reifiedOther, Other e) {
+    withTrailing(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);
     }
 
