@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -954,7 +955,7 @@ public final class Array<Element>
     }
 
     @Override
-    public long count(@Name("selecting") 
+    public long count(@Name("selecting")@FunctionalParameter("(element)") 
     @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing

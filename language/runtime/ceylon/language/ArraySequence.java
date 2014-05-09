@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -490,7 +491,9 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     }
 
     @Override
-    public long count(@Name("selecting") Callable<? extends Boolean> f) {
+    public long count(
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
+            @Name("selecting")@FunctionalParameter("(element)") Callable<? extends Boolean> f) {
         int count=0;
         for (int ii = 0; ii < length; ii++) {
             java.lang.Object x = array[first+ii];

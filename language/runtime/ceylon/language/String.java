@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.java.language.StringTokens;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
@@ -893,7 +894,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public String trimLeading(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("trimming")
+            @Name("trimming")@FunctionalParameter("(elem)")
             Callable<? extends Boolean> characters) {
         return instance(trimLeading(value, characters));
     }
@@ -915,7 +916,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public String trimTrailing(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("trimming")
+            @Name("trimming")@FunctionalParameter("(elem)")
             Callable<? extends Boolean> characters) {
         return instance(trimTrailing(value, characters));
     }
@@ -937,7 +938,7 @@ public final class String
     @TypeInfo("ceylon.language::String")
     public String trim(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            @Name("trimming")
+            @Name("trimming")@FunctionalParameter("(elem)")
             Callable<? extends Boolean> characters) {
         return instance(trim(value, characters));
     }
@@ -1270,7 +1271,8 @@ public final class String
     public Iterable<? extends String, ?> split(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Defaulted
-            @Name("splitting") Callable<? extends Boolean> splitting,
+            
+            @Name("splitting")@FunctionalParameter("(ch)") Callable<? extends Boolean> splitting,
             @Defaulted
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
@@ -1365,7 +1367,8 @@ public final class String
     splitLeading(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Defaulted
-            @Name("splitting") Callable<? extends Boolean> splitting,
+            @Name("splitting") @FunctionalParameter("(ch)")
+            Callable<? extends Boolean> splitting,
             @Defaulted
             @Name("groupSeparators") boolean groupSeparators) {
         return splitLeading(value, splitting, groupSeparators);
@@ -1465,7 +1468,8 @@ public final class String
     splitTrailing(
             @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             @Defaulted
-            @Name("splitting") Callable<? extends Boolean> splitting,
+            @Name("splitting") @FunctionalParameter("(ch)")
+            Callable<? extends Boolean> splitting,
             @Defaulted
             @Name("groupSeparators") boolean groupSeparators) {
         return splitTrailing(value, splitting, groupSeparators);

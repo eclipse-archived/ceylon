@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTyp
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -24,7 +25,7 @@ public final class flatten_ {
     public static <Return,Args> Callable<Return> flatten(
             @Ignore final TypeDescriptor $reifiedReturn,
             @Ignore final TypeDescriptor $reifiedArgs, 
-        @Name("tupleFunction")
+        @Name("tupleFunction")@FunctionalParameter("(tuple)")
         @TypeInfo("ceylon.language::Callable<Return,ceylon.language::Tuple<Args,Args,ceylon.language::Empty>>")
         final Callable<? extends Return> tupleFunction) {
         
