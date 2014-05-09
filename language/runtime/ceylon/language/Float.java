@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -343,6 +344,7 @@ public final class Float
         return value;
     }
     
+    @Transient
     public boolean getUndefined() {
         return Double.isNaN(this.value);
     }
@@ -352,6 +354,7 @@ public final class Float
         return Double.isNaN(value);
     }
     
+    @Transient
     public boolean getFinite() {
         return !Double.isInfinite(this.value) && !getUndefined();
     }
@@ -361,6 +364,7 @@ public final class Float
         return !Double.isInfinite(value) && !getUndefined(value);
     }
     
+    @Transient
     public boolean getInfinite() {
         return Double.isInfinite(value);
     }

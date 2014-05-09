@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -37,6 +38,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     @Ignore
     abstract public boolean booleanValue();
     
+    @Transient
     @Override
     public final Boolean getNot() {
         return instance(getNot(booleanValue()));

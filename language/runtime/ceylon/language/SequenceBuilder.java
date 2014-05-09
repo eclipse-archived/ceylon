@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -132,10 +133,12 @@ public class SequenceBuilder<Element> implements ReifiedType {
         return this;
     }
     
+    @Transient
     public final long getSize() {
         return length;
     }
-     
+    
+    @Transient
     public final boolean getEmpty() {
         return length == 0;
     }

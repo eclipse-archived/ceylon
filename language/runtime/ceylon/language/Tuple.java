@@ -12,6 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -180,6 +181,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Integer")
+    @Transient
     public final ceylon.language.Integer getLastIndex() {
         return super.getLastIndex();
     }
@@ -189,6 +191,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("actual")})
     @Override
     @TypeInfo("Element")
+    @Transient
     public final Element getLast() {
         return super.getLast();
     }

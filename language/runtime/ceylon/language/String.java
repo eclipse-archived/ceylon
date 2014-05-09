@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -174,6 +175,7 @@ public final class String
     }
 
     @Override
+    @Transient
     public java.lang.String toString() {
         return value;
     }
@@ -298,6 +300,7 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Integer")
+    @Transient
     public Integer getLastIndex() {
         long length = getSize();
         return (length == 0) ? null : Integer.instance(length - 1);
@@ -866,6 +869,7 @@ public final class String
     }
 
     @TypeInfo("ceylon.language::String")
+    @Transient
     public java.lang.String getTrimmed() {
         return getTrimmed(value);
     }
@@ -1588,6 +1592,7 @@ public final class String
     }
     
     @TypeInfo("ceylon.language::Iterable<ceylon.language::String>")
+    @Transient
     public Iterable<? extends String, ?> getLines() {
         return split(new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
                 TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
@@ -1656,6 +1661,7 @@ public final class String
     }
 
     @TypeInfo("ceylon.language::String")
+    @Transient
     @Override
     public String getCoalesced() {
         return this; //Can't have null characters

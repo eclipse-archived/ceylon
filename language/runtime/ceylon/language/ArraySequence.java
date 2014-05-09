@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -455,6 +456,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return $ceylon$language$Correspondence$this.items(keys);
     }
 
+    @Transient
     @Override
     public ArraySequence<Element> $clone() {
         return this;
@@ -466,11 +468,13 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return $ceylon$language$Sequence$this.toString();
     }
 
+    @Transient
     @Override
     public boolean equals(java.lang.Object that) {
         return $ceylon$language$List$this.equals(that);
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return $ceylon$language$List$this.hashCode();
