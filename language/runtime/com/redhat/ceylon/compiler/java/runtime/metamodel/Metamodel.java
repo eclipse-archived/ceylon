@@ -327,28 +327,29 @@ public class Metamodel {
         try {
             org.jboss.modules.Module jbossModule = moduleLoader.loadModule(ModuleIdentifier.create(declaration.getNameAsString(), declaration.getVersion()));
             org.jboss.modules.ModuleClassLoader cl = jbossModule.getClassLoader();
-            if(cl instanceof CeylonModuleClassLoader == false){
-                // it was loaded via the bootstrap module loader perhaps?
-                return;
-            }
-            // this can complete in another thread or this thread
-            ((CeylonModuleClassLoader) cl).registerInMetaModel();
-            if(!declaration.isAvailable()){
-                // perhaps it is being loaded in another thread, wait for it
-                Object lock = getLock();
-                synchronized(lock){
-                    int tries = RuntimeModelLoader.MAX_JBOSS_MODULES_WAITS;
-                    while(!declaration.isAvailable()){
-                        try {
-                            lock.wait(5000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+            
+            // if we can force it loaded, let's do
+            if(cl instanceof CeylonModuleClassLoader){
+                // this can complete in another thread or this thread
+                ((CeylonModuleClassLoader) cl).registerInMetaModel();
+                if(!declaration.isAvailable()){
+                    // perhaps it is being loaded in another thread, wait for it
+                    Object lock = getLock();
+                    synchronized(lock){
+                        int tries = RuntimeModelLoader.MAX_JBOSS_MODULES_WAITS;
+                        while(!declaration.isAvailable()){
+                            try {
+                                lock.wait(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            if(tries-- < 0)
+                                throw new RuntimeException("JBoss modules failed to make module available: "+declaration.getNameAsString());
                         }
-                        if(tries-- < 0)
-                            throw new RuntimeException("JBoss modules failed to make module available: "+declaration.getNameAsString());
                     }
                 }
-            }
+            }// it was loaded via the bootstrap module loader and does not need forcing
+            
             if(visitedModules == null)
                 visitedModules = new HashSet<com.redhat.ceylon.compiler.typechecker.model.Module>();
             // do not visit this module again
