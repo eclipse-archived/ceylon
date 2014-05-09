@@ -19,6 +19,9 @@
  */
 @noanno
 class Bug1108(shared String foo, shared String() bar) {}
+object process {
+    shared String readLine() => nothing;
+}
 @noanno
 void bug1108() {
     class Bug1108Inner(shared String foo, shared String() bar) {}
