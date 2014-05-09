@@ -303,4 +303,9 @@ shared native final class String(characters)
     "This string."
     shared actual String clone() => this;
     
+    shared actual native Boolean largerThan(String other); 
+    shared actual native Boolean smallerThan(String other); 
+    shared actual native Boolean notSmallerThan(String other); 
+    shared actual native Boolean notLargerThan(String other);
+     
 }

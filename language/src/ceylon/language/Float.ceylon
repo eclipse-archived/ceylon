@@ -110,4 +110,8 @@ shared native final class Float(float)
     
     shared actual native String string;
     
+    shared actual native Boolean largerThan(String other); 
+    shared actual native Boolean smallerThan(String other); 
+    shared actual native Boolean notSmallerThan(String other); 
+    shared actual native Boolean notLargerThan(String other); 
 }

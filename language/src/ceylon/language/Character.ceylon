@@ -120,4 +120,8 @@ shared final native class Character(Character character)
     "The code point of the character."
     shared actual native Integer integerValue;
     
+    shared actual native Boolean largerThan(String other); 
+    shared actual native Boolean smallerThan(String other); 
+    shared actual native Boolean notSmallerThan(String other); 
+    shared actual native Boolean notLargerThan(String other); 
 }
