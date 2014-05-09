@@ -3916,9 +3916,6 @@ fragment
 IdentifierStart
     :   '_'
     |   Letter
-        { if (!Character.isJavaIdentifierStart($text.codePointAt(0))) { 
-          //TODO: error!
-        } }
     ;       
 
 fragment
@@ -3936,9 +3933,6 @@ IdentifierPart
     :   '_'
     |   Digit
     |   Letter
-        { if (!Character.isJavaIdentifierPart($text.codePointAt(0))) { 
-          //TODO: error!
-        } }
     ;
 
 fragment

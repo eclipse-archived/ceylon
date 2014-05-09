@@ -297,4 +297,34 @@ public class LiteralVisitor extends Visitor {
         }
     }
     
+    @Override
+    public void visit(Tree.Identifier that) {
+        super.visit(that);
+        String text = that.getText();
+        int index = 0;
+        while (index<text.length()) {
+            int cp = text.codePointAt(index);
+            index += Character.charCount(cp);
+            int type = Character.getType(cp);
+            boolean num = 
+                    type==Character.LETTER_NUMBER ||
+                    type==Character.DECIMAL_DIGIT_NUMBER ||
+                    type==Character.OTHER_NUMBER;
+            boolean letter = 
+                    type==Character.LOWERCASE_LETTER ||
+                    type==Character.UPPERCASE_LETTER ||
+                    type==Character.TITLECASE_LETTER ||
+                    type==Character.OTHER_LETTER;
+            boolean us = cp=='_';
+            if (index==0 && num) {
+                that.addError("identifier may not begin with a digit");
+                break;
+            }
+            else if (!num && !letter && !us) {
+                that.addError("identifier must be composed of letters, digits, and underscores");
+                break;
+            }
+        }
+    }
+    
 }
