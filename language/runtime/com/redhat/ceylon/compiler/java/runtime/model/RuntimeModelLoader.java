@@ -11,6 +11,7 @@ import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
+import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.compiler.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionClass;
@@ -173,5 +174,20 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
 
     public Unit getUnit() {
         return typeFactory;
+    }
+    
+    @Override
+    protected Runnable makeModelErrorReporter(Module module, final String message) {
+        return makeModelErrorReporter(message);
+    }
+
+    @Override
+    protected Runnable makeModelErrorReporter(final String message) {
+        return new Runnable(){
+            @Override
+            public void run() {
+                throw new ModelResolutionException(message);
+            }
+        };
     }
 }

@@ -398,6 +398,9 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
             return ceylon.language.meta.declaration.nothingType_.get_();
         }
+        if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnknownType){
+            ((com.redhat.ceylon.compiler.typechecker.model.UnknownType)declaration).reportErrors();
+        }
         throw new RuntimeException("Declaration type not supported yet: "+declaration);
     }
 
