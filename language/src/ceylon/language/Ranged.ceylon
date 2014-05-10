@@ -1,8 +1,8 @@
 "Abstract supertype of ranged objects which map a range of 
- [[Comparable]] keys to ranges of values. The type parameter 
- [[Span]] abstracts the type of the resulting range. A 
- subrange may be obtained from an instance of `Ranged` using
- the _span_ and _segment_ operators.
+ keys to ranges of values. The type parameter [[Span]] 
+ abstracts the type of the resulting range. A subrange may 
+ be obtained from an instance of `Ranged` using the _span_ 
+ and _segment_ operators.
  
  The _span_ operator accepts the first and last indices of 
  the subrange.
