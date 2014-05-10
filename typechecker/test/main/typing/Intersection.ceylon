@@ -193,7 +193,7 @@ class Wrapper() {
     MyMutableList<Element> elements = nothing;
     
     void recurse(SubInterface&Element element) {
-        for (elem in elements.takingWhile((Element e) => true)) {
+        for (elem in elements.takeWhile((Element e) => true)) {
             if (is SubInterface elem) {
                 recurse(elem);
             }

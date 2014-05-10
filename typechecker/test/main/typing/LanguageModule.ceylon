@@ -1,7 +1,7 @@
 class LanguageModule() {
     
-    @type:"Iterable<Entry<Integer,String>,Null>" entries{"hello", "world"};
-    @type:"Iterable<Entry<Integer,String>,Null>" entries(["hello", "world"]);
+    @type:"Iterable<Entry<Integer,String>,Nothing>" entries{"hello", "world"};
+    @type:"Iterable<Entry<Integer,String>,Nothing>" entries(["hello", "world"]);
     for (Integer i->String s in entries{"hello", "world", "!"}) {}
     
     //print(append({"one", "two" , "three"}, "four").size==4);
