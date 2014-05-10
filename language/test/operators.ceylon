@@ -95,7 +95,7 @@ shared void operators() {
     Correspondence<Integer, String> c1 = {};
     check(!c1[0] exists, "empty correspondence");
     
-    Ranged<Integer,String[]> sequence = ["foo", "bar"];
+    Ranged<Integer,String,String[]> sequence = ["foo", "bar"];
     String[] subrange = sequence[1..2];
     check(subrange.size==1, "subrange size");
     check(subrange nonempty, "subrange nonempty");

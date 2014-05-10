@@ -25,7 +25,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::List<Element>",
-    "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Array<Element>>"
+    "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
 })
 public final class Array<Element> 
         implements List<Element>, ReifiedType {
@@ -41,7 +41,7 @@ public final class Array<Element>
     @Ignore
     protected final Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
     @Ignore
-    protected final Ranged$impl<Integer,List<Element>> $ceylon$language$Ranged$this;
+    protected final Ranged$impl $ceylon$language$Ranged$this;
     
     private final java.lang.Object array;
     
@@ -346,9 +346,10 @@ public final class Array<Element>
         		new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, 
         				$reifiedElement, this);
         this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl<Integer,List<Element>>(Integer.$TypeDescriptor$, 
+        		new Ranged$impl(Integer.$TypeDescriptor$,
+        		        $reifiedElement,
                         TypeDescriptor.klass(Array.class, $reifiedElement), 
-                        (Ranged<Integer, ? extends List<Element>>)this);
+                        (Ranged)this);
         this.array = array;
         this.$reifiedElement = $reifiedElement;
     }

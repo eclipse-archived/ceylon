@@ -48,7 +48,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     private final Sequence$impl<Element> 
     $ceylon$language$Sequence$this;
     @Ignore
-    private final Ranged$impl<Integer,Sequential<? extends Element>> 
+    private final Ranged$impl 
     $ceylon$language$Ranged$this;
 
     /** 
@@ -150,8 +150,8 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         this.$ceylon$language$Sequential$this = 
         		new Sequential$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl<Integer,Sequential<? extends Element>>(Integer.$TypeDescriptor$, 
-        				TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged) this);
+        		new Ranged$impl(Integer.$TypeDescriptor$, 
+        		        $reifiedElement, TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged) this);
         if (length == USE_ARRAY_SIZE) {
             length = array.length;
         }
@@ -238,7 +238,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Ignore
     @Override
-    public Ranged$impl<? super Integer, ? extends Sequential<? extends Element>> 
+    public Ranged$impl 
     $ceylon$language$Ranged$impl(){
         return $ceylon$language$Ranged$this;
     }

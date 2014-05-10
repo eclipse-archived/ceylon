@@ -100,7 +100,7 @@ class MySequence() satisfies Sequence<Integer> {
         return this;
     }
 }
-class MyRanged() satisfies Ranged<Integer, Iterable<Character>>&Iterable<Character> {
+class MyRanged() satisfies Ranged<Integer,Character,Iterable<Character>>&Iterable<Character> {
     value contents = 'a'..'z';
     shared actual Iterable<Character> span(Integer from, Integer to) {
         return contents.span(from, to);

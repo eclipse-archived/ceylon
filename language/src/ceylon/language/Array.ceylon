@@ -11,7 +11,7 @@
 shared final native class Array<Element>({Element*} elements) 
         extends Object()
         satisfies List<Element> &
-                  Ranged<Integer, Array<Element>> {
+                  Ranged<Integer, Element, Array<Element>> {
 
     "Replace the existing element at the specified index 
      with the given element."

@@ -20,7 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @SatisfiedTypes({"ceylon.language::List<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",
-                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::String>"})
+                 "ceylon.language::Ranged<ceylon.language::Integer,ceylon.language::Character,ceylon.language::String>"})
 @ValueType
 public final class String
     implements Comparable<String>, List<Character>,
@@ -52,7 +52,7 @@ public final class String
     protected final Summable$impl<String> 
     $ceylon$language$Summable$this;
     @Ignore
-    protected final Ranged$impl<Integer,List<Character>> 
+    protected final Ranged$impl 
     $ceylon$language$Ranged$this;
 
     @Ignore
@@ -78,8 +78,8 @@ public final class String
         this.$ceylon$language$Summable$this = 
         		new Summable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, 
-        				String.$TypeDescriptor$, (Ranged) this);
+        		new Ranged$impl(Integer.$TypeDescriptor$, 
+        				Character.$TypeDescriptor$,String.$TypeDescriptor$, (Ranged) this);
         if (characters instanceof String) {
             value = ((String)characters).value;
         } else {
@@ -112,8 +112,8 @@ public final class String
         this.$ceylon$language$Summable$this = 
         		new Summable$impl<String>(String.$TypeDescriptor$, this);
         this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl<Integer,List<Character>>(Integer.$TypeDescriptor$, 
-        				String.$TypeDescriptor$, (Ranged) this);
+        		new Ranged$impl(Integer.$TypeDescriptor$, 
+        				Character.$TypeDescriptor$,String.$TypeDescriptor$, (Ranged) this);
         value = string;
     }
 
@@ -154,7 +154,7 @@ public final class String
 
     @Ignore
     @Override
-    public Ranged$impl<? super Integer, ? extends List<Character>> 
+    public Ranged$impl
     $ceylon$language$Ranged$impl(){
         return $ceylon$language$Ranged$this;
     }

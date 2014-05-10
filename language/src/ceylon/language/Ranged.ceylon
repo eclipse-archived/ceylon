@@ -64,7 +64,10 @@
 see (`interface List`, 
      `interface Sequence`, 
      `class String`)
-shared interface Ranged<in Index, out Span> of Span {
+shared interface Ranged<in Index, out Element, out Span> 
+        of Span
+        satisfies {Element*}
+        given Span satisfies Ranged<Index,Element,Span> {
     
     "Obtain a span containing the mapped values between 
      the two given indices."

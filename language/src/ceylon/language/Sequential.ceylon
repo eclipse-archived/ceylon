@@ -13,7 +13,7 @@ see (`class Tuple`)
 shared interface Sequential<out Element>
         of []|[Element+]
         satisfies List<Element> & 
-                  Ranged<Integer,Element[]> {
+                  Ranged<Integer,Element,Element[]> {
     
     "Reverse this sequence, returning a new sequence."
     shared actual formal Element[] reversed;

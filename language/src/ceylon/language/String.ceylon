@@ -58,7 +58,7 @@ shared native final class String(characters)
         satisfies List<Character> & 
                   Comparable<String> &
                   Summable<String> & 
-                  Ranged<Integer,String> {
+                  Ranged<Integer,Character,String> {
     
     "The characters that form this string."
     shared {Character*} characters;

@@ -12,7 +12,7 @@ import ceylon.language { e=empty }
 see (`interface Sequence`)
 shared interface Empty of e
            satisfies Nothing[] &
-                     Ranged<Integer,[]> {
+                     Ranged<Integer,Nothing,[]> {
     
     "Returns an iterator that is already exhausted."
     shared actual Iterator<Nothing> iterator() => emptyIterator;
