@@ -314,7 +314,8 @@ public class LiteralVisitor extends Visitor {
                     type==Character.LOWERCASE_LETTER ||
                     type==Character.UPPERCASE_LETTER ||
                     type==Character.TITLECASE_LETTER ||
-                    type==Character.OTHER_LETTER;
+                    type==Character.OTHER_LETTER||
+                    type==Character.MODIFIER_LETTER;
             boolean us = cp=='_';
             if (index==0 && num) {
                 that.addError("identifier may not begin with a digit");

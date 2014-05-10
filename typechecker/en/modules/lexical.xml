@@ -69,9 +69,9 @@
         
         <synopsis>LineComment: ("//"|"#!") ~(Newline | Return)* (Return Newline | Return | Newline)?</synopsis>
         
-        <synopsis>MultilineComment: "/*" (MultilineCommmentCharacter | MultilineComment)* "*/"</synopsis>
+        <synopsis>MultilineComment: "/*" (MultilineCommentCharacter | MultilineComment)* "*/"</synopsis>
         
-        <synopsis>MultilineCommmentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</synopsis>
+        <synopsis>MultilineCommentCharacter: ~("/"|"*") | ("/" ~"*") => "/" | ("*" ~"/") => "*"</synopsis>
         
         <para>The following examples are legal comments:</para>
         
@@ -93,22 +93,44 @@
     <section id="identifiersandkeywords">
         <title>Identifiers and keywords</title>
         
-        <para><emphasis>Identifiers</emphasis> may contain upper and lowercase letters, 
-        digits and underscores.</para>
+        <para><emphasis>Identifiers</emphasis> may contain letters, digits and 
+        underscores.</para>
         
-        <synopsis>LowercaseChar: LowercaseLetter | "_"</synopsis>
-        <synopsis>UppercaseChar: UppercaseLetter</synopsis>
-        <synopsis>IdentifierChar: LowercaseChar | UppercaseChar | Number</synopsis>
+        <synopsis>LowercaseCharacter: LowercaseLetter | "_"</synopsis>
+        <synopsis>UppercaseCharacter: UppercaseLetter</synopsis>
+        <synopsis>IdentifierCharacter: LowercaseCharacter | UppercaseCharacter | Number</synopsis>
         
         <para>The lexer classifies Unicode uppercase letters, lowercase letters, 
         and numeric characters depending on the general category of the character
-        as defined by the Unicode standard. A <literal>LowercaseLetter</literal> is 
-        any character whose general category is <literal>Ll</literal>. An 
-        <literal>UppercaseLetter</literal> is any character whose general category 
-        is <literal>Lu</literal>, <literal>Lt</literal>, or <literal>Lo</literal>. 
-        A <literal>Number</literal> is any character whose general category is 
-        <literal>Nd</literal>, <literal>Nl</literal>, or <literal>No</literal>.</para>
-            
+        as defined by the Unicode standard.</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>
+                    A <literal>LowercaseLetter</literal> is any character whose 
+                    general category is <literal>Ll</literal> or any character whose 
+                    general category is <literal>Lo</literal> or <literal>Lm</literal> 
+                    which has the property <literal>Other_Lowercase</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    An <literal>UppercaseLetter</literal> is any character whose 
+                    general category is <literal>Lu</literal> or <literal>Lt</literal>, 
+                    or any character whose general category is <literal>Lo</literal> or 
+                    <literal>Lm</literal> which does not have the property
+                    <literal>Other_Lowercase</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    A <literal>Number</literal> is any character whose general 
+                    category is <literal>Nd</literal>, <literal>Nl</literal>, or 
+                    <literal>No</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+        
         <para>All identifiers are case sensitive: <literal>Person</literal> and
         <literal>person</literal> are two different legal identifiers.</para>
         
@@ -119,8 +141,8 @@
         from a reserved word or to explicitly specify whether it should be considered
         an initial uppercase or initial lowercase identifier.</para>
         
-        <synopsis>LIdentifier: LowercaseChar IdentifierChar* | "\i" IdentifierChar+</synopsis>
-        <synopsis>UIdentifier: UppercaseChar IdentifierChar* | "\I" IdentifierChar+</synopsis>
+        <synopsis>LIdentifier: LowercaseCharacter IdentifierCharacter* | "\i" IdentifierCharacter+</synopsis>
+        <synopsis>UIdentifier: UppercaseCharacter IdentifierCharacter* | "\I" IdentifierCharacter+</synopsis>
 
         <para>The following examples are legal identifiers:</para>
         
