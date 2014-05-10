@@ -2905,7 +2905,7 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         List<ProducedType> args = rst.getTypeArgumentList();
                         ProducedType kt = args.get(0);
-                        ProducedType rt = args.get(1);
+                        ProducedType rt = args.get(2);
                         Tree.ElementRange er = (Tree.ElementRange) that.getElementOrRange();
                         if (er.getLowerBound()!=null) {
                             checkAssignable(er.getLowerBound().getTypeModel(), kt,
