@@ -1271,10 +1271,7 @@ public final class String
             @Name("discardSeparators") boolean discardSeparators,
             @Defaulted
             @Name("groupSeparators") boolean groupSeparators) {
-        if (value.isEmpty()) {
-            return new Singleton<String>(String.$TypeDescriptor$, this);
-        }
-        return new StringTokens(value, splitting, !discardSeparators, groupSeparators);
+        return split(value, splitting, discardSeparators, groupSeparators);
     }
 
     @Ignore
@@ -1353,6 +1350,206 @@ public final class String
     @Ignore
     public static boolean split$groupSeparators(java.lang.Object separator, 
     		boolean discardSeparators){
+        return true;
+    }
+
+    @TypeInfo("ceylon.language::Tuple<ceylon.language::String|ceylon.language::Null,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String|ceylon.language::Null,ceylon.language::String|ceylon.language::Null,ceylon.language::Empty>>")
+    public 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitLeading(
+            @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @Defaulted
+            @Name("splitting") Callable<? extends Boolean> splitting,
+            @Defaulted
+            @Name("groupSeparators") boolean groupSeparators) {
+        return splitLeading(value, splitting, groupSeparators);
+    }
+
+    @Ignore
+    public static 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitLeading(java.lang.String value,
+            Callable<? extends Boolean> splitting,
+            boolean groupSeparators) {
+        int index = 0;
+        while (index<value.length() &&
+                !splitting.$call$(Character.instance(value.charAt(index))).booleanValue()) {
+            index++;
+        }
+        if (index==value.length()) {
+            return new Tuple($TypeDescriptor$, new String[] { instance(value), null });
+        }
+        String token = instance(value.substring(0,index));
+        if (groupSeparators) {
+            while (index<value.length() &&
+                    splitting.$call$(Character.instance(value.charAt(index))).booleanValue()) {
+                index++;
+            }
+        }
+        else {
+            index++;
+        }
+        String rest = instance(value.substring(index));
+        return new Tuple($TypeDescriptor$, new String[] { token, rest });
+    }
+
+    @Ignore
+    public 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitLeading(
+            Callable<? extends Boolean> splitting) {
+        return splitLeading(splitting, splitLeading$groupSeparators(splitting));
+    }
+
+    @Ignore
+    public static 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitLeading(java.lang.String value,
+            Callable<? extends Boolean> splitting) {
+        return splitLeading(value, splitting, splitLeading$groupSeparators(splitting));
+    }
+
+    @Ignore
+    public 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitLeading() {
+        return splitLeading(splitLeading$splitting());
+    }
+
+    @Ignore
+    public static 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitLeading(java.lang.String value) {
+        return splitLeading(value, splitLeading$splitting());
+    }
+
+    @Ignore
+    public static Callable<? extends Boolean> splitLeading$splitting(){
+        return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
+                        Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
+                "whitespace", (short)-1) {
+            @Override
+            public Boolean $call$(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).getWhitespace());
+            }
+        };
+    }
+
+    @Ignore
+    public static boolean splitLeading$groupSeparators(java.lang.Object separator){
+        return true;
+    }
+
+    @TypeInfo("ceylon.language::Tuple<ceylon.language::String|ceylon.language::Null,ceylon.language::String,ceylon.language::Tuple<ceylon.language::String|ceylon.language::Null,ceylon.language::String|ceylon.language::Null,ceylon.language::Empty>>")
+    public 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitTrailing(
+            @TypeInfo(value="ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @Defaulted
+            @Name("splitting") Callable<? extends Boolean> splitting,
+            @Defaulted
+            @Name("groupSeparators") boolean groupSeparators) {
+        return splitTrailing(value, splitting, groupSeparators);
+    }
+
+    @Ignore
+    public static 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitTrailing(java.lang.String value,
+            Callable<? extends Boolean> splitting,
+            boolean groupSeparators) {
+        int index = value.length()-1;
+        while (index>=0 &&
+                !splitting.$call$(Character.instance(value.charAt(index))).booleanValue()) {
+            index--;
+        }
+        if (index<0) {
+            return new Tuple($TypeDescriptor$, new String[] { instance(value), null });
+        }
+        String token = instance(value.substring(index+1,value.length()));
+        if (groupSeparators) {
+            while (index>=0 &&
+                    splitting.$call$(Character.instance(value.charAt(index))).booleanValue()) {
+                index--;
+            }
+        }
+        else {
+            index--;
+        }
+        String rest = instance(value.substring(0,index+1));
+        return new Tuple($TypeDescriptor$, new String[] { token, rest });
+    }
+
+    @Ignore
+    public 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitTrailing(
+            Callable<? extends Boolean> splitting) {
+        return splitTrailing(splitting, splitTrailing$groupSeparators(splitting));
+    }
+
+    @Ignore
+    public static 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitTrailing(java.lang.String value,
+            Callable<? extends Boolean> splitting) {
+        return splitTrailing(value, splitting, splitTrailing$groupSeparators(splitting));
+    }
+
+    @Ignore
+    public 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitTrailing() {
+        return splitTrailing(splitTrailing$splitting());
+    }
+
+    @Ignore
+    public static 
+    Tuple<String,? extends String,
+            ? extends Tuple<String,? extends String,
+                    ? extends Sequential<? extends String>>> 
+    splitTrailing(java.lang.String value) {
+        return splitTrailing(value, splitTrailing$splitting());
+    }
+
+    @Ignore
+    public static Callable<? extends Boolean> splitTrailing$splitting(){
+        return new AbstractCallable<Boolean>(Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
+                        Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
+                "whitespace", (short)-1) {
+            @Override
+            public Boolean $call$(java.lang.Object ch) {
+                return Boolean.instance(((Character) ch).getWhitespace());
+            }
+        };
+    }
+
+    @Ignore
+    public static boolean splitTrailing$groupSeparators(java.lang.Object separator){
         return true;
     }
 

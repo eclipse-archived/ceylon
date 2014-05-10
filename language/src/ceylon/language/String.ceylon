@@ -69,7 +69,7 @@ shared native final class String(characters)
     "This string, with all characters in uppercase."
     shared native String uppercased;
     
-    "Split the string into tokens, using the given 
+    "Split this string into tokens, using the given 
      [[predicate function|splitting]] to determine which 
      characters are separator characters.
      
@@ -77,10 +77,13 @@ shared native final class String(characters)
      
      The flags [[discardSeparators]] and [[groupSeparators]]
      determine how separator characters should occur in the
-     resulting stream."
+     resulting stream.
+     
+     If this string is the empty string, no tokens are
+     returned."
     shared native {String*} split(
             "A predicate that determines if a character is a
-             separator characters at which to split. Default 
+             separator character at which to split. Default 
              to split at any 
              [[whitespace|Character.whitespace]] character."
             Boolean splitting(Character ch) => ch.whitespace,
@@ -89,6 +92,48 @@ shared native final class String(characters)
              `false`, they will be included in the resulting 
              iterator."
             Boolean discardSeparators=true,
+            "Specifies that the separator tokens should be 
+             grouped eagerly and not be treated as 
+             single-character tokens. If `false` each 
+             separator token will be of size `1`."
+            Boolean groupSeparators=true);
+    
+    "Split this string into a leading token, and the 
+     remaining unparsed portion of the string, using the 
+     given [[predicate function|splitting]] to determine 
+     which characters are separator characters. In the
+     case that no separator characters occur in this string,
+     the unparsed portion is null.
+     
+     If this string is the empty string, the returned token 
+     is the empty string, and the unparsed portion is null."
+    shared native [String,String?] splitLeading(
+            "A predicate that determines if a character is a
+             separator character at which to split. Default 
+             to split at any 
+             [[whitespace|Character.whitespace]] character."
+            Boolean splitting(Character ch) => ch.whitespace,
+            "Specifies that the separator tokens should be 
+             grouped eagerly and not be treated as 
+             single-character tokens. If `false` each 
+             separator token will be of size `1`."
+            Boolean groupSeparators=true);
+    
+    "Split this string into a trailing token, and the 
+     remaining unparsed portion of the string, using the 
+     given [[predicate function|splitting]] to determine 
+     which characters are separator characters. In the
+     case that no separator characters occur in this string,
+     the unparsed portion is null.
+     
+     If this string is the empty string, the returned token 
+     is the empty string, and the unparsed portion is null."
+    shared native [String,String?] splitTrailing(
+            "A predicate that determines if a character is a
+             separator character at which to split. Default 
+             to split at any 
+             [[whitespace|Character.whitespace]] character."
+            Boolean splitting(Character ch) => ch.whitespace,
             "Specifies that the separator tokens should be 
              grouped eagerly and not be treated as 
              single-character tokens. If `false` each 
