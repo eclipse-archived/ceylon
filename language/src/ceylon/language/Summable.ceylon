@@ -2,7 +2,7 @@
    operator `x + y`. For [[numeric types|Numeric]], this is
    just familiar numeric addition. For [[String]], it is
    string concatenation.
-       
+   
        Integer next = current + 1;
        String helloWorld = "hello" + " " + "world";
    
