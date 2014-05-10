@@ -94,11 +94,11 @@ shared interface Ranged<in Index, out Element, out Span>
      
      The span should contain elements of this iterable 
      object, starting from the element at the given 
-     [[starting index|from]], and ending at the given
-     [[ending index|to]], in the same order as they are 
-     produced by the [[iterator]], except when the ending
-     index occurs earlier than the starting index, in which
-     case they occur in the opposite order.
+     [[starting index|from]], and ending with the element at 
+     the given [[ending index|to]], in the same order as 
+     they are produced by the [[iterator]], except when the 
+     ending index occurs earlier than the starting index, in 
+     which case they occur in the opposite order.
      
      When one or both of the given indices does not belong 
      to this ranged object, the behavior is implementation 
@@ -122,8 +122,9 @@ shared interface Ranged<in Index, out Element, out Span>
      index of this ranged object and given [[end index|to]].
      
      The span should contain elements of this iterable 
-     object, up to the given [[ending index|to]], in the 
-     same order as they are produced by the [[iterator]].
+     object, up to the element at the given 
+     [[ending index|to]], in the same order as they are 
+     produced by the [[iterator]].
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
