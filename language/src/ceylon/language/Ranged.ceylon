@@ -72,15 +72,7 @@
  `ranged` such that `y` does not occur before `x` and the 
  span `ranged[x..y]` has length `n`:
  
- - `ranged[x..y]==ranged[x:n]`.
- 
- Many ranged objects are also instances of 
- [[Correspondence]]. In this case, the span and segment
- operations should be consistent with the item operation. 
- That is, for every index `x` in the ranged object `ranged`:
- 
- - `ranged[x..x].first==ranged[x]`, and
- - `ranged[x:1].first==ranged[x]`."
+ - `ranged[x..y]==ranged[x:n]`."
 see (`interface List`, 
      `interface Sequence`, 
      `class String`)
