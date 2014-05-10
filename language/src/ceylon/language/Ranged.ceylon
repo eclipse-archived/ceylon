@@ -132,14 +132,18 @@ shared interface Ranged<in Index, out Element, out Span>
  
     "Obtain a segment containing the mapped values starting 
      from the given [[starting index|from]], with the given 
-     [[length]]. 
+     [[length]]. If `length<=0`, the resulting segment is 
+     empty.
      
      The segment should contain the given [[number|length]] 
      of elements of this iterable object, starting from the
      element at the given [[starting index|from]], in the 
-     same order as they are produced by the [[iterator]].
-     
-     If `length<=0`, the resulting segment should be empty.
+     same order as they are produced by the [[iterator]]. In
+     the case where the iterator would be exhausted before
+     [[length]] elements are produced, the resulting segment
+     contains only those elements which were produced before
+     the iterator was exhausted, and the length of the 
+     segment is less then the given `length`.
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
