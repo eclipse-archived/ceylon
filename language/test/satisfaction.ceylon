@@ -100,19 +100,19 @@ class MySequence() satisfies Sequence<Integer> {
         return this;
     }
 }
-class MyRanged() satisfies Ranged<Integer,Character,Iterable<Character>>&Iterable<Character> {
-    value contents = 'a'..'z';
-    shared actual Iterable<Character> span(Integer from, Integer to) {
-        return contents.span(from, to);
+class MyRanged(Character[] contents='a'..'z') 
+        satisfies Ranged<Integer,Character,MyRanged> {
+    shared actual MyRanged span(Integer from, Integer to) {
+        return MyRanged(contents.span(from, to));
     }
-    shared actual Iterable<Character> spanFrom(Integer from) {
-        return contents.spanFrom(from);
+    shared actual MyRanged spanFrom(Integer from) {
+        return MyRanged(contents.spanFrom(from));
     }
-    shared actual Iterable<Character> spanTo(Integer to) {
-        return contents.spanTo(to);
+    shared actual MyRanged spanTo(Integer to) {
+        return MyRanged(contents.spanTo(to));
     }
-    shared actual Iterable<Character> segment(Integer from, Integer length) {
-        return contents.segment(from, length);
+    shared actual MyRanged segment(Integer from, Integer length) {
+        return MyRanged(contents.segment(from, length));
     }
     iterator()=>contents.iterator();
 }
