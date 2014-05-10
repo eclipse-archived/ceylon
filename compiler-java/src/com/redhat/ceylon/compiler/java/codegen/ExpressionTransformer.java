@@ -4290,7 +4290,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             // Because tuple open span access has the type of the indexed element
             // (not a sequential of the union of types in the ranged) a typecast may be required.
-            ProducedType rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
+            ProducedType rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 2);
             ProducedType expectedType = access.getTypeModel();
             int flags = 0;
             if(!expectedType.isExactly(rangedSpanType)){
