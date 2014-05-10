@@ -113,8 +113,8 @@ interface Declarations {
     @error shared assign getterForSharedSetter {
     }
     
-    class Ni���o() {
-        Ni���o ni���o = Ni���o();
+    class Niẍoℳᵫᵃ() {
+        Niẍoℳᵫᵃ niẍoℳᵫᵃ = Niẍoℳᵫᵃ();
     }
     
     void _bar() { _bar(); }
