@@ -350,8 +350,8 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         final .ceylon.language.Entry entry = new .ceylon.language.Entry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), p1, p1);
         if (true || true) {
             final .java.lang.Object x = new .com.redhat.ceylon.compiler.java.test.expression.erasure.MyException(null, null);
-            ((.java.lang.Exception)x).printStackTrace();
-            final .java.lang.Throwable cause = ((.java.lang.Exception)x).getCause();
+            ((.java.lang.Throwable)x).printStackTrace();
+            final .java.lang.Throwable cause = ((.java.lang.Throwable)x).getCause();
             throw (.java.lang.Throwable)x;
         }
         return (.com.redhat.ceylon.compiler.java.test.expression.erasure.Left)middle;

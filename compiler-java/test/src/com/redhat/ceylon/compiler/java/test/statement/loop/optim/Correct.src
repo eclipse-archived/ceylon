@@ -289,7 +289,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long arraySequenceIterationStatic$priv$() {
-        final .ceylon.language.ArraySequence<.ceylon.language.Integer> array$55;
+        final .ceylon.language.ArraySequence<? extends .ceylon.language.Integer> array$55;
         .java.lang.Object array$53 = null;
         if ((array$53 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>)(.ceylon.language.Ranged)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
@@ -339,7 +339,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             array$55 = (.ceylon.language.ArraySequence)array$53;
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ArraySequence<Integer> array = {for (i in -1..11) i}.sequence.segment(1, 11)"));
         long sum = 0L;
-        final .ceylon.language.ArraySequence<.ceylon.language.Integer> seq$59 = array$55;
+        final .ceylon.language.ArraySequence<? extends .ceylon.language.Integer> seq$59 = array$55;
         final .java.lang.Object[] array$56 = seq$59.$getArray$();
         final int length$57 = seq$59.$getLength$() + seq$59.$getFirst$();
         loop_10: for (int i$58 = seq$59.$getFirst$(); i$58 < length$57; i$58++) {
@@ -420,7 +420,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long arraySequenceIterationDynamic$priv$() {
-        final .ceylon.language.ArraySequence<.ceylon.language.Integer> iterable$79;
+        final .ceylon.language.ArraySequence<? extends .ceylon.language.Integer> iterable$79;
         .java.lang.Object iterable$77 = null;
         if ((iterable$77 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
             
