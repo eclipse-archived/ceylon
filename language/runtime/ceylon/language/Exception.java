@@ -43,12 +43,14 @@ public class Exception extends RuntimeException implements ReifiedType {
         this($default$description());
     }
         
-    @TypeInfo("ceylon.language::Throwable|ceylon.language::Null")
+    @Override
+    @Ignore
     public java.lang.Throwable getCause() {
         return super.getCause();
     }
     
-    @TypeInfo("ceylon.language::String")
+    @Override
+    @Ignore
     public java.lang.String getMessage() {
         if (description != null) {
             return description.toString();
@@ -60,12 +62,14 @@ public class Exception extends RuntimeException implements ReifiedType {
         return "";
     }
 
-    @TypeInfo("ceylon.language::String")
+    @Override
+    @Ignore
     public java.lang.String toString() {
         return className_.className(this) + " \"" + getMessage() +"\""; 
     }
     
     @Override
+    @Ignore
     public void printStackTrace() {
     	super.printStackTrace();
     }

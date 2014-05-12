@@ -61,12 +61,14 @@ public class Error extends java.lang.Error implements ReifiedType {
         return "";
     }
 
-    @TypeInfo("ceylon.language::String")
+    @Override
+    @Ignore
     public java.lang.String toString() {
         return className_.className(this) + " \"" + getMessage() +"\""; 
     }
     
     @Override
+    @Ignore
     public void printStackTrace() {
     	super.printStackTrace();
     }

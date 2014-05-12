@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
@@ -50,6 +51,7 @@ public abstract class Throwable extends java.lang.Object {
     }
     
     @TypeInfo("ceylon.language::String")
+    @Transient
     public java.lang.String getMessage() {
         if (description != null) {
             return description.toString();
@@ -62,12 +64,13 @@ public abstract class Throwable extends java.lang.Object {
     }
 
     @TypeInfo("ceylon.language::String")
+    @Transient
     public java.lang.String toString() {
         return className_.className(this) + " \"" + getMessage() +"\""; 
     }
     
     //@Override
-    public void printStackTrace() {
+    public final void printStackTrace() {
     	//super.printStackTrace();
     }
 
