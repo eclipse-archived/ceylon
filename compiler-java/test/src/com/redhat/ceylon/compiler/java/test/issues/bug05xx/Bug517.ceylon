@@ -19,5 +19,5 @@
  */
 @noanno
 void bug517() {
-    Ranged<Integer,String> ran = "hello";
+    Ranged<Integer,Character,String> ran = "hello";
 }

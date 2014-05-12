@@ -27,7 +27,7 @@ shared class SequenceOperators() {
     T box<T>(T x){ return x; }
     
     void testSequence(Correspondence<Integer, String> c1, Correspondence<Integer,String>? c2, List<String>? c3, 
-                      Ranged<String, String> stringRange, Integer&List<String> integerAndList) {
+                      Ranged<Integer, Character, String> stringRange, Integer&List<String> integerAndList) {
         variable String? s = c1[1];
         s = this.c1[1];
         s = c1[box(1)];
@@ -49,7 +49,7 @@ shared class SequenceOperators() {
         subrange = sequence[box(1):box(2)];
         
         // make sure the length is cast to Integer and not String
-        String stringRangeRet = stringRange["foo":integerAndList];
+        String stringRangeRet = stringRange[1:integerAndList];
         
         variable String[] upperRange;
         upperRange = sequence[1...];
