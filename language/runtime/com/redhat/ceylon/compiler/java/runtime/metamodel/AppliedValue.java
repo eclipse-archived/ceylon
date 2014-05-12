@@ -84,6 +84,11 @@ public class AppliedValue<Get, Set>
                 }else{
                     throw new RuntimeException("Object/Basic/Identifiable member not supported: "+decl.getName());
                 }
+            } else if (javaClass == ceylon.language.Throwable.class) {
+                if("cause".equals(decl.getName())
+                        || "message".equals(decl.getName())){
+                    javaClass = instance.getClass();
+                }
             }
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
@@ -99,8 +104,10 @@ public class AppliedValue<Get, Set>
                 getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
                 if(instance != null 
                         // XXXArray.getArray is static but requires an instance as first param
-                        && (isJavaArray || !Modifier.isStatic(m.getModifiers())))
+                        && (isJavaArray || !Modifier.isStatic(m.getModifiers()))) {
+                    System.err.println("Ceylon value: " + decl + ", reflection method: " + m + ", handle: " + getter);
                     getter = getter.bindTo(instance);
+                }
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
 

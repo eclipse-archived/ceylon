@@ -115,7 +115,19 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             }else{
                 throw new RuntimeException("Object/Basic/Identifiable member not supported: "+decl.getName());
             }
-        }else{
+        } else if (javaClass == ceylon.language.Throwable.class) {
+            if("printStackTrace".equals(decl.getName())){
+                try {
+                    found = java.lang.Throwable.class.getDeclaredMethod("printStackTrace");
+                } catch (NoSuchMethodException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (SecurityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        } else{
             // FIXME: deal with Java classes and overloading
             // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
             found = Metamodel.getJavaMethod((com.redhat.ceylon.compiler.typechecker.model.Method) function.declaration);
