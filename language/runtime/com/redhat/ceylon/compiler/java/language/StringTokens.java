@@ -39,13 +39,13 @@ public class StringTokens
     $ceylon$language$Category$this;
     
     private final java.lang.String str;
-    private final Callable<? extends Boolean> splitting;
+    private final Callable<? extends Boolean> separator;
     private final boolean keepSeparators;
     private final boolean groupSeparators;
 
     public StringTokens(java.lang.String str, 
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
-            Callable<? extends Boolean> splitting,
+            Callable<? extends Boolean> separator,
             boolean keepSeparators, boolean groupSeparators) {
         this.$ceylon$language$Iterable$this = 
         		new Iterable$impl<String,java.lang.Object>(String.$TypeDescriptor$, 
@@ -53,7 +53,7 @@ public class StringTokens
         this.$ceylon$language$Category$this = 
         		new Category$impl<java.lang.Object>(Object.$TypeDescriptor$,this);
         this.str = str;
-        this.splitting = splitting;
+        this.separator = separator;
         this.keepSeparators = keepSeparators;
         this.groupSeparators = groupSeparators;
     }
@@ -61,7 +61,7 @@ public class StringTokens
     // this one is just here to satisfy the runtime Declaration otherwise the type of separator is lost
     @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
     private final Callable<? extends Boolean> getSeparator$priv(){
-        return splitting;
+        return separator;
     }
     
     @Ignore
@@ -172,7 +172,7 @@ public class StringTokens
                     if(eof())
                         return false;
                     int charCodePoint = java.lang.Character.codePointAt(chars, index);
-                    return splitting.$call$(Character.instance(charCodePoint)).booleanValue();
+                    return separator.$call$(Character.instance(charCodePoint)).booleanValue();
                 }
             };
         /*} else if (separator instanceof java.lang.String) {
