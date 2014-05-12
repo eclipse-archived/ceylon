@@ -9,7 +9,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
-        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
+        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, T, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
         this.hash = 1L;
     }
@@ -275,7 +275,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -344,10 +344,10 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public boolean definesAny(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.definesAny(keys);
     }
-    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this$;
+    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, T, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
+    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, T, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
         return $ceylon$language$Ranged$this$;
     }
     

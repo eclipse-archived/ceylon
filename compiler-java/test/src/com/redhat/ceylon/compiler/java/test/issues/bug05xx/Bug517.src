@@ -6,7 +6,7 @@ final class bug517_ {
     }
     
     static void bug517() {
-        final .ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String> ran = (.ceylon.language.Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance("hello");
+        final .ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String> ran = (.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.Character, ? extends .ceylon.language.String>)(.ceylon.language.Ranged).ceylon.language.String.instance("hello");
     }
     
     public static void main(.java.lang.String[] args) {

@@ -108,7 +108,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
-        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
+        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, T, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -373,7 +373,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -447,30 +447,30 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     public .ceylon.language.Sequential<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.items(keys);
     }
-    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this$;
+    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, T, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
+    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, T, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
         return $ceylon$language$Ranged$this$;
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends T> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends T> spanFrom(final .ceylon.language.Integer from) {
+    public final .ceylon.language.Sequential spanFrom(final .ceylon.language.Integer from) {
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends T> spanTo(final .ceylon.language.Integer to) {
+    public final .ceylon.language.Sequential spanTo(final .ceylon.language.Integer to) {
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
-    public final .ceylon.language.Sequential<? extends T> segment(final .ceylon.language.Integer from, final long length) {
+    public final .ceylon.language.Sequential segment(final .ceylon.language.Integer from, final long length) {
         return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;

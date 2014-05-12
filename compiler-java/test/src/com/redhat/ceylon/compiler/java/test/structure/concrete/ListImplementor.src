@@ -9,7 +9,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<X, .java.lang.Object>($reified$X, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, X>(.ceylon.language.Integer.$TypeDescriptor$, $reified$X, this);
-        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends X>>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$X), this);
+        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, X, .ceylon.language.List<? extends X>>(.ceylon.language.Integer.$TypeDescriptor$, $reified$X, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$X), this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     protected final .ceylon.language.List$impl<X> $ceylon$language$List$this$;
@@ -273,7 +273,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X>, ? extends .java.lang.Object> getIndexed() {
-        return $ceylon$language$Iterable$this$.getIndexed();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends X>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getIndexed();
     }
     
     @.java.lang.Override
@@ -347,10 +347,10 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     public .ceylon.language.Sequential<? extends X> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.items(keys);
     }
-    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, .ceylon.language.List<? extends X>> $ceylon$language$Ranged$this$;
+    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, X, .ceylon.language.List<? extends X>> $ceylon$language$Ranged$this$;
     
     @.java.lang.Override
-    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.List<? extends X>> $ceylon$language$Ranged$impl() {
+    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, X, ? extends .ceylon.language.List<? extends X>> $ceylon$language$Ranged$impl() {
         return $ceylon$language$Ranged$this$;
     }
     
@@ -360,7 +360,7 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> segment(final .ceylon.language.Integer from, final long length) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor segment(final .ceylon.language.Integer from, final long length) {
         throw new .ceylon.language.Exception(null, null);
     }
     
@@ -370,17 +370,17 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> spanFrom(final .ceylon.language.Integer from) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor spanFrom(final .ceylon.language.Integer from) {
         throw new .ceylon.language.Exception(null, null);
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> spanTo(final .ceylon.language.Integer to) {
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor spanTo(final .ceylon.language.Integer to) {
         throw new .ceylon.language.Exception(null, null);
     }
     
