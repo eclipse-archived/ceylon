@@ -8,6 +8,7 @@ import java.util.Arrays;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
+import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Method;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -22,7 +23,8 @@ public final class printStackTrace_
             @TypeInfo("ceylon.language::Throwable")
             @Name("exception") final java.lang.Throwable throwable,
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
-            @Defaulted @Name("write") final Callable<java.lang.Object> write) {
+            @Defaulted @Name("write") @FunctionalParameter("!(string)")
+            final Callable<java.lang.Object> write) {
         PrintWriter writer = new PrintWriter(new Writer() {
             @Override
             public void write(char[] cbuf, int off, int len) throws IOException {

@@ -149,7 +149,7 @@ public abstract class Boolean implements Binary<Boolean>, ReifiedType {
     }
 
     @Override
-    public final Boolean set(@Name("index") long index, @Name("big") @Defaulted boolean bit) {
+    public final Boolean set(@Name("index") long index, @Name("bit") @Defaulted boolean bit) {
         return instance(set(booleanValue(), index, bit));
     }
     
