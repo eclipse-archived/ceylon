@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,8 +52,12 @@ import com.redhat.ceylon.compiler.loader.ModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.impl.reflect.mirror.ReflectionUtils;
 import com.redhat.ceylon.compiler.loader.model.LazyElement;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -81,8 +86,6 @@ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
 
 public class ModelLoaderTest extends CompilerTest {
     
-    private Map<Integer, Set<Integer>> alreadyCompared = new HashMap<Integer, Set<Integer>>();
-    
     protected static String getQualifiedPrefixedName(Declaration decl){
         String name = Decl.className(decl);
         String prefix;
@@ -101,7 +104,11 @@ public class ModelLoaderTest extends CompilerTest {
         return prefix + name;
     }
     
-    protected void verifyClassLoading(String ceylon){
+    
+    protected void verifyClassLoading(String ceylon) {
+        verifyClassLoading(ceylon, new ModelComparison());
+    }
+    protected void verifyClassLoading(String ceylon, final ModelComparison modelCompare){
         // now compile the ceylon decl file
         CeyloncTaskImpl task = getCompilerTask(ceylon);
         // get the context to grab the phased units
@@ -153,7 +160,7 @@ public class ModelLoaderTest extends CompilerTest {
                                 Decl.isValue(entry.getValue()) ? DeclarationType.VALUE : DeclarationType.TYPE);
                         Assert.assertNotNull(modelDeclaration);
                         // make sure we loaded them exactly the same
-                        compareDeclarations(entry.getValue(), modelDeclaration);
+                        modelCompare.compareDeclarations(entry.getValue(), modelDeclaration);
                     }
                 }
             }
@@ -205,267 +212,282 @@ public class ModelLoaderTest extends CompilerTest {
         Boolean success = task2.call();
         Assert.assertTrue("Compilation failed", success);
     }
-    private boolean isUltimatelyVisible(Declaration d) {
-        if (d instanceof MethodOrValue && 
-                ((MethodOrValue)d).isParameter()) {
-            Scope container = d.getContainer();
-            if (container instanceof Declaration) {
-                return isUltimatelyVisible((Declaration)container);
+    static class ModelComparison {
+        private boolean isUltimatelyVisible(Declaration d) {
+            if (d instanceof MethodOrValue && 
+                    ((MethodOrValue)d).isParameter()) {
+                Scope container = d.getContainer();
+                if (container instanceof Declaration) {
+                    return isUltimatelyVisible((Declaration)container);
+                }
+            }
+            return d.isShared();
+        }
+            
+        protected void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
+            if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
+                return;
+            String name = validDeclaration.getQualifiedNameString();
+            Assert.assertNotNull("Missing model declararion for: "+name, modelDeclaration);
+            // check that we have a unit
+            Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
+            Assert.assertNotNull("Invalid Unit", modelDeclaration.getUnit().getPackage());
+            // let's not check java stuff for now, due to missing types in the jdk's private methods
+            if(name.startsWith("java."))
+                return;
+            // only compare parameter names for public methods
+            if(!(validDeclaration instanceof MethodOrValue) 
+                    || !((MethodOrValue)validDeclaration).isParameter() 
+                    || isUltimatelyVisible(validDeclaration)) {
+                Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
+            }
+            Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
+            Assert.assertEquals(name+" [annotation]", validDeclaration.isAnnotation(), modelDeclaration.isAnnotation());
+            // if they're not shared, stop at making sure they are the same type of object
+            if(!validDeclaration.isShared()
+                    && !isUltimatelyVisible(validDeclaration)
+                    && !(validDeclaration instanceof TypeParameter)){
+                boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
+                // we may replace Getter or Setter with Value, no harm done
+                sameType |= validDeclaration instanceof Value && modelDeclaration instanceof Value;
+                sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
+                Assert.assertTrue(name+" [type] " + validDeclaration + " is not the same as " + modelDeclaration, sameType);
+                return;
+            }
+            compareAnnotations(validDeclaration, modelDeclaration);
+            // check containers
+            compareContainers(validDeclaration, modelDeclaration);
+            // full check
+            if(validDeclaration instanceof ClassOrInterface){
+                Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
+                compareClassOrInterfaceDeclarations((ClassOrInterface)validDeclaration, (ClassOrInterface)modelDeclaration);
+            }else if(validDeclaration instanceof Method){
+                Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Method);
+                compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
+            }else if(validDeclaration instanceof Value || validDeclaration instanceof Setter){
+                Assert.assertTrue(name+" [Attribute]", modelDeclaration instanceof Value);
+                compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
+            }else if(validDeclaration instanceof TypeParameter){
+                Assert.assertTrue(name+" [TypeParameter]", modelDeclaration instanceof TypeParameter);
+                compareTypeParameters((TypeParameter)validDeclaration, (TypeParameter)modelDeclaration);
             }
         }
-        return d.isShared();
-    }
         
-    protected void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
-        if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
-            return;
-        String name = validDeclaration.getQualifiedNameString();
-        Assert.assertNotNull("Missing model declararion for: "+name, modelDeclaration);
-        // check that we have a unit
-        Assert.assertNotNull("Missing Unit: "+modelDeclaration.getQualifiedNameString(), modelDeclaration.getUnit());
-        Assert.assertNotNull("Invalid Unit", modelDeclaration.getUnit().getPackage());
-        // let's not check java stuff for now, due to missing types in the jdk's private methods
-        if(name.startsWith("java."))
-            return;
-        // only compare parameter names for public methods
-        if(!(validDeclaration instanceof MethodOrValue) 
-                || !((MethodOrValue)validDeclaration).isParameter() 
-                || isUltimatelyVisible(validDeclaration)) {
-            Assert.assertEquals(name+" [name]", validDeclaration.getQualifiedNameString(), modelDeclaration.getQualifiedNameString());
-        }
-        Assert.assertEquals(name+" [shared]", validDeclaration.isShared(), modelDeclaration.isShared());
-        Assert.assertEquals(name+" [annotation]", validDeclaration.isAnnotation(), modelDeclaration.isAnnotation());
-        // if they're not shared, stop at making sure they are the same type of object
-        if(!validDeclaration.isShared()
-                && !isUltimatelyVisible(validDeclaration)
-                && !(validDeclaration instanceof TypeParameter)){
-            boolean sameType = validDeclaration.getClass().isAssignableFrom(modelDeclaration.getClass());
-            // we may replace Getter or Setter with Value, no harm done
-            sameType |= validDeclaration instanceof Value && modelDeclaration instanceof Value;
-            sameType |= validDeclaration instanceof Setter && modelDeclaration instanceof Value;
-            Assert.assertTrue(name+" [type] " + validDeclaration + " is not the same as " + modelDeclaration, sameType);
-            return;
-        }
-        compareAnnotations(validDeclaration, modelDeclaration);
-        // check containers
-        compareContainers(validDeclaration, modelDeclaration);
-        // full check
-        if(validDeclaration instanceof ClassOrInterface){
-            Assert.assertTrue(name+" [ClassOrInterface]", modelDeclaration instanceof ClassOrInterface);
-            compareClassOrInterfaceDeclarations((ClassOrInterface)validDeclaration, (ClassOrInterface)modelDeclaration);
-        }else if(validDeclaration instanceof Method){
-            Assert.assertTrue(name+" [Method]", modelDeclaration instanceof Method);
-            compareMethodDeclarations((Method)validDeclaration, (Method)modelDeclaration);
-        }else if(validDeclaration instanceof Value || validDeclaration instanceof Setter){
-            Assert.assertTrue(name+" [Attribute]", modelDeclaration instanceof Value);
-            compareAttributeDeclarations((MethodOrValue)validDeclaration, (Value)modelDeclaration);
-        }else if(validDeclaration instanceof TypeParameter){
-            Assert.assertTrue(name+" [TypeParameter]", modelDeclaration instanceof TypeParameter);
-            compareTypeParameters((TypeParameter)validDeclaration, (TypeParameter)modelDeclaration);
-        }
-    }
-    
-    private void compareContainers(Declaration validDeclaration, Declaration modelDeclaration) {
-        String name = validDeclaration.getQualifiedNameString();
-        Scope validContainer = validDeclaration.getContainer();
-        Scope modelContainer = modelDeclaration.getContainer();
-        if(validContainer instanceof Declaration){
-            Assert.assertTrue(name+" [Container is Declaration]", modelContainer instanceof Declaration);
-            compareDeclarations((Declaration)validContainer, (Declaration)modelContainer);
-        }else{
-            Assert.assertTrue(name+" [Container is not Declaration]", modelContainer instanceof Declaration == false);
-        }
-    }
-
-    private void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
-        // let's not compare setter annotations
-        if(validDeclaration instanceof Setter)
-            return;
-        String name = validDeclaration.getQualifiedNameString();
-        List<Annotation> validAnnotations = validDeclaration.getAnnotations();
-        List<Annotation> modelAnnotations = modelDeclaration.getAnnotations();
-        Assert.assertEquals(name+" [annotation count]", validAnnotations.size(), modelAnnotations.size());
-        for(int i=0;i<validAnnotations.size();i++){
-            compareAnnotation(name, validAnnotations.get(i), modelAnnotations.get(i));
-        }
-    }
-
-    private void compareAnnotation(String element, Annotation validAnnotation, Annotation modelAnnotation) {
-        Assert.assertEquals(element+ " [annotation name]", validAnnotation.getName(), modelAnnotation.getName());
-        String name = element+"@"+validAnnotation.getName();
-        List<String> validPositionalArguments = validAnnotation.getPositionalArguments();
-        List<String> modelPositionalArguments = modelAnnotation.getPositionalArguments();
-        Assert.assertEquals(name+ " [annotation argument size]", validPositionalArguments.size(), modelPositionalArguments.size());
-        for(int i=0;i<validPositionalArguments.size();i++){
-            Assert.assertEquals(name+ " [annotation argument "+i+"]", validPositionalArguments.get(i), modelPositionalArguments.get(i));
-        }
-        Map<String, String> validNamedArguments = validAnnotation.getNamedArguments();
-        Map<String, String> modelNamedArguments = modelAnnotation.getNamedArguments();
-        Assert.assertEquals(name+ " [annotation named argument size]", validNamedArguments.size(), modelNamedArguments.size());
-        for(Entry<String,String> validEntry : validNamedArguments.entrySet()){
-            String modelValue = modelNamedArguments.get(validEntry.getKey());
-            Assert.assertEquals(name+ " [annotation named argument "+validEntry.getKey()+"]", validEntry.getValue(), modelValue);
-        }
-    }
-
-    private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
-        int hashCode = System.identityHashCode(modelDeclaration);
-        Set<Integer> comparedDeclarations = alreadyCompared.get(hashCode);
-        if(comparedDeclarations == null){
-            comparedDeclarations = new HashSet<Integer>();
-            alreadyCompared.put(hashCode, comparedDeclarations);
-        }
-        return !comparedDeclarations.add(System.identityHashCode(validDeclaration));
-    }
-
-    private void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
-        String name = validDeclaration.getContainer().toString()+"<"+validDeclaration.getName()+">";
-        Assert.assertEquals("[Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
-        Assert.assertEquals("[Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
-        Assert.assertEquals("[SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
-        Assert.assertEquals("[Defaulted]", validDeclaration.isDefaulted(), modelDeclaration.isDefaulted());
-        if (validDeclaration.getDeclaration() != null && modelDeclaration.getDeclaration() != null) {
-            compareDeclarations(validDeclaration.getDeclaration(), modelDeclaration.getDeclaration());
-        } else if (!(validDeclaration.getDeclaration() == null && modelDeclaration.getDeclaration() == null)) {
-            Assert.fail("[Declaration] one has declaration the other not");
-        }
-        if (validDeclaration.getSelfTypedDeclaration() != null && modelDeclaration.getSelfTypedDeclaration() != null) {
-            compareDeclarations(validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
-        } else if (!(validDeclaration.getSelfTypedDeclaration() == null && modelDeclaration.getSelfTypedDeclaration() == null)) {
-            Assert.fail("[SelfType] one has self typed declaration the other not");
-        }
-        if (validDeclaration.getDefaultTypeArgument() != null && modelDeclaration.getDefaultTypeArgument() != null) {
-            compareDeclarations(validDeclaration.getDefaultTypeArgument().getDeclaration(), modelDeclaration.getDefaultTypeArgument().getDeclaration());
-        } else if (!(validDeclaration.getDefaultTypeArgument() == null && modelDeclaration.getDefaultTypeArgument() == null)) {
-            Assert.fail("[DefaultTypeArgument] one has default type argument the other not");
-        }
-        compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
-        compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
-    }
-
-    private void compareClassOrInterfaceDeclarations(ClassOrInterface validDeclaration, ClassOrInterface modelDeclaration) {
-        String name = validDeclaration.getQualifiedNameString();
-        Assert.assertEquals(name+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
-        Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
-        Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
-        Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
-        // extended type
-        if(validDeclaration.getExtendedTypeDeclaration() == null)
-            Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
-        else
-            compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
-        // satisfied types!
-        compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
-        // case types
-        compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
-        // work on type parameters
-        compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
-        // tests specific to classes
-        if(validDeclaration instanceof Class){
-            Assert.assertTrue(name+" [is class]", modelDeclaration instanceof Class);
-            // self type
-            compareSelfTypes((Class)validDeclaration, (Class)modelDeclaration, name);
-            // parameters
-            compareParameterLists(validDeclaration.getQualifiedNameString(), 
-                    ((Class)validDeclaration).getParameterLists(), 
-                    ((Class)modelDeclaration).getParameterLists());
-            // final
-            Assert.assertEquals(name+" [is final]", validDeclaration.isFinal(), modelDeclaration.isFinal());
-        }else{
-            // tests specific to interfaces
-            Assert.assertTrue(name+" [is interface]", modelDeclaration instanceof Interface);
-        }
-        // make sure it has every member required
-        for(Declaration validMember : validDeclaration.getMembers()){
-            // skip non-shared members
-            if(!validMember.isShared())
-                continue;
-            Declaration modelMember = lookupMember(modelDeclaration, validMember);
-            Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
-            compareDeclarations(validMember, modelMember);
-        }
-        // and not more
-        for(Declaration modelMember : modelDeclaration.getMembers()){
-            // skip non-shared members
-            if(!modelMember.isShared())
-                continue;
-            Declaration validMember = lookupMember(validDeclaration, modelMember);
-            Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
-        }
-    }
-
-    private void compareCaseTypes(String name,
-            List<TypeDeclaration> validTypeDeclarations,
-            List<TypeDeclaration> modelTypeDeclarations) {
-        if(validTypeDeclarations != null){
-            Assert.assertNotNull(name+ " [null case types]", modelTypeDeclarations);
-        }else{
-            Assert.assertNull(name+ " [non-null case types]", modelTypeDeclarations);
-            return;
-        }
-        Assert.assertEquals(name+ " [case types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
-        for(int i=0;i<validTypeDeclarations.size();i++){
-            TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
-            TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
-            compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
-        }
-    }
-
-    private void compareSelfTypes(Class validDeclaration,
-            Class modelDeclaration, String name) {
-        if(validDeclaration.getSelfType() == null)
-            Assert.assertTrue(name+" [null self type]", modelDeclaration.getSelfType() == null);
-        else{
-            ProducedType validSelfType = validDeclaration.getSelfType();
-            ProducedType modelSelfType =  modelDeclaration.getSelfType();
-            Assert.assertNotNull(name+" [non-null self type]", modelSelfType);
-            // self types are always type parameters so they must have a declaration
-            compareDeclarations(validSelfType.getDeclaration(), modelSelfType.getDeclaration());
-        }
-    }
-    
-    private Declaration lookupMember(ClassOrInterface container, Declaration referenceMember) {
-        String name = referenceMember.getName();
-        for(Declaration member : container.getMembers()){
-            if(member.getName() != null 
-                    && member.getName().equals(name)){
-                // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
-                // class with the same name so we ignore it
-                if(Decl.isValue(referenceMember) && (member instanceof Class
-                                                     || (member instanceof Value && ((Value)member).isParameter())))
-                    continue;
-                // the opposite is also true
-                if((referenceMember instanceof Class
-                    || referenceMember instanceof Value && ((Value)referenceMember).isParameter())
-                        && Decl.isValue(member))
-                    continue;
-                // otherwise we found it
-                return member;
+        protected void compareContainers(Declaration validDeclaration, Declaration modelDeclaration) {
+            String name = validDeclaration.getQualifiedNameString();
+            Scope validContainer = validDeclaration.getContainer();
+            Scope modelContainer = modelDeclaration.getContainer();
+            if(validContainer instanceof Declaration){
+                Assert.assertTrue(name+" [Container is Declaration]", modelContainer instanceof Declaration);
+                compareDeclarations((Declaration)validContainer, (Declaration)modelContainer);
+            }else{
+                Assert.assertTrue(name+" [Container is not Declaration]", modelContainer instanceof Declaration == false);
             }
         }
-        // not found
-        return null;
-    }
-
-    private void compareSatisfiedTypes(String name, List<TypeDeclaration> validTypeDeclarations, List<TypeDeclaration> modelTypeDeclarations) {
-        Assert.assertEquals(name+ " [Satisfied types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
-        for(int i=0;i<validTypeDeclarations.size();i++){
-            TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
-            TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
-            compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+    
+        protected void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
+            // let's not compare setter annotations
+            if(validDeclaration instanceof Setter)
+                return;
+            String name = validDeclaration.getQualifiedNameString();
+            List<Annotation> validAnnotations = validDeclaration.getAnnotations();
+            List<Annotation> modelAnnotations = modelDeclaration.getAnnotations();
+            Assert.assertEquals(name+" [annotation count]", validAnnotations.size(), modelAnnotations.size());
+            for(int i=0;i<validAnnotations.size();i++){
+                compareAnnotation(name, validAnnotations.get(i), modelAnnotations.get(i));
+            }
         }
-    }
-
-    private void compareParameterLists(String name, List<ParameterList> validParameterLists, List<ParameterList> modelParameterLists) {
-        Assert.assertEquals(name+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
-        for(int i=0;i<validParameterLists.size();i++){
-            List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
-            List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
+    
+        protected void compareAnnotation(String element, Annotation validAnnotation, Annotation modelAnnotation) {
+            Assert.assertEquals(element+ " [annotation name]", validAnnotation.getName(), modelAnnotation.getName());
+            String name = element+"@"+validAnnotation.getName();
+            List<String> validPositionalArguments = validAnnotation.getPositionalArguments();
+            List<String> modelPositionalArguments = modelAnnotation.getPositionalArguments();
+            Assert.assertEquals(name+ " [annotation argument size]", validPositionalArguments.size(), modelPositionalArguments.size());
+            for(int i=0;i<validPositionalArguments.size();i++){
+                Assert.assertEquals(name+ " [annotation argument "+i+"]", validPositionalArguments.get(i), modelPositionalArguments.get(i));
+            }
+            Map<String, String> validNamedArguments = validAnnotation.getNamedArguments();
+            Map<String, String> modelNamedArguments = modelAnnotation.getNamedArguments();
+            Assert.assertEquals(name+ " [annotation named argument size]", validNamedArguments.size(), modelNamedArguments.size());
+            for(Entry<String,String> validEntry : validNamedArguments.entrySet()){
+                String modelValue = modelNamedArguments.get(validEntry.getKey());
+                Assert.assertEquals(name+ " [annotation named argument "+validEntry.getKey()+"]", validEntry.getValue(), modelValue);
+            }
+        }
+    
+        private Map<Integer, Set<Integer>> alreadyCompared = new HashMap<Integer, Set<Integer>>();
+        
+        private boolean alreadyCompared(Declaration validDeclaration, Declaration modelDeclaration) {
+            int hashCode = System.identityHashCode(modelDeclaration);
+            Set<Integer> comparedDeclarations = alreadyCompared.get(hashCode);
+            if(comparedDeclarations == null){
+                comparedDeclarations = new HashSet<Integer>();
+                alreadyCompared.put(hashCode, comparedDeclarations);
+            }
+            return !comparedDeclarations.add(System.identityHashCode(validDeclaration));
+        }
+    
+        protected void compareTypeParameters(TypeParameter validDeclaration, TypeParameter modelDeclaration) {
+            String name = validDeclaration.getContainer().toString()+"<"+validDeclaration.getName()+">";
+            Assert.assertEquals(name+" [Contravariant]", validDeclaration.isContravariant(), modelDeclaration.isContravariant());
+            Assert.assertEquals(name+" [Covariant]", validDeclaration.isCovariant(), modelDeclaration.isCovariant());
+            Assert.assertEquals(name+" [SelfType]", validDeclaration.isSelfType(), modelDeclaration.isSelfType());
+            Assert.assertEquals(name+" [Defaulted]", validDeclaration.isDefaulted(), modelDeclaration.isDefaulted());
+            if (validDeclaration.getDeclaration() != null && modelDeclaration.getDeclaration() != null) {
+                compareDeclarations(validDeclaration.getDeclaration(), modelDeclaration.getDeclaration());
+            } else if (!(validDeclaration.getDeclaration() == null && modelDeclaration.getDeclaration() == null)) {
+                Assert.fail("[Declaration] one has declaration the other not");
+            }
+            if (validDeclaration.getSelfTypedDeclaration() != null && modelDeclaration.getSelfTypedDeclaration() != null) {
+                compareDeclarations(validDeclaration.getSelfTypedDeclaration(), modelDeclaration.getSelfTypedDeclaration());
+            } else if (!(validDeclaration.getSelfTypedDeclaration() == null && modelDeclaration.getSelfTypedDeclaration() == null)) {
+                Assert.fail("[SelfType] one has self typed declaration the other not");
+            }
+            if (validDeclaration.getDefaultTypeArgument() != null && modelDeclaration.getDefaultTypeArgument() != null) {
+                compareDeclarations(validDeclaration.getDefaultTypeArgument().getDeclaration(), modelDeclaration.getDefaultTypeArgument().getDeclaration());
+            } else if (!(validDeclaration.getDefaultTypeArgument() == null && modelDeclaration.getDefaultTypeArgument() == null)) {
+                Assert.fail("[DefaultTypeArgument] one has default type argument the other not");
+            }
+            compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+            compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
+        }
+    
+        protected void compareClassOrInterfaceDeclarations(ClassOrInterface validDeclaration, ClassOrInterface modelDeclaration) {
+            String name = validDeclaration.getQualifiedNameString();
+            Assert.assertEquals(name+" [abstract]", validDeclaration.isAbstract(), modelDeclaration.isAbstract());
+            Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+            Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+            Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+            // extended type
+            if(validDeclaration.getExtendedTypeDeclaration() == null)
+                Assert.assertTrue(name+" [null supertype]", modelDeclaration.getExtendedTypeDeclaration() == null);
+            else
+                compareDeclarations(validDeclaration.getExtendedTypeDeclaration(), modelDeclaration.getExtendedTypeDeclaration());
+            // satisfied types!
+            compareSatisfiedTypes(name, validDeclaration.getSatisfiedTypeDeclarations(), modelDeclaration.getSatisfiedTypeDeclarations());
+            // case types
+            compareCaseTypes(name, validDeclaration.getCaseTypeDeclarations(), modelDeclaration.getCaseTypeDeclarations());
+            // work on type parameters
+            compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
+            // tests specific to classes
+            if(validDeclaration instanceof Class){
+                Assert.assertTrue(name+" [is class]", modelDeclaration instanceof Class);
+                // self type
+                compareSelfTypes((Class)validDeclaration, (Class)modelDeclaration, name);
+                // parameters
+                compareParameterLists(validDeclaration.getQualifiedNameString(), 
+                        ((Class)validDeclaration).getParameterLists(), 
+                        ((Class)modelDeclaration).getParameterLists());
+                // final
+                Assert.assertEquals(name+" [is final]", validDeclaration.isFinal(), modelDeclaration.isFinal());
+            }else{
+                // tests specific to interfaces
+                Assert.assertTrue(name+" [is interface]", modelDeclaration instanceof Interface);
+            }
+            // make sure it has every member required
+            for(Declaration validMember : validDeclaration.getMembers()){
+                // skip non-shared members
+                if(!validMember.isShared())
+                    continue;
+                Declaration modelMember = lookupMember(modelDeclaration, validMember);
+                Assert.assertNotNull(validMember.getQualifiedNameString()+" [member] not found in loaded model", modelMember);
+                compareDeclarations(validMember, modelMember);
+            }
+            // and not more
+            for(Declaration modelMember : modelDeclaration.getMembers()){
+                // skip non-shared members
+                if(!modelMember.isShared())
+                    continue;
+                Declaration validMember = lookupMember(validDeclaration, modelMember);
+                Assert.assertNotNull(modelMember.getQualifiedNameString()+" [extra member] encountered in loaded model", validMember);
+            }
+        }
+    
+        protected void compareCaseTypes(String name,
+                List<TypeDeclaration> validTypeDeclarations,
+                List<TypeDeclaration> modelTypeDeclarations) {
+            if(validTypeDeclarations != null){
+                Assert.assertNotNull(name+ " [null case types]", modelTypeDeclarations);
+            }else{
+                Assert.assertNull(name+ " [non-null case types]", modelTypeDeclarations);
+                return;
+            }
+            Assert.assertEquals(name+ " [case types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
+            for(int i=0;i<validTypeDeclarations.size();i++){
+                TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
+                TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+                compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+            }
+        }
+    
+        protected void compareSelfTypes(Class validDeclaration,
+                Class modelDeclaration, String name) {
+            if(validDeclaration.getSelfType() == null)
+                Assert.assertTrue(name+" [null self type]", modelDeclaration.getSelfType() == null);
+            else{
+                ProducedType validSelfType = validDeclaration.getSelfType();
+                ProducedType modelSelfType =  modelDeclaration.getSelfType();
+                Assert.assertNotNull(name+" [non-null self type]", modelSelfType);
+                // self types are always type parameters so they must have a declaration
+                compareDeclarations(validSelfType.getDeclaration(), modelSelfType.getDeclaration());
+            }
+        }
+        
+        private Declaration lookupMember(ClassOrInterface container, Declaration referenceMember) {
+            String name = referenceMember.getName();
+            for(Declaration member : container.getMembers()){
+                if(member.getName() != null 
+                        && member.getName().equals(name)){
+                    // we have a special case if we're asking for a Value and we find a Class, it means it's an "object"'s
+                    // class with the same name so we ignore it
+                    if(Decl.isValue(referenceMember) && (member instanceof Class
+                                                         || (member instanceof Value && ((Value)member).isParameter())))
+                        continue;
+                    // the opposite is also true
+                    if((referenceMember instanceof Class
+                        || referenceMember instanceof Value && ((Value)referenceMember).isParameter())
+                            && Decl.isValue(member))
+                        continue;
+                    // otherwise we found it
+                    return member;
+                }
+            }
+            // not found
+            return null;
+        }
+    
+        protected void compareSatisfiedTypes(String name, List<TypeDeclaration> validTypeDeclarations, List<TypeDeclaration> modelTypeDeclarations) {
+            Assert.assertEquals(name+ " [Satisfied types count]", validTypeDeclarations.size(), modelTypeDeclarations.size());
+            for(int i=0;i<validTypeDeclarations.size();i++){
+                TypeDeclaration validTypeDeclaration = validTypeDeclarations.get(i);
+                TypeDeclaration modelTypeDeclaration = modelTypeDeclarations.get(i);
+                compareDeclarations(validTypeDeclaration, modelTypeDeclaration);
+            }
+        }
+    
+        protected void compareParameterLists(String name, List<ParameterList> validParameterLists, List<ParameterList> modelParameterLists) {
+            Assert.assertEquals(name+" [param lists count]", validParameterLists.size(), modelParameterLists.size());
+            for(int i=0;i<validParameterLists.size();i++){
+                List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
+                List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
+                compareParameterList(name, i, validParameterList,
+                        modelParameterList);
+            }
+        }
+    
+        protected void compareParameterList(String name, int i,
+                List<Parameter> validParameterList,
+                List<Parameter> modelParameterList) {
             Assert.assertEquals(name+" [param lists "+i+" count]", 
                     validParameterList.size(), modelParameterList.size());
             for(int p=0;p<validParameterList.size();p++){
-                Parameter validParameter = validParameterList.get(i);
-                Parameter modelParameter = modelParameterList.get(i);
+                Parameter validParameter = validParameterList.get(p);
+                Parameter modelParameter = modelParameterList.get(p);
+                Assert.assertEquals(name+" [param "+validParameter.getName()+" name]", 
+                        validParameter.getName(), modelParameter.getName());
+                Assert.assertEquals(name+" [param "+validParameter.getName()+" declaredAnything]", 
+                        validParameter.isDeclaredAnything(), modelParameter.isDeclaredAnything());
                 Assert.assertEquals(name+" [param "+validParameter.getName()+" sequenced]", 
                         validParameter.isSequenced(), modelParameter.isSequenced());
                 Assert.assertEquals(name+" [param "+validParameter.getName()+" defaulted]", 
@@ -474,47 +496,59 @@ public class ModelLoaderTest extends CompilerTest {
                 compareDeclarations(validParameter.getModel(), modelParameter.getModel());
             }
         }
-    }
-
-    private void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
-        String name = validDeclaration.getQualifiedNameString();
-        Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
-        Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
-        Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
-        // make sure it has every parameter list required
-        List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
-        List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
-        compareParameterLists(name, validParameterLists, modelParameterLists);
-        // now same for return type
-        compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
-        // work on type parameters
-        compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
-    }
-
-    private void compareTypeParameters(String name, List<TypeParameter> validTypeParameters, List<TypeParameter> modelTypeParameters) {
-        Assert.assertEquals(name+" [type parameter count]", validTypeParameters.size(), modelTypeParameters.size());
-        for(int i=0;i<validTypeParameters.size();i++){
-            TypeParameter validTypeParameter = validTypeParameters.get(i);
-            TypeParameter modelTypeParameter = modelTypeParameters.get(i);
-            compareDeclarations(validTypeParameter, modelTypeParameter);
+    
+        protected void compareMethodDeclarations(Method validDeclaration, Method modelDeclaration) {
+            String name = validDeclaration.getQualifiedNameString();
+            Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+            Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+            Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+            Assert.assertEquals(name+" [declaredVoid]", validDeclaration.isDeclaredVoid(), modelDeclaration.isDeclaredVoid());
+            // make sure it has every parameter list required
+            List<ParameterList> validParameterLists = validDeclaration.getParameterLists();
+            List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
+            compareParameterLists(name, validParameterLists, modelParameterLists);
+            // now same for return type
+            if (compareMethodReturn(validDeclaration)) {
+                compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
+            }
+            // work on type parameters
+            compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
         }
-    }
+    
+        protected boolean compareMethodReturn(Method validDeclaration) {
+            return true;
+        }
+    
+        protected void compareTypeParameters(String name, List<TypeParameter> validTypeParameters, List<TypeParameter> modelTypeParameters) {
+            Assert.assertEquals(name+" [type parameter count]", validTypeParameters.size(), modelTypeParameters.size());
+            for(int i=0;i<validTypeParameters.size();i++){
+                TypeParameter validTypeParameter = validTypeParameters.get(i);
+                TypeParameter modelTypeParameter = modelTypeParameters.get(i);
+                compareDeclarations(validTypeParameter, modelTypeParameter);
+            }
+        }
+    
+        protected void compareAttributeDeclarations(MethodOrValue validDeclaration, Value modelDeclaration) {
+            // let's not check Setters since their corresponding Getter is checked already
+            if(validDeclaration instanceof Setter)
+                return;
+            // make sure the flags are the same
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
+            Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [late]", validDeclaration.isLate(), modelDeclaration.isLate());
+            if (compareTransientness(validDeclaration)) {
+                Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [transient]", validDeclaration.isTransient(), modelDeclaration.isTransient());
+            }
+            // compare the types
+            compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
+        }
 
-    private void compareAttributeDeclarations(MethodOrValue validDeclaration, Value modelDeclaration) {
-        // let's not check Setters since their corresponding Getter is checked already
-        if(validDeclaration instanceof Setter)
-            return;
-        // make sure the flags are the same
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [late]", validDeclaration.isLate(), modelDeclaration.isLate());
-        Assert.assertEquals(validDeclaration.getQualifiedNameString()+" [transient]", validDeclaration.isTransient(), modelDeclaration.isTransient());
-        // compare the types
-        compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
-    }
-
+        protected boolean compareTransientness(MethodOrValue validDeclaration) {
+            return true;
+        }
+    }// class ModelComparison
 	@Test
 	public void loadClass(){
 		verifyClassLoading("Klass.ceylon");
@@ -1352,5 +1386,113 @@ public class ModelLoaderTest extends CompilerTest {
     public void loadJavaContainer(){
         compile("JavaContainer1.java", "JavaContainer2.java");
         compile("JavaContainerTest.ceylon");
+    }
+    
+    private static final ClosableVirtualFile getLatestZippedLanguageSourceFile() {
+        VFS vfs = new VFS();
+        File langDir = new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language");
+        if (!langDir.exists()) {
+            System.err.println("Unable to test language module, not found in repository: " + langDir);
+            System.exit(-1);
+        }
+        String[] versions = langDir.list();
+        Arrays.sort(versions);
+        String version = versions[versions.length-1]; //last
+        return vfs.getFromZipFile( new File(langDir, version + "/ceylon.language-" + version + ".src") );
+    }
+    
+    /**
+     * When testing the annotations on the native declarations in the language module
+     * we need to wory around a few bugs
+     */
+    class OtherModelCompare extends ModelComparison {
+        @Override
+        protected void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
+            // do nothing, until ceylon/ceylon-compiler#1231 is fixed
+        }
+        @Override
+        protected void compareParameterLists(String name, List<ParameterList> validParameterLists, List<ParameterList> modelParameterLists) {
+            // Override this for now because the model loader doesn't round trip MPL methods
+            // https://github.com/ceylon/ceylon-compiler/issues/1638
+            for(int i=0;i<Math.min(validParameterLists.size(), 1);i++){
+                List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
+                List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
+                compareParameterList(name, i, validParameterList,
+                        modelParameterList);
+            }
+        }
+        @Override
+        protected boolean compareMethodReturn(Method validDeclaration) {
+            // Override this for now because the model loader doesn't round trip MPL methods
+            // https://github.com/ceylon/ceylon-compiler/issues/1638
+            return validDeclaration.getParameterLists().size() <= 1;
+        }
+        
+        protected boolean compareTransientness(MethodOrValue validDeclaration) {
+            // Until https://github.com/ceylon/ceylon-spec/issues/964 is sorted out
+            return !"ceylon.language::Sequence.reversed".equals(validDeclaration.getQualifiedNameString());
+        }
+    }
+    
+    @Test
+    public void compareNativeRuntimeWithJavaRuntime() {
+        // parse the ceylon sources from the language module and 
+        // build a map of all the native declarations
+        final Map<String, Declaration> nativeFromSource = new HashMap<String, Declaration>();
+        
+        ClosableVirtualFile latestZippedLanguageSourceFile = getLatestZippedLanguageSourceFile();
+        try {
+            TypeCheckerBuilder typeCheckerBuilder = new TypeCheckerBuilder()
+                    .verbose(false)
+                    .addSrcDirectory(latestZippedLanguageSourceFile);
+            TypeChecker typeChecker = typeCheckerBuilder.getTypeChecker();
+            typeChecker.process();
+            for (PhasedUnit pu : typeChecker.getPhasedUnits().getPhasedUnits()) {
+                for (Declaration d : pu.getDeclarations()) {
+                    if (d.isNative() && d.isToplevel()) {
+                        String qualifiedNameString = d.getQualifiedNameString();
+                        String key = d.getDeclarationKind()+":"+qualifiedNameString;
+                        Declaration prev = nativeFromSource.put(key, d);
+                        if (prev != null) {
+                            Assert.fail("Two declarations with the same key " + key + ": " + d + " and: " + prev);
+                        }
+                    }
+                }
+            }
+        } finally {
+            latestZippedLanguageSourceFile.close();
+        }
+        System.out.println(nativeFromSource);
+        
+        // now compile something (it doesn't matter what, we just need 
+        // to get our hands on from-binary models for the language module) 
+        verifyClassLoading("Any.ceylon", new RunnableTest() {
+            
+            @Override
+            public void test(ModelLoader loader) {
+                OtherModelCompare comparer = new OtherModelCompare();
+                Module binaryLangMod = loader.getLoadedModule("ceylon.language");
+                for (Map.Entry<String, Declaration> entry : nativeFromSource.entrySet()) {
+                    Declaration source = entry.getValue();
+                    ModelLoader.DeclarationType dt = null;
+                    switch (source.getDeclarationKind()) {
+                    case TYPE:
+                    case TYPE_PARAMETER:
+                        dt = DeclarationType.TYPE;
+                        break;
+                    case MEMBER:
+                    case SETTER:
+                        dt = DeclarationType.VALUE;
+                        break;
+                    }
+                    // Ensure the package is loaded
+                    binaryLangMod.getDirectPackage(source.getQualifiedNameString().replaceAll("::.*", ""));
+                    Declaration binary = loader.getDeclaration(binaryLangMod, 
+                            source.getQualifiedNameString().replace("::", "."), 
+                            dt);
+                    comparer.compareDeclarations(source, binary);
+                }
+            }
+        }, defaultOptions);
     }
 }
