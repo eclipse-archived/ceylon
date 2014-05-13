@@ -43,15 +43,15 @@ shared interface Integral<Other> of Other
     see (`function Numeric.divided`)
     shared formal Other remainder(Other other);
     
-    "Determine if the number is zero."
+    "Determine if the number is the additive identity."
     shared formal Boolean zero;
     
-    "Determine if the number is one."
+    "Determine if the number is the multiplicative identity."
     shared formal Boolean unit;
     
     "Determine if this number is a factor of the given 
      number."
-    shared Boolean divides(Other other) =>
-            (other%(this of Other)).zero;
+    shared Boolean divides(Other other) 
+            => (other % (this of Other)).zero;
     
 }

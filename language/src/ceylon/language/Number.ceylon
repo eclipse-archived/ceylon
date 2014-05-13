@@ -63,4 +63,12 @@ shared interface Number {
      - `0` if it is zero."
     shared formal Integer sign;
     
+    "The result of multiplying this number by the given 
+     [[Integer]]."
+    shared formal Number timesInteger(Integer integer);
+    
+    "The result of adding this number to the given 
+     [[Integer]]."
+    shared formal Number plusInteger(Integer integer);
+    
 }
