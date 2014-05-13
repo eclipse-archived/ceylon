@@ -180,7 +180,7 @@ public class MiscTest extends CompilerTest {
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
                 Arrays.asList("-sourcepath", compilerSourcePath, 
                               "-d", "build/classes-runtime", "-Xbootstrapceylon",
-                              "-cp", getClassPathAsPath()
+                              "-cp", getClassPathAsPathExcludingLanguageModule()
                               /*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
@@ -195,7 +195,7 @@ public class MiscTest extends CompilerTest {
             else if(required)
                 Assert.fail("Required file not found: "+file);
         } else {
-            File file = new File(javaPkgDir, baseName + "_.java");
+            File file = new File(javaPkgDir, baseName + ".java");
             if(file.exists())
                 sourceFiles.add(file);
             else if(required)

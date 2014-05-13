@@ -142,6 +142,18 @@ public abstract class CompilerTest {
     public static String[] getClassPath() {
         return CLASS_PATH;
     }
+    
+    public static String getClassPathAsPathExcludingLanguageModule() {
+        StringBuilder b = new StringBuilder();
+        for(int i=0;i<CLASS_PATH.length;i++){
+            if(i > 0)
+                b.append(File.pathSeparator);
+            if (!CLASS_PATH[i].equals(LANGUAGE_MODULE_CAR)) {
+                b.append(CLASS_PATH[i]);
+            }
+        }
+        return b.toString();
+    }
 
     // for subclassers 
     protected String transformDestDir(String name) {
