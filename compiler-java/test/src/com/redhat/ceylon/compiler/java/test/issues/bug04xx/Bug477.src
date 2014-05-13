@@ -137,8 +137,18 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexes(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.indexes(selecting);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexesWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.indexesWhere(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.firstIndexWhere(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.lastIndexWhere(selecting);
     }
     
     @.java.lang.Override
@@ -526,8 +536,18 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexes(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.indexes(selecting);
+    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> indexesWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.indexesWhere(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer firstIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.firstIndexWhere(selecting);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer lastIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$List$this$.lastIndexWhere(selecting);
     }
     
     @.java.lang.Override
