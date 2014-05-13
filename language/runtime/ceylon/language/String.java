@@ -1597,14 +1597,40 @@ public final class String
     @Override
     @Ignore
     public Iterable<? extends Integer, ?> 
-    indexes(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.indexes(f);
+    indexesWhere(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.indexesWhere(f);
     }
     
     @Ignore
     public static Iterable<? extends Integer, ?> 
-    indexes(java.lang.String value, Callable<? extends Boolean> f) {
-        return instance(value).indexes(f);
+    indexesWhere(java.lang.String value, Callable<? extends Boolean> f) {
+        return instance(value).indexesWhere(f);
+    }
+    
+    @Override
+    @Ignore
+    public Integer 
+    firstIndexWhere(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.firstIndexWhere(f);
+    }
+    
+    @Ignore
+    public static Integer 
+    firstIndexWhere(java.lang.String value, Callable<? extends Boolean> f) {
+        return instance(value).firstIndexWhere(f);
+    }
+    
+    @Override
+    @Ignore
+    public Integer 
+    lastIndexWhere(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.lastIndexWhere(f);
+    }
+    
+    @Ignore
+    public static Integer 
+    lastIndexWhere(java.lang.String value, Callable<? extends Boolean> f) {
+        return instance(value).lastIndexWhere(f);
     }
     
     @Override

@@ -204,7 +204,7 @@ shared interface List<out Element>
     "Determine if the given list occurs at the given index 
      of this list."
     shared default Boolean includesAt(
-            "The index at which this list might occur"
+            "The index at which the [[sublist]] might occur"
             Integer index, 
             List<Anything> sublist) {
         for (i in 0:sublist.size) {
@@ -274,30 +274,33 @@ shared interface List<out Element>
     
     "Determines if the given value occurs at the given index 
      in this list."
-    shared default Boolean occursAt(Integer index, Anything element) {
-         value elem = this[index];
-         if (exists element) {
-             if (exists elem) {
-                 return elem==element;
-             }
-             else {
-                 return false;
-             }
-         }
-         else {
-             return !elem exists;
-         }
+    shared default Boolean occursAt(
+            "The index at which the list might occur"
+            Integer index, 
+            Anything element) {
+        value elem = this[index];
+        if (exists element) {
+            if (exists elem) {
+                return elem==element;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return !elem exists;
+        }
     }
     
     "Determines if the given value occurs as an element of 
      this list."
     shared default Boolean occurs(Anything element) {
-         for (index in 0:size) {
-             if (occursAt(index,element)) {
-                 return true;
-             }
-         }
-         return false;
+        for (index in 0:size) {
+            if (occursAt(index,element)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     "Determines if this list contains the given value.
@@ -339,18 +342,53 @@ shared interface List<out Element>
     }
         
     "The indexes in this list for which the element 
-     satisfies the given predicate."
-    shared default {Integer*} indexes(
+     satisfies the given [[predicate function|selecting]]."
+    shared default {Integer*} indexesWhere(
             "The predicate the indexed elements must 
              satisfy"
             Boolean selecting(Element element)) 
             => { for (index in 0:size) 
-                    //TODO: fix this awful hack
-                    if (selecting(this[index] else nothing)) index };
+                    if (is Element element=this[index], 
+                            selecting(element)) 
+                        index };
     
-    "Trim the elements satisfying the given predicate
-     function from the start and end of this list, returning 
-     a list no longer than this list."
+    "The first index in this list for which the element 
+     satisfies the given [[predicate function|selecting]]."
+    shared default Integer? firstIndexWhere(
+            "The predicate the indexed elements must 
+             satisfy"
+            Boolean selecting(Element element)) {
+        variable value index = 0;
+        while (index<size) {
+            assert (is Element element=this[index]);
+            if (selecting(element)) {
+                return index;
+            }
+            index++;
+        }
+        return null;
+    }
+    
+    "The last index in this list for which the element 
+     satisfies the given [[predicate function|selecting]]."
+    shared default Integer? lastIndexWhere(
+            "The predicate the indexed elements must 
+             satisfy"
+            Boolean selecting(Element element)) {
+        variable value index = size;
+        while (index>0) {
+            index--;
+            assert (is Element element=this[index]);
+            if (selecting(element)) {
+                return index;
+            }
+        }
+        return null;
+    }
+    
+    "Trim the elements satisfying the given [[predicate 
+     function|trimming]] from the start and end of this list, 
+     returning a list no longer than this list."
     shared default List<Element> trim(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             variable Integer from=-1;
@@ -380,9 +418,9 @@ shared interface List<out Element>
         }
     }
     
-    "Trim the elements satisfying the given predicate
-     function from the start of this list, returning a list 
-     no longer than this list."
+    "Trim the elements satisfying the given [[predicate 
+     function|trimming]] from the start of this list, 
+     returning a list no longer than this list."
     shared default List<Element> trimLeading(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in 0..l) {
@@ -394,9 +432,9 @@ shared interface List<out Element>
         return [];
     }
     
-    "Trim the elements satisfying the given predicate
-     function from the end of this list, returning a list no 
-     longer than this list."
+    "Trim the elements satisfying the given [[predicate 
+     function|trimming]] from the end of this list, 
+     returning a list no longer than this list."
     shared default List<Element> trimTrailing(Boolean trimming(Element elem)) {
         if (exists l=lastIndex) {
             for (index in l..0) {

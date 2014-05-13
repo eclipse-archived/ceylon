@@ -621,8 +621,20 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     @Ignore
     public Iterable<? extends Integer, ?> 
-    indexes(Callable<? extends Boolean> f) {
-        return $ceylon$language$List$this.indexes(f);
+    indexesWhere(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.indexesWhere(f);
+    }
+    @Override
+    @Ignore
+    public Integer 
+    firstIndexWhere(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.firstIndexWhere(f);
+    }
+    @Override
+    @Ignore
+    public Integer 
+    lastIndexWhere(Callable<? extends Boolean> f) {
+        return $ceylon$language$List$this.lastIndexWhere(f);
     }
     @Override
     @Ignore
