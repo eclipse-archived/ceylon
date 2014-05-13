@@ -16,9 +16,10 @@ public class Exception extends RuntimeException implements ReifiedType {
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Exception.class);
 
-	private static final long serialVersionUID = -1790691559137471641L;
+    private static final long serialVersionUID = -1790691559137471641L;
 
-	private String description;
+    @Ignore
+    private final String description;
     
     public Exception(
             @TypeInfo("ceylon.language::Null|ceylon.language::String")

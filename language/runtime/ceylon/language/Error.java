@@ -16,9 +16,10 @@ public class Error extends java.lang.Error implements ReifiedType {
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Exception.class);
 
-	private static final long serialVersionUID = -1790691559137471641L;
+    private static final long serialVersionUID = -1790691559137471641L;
 
-	private String description;
+    @Ignore
+    private final String description;
     
     public Error(
             @TypeInfo("ceylon.language::Null|ceylon.language::String")
