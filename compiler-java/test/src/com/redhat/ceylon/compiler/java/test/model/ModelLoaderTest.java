@@ -41,8 +41,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.cmr.api.Logger;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
@@ -62,7 +69,6 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -82,7 +88,6 @@ import com.sun.source.util.TaskEvent.Kind;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
 
 public class ModelLoaderTest extends CompilerTest {
     
@@ -105,10 +110,10 @@ public class ModelLoaderTest extends CompilerTest {
     }
     
     
-    protected void verifyClassLoading(String ceylon) {
-        verifyClassLoading(ceylon, new ModelComparison());
+    protected void verifyCompilerClassLoading(String ceylon) {
+        verifyCompilerClassLoading(ceylon, new ModelComparison());
     }
-    protected void verifyClassLoading(String ceylon, final ModelComparison modelCompare){
+    protected void verifyCompilerClassLoading(String ceylon, final ModelComparison modelCompare){
         // now compile the ceylon decl file
         CeyloncTaskImpl task = getCompilerTask(ceylon);
         // get the context to grab the phased units
@@ -181,11 +186,11 @@ public class ModelLoaderTest extends CompilerTest {
         return null;
     }
 
-    protected void verifyClassLoading(String ceylon, final RunnableTest test){
-        verifyClassLoading(ceylon, test, defaultOptions);
+    protected void verifyCompilerClassLoading(String ceylon, final RunnableTest test){
+        verifyCompilerClassLoading(ceylon, test, defaultOptions);
     }
     
-    protected void verifyClassLoading(String ceylon, final RunnableTest test, List<String> options){
+    protected void verifyCompilerClassLoading(String ceylon, final RunnableTest test, List<String> options){
         // now compile the ceylon usage file
         JavacTaskImpl task2 = getCompilerTask(options, ceylon);
         // get the context to grab the declarations
@@ -212,6 +217,22 @@ public class ModelLoaderTest extends CompilerTest {
         Boolean success = task2.call();
         Assert.assertTrue("Compilation failed", success);
     }
+    
+    protected void verifyRuntimeClassLoading(RunnableTest test) {
+        RepositoryManager repoManager = CeylonUtils.repoManager()
+                .buildManager();
+        VFS vfs = new VFS();
+        com.redhat.ceylon.compiler.typechecker.context.Context context = new com.redhat.ceylon.compiler.typechecker.context.Context(repoManager, vfs);
+        RuntimeModuleManager moduleManager = new RuntimeModuleManager(context);
+        moduleManager.initCoreModules();
+        moduleManager.loadModule("ceylon.language", Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
+                getClass().getClassLoader());
+        RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
+        modelLoader.setupWithNoStandardModules();
+        modelLoader.loadStandardModules();
+        test.test(modelLoader);
+    }
+    
     static class ModelComparison {
         private boolean isUltimatelyVisible(Declaration d) {
             if (d instanceof MethodOrValue && 
@@ -551,12 +572,12 @@ public class ModelLoaderTest extends CompilerTest {
     }// class ModelComparison
 	@Test
 	public void loadClass(){
-		verifyClassLoading("Klass.ceylon");
+		verifyCompilerClassLoading("Klass.ceylon");
 	}
 
     @Test
     public void loadClassWithMethods(){
-        verifyClassLoading("KlassWithMethods.ceylon");
+        verifyCompilerClassLoading("KlassWithMethods.ceylon");
     }
     
     @Test
@@ -569,14 +590,14 @@ public class ModelLoaderTest extends CompilerTest {
     
     @Test
     public void loadFunctionalParameter(){
-        verifyClassLoading("FunctionalParameter.ceylon");
+        verifyCompilerClassLoading("FunctionalParameter.ceylon");
     }
     
     @Test
     public void functionalParameterParameterNames(){
         compile("FunctionalParameterParameterNames.ceylon");
         try {
-            verifyClassLoading("functionalparameterparameternamestest.ceylon", new RunnableTest() {
+            verifyCompilerClassLoading("functionalparameterparameternamestest.ceylon", new RunnableTest() {
                 
                 @Override
                 public void test(ModelLoader loader) {
@@ -946,92 +967,92 @@ public class ModelLoaderTest extends CompilerTest {
     
     @Test
     public void loadInnerClass(){
-        verifyClassLoading("InnerClass.ceylon");
+        verifyCompilerClassLoading("InnerClass.ceylon");
     }
     
     @Test
     public void loadInnerInterface(){
-        verifyClassLoading("InnerInterface.ceylon");
+        verifyCompilerClassLoading("InnerInterface.ceylon");
     }
 
     @Test
     public void loadClassWithAttributes(){
-        verifyClassLoading("KlassWithAttributes.ceylon");
+        verifyCompilerClassLoading("KlassWithAttributes.ceylon");
     }
 
     @Test
     public void loadClassWithAttributeAndConflictingMethods(){
-        verifyClassLoading("KlassWithAttributeAndConflictingMethods.ceylon");
+        verifyCompilerClassLoading("KlassWithAttributeAndConflictingMethods.ceylon");
     }
 
     @Test
     public void loadTypeParameters(){
-        verifyClassLoading("TypeParameters.ceylon");
+        verifyCompilerClassLoading("TypeParameters.ceylon");
     }
 
     @Test
     public void loadTypeParameterResolving(){
-        verifyClassLoading("TypeParameterResolving.ceylon");
+        verifyCompilerClassLoading("TypeParameterResolving.ceylon");
     }
 
     @Test
     public void loadToplevelMethods(){
-        verifyClassLoading("ToplevelMethods.ceylon");
+        verifyCompilerClassLoading("ToplevelMethods.ceylon");
     }
 
     @Test
     public void loadToplevelAttributes(){
-        verifyClassLoading("ToplevelAttributes.ceylon");
+        verifyCompilerClassLoading("ToplevelAttributes.ceylon");
     }
 
     @Test
     public void loadToplevelObjects(){
-        verifyClassLoading("ToplevelObjects.ceylon");
+        verifyCompilerClassLoading("ToplevelObjects.ceylon");
     }
 
     @Test
     public void loadErasedTypes(){
-        verifyClassLoading("ErasedTypes.ceylon");
+        verifyCompilerClassLoading("ErasedTypes.ceylon");
     }
 
     @Test
     public void loadDocAnnotations(){
-        verifyClassLoading("DocAnnotations.ceylon");
+        verifyCompilerClassLoading("DocAnnotations.ceylon");
     }
 
     @Test
     public void loadLocalDeclarations(){
-        verifyClassLoading("LocalDeclarations.ceylon");
+        verifyCompilerClassLoading("LocalDeclarations.ceylon");
     }
 
     @Test
     public void loadDefaultValues(){
-        verifyClassLoading("DefaultValues.ceylon");
+        verifyCompilerClassLoading("DefaultValues.ceylon");
     }
 
     @Test
     public void loadJavaKeywords(){
-        verifyClassLoading("JavaKeywords.ceylon");
+        verifyCompilerClassLoading("JavaKeywords.ceylon");
     }
 
     @Test
     public void loadAnnotations(){
-        verifyClassLoading("Annotations.ceylon");
+        verifyCompilerClassLoading("Annotations.ceylon");
     }
 
     @Test
     public void loadGettersWithUnderscores(){
-        verifyClassLoading("GettersWithUnderscores.ceylon");
+        verifyCompilerClassLoading("GettersWithUnderscores.ceylon");
     }
 
     @Test
     public void loadCaseTypes(){
-        verifyClassLoading("CaseTypes.ceylon");
+        verifyCompilerClassLoading("CaseTypes.ceylon");
     }
 
     @Test
     public void loadSelfType(){
-        verifyClassLoading("SelfType.ceylon");
+        verifyCompilerClassLoading("SelfType.ceylon");
     }
     
     @Test
@@ -1042,13 +1063,13 @@ public class ModelLoaderTest extends CompilerTest {
 
     @Test
     public void loadFormalClasses(){
-        verifyClassLoading("FormalClasses.ceylon");
+        verifyCompilerClassLoading("FormalClasses.ceylon");
     }
     
     @Test
     public void parallelLoader(){
         // whatever test, doesn't matter
-        verifyClassLoading("Any.ceylon", new RunnableTest(){
+        verifyCompilerClassLoading("Any.ceylon", new RunnableTest(){
             @Override
             public void test(final ModelLoader loader) {
                 // now walk it in threads
@@ -1108,7 +1129,7 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void jdkModelLoaderSpeedTest(){
         // whatever test, doesn't matter
-        verifyClassLoading("Any.ceylon", new RunnableTest(){
+        verifyCompilerClassLoading("Any.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
                 // walk every jdk package
@@ -1144,7 +1165,7 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void javaModelLoading(){
         compile("JavaType.java");
-        verifyClassLoading("Java.ceylon", new RunnableTest(){
+        verifyCompilerClassLoading("Java.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
                 Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
@@ -1176,7 +1197,7 @@ public class ModelLoaderTest extends CompilerTest {
     @Test
     public void javaDeprecated(){
         compile("JavaDeprecated.java");
-        verifyClassLoading("JavaDeprecated.ceylon", new RunnableTest(){
+        verifyCompilerClassLoading("JavaDeprecated.ceylon", new RunnableTest(){
             @Override
             public void test(ModelLoader loader) {
                 Module mod = loader.getLoadedModule(moduleForJavaModelLoading());
@@ -1466,13 +1487,14 @@ public class ModelLoaderTest extends CompilerTest {
         
         // now compile something (it doesn't matter what, we just need 
         // to get our hands on from-binary models for the language module) 
-        verifyClassLoading("Any.ceylon", new RunnableTest() {
+        RunnableTest tester = new RunnableTest() {
             
             @Override
             public void test(ModelLoader loader) {
                 OtherModelCompare comparer = new OtherModelCompare();
                 Module binaryLangMod = loader.getLoadedModule("ceylon.language");
                 for (Map.Entry<String, Declaration> entry : nativeFromSource.entrySet()) {
+                    System.out.println(entry.getKey());
                     Declaration source = entry.getValue();
                     ModelLoader.DeclarationType dt = null;
                     switch (source.getDeclarationKind()) {
@@ -1493,6 +1515,8 @@ public class ModelLoaderTest extends CompilerTest {
                     comparer.compareDeclarations(source, binary);
                 }
             }
-        }, defaultOptions);
+        };
+        verifyCompilerClassLoading("Any.ceylon", tester, defaultOptions);
+        verifyRuntimeClassLoading(tester);
     }
 }
