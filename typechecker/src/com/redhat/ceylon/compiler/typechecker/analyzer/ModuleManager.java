@@ -283,7 +283,7 @@ public class ModuleManager {
     }
 
     //only used if we really don't know the version
-    private void addErrorToModule(List<String> moduleName, String error) {
+    protected void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
         if (errors == null) {
             errors = new HashSet<String>();
