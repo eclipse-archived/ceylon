@@ -21,8 +21,17 @@ public class Versions {
     public static final int CEYLON_VERSION_MAJOR = 1;
     public static final int CEYLON_VERSION_MINOR = 1;
     public static final int CEYLON_VERSION_RELEASE = 0;
+    /**
+     * The MAJOR.MINOR.RELEASE version.
+     */
     public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR + "." + CEYLON_VERSION_RELEASE;
+    /**
+     * The release code name.
+     */
     public static final String CEYLON_VERSION_NAME = "Unflatzburged";
+    /**
+     * The version number + code name description string.
+     */
     public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " (" + CEYLON_VERSION_NAME + ")";
 
     /**
