@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -29,6 +30,9 @@ import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.DeprecationVisitor;
@@ -49,7 +53,7 @@ public class PhasedUnit {
     private Unit unit;
     //must be the non qualified file name
     private String fileName;
-    private ModuleManager moduleManager;
+    private WeakReference<ModuleManager> moduleManagerRef;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private List<CommonToken> tokens;
@@ -78,7 +82,7 @@ public class PhasedUnit {
         this.srcDir = srcDir;
         this.fileName = unitFile.getName();
         this.pathRelativeToSrcDir = Helper.computeRelativePath(unitFile, srcDir);
-        this.moduleManager = moduleManager;
+        this.moduleManagerRef = new WeakReference<>(moduleManager);
         this.tokens = tokenStream;
         unit = createUnit();
         unit.setFilename(fileName);
@@ -95,7 +99,7 @@ public class PhasedUnit {
         this.pkg = other.pkg;
         this.unit = other.unit;
         this.fileName = other.fileName;
-        this.moduleManager = other.moduleManager;
+        this.moduleManagerRef = new WeakReference<>(other.moduleManagerRef.get());
         this.pathRelativeToSrcDir = other.pathRelativeToSrcDir;
         this.unitFile = other.unitFile;
         this.tokens = other.tokens;
@@ -127,9 +131,8 @@ public class PhasedUnit {
             if (! moduleVisited) {
                 moduleVisited = true;
                 processLiterals();
-                moduleVisitor = new ModuleVisitor(moduleManager, pkg);
+                moduleVisitor = new ModuleVisitor(moduleManagerRef.get(), pkg);
                 moduleVisitor.setCompleteOnlyAST(reuseExistingDescriptorModels());
-                moduleManager = null;
                 compilationUnit.visit(moduleVisitor);
                 return moduleVisitor.getMainModule();
             }
@@ -224,7 +227,31 @@ public class PhasedUnit {
                     }
                 }
             }
-            compilationUnit.visit(new Validator());
+            compilationUnit.visit(new Validator() {
+                @Override
+                public void visit(ModuleDescriptor that) {
+                    super.visit(that);
+                    ImportPath importPath = that.getImportPath();
+                    if (importPath != null) {
+                        String moduleName = Util.formatPath(importPath.getIdentifiers());
+                        ModuleManager moduleManager = moduleManagerRef.get();
+                        if (moduleManager != null) {
+                            for (Module otherModule : moduleManager.getCompiledModules()) {
+                                String otherModuleName = otherModule.getNameAsString();
+                                if (moduleName.startsWith(otherModuleName + ".") || 
+                                        otherModuleName.startsWith(moduleName + ".")) {
+                                    StringBuilder error = new StringBuilder("Found two modules within the same hierarchy: '");
+                                    error.append( otherModule.getNameAsString() )
+                                    .append( "' and '" )
+                                    .append( moduleName )
+                                    .append("'");
+                                    that.addError(error.toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            });
             treeValidated = true;
         }
     }
