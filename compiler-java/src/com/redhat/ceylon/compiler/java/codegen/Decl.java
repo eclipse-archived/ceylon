@@ -615,8 +615,13 @@ public class Decl {
     }
 
     public static boolean isObjectValue(TypedDeclaration attr) {
-        TypeDeclaration type = attr.getType().getDeclaration();
-        return type.isAnonymous();
+        ProducedType type = attr.getType();
+        // Check type because in case of compile errors it can be null
+        if (type != null) {
+            TypeDeclaration typeDecl = type.getDeclaration();
+            return typeDecl.isAnonymous();
+        }
+        return false;
     }
 
     public static boolean isAnnotationConstructor(Tree.AnyMethod def) {
