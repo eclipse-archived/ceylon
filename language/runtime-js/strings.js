@@ -29,7 +29,10 @@ initExistingType(String$, String, 'ceylon.language::String', Object$, Sequential
 var origStrToString = String.prototype.toString;
 inheritProto(String$, Object$, Sequential, Comparable, Ranged, Summable);
 var String$proto = String$.$$.prototype;
-String$proto.$$targs$$={Element$Iterable:{t:Character}, Absent$Iterable:{t:Null}};
+String$proto.$$targs$$={Element$Iterable:{t:Character}, Absent$Iterable:{t:Null},
+  Element$List:{t:Character}, Other$Summable:{t:String$}, Other$Comparable:{t:String$},
+  Index$Ranged:{t:Integer}, Element$Ranged:{t:Character}, Span$Ranged:{t:String$},
+  Element$Collection:{t:Character}, Key$Correspondence:{t:Integer}, Item$Correspondence:{t:Character}};
 String$proto.getT$name = function() {
     return String$.$$.T$name;
 }
