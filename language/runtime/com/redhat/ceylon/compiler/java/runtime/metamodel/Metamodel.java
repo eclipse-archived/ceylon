@@ -93,6 +93,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Setter;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 
 public class Metamodel {
 
@@ -584,6 +585,9 @@ public class Metamodel {
             if(type.getQualifyingType() != null)
                 return TypeDescriptor.member(getTypeDescriptorForProducedType(type.getQualifyingType()), ret);
             return ret;
+        }
+        if(declaration instanceof UnknownType){
+            ((UnknownType) declaration).reportErrors();
         }
         throw new RuntimeException("Unsupported declaration type: " + declaration);
     }
