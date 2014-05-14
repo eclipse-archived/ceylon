@@ -4,7 +4,8 @@
  
       \"Hello World!\".sort(byDecreasing(Character.lowercased))"
 see (`function byIncreasing`)
-shared Comparison byDecreasing<Element,Value>(Value comparable(Element e))
+shared Comparison byDecreasing<Element,Value>
+            (Value comparable(Element e))
             (Element x, Element y)
         given Value satisfies Comparable<Value>
                 => comparable(y)<=>comparable(x);
