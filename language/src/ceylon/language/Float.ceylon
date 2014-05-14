@@ -20,6 +20,9 @@
  to itself. Thus, the definition of [[equals]] for `Float`
  violates the general contract defined by [[Object.equals]].
  
+ A floating point value with a zero [[fractionalPart]] is
+ considered equal to its [[integer]] part.
+ 
  Literal floating point values are written with a decimal
  point and, optionally, a magnitude or exponent:
  

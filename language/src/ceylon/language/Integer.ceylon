@@ -12,14 +12,17 @@
  Overflow or loss of precision occurs silently (with no 
  exception raised).
  
- Not all of the bits in the representation may be addressed by the 
+ An integer is considered equal to its [[float]] 
+ representation.
+ 
+ An integer is represented as a sequence of bits. Not all of 
+ the bits in the representation may be addressed by the 
  methods inherited from [[Binary]]:
  
- - For the JVM runtime, the bits at all indices (0 to 63) are 
-   addressable.
- 
- - For the JavaScript runtime, the bits at indices 0 to 31 are 
-   addressable.
+ - For the JVM runtime, the bits at all indices (0 to 63) 
+   are addressable.
+ - For the JavaScript runtime, the bits at indices 0 to 31 
+   are addressable.
  
  Literal integers may be written in decimal, hexadecimal, or
  binary notation:
@@ -28,7 +31,7 @@
      #21D4
      $10000111010100
  
- Underscores may be used to group digits.
+ Underscores may be used to group digits:
  
      8660
      #21_D4
@@ -45,33 +48,6 @@ shared native final class Integer(integer)
             "if there is no such character")
     shared native Character character;
     
-    shared actual native Integer not;
-    shared actual native Integer or(Integer other);
-    shared actual native Integer xor(Integer other);
-    shared actual native Integer and(Integer other);
-    
-    "If shift is in the range of addressable bits 
-     (`0..runtime.integerAddressableSize-1`), shift the addressable bits to 
-     the right by `shift` positions, with sign extension.
-     Otherwise shift the addressable bits to the right by 
-     `(bits + (shift % bits)) % bits` 
-     where `bits=runtime.integerAddressableSize`"
-    shared actual native Integer rightArithmeticShift(Integer shift);
-    "If shift is in the range of addressable bits 
-     (`0..runtime.integerAddressableSize-1`), shift the addressable bits to 
-     the right by `shift` positions, with zero extension.
-     Otherwise shift the addressable bits to the right by 
-     `(bits + (shift % bits)) % bits` 
-     where `bits=runtime.integerAddressableSize`"
-    shared actual native Integer rightLogicalShift(Integer shift);
-    "If shift is in the range of addressable bits 
-     (`0..runtime.integerAddressableSize-1`), shift the addressable bits to 
-     the left by `shift` positions.
-     Otherwise shift the addressable bits to the left by 
-     `(bits + (shift % bits)) % bits` 
-     where `bits=runtime.integerAddressableSize`"
-    shared actual native Integer leftLogicalShift(Integer shift);
-    
     shared actual native Integer plus(Integer other);
     shared actual native Integer minus(Integer other);
     shared actual native Integer times(Integer other);
@@ -83,21 +59,56 @@ shared native final class Integer(integer)
     shared actual native Integer hash;
     shared actual native Comparison compare(Integer other);
     
-    "If the `index` is for an addressable bit, the value of that bit.
-     Otherwise false."
+    "If the `index` is for an addressable bit, the value of 
+     that bit. Otherwise false."
     shared actual native Boolean get(Integer index);
-    "If the `index` is for an addressable bit, an instance with the same 
-     addressable bits as this instance, but with that bit cleared.
-     Otherwise an instance with the same addressable bits as this instance."
+    
+    "If the `index` is for an addressable bit, an instance 
+     with the same addressable bits as this instance, but 
+     with that bit cleared. Otherwise an instance with the 
+     same addressable bits as this instance."
     shared actual native Integer clear(Integer index);
-    "If the `index` is for an addressable bit, an instance with the same 
-     addressable bits as this instance, but with that bit flipped.
-     Otherwise an instance with the same addressable bits as this instance."
+    
+    "If the `index` is for an addressable bit, an instance 
+     with the same addressable bits as this instance, but 
+     with that bit flipped. Otherwise an instance with the 
+     same addressable bits as this instance."
     shared actual native Integer flip(Integer index);
-    "If the `index` is for an addressable bit, an instance with the same 
-     addressable bits as this instance, but with that bit set to `bit`.
-     Otherwise an instance with the same addressable bits as this instance."
+    
+    "If the `index` is for an addressable bit, an instance 
+     with the same addressable bits as this instance, but 
+     with that bit set to `bit`. Otherwise an instance with 
+     the same addressable bits as this instance."
     shared actual native Integer set(Integer index, Boolean bit);
+    
+    shared actual native Integer not;
+    shared actual native Integer or(Integer other);
+    shared actual native Integer xor(Integer other);
+    shared actual native Integer and(Integer other);
+    
+    "If shift is in the range of addressable bits 
+     (`0..runtime.integerAddressableSize-1`), shift the 
+     addressable bits to the right by `shift` positions, 
+     with sign extension. Otherwise shift the addressable 
+     bits to the right by `(bits + (shift % bits)) % bits` 
+     where `bits=runtime.integerAddressableSize`."
+    shared actual native Integer rightArithmeticShift(Integer shift);
+    
+    "If shift is in the range of addressable bits 
+     (`0..runtime.integerAddressableSize-1`), shift the 
+     addressable bits to the right by `shift` positions, 
+     with zero extension. Otherwise shift the addressable 
+     bits to the right by `(bits + (shift % bits)) % bits` 
+     where `bits=runtime.integerAddressableSize`."
+    shared actual native Integer rightLogicalShift(Integer shift);
+    
+    "If shift is in the range of addressable bits 
+     (`0..runtime.integerAddressableSize-1`), shift the 
+     addressable bits to the left by `shift` positions.
+     Otherwise shift the addressable bits to the left by 
+     `(bits + (shift % bits)) % bits` where 
+     `bits=runtime.integerAddressableSize`."
+    shared actual native Integer leftLogicalShift(Integer shift);
     
     shared actual native Float float;
     shared actual Integer integer;
