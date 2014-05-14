@@ -34,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Validator;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.DeprecationVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
@@ -227,7 +228,8 @@ public class PhasedUnit {
                     }
                 }
             }
-            compilationUnit.visit(new Validator() {
+            compilationUnit.visit(new Validator());
+            compilationUnit.visit(new Visitor() {
                 @Override
                 public void visit(ModuleDescriptor that) {
                     super.visit(that);
