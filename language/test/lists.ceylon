@@ -109,4 +109,28 @@ shared void lists() {
     check([0,0,0,0,0,0,0,1,2,3,4,5,6,7,8].includes(b), "List.occursIn [2]");
     check(![0,0,0,0,1,2,3,4,5,6,7,0,8].includes(b), "List.occursIn [3]");
     check(![1,2,3,4,5,6,7].includes(b), "List.occursIn [4]");
+
+    //#451
+    check(b.indexesWhere((Integer i)=>i%2==0).sequence == [1,3,5,7], "List.indexesWhere");
+    if (exists fi=b.firstIndexWhere((Integer i)=>i>5)) {
+        check(fi == 5, "List.firstIndexWhere expected 5 got ``fi``");
+    } else {
+        fail("List.firstIndexWhere should exist");
+    }
+    if (exists li=b.lastIndexWhere((Integer i)=>i<5)) {
+        check(li == 3, "List.lastIndexWhere expected 3 got ``li``");
+    } else {
+        fail("List.lastIndexWhere should exist");
+    }
+    check("Probando Novedades".indexesWhere((Character c)=>c.uppercase).sequence == [0,9], "String.indexesWhere");
+    if (exists fi="Probando".firstIndexWhere((Character c)=>c.lowercase)) {
+        check(fi == 1, "String.firstIndexWhere expected 1 got ``fi``");
+    } else {
+        fail("String.firstIndexWhere not found");
+    }
+    if (exists li="TEst".lastIndexWhere((Character c)=>c.uppercase)) {
+        check(li == 1, "String.lastIndexWhere expected 1 got ``li``");
+    } else {
+        fail("String.lastIndexWhere not found");
+    }
 }
