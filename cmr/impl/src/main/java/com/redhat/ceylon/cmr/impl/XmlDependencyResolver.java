@@ -59,7 +59,21 @@ final public class XmlDependencyResolver implements DependencyResolver {
             return null;
 
         try {
-            final Module module = parse(mp);
+            InputStream is = new FileInputStream(mp);
+            try{
+                return resolveFromInputStream(is);
+            }finally{
+                is.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+        try {
+            final Module module = parse(stream);
             final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
@@ -189,8 +203,7 @@ final public class XmlDependencyResolver implements DependencyResolver {
         }
     }
 
-    protected static Module parse(File moduleXml) throws Exception {
-        InputStream is = new FileInputStream(moduleXml);
+    protected static Module parse(InputStream is) throws Exception {
         try {
             Document document = parseXml(is);
             Element root = document.getDocumentElement();

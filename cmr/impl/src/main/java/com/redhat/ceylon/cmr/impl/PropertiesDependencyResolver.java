@@ -17,7 +17,9 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Properties;
@@ -53,15 +55,24 @@ public final class PropertiesDependencyResolver implements DependencyResolver {
             return null;
 
         try {
-            final Properties properties = new Properties();
-            final FileReader reader = new FileReader(mp);
+            final FileInputStream is = new FileInputStream(mp);
             try {
-                properties.load(reader);
+                return resolveFromInputStream(is);
             } finally {
-                reader.close();
+                is.close();
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+        try {
+            final Properties properties = new Properties();
+            properties.load(stream);
             Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
-            for (Map.Entry entry : properties.entrySet()) {
+            for (Map.Entry<?,?> entry : properties.entrySet()) {
                 String name = entry.getKey().toString();
                 String version = entry.getValue().toString();
                 boolean optional = false;

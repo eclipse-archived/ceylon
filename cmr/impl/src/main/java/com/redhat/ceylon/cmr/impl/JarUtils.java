@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,6 +59,11 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
     @Override
     public Set<ModuleInfo> resolveFromFile(File file) {
         return getDependenciesFromFile(file);
+    }
+
+    @Override
+    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+        throw new UnsupportedOperationException("Cannot resolve from stream");
     }
 
     @Override

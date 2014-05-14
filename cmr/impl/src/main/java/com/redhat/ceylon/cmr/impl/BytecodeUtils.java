@@ -70,6 +70,11 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
 
+    @Override
+    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
+        throw new UnsupportedOperationException("Operation not supported for .car files");
+    }
+
     public Node descriptor(Node artifact) {
         return null; // artifact is a descriptor
     }

@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -57,6 +58,11 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
     
     @Override
     public Set<ModuleInfo> resolveFromFile(File file) {
+        throw new UnsupportedOperationException("Operation not supported for .js files");
+    }
+
+    @Override
+    public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
         throw new UnsupportedOperationException("Operation not supported for .js files");
     }
 
