@@ -1,5 +1,4 @@
-"Given two `Comparable` values, return largest of the
- two."
+"Given two [[Comparable]] values, return largest of the two."
 see (`interface Comparable`, 
      `function smallest`, 
      `function max`)

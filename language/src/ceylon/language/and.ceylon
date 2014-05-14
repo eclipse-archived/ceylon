@@ -1,6 +1,8 @@
-"Returns a function which is the logical 
- conjunction of the given predicate functions."
-shared Boolean and<T>(
-        Boolean(T) p, 
-        Boolean(T) q)(T t) 
-    => p(t) && q(t);
+"Returns a function which is the logical conjunction of the 
+ given predicate functions."
+shared Boolean and<Value>(
+    "The first predicate function"
+    Boolean(Value) p,
+    "The second predicate function" 
+    Boolean(Value) q)(Value val) 
+        => p(val) && q(val);
