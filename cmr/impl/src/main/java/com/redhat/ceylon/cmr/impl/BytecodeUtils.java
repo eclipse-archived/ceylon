@@ -57,7 +57,6 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
     private BytecodeUtils() {
     }
 
-    private static final String JAVA = "java";
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
     private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
 
@@ -102,14 +101,12 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
         for (AnnotationInstance im : imports) {
             final String name = asString(im, "name");
-            if (JAVA.equalsIgnoreCase(name) == false) {
-                final ModuleInfo mi = new ModuleInfo(
-                        name,
-                        asString(im, "version"),
-                        asBoolean(im, "optional"),
-                        asBoolean(im, "export"));
-                infos.add(mi);
-            }
+            final ModuleInfo mi = new ModuleInfo(
+                    name,
+                    asString(im, "version"),
+                    asBoolean(im, "optional"),
+                    asBoolean(im, "export"));
+            infos.add(mi);
         }
         return infos;
     }
