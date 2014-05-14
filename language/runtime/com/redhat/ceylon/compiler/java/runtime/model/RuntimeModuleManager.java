@@ -60,6 +60,12 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         RuntimeModelLoader modelLoader = getModelLoader();
         synchronized(modelLoader.getLock()){
             Module module = getOrCreateModule(splitModuleName(name), version);
+            // The default module is created as available, so we use a different test for it, because we are the only
+            // ones setting the module's Unit
+            if(module.isDefault() 
+                    ? module.getUnit() != null
+                    : module.isAvailable())
+                return;
             modelLoader.addModuleToClassPath(module, artifact);
             modelLoader.addModuleClassLoader(module, classLoader);
             module.setAvailable(true);
