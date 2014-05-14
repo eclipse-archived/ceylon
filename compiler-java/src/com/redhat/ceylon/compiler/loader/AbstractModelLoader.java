@@ -951,84 +951,89 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         
-        // make it
-        switch(type){
-        case ATTRIBUTE:
-            decl = makeToplevelAttribute(classMirror);
-            setDeclarationVisibility(decl, classMirror, classMirror, true);
-            break;
-        case METHOD:
-            decl = makeToplevelMethod(classMirror);
-            setDeclarationVisibility(decl, classMirror, classMirror, true);
-            break;
-        case OBJECT:
-            // we first make a class
-            Declaration objectClassDecl = makeLazyClass(classMirror, null, null, true);
-            typeDeclarationsByName.put(key, objectClassDecl);
-            decls.add(objectClassDecl);
-            // then we make a value for it
-            Declaration objectDecl = makeToplevelAttribute(classMirror);
-            valueDeclarationsByName.put(key, objectDecl);
-            decls.add(objectDecl);
-            // which one did we want?
-            decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
-            setDeclarationVisibility(objectClassDecl, classMirror, classMirror, true);
-            setDeclarationVisibility(objectDecl, classMirror, classMirror, true);
-            break;
-        case CLASS:
-            if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
-                decl = makeClassAlias(classMirror);
+        try{
+            // make it
+            switch(type){
+            case ATTRIBUTE:
+                decl = makeToplevelAttribute(classMirror);
                 setDeclarationVisibility(decl, classMirror, classMirror, true);
-            }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
-                decl = makeTypeAlias(classMirror);
+                break;
+            case METHOD:
+                decl = makeToplevelMethod(classMirror);
                 setDeclarationVisibility(decl, classMirror, classMirror, true);
-            }else{
-                List<MethodMirror> constructors = getClassConstructors(classMirror);
-                if (!constructors.isEmpty()) {
-                    if (constructors.size() > 1) {
-                        decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                    } else {
-                        // single constructor
-                        MethodMirror constructor = constructors.get(0);
-                        // if the class and constructor have different visibility, we pretend there's an overload of one
-                        // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
-                        // where the constructor is protected because we want to use an accessor, in this case the class
-                        // visibility is to be used
-                        if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
-                            decl = makeLazyClass(classMirror, null, constructor, false);
-                            setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
-                        }else{
+                break;
+            case OBJECT:
+                // we first make a class
+                Declaration objectClassDecl = makeLazyClass(classMirror, null, null, true);
+                typeDeclarationsByName.put(key, objectClassDecl);
+                decls.add(objectClassDecl);
+                // then we make a value for it
+                Declaration objectDecl = makeToplevelAttribute(classMirror);
+                valueDeclarationsByName.put(key, objectDecl);
+                decls.add(objectDecl);
+                // which one did we want?
+                decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
+                setDeclarationVisibility(objectClassDecl, classMirror, classMirror, true);
+                setDeclarationVisibility(objectDecl, classMirror, classMirror, true);
+                break;
+            case CLASS:
+                if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
+                    decl = makeClassAlias(classMirror);
+                    setDeclarationVisibility(decl, classMirror, classMirror, true);
+                }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
+                    decl = makeTypeAlias(classMirror);
+                    setDeclarationVisibility(decl, classMirror, classMirror, true);
+                }else{
+                    List<MethodMirror> constructors = getClassConstructors(classMirror);
+                    if (!constructors.isEmpty()) {
+                        if (constructors.size() > 1) {
                             decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                        } else {
+                            // single constructor
+                            MethodMirror constructor = constructors.get(0);
+                            // if the class and constructor have different visibility, we pretend there's an overload of one
+                            // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
+                            // where the constructor is protected because we want to use an accessor, in this case the class
+                            // visibility is to be used
+                            if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
+                                decl = makeLazyClass(classMirror, null, constructor, false);
+                                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                            }else{
+                                decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                            }
                         }
+                    } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
+                        // objects don't need overloading stuff
+                        decl = makeLazyClass(classMirror, null, null, false);
+                        setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                    } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
+                        Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                        decl = klass;
+                        LazyClass subdecl = makeLazyClass(classMirror, klass, null, false);
+                        // no visibility for subdecl (private)
+                        subdecl.setOverloaded(true);
+                        klass.getOverloads().add(subdecl);
+                        decls.add(subdecl);
+                    } else {
+                        // private class does not need a constructor
+                        decl = makeLazyClass(classMirror, null, null, false);
                     }
-                } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
-                    // objects don't need overloading stuff
-                    decl = makeLazyClass(classMirror, null, null, false);
-                    setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
-                } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
-                    Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                    decl = klass;
-                    LazyClass subdecl = makeLazyClass(classMirror, klass, null, false);
-                    // no visibility for subdecl (private)
-                    subdecl.setOverloaded(true);
-                    klass.getOverloads().add(subdecl);
-                    decls.add(subdecl);
-                } else {
-                    // private class does not need a constructor
-                    decl = makeLazyClass(classMirror, null, null, false);
                 }
+                break;
+            case INTERFACE:
+                if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
+                    decl = makeInterfaceAlias(classMirror);
+                }else{
+                    decl = makeLazyInterface(classMirror);
+                }
+                setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
+                break;
             }
-            break;
-        case INTERFACE:
-            if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
-                decl = makeInterfaceAlias(classMirror);
-            }else{
-                decl = makeLazyInterface(classMirror);
-            }
-            setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
-            break;
+        }catch(ModelResolutionException x){
+            // FIXME: this may not be the best thing to do, perhaps we should have an erroneous Class,Interface,Method
+            // etc, like javac's model does?
+            decl = logModelResolutionException(x, null, "Failed to load declaration "+classMirror).getDeclaration();
         }
-
 
         // objects have special handling above
         if(type != ClassType.OBJECT){
@@ -1244,7 +1249,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // FIXME: this being here is highly dubious
                     return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
                 }
-                ClassMirror classMirror = lookupClassMirror(module, typeName);
+                ClassMirror classMirror;
+                try{
+                    classMirror = lookupClassMirror(module, typeName);
+                }catch(NoClassDefFoundError x){
+                    // FIXME: this may not be the best thing to do. If the class is not there we don't know what type of declaration
+                    // to return, but perhaps if we use annotation scanner rather than reflection we can figure it out, at least
+                    // in cases where the supertype is missing, which throws in reflection at class load.
+                    return logModelResolutionException(x.getMessage(), null, "Unable to load type "+typeName).getDeclaration();
+                }
                 if (classMirror == null) {
                     // special case when bootstrapping because we may need to pull the decl from the typechecked model
                     if(isBootstrap && typeName.startsWith(CEYLON_LANGUAGE+".")){

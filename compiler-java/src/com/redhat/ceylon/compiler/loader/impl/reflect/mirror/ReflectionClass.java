@@ -31,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
+import com.redhat.ceylon.compiler.loader.ModelResolutionException;
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
 import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
@@ -136,8 +137,14 @@ public class ReflectionClass implements ClassMirror {
     public List<MethodMirror> getDirectMethods() {
         if(methods != null)
             return methods;
-        Method[] directMethods = klass.getDeclaredMethods();
-        Constructor<?>[] directConstructors = klass.getDeclaredConstructors();
+        Method[] directMethods;
+        Constructor<?>[] directConstructors;
+        try{
+            directMethods = klass.getDeclaredMethods();
+            directConstructors = klass.getDeclaredConstructors();
+        }catch(NoClassDefFoundError x){
+            throw new ModelResolutionException("Failed to load methods in "+getQualifiedName(), x);
+        }
         methods = new ArrayList<MethodMirror>(directMethods.length + directConstructors.length);
         for(Method directMethod : directMethods){
             // Note: unlike JavacClass and JDTClass we return private members, because the runtime manager
