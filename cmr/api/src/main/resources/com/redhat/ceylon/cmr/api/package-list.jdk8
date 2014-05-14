@@ -1,15 +1,13 @@
 # List of JDK modules as guessed from package-list.jdk7 + new packages in Java 8:
 #
-# (new module java.time)
+# (added to java.base)
+# java.util.function
+# java.util.stream
 # java.time
 # java.time.chrono
 # java.time.format
 # java.time.temporal
 # java.time.zone
-#
-# (added to java.base)
-# java.util.function
-# java.util.stream
 #
 # (added to javax.xml)
 # org.w3c.dom.views
@@ -62,8 +60,6 @@ javax.crypto.spec
 # java.beans is only included partially in Jigsaw
 java.beans
 java.beans.beancontext
-
-=java.time
 java.time
 java.time.chrono
 java.time.format
