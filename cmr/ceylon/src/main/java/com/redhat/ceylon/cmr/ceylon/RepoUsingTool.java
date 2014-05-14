@@ -358,7 +358,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     protected String getModuleNotFoundErrorMessage(RepositoryManager repoMgr, String name, String version) {
         StringBuilder err = new StringBuilder();
-        err.append(Messages.msg(bundle, "module.not.found", name));
+        err.append(Messages.msg(bundle, "module.not.found", name, version));
         err.append("\n");
         boolean fullySearchable = true;
         for (Repository repo : repoMgr.getRepositories()) {
