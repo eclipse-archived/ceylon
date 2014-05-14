@@ -22,12 +22,4 @@ shared void testPredicates() {
     check(!or(hell, llo)("x"), "or/x");
     check(!or(hell, llo)("llohell"), "or/llohell");
     
-    check(!xor(hell, llo)("hello"), "xor/hello");
-    check(xor(hell, llo)("hell"), "xor/hell");
-    check(xor(hell, llo)("hellx"), "xor/hellx");
-    check(xor(hell, llo)("llo"), "xor/llo");
-    check(xor(hell, llo)("xllo"), "xor/xllo");
-    check(!xor(hell, llo)("x"), "xor/x");
-    check(!xor(hell, llo)("llohell"), "xor/llohell");
-    
 }
