@@ -1,5 +1,5 @@
-"Given a nonempty stream of [[Comparable]] values, return 
- the largest value in the stream."
+"Given a stream of [[Comparable]] values, return the largest 
+ value in the stream, or `null` if the stream is empty."
 see (`interface Comparable`, 
      `function min`, 
      `function largest`)
