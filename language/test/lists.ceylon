@@ -122,6 +122,13 @@ shared void lists() {
     } else {
         fail("List.lastIndexWhere should exist");
     }
+    check(b.indexesWhere(Integer.negative).empty, "List.indexesWhere empty");
+    if (exists fi=b.firstIndexWhere(Integer.negative)) {
+        fail("List.firstIndexWhere should not exist");
+    }
+    if (exists fi=b.lastIndexWhere(Integer.negative)) {
+        fail("List.lastIndexWhere should not exist");
+    }
     check("Probando Novedades".indexesWhere((Character c)=>c.uppercase).sequence == [0,9], "String.indexesWhere");
     if (exists fi="Probando".firstIndexWhere((Character c)=>c.lowercase)) {
         check(fi == 1, "String.firstIndexWhere expected 1 got ``fi``");
@@ -132,5 +139,12 @@ shared void lists() {
         check(li == 1, "String.lastIndexWhere expected 1 got ``li``");
     } else {
         fail("String.lastIndexWhere not found");
+    }
+    check("hello".indexesWhere(Character.whitespace).empty, "String.indexesWhere empty");
+    if (exists fi="hello".firstIndexWhere(Character.whitespace)) {
+        fail("String.firstIndexWhere should not exist");
+    }
+    if (exists fi="hello".lastIndexWhere(Character.whitespace)) {
+        fail("String.lastIndexWhere should not exist");
     }
 }
