@@ -7,16 +7,18 @@
  - (2-2<sup>-52</sup>)\{#00D7}2<sup>1023</sup>, 
    approximately 5\{#00D7}10<sup>-324</sup>.
  
- Zero is represented by distinct instances `+0`, `-0`, but 
- these instances are equal.
+ Zero is represented by distinct instances `+0.0`, `-0.0`, 
+ but these instances are equal.
  
  In addition, the following special values exist:
  
- - [[infinity]] and `-infinity`, and 
- - undefined values (Not a Number).
+ - [[infinity]] and `-infinity`, and
+ - undefined values.
  
- An undefined value is not equal to any other value, not 
- even to itself.
+ As required by the IEEE standard, an undefined value, often
+ denoted [NaN][], is not equal to any other value, nor even
+ to itself. Thus, the definition of [[equals]] for `Float`
+ violates the general contract defined by [[Object.equals]].
  
  Literal floating point values are written with a decimal
  point and, optionally, a magnitude or exponent:
@@ -31,7 +33,8 @@
  optional. Underscores may be used to group digits into 
  groups of three.
  
- [floating point number]: http://www.validlab.com/goldberg/paper.pdf"
+ [floating point number]: http://www.validlab.com/goldberg/paper.pdf
+ [NaN]: http://en.wikipedia.org/wiki/NaN"
 shared native final class Float(float)
         extends Object()
         satisfies Scalar<Float> & 
@@ -39,15 +42,15 @@ shared native final class Float(float)
     
     "Determines whether this value is undefined (that is, 
      Not a Number or NaN). The undefined value has the 
-     property that it is not equal (`==`) to itself, as 
-     a consequence the undefined value cannot sensibly 
-     be used in most collections."
+     property that it is not equal (`==`) to itself, and as 
+     a consequence the undefined value cannot sensibly be 
+     used in most collections."
     shared Boolean undefined => this!=this;
     
-    "Determines whether this value is infinite in 
-     magnitude. Produces `true` for `infinity` and 
-     `-infinity`. Produces `false` for a finite number, 
-     `+0`, `-0`, or undefined."
+    "Determines whether this value is infinite in magnitude. 
+     Produces `true` for `infinity` and `-infinity`. 
+     Produces `false` for a finite number, `+0.0`, `-0.0`, 
+     or undefined."
     see (`value infinity`, `value finite`)
     shared Boolean infinite => 
             this==infinity || this==-infinity;
@@ -61,32 +64,52 @@ shared native final class Float(float)
     
     "The sign of this value. Produces `1` for a positive 
      number or `infinity`. Produces `-1` for a negative
-     number or `-infinity`. Produces `0` for `+0`, `-0`, 
-     or undefined."
+     number or `-infinity`. Produces `0.0` for `+0.0`, 
+     `-0.0`, or undefined."
     shared actual native Integer sign;
     
     "Determines if this value is a positive number or
      `infinity`. Produces `false` for a negative number, 
-     `+0`, `-0`, or undefined."
+     `+0.0`, `-0.0`, or undefined."
     shared actual native Boolean positive;
     
     "Determines if this value is a negative number or
      `-infinity`. Produces `false` for a positive number, 
-     `+0`, `-0`, or undefined."
+     `+0.0`, `-0.0`, or undefined."
     shared actual native Boolean negative;
     
-    "Determines if this value is a positive number, `+0`, 
-     or `infinity`. Produces `false` for a negative 
-     number, `-0`, or undefined."
+    "Determines if this value is a positive number, `+0.0`, 
+     or `infinity`. Produces `false` for a negative number, 
+     `-0.0`, or undefined."
     shared native Boolean strictlyPositive;
     
-    "Determines if this value is a negative number, `-0`, 
-     or `-infinity`. Produces `false` for a positive 
-     number, `+0`, or undefined."
+    "Determines if this value is a negative number, `-0.0`, 
+     or `-infinity`. Produces `false` for a positive number, 
+     `+0.0`, or undefined."
     shared native Boolean strictlyNegative;
     
+    "Determines if the given object is equal to this `Float`,
+     that is, if:
+     
+     - the given object is also a `Float`,
+     - neither this value nor the given value is 
+       [[undefined]], and either
+     - both values are [[infinite]] and have the same 
+       [[sign]], or both represent the same finite floating 
+       point value as defined by the IEEE specification.
+     
+     Or if:
+     
+     - the given object is an [[Integer]],
+     - this value is neither [[undefined]], nor [[infinite]],
+     - the [[fractionalPart]] of this value equals `0.0`, 
+       and
+     - the [[integer]] part of this value equals the given 
+       integer."
     shared actual native Boolean equals(Object that);
+    
     shared actual native Integer hash;
+    
     shared actual native Comparison compare(Float other);
     shared actual native Float plus(Float other);
     shared actual native Float minus(Float other);
