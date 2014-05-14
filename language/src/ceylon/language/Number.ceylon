@@ -36,16 +36,16 @@ shared interface Number {
     "The number, represented as a [[Float]], if such a 
      representation is possible."
     throws (`class OverflowException`,
-    "if the number is too large to be represented 
-     as a `Float`")
+            "if the number is too large to be represented 
+             as a `Float`")
     shared formal Float float;
     
     "The number, represented as an [[Integer]], after 
      truncation of any fractional part if such a 
      representation is possible."
     throws (`class OverflowException`,
-    "if the number is too large to be represented 
-     as an `Integer`")
+            "if the number is too large to be represented 
+             as an `Integer`")
     shared formal Integer integer;
     
     "Determine if the number is strictly positive."
