@@ -1,0 +1,122 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1629(final .java.lang.Object o, final .java.lang.Object x, final .ceylon.language.Sequential<? extends .ceylon.language.Character> s) {
+        .java.lang.Object captured0$1 = null;
+        if ((captured0$1 = o) instanceof .ceylon.language.String) {
+            captured0$2 = ((.ceylon.language.String)captured0$1).toString();
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured0 = o"));
+        .ceylon.language.Character captured1$4 = null;
+        if ((captured1$4 = (.ceylon.language.Character).ceylon.language.String.getFirst(captured0$2)) != null) {
+            captured1$5 = captured1$4.intValue();
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists captured1 = captured0.first"));
+        .ceylon.language.Sequential<? extends .ceylon.language.Character> captured2$7 = null;
+        if ((captured2$7 = s) instanceof .ceylon.language.Sequence) {
+            captured2$8 = (.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)captured2$7;
+        } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty captured2 = s"));
+        .java.lang.String $ceylontmp$assert$9 = null;
+        .java.lang.Object captured10$10 = null;
+        if ((captured10$10 = o) instanceof .ceylon.language.String) {
+            captured10$11 = ((.ceylon.language.String)captured10$10).toString();
+            .ceylon.language.Character captured11$12 = null;
+            if ((captured11$12 = (.ceylon.language.Character).ceylon.language.String.getFirst("a")) != null) {
+                captured11$13 = captured11$12.intValue();
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> captured12$14 = null;
+                if ((captured12$14 = s) instanceof .ceylon.language.Sequence) {
+                    captured12$15 = (.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)captured12$14;
+                } else {
+                    captured12$15 = null;
+                    $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String captured10 = o" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "exists captured11 = \"a\".first" + (.java.lang.System.lineSeparator() + "\tviolated ") + "nonempty captured12 = s";
+                }
+            } else {
+                captured11$13 = 0;
+                captured12$15 = null;
+                $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String captured10 = o" + (.java.lang.System.lineSeparator() + "\tviolated ") + "exists captured11 = \"a\".first" + (.java.lang.System.lineSeparator() + "\tuntested ") + "nonempty captured12 = s";
+            }
+        } else {
+            captured10$11 = null;
+            captured11$13 = 0;
+            captured12$15 = null;
+            $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tviolated " + "is String captured10 = o" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists captured11 = \"a\".first" + (.java.lang.System.lineSeparator() + "\tuntested ") + "nonempty captured12 = s";
+        }
+        if ($ceylontmp$assert$9 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$9);
+        .java.lang.String $ceylontmp$assert$16 = null;
+        .java.lang.Object o$17 = null;
+        if ((o$17 = o) instanceof .ceylon.language.String) {
+            o$18 = ((.ceylon.language.String)o$17).toString();
+            .java.lang.Object x$19 = null;
+            if ((x$19 = x) != null) {
+                x$20 = x$19;
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> s$21 = null;
+                if ((s$21 = s) instanceof .ceylon.language.Sequence) {
+                    s$22 = (.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)s$21;
+                } else {
+                    s$22 = null;
+                    $ceylontmp$assert$16 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String o" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "exists x" + (.java.lang.System.lineSeparator() + "\tviolated ") + "nonempty s";
+                }
+            } else {
+                x$20 = null;
+                s$22 = null;
+                $ceylontmp$assert$16 = .java.lang.System.lineSeparator() + "\tunviolated " + "is String o" + (.java.lang.System.lineSeparator() + "\tviolated ") + "exists x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "nonempty s";
+            }
+        } else {
+            o$18 = null;
+            x$20 = null;
+            s$22 = null;
+            $ceylontmp$assert$16 = .java.lang.System.lineSeparator() + "\tviolated " + "is String o" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists x" + (.java.lang.System.lineSeparator() + "\tuntested ") + "nonempty s";
+        }
+        if ($ceylontmp$assert$16 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$16);
+    }
+    final .java.lang.String captured0$2;
+    final int captured1$5;
+    final .ceylon.language.Sequence<? extends .ceylon.language.Character> captured2$8;
+    final .ceylon.language.Sequence<? extends .ceylon.language.Character> captured12$15;
+    final int captured11$13;
+    final .java.lang.String captured10$11;
+    final .ceylon.language.Sequence<? extends .ceylon.language.Character> s$22;
+    final .java.lang.Object x$20;
+    final .java.lang.String o$18;
+    
+    public final .java.lang.String getAttribute0() {
+        return captured0$2;
+    }
+    
+    public final int getAttribute1() {
+        return captured1$5;
+    }
+    
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Character> getAttribute2() {
+        return captured2$8;
+    }
+    
+    public final .java.lang.String getAttribute10() {
+        return captured10$11;
+    }
+    
+    public final int getAttribute11() {
+        return captured11$13;
+    }
+    
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Character> getAttribute12() {
+        return captured12$15;
+    }
+    
+    public final .java.lang.String getAttribute20() {
+        return o$18;
+    }
+    
+    public final .java.lang.Object getAttribute21() {
+        return x$20;
+    }
+    
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Character> getAttribute22() {
+        return s$22;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1629.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1629.class);
+}
