@@ -10,8 +10,9 @@
          count++;
      }
  
- An `Ordinal` type may be used to generate a [[Range]], 
- using the span or segment operators.
+ An `Ordinal` type which is also [[Comparable]] may be used 
+ to generate a [[Range]], using the span or segment 
+ operators.
  
  The _span_ operator `..` accepts the first and last values 
  of the range.
