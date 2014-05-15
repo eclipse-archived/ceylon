@@ -233,7 +233,7 @@ public class ModelLoaderTest extends CompilerTest {
         test.test(modelLoader);
     }
     
-    static class ModelComparison {
+    static protected class ModelComparison {
         private boolean isUltimatelyVisible(Declaration d) {
             if (d instanceof MethodOrValue && 
                     ((MethodOrValue)d).isParameter()) {
@@ -245,7 +245,7 @@ public class ModelLoaderTest extends CompilerTest {
             return d.isShared();
         }
             
-        protected void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
+        public void compareDeclarations(Declaration validDeclaration, Declaration modelDeclaration) {
             if(alreadyCompared(validDeclaration, modelDeclaration) || validDeclaration instanceof LazyElement)
                 return;
             String name = validDeclaration.getQualifiedNameString();
