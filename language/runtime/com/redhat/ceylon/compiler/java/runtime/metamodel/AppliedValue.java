@@ -105,7 +105,6 @@ public class AppliedValue<Get, Set>
                 if(instance != null 
                         // XXXArray.getArray is static but requires an instance as first param
                         && (isJavaArray || !Modifier.isStatic(m.getModifiers()))) {
-                    System.err.println("Ceylon value: " + decl + ", reflection method: " + m + ", handle: " + getter);
                     getter = getter.bindTo(instance);
                 }
                 // we need to cast to Object because this is what comes out when calling it in $call
