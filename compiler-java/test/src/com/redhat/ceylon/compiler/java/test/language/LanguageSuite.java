@@ -33,7 +33,9 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
 @RunWith(CeylonModuleRunner.class)
 @TestModule(
     srcDirectory="../ceylon.language/test",
-    module="default")
+    modules={"default", "jvm", "metamodel", "annotations"},
+    dependencies={"check", "modules.imported"}
+    )
 public class LanguageSuite {
 
 }

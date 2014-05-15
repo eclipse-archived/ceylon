@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -90,25 +91,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
 
     private boolean errorIfNoTests;
     
-    private int numTests;
-
     private File outRepo;
     
     private TestLoader testLoader;
 
-    private Runnable moduleInitialiser;
-    
-    private static void scan(File relativeTo, List<String> list, File file) {
-        if (file.isDirectory()) {
-            for (File child : file.listFiles()) {
-                scan(relativeTo, list, child);
-            }
-        } else if (file.isFile()
-                && file.getName().endsWith(".ceylon")) {
-            list.add(file.getAbsolutePath());
-        }
-    }
-    
     public CeylonModuleRunner(Class<?> moduleSuiteClass) throws InitializationError {
         super(moduleSuiteClass);
         try {
@@ -118,11 +104,11 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             File srcDir = new File(testModule.srcDirectory());
             outRepo = Files.createTempDirectory("ceylon-module-runner").toFile();
             
-            for (String dependency : testModule.dependencies()) {
-                compile(srcDir, outRepo, dependency, null, false);
-            }
-            String moduleName = !testModule.module().isEmpty() ? testModule.module() : moduleSuiteClass.getPackage().getName();
-            compile(srcDir, outRepo, moduleName, testModule.dependencies(), true);
+            String[] modules = testModule.modules();
+            if(modules.length == 0)
+                modules = new String[]{ moduleSuiteClass.getPackage().getName() };
+            
+            compileAndRun(srcDir, outRepo, modules, testModule.dependencies());
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -130,7 +116,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
     }
 
-    private void compile(File srcDir, File outRepo, String moduleName, String[] deps, boolean runTests) throws Exception {
+    private void compileAndRun(File srcDir, File outRepo, String[] modules, String[] dependencies) throws Exception {
         // Compile all the .ceylon files into a .car
         Context context = new Context();
         final ErrorCollector listener = new ErrorCollector();
@@ -146,36 +132,40 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         args.add(srcDir.getCanonicalPath());
         args.add("-out");
         args.add(outRepo.getAbsolutePath());
-        if (ModuleUtil.isDefaultModule(moduleName)) {
-            scan(srcDir.getCanonicalFile(), args, srcDir.getCanonicalFile());
-        } else {
-            args.add(moduleName);
-        }
+        for(String module : modules)
+            args.add(module);
+        for(String module : dependencies)
+            args.add(module);
         
         int sc = compiler.compile(args.toArray(new String[args.size()]), 
                 context);
-        
-        if (runTests) {
-            postCompile(context, listener, moduleName, srcDir, deps);
+
+        this.children = new LinkedHashMap<Runner, Description>();
+        for(String module : modules){
+            postCompile(context, listener, module, srcDir, dependencies);
         }
     }
     
-    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] deps) throws Exception {
+    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies) throws Exception {
         // now fetch stuff from the context
         PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         
-        this.children = new LinkedHashMap<Runner, Description>();
-        
+        List<Runner> moduleRunners = new LinkedList<Runner>();
         for (final CompilerError compileError : listener.get(Kind.ERROR)) {
-            createFailingTest(compileError.filename, new CompilationException(compileError.toString()));
+            createFailingTest(moduleRunners, compileError.filename, new CompilationException(compileError.toString()));
         }
 
         // Get a class loader for the car
         // XXX Need to use CMR if the module has dependencies
-        URLClassLoader cl = classLoaderForModule(moduleName, deps, outRepo);
+        URL[] carUrls = getCarUrls(moduleName, dependencies, outRepo);
+        URLClassLoader cl = classLoaderForModule(carUrls);
+        Runnable moduleInitialiser = getModuleInitialiser(moduleName, carUrls, dependencies, cl);
+        
         if (cl != null) {
-            loadCompiledTests(srcDir, cl, phasedUnits, moduleName);
+            loadCompiledTests(moduleRunners, srcDir, cl, phasedUnits, moduleName);
         }
+        CeylonTestGroup ceylonTestGroup = new CeylonTestGroup(moduleRunners, moduleName, moduleInitialiser);
+        children.put(ceylonTestGroup, ceylonTestGroup.getDescription());
     }
 
     private static class CompilationException extends Exception {
@@ -184,7 +174,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
     }
     
-    void createFailingTest(final String testName, final Exception ex) {
+    void createFailingTest(List<Runner> moduleRunners, final String testName, final Exception ex) {
         final Description description = Description.createTestDescription(getClass(), testName);
         Runner runner = new Runner() {
             @Override
@@ -198,20 +188,18 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 notifier.fireTestFinished(description);
             }
         };
-        numTests += runner.testCount();
-        children.put(runner,
-                runner.getDescription());
+        moduleRunners.add(runner);
     }
     
-    private void loadCompiledTests(File srcDir, URLClassLoader cl, PhasedUnits phasedUnits, String moduleName)
+    private void loadCompiledTests(List<Runner> moduleRunners, File srcDir, URLClassLoader cl, PhasedUnits phasedUnits, String moduleName)
                 throws InitializationError {
-        Map<String, List<String>> testMethods = testLoader.loadTestMethods(this, phasedUnits, moduleName);
+        Map<String, List<String>> testMethods = testLoader.loadTestMethods(moduleRunners, this, phasedUnits, moduleName);
         if (testMethods.isEmpty() && errorIfNoTests) {
-            createFailingTest("No tests!", new Exception("contains no tests"));
+            createFailingTest(moduleRunners, "No tests!", new Exception("contains no tests"));
         }
         Method failureCountGetter = null;
         if(ModuleUtil.isDefaultModule(moduleName)){
-            failureCountGetter = getFailureCountGetter(cl);
+            failureCountGetter = getFailureCountGetter(moduleRunners, cl);
             // check if an error was produced
             if(failureCountGetter == null)
                 return;
@@ -229,34 +217,16 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             if (testClass == null) {
                 // Create a fake (failing) test for classes we couldn't load
                 // presumably because they had compile errors
-                createFailingTest(className, new CompilationException("Test class " + className + " didn't compile"));
+                createFailingTest(moduleRunners, className, new CompilationException("Test class " + className + " didn't compile"));
             } else {
-                final Runner runner;
-                final Description description;
-                description = Description.createTestDescription(testClass, className);
                 List<String> testMethodNames = entry.getValue();
                 CeylonTestRunner classTestRunner = new CeylonTestRunner(testClass, failureCountGetter, testMethodNames);
-                // Add child descriptions to my description
-                for (Method testMethod : classTestRunner.getChildren()) {
-                    description.addChild(classTestRunner.describeChild(testMethod));
-                }
-                if (testMethodNames == null
-                        || testMethodNames.isEmpty()) {
-                    try {
-                        description.addChild(classTestRunner.describeChild(CeylonModuleRunner.class.getMethod("noTests")));
-                    } catch (ReflectiveOperationException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                runner = classTestRunner;
-                numTests += runner.testCount();
-                children.put(runner,
-                        description);
+                moduleRunners.add(classTestRunner);
             }
         }
     }
     
-    private Method getFailureCountGetter(URLClassLoader cl) {
+    private Method getFailureCountGetter(List<Runner> moduleRunners, URLClassLoader cl) {
         Class<?> failureCountClass;
         try {
             failureCountClass = cl.loadClass("failureCount_");
@@ -266,7 +236,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         }
         if(failureCountClass == null) {
             // Create a fake (failing) test for classes we couldn't find the failure count
-            createFailingTest("Initialisation error", new CompilationException("Count not find test.failureCount class"));
+            createFailingTest(moduleRunners, "Initialisation error", new CompilationException("Count not find test.failureCount class"));
             return null;
         }
         // get the method for getting the failure count
@@ -276,7 +246,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             failureCountGetter.setAccessible(true);
         } catch (NoSuchMethodException | SecurityException e1) {
             // Create a fake (failing) test for classes we couldn't find the failure count
-            createFailingTest("Initialisation error", new CompilationException("Could not find getter for failure count: "+e1));
+            createFailingTest(moduleRunners, "Initialisation error", new CompilationException("Could not find getter for failure count: "+e1));
             return null;
         }
         return failureCountGetter;
@@ -314,29 +284,33 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             carFile = new File(moduleDir, 
                     version + File.separator + moduleName + "-" + version+ ".car");
         }
-        final String moduleVersion = version;
         if (!carFile.exists()) {
             throw new RuntimeException(carFile + " doesn't exist");
         }
         URL outCar = carFile.toURI().toURL();
         return outCar;
     }
-    
-    private URLClassLoader classLoaderForModule(final String moduleName, final String[] deps, File repo)
-            throws URISyntaxException, MalformedURLException {
+
+    private URL[] getCarUrls(final String moduleName, final String[] deps, File repo)
+            throws MalformedURLException {
         final URL[] carUrls = new URL[1 + (deps != null ? deps.length : 0)];
         
         URL carUrl = urlForModule(repo, moduleName);
-        final File carFile = new File(carUrl.toURI());
         carUrls[0] = carUrl;
         if (deps != null) {
             for (int ii = 0; ii < deps.length; ii++) {
                 carUrls[1+ii] = urlForModule(repo, deps[ii]);
             }
         }
-        
-        final URLClassLoader cl = new URLClassLoader(carUrls, 
-                getClass().getClassLoader());
+        return carUrls;
+    }
+    
+    private URLClassLoader classLoaderForModule(URL[] carUrls) {
+        return new URLClassLoader(carUrls, getClass().getClassLoader());
+    }
+
+    private Runnable getModuleInitialiser(final String moduleName, final URL[] carUrls, final String[] dependencies, final ClassLoader cl) throws URISyntaxException{
+        final File carFile = new File(carUrls[0].toURI());
         final String version;
         if (carFile.getName().equals("default.car")) {
             version = "unversioned";
@@ -347,8 +321,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             }
             version = matcher.group(1);
         }
-        
-        moduleInitialiser = new Runnable(){
+
+        return new Runnable(){
             @Override
             public void run() {
                 // set up the runtime module system
@@ -358,11 +332,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTest.makeArtifactResult(null), cl);
                 Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
                 // dependencies
-                for (int i = 0; i < deps.length; i++) {
-                    // url is in carUrls[1+i]
+                for (int i = 0; i < dependencies.length; i++) {
                     try {
                         File car = new File(carUrls[1+i].toURI());
-                        String name = deps[i];
+                        String name = dependencies[i];
                         String namePart = car.getName();
                         String version;
                         if(namePart.startsWith(name+"-")){
@@ -380,9 +353,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
 
             }
         };
-        return cl;
     }
-
+    
     private TestModule getTestModuleAnno(Class<?> moduleSuiteClass) {
         TestModule testModule = (TestModule)moduleSuiteClass.getAnnotation(TestModule.class);
         if (testModule == null) {
@@ -397,12 +369,12 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
          * @param phasedUnits
          * @return A map of class names to test methods contained in that class
          */
-        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits, String moduleName);
+        public Map<String, List<String>> loadTestMethods(List<Runner> moduleRunners, final CeylonModuleRunner moduleRunner, PhasedUnits phasedUnits, String moduleName);
     }
 
     public static class StandardLoader implements TestLoader {
         @Override
-        public Map<String, List<String>> loadTestMethods(final CeylonModuleRunner moduleRunner, final PhasedUnits phasedUnits, final String moduleName) {
+        public Map<String, List<String>> loadTestMethods(final List<Runner> moduleRunners, final CeylonModuleRunner moduleRunner, final PhasedUnits phasedUnits, final String moduleName) {
             // Find all the top level classes/functions annotated @test
             // Unfortunately doing it like this
             final Map<String, List<String>> testMethods = new TreeMap<String, List<String>>();
@@ -446,7 +418,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                                         }
                                     } 
                                     if (!added) {
-                                        moduleRunner.createFailingTest(Decl.className(decl),
+                                        moduleRunner.createFailingTest(moduleRunners, Decl.className(decl),
                                                 new Exception("@test should only be used on methods of concrete top level classes whose name ends with 'Test' or on toplevel methods"));
                                     }
                                 }
@@ -491,21 +463,19 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
     
     @Override
     public void run(RunNotifier notifier) {
-        synchronized(CompilerTest.RUN_LOCK){
-            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
-            // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
-            // we set up the module system while another thread is setting it up for other modules we're toast
-            moduleInitialiser.run();
-            try {
-                super.run(notifier);
-            } finally {
-                delete(outRepo);
-            }
+        try {
+            super.run(notifier);
+        } finally {
+            delete(outRepo);
         }
     }
     
     @Override
     public int testCount() {
-        return numTests;
+        int ret = 0;
+        for(Runner child : children.keySet()){
+            ret += child.testCount();
+        }
+        return ret;
     }
 }

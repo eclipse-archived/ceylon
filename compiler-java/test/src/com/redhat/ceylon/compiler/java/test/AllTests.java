@@ -42,8 +42,6 @@ import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_0500_0999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1000_1499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTest_1500_1999;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTest;
-import com.redhat.ceylon.compiler.java.test.language.LanguageAnnotationsSuite;
-import com.redhat.ceylon.compiler.java.test.language.LanguageMetamodelSuite;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
 import com.redhat.ceylon.compiler.java.test.metamodel.MetamodelTest;
@@ -94,8 +92,6 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     MetamodelTest.class,
     LanguageSatisfactionSuite.class,
     LanguageSuite.class,
-    LanguageMetamodelSuite.class,
-    LanguageAnnotationsSuite.class,
     BcTests.class,
     ComprehensionTest.class,
     StaticRefTest.class,

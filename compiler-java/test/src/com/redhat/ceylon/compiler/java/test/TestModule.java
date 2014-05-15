@@ -37,7 +37,7 @@ public @interface TestModule {
     /** Whether the test should fail if there are no tests to run */
     boolean errorIfNoTests() default true;
     /** The name of the module to compile */
-    String module() default "";
+    String[] modules() default {};
     
     String[] dependencies() default {};
     
