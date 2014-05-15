@@ -65,7 +65,11 @@ shared interface Number<Other> of Other
     shared formal Other plusInteger(Integer integer);
     
     "The result of raising this number to the given 
-     [[Integer]] power."
+     non-negative [[Integer]] power. For a negative power,
+     the behavior is implementation-dependent."
+    throws (`class AssertionError`, 
+            "if the exponent is a negative power and this
+             is an integral numeric type")
     shared formal Other powerOfInteger(Integer integer);
     
 }
