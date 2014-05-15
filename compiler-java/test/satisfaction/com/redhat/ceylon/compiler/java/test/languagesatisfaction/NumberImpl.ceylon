@@ -34,4 +34,7 @@ class NumberImpl() satisfies Number {
     
     shared actual Number wholePart = nothing;
 
+    shared actual Number timesInteger(Integer integer) => nothing;
+    
+    shared actual Number plusInteger(Integer integer) => nothing;
 }
