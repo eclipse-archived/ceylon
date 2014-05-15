@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ceylon-dist" default="help" basedir=".">
+<project name="ceylon-dist" default="help" basedir="."
+    xmlns:if="ant:if"
+>
 
     <tstamp>
         <format property="NOW" pattern="yyyyMMddHHmm" />
@@ -358,6 +360,50 @@ Used with another target such as 'package'">
             <fileset dir="${ceylon-runtime.dir}/build/dist">
             </fileset>
         </copy>
+        <foreach target="add-module-descriptor" param="module.descriptor.file">
+            <fileset dir="${ceylon-runtime.dir}/build/dist" casesensitive="yes">
+                <include name="**/module.xml"/>
+            </fileset>
+        </foreach>
+    </target>
+
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <target name="add-module-descriptor">
+        <dirname property="module.dir" file="${module.descriptor.file}"/>
+        <pathconvert property="module.dir.relative" pathsep="${line.separator}">
+            <propertyresource name="module.dir" />
+            <mapper type="regexp"
+                from="^(.*)/build/dist/repo/(.*)"
+                to="\2"/>
+        </pathconvert>
+        <pathconvert property="module.jar" setonempty="false">
+            <first>
+                <fileset dir="${ceylon.dist.dir}/repo/${module.dir.relative}" includes="*.jar" />
+            </first>
+        </pathconvert>
+        <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
+        <jar destfile="${module.jar}" update="true" if:set="module.jar">
+            <zipfileset dir="${module.dir}" 
+                            includes="module.xml"
+                            fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
+        </jar>
+        <basename property="module.jar.name" file="${module.jar}" if:set="module.jar"/>
+        <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
+            <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
+        </pathconvert>
+        <antcall target="sha1sum" if:set="module.sha1">
+            <param name="file" value="${module.jar}" />
+        </antcall>
     </target>
 
     <target name="generate-spec">
