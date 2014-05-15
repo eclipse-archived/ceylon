@@ -137,6 +137,7 @@ shared native final class Float(shared Float float)
     
     shared actual native Float timesInteger(Integer integer);    
     shared actual native Float plusInteger(Integer integer);
+    shared actual native Float powerOfInteger(Integer integer);
     
     shared actual native String string;
     

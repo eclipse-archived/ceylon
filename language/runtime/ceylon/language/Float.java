@@ -476,5 +476,14 @@ public final class Float
     	return value+integer;
     }
     
+    @Override
+    public Float powerOfInteger(@Name("integer") long integer) {
+        return instance(Math.pow(value,integer));
+    }
+    
+    public static double powerOfInteger(double value, long integer) {
+        return Math.pow(value,integer);
+    }
+    
 }
 

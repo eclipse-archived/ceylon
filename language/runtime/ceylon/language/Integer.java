@@ -729,4 +729,13 @@ public final class Integer
     	return value+integer;
     }
     
+    @Override
+    public Integer powerOfInteger(@Name("integer") long integer) {
+        return instance(power(value,integer));
+    }
+    
+    public static long powerOfInteger(long value, long integer) {
+        return power(value,integer);
+    }
+    
 }

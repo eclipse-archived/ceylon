@@ -64,5 +64,9 @@ shared interface Number<Other> of Other
      [[Integer]]."
     shared formal Other plusInteger(Integer integer);
     
+    "The result of raising this number to the given 
+     [[Integer]] power."
+    shared formal Other powerOfInteger(Integer integer);
+    
 }
 
