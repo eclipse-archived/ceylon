@@ -38,7 +38,7 @@
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf
  [NaN]: http://en.wikipedia.org/wiki/NaN"
-shared native final class Float(float)
+shared native final class Float(shared Float float)
         extends Object()
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
@@ -127,8 +127,13 @@ shared native final class Float(float)
     
     shared actual native Float negated;
     
-    shared actual Float float;
-    shared actual native Integer integer;
+    "This value, represented as an [[Integer]], after 
+     truncation of its fractional part, if such a 
+     representation is possible."
+    throws (`class OverflowException`,
+        "if the the [[wholePart]] of this value is too large 
+         or too small to be represented as an `Integer`")
+    shared native Integer integer;
     
     shared actual native Float timesInteger(Integer integer);    
     shared actual native Float plusInteger(Integer integer);

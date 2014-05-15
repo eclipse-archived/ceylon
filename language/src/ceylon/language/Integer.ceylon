@@ -37,7 +37,7 @@
      #21_D4
      $10_0001_1101_0100"
 see (`value runtime`)
-shared native final class Integer(integer)
+shared native final class Integer(shared Integer integer)
         extends Object()
         satisfies Integral<Integer> &
                   Binary<Integer> & 
@@ -110,8 +110,12 @@ shared native final class Integer(integer)
      `bits=runtime.integerAddressableSize`."
     shared actual native Integer leftLogicalShift(Integer shift);
     
-    shared actual native Float float;
-    shared actual Integer integer;
+    "The number, represented as a [[Float]], if such a 
+     representation is possible."
+    throws (`class OverflowException`,
+        "if the number cannot be represented as a `Float`
+         without loss of precision")
+    shared native Float float;
     
     shared actual native Integer predecessor;
     shared actual native Integer successor;

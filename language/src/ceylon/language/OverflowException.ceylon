@@ -7,7 +7,7 @@
  
  - arithmetic operations on [[Integer]]s result in _silent_ 
    overflow (JVM) or loss of precision (JavaScript), and 
-   thus never produce an `OverflowException`, and, 
+   thus never result in an `OverflowException`, and, 
  - likewise, arithmetic operations on [[Float]] produce the 
    value [[infinity]] instead of overflowing."
 shared class OverflowException()

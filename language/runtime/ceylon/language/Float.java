@@ -309,7 +309,6 @@ public final class Float
     // Conversions between numeric types
     
     @TypeInfo("ceylon.language::Integer")
-    @Override
     public long getInteger() {
         if (value >= Long.MIN_VALUE
                 && value <= Long.MAX_VALUE) {
@@ -328,7 +327,6 @@ public final class Float
     }
     
     @TypeInfo("ceylon.language::Float")
-    @Override
     public double getFloat() {
         return value;
     }
