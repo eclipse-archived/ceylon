@@ -381,7 +381,8 @@ class Generics() {
     P getFirst<P>(Sequence<P> list) {
         return list.first;
     } 
-    Number getFirstNumber(Sequence<Number> nums) {
+    Number<T> getFirstNumber<T>(Sequence<Number<T>> nums) 
+            given T satisfies Number<T> {
         return getFirst(nums);
     } 
     Object getFirstNonEmpty(Sequence<String> strs, Sequence<Object> obs) {

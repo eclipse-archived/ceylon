@@ -9,7 +9,7 @@ interface Sized satisfies Emptyish&Category {
 class Is() {
     
     interface SimpleContainer<T> 
-        given T satisfies Number {}
+        given T satisfies Number<T> {}
     
     String[]&Sized strings = nothing;
     

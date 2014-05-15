@@ -451,11 +451,11 @@ void testParellelEnumCases(Enum1 e, Super1 s, Super1|Super2|String sss,Super1&Su
 }
 
 void testLanguageModuleEffectivelyFinal<T>(T t) 
-        given T of String|Number|<String->Number> {
+        given T of String|Number<Float>|<String->Number<Integer>> {
     switch (t)
     case(is String) {}
-    case(is Number) {}
-    case(is String->Number) {}
+    case(is Number<Float>) {}
+    case(is String->Number<Integer>) {}
 }
 
 class RR<E>(E e) 

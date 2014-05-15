@@ -122,18 +122,18 @@ class TypeArgInference() {
     
     object test0 satisfies One<A> & Two<B> {}
     object test1 satisfies One<Integer> & Two<Float> {}
-    object test2 satisfies One<Number> & Two<Integer&String> {}
+    object test2 satisfies One<Number<Integer>> & Two<Integer&String> {}
     
     T? acceptOneTwo<T>(One<T>&Two<T> arg) => null;
     T? acceptOneOrTwo<T>(One<T>|Two<T> arg) => null;
     
     @type:"Null|TypeArgInference.A|TypeArgInference.B" acceptOneTwo(test0);
     @type:"Null|Integer|Float" acceptOneTwo(test1);
-    @type:"Null|Number" acceptOneTwo(test2);
+    @type:"Null|Number<Integer>" acceptOneTwo(test2);
     
     @type:"Null|TypeArgInference.A|TypeArgInference.B" acceptOneOrTwo(test0);
     @type:"Null|Integer|Float" acceptOneOrTwo(test1);
-    @type:"Null|Number" acceptOneOrTwo(test2);
+    @type:"Null|Number<Integer>" acceptOneOrTwo(test2);
     
     void higherAnything<X>(void f(X x)) {}
     higherAnything((String x) => print(x));

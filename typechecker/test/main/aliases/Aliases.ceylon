@@ -113,7 +113,9 @@ void testOpAliases() {
     
     Or<Integer,Float> ornum = 1;
     Integer|Float num = ornum;
-    Float ornumasfloat = ornum.float;
+    //Float ornumasfloat = ornum.float;
+    //Integer sign = ornum.sign;
+    String onstr = ornum.string;
     Or<Float,Integer> ornum2 = ornum;
 }
 
