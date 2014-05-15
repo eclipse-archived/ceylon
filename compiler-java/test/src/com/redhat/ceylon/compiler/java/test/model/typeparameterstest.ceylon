@@ -32,7 +32,7 @@ ClassWithSelfParameterizedUpperBounds<T4> t4 = ClassWithSelfParameterizedUpperBo
 
 ClassWithErasedUpperBounds<T2> t5 = ClassWithErasedUpperBounds(T2());
 
-ClassWithVariance<Number, Number> t6 = ClassWithVariance<Number, Number>(1);
+ClassWithVariance<Number<Integer>, Number<Integer>> t6 = ClassWithVariance<Number<Integer>, Number<Integer>>(1);
 
 ClassWithCaseTypes<Integer> t7 = ClassWithCaseTypes<Integer>();
 

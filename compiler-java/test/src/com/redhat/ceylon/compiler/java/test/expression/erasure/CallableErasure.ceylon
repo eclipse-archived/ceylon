@@ -19,7 +19,7 @@
  */
 @noanno
 class CE_Foo(){
-    Callable<Anything,[]>&Number erasedGetter {
+    Callable<Anything,[]>&Obtainable erasedGetter {
         throw;
     }
     Callable<Anything,[]> nonErasedGetter {
@@ -34,7 +34,7 @@ class CE_Foo(){
 
 @noanno
 shared class CE_MethodClass(){
-    shared Callable<Integer,[]>&Number erasedMethod = nothing;
+    shared Callable<Integer,[]>&Obtainable erasedMethod = nothing;
     shared Callable<Integer,[]> nonErasedMethod = nothing;
 }
 
@@ -48,7 +48,7 @@ shared interface CE_MethodInterface {
 
 @noanno
 shared class CE_MethodInterfaceImpl(CE_MethodClass c, 
-                                    Callable<Integer,[]>&Number erased, 
+                                    Callable<Integer,[]>&Obtainable erased, 
                                     Callable<Integer,[]> nonErased)
     satisfies CE_MethodInterface {
     // #3

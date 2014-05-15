@@ -63,8 +63,8 @@ class IntegralImpl() satisfies Integral<IntegralImpl> {
     
     shared actual Comparison compare(IntegralImpl other) => nothing;
     
-    shared actual Float float => nothing;
-    shared actual Integer integer => nothing;
+    //shared actual Float float => nothing;
+    //shared actual Integer integer => nothing;
     
     shared actual IntegralImpl magnitude => nothing;
     

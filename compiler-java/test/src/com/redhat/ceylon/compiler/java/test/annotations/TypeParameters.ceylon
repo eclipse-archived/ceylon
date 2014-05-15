@@ -17,17 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class TypeParameters<out A,in B,C=Number,D=Number|String>()
-    given B of Number | String
-    given A satisfies Number & Destroyable {
+shared class TypeParameters<out A,in B,C=Number<Integer>,D=Number<Integer>|String>()
+    given B of Number<Integer> | String
+    given A satisfies Number<Integer> & Destroyable {
     
-    shared void m<out A,in B,C=Number,D=Number|String>()
-        given B of Number | String
-        given A satisfies Number & Destroyable {
+    shared void m<out A,in B,C=Number<Integer>,D=Number<Integer>|String>()
+        given B of Number<Integer> | String
+        given A satisfies Number<Integer> & Destroyable {
     }
 }
 
-shared void typeParameters<out A,in B,C=Number,D=Number|String>()
-    given B of Number | String
-    given A satisfies Number & Destroyable {
+shared void typeParameters<out A,in B,C=Number<Integer>,D=Number<Integer>|String>()
+    given B of Number<Integer> | String
+    given A satisfies Number<Integer> & Destroyable {
 }

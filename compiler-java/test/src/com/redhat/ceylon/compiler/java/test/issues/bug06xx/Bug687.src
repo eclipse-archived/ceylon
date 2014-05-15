@@ -8,7 +8,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final <T>void method$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
     
-    public final <T extends .ceylon.language.Number>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+    public final <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         (
             let
             {
@@ -19,10 +19,10 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    private <T extends .ceylon.language.Number>void sort$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> elements) {
+    private <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> elements) {
     }
     
-    public final <T extends .ceylon.language.Number>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> elements) {
+    public final <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> elements) {
         (
             let
             {
@@ -32,7 +32,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         );
     }
     
-    public final <T extends .ceylon.language.Number>void sort3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> elements) {
+    public final <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> elements) {
     }
     
     public final void sort2() {
@@ -60,13 +60,13 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     private final void foo$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
-        <.ceylon.language.Number>sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        <.ceylon.language.Number<.ceylon.language.Integer>>sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
         (
             let
             {
                 .ceylon.language.Sequential arg$2$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                <.ceylon.language.Number>sort(arg$2$reified$0, arg$2$0);
+                <.ceylon.language.Number<.ceylon.language.Integer>>sort(arg$2$reified$0, arg$2$0);
             }
             returning null;
         );
@@ -96,7 +96,7 @@ class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.this.<.ceylon.language.Number>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$elements);
+                        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.this.<.ceylon.language.Number<.ceylon.language.Integer>>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$elements);
                     }
                     returning null;
                 );

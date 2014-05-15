@@ -39,7 +39,7 @@ shared class TypeParameters <T,U> (T t, U u) {
  //
  // methods with defaulted type params
  
- shared void methodWithDefaultedTypeParameters<A, T = Number | String, U = Number>(){
+ shared void methodWithDefaultedTypeParameters<A, T = Number<Integer> | String, U = Number<Integer>>(){
  }
 
  //
@@ -76,7 +76,7 @@ shared class TypeParameters <T,U> (T t, U u) {
 //
 // class with defaulted type params
 
-shared class ClassWithDefaultedTypeParameters<A, T = Number | String, U = Number>(){
+shared class ClassWithDefaultedTypeParameters<A, T = Number<Integer> | String, U = Number<Integer>>(){
 }
 
 //
@@ -118,7 +118,7 @@ shared T methodWithTypeParameters<T, U>(T t, U u){
 //
 // methods with defaulted type params
 
-shared void methodWithDefaultedTypeParameters<A, T = Number | String, U = Number>(){
+shared void methodWithDefaultedTypeParameters<A, T = Number<Integer> | String, U = Number<Integer>>(){
 }
 
 //

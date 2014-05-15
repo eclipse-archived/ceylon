@@ -347,7 +347,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             }
             returning $ceylontmp$opV$7;
         )).left();
-        final .ceylon.language.Entry entry = new .ceylon.language.Entry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Number.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), p1, p1);
+        final .ceylon.language.Entry entry = new .ceylon.language.Entry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Obtainable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Obtainable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), p1, p1);
         if (true || true) {
             final .java.lang.Object x = new .com.redhat.ceylon.compiler.java.test.expression.erasure.MyException(null, null);
             ((.java.lang.Throwable)x).printStackTrace();
@@ -371,7 +371,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             }
             returning $ceylontmp$12 != null ? $ceylontmp$12 : p1;
         );
-        final .ceylon.language.Number n = (.ceylon.language.Number)(
+        final .ceylon.language.Obtainable n = (.ceylon.language.Obtainable)(
             let
             {
                 .java.lang.Object $ceylontmp$13 = p1OrNull;

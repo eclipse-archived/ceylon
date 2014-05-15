@@ -22,8 +22,8 @@ by("Tom Bentley")
 shared interface Types<X,Y> {
     shared formal X&Y paramIntersection();
     shared formal X|Y paramUnion();
-    shared formal String&Number typeIntersection();
-    shared formal String|Number typeUnion();
+    shared formal String&Obtainable typeIntersection();
+    shared formal String|Obtainable typeUnion();
     shared formal String&Types<X,Y> typeIntersectionWithSelf();
     shared formal String|Types<X,Y> typeUnionWithSelf();
     shared formal X? paramOrNull();

@@ -97,8 +97,8 @@ class Test(Integer&EmptyInterface n) {
     // WARNING: when the typechecker figures out that because Integer is final
     // the Integer&EmptyInterface type cannot exist, we'll need to change it to
     // something else
-    Left testIntersection(Number&EmptyInterface p1,
-                          Number&EmptyInterface|Null p1OrNull,
+    Left testIntersection(Obtainable&EmptyInterface p1,
+                          Obtainable&EmptyInterface|Null p1OrNull,
                           Sequence<Top&EmptyInterface>&EmptyInterface tops,
                           Null|Sequence<Top&EmptyInterface>&EmptyInterface topsOrNull,
                           Test&EmptyInterface erasedTest){
@@ -163,15 +163,15 @@ class Test(Integer&EmptyInterface n) {
         return middle;
     }
 
-    void testNullHandlingOperators(Number&EmptyInterface p1,
-                                   Number&EmptyInterface|Null p1OrNull){
+    void testNullHandlingOperators(Obtainable&EmptyInterface p1,
+                                   Obtainable&EmptyInterface|Null p1OrNull){
         // conditions
         if(exists p1OrNull){}
         variable Boolean bSync;
         bSync = p1OrNull exists;
         
         value p2 = p1OrNull else p1;
-        Number n = p1OrNull else p1;
+        Obtainable n = p1OrNull else p1;
         
         // FIXME: those operators are not yet supported
         //value p3 = p1OrNull?.remainder(p1);

@@ -101,7 +101,7 @@ final class reifiedCompositeInstantiate_ {
     static <Key, Value>void reifiedCompositeInstantiate(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-        final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Key, .ceylon.language.Number.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Value, .ceylon.language.Integer.$TypeDescriptor$));
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Key, .ceylon.language.Obtainable.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Value, .ceylon.language.Integer.$TypeDescriptor$));
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

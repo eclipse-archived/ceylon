@@ -41,7 +41,7 @@ class Bug689<X,Y>(X x, Y y, X&Y xy) {
     Sequence<X|Y>|Empty attributeWithUnionErasedToIterable = [x,y];
     
 
-    variable Number sync;
+    variable Number<Integer> sync;
     sync = parameterisedMethodWithUnion(1,2).first;
     sync = parameterisedMethodWithIntersection(1).first;
     sync = Bug689(1,2,3).methodWithUnion(1,2).first;
@@ -54,7 +54,7 @@ class Bug689<X,Y>(X x, Y y, X&Y xy) {
     sync = (Bug689(1,2,3).variableWithIntersection = [1]).first;
     
     sync = Bug689(1,2,3).attributeWithUnionWithinTypeArg.first.first;
-    Number? o = Bug689(1,2,3).attributeWithUnionErasedToIterable.get(0);
+    Number<Integer>? o = Bug689(1,2,3).attributeWithUnionErasedToIterable.get(0);
 
     // model loader tests
     sync = Bug689_ModelLoader(1,2,3).parameterisedMethodWithUnion(1,2).first;

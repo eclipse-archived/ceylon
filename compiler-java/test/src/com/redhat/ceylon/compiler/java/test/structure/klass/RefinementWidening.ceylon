@@ -40,16 +40,23 @@ interface RWLeft satisfies RWTopI{}
 interface RWRight satisfies RWTopI{}
 
 @noanno
+interface RWNumber {}
+@noanno
+interface RWInteger satisfies RWNumber {}
+@noanno
+interface RWFloat satisfies RWNumber {}
+
+@noanno
 abstract class RWTop<X, Y>() {
-    shared formal RWInvParam<Number> m();
-    shared formal RWCovParam<Number> m2();
-    shared formal RWCovParam<Number> m2_erasure();
-    shared formal RWContrParam<Integer> m3();
-    shared formal RWContrParam<Integer> m3_erasure();
+    shared formal RWInvParam<RWNumber> m();
+    shared formal RWCovParam<RWNumber> m2();
+    shared formal RWCovParam<RWNumber> m2_erasure();
+    shared formal RWContrParam<RWInteger> m3();
+    shared formal RWContrParam<RWInteger> m3_erasure();
     shared formal T tParam<T>();
     shared formal T tParamErasure<T>();
-    shared formal T tBoundParam<T>() given T satisfies Number;
-    shared formal T tCovBoundParam<out T>() given T satisfies Integer;
+    shared formal T tBoundParam<T>() given T satisfies RWNumber;
+    shared formal T tCovBoundParam<out T>() given T satisfies RWInteger;
     shared formal X typeBound();
     shared formal X typeCovBound();
     shared formal Y classBound();
@@ -57,18 +64,18 @@ abstract class RWTop<X, Y>() {
 }
 
 @noanno
-abstract class RWBottom<Z>() extends RWTop<Number, Z>() {
-    shared actual formal RWInvParamExt<Number> m();
-    shared actual formal RWCovParamExt<Integer> m2();
-    shared actual formal RWCovParamExt<Integer|Float> m2_erasure();
-    shared actual formal RWContrParamExt<Number> m3();
-    shared actual formal RWContrParamExt<Number|Category> m3_erasure();
+abstract class RWBottom<Z>() extends RWTop<RWNumber, Z>() {
+    shared actual formal RWInvParamExt<RWNumber> m();
+    shared actual formal RWCovParamExt<RWInteger> m2();
+    shared actual formal RWCovParamExt<RWInteger|RWFloat> m2_erasure();
+    shared actual formal RWContrParamExt<RWNumber> m3();
+    shared actual formal RWContrParamExt<RWNumber|Category> m3_erasure();
     shared actual formal S tParam<S>();
-    shared actual formal S&Number tParamErasure<S>();
+    shared actual formal S&RWNumber tParamErasure<S>();
     shared actual formal S tBoundParam<S>();
-    shared actual formal S tCovBoundParam<out S>() given S satisfies Number;
-    shared actual formal Number typeBound();
-    shared actual formal Integer typeCovBound();
+    shared actual formal S tCovBoundParam<out S>() given S satisfies RWNumber;
+    shared actual formal RWNumber typeBound();
+    shared actual formal RWInteger typeCovBound();
     shared actual formal Z classBound();
-    shared actual formal Z&Number classBound_erasure();
+    shared actual formal Z&RWNumber classBound_erasure();
 }

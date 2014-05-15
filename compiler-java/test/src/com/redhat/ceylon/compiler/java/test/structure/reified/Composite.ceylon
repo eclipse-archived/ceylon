@@ -5,5 +5,5 @@ shared class CompositeClass<Key, Value>()
     satisfies CompositeInterface<Key, Value|Integer>{}
 
 void reifiedCompositeInstantiate<Key,Value>(){
-    value c = CompositeClass<Key&Number,Value|Integer>();
+    value c = CompositeClass<Key&Obtainable,Value|Integer>();
 }

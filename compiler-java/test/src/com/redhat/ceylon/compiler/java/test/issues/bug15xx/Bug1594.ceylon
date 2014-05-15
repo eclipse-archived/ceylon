@@ -23,7 +23,7 @@ interface Bug1594Producer<out T> {
 }
 @noanno
 interface Bug1594ProducerWithBound<out T> 
-        given T satisfies Number {
+        given T satisfies Number<Integer> {
     shared formal T t;
 }
 @noanno
@@ -34,7 +34,7 @@ interface Bug1594Consumer<in T> {
 }
 @noanno
 interface Bug1594ConsumerWithBound<in T> 
-        given T satisfies Number {
+        given T satisfies Number<Integer> {
     shared formal void m(T t);
 }
 @noanno
@@ -53,8 +53,8 @@ class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o)
     if (is Bug1594Producer<Anything> o) {
         print("Bug1594Producer<Anything>");
     }
-    if (is Bug1594ProducerWithBound<Number> o) {
-        print("Bug1594ProducerWithBound<Number>");
+    if (is Bug1594ProducerWithBound<Number<Integer>> o) {
+        print("Bug1594ProducerWithBound<Number<Integer>>");
     }
     if (is Bug1594ProducerWithBound<Anything> o) {
         print("Bug1594ProducerWithBound<Anything>");
@@ -67,8 +67,8 @@ class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o)
     if (is Bug1594Producer<Object> o) {
         print("Bug1594Producer<Object>");
     }
-    if (is Bug1594Producer<Number> o) {
-        print("Bug1594Producer<Number>");
+    if (is Bug1594Producer<Number<Integer>> o) {
+        print("Bug1594Producer<Number<Integer>>");
     }
     if (is Bug1594ProducerAlias o) {
         print("Bug1594ProducerAlias");
@@ -82,8 +82,8 @@ class Bug1594OptimizedIs<X, Y, Y2, Z>(Anything o)
     if (is Bug1594ConsumerWithBound<Anything> o) {
         print("Bug1594ConsumerWithBound<Anything>");
     }
-    if (is Bug1594ConsumerWithBound<Number> o) {
-        print("Bug1594ConsumerWithBound<Number>");
+    if (is Bug1594ConsumerWithBound<Number<Integer>> o) {
+        print("Bug1594ConsumerWithBound<Number<Integer>>");
     }
     
     // cases where can can do a short-circuit instanceof against the type parameter bounds

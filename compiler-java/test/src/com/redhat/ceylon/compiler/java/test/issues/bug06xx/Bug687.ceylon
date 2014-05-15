@@ -23,14 +23,14 @@ class Bug687()  {
     }
 
     shared void sort<T>(T* elements) 
-        given T satisfies Number {
+        given T satisfies Number<Integer> {
     }
     shared void sort3<T>(Iterable<T> elements) 
-        given T satisfies Number {
+        given T satisfies Number<Integer> {
     }
-    shared void sort2(Number&Category* elements) { 
+    shared void sort2(Number<Integer>&Category* elements) { 
     }
-    void foo(void p(Number&Category* elements)){
+    void foo(void p(Number<Integer>&Category* elements)){
         sort(*{});
         sort{elements = {};};
         sort2(*{});
