@@ -40,7 +40,7 @@
  [NaN]: http://en.wikipedia.org/wiki/NaN"
 shared native final class Float(float)
         extends Object()
-        satisfies Scalar<Float> & 
+        satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
     
     "Determines whether this value is undefined (that is, 

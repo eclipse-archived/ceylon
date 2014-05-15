@@ -37,8 +37,8 @@ public final class Integer
 
     @Ignore
     @Override
-    public Scalar$impl<Integer> $ceylon$language$Scalar$impl(){
-        // drags Numeric<Integer> Comparable<Integer> Number
+    public Number$impl<Integer> $ceylon$language$Number$impl(){
+        // drags Numeric<Integer> Comparable<Integer>
         throw Util.makeUnimplementedMixinAccessException();
     }
 
@@ -66,13 +66,7 @@ public final class Integer
     public Comparable$impl<Integer> $ceylon$language$Comparable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
-
-    @Ignore
-    @Override
-    public Number$impl $ceylon$language$Number$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
+    
     @Ignore
     @Override
     public Integral$impl<Integer> $ceylon$language$Integral$impl(){

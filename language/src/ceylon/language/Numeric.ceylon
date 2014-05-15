@@ -45,8 +45,8 @@
  
  Some numeric types, for example complex numbers, do not 
  have a [[total order|Comparable]]. Numeric types with a 
- total order also satisfy [[Scalar]]."
-see (`interface Scalar`)
+ total order also satisfy [[Number]]."
+see (`interface Number`)
 by ("Gavin")
 shared interface Numeric<Other> of Other
         satisfies Invertable<Other>

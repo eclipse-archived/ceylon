@@ -1,60 +1,35 @@
-"Abstraction of numeric types representing scalar values. 
- This type defines operations which can be expressed without 
- reference to the invariant self types `Other` of 
- [[Numeric]], [[Scalar]], and [[Comparable]].
+"Abstraction of [[numeric|Numeric]] types with a natural 
+ [[total order|Comparable]], including the built-in numeric 
+ types [[Integer]] and [[Float]].
  
- `Number` allows certain operations to be applied to streams
- of heterogeneous numeric types.
+ A `Number` has a well-defined [[magnitude]] together with a 
+ [[sign]] of type [[Integer]], which should satisfy:
  
-     value magnitudes = { -1.0, 1, 0.0, 2, 4.0 }.map(Number.magnitude); 
+ - `x.magnitude >= 0`
+ - `x.magnitude == 0` iff `x==0`
+ - `x.sign==0` iff `x==0`
+ - `x.sign==1` iff `x>0`
+ - `x.sign==-1` iff `x<0`
  
- This would not be well-typed for `Scalar.magnitude`, since 
- `Scalar` is an invariant type.
+ where `0` is the additive identity of the numeric type.
  
- Every concrete class which implements `Number` should 
- also implement `Scalar`. (Unfortunately, this constraint
- cannot be expressed within the type system of the language
- without loss of the covariance of this type.)"
-see (`interface Numeric`, `interface Scalar`)
+ Not every value commonly considered to be a \"number\" is
+ a `Number`. For example, complex numbers aren't `Number`s
+ since they don't have a total order."
+see (`class Integer`, `class Float`)
 by ("Gavin")
-shared interface Number {
+shared interface Number<Other> of Other
+        satisfies Numeric<Other> & 
+                  Comparable<Other>
+        given Other satisfies Number<Other> {
     
-    "The magnitude of this number."
-    see (`value Scalar.magnitude`)
-    shared formal Number magnitude;
-    
-    "The fractional part of this number, after truncation of 
-     the integral part. For [[Integral]] numeric types, the 
-     fractional part is always zero."
-    shared formal Number fractionalPart;
-    
-    "The integral value of the number after truncation of 
-     the fractional part. For [[Integral]] numeric types, 
-     the integral value of a number is the number itself."
-    shared formal Number wholePart;
-    
-    "The number, represented as a [[Float]], if such a 
-     representation is possible."
-    throws (`class OverflowException`,
-            "if the number is too large to be represented 
-             as a `Float`")
-    shared formal Float float;
-    
-    "The number, represented as an [[Integer]], after 
-     truncation of any fractional part if such a 
-     representation is possible."
-    throws (`class OverflowException`,
-            "if the number is too large to be represented 
-             as an `Integer`")
-    shared formal Integer integer;
-    
-    "Determine if the number is strictly positive."
-    see (`value Scalar.positive`)
-    shared formal Boolean positive;
-    
-    "Determine if the number is strictly negative."
-    see (`value Scalar.negative`)
-    shared formal Boolean negative;
+    "The magnitude of this number. Must satisfy: 
+     
+     - `magnitude>=0` 
+     - `magnitude==0` iff `this==0`
+     
+     where `0` is the additive identity."
+    shared formal Other magnitude;
     
     "The sign of this number: 
      
@@ -63,12 +38,46 @@ shared interface Number {
      - `0` if it is zero."
     shared formal Integer sign;
     
+    "Determine if the number is strictly positive, that is, 
+     if `this>0`, where `0` is the additive identity."
+    shared formal Boolean positive;
+    
+    "Determine if the number is strictly negative, that is, 
+     if `this<0`, where `0` is the additive identity."
+    shared formal Boolean negative;
+    
+    "The fractional part of this number, after truncation of 
+     the integral part. For [[Integral]] numeric types, the 
+     fractional part is always zero."
+    shared formal Other fractionalPart;
+    
+    "The integral value of the number after truncation of 
+     the fractional part. For [[Integral]] numeric types, 
+     the integral value of a number is the number itself."
+    shared formal Other wholePart;
+    
+    "The number, represented as a [[Float]], if such a 
+     representation is possible."
+    throws (`class OverflowException`,
+        "if the number is too large to be represented 
+         as a `Float`")
+    shared formal Float float;
+    
+    "The number, represented as an [[Integer]], after 
+     truncation of any fractional part, if such a 
+     representation is possible."
+    throws (`class OverflowException`,
+        "if the number is too large to be represented 
+         as an `Integer`")
+    shared formal Integer integer;
+    
     "The result of multiplying this number by the given 
      [[Integer]]."
-    shared formal Number timesInteger(Integer integer);
+    shared formal Other timesInteger(Integer integer);
     
     "The result of adding this number to the given 
      [[Integer]]."
-    shared formal Number plusInteger(Integer integer);
+    shared formal Other plusInteger(Integer integer);
     
 }
+

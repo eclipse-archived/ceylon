@@ -1302,7 +1302,7 @@ shared void checkEqualityAndHash(){
     
     value i1Type = `TypeParams<TPA&TPB>`;
     value i2Type = `TypeParams<TPB&TPA>`;
-    value i3Type = `TypeParams<TPA&TPB&Number>`;
+    value i3Type = `TypeParams<TPA&TPB&Number<Float>>`;
     assert(i1Type == i1Type);
     assert(i1Type.hash == i1Type.hash);
     assert(i1Type == i2Type);

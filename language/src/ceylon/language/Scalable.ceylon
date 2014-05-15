@@ -28,7 +28,7 @@
  - `a ** (x+y) == a**x + a**y`
  
  The [[scaling type|Scale]] must be a [[numeric|Numeric]]
- type, but is not required to be [[Scalar]], since a complex
+ type, but is not required to be [[Number]], since a complex
  number scaling type should be allowed."
 by ("Gavin")
 shared interface Scalable<in Scale, out Value> of Value 

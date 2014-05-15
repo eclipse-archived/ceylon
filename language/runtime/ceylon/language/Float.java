@@ -15,12 +15,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Ceylon(major = 7)
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @SatisfiedTypes({
-    "ceylon.language::Scalar<ceylon.language::Float>",
+    "ceylon.language::Number<ceylon.language::Float>",
     "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>"
 })
 @ValueType
 public final class Float
-    implements Scalar<Float>, Exponentiable<Float,Float>, ReifiedType {
+    implements Number<Float>, Exponentiable<Float,Float>, ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Float.class);
@@ -34,8 +34,8 @@ public final class Float
     
     @Ignore
     @Override
-    public Scalar$impl<Float> $ceylon$language$Scalar$impl(){
-        // drags Numeric<Float> Comparable<Float> Number
+    public Number$impl<Float> $ceylon$language$Number$impl(){
+        // drags Numeric<Float> Comparable<Float>
         throw Util.makeUnimplementedMixinAccessException();
     }
 
@@ -63,13 +63,7 @@ public final class Float
     public Comparable$impl<Float> $ceylon$language$Comparable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
-
-    @Ignore
-    @Override
-    public Number$impl $ceylon$language$Number$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
+    
     @Ignore
     @Override
     public Exponentiable$impl<Float,Float> $ceylon$language$Exponentiable$impl(){
