@@ -316,6 +316,10 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     
     @Test
     public void testBug1639() {
-        compareWithJavaSource("bug16xx/Bug1639");
+        assertErrors(
+                new String[] { "bug16xx/Bug1639.ceylon" },
+                defaultOptions,
+                null,
+                new CompilerError(22, "dynamic is not yet supported on this platform"));
     }
 }
