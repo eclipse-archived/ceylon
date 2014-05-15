@@ -28,5 +28,11 @@
     </resources>
 
     <dependencies>
+        <system export="true">
+            <paths>
+                <path name="javax/swing"/>
+                <path name="javax/swing/tree"/>
+            </paths>
+        </system>
     </dependencies>
 </module>
