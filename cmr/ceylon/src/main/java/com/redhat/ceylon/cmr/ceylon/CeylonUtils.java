@@ -305,7 +305,10 @@ public class CeylonUtils {
             }
 
             if (outRepo == null) {
-                addRepo(builder, repositories.getOutputRepository());
+                // do not add the output repo if we do not specify it and do not want the default repos
+                if(!noDefRepos){
+                    addRepo(builder, repositories.getOutputRepository());
+                }
             } else {
                 addRepo(builder, repositories, outRepo);
             }
