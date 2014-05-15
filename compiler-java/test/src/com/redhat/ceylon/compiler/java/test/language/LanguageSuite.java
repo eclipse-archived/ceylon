@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 
 import com.redhat.ceylon.compiler.java.test.CeylonModuleRunner;
 import com.redhat.ceylon.compiler.java.test.TestModule;
+import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
 
 
 /**
@@ -34,8 +35,12 @@ import com.redhat.ceylon.compiler.java.test.TestModule;
 @TestModule(
     srcDirectory="../ceylon.language/test",
     modules={"default", "jvm", "metamodel", "annotations"},
-    dependencies={"check", "modules.imported"}
-    )
+    dependencies={"check", "modules.imported"},
+    runModulesInNewJvm = { 
+            @ModuleSpecifier(module = "default", runClass = "run_"), 
+            @ModuleSpecifier(module = "metamodel", version = "0.1")
+    }
+)
 public class LanguageSuite {
 
 }

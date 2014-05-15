@@ -17,31 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
 package com.redhat.ceylon.compiler.java.test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Annotation used with {@link org.junit.runner.RunWith @RunWith(CeylonModuleRunner.class)}.
- * @author tom
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface TestModule {
-
-    /** The directory where the source code is to be found */
-    String srcDirectory();
-    /** Whether the test should fail if there are no tests to run */
-    boolean errorIfNoTests() default true;
-    /** The name of the modules to compile */
-    String[] modules() default {};
-    
-    String[] dependencies() default {};
-    
-    Class<? extends CeylonModuleRunner.TestLoader> testLoader() default CeylonModuleRunner.StandardLoader.class;
-    
-    ModuleSpecifier[] runModulesInNewJvm() default {}; 
+public @interface ModuleSpecifier {
+    String module();
+    String version() default "";
+    String runClass() default "";
 }

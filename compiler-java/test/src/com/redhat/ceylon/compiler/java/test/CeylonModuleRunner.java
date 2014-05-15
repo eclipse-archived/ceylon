@@ -28,12 +28,14 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,6 +53,7 @@ import org.junit.runners.model.InitializationError;
 import com.redhat.ceylon.cmr.api.JDKUtils;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.java.runtime.Main;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -59,12 +62,14 @@ import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyClass;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 import com.sun.tools.javac.util.Context;
 
 /**
@@ -101,6 +106,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             TestModule testModule = getTestModuleAnno(moduleSuiteClass);
             this.errorIfNoTests = testModule.errorIfNoTests();
             this.testLoader = testModule.testLoader().newInstance();
+            this.children = new LinkedHashMap<Runner, Description>();
+            
             File srcDir = new File(testModule.srcDirectory());
             outRepo = Files.createTempDirectory("ceylon-module-runner").toFile();
             
@@ -109,11 +116,73 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 modules = new String[]{ moduleSuiteClass.getPackage().getName() };
             
             compileAndRun(srcDir, outRepo, modules, testModule.dependencies());
+            
+            for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
+                makeModuleRunnerInNewJvm(module);
+            }
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void makeModuleRunnerInNewJvm(final ModuleSpecifier module) {
+        final Description description = Description.createTestDescription(getClass(), "Run "+module.module()+" in new JVM");
+        
+        Runner runner = new Runner(){
+            @Override
+            public Description getDescription() {
+                return description;
+            }
+
+            @Override
+            public void run(RunNotifier notifier) {
+                notifier.fireTestStarted(description);
+                try{
+                    String moduleName = module.module();
+                    String version = Module.DEFAULT_MODULE_NAME.equals(moduleName) ? null : module.version();
+                    String runClass = module.runClass();
+                    if(runClass.isEmpty())
+                        runClass = moduleName + ".run_";
+                    runModuleInNewJvm(moduleName, version, runClass);
+                }catch(Exception x){
+                    x.printStackTrace();
+                    notifier.fireTestFailure(new Failure(description, x));
+                }
+                notifier.fireTestFinished(description);
+            }
+        };
+        children.put(runner, description);
+    }
+
+    protected void runModuleInNewJvm(String module, String version, String runClass) throws Exception {
+        String path = System.getProperty("java.home")
+                + File.separator + "bin" + File.separator + "java";
+        
+        String moduleSpec = Module.DEFAULT_MODULE_NAME.equals(module) ? module : (module+"/"+version);
+
+        CeylonClasspathTool cpTool = new CeylonClasspathTool();
+        cpTool.setModule(moduleSpec);
+        cpTool.setRepositoryAsStrings(Arrays.asList(outRepo.getAbsolutePath()));
+        cpTool.setSystemRepository("../ceylon-dist/dist/repo");
+        cpTool.setNoDefRepos(true);
+        cpTool.setOffline(true);
+        StringBuilder sb = new StringBuilder();
+        cpTool.setOut(sb);
+        cpTool.run();
+
+        String classpath = sb.toString();
+        
+        ProcessBuilder processBuilder = 
+                new ProcessBuilder(path, "-cp", 
+                classpath, 
+                Main.class.getName(),
+                moduleSpec, runClass);
+        processBuilder.inheritIO();
+        Process process = processBuilder.start();
+        int exit = process.waitFor();
+        Assert.assertTrue(exit == 0);
     }
 
     private void compileAndRun(File srcDir, File outRepo, String[] modules, String[] dependencies) throws Exception {
@@ -137,10 +206,19 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         for(String module : dependencies)
             args.add(module);
         
-        int sc = compiler.compile(args.toArray(new String[args.size()]), 
-                context);
+        compiler.compile(args.toArray(new String[args.size()]), context);
 
-        this.children = new LinkedHashMap<Runner, Description>();
+        TreeSet<CompilerError> errors = listener.get(Kind.ERROR);
+        if(!errors.isEmpty()){
+            List<Runner> errorRunners = new LinkedList<Runner>();
+            for (final CompilerError compileError : errors) {
+                createFailingTest(errorRunners, compileError.filename, new CompilationException(compileError.toString()));
+            }
+            for(Runner errorRunner : errorRunners){
+                children.put(errorRunner, errorRunner.getDescription());
+            }
+        }
+
         for(String module : modules){
             postCompile(context, listener, module, srcDir, dependencies);
         }
@@ -151,9 +229,6 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         
         List<Runner> moduleRunners = new LinkedList<Runner>();
-        for (final CompilerError compileError : listener.get(Kind.ERROR)) {
-            createFailingTest(moduleRunners, compileError.filename, new CompilationException(compileError.toString()));
-        }
 
         // Get a class loader for the car
         // XXX Need to use CMR if the module has dependencies
