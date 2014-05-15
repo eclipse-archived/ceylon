@@ -2424,10 +2424,10 @@ tupleType returns [TupleType type]
     ;
 
 groupedType returns [StaticType type]
-    : SMALLER_OP
+    : SMALLER_OP //don't throw this token away!
       t=type
       { $type=$t.type; }
-      LARGER_OP
+      LARGER_OP //don't throw this token away!
     ;
 
 iterableType returns [IterableType type]
