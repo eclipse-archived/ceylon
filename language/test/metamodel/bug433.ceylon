@@ -4,6 +4,6 @@ object bug433Object {}
 
 @test
 shared void bug433() {
-    assert(`value bug433Object`.isObject);
-    assert(`value bug433Object`.objectDeclaration exists);
+    assert(`value bug433Object`.objectValue);
+    assert(`value bug433Object`.objectClass exists);
 }

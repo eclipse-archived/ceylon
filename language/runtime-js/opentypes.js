@@ -319,16 +319,16 @@ atr$($$openValue,'toplevel',function(){return this.toplevel_;},undefined,functio
       return OpenSetter(this);
     },undefined,function(){return{mod:$CCMM$,$t:{t:SetterDeclaration$meta$declaration},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','setter']};});
 
-    atr$($$openValue,'isObject',function(){
+    atr$($$openValue,'objectValue',function(){
       return this.meta&&this.meta.$mt==='o';
-    },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','isObject']};});
-    atr$($$openValue,'objectDeclaration',function(){
-      if (this.isObject) {
+    },undefined,function(){return{mod:$CCMM$,$t:{t:Boolean$},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','objectValue']};});
+    atr$($$openValue,'objectClass',function(){
+      if (this.objectValue) {
         var _m=getrtmm$$(this.tipo);
         if (_m && _m.$t && typeof(_m.$t.t)==='function')return OpenClass(this._pkg,_m.$t.t);
       }
       return null;
-    },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:ClassDeclaration$meta$declaration},{t:Null}]},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','objectDeclaration']};});
+    },undefined,function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:ClassDeclaration$meta$declaration},{t:Null}]},$cont:OpenValue,$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ValueDeclaration','$at','objectClass']};});
 
     })(OpenValue.$$.prototype);
   }

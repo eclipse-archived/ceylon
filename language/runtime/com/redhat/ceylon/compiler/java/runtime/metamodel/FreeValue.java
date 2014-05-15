@@ -55,14 +55,14 @@ public class FreeValue
     
     
     @Override
-    public boolean getIsObject(){
+    public boolean getObjectValue(){
         return type instanceof ceylon.language.meta.declaration.OpenClassType
                 && ((ceylon.language.meta.declaration.OpenClassType) type).getDeclaration().getAnonymous();
     }
     
     @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration|ceylon.language::Null")
     @Override
-    public ceylon.language.meta.declaration.ClassDeclaration getObjectDeclaration(){
+    public ceylon.language.meta.declaration.ClassDeclaration getObjectClass(){
         if(type instanceof ceylon.language.meta.declaration.OpenClassType){
             ceylon.language.meta.declaration.OpenClassType decl = (ceylon.language.meta.declaration.OpenClassType)type;
             if(decl.getDeclaration().getAnonymous())
