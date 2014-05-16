@@ -214,13 +214,6 @@ shared class IntegerTest() {
     }
     
     @test
-    shared void testInteger() {
-        Integer ten = 10;
-        Integer other = ten.integer;
-        assertEquals(ten, other);            
-    }
-    
-    @test
     shared void testSign() {
         Integer ten = 10;        
         Integer minusTwo = -2;

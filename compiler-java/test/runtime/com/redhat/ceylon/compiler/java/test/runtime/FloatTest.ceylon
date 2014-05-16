@@ -168,12 +168,6 @@ shared class FloatTest() {
     }
     
     @test
-    shared void testFloat() {
-        Float ten = 10.5;
-        Float floatTen = ten.float;            
-    }
-    
-    @test
     shared void testInteger() {
         Float ten = 10.5;
         Integer other = ten.integer;        
