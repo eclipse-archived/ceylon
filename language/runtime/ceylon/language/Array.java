@@ -5,7 +5,8 @@ import static java.util.Arrays.copyOfRange;
 
 import java.util.Arrays;
 
-import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractArrayIterator;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -677,40 +678,52 @@ public final class Array<Element>
         return ind >= 0 && ind < getSize();
     }
 
+    @Ignore
+    final class ArrayIterable extends AbstractArrayIterable<Element, java.lang.Object> {
+
+        ArrayIterable() {
+            super(array, (int)Array.this.getSize());
+        }
+        
+        protected ArrayIterable(java.lang.Object array, int start,
+                int len, int step) {
+            super(array, start, len, step);
+        }
+
+        @Override
+        protected ArrayIterable newInstance(java.lang.Object array, int start,
+                int len, int step) {
+            return new ArrayIterable(array, start, len, step);
+        }
+
+        @Override
+        protected Element get(java.lang.Object array, int index) {
+            return unsafeItem(index);
+        }
+        
+        /** 
+         * If this is an Iterable over an {@code Array<Character>} 
+         * (wrapping a {@code int[]}) with unit step size, then 
+         * returns a String of those codepoints. 
+         * Otherwise returns null.
+         */
+        @Ignore
+        java.lang.String stringValue() {
+            if (array instanceof int[]
+                    && step == 1) {
+                return new java.lang.String((int[])array, start, (int)this.getSize());
+            } 
+            return null;
+        }
+    }
+    
     @Override
     public Iterator<Element> iterator() {
-        class ArrayIterator extends AbstractIterator<Element> 
-        implements ReifiedType {
-            
-            public ArrayIterator() {
-                super($reifiedElement);
+        return new AbstractArrayIterator<Element>($reifiedElement, 0, (int)getSize(), 1) {
+            protected Element get(int index) {
+                return unsafeItem(index);
             }
-
-            private int idx = 0;
-
-            @Override
-            public java.lang.Object next() {
-                if (idx < getSize()) {
-                    return unsafeItem(idx++);
-                }
-                else {
-                    return finished_.get_();
-                }
-            }
-
-            @Override
-            public java.lang.String toString() {
-                return "ArrayIterator";
-            }
-
-            @Override
-            @Ignore
-            public TypeDescriptor $getType$() {
-                return TypeDescriptor.klass(ArrayIterator.class, 
-                		$reifiedElement);
-            }
-        }
-        return new ArrayIterator();
+        };
     }
 
     @TypeInfo("ceylon.language::Null|Element")
@@ -1215,19 +1228,36 @@ public final class Array<Element>
     @Override @Ignore
 	public Iterable<? extends Element, ?> 
     skip(long skip) {
-		return $ceylon$language$Iterable$this.skip(skip);
+        int intSkip = (int)skip;
+        int length = (int)getSize();
+        if (skip <= 0) {
+            return this;
+        }
+        return new ArrayIterable(this.array, intSkip, Math.max(0, length-intSkip), 1);
 	}
 
 	@Override @Ignore
 	public Iterable<? extends Element, ?> 
 	take(long take) {
-		return $ceylon$language$Iterable$this.take(take);
+	    int length = (int)getSize();
+	    if (take >= length) {
+	        return this;
+	    }
+		return new ArrayIterable(this.array, 0, Math.max((int)take, 0), 1);
 	}
 
 	@Override @Ignore
 	public Iterable<? extends Element, ?> 
 	by(long step) {
-		return $ceylon$language$Iterable$this.by(step);
+	    if (step <= 0) {
+	        throw new AssertionError("step size must be greater than zero");
+	    } else if (step == 1) {
+	        return this;
+	    }
+		return new ArrayIterable(array, 
+		        0, 
+		        (int)((getSize()+step-1)/step), 
+		        (int)step);
 	}
     @Override @Ignore
     public Iterable<? extends Element, ?> 

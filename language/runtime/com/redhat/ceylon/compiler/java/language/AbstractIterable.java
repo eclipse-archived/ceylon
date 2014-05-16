@@ -83,12 +83,12 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     }
 
     @Override
-    public final long getSize() {
+    public long getSize() {
         return $ceylon$language$Iterable$this.getSize();
     }
     
     @Override
-    public final boolean getEmpty() {
+    public boolean getEmpty() {
         return iterator().next() == finished_.get_();
     }
 

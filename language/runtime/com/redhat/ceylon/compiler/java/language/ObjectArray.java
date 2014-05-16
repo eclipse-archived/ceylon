@@ -203,325 +203,46 @@ public final class ObjectArray<T> implements ReifiedType {
     
     @Ignore
     public static <T> ObjectArrayIterable<T> getIterable(T[] value) {
-        return new ObjectArrayIterable<T>(value);
+        return new ObjectArrayIterable<T>(value, value.length);
     }
     
     /* Implement Iterable */
 
-    public static class ObjectArrayIterable<T> implements ReifiedType, Iterable<T, ceylon.language.Null> {
-        private final Category$impl<Object> $ceylon$language$Category$this = new Category$impl<Object>(ceylon.language.Object.$TypeDescriptor$, this);
-        private final Iterable$impl<T, Null> $ceylon$language$Iterable$this;
-        
-        private final T[] array;
-        private TypeDescriptor $reified$Element;
-        /** The index where iteration starts */
-        private final int start;
-        /** The step size of iteration */
-        private final int step;
-        /** The index one beyond where iteration ends */
-        private final int end;
-        
+    public static final class ObjectArrayIterable<T> extends AbstractArrayIterable<T, T[]> {
+
+        public ObjectArrayIterable(T[] array, int start, int len, int step) {
+            super(array, start, len, step);
+        }
+
+        public ObjectArrayIterable(T[] array, int length) {
+            super(array, length);
+        }
+
         @Override
-        public TypeDescriptor $getType$() {
-            return TypeDescriptor.klass(ObjectArrayIterable.class, this.$reified$Element);
+        protected ObjectArrayIterable<T> newInstance(T[] array, int start,
+                int len, int step) {
+            return new ObjectArrayIterable<T>(array, start, len, step);
         }
-        
-        @Ignore
-        public ObjectArrayIterable(T[] array) {
-            this(array, 0, array.length, 1);
-        }
-        @Ignore
-        private ObjectArrayIterable(T[] array, int start, int end, int step) {
-            if (start < 0) {
-                throw new ceylon.language.AssertionError("start must be positive");
-            }
-            if (end < 0) {
-                throw new ceylon.language.AssertionError("end must be positive");
-            }
-            if (step <= 0) {
-                throw new ceylon.language.AssertionError("step size must be greater than zero");
-            }
-            
-            this.array = array;
-            this.$reified$Element = TypeDescriptor.klass(array.getClass().getComponentType());
-            this.$ceylon$language$Iterable$this = new Iterable$impl<T, Null>(
-                    this.$reified$Element, Null.$TypeDescriptor$, this);
-            this.start = start;
-            this.end = end;
-            this.step = step;
+
+        @Override
+        protected T get(T[] array, int index) {
+            return array[index];
         }
         
-        @Ignore
-        public T[] arrayValue() {
-            return array;
-        }
-        
-        @Override
-        public Category$impl<? super Object> $ceylon$language$Category$impl() {
-            return $ceylon$language$Category$this;
-        }
-    
-        @Override
-        public Iterable$impl<? extends T, ? extends Null> $ceylon$language$Iterable$impl() {
-            return $ceylon$language$Iterable$this;
-        }
-    
-        @Override
-        public boolean containsAny(Iterable<? extends Object, ? extends Object> arg0) {
-            return $ceylon$language$Category$this.containsAny(arg0);
-        }
-    
-        @Override
-        public boolean containsEvery(
-                Iterable<? extends Object, ? extends Object> arg0) {
-            return $ceylon$language$Category$this.containsEvery(arg0);
-        }
-    
-        @Override
-        public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
-            return $ceylon$language$Iterable$this.any(arg0);
-        }
-    
-        @Override
-        public ObjectArrayIterable<T> by(long step) {
-            return new ObjectArrayIterable<T>(this.array, 
-                    this.start, 
-                    this.end, 
-                    this.step*(int)step);
-        }
-    
-        @Override
-        public <Other, OtherAbsent> Iterable<?,?> chain(
-                @Ignore
-                TypeDescriptor $reified$Other,
-                @Ignore
-                TypeDescriptor $reified$OtherAbsent,
-                Iterable<? extends Other, ? extends OtherAbsent> other) {
-            return $ceylon$language$Iterable$this.chain($reified$Other, $reified$OtherAbsent, other);
-        }
-        
-        @Override
-        public <Result> Sequential<? extends Result> collect(
-                @Ignore
-                TypeDescriptor $reified$Result,
-                Callable<? extends Result> collecting) {
-            return $ceylon$language$Iterable$this.collect($reified$Result, collecting);
-        }
-        
-        @Override
-        public boolean contains(Object item) {
-            return $ceylon$language$Iterable$this.contains(item);
-        }
-        
-        @Override
-        public long count(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.count(selecting);
-        }
-    
-        @Override
-        public Iterable<? extends T, ? extends Null> cycle(long times) {
-            return $ceylon$language$Iterable$this.cycle(times);
-        }
-    
-        @Override
-        public <Default> Iterable<? extends Object, ? extends Null> defaultNullElements(
-                @Ignore
-                TypeDescriptor $reified$Default, 
-                Default defaultValue) {
-            return this;
-        }
-    
-        @Override
-        public boolean every(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.every(selecting);
-        }
-    
-        @Override
-        public Iterable<? extends T, ? extends Object> filter(
-                Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.filter(selecting);
-        }
-    
-        @Override
-        public T find(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.find(selecting);
-        }
-    
-        @Override
-        public T findLast(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.findLast(selecting);
-        }
-    
-        @Override
-        public <Result> Result fold(
-                @Ignore
-                TypeDescriptor $reified$Result, 
-                Result initial,
-                Callable<? extends Result> accumulating) {
-            return $ceylon$language$Iterable$this.fold($reified$Result, initial, accumulating);
-        }
-    
-        @Override
-        public <Other> Iterable<? extends Object, ? extends Object> following(
-                @Ignore
-                TypeDescriptor $reified$Other, 
-                Other head) {
-            return $ceylon$language$Iterable$this.following($reified$Other, head);
-        }
-    
-        @Override
-        public Iterable<? extends T, ? extends Object> getCoalesced() {
-            return this;
-        }
-    
-        @Override
-        public Iterable<? extends T, ? extends Null> getCycled() {
-            return $ceylon$language$Iterable$this.getCycled();
-        }
-        
-        @Override
-        public boolean getEmpty() {
-            return this.end <= this.start;
-        }
-        
-        @Override
-        public T getFirst() {
-            return this.getEmpty() ? null : this.array[this.start];
-        }
-        
-        @Override
-        public Iterable<? extends Entry<? extends ceylon.language.Integer, ? extends T>, ? extends Object> getIndexed() {
-            return $ceylon$language$Iterable$this.getIndexed();
-        }
-        
-        @Override
-        public T getLast() {
-            return this.getEmpty() ? null : this.array[this.end-1];
-        }
-        
-        @Override
-        public ObjectArrayIterable<T> getRest() {
-            return new ObjectArrayIterable<T>(this.array, this.start+1, this.end, this.step);
-        }
-        
-        @Override
-        public Sequential<? extends T> getSequence() {
-         // Note: Sequential is immutable, and we don't know where the array
-            // came from, so however we create the sequence we must take a copy
-            return this.getEmpty() ? empty_.get_() : new ArraySequence($reified$Element, this);
-        }
-    
-        @Ignore
-        @Override
-        public long getSize() {
-            return java.lang.Math.max(0, (this.end-this.start+this.step-1)/this.step);
-        }
-    
-        @Override
-        public Iterator<? extends T> iterator() {
-            if (this.getEmpty()) {
-                return (Iterator)ceylon.language.emptyIterator_.get_();
-            }
-            return new Iterator<T>() {
-                
-                private int index = ObjectArrayIterable.this.start;
-                
-                private final Iterator$impl<T> $ceylon$language$Iterator$this = new Iterator$impl<T>($reified$Element, this);
-                
-                @Override
-                public Iterator$impl<? extends T> $ceylon$language$Iterator$impl() {
-                    return $ceylon$language$Iterator$this;
-                }
-                
-                @Override
-                public Object next() {
-                    if (index < ObjectArrayIterable.this.end) {
-                        T result = ObjectArrayIterable.this.array[index];
-                        index += ObjectArrayIterable.this.step;
-                        return result;
-                    } else {
-                        return finished_.get_();
-                    }
-                }
-            };
-        }
-        
-        @Override
-        public boolean longerThan(long length) {
-            return this.getSize() > length;
-        }
-        
-        @Override
-        public <Result> Iterable<? extends Result, ? extends Null> map(
-                @Ignore
-                TypeDescriptor $reified$Result, 
-                Callable<? extends Result> collecting) {
-            return $ceylon$language$Iterable$this.map($reified$Result, collecting);
-        }
-    
-        @Override
-        public <Result> Object reduce(
-                @Ignore
-                TypeDescriptor $reified$Result,
-                Callable<? extends Result> accumulating) {
-            return $ceylon$language$Iterable$this.reduce($reified$Result, accumulating);
-        }
-    
-        @Override
-        public List<? extends T> repeat(long times) {
-            return $ceylon$language$Iterable$this.repeat(times);
-        }
-    
-        @Override
-        public Sequential<? extends T> select(Callable<? extends ceylon.language.Boolean> selecting) {
-            return $ceylon$language$Iterable$this.select(selecting);
-        }
-        
-        @Override
-        public boolean shorterThan(long length) {
-            return this.getSize() < length;
-        }
-    
-        @Override
-        public ObjectArrayIterable<T> skip(long skip) {
-            if (skip <= 0) {
-                return this;
-            }
-            return new ObjectArrayIterable<T>(this.array, 
-                    this.start+(int)skip*this.step, 
-                    this.end, 
-                    this.step);
-        }
-    
-        @Override
-        public Iterable<? extends T, ? extends Object> skipWhile(
-                Callable<? extends ceylon.language.Boolean> skip) {
-            return $ceylon$language$Iterable$this.skipWhile(skip);
-        }
-    
-        @Override
-        public Sequential<? extends T> sort(
-                final Callable<? extends Comparison> comparing) {
-            return $ceylon$language$Iterable$this.sort(comparing);
-        }
-    
         @Override
         public ObjectArrayIterable<T> take(long take) {
-            if (take >= this.getSize()) {
-                return this;
-            }
-            return new ObjectArrayIterable<T>(this.array, 
-                    this.start, 
-                    (int)take*this.step+1, 
-                    this.step);
+            return (ObjectArrayIterable<T>)super.take(take);
         }
-    
+        
         @Override
-        public Iterable<? extends T, ? extends Object> takeWhile(
-                Callable<? extends ceylon.language.Boolean> take) {
-            return $ceylon$language$Iterable$this.takeWhile(take);
+        public ObjectArrayIterable<T> skip(long take) {
+            return (ObjectArrayIterable<T>)super.skip(take);
         }
-   
+        
+        @Override
+        public ObjectArrayIterable<T> by(long take) {
+            return (ObjectArrayIterable<T>)super.by(take);
+        }
     }
 
 }
