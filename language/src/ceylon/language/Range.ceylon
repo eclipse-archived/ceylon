@@ -42,7 +42,7 @@ shared final class Range<Element>(first, last)
     
     Element next(Element x) 
             => decreasing then x.predecessor 
-                    else x.successor;
+                          else x.successor;
 
     "The nonzero number of elements in the range."
     shared actual Integer size {
@@ -255,9 +255,9 @@ shared final class Range<Element>(first, last)
     }
     
     "Determines if the range includes the given value."
-    shared Boolean containsElement(Element x) =>
-            decreasing then x<=first && x>=last
-                    else x>=first && x<=last;
+    shared Boolean containsElement(Element x) 
+            => decreasing then x<=first && x>=last
+                          else x>=first && x<=last;
     
     shared actual Boolean includes(List<Anything> sublist) {
         if (is Range<Element> sublist) {
@@ -292,54 +292,121 @@ shared final class Range<Element>(first, last)
      immutable."
     shared actual Range<Element> clone() => this;
     
-    shared actual Range<Element>|Empty segment(
-            Integer from, 
+    shared actual Range<Element>|Empty segment(Integer from, 
             Integer length) {
-        if (length<=0 || from>lastIndex) {
-            return {};
+        if (length<=0 || from+length<0) {
+            return [];
         }
-        variable value x=first;
-        variable value i=0;
-        while (i++<from) { x=next(x); }
-        variable value y=x;
-        variable value j=1;
-        while (j++<length && y<last) { y=next(y); }
-        return Range<Element>(x, y);
+        if (is Number<Element> first) {
+            Element xx; Element yy;
+            if (decreasing) {
+                value x = first.plusInteger(-from);
+                if (x<last) {
+                    return [];
+                }
+                value y = first.plusInteger(-from-length);
+                yy = y<last then last else y;
+                xx = x>first then first else x;
+            }
+            else {
+                value x = first.plusInteger(from);
+                if (x>last) {
+                    return [];
+                }
+                value y = first.plusInteger(from+length);
+                yy = y>last then last else y;
+                xx = x<first then first else x;
+            }
+            return xx..yy;
+        }
+        else {
+            variable value x=first;
+            variable value i=0;
+            while (i++<from) {
+                x=next(x);
+            }
+            if (decreasing && x<last || 
+                !decreasing && x>last) {
+                return [];
+            }
+            variable value y=first;
+            variable value j=0;
+            while (j++<length+from && 
+                (decreasing && y>last || 
+                !decreasing && y<last)) {
+                y=next(y); 
+            }
+            return x..y;
+        }
     }
     
-    shared actual Range<Element>|Empty span(
-            Integer from, Integer to) {
-        variable value toIndex=to;
-        variable value fromIndex=from;
-        if (toIndex<0) {
-            if (fromIndex<0) {
-                return {};
+    shared actual Range<Element>|Empty span(Integer from, 
+            Integer to) {
+        if (from<0 && to<0) {
+            return [];
+        }
+        if (is Number<Element> first) {
+            Element x; Element y;
+            if (decreasing) {
+                x = first.plusInteger(-from);
+                y = first.plusInteger(-to);
             }
-            toIndex=0;
-        }
-        else if (toIndex>lastIndex) {
-            if (fromIndex>lastIndex) {
-                return {};
+            else {
+                x = first.plusInteger(from);
+                y = first.plusInteger(to);
             }
-            toIndex=lastIndex;
+            if (x<first && y<first ||
+                x>last && y>last) {
+                return [];
+            }
+            Element xx; Element yy;
+            if (decreasing) {
+                yy = (y<last then last) 
+                else (y>first then first) 
+                else y;
+                xx = (x<last then last) 
+                else (x>first then first) 
+                else x;
+            }
+            else {
+                yy = (y>last then last) 
+                else (y<first then first) 
+                else y;
+                xx = (x>last then last) 
+                else (x<first then first) 
+                else x;
+            }
+            return xx..yy;
         }
-        if (fromIndex<0) {
-            fromIndex=0;
+        else {
+            variable value x=first;
+            variable value i=0;
+            while (i++<from) {
+                x=next(x);
+            }
+            variable value y=first;
+            variable value j=0;
+            while (j++<to) {
+                y=next(y);
+            }
+            if (x>last && y>last) {
+                return [];
+            }
+            Element xx; Element yy;
+            if (decreasing) {
+                yy = y<last then last else y;
+                xx = x<last then last else x;
+            }
+            else {
+                yy = y>last then last else y;
+                xx = x>last then last else x;
+            }
+            return xx..yy;
         }
-        else if (fromIndex>lastIndex) {
-            fromIndex=lastIndex;
-        }
-        variable value x=first;
-        variable value i=0;
-        while (i++<fromIndex) { x=next(x); }
-        variable value y=first;
-        variable value j=0;
-        while (j++<toIndex) { y=next(y); }
-        return Range<Element>(x, y);
     }
     
     shared actual Range<Element>|Empty spanTo(Integer to) {
-        return to < 0 then {} else span(0, to);
+        return to < 0 then [] else span(0, to);
     }
     
     shared actual Range<Element>|Empty spanFrom(Integer from) {
@@ -353,24 +420,40 @@ shared final class Range<Element>(first, last)
         if (skipit <= 0) {
             return this;
         }
-        variable value x=0;
-        variable value e = first;
-        while (x++<skipit) {
-            e=next(e);
+        Element elem;
+        if (is Number<Element> first) {
+            elem = first.plusInteger(decreasing then -skipit else skipit);
         }
-        return containsElement(e) then Range(e, last) else {};
+        else {
+            variable value x=0;
+            variable value e = first;
+            while (x++<skipit) {
+                e=next(e);
+            }
+            elem = e;
+        }
+        return containsElement(elem) 
+                then elem..last 
+                else {};
     }
     
     shared actual Range<Element>|Empty take(Integer taking) {
         if (taking <= 0) {
             return {};
         }
-        variable value x=0;
-        variable value e=first;
-        while (++x<taking) {
-            e=next(e);
+        Element elem;
+        if (is Number<Element> first) {
+            elem = first.plusInteger(decreasing then -taking else taking);
         }
-        return containsElement(e) then Range(first, e) else this;
+        else {
+            variable value x=0;
+            variable value e=first;
+            while (++x<taking) {
+                e=next(e);
+            }
+            elem = e;
+        }
+        return containsElement(elem) then first..elem else this;
     }
 
     "Returns the range itself, since a Range cannot
