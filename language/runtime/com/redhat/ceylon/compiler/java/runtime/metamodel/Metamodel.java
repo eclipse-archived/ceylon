@@ -360,7 +360,7 @@ public class Metamodel {
                 com.redhat.ceylon.compiler.typechecker.model.Module importedModule = mi.getModule();
                 // make sure we don't run in circles
                 if(importedModule != null && !visitedModules.contains(importedModule))
-                    getOrCreateMetamodel(importedModule);
+                    getOrCreateMetamodel(importedModule, visitedModules);
             }
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
