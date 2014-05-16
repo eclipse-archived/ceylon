@@ -75,7 +75,7 @@ shared void lists() {
     if (exists e=b.last) {
         check(e==8, "LazyList.last");
     } else { fail("LazyList.last"); }
-    check(b.reversed==8..1, "LazyList.reversed");
+    check(b.reversed==ArraySequence(8..1), "LazyList.reversed");
     
     //#167
     value empty167 = TestList<Nothing>();

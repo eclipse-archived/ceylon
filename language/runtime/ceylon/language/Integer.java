@@ -387,6 +387,16 @@ public final class Integer
         return value;
     }
 
+    @Override
+    public Integer neighbour(@Name("offset") long offset) {
+        return instance(value+offset);
+    }
+
+    @Ignore
+    public static Integer neighbour(long value, long offset) {
+        return instance(value+offset);
+    }
+
     public double getFloat() {
         if (value >= 9007199254740992L
                 || value <= -9007199254740992L) {

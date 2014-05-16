@@ -153,11 +153,11 @@ shared void testIterables() {
     //Taking
     check({1,2,3,4,5}.take(3).sequence=={1,2,3}.sequence, "take [1]");
     check(!{1,2,3,4,5}.take(0).sequence nonempty, "take [2]");
-    check((1..10).take(5)==1..5, "Range.take [3]");
+    check((1..10).take(5)==1..5, "Range.take [3] was ``(1..10).take(5)``");
     check(!(1..5).take(0).sequence nonempty, "Range.take [4]");
     check((1..10).take(100)==1..10, "Range.take [5]");
     check({1,2,3,4,5}.take(100).sequence=={1,2,3,4,5}.sequence, "take [6]");
-    check((5..1).take(3)==5..3, "Range.take [7]");
+    check((5..1).take(3)==5..3, "Range.take [7] was ``(5..1).take(3)``");
     check("hola".take(2)=="ho", "String.take");
     check({for (i in 1..10) i}.take(2).sequence=={1,2}.sequence, "comprehension.take");
 

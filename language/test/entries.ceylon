@@ -103,9 +103,9 @@ Range<Integer> range {
     String->Entry<Boolean,String> ent = "hello"->(true->"hello");
     check(ent.item.item=="hello", "entry item item");
     
-    check((0..10).segment(2, 3).string=="2..4", "range segment");
+    check((0..10).segment(2, 3).string=="2..4", "range segment was ``(0..10).segment(2, 3)``");
     check((0..10).span(2, 5).string=="2..5", "range span");
-    check((2..10).segment(1, 3).string=="3..5", "range segment");
+    check((2..10).segment(1, 3).string=="3..5", "range segment was ``(2..10).segment(1, 3)``");
     check((2..10).span(2, 7).string=="4..9", "range span");
     check(!(0..9).segment(11,10) nonempty, "(0..9).segment(11,10) is empty");
     check(!(0..9).segment(3,0) nonempty, "(0..9).segment(3,0) is empty");
@@ -141,7 +141,7 @@ Range<Integer> range {
     check(r1r.size==r1.size-1, "range.rest.size 1");
     check(r2r.size==r2.size-1, "range.rest.size 2");
     check((r1r.first else 0) == (r1.get(1) else 1), "range.rest.first 1");
-    check((r2r.first else 0) == (r2.get(1) else 1), "range.rest.first 2");
+    check((r2r.first else 0) == (r2.get(1) else 1), "range.rest.first 2 ``r2r.first else ""``==``r2.get(1) else ""``");
     check(!r4.rest nonempty, "nonempty range.rest says `` r4.rest nonempty ``, should be false");
     check(r1.lastIndex==4, "range.lastIndex 1");
     check(r2.lastIndex==3, "range.lastIndex 2");

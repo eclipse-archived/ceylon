@@ -5,6 +5,6 @@ import java.util { List, ArrayList }
 shared void bug200() {
     Object l = ArrayList<Integer>();
     assert(!is ArrayList<Integer> l);
-    Object l2 = JavaList();
-    assert(is ArrayList<Integer> l2);
+    //Object l2 = JavaList();
+    //assert(is ArrayList<Integer> l2);
 }

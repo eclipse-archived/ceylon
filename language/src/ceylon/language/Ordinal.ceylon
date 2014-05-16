@@ -71,4 +71,14 @@ shared interface Enumerable<out Other> of Other
      for every instance `x` of the enumerable type."
     shared formal Integer integerValue;
     
+    "The indirect successor or predecessor at the given
+     [[offset]], where:
+     
+     - `x.neighbour(0) == x`,
+     - `x.neighbour(i+1) == x.neighbour(i).successor`, and
+     - `x.neighbour(i-1) == x.neighbour(i).predecessor`."
+    shared formal Other neighbour(Integer offset);
+    
+    shared actual default Other successor => neighbour(1);
+    shared actual default Other predecessor => neighbour(-1);
 }

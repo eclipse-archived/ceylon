@@ -113,7 +113,7 @@ shared final class Range<Element>(first, last)
             return [];
         }
         else {
-            return Range(next(first),last);
+            return next(first)..last;
         }
     }
     
@@ -124,30 +124,33 @@ shared final class Range<Element>(first, last)
         if (index<0) {
             return null;
         }
-        if (is Number<Element> first) {
-            value result = first.plusInteger(index);
-            return result<=last then result;
+        else if (is Enumerable<Element> first) {
+            value result = first.neighbour(decreasing then -index else index);
+            return decreasing && result>=last || 
+                  !decreasing && result<=last 
+                          then result;
         }
-        //optimize this for numbers!
-        variable Integer current=0;
-        variable Element x=first;
-        while (current<index) {
-            if (x==last) {
-                return null;
+        else {
+            variable Integer current=0;
+            variable Element x=first;
+            while (current<index) {
+                if (x==last) {
+                    return null;
+                }
+                else {
+                    ++current;
+                    x=next(x);
+                }
             }
-            else {
-                ++current;
-                x=next(x);
-            }
+            return x;
         }
-        return x;
     }
     
     "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator() {
-        if (is Number<Element> first,
-            is Number<Element> last) {
-            return NumberRangeBy(first, last, 1).iterator();
+        if (is Enumerable<Element> first,
+            is Enumerable<Element> last) {
+            return EnumerableRangeBy(first, last, 1).iterator();
         } 
         object iterator
                 satisfies Iterator<Element> {
@@ -177,9 +180,9 @@ shared final class Range<Element>(first, last)
         if (step == 1) {
             return this;
         }
-        else if (is Number<Element> first, 
-                is Number<Element> last) {
-            return NumberRangeBy(first, last, step);
+        else if (is Enumerable<Element> first, 
+                is Enumerable<Element> last) {
+            return EnumerableRangeBy(first, last, step);
         }
         else {
             return super.by(step);
@@ -198,9 +201,9 @@ shared final class Range<Element>(first, last)
         if (shift==0) {
             return this;
         }
-        else if (is Number<Element> first, 
-                is Number<Element> last) {
-            return first.plusInteger(shift)..last.plusInteger(shift);
+        else if (is Enumerable<Element> first, 
+                is Enumerable<Element> last) {
+            return first.neighbour(shift)..last.neighbour(shift);
         }
         else {
             variable value shiftedFirst = first;
@@ -292,28 +295,28 @@ shared final class Range<Element>(first, last)
      immutable."
     shared actual Range<Element> clone() => this;
     
-    shared actual Range<Element>|Empty segment(Integer from, 
+    shared actual Range<Element>|[] segment(Integer from, 
             Integer length) {
         if (length<=0 || from+length<0) {
             return [];
         }
-        if (is Number<Element> first) {
+        if (is Enumerable<Element> first) {
             Element xx; Element yy;
             if (decreasing) {
-                value x = first.plusInteger(-from);
+                value x = first.neighbour(-from);
                 if (x<last) {
                     return [];
                 }
-                value y = first.plusInteger(-from-length);
+                value y = first.neighbour(-from-length);
                 yy = y<last then last else y;
                 xx = x>first then first else x;
             }
             else {
-                value x = first.plusInteger(from);
+                value x = first.neighbour(from);
                 if (x>last) {
                     return [];
                 }
-                value y = first.plusInteger(from+length);
+                value y = first.neighbour(from+length-1);
                 yy = y>last then last else y;
                 xx = x<first then first else x;
             }
@@ -331,7 +334,7 @@ shared final class Range<Element>(first, last)
             }
             variable value y=first;
             variable value j=0;
-            while (j++<length+from && 
+            while (j++<from+length-1 && 
                 (decreasing && y>last || 
                 !decreasing && y<last)) {
                 y=next(y); 
@@ -340,20 +343,20 @@ shared final class Range<Element>(first, last)
         }
     }
     
-    shared actual Range<Element>|Empty span(Integer from, 
+    shared actual Range<Element>|[] span(Integer from, 
             Integer to) {
         if (from<0 && to<0) {
             return [];
         }
-        if (is Number<Element> first) {
+        if (is Enumerable<Element> first) {
             Element x; Element y;
             if (decreasing) {
-                x = first.plusInteger(-from);
-                y = first.plusInteger(-to);
+                x = first.neighbour(-from);
+                y = first.neighbour(-to);
             }
             else {
-                x = first.plusInteger(from);
-                y = first.plusInteger(to);
+                x = first.neighbour(from);
+                y = first.neighbour(to);
             }
             if (x<first && y<first ||
                 x>last && y>last) {
@@ -405,55 +408,57 @@ shared final class Range<Element>(first, last)
         }
     }
     
-    shared actual Range<Element>|Empty spanTo(Integer to) {
+    shared actual Range<Element>|[] spanTo(Integer to) {
         return to < 0 then [] else span(0, to);
     }
     
-    shared actual Range<Element>|Empty spanFrom(Integer from) {
+    shared actual Range<Element>|[] spanFrom(Integer from) {
         return span(from, size);
     }
 
     "Reverse this range, returning a new range."
     shared actual Range<Element> reversed => Range(last,first);
     
-    shared actual Range<Element>|Empty skip(Integer skipit) {
+    shared actual Range<Element>|[] skip(Integer skipit) {
         if (skipit <= 0) {
             return this;
         }
         Element elem;
-        if (is Number<Element> first) {
-            elem = first.plusInteger(decreasing then -skipit else skipit);
+        if (is Enumerable<Element> first) {
+            elem = first.neighbour(decreasing then -skipit else skipit);
         }
         else {
             variable value x=0;
             variable value e = first;
             while (x++<skipit) {
-                e=next(e);
+                e = next(e);
             }
             elem = e;
         }
         return containsElement(elem) 
                 then elem..last 
-                else {};
+                else [];
     }
     
-    shared actual Range<Element>|Empty take(Integer taking) {
+    shared actual Range<Element>|[] take(Integer taking) {
         if (taking <= 0) {
-            return {};
+            return [];
         }
         Element elem;
-        if (is Number<Element> first) {
-            elem = first.plusInteger(decreasing then -taking else taking);
+        if (is Enumerable<Element> first) {
+            elem = first.neighbour(decreasing then -taking+1 else taking-1);
         }
         else {
             variable value x=0;
             variable value e=first;
             while (++x<taking) {
-                e=next(e);
+                e = next(e);
             }
             elem = e;
         }
-        return containsElement(elem) then first..elem else this;
+        return containsElement(elem) 
+                then first..elem 
+                else this;
     }
 
     "Returns the range itself, since a Range cannot
@@ -465,40 +470,38 @@ shared final class Range<Element>(first, last)
     
 }
 
-class NumberRangeBy<Element>(Element first, Element last, 
+class EnumerableRangeBy<Element>(Element first, Element last, 
     Integer step) 
-        satisfies {Element+} {
+        satisfies {Element+}
+        given Element satisfies Comparable<Element> {
     shared actual Iterator<Element> iterator() {
-        assert (is Number<Element> first, 
-                is Number<Element> last);
+        assert (is Enumerable<Element> first, 
+                is Enumerable<Element> last);
         object iterator 
                 satisfies Iterator<Element> {
             variable value current = first; 
             shared actual Element|Finished next() {
                 value result = current;
-                assert (is Number<Element> diff = current-last);
                 Element next;
                 if (last<first) {
-                    if (diff.negative) {
-                        // not current < last because current
-                        // might have overflowed
+                    if (current < last) {
+                        //TODO: handle overflow
                         return finished;
                     }
-                    next = current.plusInteger(-step);
+                    next = current.neighbour(-step);
                 }
                 else {
-                    if (diff.positive) {
-                        // not current > last because current
-                        // might have overflowed
+                    if (current > last) {
+                        //TODO: handle overflow
                         return finished;
                     }
-                    next = current.plusInteger(step);
+                    next = current.neighbour(step);
                 }
-                assert (is Number<Element> next);
+                assert (is Enumerable<Element> next);
                 current = next;
                 return result;
             }
-            string => "NumberRangeByIterator";
+            string => "EnumerableRangeByIterator";
         }
         return iterator;
     }
