@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.ArrayIterable;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
 import com.redhat.ceylon.compiler.java.language.StringTokens;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -85,13 +86,21 @@ public final class String
         if (characters instanceof String) {
             value = ((String)characters).value;
         } else {
-            java.lang.StringBuilder sb = new java.lang.StringBuilder();
-            java.lang.Object $tmp;
-            for (Iterator<? extends Character> $val$iter$0 = characters.iterator(); 
-                    !(($tmp = $val$iter$0.next()) instanceof Finished);) {
-                sb.append($tmp);
+            java.lang.String s = null;
+            if (characters instanceof Array.ArrayIterable) {
+                s = ((Array.ArrayIterable)characters).stringValue();
             }
-            value = sb.toString();
+            if (s != null) {
+                value = s;
+            } else {
+                java.lang.StringBuilder sb = new java.lang.StringBuilder();
+                java.lang.Object $tmp;
+                for (Iterator<? extends Character> $val$iter$0 = characters.iterator(); 
+                        !(($tmp = $val$iter$0.next()) instanceof Finished);) {
+                    sb.append($tmp);
+                }
+                value = sb.toString();
+            }
         }
     }
 
