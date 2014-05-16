@@ -3,13 +3,12 @@
  types [[Integer]] and [[Float]].
  
  A `Number` has a well-defined [[magnitude]] together with a 
- [[sign]] of type [[Integer]], which should satisfy:
+ [[sign]] of type [[Integer]], defined for any instance `x`
+ as follows:
  
- - `x.magnitude >= 0`
- - `x.magnitude == 0` iff `x==0`
- - `x.sign==0` iff `x==0`
- - `x.sign==1` iff `x>0`
- - `x.sign==-1` iff `x<0`
+ - if `x==0` then `x.sign==0` and `x.magnitude==0`,
+ - if `x>0` then `x.sign==1` and `x.magnitude==x`, or
+ - if `x<0` then `x.sign==-1` and `x.magnitude==-x`,
  
  where `0` is the additive identity of the numeric type.
  
@@ -23,20 +22,39 @@ shared interface Number<Other> of Other
                   Comparable<Other>
         given Other satisfies Number<Other> {
     
-    "The magnitude of this number. Must satisfy: 
+    "The magnitude of this number, defined for any instance 
+     `x` as:
      
-     - `magnitude>=0` 
-     - `magnitude==0` iff `this==0`
+     - `-x` if `x<0`, or 
+     - `x` otherwise,
      
-     where `0` is the additive identity."
-    shared formal Other magnitude;
+     where `0` is the additive identity. Hence:
+     
+     - `x.magnitude >= 0` for any `x`, and
+     - `x.magnitude == 0` if and only if `x==0`."
+    shared default Other magnitude
+            => negative then negated else this of Other;
     
     "The sign of this number: 
      
-     - `1` if the number is positive, 
-     - `-1` if it is negative, or 
-     - `0` if it is zero."
-    shared formal Integer sign;
+     - `1` if the number is [[positive]], 
+     - `-1` if it is [[negative]], or 
+     - `0` if it is the additive identity.
+     
+     Must satisfy:
+     
+         x.magnitude.timesInteger(x.sign) == x"
+    shared default Integer sign {
+        if (positive) {
+            return 1;
+        }
+        else if (negative) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    }
     
     "Determine if the number is strictly positive, that is, 
      if `this>0`, where `0` is the additive identity."
@@ -68,8 +86,8 @@ shared interface Number<Other> of Other
      non-negative [[Integer]] power. For a negative power,
      the behavior is implementation-dependent."
     throws (`class AssertionError`, 
-            "if the exponent is a negative power and this
-             is an integral numeric type")
+            "if the exponent is a negative power and this is 
+             an integral numeric type")
     shared formal Other powerOfInteger(Integer integer);
     
 }
