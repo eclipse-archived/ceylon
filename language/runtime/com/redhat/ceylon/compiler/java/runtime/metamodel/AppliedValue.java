@@ -82,7 +82,7 @@ public class AppliedValue<Get, Set>
                     // look it up on j.l.Object, getterName should work
                     javaClass = java.lang.Object.class;
                 }else{
-                    throw new RuntimeException("Object/Basic/Identifiable member not supported: "+decl.getName());
+                    throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+decl.getName());
                 }
             } else if (javaClass == ceylon.language.Throwable.class) {
                 if("cause".equals(decl.getName())
@@ -111,12 +111,8 @@ public class AppliedValue<Get, Set>
                 getter = getter.asType(MethodType.methodType(Object.class));
 
                 initSetter(decl, javaClass, getterType, instance, valueType);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
-            } catch (SecurityException e) {
-                throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
+                throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
             }
         }else if(decl instanceof LazyValue){
             LazyValue lazyDecl = (LazyValue) decl;
@@ -134,12 +130,8 @@ public class AppliedValue<Get, Set>
                 getter = getter.asType(MethodType.methodType(Object.class));
 
                 initSetter(decl, javaClass, getterType, null, valueType);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
-            } catch (SecurityException e) {
-                throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to find getter method "+getterName+" for: "+decl, e);
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
+                throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
             }
         }else if(decl instanceof FieldValue){
             FieldValue fieldDecl = (FieldValue) decl;
@@ -156,12 +148,8 @@ public class AppliedValue<Get, Set>
                         getter = getter.bindTo(instance);
                     // we need to cast to Object because this is what comes out when calling it in $call
                     getter = getter.asType(MethodType.methodType(Object.class));
-                } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("Failed to find Array.getLength method for: "+decl, e);
-                } catch (SecurityException e) {
-                    throw new RuntimeException("Failed to find Array.getLength method for: "+decl, e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException("Failed to find Array.getLength method for: "+decl, e);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
+                    throw Metamodel.newModelError("Failed to find Array.getLength method for: "+decl, e);
                 }
             }else{
                 try {
@@ -177,16 +165,12 @@ public class AppliedValue<Get, Set>
                     getter = getter.asType(MethodType.methodType(Object.class));
 
                     initSetter(decl, javaClass, getterType, instance, valueType);
-                } catch (NoSuchFieldException e) {
-                    throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
-                } catch (SecurityException e) {
-                    throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+                } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+                    throw Metamodel.newModelError("Failed to find field "+fieldName+" for: "+decl, e);
                 }
             }
         }else
-            throw new RuntimeException("Unsupported attribute type: "+decl);
+            throw Metamodel.newModelError("Unsupported attribute type: "+decl);
     }
 
     private void initSetter(com.redhat.ceylon.compiler.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
@@ -203,12 +187,8 @@ public class AppliedValue<Get, Set>
                     setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
-            } catch (SecurityException e) {
-                throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
+                throw Metamodel.newModelError("Failed to find setter method "+setterName+" for: "+decl, e);
             }
         }else if(decl instanceof LazyValue){
             // FIXME: we should really save the getter name in the LazyDecl
@@ -219,12 +199,8 @@ public class AppliedValue<Get, Set>
                 setter = MethodHandles.lookup().unreflect(m);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
-            } catch (SecurityException e) {
-                throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to find setter method "+setterName+" for: "+decl, e);
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
+                throw Metamodel.newModelError("Failed to find setter method "+setterName+" for: "+decl, e);
             }
         }else if(decl instanceof FieldValue){
             String fieldName = ((FieldValue) decl).getRealName();
@@ -236,15 +212,11 @@ public class AppliedValue<Get, Set>
                     setter = setter.bindTo(instance);
                 setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
                 setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
-            } catch (NoSuchFieldException e) {
-                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
-            } catch (SecurityException e) {
-                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Failed to find field "+fieldName+" for: "+decl, e);
+            } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+                throw Metamodel.newModelError("Failed to find field "+fieldName+" for: "+decl, e);
             }
         }else
-            throw new RuntimeException("Unsupported attribute type: "+decl);
+            throw Metamodel.newModelError("Unsupported attribute type: "+decl);
     }
 
     @Override

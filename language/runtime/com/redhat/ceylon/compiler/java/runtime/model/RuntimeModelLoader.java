@@ -108,7 +108,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         Class<?> klass = ((ReflectionClass)classMirror).klass;
         Module ret = findModuleForClass(klass);
         if(ret == null)
-            throw new RuntimeException("Could not find module for class "+klass);
+            throw new ModelResolutionException("Could not find module for class "+klass);
         return ret;
     }
 
@@ -137,10 +137,10 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                         try {
                             lock.wait(5000);
                         } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                            throw new ModelResolutionException(e);
                         }
                         if(tries-- < 0)
-                            throw new RuntimeException("Failed to find registered classloader for "+klass);
+                            throw new ModelResolutionException("Failed to find registered classloader for "+klass);
                     }
                     ret = moduleCache.get(cacheKey);
                 }

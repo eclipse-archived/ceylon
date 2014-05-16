@@ -106,25 +106,21 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 try {
                     found = java.lang.Object.class.getDeclaredMethod("equals", java.lang.Object.class);
                 } catch (NoSuchMethodException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw Metamodel.newModelError("Missing equals method in ceylon.language::Object");
                 } catch (SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw Metamodel.newModelError("Security exception getting equals method in ceylon.language::Object");
                 }
             }else{
-                throw new RuntimeException("Object/Basic/Identifiable member not supported: "+decl.getName());
+                throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+decl.getName());
             }
         } else if (javaClass == ceylon.language.Throwable.class) {
             if("printStackTrace".equals(decl.getName())){
                 try {
                     found = java.lang.Throwable.class.getDeclaredMethod("printStackTrace");
                 } catch (NoSuchMethodException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw Metamodel.newModelError("Missing printStackTrace method in ceylon.language::Throwable");
                 } catch (SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw Metamodel.newModelError("Security exception getting printStackTrace method in ceylon.language::Throwable");
                 }
             }
         } else{
@@ -163,7 +159,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     if(defaultedMethods[i] == null)
-                        throw new RuntimeException("Missing defaulted method "+found.getName()
+                        throw Metamodel.newModelError("Missing defaulted method "+found.getName()
                                 +" with "+(i+firstDefaulted)+" parameters in "+found.getDeclaringClass());
                     dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, appliedFunction, parameterProducedTypes, variadic, false);
                 }
@@ -201,7 +197,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
                 method = MethodHandles.lookup().unreflect(found);
             }
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
+            throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
         }
         // box the return type
         method = MethodHandleUtil.boxReturnValue(method, found.getReturnType(), appliedFunction.getType());
@@ -269,11 +265,15 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         return null;
     }
 
+    private void checkMethod(){
+        if(method == null)
+            throw Metamodel.newModelError("No method found for: "+declaration.getName());
+    }
+    
     @Ignore
     @Override
     public Type $call$() {
-        if(method == null)
-            throw new RuntimeException("No method found for: "+declaration.getName());
+        checkMethod();
         try {
             if(firstDefaulted == -1)
                 return (Type)method.invokeExact();
@@ -288,8 +288,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     @Override
     public Type $call$(Object arg0) {
-        if(method == null)
-            throw new RuntimeException("No method found for: "+declaration.getName());
+        checkMethod();
         try {
             if(firstDefaulted == -1)
                 return (Type)method.invokeExact(arg0);
@@ -304,8 +303,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     @Override
     public Type $call$(Object arg0, Object arg1) {
-        if(method == null)
-            throw new RuntimeException("No method found for: "+declaration.getName());
+        checkMethod();
         try {
             if(firstDefaulted == -1)
                 return (Type)method.invokeExact(arg0, arg1);
@@ -320,8 +318,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     @Override
     public Type $call$(Object arg0, Object arg1, Object arg2) {
-        if(method == null)
-            throw new RuntimeException("No method found for: "+declaration.getName());
+        checkMethod();
         try {
             if(firstDefaulted == -1)
                 return (Type)method.invokeExact(arg0, arg1, arg2);
@@ -337,8 +334,7 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @Ignore
     @Override
     public Type $call$(Object... args) {
-        if(method == null)
-            throw new RuntimeException("No method found for: "+declaration.getName());
+        checkMethod();
         try {
             // FIXME: this does not do invokeExact and does boxing/widening
             if(firstDefaulted == -1)
@@ -460,12 +456,12 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
             }
         }
         if(found == null)
-            throw new RuntimeException("Default argument method for "+parameter.getName()+" not found");
+            throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" not found");
         int parameterCount = found.getParameterTypes().length;
         if(MethodHandleUtil.isReifiedTypeSupported(found, false))
             parameterCount -= found.getTypeParameters().length;
         if(parameterCount != collectedValueCount)
-            throw new RuntimeException("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
+            throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
         
         // AFAIK default value methods cannot be Java-variadic 
         MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, appliedFunction, parameterProducedTypes, false, false);

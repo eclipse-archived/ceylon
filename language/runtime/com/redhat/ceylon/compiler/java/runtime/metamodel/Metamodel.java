@@ -211,7 +211,7 @@ public class Metamodel {
     public static ProducedType getProducedType(Object instance) {
         TypeDescriptor instanceType = getTypeDescriptor(instance);
         if(instanceType == null)
-            throw new RuntimeException("Metamodel not yet supported for Java types");
+            throw Metamodel.newModelError("Metamodel not yet supported for Java types");
         return getProducedType(instanceType);
     }
 
@@ -221,7 +221,7 @@ public class Metamodel {
 
     public static ceylon.language.meta.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
-            throw new RuntimeException("Metamodel not yet supported for Java types");
+            throw Metamodel.newModelError("Metamodel not yet supported for Java types");
         ProducedType pt = typeDescriptor.toProducedType(moduleManager);
         return getAppliedMetamodel(pt);
     }
@@ -253,7 +253,7 @@ public class Metamodel {
                     com.redhat.ceylon.compiler.typechecker.model.Setter value = (com.redhat.ceylon.compiler.typechecker.model.Setter)declaration;
                     ret = new FreeSetter(value);
                 }else{
-                    throw new RuntimeException("Declaration type not supported yet: "+declaration);
+                    throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
                 }
                 typeCheckModelToRuntimeModel.put(declaration, ret);
             }
@@ -342,10 +342,10 @@ public class Metamodel {
                             try {
                                 lock.wait(5000);
                             } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
+                                throw Metamodel.newModelError(e);
                             }
                             if(tries-- < 0)
-                                throw new RuntimeException("JBoss modules failed to make module available: "+declaration.getNameAsString());
+                                throw Metamodel.newModelError("JBoss modules failed to make module available: "+declaration.getNameAsString());
                         }
                     }
                 }
@@ -366,11 +366,11 @@ public class Metamodel {
             // it's not an issue if we don't find the default module, it's always created but not always
             // present
             if(!declaration.isDefault())
-                throw new RuntimeException(e);
+                throw Metamodel.newModelError(e);
         } catch (SecurityException e) {
-            throw new RuntimeException(e);
+            throw Metamodel.newModelError(e);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
+            throw Metamodel.newModelError(e);
         }
     }
 
@@ -402,7 +402,7 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.UnknownType){
             ((com.redhat.ceylon.compiler.typechecker.model.UnknownType)declaration).reportErrors();
         }
-        throw new RuntimeException("Declaration type not supported yet: "+declaration);
+        throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -470,7 +470,7 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.compiler.typechecker.model.NothingType){
             return (ceylon.language.meta.model.Type<T>)ceylon.language.meta.model.nothingType_.get_();
         }
-        throw new RuntimeException("Declaration type not supported yet: "+declaration);
+        throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
     }
 
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.compiler.typechecker.model.Module module) {
@@ -518,7 +518,7 @@ public class Metamodel {
         if(declaration.getContainer() instanceof com.redhat.ceylon.compiler.typechecker.model.Declaration){
             return getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Declaration)declaration.getContainer());
         }
-        throw new RuntimeException("Unsupported declaration type: " + declaration + " of type "+declaration.getClass());
+        throw Metamodel.newModelError("Unsupported declaration type: " + declaration + " of type "+declaration.getClass());
     }
 
     public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.compiler.typechecker.model.Method declaration) {
@@ -530,7 +530,7 @@ public class Metamodel {
             ReflectionMethod methodMirror = (ReflectionMethod) ((LazyMethod) declaration).getMethodMirror();
             return (java.lang.reflect.Method) methodMirror.method;
         }
-        throw new RuntimeException("Unsupported declaration type: " + declaration);
+        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
     }
 
     public static TypeDescriptor getTypeDescriptorForProducedType(com.redhat.ceylon.compiler.typechecker.model.ProducedType type) {
@@ -578,7 +578,7 @@ public class Metamodel {
                 else if(underlyingDeclaration instanceof LazyMethod)
                     classMirror = (ReflectionClass) ((LazyMethod) underlyingDeclaration).classMirror;
                 else
-                    throw new RuntimeException("Unsupported underlying declaration type: " + underlyingDeclaration);
+                    throw Metamodel.newModelError("Unsupported underlying declaration type: " + underlyingDeclaration);
                 ret = TypeDescriptor.functionOrValue(classMirror.klass, tdArgs);
             }else
                 ret = TypeDescriptor.functionOrValue(underlyingDeclaration.getName(), tdArgs);
@@ -589,7 +589,7 @@ public class Metamodel {
         if(declaration instanceof UnknownType){
             ((UnknownType) declaration).reportErrors();
         }
-        throw new RuntimeException("Unsupported declaration type: " + declaration);
+        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
     }
 
     private static TypeDescriptor[] getTypeDescriptorsForProducedTypes(List<ProducedType> args) {
@@ -608,23 +608,23 @@ public class Metamodel {
             // now find the method
             ceylon.language.meta.declaration.FunctionDeclaration ret = classOrInterface.findMethod(method.getName());
             if(ret == null)
-                throw new RuntimeException("Failed to find method "+method.getName()+" in "+container);
+                throw Metamodel.newModelError("Failed to find method "+method.getName()+" in "+container);
             return ret;
         }
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Package){
             ceylon.language.meta.declaration.Package pkg = getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package) container);
             ceylon.language.meta.declaration.FunctionDeclaration ret = pkg.getFunction(method.getName());
             if(ret == null)
-                throw new RuntimeException("Failed to find method "+method.getName()+" in "+container);
+                throw Metamodel.newModelError("Failed to find method "+method.getName()+" in "+container);
             return ret;
         }
-        throw new RuntimeException("Unsupported method container for "+method.getName()+": "+container);
+        throw Metamodel.newModelError("Unsupported method container for "+method.getName()+": "+container);
     }
 
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.meta.declaration.OpenType pt) {
         if(pt instanceof FreeClassOrInterfaceType)
             return ((FreeClassOrInterfaceType)pt).producedType;
-        throw new RuntimeException("Unsupported produced type: " + pt);
+        throw Metamodel.newModelError("Unsupported produced type: " + pt);
     }
 
     public static com.redhat.ceylon.compiler.typechecker.model.ProducedType getModel(ceylon.language.meta.model.Type<?> pt) {
@@ -637,7 +637,7 @@ public class Metamodel {
         if(pt instanceof ceylon.language.meta.model.nothingType_)
             return new NothingType(moduleManager.getModelLoader().getUnit()).getType();
             
-        throw new RuntimeException("Unsupported applied produced type: " + pt);
+        throw Metamodel.newModelError("Unsupported applied produced type: " + pt);
     }
 
     public static com.redhat.ceylon.compiler.typechecker.model.Package getPackage(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
@@ -645,7 +645,7 @@ public class Metamodel {
         while(scope != null && scope instanceof com.redhat.ceylon.compiler.typechecker.model.Package == false)
             scope = scope.getContainer();
         if(scope == null)
-            throw new RuntimeException("Declaration with no package: "+declaration);
+            throw Metamodel.newModelError("Declaration with no package: "+declaration);
         return (com.redhat.ceylon.compiler.typechecker.model.Package)scope;
     }
 
@@ -704,7 +704,7 @@ public class Metamodel {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {/* aka ReflectiveOperationException */
-                throw new RuntimeException("While unwrapping a sequenced annotation of element " + annotated, e);
+                throw Metamodel.newModelError("While unwrapping a sequenced annotation of element " + annotated, e);
             }
             for (java.lang.annotation.Annotation wrapped : jAnnotations) {
                 addAnnotation(annotated, ceylonAnnotations, wrapped, pred);
@@ -713,14 +713,14 @@ public class Metamodel {
             // Find the annotation class
             String annotationName = jAnnotationType.getName();
             if (!annotationName.endsWith("$annotation$")) {
-                throw new RuntimeException();
+                throw Metamodel.newModelError("Annotation has invalid name: "+annotationName);
             }
             String className = annotationName.substring(0, annotationName.length() - "$annotation$".length());
             java.lang.Class<A> annotationClass;
             try {
                 annotationClass = (java.lang.Class<A>)Class.forName(className, false, jAnnotationType.getClassLoader());
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to find annotation class " + className + " for annotation type " + annotationName + " on element "+ annotated, e);
+                throw Metamodel.newModelError("Unable to find annotation class " + className + " for annotation type " + annotationName + " on element "+ annotated, e);
             }
             
             // Invoke it with the jAnnotation as the only argument
@@ -734,7 +734,7 @@ public class Metamodel {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {/* aka ReflectiveOperationException */
-                throw new RuntimeException("While reflectively instantiating " + annotationClass + " on element " + annotated, e);
+                throw Metamodel.newModelError("While reflectively instantiating " + annotationClass + " on element " + annotated, e);
             } 
         }
     }
@@ -761,7 +761,7 @@ public class Metamodel {
                     new Class[]{jAnnotationType, ceylon.language.Annotation.class}, 
                     handler);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Element " + annotated 
+            throw Metamodel.newModelError("Element " + annotated 
                     + " with Java annotation type " + jAnnotationType.getName() 
                     + " (classloader: " + jAnnotationType.getClassLoader()
                     + ") using classloader for proxy: " + classLoader, e);
@@ -781,7 +781,7 @@ public class Metamodel {
             Annotated annotated, Predicates.Predicate<A> predicate) {
         java.lang.annotation.Annotation[] jAnnotations = ((AnnotationBearing)annotated).$getJavaAnnotations$();
         if (jAnnotations == null) {
-            throw new RuntimeException("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
+            throw Metamodel.newModelError("Unable to find java.lang.reflect.AnnotatedElement for " + annotated);
         }
         
         // TODO Fix initial size estimate when query for OptionalAnnotation
@@ -799,7 +799,7 @@ public class Metamodel {
         else if(method instanceof LazyMethod){
             return ((LazyMethod)method).getRealMethodName();
         }else
-            throw new RuntimeException("Function declaration type not supported yet: "+method);
+            throw Metamodel.newModelError("Function declaration type not supported yet: "+method);
     }
 
     public static int getFirstDefaultedParameter(List<Parameter> parameters) {
@@ -862,7 +862,7 @@ public class Metamodel {
             return ((LazyClass) declaration).isCeylon();
         if(declaration instanceof LazyInterface)
             return ((LazyInterface) declaration).isCeylon();
-        throw new RuntimeException("Declaration type not supported: "+declaration);
+        throw Metamodel.newModelError("Declaration type not supported: "+declaration);
     }
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.compiler.typechecker.model.Unit unit, 
@@ -957,7 +957,7 @@ public class Metamodel {
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {/* aka ReflectiveOperationException */
-            throw new RuntimeException(e);
+            throw Metamodel.newModelError(e);
         }
     }
     
@@ -1000,7 +1000,7 @@ public class Metamodel {
         if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Package)
             return Metamodel.getOrCreateMetamodel((com.redhat.ceylon.compiler.typechecker.model.Package)container);
         // FIXME: can that happen?
-        throw new RuntimeException("Illegal container type: "+container);
+        throw Metamodel.newModelError("Illegal container type: "+container);
     }
 
     public static boolean isLocalType(com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration decl) {
@@ -1220,7 +1220,7 @@ public class Metamodel {
         case OUT: return appliedType.isSubtypeOf(expectedReifiedType);
         case NONE: return appliedType.isExactly(expectedReifiedType);
         default:
-            throw new RuntimeException("Invalid variance: "+variance);
+            throw Metamodel.newModelError("Invalid variance: "+variance);
         }
     }
 
@@ -1365,5 +1365,20 @@ public class Metamodel {
         if(!Util.eq(a.getQualifier(), b.getQualifier()))
             return false;
         return a.getName().equals(b.getName());
+    }
+
+    public static RuntimeException newModelError(String string) {
+        return newModelError(string, null);
+    }
+
+    public static RuntimeException newModelError(Throwable t) {
+        return newModelError(null, t);
+    }
+
+    public static RuntimeException newModelError(String string, Throwable cause) {
+        // we throw in rethrow in order not to have to declare the error everywhere
+        Util.rethrow(new ceylon.language.meta.declaration.ModelError(ceylon.language.String.instance(string), cause));
+        // we don't return any thing since we throw
+        return null;
     }
 }

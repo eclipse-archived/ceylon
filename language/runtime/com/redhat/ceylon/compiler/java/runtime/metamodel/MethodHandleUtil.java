@@ -200,10 +200,8 @@ public class MethodHandleUtil {
                     filters[i] = unbox.asType(MethodType.methodType(paramType, java.lang.Object.class));
                 }
             }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Failed to filter parameter", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Failed to filter parameter", e);
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            throw Metamodel.newModelError("Failed to filter parameter", e);
         }
         return MethodHandles.filterArguments(method, filterIndex, filters);
     }
@@ -265,10 +263,8 @@ public class MethodHandleUtil {
                 return MethodHandles.filterReturnValue(method, box);
             }
             return method;
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Failed to filter return value", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Failed to filter return value", e);
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            throw Metamodel.newModelError("Failed to filter return value", e);
         }
     }
 
@@ -357,7 +353,7 @@ public class MethodHandleUtil {
             return MethodHandleUtil.setupArrayConstructor("booleanArrayConstructor", boolean.class, defaultedMethods);
         if(arrayClass == ObjectArray.class)
             return MethodHandleUtil.setupArrayConstructor("objectArrayConstructor", Object.class, defaultedMethods, true);
-        throw new RuntimeException("Array type not supported yet: "+arrayClass);
+        throw Metamodel.newModelError("Array type not supported yet: "+arrayClass);
     }
 
     public static Method setupArrayConstructor(String name, Class<?> elementType, Object[] defaultedMethods){
@@ -376,10 +372,8 @@ public class MethodHandleUtil {
             }
             defaultedMethods[1] = found;
             return found;
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Failed to find array method constructor "+name+" in MethodHandleUtil", e);
-        } catch (SecurityException e) {
-            throw new RuntimeException("Failed to find array method constructor "+name+" in MethodHandleUtil", e);
+        } catch (NoSuchMethodException | SecurityException e) {
+            throw Metamodel.newModelError("Failed to find array method constructor "+name+" in MethodHandleUtil", e);
         }
     }
 
@@ -509,7 +503,7 @@ public class MethodHandleUtil {
         if(arrayClass == ObjectArray.class)
             arrayType = Object[].class;
         if(arrayType == null)
-            throw new RuntimeException("Array type not supported yet: "+arrayClass);
+            throw Metamodel.newModelError("Array type not supported yet: "+arrayClass);
         return arrayType;
     }
 
@@ -522,12 +516,10 @@ public class MethodHandleUtil {
             case 3: return arrayClass.getDeclaredMethod("copyTo", arrayType, arrayType, int.class, int.class);
             case 4: return arrayClass.getDeclaredMethod("copyTo", arrayType, arrayType, int.class, int.class, int.class);
             default:
-                throw new RuntimeException("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes());
+                throw Metamodel.newModelError("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes());
             }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes(), e);
-        } catch (SecurityException e) {
-            throw new RuntimeException("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes(), e);
+        } catch (NoSuchMethodException | SecurityException e) {
+            throw Metamodel.newModelError("Missing "+arrayClass+" static method copyTo with parameters: "+arrayType+" and "+found.getParameterTypes(), e);
         }
     }
 
@@ -539,6 +531,6 @@ public class MethodHandleUtil {
                 || (arrayClass == DoubleArray.class && getterName.equals("getFloatArray"))
                 || (arrayClass == IntArray.class && getterName.equals("getCodePointArray")))
             return new Class<?>[]{arrayType};
-        throw new RuntimeException("No such property in Java array "+arrayClass+": "+getterName);
+        throw Metamodel.newModelError("No such property in Java array "+arrayClass+": "+getterName);
     }
 }

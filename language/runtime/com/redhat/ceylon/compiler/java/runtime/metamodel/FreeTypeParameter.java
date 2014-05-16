@@ -105,7 +105,7 @@ public class FreeTypeParameter
             return ceylon.language.meta.declaration.covariant_.get_();
         if(declaration.isContravariant())
             return ceylon.language.meta.declaration.contravariant_.get_();
-        throw new RuntimeException("Underlying declaration is neither invariant, covariant nor contravariant");
+        throw Metamodel.newModelError("Underlying declaration is neither invariant, covariant nor contravariant");
     }
 
     @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::OpenType")

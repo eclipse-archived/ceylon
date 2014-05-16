@@ -144,7 +144,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 }
                 // FIXME: deal with private stuff?
                 if(found != null){
-                    throw new RuntimeException("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
+                    throw Metamodel.newModelError("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
                 }
                 found = constr;
             }
@@ -172,7 +172,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
 
                 // FIXME: deal with private stuff?
                 if(found != null){
-                    throw new RuntimeException("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
+                    throw Metamodel.newModelError("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
                 }
                 found = meth;
             }
@@ -185,7 +185,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 int i=0;
                 for(;i<defaultedMethods.length-1;i++){
                     if(defaultedMethods[i] == null)
-                        throw new RuntimeException("Missing defaulted constructor for "+ declaration.getName()
+                        throw Metamodel.newModelError("Missing defaulted constructor for "+ declaration.getName()
                                 +" with "+(i+firstDefaulted)+" parameters in "+javaClass);
                     dispatch[i] = reflectionToMethodHandle(defaultedMethods[i], javaClass, instance, producedType, parameterProducedTypes, variadic, false);
                 }
@@ -222,7 +222,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
                 returnType = ((java.lang.reflect.Method)found).getReturnType();
             }
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Problem getting a MH for constructor for: "+javaClass, e);
+            throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
         }
         boolean isJavaMember = found instanceof java.lang.reflect.Constructor && instance != null && !isStatic;
 
@@ -282,7 +282,7 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         if(((FreeClass)declaration).getAnonymous())
             throw new InvocationException("Object class cannot be instantiated");
         if(constructor == null)
-            throw new RuntimeException("No constructor found for: "+declaration.getName());
+            throw Metamodel.newModelError("No constructor found for: "+declaration.getName());
     }
 
     @Ignore
@@ -468,12 +468,12 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
             }
         }
         if(found == null)
-            throw new RuntimeException("Default argument method for "+parameter.getName()+" not found");
+            throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" not found");
         int parameterCount = found.getParameterTypes().length;
         if(MethodHandleUtil.isReifiedTypeSupported(found, false))
             parameterCount -= found.getTypeParameters().length;
         if(parameterCount != collectedValueCount)
-            throw new RuntimeException("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
+            throw Metamodel.newModelError("Default argument method for "+parameter.getName()+" requires wrong number of parameters: "+parameterCount+" should be "+collectedValueCount);
 
         // AFAIK default value methods cannot be Java-variadic 
         MethodHandle methodHandle = reflectionToMethodHandle(found, javaClass, instance, producedType, parameterProducedTypes, false, false);

@@ -59,7 +59,7 @@ public class FreeTypeParameterType
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else
-                throw new RuntimeException("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
+                throw Metamodel.newModelError("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
         }else if(container instanceof com.redhat.ceylon.compiler.typechecker.model.Method){
             // try to find it in the method
             ceylon.language.meta.declaration.FunctionDeclaration method = Metamodel.getMetamodel((com.redhat.ceylon.compiler.typechecker.model.Method)container);
@@ -67,9 +67,9 @@ public class FreeTypeParameterType
             if(typeParameter != null)
                 this.declaration = typeParameter;
             else
-                throw new RuntimeException("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
+                throw Metamodel.newModelError("Failed to find type parameter: "+wrapped.getName()+" in container "+container);
         }else
-            throw new RuntimeException("Declaration container type not supported yet: "+container);
+            throw Metamodel.newModelError("Declaration container type not supported yet: "+container);
     }
     
     private void checkInit() {

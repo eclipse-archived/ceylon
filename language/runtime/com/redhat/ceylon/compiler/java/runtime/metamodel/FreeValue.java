@@ -233,15 +233,15 @@ public class FreeValue
                 // FIXME: pretty sure that's wrong because of synthetic params. See ReflectionMethod.getParameters
                 parameterAnnotations = Reflection.findConstructor(Metamodel.getJavaClass((com.redhat.ceylon.compiler.typechecker.model.Class)container)).getParameterAnnotations();
             }else{
-                throw new RuntimeException("Unsupported parameter container");
+                throw Metamodel.newModelError("Unsupported parameter container");
             }
             // now find the right parameter
             List<Parameter> parameters = ((com.redhat.ceylon.compiler.typechecker.model.Functional)container).getParameterLists().get(0).getParameters();
             int index = parameters.indexOf(parameter);
             if(index == -1)
-                throw new RuntimeException("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());
+                throw Metamodel.newModelError("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());
             if(index >= parameterAnnotations.length)
-                throw new RuntimeException("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getModel().getContainer());
+                throw Metamodel.newModelError("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getModel().getContainer());
             return parameterAnnotations[index];
         }else{
             Class<?> javaClass = Metamodel.getJavaClass(declaration);

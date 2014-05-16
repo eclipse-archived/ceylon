@@ -57,7 +57,7 @@ public class FreeImport
             field = javaClass.getField(fieldName);
             field.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
+            throw Metamodel.newModelError(e);
         }
         return field;
     }

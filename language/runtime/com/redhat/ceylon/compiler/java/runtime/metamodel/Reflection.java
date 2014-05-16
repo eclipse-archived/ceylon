@@ -119,10 +119,10 @@ class Reflection {
             }
         }
         if (best == null) {
-            throw new RuntimeException("Couldn't find method " + javaClass);
+            throw Metamodel.newModelError("Couldn't find method " + javaClass);
         }
         if (numBest > 1) {
-            throw new RuntimeException("Method arity ambiguity " + javaClass);
+            throw Metamodel.newModelError("Method arity ambiguity " + javaClass);
         }
         return best;
     }

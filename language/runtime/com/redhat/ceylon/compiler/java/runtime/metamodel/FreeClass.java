@@ -53,7 +53,7 @@ public class FreeClass
                 if(overloads.size() == 1){
                     classDeclaration = (com.redhat.ceylon.compiler.typechecker.model.Class) overloads.get(0);
                 }else{
-                    throw new ceylon.language.AssertionError("Class has more than one overloaded constructor");
+                    throw Metamodel.newModelError("Class has more than one overloaded constructor");
                 }
             }
             ParameterList parameterList = classDeclaration.getParameterList();

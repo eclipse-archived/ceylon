@@ -42,11 +42,11 @@ class DeclarationParser {
     private int i = 0;
     private String ref;
     
-    private RuntimeException parseError(String msg) {
-        throw new RuntimeException(msg + " at index " + i + ": " + ref);
+    private java.lang.RuntimeException parseError(String msg) {
+        throw Metamodel.newModelError(msg + " at index " + i + ": " + ref);
     }
     
-    private RuntimeException unexpectedToken () {
+    private java.lang.RuntimeException unexpectedToken () {
         return parseError("Unexpected token");
     }
 
@@ -249,12 +249,12 @@ class DeclarationParser {
         throw unexpectedToken();
     }
 
-    private RuntimeException metamodelError(String msg) {
-        return new RuntimeException(msg);
+    private java.lang.RuntimeException metamodelError(String msg) {
+        return Metamodel.newModelError(msg);
     }
     
-    private RuntimeException metamodelNotFound(String msg) {
-        return metamodelError(msg);
+    private java.lang.RuntimeException metamodelNotFound(String msg) {
+        return Metamodel.newModelError(msg);
     }
     
     protected Module makeModule(String moduleName, String version) {
