@@ -37,8 +37,8 @@ class Bug1041<T>() {
     shared void java(Bug1041Java<Integer> java) {
         value elvisOp1 = java.stringProp?.size;
         value elvisOp2 = java.stringMethod()?.size;
-        value elvisOp3 = java.taProp?.integer;
-        value elvisOp4 = java.taMethod()?.integer;
+        value elvisOp3 = java.taProp?.sign;
+        value elvisOp4 = java.taMethod()?.sign;
         value elseOp1 = java.stringProp else "";
         value elseOp2 = java.stringMethod() else "";
         value elseOp3 = java.taProp else 0;
@@ -54,8 +54,8 @@ class Bug1041<T>() {
     shared void ceylon(Bug1041<Integer> java) {
         value elvisOp1 = java.stringProp?.size;
         value elvisOp2 = java.stringMethod()?.size;
-        value elvisOp3 = java.taProp?.integer;
-        value elvisOp4 = java.taMethod()?.integer;
+        value elvisOp3 = java.taProp?.sign;
+        value elvisOp4 = java.taMethod()?.sign;
         value elseOp1 = java.stringProp else "";
         value elseOp2 = java.stringMethod() else "";
         value elseOp3 = java.taProp else 0;

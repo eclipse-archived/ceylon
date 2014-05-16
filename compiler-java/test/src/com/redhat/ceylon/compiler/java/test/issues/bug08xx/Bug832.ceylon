@@ -17,10 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+interface Bug832Common {
+    shared default Integer sign => 0;
+}
+class Bug832Integer() satisfies Bug832Common {}
+class Bug832Float() satisfies Bug832Common {}
 @noanno
 void bug832() {
-    alias Num => Integer|Float;
-    Num n =  2;
+    alias Num => Bug832Integer|Bug832Float;
+    Num n =  Bug832Integer();
     value sign = n.sign;
     alias L => List<Object>|Set<Object>;
     L l = {};

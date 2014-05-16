@@ -95,14 +95,14 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             {
                 .ceylon.language.Integer safe$4 = java.getTaProp();
             }
-            returning safe$4 != null ? .ceylon.language.Integer.instance(safe$4.getInteger()) : null;
+            returning safe$4 != null ? .ceylon.language.Integer.instance(safe$4.getSign()) : null;
         );
         final .ceylon.language.Integer elvisOp4 = (
             let
             {
                 .ceylon.language.Integer safe$5 = java.taMethod();
             }
-            returning safe$5 != null ? .ceylon.language.Integer.instance(safe$5.getInteger()) : null;
+            returning safe$5 != null ? .ceylon.language.Integer.instance(safe$5.getSign()) : null;
         );
         final .java.lang.String elseOp1 = (
             let
@@ -183,14 +183,14 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             {
                 .ceylon.language.Integer safe$16 = java.getTaProp();
             }
-            returning safe$16 != null ? .ceylon.language.Integer.instance(safe$16.getInteger()) : null;
+            returning safe$16 != null ? .ceylon.language.Integer.instance(safe$16.getSign()) : null;
         );
         final .ceylon.language.Integer elvisOp4 = (
             let
             {
                 .ceylon.language.Integer safe$17 = java.taMethod();
             }
-            returning safe$17 != null ? .ceylon.language.Integer.instance(safe$17.getInteger()) : null;
+            returning safe$17 != null ? .ceylon.language.Integer.instance(safe$17.getSign()) : null;
         );
         final .java.lang.String elseOp1 = (
             let
