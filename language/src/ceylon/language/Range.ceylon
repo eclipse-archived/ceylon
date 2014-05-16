@@ -34,22 +34,21 @@ shared final class Range<Element>(first, last)
     "The end of the range."
     shared actual Element last;
     
-    shared actual String string => 
-            first.string + ".." + last.string;
+    shared actual String string 
+            => first.string + ".." + last.string;
     
     "Determines if the range is decreasing."
     shared Boolean decreasing => last<first; 
     
-    Element next(Element x) =>
-            decreasing then x.predecessor 
+    Element next(Element x) 
+            => decreasing then x.predecessor 
                     else x.successor;
 
     "The nonzero number of elements in the range."
     shared actual Integer size {
     	if (is Enumerable<Anything> last, 
     	    is Enumerable<Anything> first) {
-    		return (last.integerValue - 
-    		        first.integerValue)
+    		return (last.integerValue - first.integerValue)
     		            .magnitude+1;
     	}
     	else {
@@ -67,7 +66,7 @@ shared final class Range<Element>(first, last)
         if (length<1) {
             return true;
         }
-        if (is Enumerable<Anything> last, 
+        else if (is Enumerable<Anything> last, 
             is Enumerable<Anything> first) {
             return size>length;
         }
@@ -88,7 +87,7 @@ shared final class Range<Element>(first, last)
         if (length<=1) {
             return false;
         }
-        if (is Enumerable<Anything> last, 
+        else if (is Enumerable<Anything> last, 
             is Enumerable<Anything> first) {
             return size<length;
         }
@@ -108,27 +107,36 @@ shared final class Range<Element>(first, last)
     "The index of the end of the range."
     shared actual Integer lastIndex => size-1; 
     
-    "The rest of the range, without the start of the
-     range."
+    "The rest of the range, without the start of the range."
     shared actual Element[] rest {
-        if (first==last) { return []; }
-        Element n = next(first);
-        return Range<Element>(n,last);
+        if (first==last) {
+            return [];
+        }
+        else {
+            return Range(next(first),last);
+        }
     }
     
-    "The element of the range that occurs `n` values after
-     the start of the range. Note that this operation 
-     is inefficient for large ranges."
-    shared actual Element? get(Integer n) {
+    "The element of the range that occurs [[index]] values 
+     after the start of the range. Note that this operation 
+     may be inefficient for large ranges."
+    shared actual Element? get(Integer index) {
+        if (index<0) {
+            return null;
+        }
+        if (is Number<Element> first) {
+            value result = first.plusInteger(index);
+            return result<=last then result;
+        }
         //optimize this for numbers!
-        variable Integer index=0;
+        variable Integer current=0;
         variable Element x=first;
-        while (index<n) {
+        while (current<index) {
             if (x==last) {
                 return null;
             }
             else {
-                ++index;
+                ++current;
                 x=next(x);
             }
         }
@@ -137,10 +145,9 @@ shared final class Range<Element>(first, last)
     
     "An iterator for the elements of the range."
     shared actual Iterator<Element> iterator() {
-        if (is Integer first,
-            is Integer last) {
-            assert (is {Element*} result = IntegerRangeBy(first, last, 1));
-            return result.iterator();
+        if (is Number<Element> first,
+            is Number<Element> last) {
+            return NumberRangeBy(first, last, 1).iterator();
         } 
         object iterator
                 satisfies Iterator<Element> {
@@ -148,7 +155,9 @@ shared final class Range<Element>(first, last)
             shared actual Element|Finished next() {
                 Element|Finished result = current;
                 if (!is Finished curr = current) {
-                    if (decreasing then curr<=last else curr>=last) {
+                    if (decreasing 
+                        then curr<=last 
+                        else curr>=last) {
                         current = finished;
                     } 
                     else {
@@ -168,10 +177,9 @@ shared final class Range<Element>(first, last)
         if (step == 1) {
             return this;
         }
-        else if (is Integer first, is Integer last) {
-            assert (is {Element+} result 
-                    = IntegerRangeBy(first, last, step));
-            return result;
+        else if (is Number<Element> first, 
+                is Number<Element> last) {
+            return NumberRangeBy(first, last, step);
         }
         else {
             return super.by(step);
@@ -190,10 +198,9 @@ shared final class Range<Element>(first, last)
         if (shift==0) {
             return this;
         }
-        else if (is Integer first, is Integer last) {
-            assert (is Range<Element> shifted 
-                    = first+shift..last+shift);
-            return shifted;
+        else if (is Number<Element> first, 
+                is Number<Element> last) {
+            return first.plusInteger(shift)..last.plusInteger(shift);
         }
         else {
             variable value shiftedFirst = first;
@@ -375,35 +382,40 @@ shared final class Range<Element>(first, last)
     
 }
 
-class IntegerRangeBy(Integer first, Integer last, Integer step) 
-        satisfies {Integer+} {
-    shared actual Iterator<Integer> iterator() {
+class NumberRangeBy<Element>(Element first, Element last, 
+    Integer step) 
+        satisfies {Element+} {
+    shared actual Iterator<Element> iterator() {
+        assert (is Number<Element> first, 
+                is Number<Element> last);
         object iterator 
-                satisfies Iterator<Integer> {
+                satisfies Iterator<Element> {
             variable value current = first; 
-            shared actual Integer|Finished next() {
+            shared actual Element|Finished next() {
+                value result = current;
+                assert (is Number<Element> diff = current-last);
+                Element next;
                 if (last<first) {
-                    if (current-last < 0) {
-                        // not current < last because current might 
-                        // have overflowed
+                    if (diff.negative) {
+                        // not current < last because current
+                        // might have overflowed
                         return finished;
                     }
-                    value result = current;
-                    current-=step;
-                    return result;
+                    next = current.plusInteger(-step);
                 }
                 else {
-                    if (current-last > 0) {
-                        // not current < last because current might 
-                        // have overflowed
+                    if (diff.positive) {
+                        // not current > last because current
+                        // might have overflowed
                         return finished;
                     }
-                    value result = current;
-                    current+=step;
-                    return result;
+                    next = current.plusInteger(step);
                 }
+                assert (is Number<Element> next);
+                current = next;
+                return result;
             }
-            string => "IntegerRangeByIterator";
+            string => "NumberRangeByIterator";
         }
         return iterator;
     }
