@@ -177,9 +177,8 @@ shared void numbers() {
     check(1.1.integer==1, "1.1.integer is `` 1.1.integer `` instead of 1");
     check((-1.6).integer==-1, "(-1.6).integer is `` (-1.6).integer `` instead of -2");
     check((-1.1).integer==-1, "(-1.1).integer is `` (-1.1).integer `` instead of -1");
-    check(2.float==2.0, "natural float");
-    check((-3).float==-3.0, "integer float");
-    check(4.integer==+4, "natural integer");
+    check(2.float==2.0, "integer float");
+    check((-3).float==-3.0, "negative integer float");
     
     check(1.plus { other=2; }.equals { that=3; }, "natural named args");
                 

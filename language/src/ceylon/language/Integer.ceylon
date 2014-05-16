@@ -37,7 +37,7 @@
      #21_D4
      $10_0001_1101_0100"
 see (`value runtime`)
-shared native final class Integer(shared Integer integer)
+shared native final class Integer(Integer integer)
         extends Object()
         satisfies Integral<Integer> &
                   Binary<Integer> & 

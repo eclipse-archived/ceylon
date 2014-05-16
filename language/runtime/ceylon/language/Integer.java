@@ -377,17 +377,8 @@ public final class Integer
 
     // Conversions between numeric types
 
-    public long getInteger() {
-        return value;
-    }
-
     @Override
     public long getIntegerValue() {
-        return value;
-    }
-
-    @Ignore
-    public static long getInteger(long value) {
         return value;
     }
 

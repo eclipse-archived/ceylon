@@ -38,7 +38,7 @@
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf
  [NaN]: http://en.wikipedia.org/wiki/NaN"
-shared native final class Float(shared Float float)
+shared native final class Float(Float float)
         extends Object()
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {

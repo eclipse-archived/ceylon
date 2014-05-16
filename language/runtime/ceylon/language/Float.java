@@ -324,15 +324,6 @@ public final class Float
         throw new OverflowException();
     }
     
-    public double getFloat() {
-        return value;
-    }
-    
-    @Ignore
-    public static double getFloat(double value) {
-        return value;
-    }
-    
     @Transient
     public boolean getUndefined() {
         return Double.isNaN(this.value);
