@@ -80,8 +80,7 @@ public class FreeValue
     public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
                                                                       @Ignore TypeDescriptor $reifiedSet){
         if(!getToplevel())
-            // FIXME: change type
-            throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;
         com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference typedReference = modelDecl.getProducedTypedReference(null, Collections.<ProducedType>emptyList());
 
@@ -112,8 +111,7 @@ public class FreeValue
                 @Ignore TypeDescriptor $reifiedSet,
                 @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType){
         if(getToplevel())
-            // FIXME: change type
-            throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
         ProducedType qualifyingType = Metamodel.getModel(containerType);
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         com.redhat.ceylon.compiler.typechecker.model.Value modelDecl = (com.redhat.ceylon.compiler.typechecker.model.Value)declaration;

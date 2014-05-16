@@ -142,8 +142,7 @@ public class FreeClass
             @Ignore TypeDescriptor $reifiedArguments,
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(!getToplevel())
-            // FIXME: change type
-            throw new RuntimeException("Cannot apply a member declaration with no container type: use memberApply");
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
         List<com.redhat.ceylon.compiler.typechecker.model.ProducedType> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.compiler.typechecker.model.ProducedReference appliedType = declaration.getProducedReference(null, producedTypes);
@@ -185,8 +184,7 @@ public class FreeClass
                 @Name("containerType") ceylon.language.meta.model.Type<? extends Container> containerType,
                 @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
         if(getToplevel())
-            // FIXME: change type
-            throw new RuntimeException("Cannot apply a toplevel declaration to a container type: use apply");
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a toplevel declaration to a container type: use apply");
 
         ceylon.language.meta.model.MemberClass<Container, Type, Arguments> member 
             = (ceylon.language.meta.model.MemberClass)
