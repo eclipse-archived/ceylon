@@ -177,6 +177,7 @@ public class PrimitiveArrayIterableTest {
     @Test
     public void testObjectArrayIterable() {
         ObjectArrayIterable<ceylon.language.Integer> zero_ten = ints(-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11).skip(1).take(11);
+        //ObjectArrayIterable<ceylon.language.Integer> zero_ten = ints(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         ObjectArrayIterable<ceylon.language.Integer> zero_five = ints(0, 1, 2, 3, 4, 5);
         ObjectArrayIterable<ceylon.language.Integer> five_ten = ints(5, 6, 7, 8, 9, 10);
         ObjectArrayIterable<ceylon.language.Integer> empty = ints();
