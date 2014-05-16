@@ -7,7 +7,6 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -308,7 +307,6 @@ public final class Float
     
     // Conversions between numeric types
     
-    @TypeInfo("ceylon.language::Integer")
     public long getInteger() {
         if (value >= Long.MIN_VALUE
                 && value <= Long.MAX_VALUE) {
@@ -326,7 +324,6 @@ public final class Float
         throw new OverflowException();
     }
     
-    @TypeInfo("ceylon.language::Float")
     public double getFloat() {
         return value;
     }

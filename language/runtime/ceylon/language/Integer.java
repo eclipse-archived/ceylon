@@ -188,7 +188,8 @@ public final class Integer
             return 1L;
         }
         if (power < 0) {
-            throw new AssertionError(value + "^" + power + " cannot be represented as an Integer");
+            throw new AssertionError(value + "^" + power + 
+                    " cannot be represented as an Integer");
         } else if (power == 0L) {
             return 1L;
         }
@@ -376,12 +377,10 @@ public final class Integer
 
     // Conversions between numeric types
 
-    @TypeInfo("ceylon.language::Integer")
     public long getInteger() {
         return value;
     }
 
-    @TypeInfo("ceylon.language::Integer")
     @Override
     public long getIntegerValue() {
         return value;
@@ -397,7 +396,6 @@ public final class Integer
         return value;
     }
 
-    @TypeInfo("ceylon.language::Float")
     public double getFloat() {
         if (value >= 9007199254740992L
                 || value <= -9007199254740992L) {
