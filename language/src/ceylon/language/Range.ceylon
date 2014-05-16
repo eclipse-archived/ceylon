@@ -63,6 +63,48 @@ shared final class Range<Element>(first, last)
     	}
     }
     
+    shared actual Boolean longerThan(Integer length) {
+        if (length<1) {
+            return true;
+        }
+        if (is Enumerable<Anything> last, 
+            is Enumerable<Anything> first) {
+            return size>length;
+        }
+        else {
+            variable Integer size = 1;
+            variable Element current=first;
+            while (current!=last) {
+                if (size++>length) {
+                    return true;
+                }
+                current = next(current);
+            }
+            return false;
+        }
+    }
+    
+    shared actual Boolean shorterThan(Integer length) {
+        if (length<=1) {
+            return false;
+        }
+        if (is Enumerable<Anything> last, 
+            is Enumerable<Anything> first) {
+            return size<length;
+        }
+        else {
+            variable Integer size = 1;
+            variable Element current=first;
+            while (current!=last) {
+                if (size++==length) {
+                    return false;
+                }
+                current = next(current);
+            }
+            return true;
+        }
+    }
+    
     "The index of the end of the range."
     shared actual Integer lastIndex => size-1; 
     

@@ -36,4 +36,9 @@ shared void testRange() {
     check((1..4).shifted(2)==3..6, "int range shift 1");
     check((1..5).shifted(-2)==-1..3, "int range shift 2");
     check(('a'..'c').shifted(1)=='b'..'d', "char range shift 1");
+    
+    check((1..3).longerThan(2), "range longerThan");
+    check(!(1..3).longerThan(3), "range not longerThan");
+    check(!(1..3).shorterThan(3), "range not shorterThan");
+    check((1..3).shorterThan(4), "range shorterThan");
 }
