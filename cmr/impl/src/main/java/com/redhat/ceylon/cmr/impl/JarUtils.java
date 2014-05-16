@@ -25,9 +25,10 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -40,14 +41,18 @@ import com.redhat.ceylon.common.ModuleUtil;
  *
  * @author <a href="mailto:tako@ceylon-lang.org">Tako Schotanus</a>
  */
-public final class JarUtils implements DependencyResolver, ModuleInfoReader {
+public final class JarUtils extends AbstractDependencyResolver implements ModuleInfoReader {
     public static JarUtils INSTANCE = new JarUtils();
 
     private JarUtils() {
     }
 
     @Override
-    public Set<ModuleInfo> resolve(ArtifactResult result) {
+    public Set<ModuleInfo> resolve(DependencyContext context) {
+        if (context.ignoreExternal()) {
+            return null;
+        }
+        ArtifactResult result = context.result();
         File mod = result.artifact();
         if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
             return getDependencies(result.artifact());
@@ -99,31 +104,28 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
     }
 
     private static Set<ModuleInfo> getDependencies(File moduleArchive) {
-        Set<ModuleInfo> deps = null;
         File xml = new File(moduleArchive.getParentFile(), "module.xml");
-        if (xml.isFile()) {
-            deps = getDependenciesFromFile(xml);
-        } else {
-            File props = new File(moduleArchive.getParentFile(), "module.properties");
-            if (props.isFile()) {
-                deps = getDependenciesFromFile(props);
-            }
+        Set<ModuleInfo> result = getDependenciesFromFile(xml);
+        if (result != null) {
+            return result;
         }
-        return deps;
+
+        File props = new File(moduleArchive.getParentFile(), "module.properties");
+        return getDependenciesFromFile(props);
     }
     
     private static Set<ModuleInfo> getDependenciesFromFile(File descriptorFile) {
-        Set<ModuleInfo> deps = null;
-        if (descriptorFile.isFile() && descriptorFile.getName().equalsIgnoreCase("module.xml")) {
-            XmlDependencyResolver res = XmlDependencyResolver.INSTANCE;
-            deps = res.resolveFromFile(descriptorFile);
-        } else {
-            if (descriptorFile.isFile() && descriptorFile.getName().equalsIgnoreCase("module.properties")) {
-                PropertiesDependencyResolver res = PropertiesDependencyResolver.INSTANCE;
-                deps = res.resolveFromFile(descriptorFile);
-            }
+        if (descriptorFile.isFile() == false) {
+            return null;
         }
-        return deps;
+
+        if (descriptorFile.getName().equalsIgnoreCase("module.xml")) {
+            return XmlDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+        } else if (descriptorFile.getName().equalsIgnoreCase("module.properties")) {
+            return PropertiesDependencyResolver.INSTANCE.resolveFromFile(descriptorFile);
+        } else {
+            return null;
+        }
     }
     
     private static String getVersionFromFilename(String moduleName, String name) {
@@ -160,8 +162,7 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
     // in the JAR pointed to by the given file
     public static Set<String> gatherClassnamesFromJar(File jar) throws IOException {
         HashSet<String> names = new HashSet<>();
-        JarFile zf = new JarFile(jar);
-        try {
+        try (JarFile zf = new JarFile(jar)) {
             Enumeration<? extends JarEntry> entries = zf.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
@@ -171,8 +172,6 @@ public final class JarUtils implements DependencyResolver, ModuleInfoReader {
                     names.add(className);
                 }
             }
-        } finally {
-            zf.close();
         }
         return names;
     }

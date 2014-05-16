@@ -16,9 +16,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -26,52 +23,25 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.spi.Node;
 
 /**
  * Read module info from properties.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class PropertiesDependencyResolver implements DependencyResolver {
+public final class PropertiesDependencyResolver extends ModulesDependencyResolver {
     public static final PropertiesDependencyResolver INSTANCE = new PropertiesDependencyResolver();
 
-    public Set<ModuleInfo> resolve(ArtifactResult result) {
-        final File artifact = result.artifact();
-        final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_PROPERTIES);
-        return resolveFromFile(mp);
+    private PropertiesDependencyResolver() {
+        super(ArtifactContext.MODULE_PROPERTIES);
     }
 
-    public Node descriptor(Node artifact) {
-        return NodeUtils.firstParent(artifact).getChild(ArtifactContext.MODULE_PROPERTIES);
-    }
-
-    @Override
-    public Set<ModuleInfo> resolveFromFile(File mp) {
-        if (mp.exists() == false)
-            return null;
-
-        try {
-            final FileInputStream is = new FileInputStream(mp);
-            try {
-                return resolveFromInputStream(is);
-            } finally {
-                is.close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    @Override
     public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
         try {
             final Properties properties = new Properties();
             properties.load(stream);
-            Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
+            Set<ModuleInfo> infos = new LinkedHashSet<>();
             for (Map.Entry<?,?> entry : properties.entrySet()) {
                 String name = entry.getKey().toString();
                 String version = entry.getValue().toString();

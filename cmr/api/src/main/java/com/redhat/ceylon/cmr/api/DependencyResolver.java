@@ -31,6 +31,14 @@ public interface DependencyResolver {
     /**
      * Resolve dependecies.
      *
+     * @param context the context
+     * @return dependencies list or null if cannot resolve
+     */
+    Set<ModuleInfo> resolve(DependencyContext context);
+
+    /**
+     * Resolve dependecies.
+     *
      * @param result the result
      * @return dependencies list or null if cannot resolve
      */

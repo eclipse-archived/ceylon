@@ -16,12 +16,16 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.util.Set;
+
 /**
- * Visibility type.
+ * Abstract dependency resolver.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public enum VisibilityType {
-    STRICT, // all deps must be explicity declared; even JDK paths
-    LOOSE
+public abstract class AbstractDependencyResolver implements DependencyResolver {
+    public Set<ModuleInfo> resolve(ArtifactResult result) {
+        return resolve(new DependencyContextImpl(result, false, false));
+    }
 }
+

@@ -28,6 +28,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.DependencyContext;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.ModuleUtil;
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.AnnotationValue;
 import org.jboss.jandex.ClassInfo;
@@ -37,21 +46,12 @@ import org.jboss.jandex.IndexReader;
 import org.jboss.jandex.Indexer;
 import org.jboss.jandex.JarIndexer;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
-import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.spi.Node;
-import com.redhat.ceylon.common.ModuleUtil;
-
 /**
  * Byte hacks / utils.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader {
+public final class BytecodeUtils extends AbstractDependencyResolver implements ModuleInfoReader {
     public static BytecodeUtils INSTANCE = new BytecodeUtils();
 
     private BytecodeUtils() {
@@ -60,16 +60,19 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
     private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
     private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
 
-    public Set<ModuleInfo> resolve(ArtifactResult result) {
+    public Set<ModuleInfo> resolve(DependencyContext context) {
+        if (context.ignoreInner()) {
+            return null;
+        }
+
+        final ArtifactResult result = context.result();
         return readModuleInformation(result.name(), result.artifact());
     }
-    
-    @Override
+
     public Set<ModuleInfo> resolveFromFile(File file) {
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
 
-    @Override
     public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
         throw new UnsupportedOperationException("Operation not supported for .car files");
     }
@@ -86,7 +89,7 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
      * @return module info list
      */
     private static Set<ModuleInfo> readModuleInformation(final String moduleName, final File jarFile) {
-        Index index = readModuleIndex(moduleName, jarFile);
+        Index index = readModuleIndex(jarFile);
         final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (ai == null)
             return null;
@@ -111,7 +114,7 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         return infos;
     }
 
-    private static Index readModuleIndex(final String moduleName, final File jarFile) {
+    private static Index readModuleIndex(final File jarFile) {
         final Index index;
         try {
             // TODO -- remove this with new Jandex release
@@ -123,11 +126,8 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
                 JarIndexer.createJarIndex(jarFile, new Indexer(), false, false, false);
             }
 
-            final InputStream stream = new FileInputStream(indexFile);
-            try {
+            try (InputStream stream = new FileInputStream(indexFile)) {
                 index = new IndexReader(stream).read();
-            } finally {
-                stream.close();
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to read index for module " + jarFile.getPath(), e);
@@ -140,12 +140,12 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         return index.getClassByName(moduleClassName);
     }
 
-    @Override
     public int[] getBinaryVersions(String moduleName, File moduleArchive) {
-        Index index = readModuleIndex(moduleName, moduleArchive);
+        Index index = readModuleIndex(moduleArchive);
         final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
+
         AnnotationValue majorAnnotation = ceylonAnnotation.value("major");
         AnnotationValue minorAnnotation = ceylonAnnotation.value("minor");
 
@@ -154,9 +154,8 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
         return new int[]{major, minor};
     }
 
-    @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, File moduleArchive, boolean includeMembers) {
-        Index index = readModuleIndex(moduleName, moduleArchive);
+        Index index = readModuleIndex(moduleArchive);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
@@ -218,15 +217,14 @@ public final class BytecodeUtils implements DependencyResolver, ModuleInfoReader
             AnnotationValue optional = dep.value("optional");
             
             result.add(new ModuleInfo(name.asString(), version.asString(),
-                    (export != null) ? export.asBoolean() : false,
-                    (optional != null) ? optional.asBoolean() : false));
+                    (export != null) && export.asBoolean(),
+                    (optional != null) && optional.asBoolean()));
         }
         return result;
     }
     
-    @Override
     public boolean matchesModuleInfo(String moduleName, File moduleArchive, String query) {
-        Index index = readModuleIndex(moduleName, moduleArchive);
+        Index index = readModuleIndex(moduleArchive);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;

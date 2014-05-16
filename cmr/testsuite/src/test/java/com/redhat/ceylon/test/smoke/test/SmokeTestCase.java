@@ -38,17 +38,14 @@ import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.api.VersionComparator;
-import com.redhat.ceylon.cmr.impl.AbstractNodeRepositoryManager;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.JDKRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
-import com.redhat.ceylon.cmr.impl.RootRepositoryManager;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -218,15 +215,12 @@ public class SmokeTestCase extends AbstractTest {
             originFile = new File(file.getAbsolutePath() + ".origin");
             Assert.assertNotNull(originFile);            
             try {
-                String line = null;
-                BufferedReader reader = new BufferedReader(new FileReader(originFile));
-                try {
+                String line;
+                try (BufferedReader reader = new BufferedReader(new FileReader(originFile))) {
                     line = reader.readLine();
-                } finally {
-                    reader.close();
                 }
                 assertEquals(repoURL, line);
-            } catch(IOException e) {
+            } catch(IOException ignored) {
             } 
         } finally {
             manager.removeArtifact(name, version);
@@ -291,8 +285,22 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext context = new ArtifactContext("org.acme.props", "1.0", ArtifactContext.JAR);
         try {
-            manager.putArtifact(context, new ByteArrayInputStream("dummy_jar".getBytes()));
+            manager.putArtifact(context, mockJar("someentry", "qwerty".getBytes()));
             manager.putArtifact(context.getModuleProperties(), new ByteArrayInputStream("moduletest=0.1\n".getBytes()));
+            File[] files = manager.resolve(context);
+            Assert.assertNotNull(files);
+            Assert.assertEquals(3, files.length);
+        } finally {
+            manager.removeArtifact(context);
+        }
+    }
+
+    @Test
+    public void testInnerProperties() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("org.mood.lw", "1.0", ArtifactContext.JAR);
+        try {
+            manager.putArtifact(context, mockJar("META-INF/jbossmodules/org/mood/lw/1.0/module.properties", "moduletest=0.1\n".getBytes()));
             File[] files = manager.resolve(context);
             Assert.assertNotNull(files);
             Assert.assertEquals(3, files.length);

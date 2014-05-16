@@ -41,6 +41,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import com.redhat.ceylon.cmr.api.ArtifactResult;
+
 /**
  * I/O utils.
  *
@@ -258,7 +260,7 @@ public class IOUtils {
     public enum UnzipFailure {
         DestinationNotDirectory,
         CannotCreateDestination,
-        CopyError;
+        CopyError
     }
     
     @SuppressWarnings("serial")
@@ -289,9 +291,8 @@ public class IOUtils {
         } else {
             mkdirs(dir);
         }
-        
-        ZipFile zf = new ZipFile(zip);
-        try {
+
+        try (ZipFile zf = new ZipFile(zip)) {
             Enumeration<? extends ZipEntry> entries = zf.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
@@ -303,23 +304,15 @@ public class IOUtils {
                         continue;
                     }
                     mkdirs(out.getParentFile());
-                    InputStream zipIn = zf.getInputStream(entry);
-                    try {
-                        BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out));
-                        try {
+                    try (InputStream zipIn = zf.getInputStream(entry)) {
+                        try (BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out))) {
                             IOUtils.copyStream(zipIn, fileOut, false, false);
-                        } finally {
-                            fileOut.close();
                         }
-                    } finally {
-                        zipIn.close();
                     }
                 } catch (IOException e) {
                     throw new UnzipException(UnzipFailure.CopyError, entryName, e);
                 }
             }
-        } finally {
-            zf.close();
         }
     }
     
@@ -328,5 +321,23 @@ public class IOUtils {
             throw new UnzipException(UnzipFailure.CannotCreateDestination, dir);
         }
         return dir;
+    }
+
+    public static InputStream findDescriptor(ArtifactResult result, String descriptorPath) {
+        try {
+            File file = result.artifact();
+            try (ZipFile zipFile = new ZipFile(file)) {
+                ZipEntry zipEntry = zipFile.getEntry(descriptorPath);
+                if (zipEntry != null) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    copyStream(zipFile.getInputStream(zipEntry), baos, true, true);
+                    return new ByteArrayInputStream(baos.toByteArray());
+                } else {
+                    return null;
+                }
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

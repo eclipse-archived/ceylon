@@ -16,8 +16,6 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,10 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.spi.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -44,37 +39,17 @@ import org.xml.sax.SAXException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-final public class XmlDependencyResolver implements DependencyResolver {
+final public class XmlDependencyResolver extends ModulesDependencyResolver {
     public static final XmlDependencyResolver INSTANCE = new XmlDependencyResolver();
 
-    public Set<ModuleInfo> resolve(ArtifactResult result) {
-        final File artifact = result.artifact();
-        final File mp = new File(artifact.getParent(), ArtifactContext.MODULE_XML);
-        return resolveFromFile(mp);
+    private XmlDependencyResolver() {
+        super(ArtifactContext.MODULE_XML);
     }
 
-    @Override
-    public Set<ModuleInfo> resolveFromFile(File mp) {
-        if (mp.exists() == false)
-            return null;
-
-        try {
-            InputStream is = new FileInputStream(mp);
-            try{
-                return resolveFromInputStream(is);
-            }finally{
-                is.close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public Set<ModuleInfo> resolveFromInputStream(InputStream stream) {
         try {
             final Module module = parse(stream);
-            final Set<ModuleInfo> infos = new LinkedHashSet<ModuleInfo>();
+            final Set<ModuleInfo> infos = new LinkedHashSet<>();
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
             }
@@ -82,10 +57,6 @@ final public class XmlDependencyResolver implements DependencyResolver {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public Node descriptor(Node artifact) {
-        return NodeUtils.firstParent(artifact).getChild(ArtifactContext.MODULE_XML);
     }
 
     private static class ModuleIdentifier implements Comparable<ModuleIdentifier> {
@@ -157,7 +128,7 @@ final public class XmlDependencyResolver implements DependencyResolver {
 
     private static class Module {
         private ModuleIdentifier module;
-        private Set<ModuleIdentifier> dependencies = new LinkedHashSet<ModuleIdentifier>();
+        private Set<ModuleIdentifier> dependencies = new LinkedHashSet<>();
 
         public Module(ModuleIdentifier module) {
             this.module = module;
@@ -234,7 +205,7 @@ final public class XmlDependencyResolver implements DependencyResolver {
     }
 
     protected static List<Element> getElements(Element parent, String tagName) {
-        List<Element> elements = new ArrayList<Element>();
+        List<Element> elements = new ArrayList<>();
         NodeList nodes = parent.getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
             org.w3c.dom.Node node = nodes.item(i);

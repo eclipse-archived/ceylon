@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2014 Red Hat inc. and third party contributors as noted
  * by the author tags.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,28 @@
 package com.redhat.ceylon.cmr.api;
 
 /**
- * Visibility type.
- *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public enum VisibilityType {
-    STRICT, // all deps must be explicity declared; even JDK paths
-    LOOSE
+class DependencyContextImpl implements DependencyContext {
+    private final ArtifactResult result;
+    private boolean ignoreInner;
+    private boolean ignoreExternal;
+
+    DependencyContextImpl(ArtifactResult result, boolean ignoreInner, boolean ignoreExternal) {
+        this.result = result;
+        this.ignoreInner = ignoreInner;
+        this.ignoreExternal = ignoreExternal;
+    }
+
+    public ArtifactResult result() {
+        return result;
+    }
+
+    public boolean ignoreInner() {
+        return ignoreInner;
+    }
+
+    public boolean ignoreExternal() {
+        return ignoreExternal;
+    }
 }

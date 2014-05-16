@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Red Hat inc. and third party contributors as noted 
+ * Copyright 2014 Red Hat inc. and third party contributors as noted
  * by the author tags.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,30 @@
 package com.redhat.ceylon.cmr.api;
 
 /**
- * Visibility type.
- *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public enum VisibilityType {
-    STRICT, // all deps must be explicity declared; even JDK paths
-    LOOSE
+public interface DependencyContext {
+    /**
+     * Get current artifact,
+     * whose dependencies we're trying to read.
+     *
+     * @return current artifact
+     */
+    ArtifactResult result();
+
+    /**
+     * Do we ignore inner descriptors.
+     * e.g. could be used to override inner decriptor
+     *
+     * @return true if yes, false otherwise
+     */
+    boolean ignoreInner();
+
+    /**
+     * Do we ignore external descriptors.
+     * e.g. must be applied when looking at a flat classpath
+     *
+     * @return true if yes, false otherwise
+     */
+    boolean ignoreExternal();
 }

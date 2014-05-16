@@ -16,8 +16,11 @@
 
 package com.redhat.ceylon.test.smoke.test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileVisitResult;
@@ -27,9 +30,12 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
@@ -230,20 +236,38 @@ public class AbstractTest {
     }
 
     protected static SortedSet<String> set(String... values) {
-        SortedSet<String> ret = new TreeSet<String>();
+        SortedSet<String> ret = new TreeSet<>();
         Collections.addAll(ret, values);
         return ret;
     }
 
     protected static SortedSet<ModuleInfo> deps(ModuleInfo... values) {
-        SortedSet<ModuleInfo> ret = new TreeSet<ModuleInfo>();
+        SortedSet<ModuleInfo> ret = new TreeSet<>();
         Collections.addAll(ret, values);
         return ret;
     }
 
     protected static SortedSet<ModuleVersionArtifact> types(ModuleVersionArtifact... values) {
-        SortedSet<ModuleVersionArtifact> ret = new TreeSet<ModuleVersionArtifact>();
+        SortedSet<ModuleVersionArtifact> ret = new TreeSet<>();
         Collections.addAll(ret, values);
         return ret;
+    }
+
+    protected static InputStream mockJar(String entryName, byte[] entryContent) throws IOException {
+        return mockJar(new String[]{entryName}, Collections.singletonList(entryContent));
+    }
+
+    protected static InputStream mockJar(String[] entryNames, List<byte[]> entryContents) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (JarOutputStream output = new JarOutputStream(baos)) {
+            for (int i = 0; i < entryNames.length; i++) {
+                String entryName = entryNames[i];
+                JarEntry jarEntry = new JarEntry(entryName);
+                output.putNextEntry(jarEntry);
+                output.write(entryContents.get(i));
+                output.closeEntry();
+            }
+        }
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 }

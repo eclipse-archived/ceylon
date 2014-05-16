@@ -30,29 +30,34 @@ import java.util.Set;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import net.minidev.json.JSONValue;
-
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
+import net.minidev.json.JSONValue;
 
 /**
  * Utility functions to retrieve module meta information from compiled JS modules
  *
  * @author <a href="mailto:tako@ceylon-lang.org">Tako Schotanus</a>
  */
-public final class JSUtils implements DependencyResolver, ModuleInfoReader {
+public final class JSUtils extends AbstractDependencyResolver implements ModuleInfoReader {
     public static JSUtils INSTANCE = new JSUtils();
 
     private JSUtils() {
     }
 
-    public Set<ModuleInfo> resolve(ArtifactResult result) {
+    public Set<ModuleInfo> resolve(DependencyContext context) {
+        if (context.ignoreInner()) {
+            return null;
+        }
+
+        ArtifactResult result = context.result();
         File mod = result.artifact();
         if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JS)) {
             return readModuleInformation(result.name(), mod);
@@ -101,6 +106,20 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
         }
         
         return new int[]{major, minor};
+    }
+
+    private static ScriptEngine getEngine(File moduleArchive) {
+        ScriptEngine engine;
+        try {
+            engine = new ScriptEngineManager().getEngineByName("JavaScript");
+            engine.eval("var exports={}");
+            engine.eval("var module={}");
+            engine.eval("function require() { return { '$addmod$' : function() {} } }");
+            engine.eval(new FileReader(moduleArchive));
+            return engine;
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to parse module JS file", ex);
+        }
     }
 
     private static Set<ModuleInfo> getDependencies(Map<String,Object> model) {
@@ -243,8 +262,7 @@ public final class JSUtils implements DependencyResolver, ModuleInfoReader {
             while ((line = reader.readLine()) != null) {
                 if ((line.startsWith("var $CCMM$=") || line.startsWith("var $METAMODEL$=")) && line.endsWith("};")) {
                     line = line.substring(line.indexOf("{"), line.length()-1);
-                    Map<String,Object> model = (Map<String,Object>)JSONValue.parse(line);
-                    return model;
+                    return  (Map<String,Object>) JSONValue.parse(line);
                 }
             }
             return null;

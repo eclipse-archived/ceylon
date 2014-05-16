@@ -28,7 +28,7 @@ import com.redhat.ceylon.cmr.spi.Node;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class DependencyResolvers {
-    private final List<DependencyResolver> resolvers = new CopyOnWriteArrayList<DependencyResolver>();
+    private final List<DependencyResolver> resolvers = new CopyOnWriteArrayList<>();
 
     public void addResolver(DependencyResolver resolver) {
         addResolver(resolver, resolvers.size());
