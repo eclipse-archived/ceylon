@@ -471,7 +471,8 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
         try {
             return methodHandle.invokeWithArguments(arguments);
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            Util.rethrow(e);
+            return null;
         }
     }
 
