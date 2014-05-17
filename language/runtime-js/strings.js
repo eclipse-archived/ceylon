@@ -682,6 +682,9 @@ atr$(Character$proto, 'string', function(){
 Character$proto.equals = function(other) {
     return other.constructor===Character.$$ && other.value===this.value;
 }
+Character$proto.neighbour=function(offset) {
+  return Character(this.value+offset);
+}
 atr$(Character$proto, 'hash', function(){ return this.value; },undefined,function(){return{
   mod:$CCMM$,$t:{t:Integer},d:['$','Character','$at','hash']}});
 Character$proto.compare = function(other) {
