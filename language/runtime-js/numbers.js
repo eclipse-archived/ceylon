@@ -1,8 +1,12 @@
-function Number$(wat) {
+function Number$($$targs$$,wat) {
+    add_type_arg(obj, 'Other$Number', $$targs$$.Other$Number);
     return wat;
 }
 initType(Number$, 'ceylon.language::Number');
-Number$.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,d:['$','Number']};}
+Number$.$crtmm$=function(){return{$an:function(){return[shared()]},mod:$CCMM$,
+  $tp:{Other$Number:{satisfies:{t:Number$,a:{Other$Number:'Other$Number'}}}},
+  satisfies:[{t:Numeric,a:{Other$Numeric:'Other$Number'}},{t:Comparable,a:{Other$Comparable:'Other$Comparable'}}],
+  d:['$','Number']};}
 ex$.Number=Number$;
 function $init$Number$() {
     if (Number$.$$===undefined) {
@@ -15,20 +19,22 @@ var toInt = function(float) {
     return (float >= 0) ? Math.floor(float) : Math.ceil(float);
 }
 
-function JSNumber(value) { return Number(value); }
+function JSNumber(value) { return Number({Other$Number:{t:value==parseInt(value)?Integer:Float}}, value); }
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
-JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[shared()];},mod:$CCMM$,d:['$','Number']};}
+JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[shared()];},
+  mod:$CCMM$,d:['$','Number']};}
 
 var origNumToString = Number.prototype.toString;
-inheritProto(JSNumber, Object$, Scalar, $init$Integral(), Exponentiable);
+inheritProto(JSNumber, Object$, $init$Integral(), Exponentiable);
 
 function Integer(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Integer') {
         return value;
     }
+    value.$$targs$$={Other$Number:{t:Integer}};
     return Number(value);
 }
-initTypeProto(Integer, 'ceylon.language::Integer', Object$, Scalar, 
+initTypeProto(Integer, 'ceylon.language::Integer', Object$,Number$,
         $init$Integral(), Exponentiable, Binary);
 Integer.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
 
@@ -37,10 +43,11 @@ function Float(value) {
         return value;
     }
     var that = new Number(value);
+    that.$$targs$$={Other$Number:{t:Float}};
     that.float$ = true;
     return that;
 }
-initTypeProto(Float, 'ceylon.language::Float', Object$, Scalar, Exponentiable);
+initTypeProto(Float, 'ceylon.language::Float', Object$,Number$,Exponentiable);
 Float.$crtmm$=function(){return{$an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Float']};}
 
 var JSNum$proto = Number.prototype;
@@ -162,6 +169,9 @@ JSNum$proto.flip = function(idx) {
 }
 JSNum$proto.clear = function(index) {
     return this.set(index, false);
+}
+JSNum$proto.neighbour=function(offset) {
+  return this+offset;
 }
 atr$(JSNum$proto, 'magnitude', function(){ return Math.abs(this); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','magnitude']};});
