@@ -76,15 +76,23 @@ String$proto.compare.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Comparison},d:['
 String$proto.smallerThan=function(o){
   return Comparable.$$.prototype.smallerThan.call(this,o);
 }
+String$proto.smallerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
+  $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','smallerThan']};};
 String$proto.largerThan=function(o){
   return Comparable.$$.prototype.largerThan.call(this,o);
 }
+String$proto.largerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
+  $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','largerThan']};};
 String$proto.notSmallerThan=function(o){
   return Comparable.$$.prototype.notSmallerThan.call(this,o);
 }
+String$proto.notSmallerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
+  $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','notSmallerThan']};};
 String$proto.notLargerThan=function(o){
   return Comparable.$$.prototype.notLargerThan.call(this,o);
 }
+String$proto.notLargerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
+  $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','notLargerThan']};};
 atr$(String$proto,'sequence',function(){
   return Iterable.$$.prototype.$prop$getSequence.get.call(this);
 },undefined,function(){return{
