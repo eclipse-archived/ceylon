@@ -73,6 +73,18 @@ String$proto.compare = function(other) {
 }
 String$proto.compare.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Comparison},d:['$','String','$m','compare'],
   $ps:[{$nm:'other',$t:{t:String$}}]};}
+String$proto.smallerThan=function(o){
+  return Comparable.$$.prototype.smallerThan.call(this,o);
+}
+String$proto.largerThan=function(o){
+  return Comparable.$$.prototype.largerThan.call(this,o);
+}
+String$proto.notSmallerThan=function(o){
+  return Comparable.$$.prototype.notSmallerThan.call(this,o);
+}
+String$proto.notLargerThan=function(o){
+  return Comparable.$$.prototype.notLargerThan.call(this,o);
+}
 atr$(String$proto,'sequence',function(){
   return Iterable.$$.prototype.$prop$getSequence.get.call(this);
 },undefined,function(){return{
@@ -663,6 +675,8 @@ function Character(value,cache) {
         return value;
     }
     var that = new Character.$$;
+    Comparable({Other$Comparable:{t:Character}},that);
+    Enumerable({Other$Enumerable:{t:Character}},that);
     that.value = value;
     return that;
 }

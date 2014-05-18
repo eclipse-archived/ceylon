@@ -1,5 +1,5 @@
 function Number$($$targs$$,wat) {
-    add_type_arg(obj, 'Other$Number', $$targs$$.Other$Number);
+    add_type_arg(wat, 'Other$Number', $$targs$$.Other$Number);
     return wat;
 }
 initType(Number$, 'ceylon.language::Number');
@@ -19,7 +19,12 @@ var toInt = function(float) {
     return (float >= 0) ? Math.floor(float) : Math.ceil(float);
 }
 
-function JSNumber(value) { return Number({Other$Number:{t:value==parseInt(value)?Integer:Float}}, value); }
+function JSNumber(value) {
+  if (value===parseInt(value)) {
+    return Integer(value);
+  }
+  return Float(value);
+}
 initExistingType(JSNumber, Number, 'ceylon.language::JSNumber');
 JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[shared()];},
   mod:$CCMM$,d:['$','Number']};}
@@ -31,8 +36,9 @@ function Integer(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Integer') {
         return value;
     }
-    value.$$targs$$={Other$Number:{t:Integer}};
-    return Number(value);
+    var that=Number(value);
+    Number$({Other$Number:{t:Integer}},that);
+    return that;
 }
 initTypeProto(Integer, 'ceylon.language::Integer', Object$,Number$,
         $init$Integral(), Exponentiable, Binary);
@@ -43,7 +49,7 @@ function Float(value) {
         return value;
     }
     var that = new Number(value);
-    that.$$targs$$={Other$Number:{t:Float}};
+    Number$({Other$Number:{t:Float}},that);
     that.float$ = true;
     return that;
 }
@@ -103,6 +109,18 @@ JSNum$proto.equals = function(other) { return (typeof(other)==='number' || other
 JSNum$proto.compare = function(other) {
     var value = this.valueOf();
     return value==other ? equal : (value<other ? smaller:larger);
+}
+JSNum$proto.smallerThan=function(o) {
+  return Comparable.$$.prototype.smallerThan.call(this,o);
+}
+JSNum$proto.largerThan=function(o) {
+  return Comparable.$$.prototype.largerThan.call(this,o);
+}
+JSNum$proto.notSmallerThan=function(o) {
+  return Comparable.$$.prototype.notSmallerThan.call(this,o);
+}
+JSNum$proto.notLargerThan=function(o) {
+  return Comparable.$$.prototype.notLargerThan.call(this,o);
 }
 atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
   undefined,function(){return{$an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Number$,d:['$','Number','$at','float']};});
