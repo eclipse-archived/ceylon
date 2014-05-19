@@ -24,6 +24,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
 import com.redhat.ceylon.cmr.api.DependencyContext;
+import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.JULLogger;
@@ -36,6 +37,8 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class MavenDependencyResolver extends AbstractDependencyResolver {
+    private static final Logger logger = new JULLogger();
+
     public Set<ModuleInfo> resolve(DependencyContext context) {
         if (context.ignoreInner() == false) {
             ArtifactResult result = context.result();
@@ -64,7 +67,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        AetherUtils utils = new AetherUtils(new JULLogger(), false);
+        AetherUtils utils = new AetherUtils(logger, false);
         MavenArtifactInfo[] dependencies = utils.getDependencies(file);
         return toModuleInfo(dependencies);
     }
@@ -74,7 +77,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        AetherUtils utils = new AetherUtils(new JULLogger(), false);
+        AetherUtils utils = new AetherUtils(logger, false);
         MavenArtifactInfo[] dependencies = utils.getDependencies(stream);
         return toModuleInfo(dependencies);
     }
