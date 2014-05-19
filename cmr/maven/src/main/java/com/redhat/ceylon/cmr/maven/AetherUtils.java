@@ -18,22 +18,11 @@ package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.jboss.shrinkwrap.resolver.api.ResolutionException;
-import org.jboss.shrinkwrap.resolver.api.Resolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
-import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
-import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -43,8 +32,22 @@ import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
+import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
+import org.jboss.shrinkwrap.resolver.api.ResolutionException;
+import org.jboss.shrinkwrap.resolver.api.Resolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 
 /**
  * Aether utils.
@@ -66,6 +69,25 @@ public class AetherUtils {
         this.log = log;
         this.offline = offline;
         settingsXml = getDefaultMavenSettings();
+    }
+
+    MavenArtifactInfo[] getDependencies(File pomXml) {
+        MavenResolverSystem system = getResolver();
+        PomEquippedResolveStage stage = system.loadPomFromFile(pomXml);
+        MavenFormatStage dependencies = stage.importDependencies(SCOPES).resolve().using(SCOPED_STRATEGY);
+        return dependencies.asResolvedArtifact();
+    }
+
+    MavenArtifactInfo[] getDependencies(InputStream pomXml) {
+        try {
+            return getDependencies(IOUtils.toTempFile(pomXml));
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    static boolean isOptional(MavenArtifactInfo info) {
+        return !(info.getScope() == ScopeType.COMPILE || info.getScope() == ScopeType.RUNTIME);
     }
 
     void overrideSettingsXml(String settingsXml) {
@@ -120,10 +142,10 @@ public class AetherUtils {
         if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.MAVEN_SRC)) {
             return fetchWithClassifier(groupId, artifactId, version, "sources", repositoryDisplayString);
         }
-        
+
         return fetchDependencies(groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isFetchSingleArtifact(), repositoryDisplayString);
     }
-    
+
     private ArtifactResult fetchDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
         MavenCoordinate mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
         ArtifactOverrides ao = findArtifactOverrides(mc);
@@ -200,7 +222,7 @@ public class AetherUtils {
             public ImportType importType() {
                 return shared ? ImportType.EXPORT : ImportType.UNDEFINED;
             }
-            
+
             private synchronized ArtifactResult getResult() {
                 if (result == null) {
                     result = fetchDependencies(dCo.getGroupId(), dCo.getArtifactId(), dVersion, false, repositoryDisplayString);
@@ -236,7 +258,7 @@ public class AetherUtils {
         return null;
     }
 
-    private static String toCanonicalForm(String groupId, String artifactId) {
+    static String toCanonicalForm(String groupId, String artifactId) {
         return groupId + ":" + artifactId;
     }
 
@@ -267,15 +289,14 @@ public class AetherUtils {
 
     private MavenResolverSystem getResolver() {
         ClassLoader classLoader = AetherUtils.class.getClassLoader();
-        if(classLoader == null)
+        if (classLoader == null)
             classLoader = ClassLoader.getSystemClassLoader();
-        
-        ConfigurableMavenResolverSystem factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
 
+        ConfigurableMavenResolverSystem factory = Resolvers.configure(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
         MavenResolverSystem resolver;
-        if (settingsXml.startsWith("classpath:")){
+        if (settingsXml.startsWith("classpath:")) {
             resolver = factory.fromClassloaderResource(settingsXml.substring(10), classLoader);
-        }else{
+        } else {
             resolver = factory.fromFile(settingsXml);
         }
         return resolver;
@@ -283,6 +304,7 @@ public class AetherUtils {
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
         private String repositoryDisplayString;
+
         protected MavenArtifactResult(String name, String version, String repositoryDisplayString) {
             super(name, version);
             this.repositoryDisplayString = repositoryDisplayString;
@@ -291,7 +313,7 @@ public class AetherUtils {
         public ArtifactResultType type() {
             return ArtifactResultType.MAVEN;
         }
-        
+
         @Override
         public String repositoryDisplayString() {
             return repositoryDisplayString;

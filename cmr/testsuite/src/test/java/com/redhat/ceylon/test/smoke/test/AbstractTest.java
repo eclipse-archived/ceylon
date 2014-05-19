@@ -36,6 +36,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
@@ -254,12 +255,20 @@ public class AbstractTest {
     }
 
     protected static InputStream mockJar(String entryName, byte[] entryContent) throws IOException {
-        return mockJar(new String[]{entryName}, Collections.singletonList(entryContent));
+        return mockJar(entryName, entryContent, null);
+    }
+
+    protected static InputStream mockJar(String entryName, byte[] entryContent, Manifest manifest) throws IOException {
+        return mockJar(new String[]{entryName}, Collections.singletonList(entryContent), manifest);
     }
 
     protected static InputStream mockJar(String[] entryNames, List<byte[]> entryContents) throws IOException {
+        return mockJar(entryNames, entryContents, null);
+    }
+
+    protected static InputStream mockJar(String[] entryNames, List<byte[]> entryContents, Manifest manifest) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (JarOutputStream output = new JarOutputStream(baos)) {
+        try (JarOutputStream output = (manifest != null) ? new JarOutputStream(baos, manifest) : new JarOutputStream(baos)) {
             for (int i = 0; i < entryNames.length; i++) {
                 String entryName = entryNames[i];
                 JarEntry jarEntry = new JarEntry(entryName);

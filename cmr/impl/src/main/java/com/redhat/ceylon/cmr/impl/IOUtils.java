@@ -340,4 +340,15 @@ public class IOUtils {
             throw new IllegalStateException(e);
         }
     }
+
+    public static File toTempFile(InputStream inputStream) throws IOException {
+        try {
+            final File tempFile = File.createTempFile("ceylon-", "-pom.xml");
+            writeToFile(tempFile, inputStream);
+            tempFile.deleteOnExit();
+            return tempFile;
+        } finally {
+            safeClose(inputStream);
+        }
+    }
 }

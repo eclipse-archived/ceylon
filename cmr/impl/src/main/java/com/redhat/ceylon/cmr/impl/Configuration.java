@@ -16,6 +16,9 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.util.logging.Logger;
+
+import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyResolvers;
 
 /**
@@ -30,11 +33,23 @@ public class Configuration {
         resolvers = new DependencyResolvers();
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
+        addResolver("com.redhat.ceylon.cmr.maven.MavenDependencyResolver");
+        resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
         resolvers.addResolver(BytecodeUtils.INSTANCE);
         resolvers.addResolver(JSUtils.INSTANCE);
     }
 
     public static DependencyResolvers getResolvers() {
         return resolvers;
+    }
+
+    private static void addResolver(String className) {
+        try {
+            ClassLoader cl = Configuration.class.getClassLoader();
+            DependencyResolver resolver = (DependencyResolver) cl.loadClass(className).newInstance();
+            resolvers.addResolver(resolver);
+        } catch (Throwable t) {
+            Logger.getLogger(Configuration.class.getName()).warning(String.format("Cannot add resolver %s - %s", className, t));
+        }
     }
 }

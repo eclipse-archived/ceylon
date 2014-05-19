@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -346,6 +348,24 @@ public class SmokeTestCase extends AbstractTest {
         ac.setSuffixes(ArtifactContext.JAR);
         result = manager.getArtifactResult(ac);
         Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testSimpleOSGi() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("org.osgi.ceylon", "1.0", ArtifactContext.JAR);
+        try {
+            Manifest manifest = new Manifest();
+            manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+            manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;bundle-version=0.1");
+            manager.putArtifact(context, mockJar("foo", "bar".getBytes(), manifest));
+
+            File[] files = manager.resolve(context);
+            Assert.assertNotNull(files);
+            Assert.assertEquals(3, files.length);
+        } finally {
+            manager.removeArtifact(context);
+        }
     }
 
     public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), set(".car"), 3, null, false, null);

@@ -47,7 +47,11 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
             String descriptorPath = String.format("META-INF/jbossmodules/%s/%s/" + descriptorName, result.name().replace('.', '/'), result.version());
             final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);
             if (descriptor != null) {
-                return resolveFromInputStream(descriptor);
+                try {
+                    return resolveFromInputStream(descriptor);
+                } finally {
+                    IOUtils.safeClose(descriptor);
+                }
             }
         }
 

@@ -17,21 +17,17 @@
 package com.redhat.ceylon.test.maven.test;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.Repository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.impl.JULLogger;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,10 +36,7 @@ import org.junit.Test;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AetherTestCase {
-
-    private Logger log = new JULLogger();
-
+public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testSimpleTest() throws Throwable {
         StructureBuilder structureBuilder = new AetherContentStore(log, false);
@@ -214,22 +207,6 @@ public class AetherTestCase {
             if (exists) {
                 Assert.assertTrue(artifact.delete()); // delete this one
             }
-        }
-    }
-
-    private Repository createAetherRepository() throws Exception {
-        return createAetherRepository(false);
-    }
-
-    private Repository createAetherRepository(boolean useOverrides) throws Exception {
-        URL settingsURL = getClass().getClassLoader().getResource("maven-settings/settings.xml");
-        String settingsXml = new File(settingsURL.toURI()).getPath();
-        if (useOverrides) {
-            URL overridessURL = getClass().getClassLoader().getResource("maven-settings/overrides.xml");
-            String overridesXml = new File(overridessURL.toURI()).getPath();
-            return AetherRepository.createRepository(log, settingsXml, overridesXml, false);
-        } else {
-            return AetherRepository.createRepository(log, settingsXml, false);
         }
     }
 }
