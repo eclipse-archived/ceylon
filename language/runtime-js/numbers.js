@@ -30,7 +30,7 @@ JSNumber.$crtmm$=function(){return{$nm:'JSNumber',$mt:'c',$an:function(){return[
   mod:$CCMM$,d:['$','Number']};}
 
 var origNumToString = Number.prototype.toString;
-inheritProto(JSNumber, Object$, $init$Integral(), Exponentiable);
+inheritProto(JSNumber, Object$, Number$, $init$Integral(), Exponentiable);
 
 function Integer(value) {
     if (value && value.getT$name && value.getT$name() === 'ceylon.language::Integer') {
