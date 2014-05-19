@@ -79,10 +79,17 @@ public class AetherUtils {
     }
 
     MavenArtifactInfo[] getDependencies(InputStream pomXml) {
+        File tempFile = null;
         try {
-            return getDependencies(IOUtils.toTempFile(pomXml));
+            tempFile = IOUtils.toTempFile(pomXml);
+            return getDependencies(tempFile);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
+        } finally {
+            if (tempFile != null) {
+                //noinspection ResultOfMethodCallIgnored
+                tempFile.delete();
+            }
         }
     }
 

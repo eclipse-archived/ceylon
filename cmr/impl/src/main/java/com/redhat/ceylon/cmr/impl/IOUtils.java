@@ -345,7 +345,6 @@ public class IOUtils {
         try {
             final File tempFile = File.createTempFile("ceylon-", "-pom.xml");
             writeToFile(tempFile, inputStream);
-            tempFile.deleteOnExit();
             return tempFile;
         } finally {
             safeClose(inputStream);
