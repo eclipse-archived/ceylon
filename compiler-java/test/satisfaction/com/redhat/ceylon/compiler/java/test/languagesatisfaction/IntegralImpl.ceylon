@@ -83,4 +83,6 @@ class IntegralImpl() satisfies Integral<IntegralImpl> {
     shared actual IntegralImpl plusInteger(Integer integer) => nothing;
     
     shared actual IntegralImpl powerOfInteger(Integer power) => nothing;
+    
+    shared actual IntegralImpl neighbour(Integer integer) => nothing;
 }
