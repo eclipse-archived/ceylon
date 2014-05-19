@@ -56,7 +56,10 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     public RootRepositoryManager(File rootDir, Logger log) {
         super(log);
         if (!rootDir.exists() && !rootDir.mkdirs()) {
-            throw new IllegalArgumentException("Cannot create Ceylon cache repository directory: " + rootDir);
+            throw new RepositoryException("Cannot create Ceylon cache repository directory: " + rootDir);
+        }
+        if (!rootDir.isDirectory()) {
+            throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
         }
         fileContentStore = new FileContentStore(rootDir);
         final Repository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
