@@ -47,8 +47,10 @@ import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
+import com.redhat.ceylon.cmr.api.RepositoryException;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.compiler.EnvironmentException;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -674,6 +676,8 @@ public class Main extends com.sun.tools.javac.main.Main {
             throw new RuntimeException(ex.getCause());
         } catch (PropagatedException ex) {
             throw ex.getCause();
+        } catch (RepositoryException ex) {
+            throw new EnvironmentException(ex);
         } catch (Throwable ex) {
             // Nasty. If we've already reported an error, compensate
             // for buggy compiler error recovery by swallowing thrown
