@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -252,6 +253,12 @@ public class AbstractTest {
         SortedSet<ModuleVersionArtifact> ret = new TreeSet<>();
         Collections.addAll(ret, values);
         return ret;
+    }
+
+    protected static Manifest mockManifest(String version) {
+        Manifest manifest = new Manifest();
+        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, version);
+        return manifest;
     }
 
     protected static InputStream mockJar(String entryName, byte[] entryContent) throws IOException {

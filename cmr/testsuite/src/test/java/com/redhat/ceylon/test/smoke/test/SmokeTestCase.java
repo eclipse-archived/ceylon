@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -355,8 +354,7 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
         ArtifactContext context = new ArtifactContext("org.osgi.ceylon", "1.0", ArtifactContext.JAR);
         try {
-            Manifest manifest = new Manifest();
-            manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+            Manifest manifest = mockManifest("1.0");
             manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;bundle-version=0.1");
             manager.putArtifact(context, mockJar("foo", "bar".getBytes(), manifest));
 
