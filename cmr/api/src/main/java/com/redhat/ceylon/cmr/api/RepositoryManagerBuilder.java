@@ -49,6 +49,13 @@ public class RepositoryManagerBuilder {
         try {
             Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, String.class);
             delegate = ctor.newInstance(log, offline, mavenOverrides);
+        } catch (java.lang.reflect.InvocationTargetException e) {
+            Throwable tex = e.getTargetException();
+            if (tex instanceof RuntimeException) {
+                throw (RuntimeException)tex;
+            } else {
+                throw new IllegalArgumentException(e);
+            }
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -64,6 +71,13 @@ public class RepositoryManagerBuilder {
         try {
             Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, String.class);
             delegate = ctor.newInstance(mainRepository, log, offline, mavenOverrides);
+        } catch (java.lang.reflect.InvocationTargetException e) {
+            Throwable tex = e.getTargetException();
+            if (tex instanceof RuntimeException) {
+                throw (RuntimeException)tex;
+            } else {
+                throw new IllegalArgumentException(tex);
+            }
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
