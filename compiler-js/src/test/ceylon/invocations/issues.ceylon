@@ -33,16 +33,16 @@ R bar326tl<A, R>(A arg) {
 R(A) foo326tl<A, R>() => bar326tl<A,R>;
 
 void testIssue326() {
-  check(foo326tl<Integer,Number>()(5)==5, "Issue 326 #1");
-  value ftl = foo326tl<Integer,Number>();
+  check(foo326tl<Integer,Number<Integer>>()(5)==5, "Issue 326 #1");
+  value ftl = foo326tl<Integer,Number<Integer>>();
   check(ftl(5)==5, "Issue 326 #2");
   R bar326<A, R>(A arg) {
     assert(is R r=arg);
     return r;
   }
   R(A) foo326<A, R>() => bar326<A,R>;
-  check(foo326<Integer,Number>()(5)==5, "Issue 326 #3");
-  value fi = foo326<Integer,Number>();
+  check(foo326<Integer,Number<Integer>>()(5)==5, "Issue 326 #3");
+  value fi = foo326<Integer,Number<Integer>>();
   check(fi(5)==5, "Issue 326 #4");
 }
 
