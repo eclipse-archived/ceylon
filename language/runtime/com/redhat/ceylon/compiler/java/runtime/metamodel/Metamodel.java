@@ -202,10 +202,7 @@ public class Metamodel {
     }
 
     public static boolean isReified(java.lang.Object o, TypeDescriptor type){
-        TypeDescriptor instanceType = getTypeDescriptor(o);
-        if(instanceType == null)
-            return false;
-        return instanceType.toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
+        return moduleManager.cachedIs(o, type);
     }
 
     public static ProducedType getProducedType(Object instance) {

@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.model;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.compiler.loader.impl.reflect.model.ReflectionModuleManager;
@@ -15,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
 import com.redhat.ceylon.compiler.typechecker.model.Modules;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 
 public class RuntimeModuleManager extends ReflectionModuleManager {
@@ -103,5 +107,43 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     
     public Module findModuleForClass(java.lang.Class<?> klass){
         return getModelLoader().findModuleForClass(klass);
+    }
+    
+    private final LinkedHashMap<TypeDescriptor, ProducedType> producedTypeCache = new LinkedHashMap<TypeDescriptor, ProducedType>(100, (float)0.75, true) {
+        protected boolean removeEldestEntry(Map.Entry<TypeDescriptor, ProducedType> eldest) {
+            return size() > 100;
+         }
+    };
+    
+    public ProducedType getCachedProducedType(TypeDescriptor td) {
+        ProducedType pt = producedTypeCache.get(td);
+        if (pt == null) {
+            pt = td.toProducedType(this);
+            producedTypeCache.put(td, pt);
+        }
+        return pt;
+    }
+    
+    private final LinkedHashMap<String, Boolean> isCache = new LinkedHashMap<String, Boolean>(100, (float)0.75, true) {
+        protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
+            return size() > 100;
+         }
+    };
+    
+    public boolean cachedIs(Object o, TypeDescriptor type) {
+        TypeDescriptor instanceType = Metamodel.getTypeDescriptor(o);
+        String key = instanceType+"<:"+type;
+        Boolean cachedResult = isCache.get(key);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
+        
+        if(instanceType == null)
+            return false;
+        ProducedType pt1 = getCachedProducedType(instanceType);
+        ProducedType pt2  = getCachedProducedType(type);
+        boolean result = pt1.isSubtypeOf(pt2);
+        isCache.put(key, result);
+        return result;
     }
 }
