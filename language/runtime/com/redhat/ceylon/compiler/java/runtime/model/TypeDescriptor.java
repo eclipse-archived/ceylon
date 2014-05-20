@@ -336,7 +336,14 @@ public abstract class TypeDescriptor {
         
         @Override
         public int hashCode() {
-            return Arrays.hashCode(typeArguments) ^ klass.hashCode() ^ name.hashCode();
+            int hash = Arrays.hashCode(typeArguments);
+            if (klass != null) {
+                hash ^= klass.hashCode();
+            } 
+            if (name != null) {
+                hash ^= name.hashCode();
+            }
+            return hash;
         }
         
         @Override
