@@ -1,13 +1,19 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
+import java.util.Collections;
 import java.util.List;
 
 import ceylon.language.ArraySequence;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
+import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.FunctionDeclaration;
+import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.ClassOrInterface$impl;
 import ceylon.language.meta.model.IncompatibleTypeException;
@@ -25,7 +31,10 @@ import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
+import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 
 @Ceylon(major = 7)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -499,6 +508,580 @@ public abstract class AppliedClassOrInterface<Type>
             return null;
         return value.memberApply($reifiedContainer, $reifiedGet, $reifiedSet, 
                 (ceylon.language.meta.model.Type<Container>)this);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @Ignore
+    public <Container, Get, Set>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Attribute<? super Container, ? extends Get, ? super Set>> 
+            getDeclaredAttributes(@Ignore TypeDescriptor $reifiedContainer, 
+                                  @Ignore TypeDescriptor $reifiedGet, 
+                                  @Ignore TypeDescriptor $reifiedSet) {
+        return getDeclaredAttributes($reifiedContainer, $reifiedGet, $reifiedSet, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Get"),
+        @TypeParameter(value = "Set")
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Attribute<Container,Get,Set>>")
+    public <Container, Get, Set>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Attribute<? super Container, ? extends Get, ? super Set>> 
+            getDeclaredAttributes(@Ignore TypeDescriptor $reifiedContainer, 
+                                  @Ignore TypeDescriptor $reifiedGet, 
+                                  @Ignore TypeDescriptor $reifiedSet,
+                                  @Sequenced
+                                  ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        // check the container type first
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(this.producedType))
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        Sequential<? extends ValueDeclaration> declaredDeclarations = declaration.<ValueDeclaration>declaredMemberDeclarations(ValueDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedGet = Metamodel.getProducedType($reifiedGet);
+        ProducedType reifiedSet = Metamodel.getProducedType($reifiedSet);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Attribute.class, $reifiedType, $reifiedGet, $reifiedSet);
+        SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeValue decl = (FreeValue) it;
+
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+
+            addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, this.producedType, reifiedGet, reifiedSet);
+        }
+        return members.getSequence();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <Container,Get,Set> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedGet,
+            @Ignore TypeDescriptor $reifiedSet,
+            SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members,
+            FreeValue decl, ProducedType qualifyingType, 
+            ProducedType reifiedGet, ProducedType reifiedSet){
+        // now the types
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
+        ProducedType type = producedReference.getType();
+        if(!type.isSubtypeOf(reifiedGet))
+            return;
+        ProducedType setType = decl.getVariable() ? type : decl.declaration.getUnit().getNothingDeclaration().getType();
+        if(!reifiedSet.isSubtypeOf(setType))
+            return;
+        // it's compatible!
+        members.append(decl.<Container,Get,Set>memberApply($reifiedContainer, $reifiedGet, $reifiedSet, (ceylon.language.meta.model.Type<Container>)this));
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @Ignore
+    public <Container, Get, Set>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Attribute<? super Container, ? extends Get, ? super Set>> 
+            getAttributes(@Ignore TypeDescriptor $reifiedContainer, 
+                          @Ignore TypeDescriptor $reifiedGet, 
+                          @Ignore TypeDescriptor $reifiedSet) {
+        return getAttributes($reifiedContainer, $reifiedGet, $reifiedSet, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Get"),
+        @TypeParameter(value = "Set")
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Attribute<Container,Get,Set>>")
+    public <Container, Get, Set>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Attribute<? super Container, ? extends Get, ? super Set>> 
+            getAttributes(@Ignore TypeDescriptor $reifiedContainer, 
+                          @Ignore TypeDescriptor $reifiedGet, 
+                          @Ignore TypeDescriptor $reifiedSet,
+                          @Sequenced
+                          ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        Sequential<? extends ValueDeclaration> declaredDeclarations = declaration.<ValueDeclaration>memberDeclarations(ValueDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        ProducedType reifiedGet = Metamodel.getProducedType($reifiedGet);
+        ProducedType reifiedSet = Metamodel.getProducedType($reifiedSet);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Attribute.class, $reifiedContainer, $reifiedGet, $reifiedSet);
+        SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.Attribute<? super Container,? extends Get,? super Set>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeValue decl = (FreeValue) it;
+
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            // check the container type first
+            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
+            if(qualifyingType == null)
+                continue;
+
+            addIfCompatible($reifiedContainer, $reifiedGet, $reifiedSet, members, decl, qualifyingType, reifiedGet, reifiedSet);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @Ignore
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Method<? super Container, ? extends Type, ? super Arguments>> 
+            getDeclaredMethods(@Ignore TypeDescriptor $reifiedContainer, 
+                               @Ignore TypeDescriptor $reifiedType, 
+                               @Ignore TypeDescriptor $reifiedArguments) {
+        return getDeclaredMethods($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Method<Container,Type,Arguments>>")
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Method<? super Container, ? extends Type, ? super Arguments>> 
+            getDeclaredMethods(@Ignore TypeDescriptor $reifiedContainer, 
+                               @Ignore TypeDescriptor $reifiedType, 
+                               @Ignore TypeDescriptor $reifiedArguments,
+                               @Sequenced
+                               ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        // check the container type first
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(this.producedType))
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        Sequential<? extends FunctionDeclaration> declaredDeclarations = declaration.<FunctionDeclaration>declaredMemberDeclarations(FunctionDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Method.class, $reifiedContainer, $reifiedType, $reifiedArguments);
+        SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeFunction decl = (FreeFunction) it;
+
+            // skip generic functions
+            if(!decl.getTypeParameterDeclarations().getEmpty())
+                continue;
+            
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @Ignore
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Method<? super Container, ? extends Type, ? super Arguments>> 
+            getMethods(@Ignore TypeDescriptor $reifiedContainer, 
+                       @Ignore TypeDescriptor $reifiedType, 
+                       @Ignore TypeDescriptor $reifiedArguments) {
+        return getMethods($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Method<Container,Type,Arguments>>")
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.Method<? super Container, ? extends Type, ? super Arguments>> 
+            getMethods(@Ignore TypeDescriptor $reifiedContainer, 
+                       @Ignore TypeDescriptor $reifiedType, 
+                       @Ignore TypeDescriptor $reifiedArguments,
+                       @Sequenced
+                       ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        Sequential<? extends FunctionDeclaration> declaredDeclarations = declaration.<FunctionDeclaration>memberDeclarations(FunctionDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.Method.class, $reifiedContainer, $reifiedType, $reifiedArguments);
+        SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeFunction decl = (FreeFunction) it;
+
+            // skip generic functions
+            if(!decl.getTypeParameterDeclarations().getEmpty())
+                continue;
+            
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            // check the container type first
+            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
+            if(qualifyingType == null)
+                continue;
+
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "hiding" })
+    private <Container,Type,Arguments extends Sequential<? extends Object>> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedType,
+            @Ignore TypeDescriptor $reifiedArguments,
+            SequenceBuilder<ceylon.language.meta.model.Method<? super Container,? extends Type,? super Arguments>> members,
+            FreeFunction decl, ProducedType qualifyingType, 
+            ProducedType reifiedType, ProducedType reifiedArguments){
+        // now the types
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
+        ProducedType type = producedReference.getType();
+        if(!type.isSubtypeOf(reifiedType))
+            return;
+        ProducedType argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
+        if(!reifiedArguments.isSubtypeOf(argumentsType))
+            return;
+        // it's compatible!
+        members.append(decl.<Container,Type,Arguments>memberApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @Ignore
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberClass<? super Container, ? extends Type, ? super Arguments>> 
+            getDeclaredClasses(@Ignore TypeDescriptor $reifiedContainer, 
+                               @Ignore TypeDescriptor $reifiedType, 
+                               @Ignore TypeDescriptor $reifiedArguments) {
+        return getDeclaredClasses($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::MemberClass<Container,Type,Arguments>>")
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberClass<? super Container, ? extends Type, ? super Arguments>> 
+            getDeclaredClasses(@Ignore TypeDescriptor $reifiedContainer, 
+                               @Ignore TypeDescriptor $reifiedType, 
+                               @Ignore TypeDescriptor $reifiedArguments,
+                               @Sequenced
+                               ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        // check the container type first
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(this.producedType))
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        Sequential<? extends ClassDeclaration> declaredDeclarations = declaration.<ClassDeclaration>declaredMemberDeclarations(ClassDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);
+        SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeClass decl = (FreeClass) it;
+
+            // skip generic classes
+            if(!decl.getTypeParameterDeclarations().getEmpty())
+                continue;
+            
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, producedType, reifiedType, reifiedArguments);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @Ignore
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberClass<? super Container, ? extends Type, ? super Arguments>> 
+            getClasses(@Ignore TypeDescriptor $reifiedContainer, 
+                       @Ignore TypeDescriptor $reifiedType, 
+                       @Ignore TypeDescriptor $reifiedArguments) {
+        return getClasses($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::MemberClass<Container,Type,Arguments>>")
+    public <Container, Type, Arguments extends Sequential<? extends Object>>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberClass<? super Container, ? extends Type, ? super Arguments>> 
+            getClasses(@Ignore TypeDescriptor $reifiedContainer, 
+                       @Ignore TypeDescriptor $reifiedType, 
+                       @Ignore TypeDescriptor $reifiedArguments,
+                       @Sequenced
+                       ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        Sequential<? extends ClassDeclaration> declaredDeclarations = declaration.<ClassDeclaration>memberDeclarations(ClassDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        ProducedType reifiedArguments = Metamodel.getProducedType($reifiedArguments);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType, $reifiedArguments);
+        SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeClass decl = (FreeClass) it;
+
+            // skip generic classes
+            if(!decl.getTypeParameterDeclarations().getEmpty())
+                continue;
+            
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            // check the container type first
+            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
+            if(qualifyingType == null)
+                continue;
+
+            addIfCompatible($reifiedContainer, $reifiedType, $reifiedArguments, members, decl, qualifyingType, reifiedType, reifiedArguments);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "hiding" })
+    private <Container,Type,Arguments extends Sequential<? extends Object>> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedType,
+            @Ignore TypeDescriptor $reifiedArguments,
+            SequenceBuilder<ceylon.language.meta.model.MemberClass<? super Container,? extends Type,? super Arguments>> members,
+            FreeClass decl, ProducedType qualifyingType, 
+            ProducedType reifiedType, ProducedType reifiedArguments){
+        // now the types
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
+        ProducedType type = producedReference.getType();
+        if(!type.isSubtypeOf(reifiedType))
+            return;
+        ProducedType argumentsType = Metamodel.getProducedTypeForArguments(decl.declaration.getUnit(), (Functional) decl.declaration, producedReference);
+        if(!reifiedArguments.isSubtypeOf(argumentsType))
+            return;
+        // it's compatible!
+        members.append(decl.<Container,Type,Arguments>memberClassApply($reifiedContainer, $reifiedType, $reifiedArguments, (ceylon.language.meta.model.Type<Container>)this));
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @Ignore
+    public <Container, Type>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberInterface<? super Container, ? extends Type>> 
+            getDeclaredInterfaces(@Ignore TypeDescriptor $reifiedContainer, 
+                                  @Ignore TypeDescriptor $reifiedType) {
+        return getDeclaredInterfaces($reifiedContainer, $reifiedType, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::MemberInterface<Container,Type>>")
+    public <Container, Type>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberInterface<? super Container, ? extends Type>> 
+            getDeclaredInterfaces(@Ignore TypeDescriptor $reifiedContainer, 
+                                  @Ignore TypeDescriptor $reifiedType, 
+                                  @Sequenced
+                                  ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        // check the container type first
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        if(!reifiedContainer.isSubtypeOf(this.producedType))
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        Sequential<? extends InterfaceDeclaration> declaredDeclarations = declaration.<InterfaceDeclaration>declaredMemberDeclarations(InterfaceDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberClass.class, $reifiedContainer, $reifiedType);
+        SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeInterface decl = (FreeInterface) it;
+
+            // skip generic classes
+            if(!decl.getTypeParameterDeclarations().getEmpty())
+                continue;
+            
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            addIfCompatible($reifiedContainer, $reifiedType, members, decl, producedType, reifiedType);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @Ignore
+    public <Container, Type>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberInterface<? super Container, ? extends Type>> 
+            getInterfaces(@Ignore TypeDescriptor $reifiedContainer, 
+                          @Ignore TypeDescriptor $reifiedType) {
+        return getInterfaces($reifiedContainer, $reifiedType, (ceylon.language.Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes", "hiding" })
+    @Override
+    @TypeParameters({
+        @TypeParameter(value = "Container"),
+        @TypeParameter(value = "Type"),
+    })
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::MemberInterface<Container,Type>>")
+    public <Container, Type>
+        ceylon.language.Sequential<? extends ceylon.language.meta.model.MemberInterface<? super Container, ? extends Type>> 
+            getInterfaces(@Ignore TypeDescriptor $reifiedContainer, 
+                          @Ignore TypeDescriptor $reifiedType, 
+                          @Sequenced
+                          ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends ceylon.language.Annotation>> annotations) {
+        checkInit();
+        
+        Sequential<? extends InterfaceDeclaration> declaredDeclarations = declaration.<InterfaceDeclaration>memberDeclarations(InterfaceDeclaration.$TypeDescriptor$);
+        if(declaredDeclarations.getEmpty())
+            return (ceylon.language.Sequential)empty_.get_();
+        
+        ProducedType reifiedContainer = Metamodel.getProducedType($reifiedContainer);
+        ProducedType reifiedType = Metamodel.getProducedType($reifiedType);
+        
+        Iterator<?> iterator = declaredDeclarations.iterator();
+        Object it;
+        TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
+        TypeDescriptor reifiedKind = TypeDescriptor.klass(ceylon.language.meta.model.MemberInterface.class, $reifiedContainer, $reifiedType);
+        SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members = 
+                new SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>>(reifiedKind, (int) declaredDeclarations.getSize());
+
+        while((it = iterator.next()) != finished_.get_()){
+            FreeInterface decl = (FreeInterface) it;
+
+            // skip generic classes
+            if(!decl.getTypeParameterDeclarations().getEmpty())
+                continue;
+            
+            // ATM this is an AND WRT annotation types: all must be present
+            if(!hasAllAnnotations(decl, annotationTypeDescriptors))
+                continue;
+            
+            // check the container type first
+            ProducedType qualifyingType = reifiedContainer.getSupertype((TypeDeclaration) decl.declaration.getContainer());
+            if(qualifyingType == null)
+                continue;
+
+            addIfCompatible($reifiedContainer, $reifiedType, members, decl, qualifyingType, reifiedType);
+        }
+        return members.getSequence();
+    }
+
+    @SuppressWarnings({ "unchecked", "hiding" })
+    private <Container,Type> void addIfCompatible(@Ignore TypeDescriptor $reifiedContainer,
+            @Ignore TypeDescriptor $reifiedType,
+            SequenceBuilder<ceylon.language.meta.model.MemberInterface<? super Container,? extends Type>> members,
+            FreeInterface decl, ProducedType qualifyingType, 
+            ProducedType reifiedType){
+        // now the types
+        ProducedReference producedReference = decl.declaration.getProducedReference(qualifyingType, Collections.<ProducedType>emptyList());
+        ProducedType type = producedReference.getType();
+        if(!type.isSubtypeOf(reifiedType))
+            return;
+        // it's compatible!
+        members.append(decl.<Container,Type>memberInterfaceApply($reifiedContainer, $reifiedType, (ceylon.language.meta.model.Type<Container>)this));
+    }
+
+    private boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
+        for(TypeDescriptor annotationTypeDescriptor : annotationTypeDescriptors){
+            if(decl.annotations(annotationTypeDescriptor).getEmpty()){
+                // skip this declaration
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

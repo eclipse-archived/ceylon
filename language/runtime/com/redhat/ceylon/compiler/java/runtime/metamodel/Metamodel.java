@@ -592,6 +592,37 @@ public class Metamodel {
         throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
     }
 
+    public static TypeDescriptor[] getTypeDescriptors(Sequential<? extends ceylon.language.meta.model.Type<?>> types) {
+        Iterator<? extends ceylon.language.meta.model.Type<?>> iterator = types.iterator();
+        Object it;
+        TypeDescriptor[] ret = new TypeDescriptor[(int) types.getSize()];
+        int i=0;
+        while((it = iterator.next()) != finished_.get_()){
+            ceylon.language.meta.model.Type<?> annotationType = (ceylon.language.meta.model.Type<?>)it;
+            ret[i++] = getTypeDescriptor(annotationType);
+        }
+        return ret;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static TypeDescriptor getTypeDescriptor(ceylon.language.meta.model.Type<?> appliedType) {
+        if(appliedType instanceof AppliedClass){
+            return ((AppliedClass) appliedType).$reifiedType;
+        }
+        if(appliedType instanceof AppliedInterface){
+            return ((AppliedInterface) appliedType).$reifiedType;
+        }
+        if(appliedType instanceof AppliedUnionType){
+            return ((AppliedUnionType) appliedType).$reifiedUnion;
+        }
+        if(appliedType instanceof AppliedIntersectionType){
+            return ((AppliedIntersectionType) appliedType).$reifiedIntersection;
+        }
+        if(appliedType == ceylon.language.meta.model.nothingType_.get_())
+            return TypeDescriptor.NothingType;
+        throw Metamodel.newModelError("Unsupported type: " + appliedType);
+    }
+
     private static TypeDescriptor[] getTypeDescriptorsForProducedTypes(List<ProducedType> args) {
         TypeDescriptor[] tdArgs = new TypeDescriptor[args.size()];
         for(int i=0;i<tdArgs.length;i++){
