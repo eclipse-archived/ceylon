@@ -94,13 +94,7 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
     @Override
     @Ignore
     public final Sequential<? extends Element> getSequence() {
-        final SequenceBuilder<Element> sb = new SequenceBuilder<Element>($reifiedElement);
-        java.lang.Object next = null;
-        for (Iterator<? extends Element> iter = iterator(); 
-        		(next = iter.next()) != finished_.get_();) {
-            sb.append((Element) next);
-        }
-        return sb.getSequence();
+        return $ceylon$language$Iterable$this.getSequence();
     }
     
     @Override
