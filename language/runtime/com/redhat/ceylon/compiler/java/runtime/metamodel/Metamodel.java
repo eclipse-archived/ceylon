@@ -414,7 +414,7 @@ public class Metamodel {
         TypeDescriptor td = TypeDescriptor.NothingType;
         for(ProducedType pt : types){
             OpenType mm = Metamodel.getMetamodel(pt);
-            td = td.union(((ReifiedType)mm).$getType$());
+            td = TypeDescriptor.union(((ReifiedType)mm).$getType$());
             ret[i++] = mm;
         }
         return Util.sequentialInstance(td, ret);

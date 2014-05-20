@@ -286,6 +286,7 @@ public class FreeFunction
         return memberInvoke(container, typeArguments, empty_.get_());
     }
 
+    @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Anything")
     @Override
     public java.lang.Object memberInvoke(

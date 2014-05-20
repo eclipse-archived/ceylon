@@ -257,6 +257,7 @@ public class FreeClass
         return memberInstantiate(container, typeArguments, empty_.get_());
     }
 
+    @SuppressWarnings("unchecked")
     @TypeInfo("ceylon.language::Anything")
     @Override
     public java.lang.Object memberInstantiate(

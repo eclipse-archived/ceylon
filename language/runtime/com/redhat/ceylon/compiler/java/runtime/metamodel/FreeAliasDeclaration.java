@@ -5,7 +5,6 @@ import ceylon.language.meta.declaration.AliasDeclaration$impl;
 import ceylon.language.meta.declaration.GenericDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
 
-import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
