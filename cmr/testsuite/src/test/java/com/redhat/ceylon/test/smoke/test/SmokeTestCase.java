@@ -27,6 +27,7 @@ import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.cmr.api.ImportType;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
@@ -352,7 +353,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSimpleOSGi() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("org.osgi.ceylon", "1.0", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext("org.osgi.ceylon.simple", "1.0", ArtifactContext.JAR);
         try {
             Manifest manifest = mockManifest("1.0");
             manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;bundle-version=0.1");
@@ -361,6 +362,48 @@ public class SmokeTestCase extends AbstractTest {
             File[] files = manager.resolve(context);
             Assert.assertNotNull(files);
             Assert.assertEquals(3, files.length);
+        } finally {
+            manager.removeArtifact(context);
+        }
+    }
+
+    @Test
+    public void testOptionalOSGi() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("org.osgi.ceylon.optional", "1.0", ArtifactContext.JAR);
+        try {
+            Manifest manifest = mockManifest("1.0");
+            manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;resolution:=optional;bundle-version=0.1");
+            manager.putArtifact(context, mockJar("foo", "bar".getBytes(), manifest));
+
+            ArtifactResult result = manager.getArtifactResult(context);
+            Assert.assertNotNull(result);
+            Assert.assertNotNull(result.dependencies());
+            Assert.assertEquals(1, result.dependencies().size());
+            ArtifactResult dep1 = result.dependencies().get(0);
+            Assert.assertNotNull(dep1);
+            Assert.assertEquals(ImportType.OPTIONAL, dep1.importType());
+        } finally {
+            manager.removeArtifact(context);
+        }
+    }
+
+    @Test
+    public void testSharedOSGi() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+        ArtifactContext context = new ArtifactContext("org.osgi.ceylon.shared", "1.0", ArtifactContext.JAR);
+        try {
+            Manifest manifest = mockManifest("1.0");
+            manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;visibility:=reexport;bundle-version=0.1");
+            manager.putArtifact(context, mockJar("foo", "bar".getBytes(), manifest));
+
+            ArtifactResult result = manager.getArtifactResult(context);
+            Assert.assertNotNull(result);
+            Assert.assertNotNull(result.dependencies());
+            Assert.assertEquals(1, result.dependencies().size());
+            ArtifactResult dep1 = result.dependencies().get(0);
+            Assert.assertNotNull(dep1);
+            Assert.assertEquals(ImportType.EXPORT, dep1.importType());
         } finally {
             manager.removeArtifact(context);
         }

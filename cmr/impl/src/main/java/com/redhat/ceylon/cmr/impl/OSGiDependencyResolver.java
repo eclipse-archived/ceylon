@@ -109,15 +109,42 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         if (p > 0) {
             String[] parameters = bundle.substring(p + 1).split(";");
             for (String param : parameters) {
-                if (param.startsWith("bundle-version=")) {
-                    version = param.substring("bundle-version=".length());
-                } else if (param.equals("visibility:=reexport")) {
-                    shared = true;
-                } else if (param.equals("resolution:=optional")) {
-                    optional = true;
+                int d = param.indexOf(":=");
+                if (d > 0) {
+                    String[] directive = parseDirective(param);
+                    String key = directive[0];
+                    String value = directive[1];
+                    if (key.equals("visibility") && value.equals("reexport")) {
+                        shared = true;
+                    }
+                    if (key.equals("resolution") && value.equals("optional")) {
+                        optional = true;
+                    }
+                    continue;
                 }
+                int a = param.indexOf("=");
+                if (a > 0) {
+                    String[] attribute = parseAttribute(param);
+                    String key = attribute[0];
+                    String value = attribute[1];
+                    if (key.equals("bundle-version")) {
+                        version = value;
+                    }
+                    continue;
+                }
+                log.warning(String.format("Parameter %s is not directive or attribute.", param));
             }
         }
         return new ModuleInfo(name, version, optional, shared);
+    }
+
+    private String[] parseDirective(String parameter) {
+        String[] split = parameter.split(":=");
+        return new String[]{split[0].trim(), split[1].trim()};
+    }
+
+    private String[] parseAttribute(String parameter) {
+        String[] split = parameter.split("=");
+        return new String[]{split[0].trim(), split[1].trim()};
     }
 }
