@@ -106,7 +106,11 @@ public class CeylonTestRunner extends ParentRunner<Method> {
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             StackTraceElement[] st = cause.getStackTrace();
-            if ("com.redhat.ceylon.compiler.java.test.runtime.AssertionFailed".equals(cause.getClass().getName())) {
+            if ("ceylon.language.AssertionError".equals(cause.getClass().getName())) {
+                AssertionError error = new AssertionError(cause.getMessage());
+                error.setStackTrace(cause.getStackTrace());
+                failure = new Failure(description, error);
+            } else if ("com.redhat.ceylon.compiler.java.test.runtime.AssertionFailed".equals(cause.getClass().getName())) {
                 AssertionError error = new AssertionError(cause.getMessage());
                 error.setStackTrace(cause.getStackTrace());
                 failure = new Failure(description, error);
