@@ -11,7 +11,6 @@ import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
 import ceylon.language.List;
-import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 

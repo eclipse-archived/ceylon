@@ -3,6 +3,7 @@ package ceylon.language;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;

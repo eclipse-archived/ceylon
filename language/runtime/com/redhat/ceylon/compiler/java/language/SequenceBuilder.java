@@ -1,4 +1,12 @@
-package ceylon.language;
+package com.redhat.ceylon.compiler.java.language;
+
+import ceylon.language.ArraySequence;
+import ceylon.language.AssertionError;
+import ceylon.language.Finished;
+import ceylon.language.Iterable;
+import ceylon.language.Iterator;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -21,7 +29,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     
     /** What will become the backing array of the ArraySequence we're building */
     @Ignore
-    java.lang.Object[] array;
+    public java.lang.Object[] array;
     
     /** The number of elements (from start) currently in {@link array} */
     @Ignore
@@ -76,7 +84,7 @@ public class SequenceBuilder<Element> implements ReifiedType {
     }
     /** Trims the array so it's just big enough */
     @Ignore
-    SequenceBuilder<Element> trim$priv() {
+    public SequenceBuilder<Element> trim$priv() {
         if (array.length != length) {
             resize$priv$(length);
         }
@@ -108,8 +116,8 @@ public class SequenceBuilder<Element> implements ReifiedType {
             ArraySequence<? extends Element> as = (ArraySequence<? extends Element>)elements;
             int size = (int)as.getSize();
             ensureCapacity$priv$(length + size);
-            java.lang.Object[] a = as.array;
-            System.arraycopy(a, as.first, array, length, size);
+            java.lang.Object[] a = as.$getArray$();
+            System.arraycopy(a, as.$getFirst$(), array, length, size);
             length += size;
         } else {
         	java.lang.Object elem;

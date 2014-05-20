@@ -8,7 +8,6 @@ import java.util.Map;
 
 import ceylon.language.Anything;
 import ceylon.language.Empty;
-import ceylon.language.SequenceBuilder;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration$impl;
@@ -18,6 +17,7 @@ import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
