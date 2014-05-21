@@ -4518,5 +4518,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return false;
     }
+    
+    JCExpression makeSequenceBuilderType(ProducedType elementType) {
+        return make().TypeApply(
+                make().QualIdent(syms().ceylonSequenceBuilderType.tsym), 
+                List.<JCExpression>of(makeJavaType(elementType, JT_TYPE_ARGUMENT)));
+    }
 
 }

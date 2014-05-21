@@ -129,14 +129,6 @@ public class TypeFactory extends Unit {
         return new UnknownType(this).getType();
     }
     
-    public ProducedType getSequenceBuilderType(ProducedType et) {
-        return producedType(getSequenceBuilderDeclaration(), et);
-    }
-
-    public TypeDeclaration getSequenceBuilderDeclaration() {
-        return (TypeDeclaration)getLanguageModuleDeclaration("SequenceBuilder");
-    }
-
     public ProducedType getIteratedAbsentType(ProducedType type) {
         ProducedType st = type.getSupertype(getIterableDeclaration());
         if (st!=null && st.getTypeArguments().size()>1) {
