@@ -80,12 +80,19 @@ public class ReflectionUtils {
     }
 
     public static String getPackageName(Class<?> klass) {
+//        Package pkg;
         if(klass.isPrimitive() || klass.isArray()){
             // primitives and arrays don't have a package, so we pretend they come from java.lang
             return "java.lang";
-        }else if(klass.getPackage() != null){
+            
+/*
+ * We used to have the following code, but getPackage() is stateless and does a bunch of expensive things
+ * every time we invoke it, and even invoking it once, it allocates more crap than the long road below,
+ * as proved by profiling, so we use the long road which is cheaper.
+        }else if((pkg = klass.getPackage()) != null){
             // short road
-            return klass.getPackage().getName();
+            return pkg.getName();
+*/
         }else{
             // long road
             while(klass.getEnclosingClass() != null){
