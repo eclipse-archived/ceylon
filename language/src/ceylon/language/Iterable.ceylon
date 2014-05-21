@@ -175,7 +175,7 @@ shared interface Iterable<out Element, out Absent=Null>
      of this stream, in the same order they occur in this
      stream."
     shared default Element[] sequence 
-            => SequenceBuilder<Element>().appendAll(this).sequence;
+            => sequential(this);
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
@@ -749,12 +749,7 @@ shared interface Iterable<out Element, out Absent=Null>
      [[cycle]]."
     see (`function cycle`)
     shared default List<Element> repeat(Integer times) {
-        value sb = SequenceBuilder<Element>();
-        variable value count=0;
-        while (count++<times) {
-            sb.appendAll(this);
-        }
-        return sb.sequence;
+        return sequential(cycle(times));
     }
     
 }
