@@ -182,7 +182,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.pack200 = pack200;
     }
 
-    @OptionArgument(longName="src", argumentName="dirs")
+    @OptionArgument(shortName='s', longName="src", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to directory containing source files. " +
             "Can be specified multiple times; you can also specify several " +
@@ -200,7 +200,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         setSrc(source);
     }
     
-    @OptionArgument(longName="resource", argumentName="dirs")
+    @OptionArgument(shortName='r', longName="resource", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to directory containing resource files. " +
             "Can be specified multiple times; you can also specify several " +
@@ -210,7 +210,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.resources = resource;
     }
 
-    @OptionArgument(argumentName="folder-name")
+    @OptionArgument(shortName='R', argumentName="folder-name")
     @Description("Sets the special resource folder name whose files will " +
             "end up in the root of the resulting module CAR file (default: ROOT).")
     public void setResourceRoot(String resourceRoot) {
@@ -224,7 +224,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.continueOnErrors = continueOnErrors;
     }
 
-    @OptionArgument(argumentName="encoding")
+    @OptionArgument(shortName='E', argumentName="encoding")
     @Description("Sets the encoding used for reading source files" +
             "(default: platform-specific).")
     public void setEncoding(String encoding) {
