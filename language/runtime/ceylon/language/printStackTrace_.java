@@ -24,7 +24,7 @@ public final class printStackTrace_
             @Name("exception") final java.lang.Throwable throwable,
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
             @Defaulted @Name("write") @FunctionalParameter("!(string)")
-            final Callable<java.lang.Object> write) {
+            final Callable<? extends java.lang.Object> write) {
         PrintWriter writer = new PrintWriter(new Writer() {
             @Override
             public void write(char[] cbuf, int off, int len) throws IOException {
