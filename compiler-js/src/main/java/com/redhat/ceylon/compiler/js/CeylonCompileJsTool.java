@@ -53,7 +53,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
     }
 
-    @OptionArgument(argumentName="encoding")
+    @OptionArgument(shortName='E', argumentName="encoding")
     @Description("Sets the encoding used for reading source files (default: platform-specific)")
     public void setEncoding(String encoding) {
         this.encoding = encoding;
@@ -112,7 +112,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         }
     }
     
-    @OptionArgument(longName="src", argumentName="dirs")
+    @OptionArgument(shortName='s', longName="src", argumentName="dirs")
     @ParsedBy(StandardArgumentParsers.PathArgumentParser.class)
     @Description("Path to source files. " +
     		"Can be specified multiple times; you can also specify several " +
