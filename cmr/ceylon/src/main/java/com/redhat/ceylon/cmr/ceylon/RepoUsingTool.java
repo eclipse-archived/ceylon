@@ -201,7 +201,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         boolean checkCompilation = compileFlags.contains(COMPILE_CHECK);
         boolean allowCompilation = forceCompilation || checkCompilation || compileFlags.contains(COMPILE_ONCE);
         
-        if (!forceCompilation && (ModuleUtil.isDefaultModule(name) || version != null)) {
+        if (!forceCompilation && !checkCompilation && (ModuleUtil.isDefaultModule(name) || version != null)) {
             // If we have the default module or a version we first try it the quick way
             ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
             ac.setFetchSingleArtifact(true);
@@ -216,31 +216,37 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             }
         }
 
-        // finding a single compiled version in the output repo is a lot cheaper than query everything so let's
-        // try that first
-        if(version == null && !ModuleUtil.isDefaultModule(name)){
-            String compiledVersion = findCompiledVersion(repoMgr, name, version, type, binaryMajor, binaryMinor);
-            if(compiledVersion != null)
-                return compiledVersion;
-        }
-
         boolean suggested = false;
         Collection<ModuleVersionDetails> versions = null;
         
+        // finding a single compiled version in the output repo is a lot cheaper than query everything so let's
+        // try that first
+        if (version == null && !ModuleUtil.isDefaultModule(name)) {
+            ModuleVersionDetails compiledVersion = findCompiledVersion(repoMgr, name, version, type, binaryMajor, binaryMinor);
+            if (compiledVersion != null && compiledVersion.getVersion() != null) {
+                if (forceCompilation || checkCompilation) {
+                    versions = Collections.singleton(compiledVersion);
+                } else {
+                    return compiledVersion.getVersion();
+                }
+            }
+        }
+
         // if we did not find any version in the output repo, see if we have a single one in the source repo, that's
         // a lot cheaper than looking the version up
         ModuleVersionDetails srcVersion = null;
-        if(allowCompilation && version == null){
+        if (allowCompilation && version == null) {
             srcVersion = getVersionFromSource(name);
-            if(srcVersion != null){
+            if (srcVersion != null && versions == null) {
                 // we found some source, let's compile it and not even look up anything else
                 versions = Collections.emptyList();
             }
         }
         
         // find versions unless we have one in sources waiting to be compiled
-        if(versions == null)
+        if (versions == null) {
             versions = getModuleVersions(repoMgr, name, version, type, binaryMajor, binaryMinor);
+        }
         
         if (version != null) {
             // Here we either have a single version or none
@@ -320,7 +326,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
     }
     
-    private String findCompiledVersion(RepositoryManager repoMgr, String name, String version, Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
+    private ModuleVersionDetails findCompiledVersion(RepositoryManager repoMgr, String name, String version, Type type, Integer binaryMajor, Integer binaryMinor) throws IOException {
         File outDir = DefaultToolOptions.getCompilerOutDir();
         if(outDir != null){
             Repository outDirRepository = null;
@@ -349,7 +355,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 outDirRepository.completeVersions(query, result);
                 NavigableMap<String, ModuleVersionDetails> outRepoVersions = result.getVersions();
                 if(outRepoVersions.size() == 1){
-                    return outRepoVersions.get(outRepoVersions.firstKey()).getVersion();
+                    return outRepoVersions.get(outRepoVersions.firstKey());
                 }
             }
         }
