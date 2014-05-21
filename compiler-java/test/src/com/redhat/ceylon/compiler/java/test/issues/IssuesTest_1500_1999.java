@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.io.IOException;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -323,6 +325,18 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                 new CompilerError(22, "dynamic is not yet supported on this platform"));
     }
     
+    @Ignore("Only used for profiling")
+    @Test
+    public void testBug1647() throws IOException {
+//        System.err.println("Press enter to continue");
+//        System.in.read();
+//        System.err.println("Let's go");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1647", "bug16xx/Bug1647.ceylon");
+//        System.err.println("Press enter to quit");
+//        System.in.read();
+//        System.err.println("Done");
+    }
+
     @Test
     public void testBug1649() {
         compareWithJavaSource("bug16xx/Bug1649");
