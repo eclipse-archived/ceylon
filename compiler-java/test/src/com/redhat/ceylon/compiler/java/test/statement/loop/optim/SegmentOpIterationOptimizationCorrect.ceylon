@@ -42,7 +42,7 @@ void segmentOpIterationOptimizationCorrect() {
     // First check that Range.by() (whose implementation is also optimized for 
     // Integer) behaves as we expect 
     function unoptimizedSegmentWithBy(Integer start, Integer length, Integer step) {
-        value unoptimized = SequenceBuilder<Integer>();
+        value unoptimized = ArrayBuilder<Integer>();
         @disableOptimization
         for (i in (start:length).by(step)) {
             //print("unoptimized " i "");
@@ -87,14 +87,14 @@ void segmentOpIterationOptimizationCorrect() {
     // Check that range iteration optimization of a 'for (i in lhs..rhs) { ' 
     // loop produces the same results as an unoptimized range iteration...
     void optimizedMatches(Integer start, Integer length) {
-        value unoptimized = SequenceBuilder<Integer>();
+        value unoptimized = ArrayBuilder<Integer>();
         @disableOptimization
         for (i in start:length) {
             //print("unoptimized " i "");
             unoptimized.append(i);
         }
         
-        value optimized = SequenceBuilder<Integer>();
+        value optimized = ArrayBuilder<Integer>();
         @requireOptimization:"SegmentOpIteration"
         for (i in start:length) {
             //print("optimized " i "");
@@ -124,14 +124,14 @@ void segmentOpIterationOptimizationCorrect() {
     // Check that range iteration optimization of a 'for (i in (lhs..rhs).by(step)) { ' 
     // loop produces the same results as an unoptimized range iteration...
     void optimizedWithByMatches(Integer start, Integer length, Integer step) {
-        value unoptimized = SequenceBuilder<Integer>();
+        value unoptimized = ArrayBuilder<Integer>();
         @disableOptimization
         for (i in (start:length).by(step)) {
             //print("unoptimized " i "");
             unoptimized.append(i);
         }
         
-        value optimized = SequenceBuilder<Integer>();
+        value optimized = ArrayBuilder<Integer>();
         @requireOptimization:"RangeOpIteration"
         for (i in (start:length).by(step)) {
             //print("optimized " i "");
