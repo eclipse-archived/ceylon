@@ -233,7 +233,8 @@ public class Package
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        // use the cached version, profiling says List.hashCode is expensive
+        return getNameAsString().hashCode();
     }
     
     @Override
