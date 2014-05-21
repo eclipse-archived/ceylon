@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.java.language.IntArray;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.compiler.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.compiler.loader.model.LocalDeclarationContainer;
@@ -156,7 +157,7 @@ public abstract class TypeDescriptor {
             TypeDeclaration decl = (TypeDeclaration) moduleManager.getModelLoader().getDeclaration(module, typeName, DeclarationType.TYPE);
             List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
-                typeArgs.add(typeArg.toProducedType(moduleManager));
+                typeArgs.add(Metamodel.getProducedType(typeArg));
             }
             return decl.getProducedType(qualifyingType, typeArgs);
         }
@@ -270,7 +271,7 @@ public abstract class TypeDescriptor {
             // add the type args
             List<ProducedType> typeArgs = new ArrayList<ProducedType>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
-                typeArgs.add(typeArg.toProducedType(moduleManager));
+                typeArgs.add(Metamodel.getProducedType(typeArg));
             }
             // wrap it
             return new FunctionOrValueInterface(declaration).getProducedType(qualifyingType, typeArgs);
@@ -364,7 +365,7 @@ public abstract class TypeDescriptor {
 
         @Override
         public ProducedType toProducedType(RuntimeModuleManager moduleManager) {
-            ProducedType qualifyingType = container.toProducedType(moduleManager);
+            ProducedType qualifyingType = Metamodel.getProducedType(container);
             return ((QualifiableTypeDescriptor)member).toProducedType(qualifyingType, moduleManager);
         }
 
@@ -485,7 +486,7 @@ public abstract class TypeDescriptor {
             UnionType ret = new UnionType(moduleManager.getModelLoader().getUnit());
             ArrayList<ProducedType> caseTypes = new ArrayList<ProducedType>(members.length);
             for(TypeDescriptor member : members)
-                Util.addToUnion(caseTypes,member.toProducedType(moduleManager));
+                Util.addToUnion(caseTypes,Metamodel.getProducedType(member));
             ret.setCaseTypes(caseTypes);
             return ret.getType();
         }
@@ -551,7 +552,7 @@ public abstract class TypeDescriptor {
 			IntersectionType ret = new IntersectionType(unit);
             ArrayList<ProducedType> satisfiedTypes = new ArrayList<ProducedType>(members.length);
             for(TypeDescriptor member : members)
-            	Util.addToIntersection(satisfiedTypes, member.toProducedType(moduleManager), unit);
+            	Util.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
             ret.setSatisfiedTypes(satisfiedTypes);
             return ret.canonicalize().getType();
         }

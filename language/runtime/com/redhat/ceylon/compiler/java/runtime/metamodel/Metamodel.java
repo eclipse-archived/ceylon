@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
@@ -109,6 +110,8 @@ public class Metamodel {
     private static Map<com.redhat.ceylon.compiler.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule> typeCheckModulesToRuntimeModel
         = new HashMap<com.redhat.ceylon.compiler.typechecker.model.Module, com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule>();
 
+    private static Map<TypeDescriptor,ProducedType> typeDescriptorToProducedType = new WeakHashMap<TypeDescriptor,ProducedType>();
+
     static{
         resetModuleManager();
     }
@@ -155,6 +158,7 @@ public class Metamodel {
         typeCheckModelToRuntimeModel.clear();
         typeCheckModulesToRuntimeModel.clear();
         typeCheckPackagesToRuntimeModel.clear();
+        typeDescriptorToProducedType.clear();
     }
 
     public static Object getLock(){
@@ -205,7 +209,7 @@ public class Metamodel {
         TypeDescriptor instanceType = getTypeDescriptor(o);
         if(instanceType == null)
             return false;
-        return instanceType.toProducedType(moduleManager).isSubtypeOf(type.toProducedType(moduleManager));
+        return getProducedType(instanceType).isSubtypeOf(getProducedType(type));
     }
 
     public static ProducedType getProducedType(Object instance) {
@@ -216,13 +220,21 @@ public class Metamodel {
     }
 
     public static ProducedType getProducedType(TypeDescriptor reifiedType) {
-        return reifiedType.toProducedType(moduleManager);
+        ProducedType producedType;
+        synchronized(getLock()){
+            producedType = typeDescriptorToProducedType.get(reifiedType);
+            if(producedType == null){
+                producedType = reifiedType.toProducedType(moduleManager);
+                typeDescriptorToProducedType.put(reifiedType, producedType);
+            }
+        }
+        return producedType;
     }
 
     public static ceylon.language.meta.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw Metamodel.newModelError("Metamodel not yet supported for Java types");
-        ProducedType pt = typeDescriptor.toProducedType(moduleManager);
+        ProducedType pt = getProducedType(typeDescriptor);
         return getAppliedMetamodel(pt);
     }
     
