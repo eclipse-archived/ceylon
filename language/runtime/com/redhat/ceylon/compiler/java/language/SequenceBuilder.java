@@ -78,8 +78,8 @@ public class SequenceBuilder<Element> implements ReifiedType {
             return (Sequential<? extends Element>)empty_.get_();
         }
         else {
-            return ArraySequence.backedBy$hidden($reifiedElement, 
-            		(Element[])array, 0, length);
+            return new ArraySequence($reifiedElement, 
+            		(Element[])array, 0, length, false);
         }
     }
     
