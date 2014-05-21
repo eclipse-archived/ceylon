@@ -18,10 +18,10 @@
  * MA  02110-1301, USA.
  */
 shared Iterable<T> filter<T>(Iterable<T> src, Boolean test(T t)){
-    value builder = SequenceBuilder<T>();
+    variable [T*] builder = [];
     for(t in src){
         if(test(t)){
-            builder.append(t);
+            builder = [t, *builder];
         }
     }
     return builder.sequence;
