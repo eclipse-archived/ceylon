@@ -132,7 +132,11 @@ public abstract class TypeDescriptor {
         
         @Override
         public int hashCode() {
-            return Arrays.hashCode(typeArguments) ^ klass.hashCode();
+            int ret = 17;
+            ret = 37 * ret + "class".hashCode();
+            ret = 37 * ret + Arrays.hashCode(typeArguments);
+            ret = 37 * ret + klass.hashCode();
+            return  ret;
         }
         
         @Override
@@ -307,7 +311,12 @@ public abstract class TypeDescriptor {
         
         @Override
         public int hashCode() {
-            return Arrays.hashCode(typeArguments) ^ klass.hashCode() ^ name.hashCode();
+            int ret = 17;
+            ret = 37 * ret + "functionorvalue".hashCode();
+            ret = 37 * ret + Arrays.hashCode(typeArguments);
+            ret = 37 * ret + (klass != null ? klass.hashCode() : 0);
+            ret = 37 * ret + (name != null ? name.hashCode() : 0);
+            return  ret;
         }
         
         @Override
@@ -351,7 +360,11 @@ public abstract class TypeDescriptor {
 
         @Override
         public int hashCode() {
-            return container.hashCode() ^ member.hashCode();
+            int ret = 17;
+            ret = 37 * ret + "member".hashCode();
+            ret = 37 * ret + container.hashCode();
+            ret = 37 * ret + member.hashCode();
+            return ret;
         }
 
         @Override
@@ -388,7 +401,9 @@ public abstract class TypeDescriptor {
         
         @Override
         public int hashCode() {
-            return 0;
+            int ret = 17;
+            ret = 37 * ret + "nothing".hashCode();
+            return ret;
         }
 
         @Override
@@ -473,7 +488,10 @@ public abstract class TypeDescriptor {
 
         @Override
         public int hashCode() {
-            return unorderedHashCode(members) ^ '|';
+            int ret = 17;
+            ret = 37 * ret + "union".hashCode();
+            ret = 37 * ret + unorderedHashCode(members);
+            return ret;
         }
 
         @Override
@@ -538,7 +556,10 @@ public abstract class TypeDescriptor {
         
         @Override
         public int hashCode() {
-            return unorderedHashCode(members) ^ '&';
+            int ret = 17;
+            ret = 37 * ret + "intersection".hashCode();
+            ret = 37 * ret + unorderedHashCode(members);
+            return ret;
         }
 
         @Override
