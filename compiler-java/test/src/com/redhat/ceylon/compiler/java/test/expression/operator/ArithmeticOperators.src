@@ -96,6 +96,16 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public .ceylon.language.Enumerable$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$impl() {
         return $ceylon$language$Enumerable$this$;
     }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
     protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$this$;
     
     @.java.lang.Override
