@@ -387,8 +387,14 @@ public class CeylonTool implements Tool {
     public static void setupScriptEnvironment(ProcessBuilder processBuilder) {
         Map<String, String> env = processBuilder.environment();
         String ceylonHome = System.getProperty(Constants.PROP_CEYLON_HOME_DIR);
-        if(ceylonHome != null)
+        if (ceylonHome != null) {
             env.put(Constants.ENV_CEYLON_HOME_DIR, ceylonHome);
+            String ceylonBin = ceylonHome + File.separator + "bin" + File.separator + "ceylon";
+            if (OSUtil.isWindows()) {
+                ceylonBin += ".bat";
+            }
+            env.put("CEYLON", ceylonBin);
+        }
         // FIXME: more info?
         env.put("JAVA_HOME", System.getProperty("java.home"));
         env.put("CEYLON_VERSION_MAJOR", Integer.toString(Versions.CEYLON_VERSION_MAJOR));
