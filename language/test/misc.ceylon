@@ -32,15 +32,8 @@ shared void misc() {
     }
     check(s=="", "while nonempty");
     
-    value bs = SequenceBuilder<Integer>();
-    for (i in 0..10) {
-        check(bs.size==i, "builder size");
-        bs.append(i);
-    }
-    check(bs.size==11, "builder size");
-    
-    for (n->e in entries(bs.sequence)) {
-        check(n==e, "entry iteration");
+    for (n->e in entries(Array(0..10).sequence)) {
+        check(n==e, "entry iteration ``n`` != ``e``");
     }
     
     //Test empty varargs
