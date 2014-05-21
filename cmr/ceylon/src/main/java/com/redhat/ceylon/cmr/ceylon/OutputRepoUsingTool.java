@@ -35,7 +35,7 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
         super(bundle);
     }
     
-    @OptionArgument(argumentName="url")
+    @OptionArgument(shortName='o', argumentName="url")
     @Description("Specifies the output module repository (which must be publishable). " +
             "(default: `./modules`)")
     public void setOut(String out) {

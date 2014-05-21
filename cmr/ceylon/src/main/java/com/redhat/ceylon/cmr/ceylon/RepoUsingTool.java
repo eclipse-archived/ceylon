@@ -131,7 +131,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.noDefRepos = noDefRepos;
     }
 
-    @Option(longName="offline")
+    @Option(shortName='L', longName="offline")
     @Description("Enables offline mode that will prevent connections to remote repositories.")
     public void setOffline(boolean offline) {
         this.offline = offline;
