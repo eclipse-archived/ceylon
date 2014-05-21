@@ -8,45 +8,30 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Transient;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-@Ceylon(major = 7)
-@Class
-@TypeParameters(@TypeParameter(value = "Element"))
 public class SequenceBuilder<Element> implements ReifiedType {
 
     private final static int MIN_CAPACITY = 5;
     private final static int MAX_CAPACITY = java.lang.Integer.MAX_VALUE;
     
     /** What will become the backing array of the ArraySequence we're building */
-    @Ignore
     public java.lang.Object[] array;
     
     /** The number of elements (from start) currently in {@link array} */
-    @Ignore
     int length = 0;
     
     /* Invariant: 0 <= start <= array.length */
     /* Invariant: 0 <= committed <= length */
     /* Invariant: 0 <= start + length <= array.length */
-    @Ignore
     protected final TypeDescriptor $reifiedElement;
     
-    public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement) {
+    public SequenceBuilder(TypeDescriptor $reifiedElement) {
         this.$reifiedElement = $reifiedElement;
     }
     
-    @Ignore
-    public SequenceBuilder(@Ignore TypeDescriptor $reifiedElement, 
+    public SequenceBuilder(TypeDescriptor $reifiedElement, 
     		int initialCapacity) {
         this($reifiedElement);
         if (initialCapacity >= 0) {
@@ -55,7 +40,6 @@ public class SequenceBuilder<Element> implements ReifiedType {
     }
     
     /** Ensures the array has at least the given capacity (it may allocate more) */
-    @Ignore
     private void ensureCapacity$priv$(long capacity) {
         
         if ((array == null && capacity > 0)
@@ -74,7 +58,6 @@ public class SequenceBuilder<Element> implements ReifiedType {
         }
     }
     /** Resizes the array to the given size */
-    @Ignore
     private void resize$priv$(long newcapacity) {
         java.lang.Object[] newarray = new java.lang.Object[(int)newcapacity];
         if (array != null) {
@@ -83,7 +66,6 @@ public class SequenceBuilder<Element> implements ReifiedType {
         array = newarray;
     }
     /** Trims the array so it's just big enough */
-    @Ignore
     public SequenceBuilder<Element> trim$priv() {
         if (array.length != length) {
             resize$priv$(length);
@@ -91,7 +73,6 @@ public class SequenceBuilder<Element> implements ReifiedType {
         return this;
     }
     
-    @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
         if (array==null || length == 0) {
             return (Sequential<? extends Element>)empty_.get_();
@@ -102,16 +83,14 @@ public class SequenceBuilder<Element> implements ReifiedType {
         }
     }
     
-    public SequenceBuilder<Element> append(@Name("element") Element element) {
+    public SequenceBuilder<Element> append(Element element) {
         ensureCapacity$priv$(length+1);
     	array[length] = element;
     	length+=1;
     	return this;
     }
     
-    public SequenceBuilder<Element> appendAll(@Name("elements") 
-    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>") 
-    Iterable<? extends Element, ?> elements) {
+    public SequenceBuilder<Element> appendAll(Iterable<? extends Element, ?> elements) {
         if (elements instanceof ArraySequence) {
             ArraySequence<? extends Element> as = (ArraySequence<? extends Element>)elements;
             int size = (int)as.getSize();
@@ -136,23 +115,19 @@ public class SequenceBuilder<Element> implements ReifiedType {
     	return this;
     }
     
-    @Ignore
     public final SequenceBuilder<Element> appendAll() {
         return this;
     }
     
-    @Transient
     public final long getSize() {
         return length;
     }
     
-    @Transient
     public final boolean getEmpty() {
         return length == 0;
     }
      
     @Override
-    @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(SequenceBuilder.class, 
         		$reifiedElement);
