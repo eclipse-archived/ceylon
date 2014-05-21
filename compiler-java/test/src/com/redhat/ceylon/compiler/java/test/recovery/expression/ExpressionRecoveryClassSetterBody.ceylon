@@ -1,20 +1,20 @@
-class ExpressionRecoveryClassSetterBody(SequenceBuilder<Integer> sb) {
+class ExpressionRecoveryClassSetterBody(void append(Integer i)) {
     shared String attribute {
-        sb.append(3);
+        append(3);
         return "";
     }
     assign attribute {
-        sb.append(5);
+        append(5);
         value x = asdfClassSetterBody();
-        sb.append(6);
+        append(6);
     }
 }
-void expressionRecoveryClassSetterBody_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
-    value i = ExpressionRecoveryClassSetterBody(sb);
-    sb.append(2);
+void expressionRecoveryClassSetterBody_main(void append(Integer i)) {
+    append(1);
+    value i = ExpressionRecoveryClassSetterBody(append);
+    append(2);
     value x = i.attribute;
-    sb.append(4);
+    append(4);
     i.attribute = x;
-    sb.append(7);
+    append(7);
 }

@@ -1,5 +1,5 @@
-class ExpressionRecoveryClassInitVariableValueInit(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+class ExpressionRecoveryClassInitVariableValueInit(void append(Integer i)) {
+    append(1);
     variable String x = asdfClassInitVariableValueInit;
-    sb.append(2);
+    append(2);
 }

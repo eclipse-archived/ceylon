@@ -1,19 +1,19 @@
 interface ExpressionRecoveryInterfaceAttributeBody {
-    shared formal SequenceBuilder<Integer> sb;
+    shared formal void append(Integer i);
     shared String attribute {
-        sb.append(3);
+        append(3);
         asdfInterfaceAttributeBody();
-        sb.append(4);
+        append(4);
         return "";
     }
 }
-class ExpressionRecoveryInterfaceAttributeBody_class (shared actual SequenceBuilder<Integer> sb) satisfies ExpressionRecoveryInterfaceAttributeBody {
+class ExpressionRecoveryInterfaceAttributeBody_class (shared actual void append(Integer i)) satisfies ExpressionRecoveryInterfaceAttributeBody {
     
 }
-void expressionRecoveryInterfaceAttributeBody_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
-    value i = ExpressionRecoveryInterfaceAttributeBody_class(sb);
-    sb.append(2);
+void expressionRecoveryInterfaceAttributeBody_main(void append(Integer i)) {
+    append(1);
+    value i = ExpressionRecoveryInterfaceAttributeBody_class(append);
+    append(2);
     value x = i.attribute;
-    sb.append(5);
+    append(5);
 }

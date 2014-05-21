@@ -1,7 +1,7 @@
-class ExpressionRecoveryClassInitValueSpecifierDeferred(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+class ExpressionRecoveryClassInitValueSpecifierDeferred(void append(Integer i)) {
+    append(1);
     Boolean x;
-    sb.append(2);
+    append(2);
     x => asdfClassInitValueSpecifierDeferred;
-    sb.append(3);
+    append(3);
 }

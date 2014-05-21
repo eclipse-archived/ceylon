@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-void expressionRecoveryAssertVariable(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoveryAssertVariable(void append(Integer i)) {
+    append(1);
     assert (exists bar = baz.someMethod());
-    sb.append(2);
+    append(2);
 }

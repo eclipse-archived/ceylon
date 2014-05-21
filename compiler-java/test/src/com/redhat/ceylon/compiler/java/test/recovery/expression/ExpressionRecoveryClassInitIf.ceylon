@@ -1,7 +1,7 @@
-class ExpressionRecoveryClassInitIf(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+class ExpressionRecoveryClassInitIf(void append(Integer i)) {
+    append(1);
     if (asdfClassInitIf) {
-        sb.append(2);
+        append(2);
     }
-    sb.append(3);
+    append(3);
 }

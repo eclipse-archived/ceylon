@@ -1,5 +1,5 @@
-shared String expressionRecoveryFunctionSpecifier(SequenceBuilder<Integer> sb) => asdfFunctionSpecifier();
-shared String expressionRecoveryFunctionSpecifierMpl(SequenceBuilder<Integer> sb1)(SequenceBuilder<Integer> sb2) => asdfFunctionSpecifierMpl();
-void expressionRecoveryFunctionSpecifierMpl_main(SequenceBuilder<Integer> sb) {
-    expressionRecoveryFunctionSpecifierMpl(sb)(sb);
+shared String expressionRecoveryFunctionSpecifier(void append(Integer i)) => asdfFunctionSpecifier();
+shared String expressionRecoveryFunctionSpecifierMpl(void append1(Integer i))(void append2(Integer i)) => asdfFunctionSpecifierMpl();
+void expressionRecoveryFunctionSpecifierMpl_main(void append(Integer i)) {
+    expressionRecoveryFunctionSpecifierMpl(append)(append);
 }

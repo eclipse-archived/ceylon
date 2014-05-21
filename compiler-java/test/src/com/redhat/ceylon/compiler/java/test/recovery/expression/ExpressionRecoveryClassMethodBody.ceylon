@@ -1,14 +1,14 @@
 class ExpressionRecoveryClassMethodBody() {
-    shared void method(SequenceBuilder<Integer> sb) {
-        sb.append(3);
+    shared void method(void append(Integer i)) {
+        append(3);
         asdfClassMethodBody();
-        sb.append(4);
+        append(4);
     }
 }
-void expressionRecoveryClassMethodBody_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoveryClassMethodBody_main(void append(Integer i)) {
+    append(1);
     value i = ExpressionRecoveryClassMethodBody();
-    sb.append(2);
-    i.method(sb);
-    sb.append(5);
+    append(2);
+    i.method(append);
+    append(5);
 }

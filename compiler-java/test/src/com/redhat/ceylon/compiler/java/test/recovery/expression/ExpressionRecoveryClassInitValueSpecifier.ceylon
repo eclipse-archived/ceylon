@@ -1,5 +1,5 @@
-class ExpressionRecoveryClassInitValueSpecifier(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+class ExpressionRecoveryClassInitValueSpecifier(void append(Integer i)) {
+    append(1);
     String x => asdfClassInitValueSpecifier;
-    sb.append(2);
+    append(2);
 }

@@ -1,4 +1,4 @@
-shared class ExpressionRecoveryClassDp(SequenceBuilder<Integer> sb, String s = asdfClassDp()) {
-    sb.append(1);
+shared class ExpressionRecoveryClassDp(void append(Integer i), String s = asdfClassDp()) {
+    append(1);
 }
 

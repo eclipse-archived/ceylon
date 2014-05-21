@@ -4,10 +4,10 @@ shared String expressionRecoverySetterBody {
 assign expressionRecoverySetterBody {
     asdfSetterBody();
 }
-void expressionRecoverySetterBody_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoverySetterBody_main(void append(Integer i)) {
+    append(1);
     value x = expressionRecoverySetterBody;
-    sb.append(2);
+    append(2);
     expressionRecoverySetterBody = "";
-    sb.append(3);
+    append(3);
 }

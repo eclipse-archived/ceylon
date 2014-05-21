@@ -1,3 +1,3 @@
-class ExpressionRecoveryClassExtends(SequenceBuilder<Integer> sb) extends Basic(asdf) {
-    sb.append(1);
+class ExpressionRecoveryClassExtends(void append(Integer i)) extends Basic(asdf) {
+    append(1);
 }
