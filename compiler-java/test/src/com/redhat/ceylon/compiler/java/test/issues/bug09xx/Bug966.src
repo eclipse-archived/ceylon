@@ -356,7 +356,7 @@ public abstract class Bug966<Element extends .ceylon.language.Ordinal<? extends 
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
+    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     
