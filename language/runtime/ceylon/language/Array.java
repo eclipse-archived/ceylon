@@ -743,6 +743,7 @@ public final class Array<Element>
     @SuppressWarnings("unchecked")
     @Ignore
     public Element unsafeItem(int index) {
+        java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();
         if (array instanceof char[]) {
             char val = ((char[])array)[index];
             return (Element) java.lang.Character.valueOf(val);
@@ -757,7 +758,7 @@ public final class Array<Element>
         } 
         else if (array instanceof int[]) {
             int val = ((int[])array)[index];
-            if ($reifiedElement == Character.$TypeDescriptor$) {
+            if (arrayElementClass == Character.class) {
                 return (Element) Character.instance(val);
             }
             else {
@@ -766,7 +767,7 @@ public final class Array<Element>
         } 
         else if (array instanceof long[]) {
             long val = ((long[])array)[index];
-            if ($reifiedElement == Integer.$TypeDescriptor$) {
+            if (arrayElementClass == Integer.class) {
             	return (Element) Integer.instance(val);
             }
             else {
@@ -779,7 +780,7 @@ public final class Array<Element>
         } 
         else if (array instanceof double[]) {
         	double val = ((double[])array)[index];
-            if ($reifiedElement == Float.$TypeDescriptor$) {
+            if (arrayElementClass == Float.class) {
             	return (Element) Float.instance(val);
             }
             else {
@@ -788,7 +789,7 @@ public final class Array<Element>
         } 
         else if (array instanceof boolean[]) {
         	boolean val = ((boolean[])array)[index];
-            if ($reifiedElement == Boolean.$TypeDescriptor$) {
+            if (arrayElementClass == Boolean.class) {
             	return (Element) Boolean.instance(val);
             }
             else {
@@ -797,7 +798,7 @@ public final class Array<Element>
         } 
         else if (array instanceof java.lang.String[]) {
         	java.lang.String val = ((java.lang.String[])array)[index];
-			if ($reifiedElement == String.$TypeDescriptor$) {
+			if (arrayElementClass == String.class) {
         		return (Element) String.instance(val);
         	}
         	else {
@@ -1291,11 +1292,12 @@ public final class Array<Element>
     @Ignore 
     public Sequential<? extends Element> getSequence() {
         long size = getSize();
+        java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();
         java.lang.Object[] result = (java.lang.Object[])java.lang.reflect.Array
-        		.newInstance($reifiedElement.getArrayElementClass(), (int)size);
+        		.newInstance(arrayElementClass, (int)size);
         if (array instanceof long[]) {
             long[] arr = (long[]) array;
-            if ($reifiedElement==Integer.$TypeDescriptor$) {
+            if (arrayElementClass==Integer.class) {
             	for (int i=0; i<size; i++) {
             		result[i] = Integer.instance(arr[i]);
             	}
@@ -1308,7 +1310,7 @@ public final class Array<Element>
         }
         else if (array instanceof double[]) {
             double[] arr = (double[]) array;
-            if ($reifiedElement==Float.$TypeDescriptor$) {
+            if (arrayElementClass==Float.class) {
             	for (int i=0; i<size; i++) {
             		result[i] = Float.instance(arr[i]);
             	}
@@ -1325,9 +1327,21 @@ public final class Array<Element>
                 result[i] = java.lang.Character.valueOf(arr[i]);
             }
         }
+        else if (array instanceof java.lang.String[]) {
+            java.lang.String[] arr = (java.lang.String[]) array;
+            if (arrayElementClass==String.class) {
+                for (int i=0; i<size; i++) {
+                    result[i] = String.instance(arr[i]);
+                }
+            } else {
+                for (int i=0; i<size; i++) {
+                    result[i] = arr[i];
+                }
+            }
+        }
         else if (array instanceof int[]) {
             int[] arr = (int[]) array;
-            if ($reifiedElement==Character.$TypeDescriptor$) {
+            if (arrayElementClass==Character.class) {
             	for (int i=0; i<size; i++) {
             		result[i] = Character.instance(arr[i]);
             	}
@@ -1358,7 +1372,7 @@ public final class Array<Element>
         }
         else if (array instanceof boolean[]) {
             boolean[] arr = (boolean[]) array;
-            if ($reifiedElement==Boolean.$TypeDescriptor$) {
+            if (arrayElementClass==Boolean.class) {
             	for (int i=0; i<size; i++) {
             		result[i] = Boolean.instance(arr[i]);
             	}
