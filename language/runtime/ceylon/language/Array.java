@@ -682,12 +682,12 @@ public final class Array<Element>
     final class ArrayIterable extends AbstractArrayIterable<Element, java.lang.Object> {
 
         ArrayIterable() {
-            super(array, (int)Array.this.getSize());
+            super($reifiedElement, array, (int)Array.this.getSize());
         }
         
         protected ArrayIterable(java.lang.Object array, int start,
                 int len, int step) {
-            super(array, start, len, step);
+            super($reifiedElement, array, start, len, step);
         }
 
         @Override

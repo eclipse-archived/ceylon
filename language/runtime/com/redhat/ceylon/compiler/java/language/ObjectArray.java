@@ -1,24 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Array;
-import ceylon.language.ArraySequence;
-import ceylon.language.Callable;
-import ceylon.language.Category$impl;
-import ceylon.language.Comparison;
-import ceylon.language.Entry;
-import ceylon.language.Finished;
-import ceylon.language.Iterable;
-import ceylon.language.Iterable$impl;
-import ceylon.language.Iterator;
-import ceylon.language.Iterator$impl;
-import ceylon.language.List;
-import ceylon.language.Null;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.finished_;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.IntArray.IntArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -211,11 +195,11 @@ public final class ObjectArray<T> implements ReifiedType {
     public static final class ObjectArrayIterable<T> extends AbstractArrayIterable<T, T[]> {
 
         public ObjectArrayIterable(T[] array, int start, int len, int step) {
-            super(array, start, len, step);
+            super(TypeDescriptor.klass(array.getClass().getComponentType()), array, start, len, step);
         }
 
         public ObjectArrayIterable(T[] array, int length) {
-            super(array, length);
+            super(TypeDescriptor.klass(array.getClass().getComponentType()), array, length);
         }
 
         @Override

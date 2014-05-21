@@ -48,12 +48,12 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
     }
 
     @Ignore
-    public AbstractArrayIterable(ArrayType array, int length) {
-        this(array, 0, length, 1);
+    public AbstractArrayIterable(TypeDescriptor $reified$Element, ArrayType array, int length) {
+        this($reified$Element, array, 0, length, 1);
     }
-    /** Constructor used internally via {@link #newInstance(Object, int, int, int)*/
+    /** Constructor used internally via {@link #newInstance(Object, int, int, int)} */
     @Ignore
-    protected AbstractArrayIterable(ArrayType array, int start, int len, int step) {
+    protected AbstractArrayIterable(TypeDescriptor $reified$Element, ArrayType array, int start, int len, int step) {
         if (start < 0) {
             throw new ceylon.language.AssertionError("start must be non-negative");
         }
@@ -65,7 +65,7 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
         }
 
         this.array = array;
-        this.$reified$Element = TypeDescriptor.klass(array.getClass().getComponentType());
+        this.$reified$Element = $reified$Element;
         this.$ceylon$language$Iterable$this = new Iterable$impl<Element, Null>(
                 this.$reified$Element, Null.$TypeDescriptor$, this);
         this.start = start;
