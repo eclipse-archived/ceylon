@@ -432,7 +432,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     @Ignore
-    public Category<? super java.lang.Object> getKeys() {
+    public Category<? super ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this.getKeys();
     }
 

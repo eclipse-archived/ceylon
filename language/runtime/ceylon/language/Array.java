@@ -894,7 +894,7 @@ public final class Array<Element>
 
     @Override
     @Ignore
-    public Category<? super java.lang.Object> getKeys() {
+    public Category<? super ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this.getKeys();
     }
 
