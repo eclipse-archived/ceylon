@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.FieldMirror;
@@ -30,6 +31,7 @@ public class ReflectionField implements FieldMirror {
 
     private Field field;
     private ReflectionType type;
+    private Map<String, AnnotationMirror> annotations;
 
     public ReflectionField(Field field) {
         this.field = field;
@@ -37,7 +39,15 @@ public class ReflectionField implements FieldMirror {
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return ReflectionUtils.getAnnotation(field, type);
+        return getAnnotations().get(type);
+    }
+    
+    private Map<String, AnnotationMirror> getAnnotations() {
+        // profiling revealed we need to cache this
+        if(annotations == null){
+            annotations = ReflectionUtils.getAnnotations(field);
+        }
+        return annotations;
     }
 
     @Override

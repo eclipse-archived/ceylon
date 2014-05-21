@@ -43,16 +43,22 @@ import com.redhat.ceylon.compiler.loader.mirror.TypeParameterMirror;
 
 public class ReflectionUtils {
 
-    public static AnnotationMirror getAnnotation(AnnotatedElement annotated, String type) {
-        return getAnnotation(annotated.getDeclaredAnnotations(), type);
+    static final Class<? extends Annotation> IGNORE_ANNOTATION = ReflectionUtils.getClass(AbstractModelLoader.CEYLON_IGNORE_ANNOTATION);
+    
+    public static Map<String, AnnotationMirror> getAnnotations(AnnotatedElement annotated) {
+        Annotation[] annotations = annotated.getDeclaredAnnotations();
+        return getAnnotations(annotations);
     }
 
-    public static AnnotationMirror getAnnotation(Annotation[] annotations, String type) {
-        for(Annotation annotation : annotations){
-            if(annotation.annotationType().getName().equals(type))
-                return new ReflectionAnnotation(annotation);
+    public static Map<String, AnnotationMirror> getAnnotations(Annotation[] annotations) {
+        if(annotations.length == 0)
+            return Collections.<String,AnnotationMirror>emptyMap();
+        Map<String, AnnotationMirror> map = new HashMap<String,AnnotationMirror>();
+        for(int i=annotations.length-1;i>=0;i--){
+            Annotation annotation = annotations[i];
+            map.put(annotation.annotationType().getName(), new ReflectionAnnotation(annotation));
         }
-        return null;
+        return map;
     }
 
     public static List<TypeParameterMirror> getTypeParameters(GenericDeclaration decl) {
@@ -65,7 +71,7 @@ public class ReflectionUtils {
 
     /* Required to fix the distribution build, so that we can build the compiler before building the language module */
     @SuppressWarnings("unchecked")
-    static Class<? extends Annotation> getClass(String string) {
+    private static Class<? extends Annotation> getClass(String string) {
         try {
             return (Class<? extends Annotation>) Class.forName(string);
         } catch (ClassNotFoundException e) {
@@ -164,12 +170,11 @@ public class ReflectionUtils {
     }
 
     private static boolean isOverridingMethodInClass(Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> lookupClass) {
-        Class<? extends Annotation> ignoreAnnotationClass = ReflectionUtils.getClass(AbstractModelLoader.CEYLON_IGNORE_ANNOTATION);
         try {
             Method m = lookupClass.getDeclaredMethod(name, parameterTypes);
             // present
             return !m.isBridge() && !m.isSynthetic() && !Modifier.isPrivate(m.getModifiers())
-                    && !m.isAnnotationPresent(ignoreAnnotationClass);
+                    && !m.isAnnotationPresent(IGNORE_ANNOTATION);
         } catch (Exception e) {
             // not present
         }
@@ -178,7 +183,7 @@ public class ReflectionUtils {
             if(!m.getName().equals(name)
                     || m.isBridge()
                     || m.isSynthetic()
-                    || m.isAnnotationPresent(ignoreAnnotationClass)
+                    || m.isAnnotationPresent(IGNORE_ANNOTATION)
                     || Modifier.isFinal(m.getModifiers())
                     || Modifier.isPrivate(m.getModifiers()))
                 continue;
@@ -200,12 +205,11 @@ public class ReflectionUtils {
     }
 
     private static boolean isOverloadingMethodInClass(Method method, String name, Class<?>[] parameterTypes, Class<?> declaringClass, Class<?> lookupClass) {
-        Class<? extends Annotation> ignoreAnnotationClass = ReflectionUtils.getClass(AbstractModelLoader.CEYLON_IGNORE_ANNOTATION);
         for(Method m : lookupClass.getDeclaredMethods()){
             if(!m.getName().equals(name)
                     || m.isBridge()
                     || m.isSynthetic()
-                    || m.isAnnotationPresent(ignoreAnnotationClass)
+                    || m.isAnnotationPresent(IGNORE_ANNOTATION)
                     || Modifier.isPrivate(m.getModifiers()))
                 continue;
             if(m.getParameterTypes().length != parameterTypes.length)
@@ -358,5 +362,4 @@ public class ReflectionUtils {
         }
         return ret;
     }
-
 }

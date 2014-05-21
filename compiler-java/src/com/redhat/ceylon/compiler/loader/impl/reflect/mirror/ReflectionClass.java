@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.ModelResolutionException;
@@ -57,6 +58,7 @@ public class ReflectionClass implements ClassMirror {
     private MethodMirror enclosingMethod;
     private LinkedList<ClassMirror> innerClasses;
     private String cacheKey;
+    private Map<String, AnnotationMirror> annotations;
 
     public ReflectionClass(Class<?> klass) {
         this.klass = klass;
@@ -64,7 +66,19 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return ReflectionUtils.getAnnotation(klass, type);
+        return getAnnotations().get(type);
+    }
+
+    private boolean isAnnotationPresent(String type) {
+        return getAnnotations().containsKey(type);
+    }
+
+    private Map<String, AnnotationMirror> getAnnotations() {
+        // profiling revealed we need to cache this
+        if(annotations == null){
+            annotations = ReflectionUtils.getAnnotations(klass);
+        }
+        return annotations;
     }
 
     @Override
@@ -205,17 +219,17 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isCeylonToplevelAttribute() {
-        return !isInnerClass() && klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Attribute"));
+        return !isInnerClass() && isAnnotationPresent(AbstractModelLoader.CEYLON_ATTRIBUTE_ANNOTATION);
     }
 
     @Override
     public boolean isCeylonToplevelObject() {
-        return !isInnerClass() && klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Object"));
+        return !isInnerClass() && isAnnotationPresent(AbstractModelLoader.CEYLON_OBJECT_ANNOTATION);
     }
 
     @Override
     public boolean isCeylonToplevelMethod() {
-        return !isInnerClass() && klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Method"));
+        return !isInnerClass() && isAnnotationPresent(AbstractModelLoader.CEYLON_METHOD_ANNOTATION);
     }
 
     @Override
@@ -230,12 +244,12 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isInnerClass() {
-        return klass.isMemberClass() || klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.Container"));
+        return klass.isMemberClass() || isAnnotationPresent(AbstractModelLoader.CEYLON_CONTAINER_ANNOTATION);
     }
 
     @Override
     public boolean isLocalClass() {
-        return klass.isLocalClass() || klass.isAnnotationPresent(ReflectionUtils.getClass("com.redhat.ceylon.compiler.java.metadata.LocalDeclaration"));
+        return klass.isLocalClass() || isAnnotationPresent(AbstractModelLoader.CEYLON_LOCAL_DECLARATION_ANNOTATION);
     }
 
     @Override

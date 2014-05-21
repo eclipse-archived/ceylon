@@ -30,6 +30,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.ClassMirror;
@@ -47,6 +48,7 @@ public class ReflectionMethod implements MethodMirror {
     private Boolean overloadingMethod;
     private ReflectionType returnType;
     private ClassMirror enclosingClass;
+    private Map<String, AnnotationMirror> annotations;
 
     public ReflectionMethod(ClassMirror enclosingClass, Member method) {
         this.method = method;
@@ -55,7 +57,15 @@ public class ReflectionMethod implements MethodMirror {
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return ReflectionUtils.getAnnotation((AnnotatedElement)method, type);
+        return getAnnotations().get(type);
+    }
+
+    private Map<String, AnnotationMirror> getAnnotations() {
+        // profiling revealed we need to cache this
+        if(annotations == null){
+            annotations = ReflectionUtils.getAnnotations((AnnotatedElement)method);
+        }
+        return annotations;
     }
 
     @Override

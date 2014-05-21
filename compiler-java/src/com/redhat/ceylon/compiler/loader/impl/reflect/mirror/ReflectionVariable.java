@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.loader.impl.reflect.mirror;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import com.redhat.ceylon.compiler.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.compiler.loader.mirror.TypeMirror;
@@ -30,17 +31,17 @@ import com.redhat.ceylon.compiler.loader.mirror.VariableMirror;
 public class ReflectionVariable implements VariableMirror {
 
     private Type type;
-    private Annotation[] annotations;
+    private Map<String, AnnotationMirror> annotations;
     private ReflectionType varType;
 
     public ReflectionVariable(Type type, Annotation[] annotations) {
         this.type = type;
-        this.annotations = annotations;
+        this.annotations = ReflectionUtils.getAnnotations(annotations);
     }
 
     @Override
     public AnnotationMirror getAnnotation(String type) {
-        return ReflectionUtils.getAnnotation(annotations, type);
+        return annotations.get(type);
     }
 
     @Override
