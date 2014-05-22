@@ -2,7 +2,6 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
-import com.redhat.ceylon.compiler.java.language.ArrayIterable;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
 import com.redhat.ceylon.compiler.java.language.StringTokens;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -728,6 +727,8 @@ public final class String
     
     @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
     public Iterable<? extends Character, ?> getCharacters() {
+        //TODO: return a nonempty Iterable unless this
+        //      is the empty string
         return this;
     }
     
