@@ -155,7 +155,8 @@ public class FreeFunction
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
 
-        Metamodel.checkReifiedTypeArgument("apply", "Function<$1,$2>", Variance.OUT, appliedFunction.getType(), $reifiedReturn, 
+        Metamodel.checkReifiedTypeArgument("apply", "Function<$1,$2>", Variance.OUT, 
+                declaration.getUnit().getCallableReturnType(appliedFunction.getFullType()), $reifiedReturn, 
                 Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
         return new AppliedFunction<Return,Arguments>(reifiedType, reifiedArguments, appliedFunction, this, null, null);
     }
