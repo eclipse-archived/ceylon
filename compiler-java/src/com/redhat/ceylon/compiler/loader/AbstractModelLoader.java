@@ -2237,18 +2237,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // type params first
         setTypeParameters(method, methodMirror);
 
-        // now its parameters
-        if(isEqualsMethod(methodMirror))
-            setEqualsParameters(method, methodMirror);
-        else
-            setParameters(method, methodMirror, isCeylon, klass);
-        
         // and its return type
         // do not log an additional error if we had one from checking if it was overriding
         if(type == null)
             type = obtainType(methodMirror.getReturnType(), methodMirror, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
                               "method '"+methodMirror.getName()+"'", klass);
         method.setType(type);
+        
+        // now its parameters
+        if(isEqualsMethod(methodMirror))
+            setEqualsParameters(method, methodMirror);
+        else
+            setParameters(method, methodMirror, isCeylon, klass);
+        
         method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
         type.setRaw(isRaw(Decl.getModuleContainer(klass), methodMirror.getReturnType()));
         markDeclaredVoid(method, methodMirror);
@@ -2263,7 +2264,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         return method;
     }
-
     private void fillRefinedDeclarations(ClassOrInterface klass) {
         for(Declaration member : klass.getMembers()){
             // do not trigger a type load (by calling isActual()) for Java inner classes since they
@@ -2778,6 +2778,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             parameterIndex++;
         }
+        if (decl instanceof Method) {
+            // Multiple parameter lists
+            AnnotationMirror functionalParameterAnnotation = methodMirror.getAnnotation(CEYLON_FUNCTIONAL_PARAMETER_ANNOTATION);
+            if (functionalParameterAnnotation != null) {
+                parameterNameParser.parseMpl((String)functionalParameterAnnotation.getValue(), ((Method)decl).getType().getFullType(), (Method)decl);
+            }
+        }
     }
     private Method loadFunctionalParameter(Declaration decl, String paramName, ProducedType type, String parameterNames) {
         Method method = new Method();
@@ -3107,9 +3114,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // type params first
                 setTypeParameters(method, meth);
 
-                // now its parameters
-                setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
-
                 method.setType(obtainType(meth.getReturnType(), meth, method, Decl.getModuleContainer(method), VarianceLocation.COVARIANT,
                         "toplevel method", method));
                 method.setDeclaredVoid(meth.isDeclaredVoid());
@@ -3117,6 +3121,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 markUnboxed(method, meth, meth.getReturnType());
                 markTypeErased(method, meth, meth.getReturnType());
 
+             // now its parameters
+                setParameters(method, meth, true /* toplevel methods are always Ceylon */, method);
+                
                 method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
                 setAnnotations(method, meth);
 
