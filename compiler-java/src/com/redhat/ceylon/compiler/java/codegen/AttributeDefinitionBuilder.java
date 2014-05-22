@@ -27,10 +27,12 @@ import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
+import com.sun.tools.javac.tree.JCTree.JCBlock;
+import com.sun.tools.javac.tree.JCTree.JCCatch;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCReturn;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCThrow;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
@@ -245,6 +247,8 @@ public class AttributeDefinitionBuilder {
         if (hasField) {
             if (variableInitThrow == null) {
                 defs.append(generateField());
+                if(toplevel && !late)
+                    defs.append(generateInitExceptionField());
                 if(variableInit != null) {
                     defs.append(generateFieldInit());
                 }
@@ -334,7 +338,18 @@ public class AttributeDefinitionBuilder {
                 null
         );
     }
-    
+
+    private JCTree generateInitExceptionField() {
+        long flags = Flags.PRIVATE | Flags.STATIC | Flags.FINAL;
+
+        return owner.make().VarDef(
+                owner.make().Modifiers(flags),
+                owner.names().fromString(Naming.quoteIfJavaKeyword(Naming.getToplevelAttributeSavedExceptionName())),
+                owner.makeJavaType(owner.syms().throwableType.tsym),
+                null
+        );
+    }
+
     private JCTree generateFieldInit() {
         long flags = (modifiers & Flags.STATIC);
         
@@ -347,7 +362,40 @@ public class AttributeDefinitionBuilder {
             );
         }
         JCTree.JCAssign init = owner.make().Assign(owner.makeUnquotedIdent(fieldName), varInit);
-        List<JCStatement> stmts = List.<JCTree.JCStatement>of(owner.make().Exec(init));
+        List<JCStatement> stmts;
+        if(toplevel && !late){
+            // surround the init expression with a try/catch that saves the exception
+            
+            String exceptionName = "x"; // doesn't matter
+            
+            // $initException$ = x
+            JCStatement saveException = owner.make().Exec(owner.make().Assign(
+                    owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                    owner.makeUnquotedIdent(exceptionName)));
+            // value = null
+            JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeNull()));
+            // the catch statements
+            JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue));
+            
+            // the catch block
+            JCExpression throwableType = owner.makeJavaType(owner.syms().throwableType.tsym);
+            JCVariableDecl exceptionParam = owner.make().VarDef(owner.make().Modifiers(0), 
+                    owner.naming.makeUnquotedName(exceptionName), 
+                    throwableType , null);
+            JCCatch catchers = owner.make().Catch(exceptionParam, handlerBlock);
+            
+            // $initException$ = null
+            JCTree.JCAssign nullException = owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                    owner.makeNull());
+            // save the value, mark the exception as null
+            List<JCStatement> body = List.<JCTree.JCStatement>of(owner.make().Exec(init), owner.make().Exec(nullException));
+            
+            // the try/catch
+            JCTree.JCTry try_ = owner.make().Try(owner.make().Block(0, body), List.<JCTree.JCCatch>of(catchers), null);
+            stmts = List.<JCTree.JCStatement>of(try_);
+        }else{
+            stmts = List.<JCTree.JCStatement>of(owner.make().Exec(init));
+        }
         return owner.make().Block(flags, stmts);
     }
 
@@ -366,10 +414,21 @@ public class AttributeDefinitionBuilder {
         
         JCTree.JCBlock block = owner.make().Block(0L, stmts);
         if (toplevel || late) {            
-            JCExpression msg = owner.make().Literal(late ? "Accessing uninitialized 'late' attribute" : "Cyclic initialization");
+            JCExpression msg = owner.make().Literal(late ? "Accessing uninitialized 'late' attribute '"+attrName+"'" : "Cyclic initialization trying to read the value of '"+attrName+"' before it was set");
             JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationErrorType), 
                     List.<JCExpression>of(msg)));
-            JCTree.JCBlock catchBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(throwStmt));
+            List<JCStatement> catchStmts;
+            if(toplevel && !late){
+                JCStatement rethrow = owner.make().Exec(owner.makeUtilInvocation("rethrow", 
+                        List.of(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())), null));
+                // rethrow the init exception if we have one
+                JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                        owner.makeNull()), rethrow, null);
+                catchStmts = List.<JCTree.JCStatement>of(ifThrow, throwStmt);
+            }else{
+                catchStmts = List.<JCTree.JCStatement>of(throwStmt);
+            }
+            JCTree.JCBlock catchBlock = owner.make().Block(0, catchStmts);
             JCVariableDecl excepType = owner.makeVar("ex", owner.make().Type(owner.syms().nullPointerExceptionType), null);
             JCTree.JCCatch catcher = owner.make().Catch(excepType , catchBlock);
             JCTree.JCTry tryExpr = owner.make().Try(block, List.<JCTree.JCCatch>of(catcher), null);

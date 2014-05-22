@@ -94,6 +94,7 @@ public class Naming implements LocalId {
         $getType$,
         $getIterables$,
         $index$,
+        $initException$,
         $instance$,
         $invoke$,
         $lookup$,
@@ -2186,6 +2187,9 @@ public class Naming implements LocalId {
     public String getAnnotationSequenceMethodName() {
         return name(Unfix.$annotationSequence$);
     }
-    
+
+    public static String getToplevelAttributeSavedExceptionName() {
+        return name(Unfix.$initException$);
+    }
 }
 
