@@ -3526,8 +3526,15 @@ final class classDecl3_ {
     private classDecl3_() {
     }
     private static .ceylon.language.meta.declaration.ClassDeclaration[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.meta.declaration.ClassDeclaration[]{null};
+        try {
+            value = new .ceylon.language.meta.declaration.ClassDeclaration[]{null};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
@@ -3538,7 +3545,8 @@ final class classDecl3_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'classDecl3\' before it was set");
         }
     }
     
@@ -3557,8 +3565,15 @@ final class classDecl4_ {
     private classDecl4_() {
     }
     private static .ceylon.language.meta.declaration.ClassDeclaration[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.meta.declaration.ClassDeclaration[]{null};
+        try {
+            value = new .ceylon.language.meta.declaration.ClassDeclaration[]{null};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
@@ -3569,7 +3584,8 @@ final class classDecl4_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'classDecl4\' before it was set");
         }
     }
     

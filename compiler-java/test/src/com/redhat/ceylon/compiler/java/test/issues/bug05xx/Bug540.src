@@ -5,18 +5,26 @@ final class arr1_ {
     private arr1_() {
     }
     private static final .ceylon.language.Array<.ceylon.language.Integer>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Array[]{new .ceylon.language.Array<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L),
-                .ceylon.language.Integer.instance(3L)}))};
+        try {
+            value = new .ceylon.language.Array[]{new .ceylon.language.Array<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.Integer, .ceylon.language.Integer, .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Tuple<.ceylon.language.Integer, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends .ceylon.language.Integer>>>>(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                    .ceylon.language.Integer.instance(1L),
+                    .ceylon.language.Integer.instance(2L),
+                    .ceylon.language.Integer.instance(3L)}))};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Array<.ceylon.language.Integer> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'arr1\' before it was set");
         }
     }
 }
@@ -25,41 +33,49 @@ final class arr3_ {
     private arr3_() {
     }
     private static final .ceylon.language.Array<.ceylon.language.Integer>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Array[]{(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
-                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Integer.instance(1L);
+        try {
+            value = new .ceylon.language.Array[]{(
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                    .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 3, false){
                         
-                        case 1: 
-                            return .ceylon.language.Integer.instance(2L);
-                        
-                        case 2: 
-                            return .ceylon.language.Integer.instance(3L);
-                        
-                        default: 
-                            return null;
-                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return .ceylon.language.Integer.instance(1L);
+                            
+                            case 1: 
+                                return .ceylon.language.Integer.instance(2L);
+                            
+                            case 2: 
+                                return .ceylon.language.Integer.instance(3L);
+                            
+                            default: 
+                                return null;
+                            
+                            }
                         }
-                    }
-                };
-            }
-            returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
-        )};
+                    };
+                }
+                returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
+            )};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Array<.ceylon.language.Integer> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'arr3\' before it was set");
         }
     }
 }

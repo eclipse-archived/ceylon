@@ -51,15 +51,23 @@ final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model
         final InnerClass_2 x = new InnerClass_2();
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'transient\' before it was set");
         }
     }
     

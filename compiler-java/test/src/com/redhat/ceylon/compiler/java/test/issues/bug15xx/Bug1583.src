@@ -25,8 +25,15 @@ public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.m
     private mixers_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -46,7 +53,8 @@ public final class mixers_ implements .com.redhat.ceylon.compiler.java.runtime.m
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'mixers\' before it was set");
         }
     }
     

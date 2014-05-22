@@ -678,8 +678,15 @@ final class litValue_ {
     private litValue_() {
     }
     private static final long[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new long[]{2L};
+        try {
+            value = new long[]{2L};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -688,7 +695,8 @@ final class litValue_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litValue\' before it was set");
         }
     }
 }
@@ -700,8 +708,15 @@ final class litVariable_ {
     private litVariable_() {
     }
     private static long[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new long[]{2L};
+        try {
+            value = new long[]{2L};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
@@ -712,7 +727,8 @@ final class litVariable_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litVariable\' before it was set");
         }
     }
     

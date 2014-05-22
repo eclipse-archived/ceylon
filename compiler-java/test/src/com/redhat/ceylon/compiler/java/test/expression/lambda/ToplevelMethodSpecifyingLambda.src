@@ -5,22 +5,30 @@ final class toplevel_ {
     private toplevel_() {
     }
     private static final .ceylon.language.Callable<? extends .ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Callable[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
-            
-            @.java.lang.Override
-            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                final .java.lang.String name2 = ((.ceylon.language.String)$param$0).toString();
-                return .ceylon.language.String.instance("hello " + name2);
-            }
-        }};
+        try {
+            value = new .ceylon.language.Callable[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(String)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String name2 = ((.ceylon.language.String)$param$0).toString();
+                    return .ceylon.language.String.instance("hello " + name2);
+                }
+            }};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevel\' before it was set");
         }
     }
 }

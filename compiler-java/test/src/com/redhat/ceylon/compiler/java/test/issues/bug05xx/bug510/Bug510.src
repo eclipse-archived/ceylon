@@ -60,8 +60,15 @@ final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.mo
     private synchronized_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -70,7 +77,8 @@ final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.mo
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'synchronized\' before it was set");
         }
     }
     
@@ -88,8 +96,15 @@ final class volatile_ {
     private volatile_() {
     }
     private static final long[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new long[]{5L};
+        try {
+            value = new long[]{5L};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -98,7 +113,8 @@ final class volatile_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'volatile\' before it was set");
         }
     }
 }

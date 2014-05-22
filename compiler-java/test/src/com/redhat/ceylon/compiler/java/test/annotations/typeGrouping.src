@@ -68,8 +68,15 @@ final class typeGroupAttribute_ {
     private typeGroupAttribute_() {
     }
     private static final .java.lang.Object[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .java.lang.Object[]{.ceylon.language.nothing_.get_()};
+        try {
+            value = new .java.lang.Object[]{.ceylon.language.nothing_.get_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -80,7 +87,8 @@ final class typeGroupAttribute_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'typeGroupAttribute\' before it was set");
         }
     }
 }

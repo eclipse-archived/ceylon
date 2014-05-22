@@ -217,8 +217,15 @@ final class toplevelAttribute_ {
     private toplevelAttribute_() {
     }
     private static final .java.lang.Object[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Foo()};
+        try {
+            value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Foo()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -229,7 +236,8 @@ final class toplevelAttribute_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelAttribute\' before it was set");
         }
     }
 }
@@ -241,8 +249,15 @@ public final class sharedToplevelAttribute_ {
     private sharedToplevelAttribute_() {
     }
     private static final .java.lang.Object[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Bar()};
+        try {
+            value = new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.annotations.Bar()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -255,7 +270,8 @@ public final class sharedToplevelAttribute_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'sharedToplevelAttribute\' before it was set");
         }
     }
 }

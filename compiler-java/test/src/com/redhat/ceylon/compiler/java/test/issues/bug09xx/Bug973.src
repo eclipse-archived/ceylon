@@ -14,66 +14,74 @@ final class bug973_ff_ {
     private bug973_ff_() {
     }
     private static final long[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new long[]{((.ceylon.language.Integer)(.java.lang.Object)(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-                                
-                                public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                                        {
-                                            $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).iterator();
-                                        }
-                                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                                        private .ceylon.language.Integer x;
-                                        private boolean x$exhausted$;
-                                        
-                                        private final boolean x() {
-                                            final .java.lang.Object $ceylontmp$item$1 = $iterator$0.next();
-                                            x$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
-                                            if (x$exhausted$) {
-                                                return false;
-                                            } else {
-                                                x = (.ceylon.language.Integer)$ceylontmp$item$1;
-                                                return true;
+        try {
+            value = new long[]{((.ceylon.language.Integer)(.java.lang.Object)(
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                    .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
+                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                                    
+                                    public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                            {
+                                                $iterator$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).iterator();
                                             }
-                                        }
-                                        
-                                        public final .java.lang.Object next() {
-                                            if (this.x()) {
-                                                final .ceylon.language.Integer x = this.x;
-                                                return x;
-                                            } else return .ceylon.language.finished_.get_();
-                                        }
-                                    };
-                                }
-                            };
-                        
-                        default: 
-                            return null;
-                        
+                                            private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                            private .ceylon.language.Integer x;
+                                            private boolean x$exhausted$;
+                                            
+                                            private final boolean x() {
+                                                final .java.lang.Object $ceylontmp$item$1 = $iterator$0.next();
+                                                x$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                                                if (x$exhausted$) {
+                                                    return false;
+                                                } else {
+                                                    x = (.ceylon.language.Integer)$ceylontmp$item$1;
+                                                    return true;
+                                                }
+                                            }
+                                            
+                                            public final .java.lang.Object next() {
+                                                if (this.x()) {
+                                                    final .ceylon.language.Integer x = this.x;
+                                                    return x;
+                                                } else return .ceylon.language.finished_.get_();
+                                            }
+                                        };
+                                    }
+                                };
+                            
+                            default: 
+                                return null;
+                            
+                            }
                         }
-                    }
-                };
-            }
-            returning .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug973_first_.<.ceylon.language.Integer, .java.lang.Object>bug973_first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
-        )).longValue()};
+                    };
+                }
+                returning .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug973_first_.<.ceylon.language.Integer, .java.lang.Object>bug973_first(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+            )).longValue()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static long get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug973_ff\' before it was set");
         }
     }
 }

@@ -604,15 +604,23 @@ final class topLevelLeftAttribute_ {
     private topLevelLeftAttribute_() {
     }
     private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left[]{new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelLeftAttribute\' before it was set");
         }
     }
     

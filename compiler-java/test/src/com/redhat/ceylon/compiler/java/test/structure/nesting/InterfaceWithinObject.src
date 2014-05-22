@@ -61,15 +61,23 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
         return z;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_[]{new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     static .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'interfaceWithinObject\' before it was set");
         }
     }
     

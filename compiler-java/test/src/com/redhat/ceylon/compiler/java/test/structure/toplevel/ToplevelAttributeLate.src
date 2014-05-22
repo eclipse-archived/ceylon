@@ -25,7 +25,7 @@ final class toplevelAttributeLate_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute");
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLate\'");
         }
     }
     
@@ -45,7 +45,7 @@ final class toplevelAttributeLateVariable_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute");
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLateVariable\'");
         }
     }
     

@@ -612,15 +612,23 @@ final class bug708extra1_ {
     private bug708extra1_() {
     }
     private static final .ceylon.language.String[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.String[]{(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor$)};
+        try {
+            value = new .ceylon.language.String[]{(.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor$)};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.String get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra1\' before it was set");
         }
     }
 }
@@ -629,15 +637,23 @@ final class bug708extra2_ {
     private bug708extra2_() {
     }
     private static final .ceylon.language.String[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.String[]{(.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).test()};
+        try {
+            value = new .ceylon.language.String[]{(.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).test()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.String get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra2\' before it was set");
         }
     }
 }
@@ -646,15 +662,23 @@ final class bug708obj_ {
     private bug708obj_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708obj\' before it was set");
         }
     }
 }
@@ -663,21 +687,29 @@ final class bug708extra3_ {
     private bug708extra3_() {
     }
     private static final .ceylon.language.String[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.String[]{(.ceylon.language.String)(
-            let
-            {
-                .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> safe$18 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.get_();
-            }
-            returning safe$18 != null ? safe$18.test() : null;
-        )};
+        try {
+            value = new .ceylon.language.String[]{(.ceylon.language.String)(
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> safe$18 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.get_();
+                }
+                returning safe$18 != null ? safe$18.test() : null;
+            )};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.String get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra3\' before it was set");
         }
     }
 }
@@ -686,15 +718,23 @@ final class bug708seq_ {
     private bug708seq_() {
     }
     private static final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)})};
+        try {
+            value = new .ceylon.language.Sequential[]{new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)})};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708seq\' before it was set");
         }
     }
 }
@@ -703,28 +743,36 @@ final class bug708extra4_ {
     private bug708extra4_() {
     }
     private static final .ceylon.language.Sequential<? extends .ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Sequential[]{(
-            let
-            {
-                .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> spread$19$iterable$ = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.get_();
-                .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$19$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$));
-                .java.lang.Object spread$19$iteration$;
-                .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> spread$19$iterator$ = spread$19$iterable$.iterator();
-                while (!((spread$19$iteration$ = spread$19$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> spread$19$element$ = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)spread$19$iteration$;
-                    spread$19$sb$.append((.ceylon.language.String)spread$19$element$.test());
+        try {
+            value = new .ceylon.language.Sequential[]{(
+                let
+                {
+                    .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> spread$19$iterable$ = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.get_();
+                    .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$19$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$));
+                    .java.lang.Object spread$19$iteration$;
+                    .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> spread$19$iterator$ = spread$19$iterable$.iterator();
+                    while (!((spread$19$iteration$ = spread$19$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> spread$19$element$ = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)spread$19$iteration$;
+                        spread$19$sb$.append((.ceylon.language.String)spread$19$element$.test());
+                    }
                 }
-            }
-            returning spread$19$sb$.getSequence();
-        )};
+                returning spread$19$sb$.getSequence();
+            )};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Sequential<? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra4\' before it was set");
         }
     }
 }
@@ -736,8 +784,15 @@ final class bug708_cache_ {
     private bug708_cache_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -746,7 +801,8 @@ final class bug708_cache_ {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708_cache\' before it was set");
         }
     }
 }

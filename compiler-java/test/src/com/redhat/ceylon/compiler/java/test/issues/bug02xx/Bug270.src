@@ -113,24 +113,32 @@ final class bug270_ {
     private bug270_() {
     }
     private static final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Entry[]{(
-            let
-            {
-                .ceylon.language.String arg$8$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer arg$8$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$1 = .ceylon.language.String.$TypeDescriptor$;
-            }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$8$reified$0, arg$8$reified$1, arg$8$0, arg$8$1);
-        )};
+        try {
+            value = new .ceylon.language.Entry[]{(
+                let
+                {
+                    .ceylon.language.String arg$8$1 = .ceylon.language.String.instance("hello");
+                    .ceylon.language.Integer arg$8$0 = .ceylon.language.Integer.instance(1L);
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$8$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+                }
+                returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$8$reified$0, arg$8$reified$1, arg$8$0, arg$8$1);
+            )};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug270\' before it was set");
         }
     }
 }
@@ -139,24 +147,32 @@ final class bug270Variable_ {
     private bug270Variable_() {
     }
     private static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Entry[]{(
-            let
-            {
-                .ceylon.language.String arg$9$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Integer arg$9$0 = .ceylon.language.Integer.instance(1L);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$1 = .ceylon.language.String.$TypeDescriptor$;
-            }
-            returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$9$reified$0, arg$9$reified$1, arg$9$0, arg$9$1);
-        )};
+        try {
+            value = new .ceylon.language.Entry[]{(
+                let
+                {
+                    .ceylon.language.String arg$9$1 = .ceylon.language.String.instance("hello");
+                    .ceylon.language.Integer arg$9$0 = .ceylon.language.Integer.instance(1L);
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$9$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+                }
+                returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$9$reified$0, arg$9$reified$1, arg$9$0, arg$9$1);
+            )};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug270Variable\' before it was set");
         }
     }
     
@@ -169,33 +185,41 @@ final class bug270_2_ {
     private bug270_2_() {
     }
     private static final .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .ceylon.language.Entry[]{.com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug270_eatEntry_.<.ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>>bug270_eatEntry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), (
-            let
-            {
-                .ceylon.language.String arg$10$1 = .ceylon.language.String.instance("hello");
-                .ceylon.language.Entry arg$10$0 = (
-                    let
-                    {
-                        .ceylon.language.String arg$11$1 = .ceylon.language.String.instance("hello");
-                        .ceylon.language.Integer arg$11$0 = .ceylon.language.Integer.instance(1L);
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
-                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$1 = .ceylon.language.String.$TypeDescriptor$;
-                    }
-                    returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$11$reified$0, arg$11$reified$1, arg$11$0, arg$11$1);
-                );
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$1 = .ceylon.language.String.$TypeDescriptor$;
-            }
-            returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>(arg$10$reified$0, arg$10$reified$1, arg$10$0, arg$10$1);
-        ))};
+        try {
+            value = new .ceylon.language.Entry[]{.com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug270_eatEntry_.<.ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String>>bug270_eatEntry(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$), (
+                let
+                {
+                    .ceylon.language.String arg$10$1 = .ceylon.language.String.instance("hello");
+                    .ceylon.language.Entry arg$10$0 = (
+                        let
+                        {
+                            .ceylon.language.String arg$11$1 = .ceylon.language.String.instance("hello");
+                            .ceylon.language.Integer arg$11$0 = .ceylon.language.Integer.instance(1L);
+                            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                            .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+                        }
+                        returning new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(arg$11$reified$0, arg$11$reified$1, arg$11$0, arg$11$1);
+                    );
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$10$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+                }
+                returning new .ceylon.language.Entry<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .ceylon.language.String>(arg$10$reified$0, arg$10$reified$1, arg$10$0, arg$10$1);
+            ))};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .ceylon.language.Entry<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .ceylon.language.String> get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug270_2\' before it was set");
         }
     }
 }

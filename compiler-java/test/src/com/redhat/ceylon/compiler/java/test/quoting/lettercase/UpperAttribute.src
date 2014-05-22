@@ -8,8 +8,15 @@ public final class Zero {
     private Zero() {
     }
     private static long[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new long[]{0L};
+        try {
+            value = new long[]{0L};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -23,7 +30,8 @@ public final class Zero {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Zero\' before it was set");
         }
     }
     

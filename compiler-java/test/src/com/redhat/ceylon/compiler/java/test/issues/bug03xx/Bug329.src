@@ -31,15 +31,23 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
         return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se\' before it was set");
         }
     }
     
@@ -65,15 +73,23 @@ final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.mode
         return $com$redhat$ceylon$compiler$java$test$issues$bug03xx$Bug329_Something$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se2\' before it was set");
         }
     }
     

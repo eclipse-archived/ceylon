@@ -5,15 +5,23 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
     private transient_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'transient\' before it was set");
         }
     }
     
@@ -27,15 +35,23 @@ public final class $module_ implements .com.redhat.ceylon.compiler.java.runtime.
     private $module_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.$module_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'module\' before it was set");
         }
     }
     
@@ -49,15 +65,23 @@ public final class $package_ implements .com.redhat.ceylon.compiler.java.runtime
     private $package_() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_[]{new .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.$package_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'package\' before it was set");
         }
     }
     

@@ -42,15 +42,23 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
         return b2;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[] value;
+    private static final .java.lang.Throwable $initException$;
     static {
-        value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_()};
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_[]{new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_()};
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+        }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ get_() {
         try {
             return value[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Cyclic initialization");
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1119Addition\' before it was set");
         }
     }
     

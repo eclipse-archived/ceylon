@@ -12,7 +12,7 @@ public class Bug1479<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
         try {
             return parent[0];
         } catch (.java.lang.NullPointerException ex) {
-            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute");
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'parent\'");
         }
     }
     
