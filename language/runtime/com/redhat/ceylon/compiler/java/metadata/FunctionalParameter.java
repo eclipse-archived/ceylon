@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * (i.e. having {@code Method} as its model)
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.METHOD})
 public @interface FunctionalParameter {
     /** 
      * <p>The names of the parameters of this functional parameter. 
