@@ -1298,7 +1298,8 @@ shared void checkEqualityAndHash(){
     assert(u1Type.hash == u2Type.hash);
     assert(u1Type != u3Type);
     assert(u1Type.hash != u3Type.hash);
-    assert(u1Type.string == "metamodel::TypeParams<ceylon.language::Integer|ceylon.language::String>");
+    assert(u1Type.string == "metamodel::TypeParams<ceylon.language::Integer|ceylon.language::String>"
+        || u1Type.string == "metamodel::TypeParams<ceylon.language::String|ceylon.language::Integer>");
     
     value i1Type = `TypeParams<TPA&TPB>`;
     value i2Type = `TypeParams<TPB&TPA>`;
