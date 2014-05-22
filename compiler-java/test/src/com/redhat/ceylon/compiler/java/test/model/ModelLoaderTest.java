@@ -529,15 +529,9 @@ public class ModelLoaderTest extends CompilerTest {
             List<ParameterList> modelParameterLists = modelDeclaration.getParameterLists();
             compareParameterLists(name, validParameterLists, modelParameterLists);
             // now same for return type
-            if (compareMethodReturn(validDeclaration)) {
-                compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
-            }
+            compareDeclarations(validDeclaration.getType().getDeclaration(), modelDeclaration.getType().getDeclaration());
             // work on type parameters
             compareTypeParameters(name, validDeclaration.getTypeParameters(), modelDeclaration.getTypeParameters());
-        }
-    
-        protected boolean compareMethodReturn(Method validDeclaration) {
-            return true;
         }
     
         protected void compareTypeParameters(String name, List<TypeParameter> validTypeParameters, List<TypeParameter> modelTypeParameters) {
@@ -586,6 +580,11 @@ public class ModelLoaderTest extends CompilerTest {
         assertErrors("variadictest",
                 new CompilerError(7, "missing argument to required parameter seq of VariadicPlus")
         );
+    }
+    
+    @Test
+    public void loadMultipleParameterList(){
+        verifyCompilerClassLoading("MultipleParameterList.ceylon");
     }
     
     @Test
@@ -1430,23 +1429,6 @@ public class ModelLoaderTest extends CompilerTest {
         @Override
         protected void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
             // do nothing, until ceylon/ceylon-compiler#1231 is fixed
-        }
-        @Override
-        protected void compareParameterLists(String name, List<ParameterList> validParameterLists, List<ParameterList> modelParameterLists) {
-            // Override this for now because the model loader doesn't round trip MPL methods
-            // https://github.com/ceylon/ceylon-compiler/issues/1638
-            for(int i=0;i<Math.min(validParameterLists.size(), 1);i++){
-                List<Parameter> validParameterList = validParameterLists.get(i).getParameters();
-                List<Parameter> modelParameterList = modelParameterLists.get(i).getParameters();
-                compareParameterList(name, i, validParameterList,
-                        modelParameterList);
-            }
-        }
-        @Override
-        protected boolean compareMethodReturn(Method validDeclaration) {
-            // Override this for now because the model loader doesn't round trip MPL methods
-            // https://github.com/ceylon/ceylon-compiler/issues/1638
-            return validDeclaration.getParameterLists().size() <= 1;
         }
         
         protected boolean compareTransientness(MethodOrValue validDeclaration) {
