@@ -2210,6 +2210,10 @@ public class ClassTransformer extends AbstractTransformer {
             methodBuilder.reifiedTypeParameters(typeParameterListModel(typeParameterList));
         }
         
+        if (methodModel.getParameterLists().size() > 1) {
+            methodBuilder.mpl(methodModel.getParameterLists());
+        }
+        
         boolean hasOverloads = false;
         Tree.ParameterList parameterList = parameterLists.get(0);
         for (final Tree.Parameter parameter : parameterList.getParameters()) {

@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
 import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedTypedReference;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
@@ -538,5 +539,14 @@ public class MethodDefinitionBuilder
 
     public void defaultValue(JCExpression defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public void mpl(java.util.List<ParameterList> parameterLists) {
+        StringBuilder sb = new StringBuilder();
+        for (int ii = 1; ii < parameterLists.size(); ii++) {
+            ParameterList parameterList = parameterLists.get(ii);
+            ParameterDefinitionBuilder.functionalParameters(sb, parameterList);
+        }
+        modelAnnotations(gen.makeAtFunctionalParameter(sb.toString()));
     }
 }

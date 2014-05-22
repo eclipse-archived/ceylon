@@ -115,29 +115,33 @@ public class ParameterDefinitionBuilder {
             sb.append('!');
         }
         for (ParameterList pl : model.getParameterLists()) {
-            sb.append('(');
-            Iterator<Parameter> parameters = pl.getParameters().iterator();
-            while (parameters.hasNext()) {
-                Parameter p = parameters.next();
-                MethodOrValue pm = p.getModel();
-                sb.append(pm.getName());
-                if(p.isSequenced()) {
-                    if (p.isAtLeastOne()) {
-                        sb.append('+');
-                    } else {
-                        sb.append('*');
-                    }
-                }
-                if (pm instanceof Method) {
-                    Method meth = (Method)pm;
-                    functionalName(sb, (Method)pm);
-                }
-                if (parameters.hasNext()) {
-                    sb.append(',');
+            functionalParameters(sb, pl);
+        }
+    }
+
+    static void functionalParameters(StringBuilder sb, ParameterList pl) {
+        sb.append('(');
+        Iterator<Parameter> parameters = pl.getParameters().iterator();
+        while (parameters.hasNext()) {
+            Parameter p = parameters.next();
+            MethodOrValue pm = p.getModel();
+            sb.append(pm.getName());
+            if(p.isSequenced()) {
+                if (p.isAtLeastOne()) {
+                    sb.append('+');
+                } else {
+                    sb.append('*');
                 }
             }
-            sb.append(')');
+            if (pm instanceof Method) {
+                Method meth = (Method)pm;
+                functionalName(sb, (Method)pm);
+            }
+            if (parameters.hasNext()) {
+                sb.append(',');
+            }
         }
+        sb.append(')');
     }
 
     static boolean isBoxedVariableParameter(Parameter parameter) {
