@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -81,7 +82,6 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     };
     
     private Path res;
-    private List<File> compileList = new ArrayList<File>(2);
     private Path classpath;
     private final ModuleSet moduleSet = new ModuleSet();
     private FileSet files;
@@ -89,6 +89,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private Boolean noOsgi;
     private Boolean pack200;
 
+    private List<File> compileList = new ArrayList<File>(2);
+    private Set<Module> modules = null;
+    
     public CeylonCompileAntTask() {
         super("compile");
     }
@@ -223,8 +226,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             addToCompileList(getSrc());
             addToCompileList(getResource());
         }
+        modules = moduleSet.getModules();
         
-        if (compileList.size() == 0 && moduleSet.getModules().size() == 0){
+        if (compileList.size() == 0 && modules.size() == 0){
             log("Nothing to compile");
             return null;
         }
@@ -378,7 +382,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         };
         
         if (lazyTask.filterFiles(compileList) 
-                && lazyTask.filterModules(moduleSet.getModules())) {
+                && lazyTask.filterModules(modules)) {
             log("Everything's up to date");
             return null;
         }
@@ -434,7 +438,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
             cmd.createArgument().setValue(file.getAbsolutePath());
         }
         // modules to compile
-        for (Module module : moduleSet.getModules()) {
+        for (Module module : modules) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
             cmd.createArgument().setValue(module.toVersionlessSpec());
         }

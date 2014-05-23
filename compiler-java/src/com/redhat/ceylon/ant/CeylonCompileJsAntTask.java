@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -41,13 +42,15 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
 // TODO Resources not implemented yet for the JS compiler
 //    private Path res;
     
-    private List<File> compileList = new ArrayList<File>(2);
     private ModuleSet moduleset = new ModuleSet();
     private FileSet files;
     private boolean optimize = true;
     private boolean modulify = true;
     private boolean gensrc = true;
 
+    private List<File> compileList = new ArrayList<File>(2);
+    private Set<Module> modules = null;
+    
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
         @Override
         public boolean accept(File pathname) {
@@ -144,8 +147,9 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
             addToCompileList(getSrc());
             addToCompileList(getResource());
         }
+        modules = moduleset.getModules();
         
-        if (compileList.size() == 0 && moduleset.getModules().size() == 0){
+        if (compileList.size() == 0 && modules.size() == 0){
             log("Nothing to compile");
             return null;
         }
@@ -181,7 +185,7 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         };
 
         if (lazyTask.filterFiles(compileList) 
-                && lazyTask.filterModules(moduleset.getModules())) {
+                && lazyTask.filterModules(modules)) {
             log("Everything's up to date");
             return null;
         }
@@ -227,7 +231,7 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         }
         
         // modules to compile
-        for (Module module : moduleset.getModules()) {
+        for (Module module : modules) {
             log("Adding module: "+module, Project.MSG_VERBOSE);
             cmd.createArgument().setValue(module.toSpec());
         }
