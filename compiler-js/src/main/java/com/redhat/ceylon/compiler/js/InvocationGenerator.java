@@ -334,8 +334,7 @@ public class InvocationGenerator {
                         argvars.add(argvar);
                         gen.out(argvar, "=");
                     }
-                    TypedDeclaration decl = pd == null ? null : pd.getModel();
-                    int boxType = gen.boxUnboxStart(expr.getTerm(), decl);
+                    final int boxType = pd==null?0:gen.boxUnboxStart(expr.getTerm(), pd.getModel());
                     if (dyncheck) {
                         TypeUtils.generateDynamicCheck(((Tree.ListedArgument) arg).getExpression(),
                                 pd.getType(), gen, false);
@@ -439,6 +438,10 @@ public class InvocationGenerator {
                         } else {
                             ProducedType spreadType = TypeUtils.findSupertype(gen.getTypeUtils().sequential,
                                     expr.getTypeModel());
+                            if (spreadType == null) {
+                                //Go directly to Iterable
+                                spreadType = TypeUtils.findSupertype(gen.getTypeUtils().iterable, expr.getTypeModel());
+                            }
                             TypeUtils.printTypeArguments(that, spreadType.getTypeArguments(), gen, false);
                         }
                         gen.out(")");
