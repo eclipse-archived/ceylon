@@ -101,6 +101,14 @@ public abstract class ServiceToolLoader extends ToolLoader {
         // Then look in ~/.ceylon/bin
         File defUserDir = new File(FileUtil.getDefaultUserDir(), "bin");
         findPluginInPath(defUserDir, names);
+        // And in every installed script plugin in ~/.ceylon/bin/{moduleName}/
+        if(defUserDir.isDirectory() && defUserDir.canRead()){
+            for(File scriptPluginDir : defUserDir.listFiles()){
+                if(scriptPluginDir.isDirectory()){
+                    findPluginInPath(scriptPluginDir, names);
+                }
+            }
+        }
         // And finally in the user's PATH
         File[] paths = FileUtil.getExecPath();
         for (File part : paths) {
