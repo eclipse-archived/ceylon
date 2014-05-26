@@ -47,6 +47,10 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             if (p < 0) {
                 p = name.lastIndexOf('.');
             }
+            if (p < 0) {
+                // not a Maven artifact
+                return null;
+            }
             String groupId = name.substring(0, p);
             String artifactId = name.substring(p + 1);
             String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
