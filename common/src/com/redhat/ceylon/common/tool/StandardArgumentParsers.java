@@ -3,6 +3,7 @@ package com.redhat.ceylon.common.tool;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -124,7 +125,9 @@ public class StandardArgumentParsers {
         public Iterable<String> possibilities() {
             E[] values;
             try {
-                values = (E[]) enumClass.getMethod("values").invoke(null);
+                Method method = enumClass.getMethod("values");
+                method.setAccessible(true);
+                values = (E[]) method.invoke(null);
             } catch (ReflectiveOperationException e) {
                 // Should never happen
                 throw new RuntimeException(e);
