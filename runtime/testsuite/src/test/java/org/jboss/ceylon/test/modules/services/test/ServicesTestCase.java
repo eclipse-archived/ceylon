@@ -21,7 +21,6 @@ import javax.sound.sampled.Mixer;
 
 import ceylon.paris.f2f.iface.IService;
 import ceylon.paris.f2f.impl.ServiceImpl;
-
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
@@ -51,6 +50,7 @@ public class ServicesTestCase extends ModulesTest {
 
         testArchive(module, lib1, lib2);
     }
+
     @Test
     public void testAudioMixerServices() throws Throwable {
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
