@@ -37,16 +37,8 @@ interface Matrix<Cell> => Sequence<[Cell+]>;
 class Listleton<T>(List<T> l) => Singleton<List<T>>(l);
 
 class MiMatrix(Integer gridSize) satisfies Matrix<Integer> {
-    value sb = SequenceBuilder<[Integer+]>();
-    for (i in 1..gridSize) {
-        sb.append([ for (j in 1..gridSize) j ]);
-    }
-    Matrix<Integer> grid;
-    if (nonempty g=sb.sequence) {
-        grid=g;
-    } else {
-        grid=[[1]];
-    }
+    value sb = [ for (i in 1..gridSize) [ for (j in 1..gridSize) j ] ];
+    Matrix<Integer> grid = sb;
     shared actual Iterator<[Integer+]> iterator() { return grid.iterator(); }
     shared actual String string = grid.string;
     shared actual Integer hash = grid.hash;
