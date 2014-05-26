@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,8 +35,10 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -246,5 +249,80 @@ public class IOUtils {
             }
             os.closeEntry();
         }
+    }
+
+    public enum UnzipFailure {
+        DestinationNotDirectory,
+        CannotCreateDestination,
+        CopyError;
+    }
+    
+    @SuppressWarnings("serial")
+    public static class UnzipException extends RuntimeException {
+        public final UnzipFailure failure;
+        public final File dir;
+        public final String entryName;
+
+        public UnzipException(UnzipFailure failure, File dir){
+            this.failure = failure;
+            this.dir = dir;
+            this.entryName = null;
+        }
+
+        public UnzipException(UnzipFailure failure, String entryName, IOException e) {
+            super(e);
+            this.failure = failure;
+            this.dir = null;
+            this.entryName = entryName;
+        }
+    }
+    
+    public static void extractArchive(File zip, File dir) throws IOException {
+        if (dir.exists()) {
+            if (!dir.isDirectory()) {
+                throw new UnzipException(UnzipFailure.DestinationNotDirectory, dir);
+            }
+        } else {
+            mkdirs(dir);
+        }
+        
+        ZipFile zf = new ZipFile(zip);
+        try {
+            Enumeration<? extends ZipEntry> entries = zf.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                String entryName = entry.getName();
+                try {
+                    File out = new File(dir, entryName);
+                    if (entry.isDirectory()) {
+                        mkdirs(out);
+                        continue;
+                    }
+                    mkdirs(out.getParentFile());
+                    InputStream zipIn = zf.getInputStream(entry);
+                    try {
+                        BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out));
+                        try {
+                            IOUtils.copyStream(zipIn, fileOut, false, false);
+                        } finally {
+                            fileOut.close();
+                        }
+                    } finally {
+                        zipIn.close();
+                    }
+                } catch (IOException e) {
+                    throw new UnzipException(UnzipFailure.CopyError, entryName, e);
+                }
+            }
+        } finally {
+            zf.close();
+        }
+    }
+    
+    private static File mkdirs(File dir) {
+        if (!dir.exists() && !dir.mkdirs()) {
+            throw new UnzipException(UnzipFailure.CannotCreateDestination, dir);
+        }
+        return dir;
     }
 }
