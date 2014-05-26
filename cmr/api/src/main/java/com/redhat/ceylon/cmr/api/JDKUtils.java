@@ -63,6 +63,7 @@ public class JDKUtils {
 
     private static Map<String, Tuple> jdkModules;
     private static Map<String, Tuple> jdkOracleModules;
+    private static HashMap<String, String> jdkPackageToModule;
 
     private static class Tuple {
         private Set<String> packages;
@@ -89,6 +90,15 @@ public class JDKUtils {
             return;
         jdkModules = loadModularPackageList(jdk.packageList);
         jdkOracleModules = loadModularPackageList(jdk.packageListOracle);
+        jdkPackageToModule = new HashMap<String,String>();
+        for(Entry<String, Tuple> entry : jdkModules.entrySet()){
+            for(String pkg : entry.getValue().packages)
+                jdkPackageToModule.put(pkg, entry.getKey());
+        }
+        for(Entry<String, Tuple> entry : jdkOracleModules.entrySet()){
+            for(String pkg : entry.getValue().packages)
+                jdkPackageToModule.put(pkg, entry.getKey());
+        }
     }
 
     private static Map<String, Tuple> loadModularPackageList(String file) {
@@ -230,14 +240,6 @@ public class JDKUtils {
 
     public static String getJDKModuleNameForPackage(String pkgName) {
         loadPackageList();
-        for(Entry<String, Tuple> entry : jdkModules.entrySet()){
-            if(entry.getValue().packages.contains(pkgName))
-                return entry.getKey();
-        }
-        for(Entry<String, Tuple> entry : jdkOracleModules.entrySet()){
-            if(entry.getValue().packages.contains(pkgName))
-                return entry.getKey();
-        }
-        return null;
+        return jdkPackageToModule.get(pkgName);
     }
 }
