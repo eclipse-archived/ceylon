@@ -61,11 +61,17 @@ public class CeylonClasspathTool extends RepoUsingTool {
         
         boolean once = true;
         for(ArtifactResult entry : loadedModules.values()){
+            // since we even add missing modules there to avoid seeing them twice, let's skip them now
+            if(entry == null)
+                continue;
+            File file = entry.artifact();
+            if(file == null)
+                continue;
             if(once)
                 once = false;
             else
                 append(File.pathSeparator);
-            append(entry.artifact().getAbsolutePath());
+            append(file.getAbsolutePath());
         }
         flush();
     }
