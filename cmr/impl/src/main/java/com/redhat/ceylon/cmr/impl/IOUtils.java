@@ -237,7 +237,11 @@ public class IOUtils {
     }
 
     private static void zipInternal(String path, File file, ZipOutputStream os) throws IOException {
-        String filePath = path + "/" + file.getName();
+        String filePath;
+        if(path.isEmpty())
+            filePath = file.getName();
+        else
+            filePath = path + "/" + file.getName();
         if (file.isDirectory()) {
             for (File f : file.listFiles())
                 zipInternal(filePath, f, os);
