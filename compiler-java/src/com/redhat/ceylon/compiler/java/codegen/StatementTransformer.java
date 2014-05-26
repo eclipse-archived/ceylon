@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -1627,7 +1628,8 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeIndexedAccess() {
             JCArrayAccess expr = make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
-            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, BoxingStrategy.UNBOXED, elementType);
+            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel());
+            return expressionGen().applyErasureAndBoxing(expr, typeFact().getAnythingDeclaration().getType(), true, boxingStrategy, elementType);
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
