@@ -94,7 +94,7 @@ String$proto.notLargerThan=function(o){
 String$proto.notLargerThan.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Boolean$},
   $ps:[{$nm:'Other',$t:{t:String$},$mt:'prm'}],d:['$','String','$m','notLargerThan']};};
 atr$(String$proto,'sequence',function(){
-  return Iterable.$$.prototype.$prop$getSequence.get.call(this);
+  return ArraySequence(this,{Element$Iterable:{t:Character}});
 },undefined,function(){return{
   mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Character}}},$cont:String$,d:['$','String','$at','sequence'],
   $an:function(){return[actual(),shared()]}
