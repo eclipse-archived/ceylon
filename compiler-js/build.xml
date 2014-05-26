@@ -164,12 +164,6 @@
 
     <target name="noderun">
         <echo message="Running tests on node.js (node must be installed)" />
-        <mkdir dir="${build.test}/lexical/${jslangpath}" />
-        <mkdir dir="${build.test}/proto/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/lexical/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/lexical/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}" todir="${build.test}/proto/${jslangpath}" />
-        <copy file="${runtime}/${jslangmodule}.sha1" todir="${build.test}/proto/${jslangpath}" />
         <java classname="NodeTest" classpathref="test.run.classpath">
             <arg value="${build.test}/lexical" />
             <arg value="${build.test}/proto" />
