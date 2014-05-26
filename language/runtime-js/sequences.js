@@ -213,54 +213,6 @@ TypeCategory$proto.contains = function(k) {
     return is$(k, this.type) && this.seq.defines(k);
 }
 
-function SequenceBuilder($$targs$$,that) {
-    if(that===undefined)that=new SequenceBuilder.$$;
-    that.seq = [];
-    that.$$targs$$=$$targs$$;
-    return that;
-}
-SequenceBuilder.$crtmm$=function(){return{$ps:[],$an:function(){return[shared()];},
-  $tp:{Element$SequenceBuilder:{}}, mod:$CCMM$,d:['$','SequenceBuilder']};}
-
-initTypeProto(SequenceBuilder, 'ceylon.language::SequenceBuilder', $init$Basic());
-var SequenceBuilder$proto = SequenceBuilder.$$.prototype;
-atr$(SequenceBuilder$proto, 'sequence', function() {
-    return (this.seq.length > 0) ? ArraySequence(this.seq,{Element$Iterable:this.$$targs$$.Element$SequenceBuilder}) : getEmpty();
-},undefined,function(){return{
-  $t:{t:Sequential,a:{Element$Sequential:'Element$SequenceBuilder'}},mod:$CCMM$,d:['$','SequenceBuilder','$at','sequence']};});
-SequenceBuilder$proto.append=function(e){
-  this.seq.push(e);
-  return this;
-}
-SequenceBuilder$proto.appendAll = function(/*Iterable*/arr) {
-    if (arr === undefined) return;
-    var iter = arr.iterator();
-    var e; while ((e = iter.next()) !== getFinished()) {
-        this.seq.push(e);
-    }
-    return this;
-}
-atr$(SequenceBuilder$proto, 'size', function(){ return this.seq.length; },undefined,function(){return{
-  $t:{t:Integer},mod:$CCMM$,d:['$','SequenceBuilder','$at','size']
-};});
-atr$(SequenceBuilder$proto, 'empty', function() { return this.seq.length===0 },function(){return{
-  $t:{t:Boolean$},mod:$CCMM$,d:['$','SequenceBuilder','$at','empty']
-};});
-
-function SequenceAppender(other, $$targs$$,that) {
-    if (that===undefined)that=new SequenceAppender.$$;
-    SequenceBuilder({Element$SequenceBuilder:$$targs$$.Element$SequenceAppender},that);
-    that.appendAll(other);
-    return that;
-}
-SequenceAppender.$crtmm$=function(){return{$ps:[{$nm:'elements',$t:{t:Sequence,a:{Element$Sequence:'Element$SequenceAppender'}},$mt:'prm'}],$an:function(){return[shared()];},
-  'super':{t:SequenceBuilder,a:{Element$SequenceBuilder:'Element$SequenceAppender'}},$tp:{Element$SequenceAppender:{}},mod:$CCMM$,d:['$','SequenceAppender']};}
-
-initTypeProto(SequenceAppender, 'ceylon.language::SequenceAppender', SequenceBuilder);
-
-ex$.Sequence=Sequence;
-//ex$.SequenceBuilder=SequenceBuilder;
-//ex$.SequenceAppender=SequenceAppender;
 ex$.ArraySequence=ArraySequence;
 
 //for sequenced enumerations
