@@ -1256,13 +1256,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression makeModuleLiteralCall(Module module) {
         JCExpression modulesGetIdent = naming.makeFQIdent("ceylon", "language", "meta", "modules_", "get_");
         JCExpression modulesGet = make().Apply(null, modulesGetIdent, List.<JCExpression>nil());
+        JCExpression call;
         if(module.isDefault()){
-            return make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());
+            call = make().Apply(null, makeSelect(modulesGet, "getDefault"), List.<JCExpression>nil());
         }else{
-            return make().Apply(null, makeSelect(modulesGet, "find"), 
+            call = make().Apply(null, makeSelect(modulesGet, "find"), 
                                       List.<JCExpression>of(ceylonLiteral(module.getNameAsString()),
                                                             ceylonLiteral(module.getVersion())));
         }
+        // make sure we handle missing modules gracefully
+        String version = module.getVersion();
+        return makeMetamodelInvocation("checkModule", List.of(call, ceylonLiteral(module.getNameAsString()), version == null ? makeNull() : ceylonLiteral(version)), null);
     }
 
     private JCExpression getClosedTypesSequential(java.util.List<ProducedType> typeModels) {
