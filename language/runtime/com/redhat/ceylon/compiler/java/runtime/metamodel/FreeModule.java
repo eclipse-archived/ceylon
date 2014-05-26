@@ -33,6 +33,7 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
 
     @Ignore
     public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(FreeModule.class);
+    private static final java.lang.annotation.Annotation[] NO_ANNOTATION = new java.lang.annotation.Annotation[0];
     protected com.redhat.ceylon.compiler.typechecker.model.Module declaration;
     private Sequential<? extends Package> packages;
     private Sequential<? extends Import> dependencies;
@@ -68,6 +69,8 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
+        if(declaration.isDefault() || declaration.isJava())
+            return NO_ANNOTATION;
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }
 
