@@ -8,3 +8,4 @@ com.redhat.ceylon.tools.info.CeylonInfoTool
 com.redhat.ceylon.tools.version.CeylonVersionTool
 com.redhat.ceylon.tools.copy.CeylonCopyTool
 com.redhat.ceylon.tools.classpath.CeylonClasspathTool
+com.redhat.ceylon.tools.plugin.CeylonPluginTool
