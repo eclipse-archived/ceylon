@@ -3648,7 +3648,7 @@ final class toplevelAttribute_ {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.variable"));
         if (lm$205.getName().equals("toplevelAttribute")) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.name == \"toplevelAttribute\""));
-        if (lm$205.getContainer().equals(.ceylon.language.meta.modules_.get_().getDefault().findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
+        if (lm$205.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.container == `package com.redhat.ceylon.compiler.java.test.structure.reified`"));
         .com.redhat.ceylon.compiler.java.test.structure.reified.classDecl3_.set_(d);
         
@@ -3746,7 +3746,7 @@ final class toplevelAttribute_ {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is SetterDeclaration lm = d.container"));
         if (lm$216.getName().equals("toplevelAttribute")) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.name == \"toplevelAttribute\""));
-        if (lm$216.getContainer().equals(.ceylon.language.meta.modules_.get_().getDefault().findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
+        if (lm$216.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.reified"))) {
         } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "lm.container == `package com.redhat.ceylon.compiler.java.test.structure.reified`"));
         .com.redhat.ceylon.compiler.java.test.structure.reified.classDecl4_.set_(d);
         
