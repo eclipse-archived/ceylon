@@ -24,6 +24,7 @@ public abstract class Constants {
     
     public static final String DEFAULT_SOURCE_DIR = "source";
     public static final String DEFAULT_RESOURCE_DIR = "resource";
+    public static final String DEFAULT_SCRIPT_DIR = "script";
     public static final String DEFAULT_DOC_DIR = "doc";
     public static final String DEFAULT_MODULE_DIR = "modules";
     
