@@ -316,6 +316,8 @@ public class Metamodel {
             if(ret == null){
                 // make sure it is loaded
                 loadModule(declaration, visitedModules);
+                if(!declaration.isAvailable())
+                    return null;
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeModule(declaration); 
                 typeCheckModulesToRuntimeModel.put(declaration, ret);
             }
