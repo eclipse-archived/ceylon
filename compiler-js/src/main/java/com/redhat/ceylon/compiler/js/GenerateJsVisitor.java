@@ -2402,9 +2402,8 @@ public class GenerateJsVisitor extends Visitor
                     return 0;
                 }
                 return 1;
-            } else if ("ceylon.language::String".equals(fromTypeName)
-                        || "ceylon.language::Float".equals(fromTypeName)) {
-                // conversion from Ceylon String or Float to native value
+            } else if ("ceylon.language::Float".equals(fromTypeName)) {
+                // conversion from Ceylon Float to native value
                 return 2;
             } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
                 if (fromTerm instanceof Tree.MemberOrTypeExpression) {
