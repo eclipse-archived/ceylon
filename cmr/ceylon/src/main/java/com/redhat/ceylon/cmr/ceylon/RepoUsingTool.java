@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
 
@@ -49,6 +51,7 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 
 public abstract class RepoUsingTool extends CeylonBaseTool {
     protected List<URI> repo;
@@ -459,7 +462,78 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
         return null;
     }
+
+    protected boolean isSourceModule(String name, String version, List<File> srcDirs){
+        for (File srcDir : srcDirs) {
+            if(isSourceModule(srcDir, name, version))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isSourceModule(File srcDir, String name, String version) {
+        try{
+            ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, srcDir);
+            String declaredVersion = mdr.getModuleVersion();
+            return name.equals("default") || version.equals(declaredVersion);
+        }catch(ModuleDescriptorReader.NoSuchModuleException x){
+            return false;
+        }
+    }
+
+    protected List<ModuleSpec> getSourceModules(List<File> srcDirs){
+        Map<String, ModuleSpec> modules = new HashMap<String, ModuleSpec>();
+        for (File srcDir : srcDirs) {
+            collectModules(srcDir, srcDir, modules);
+        }
+        ArrayList<ModuleSpec> ret = new ArrayList<ModuleSpec>(modules.size());
+        ret.addAll(modules.values());
+        return ret;
+    }
     
+    private void collectModules(File sourceRoot, File sourceFile, Map<String, ModuleSpec> modules) {
+        if(sourceFile.isDirectory()){
+            File moduleFile = new File(sourceFile, "module.ceylon");
+            // do we have a module file?
+            if(moduleFile.exists()){
+                collectModule(sourceRoot, sourceFile, modules);
+                // we done with this tree
+                return;
+            }
+            // recurse down normal folders
+            for(File f : sourceFile.listFiles()){
+                collectModules(sourceRoot, f, modules);
+            }
+        }else{
+            String name = sourceFile.getName().toLowerCase();
+            // did we find a source file?
+            if(name.endsWith(".ceylon")
+                    || name.endsWith(".java")
+                    || name.endsWith(".js")){
+                // we have a default module
+                if(!modules.containsKey("default"))
+                    modules.put("default", new ModuleSpec("default", null));
+            }
+        }
+    }
+
+    private void collectModule(File sourceRoot, File sourceFile, Map<String, ModuleSpec> modules) {
+        File relativeFile = FileUtil.relativeFile(sourceRoot, sourceFile);
+        String name = relativeFile.getPath().replace(File.separatorChar, '.');
+        if(modules.containsKey(name))
+            return;
+        try{
+            ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, sourceRoot);
+            String version = mdr.getModuleVersion();
+            if (version != null) {
+                modules.put(name, new ModuleSpec(name, version));
+            }
+        }catch(ModuleDescriptorReader.NoSuchModuleException x){
+            // skip this source folder and look in the next one
+            x.printStackTrace();
+        }
+    }
+
     private boolean runCompiler(RepositoryManager repoMgr, String name, ModuleQuery.Type type) {
         List<String> args = new ArrayList<String>();
         if (systemRepo != null) {
