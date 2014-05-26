@@ -16,8 +16,12 @@
 
 package org.jboss.ceylon.test.modules.services.test;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Mixer;
+
 import ceylon.paris.f2f.iface.IService;
 import ceylon.paris.f2f.impl.ServiceImpl;
+
 import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
@@ -46,5 +50,17 @@ public class ServicesTestCase extends ModulesTest {
         System.out.println("lib2 = " + lib2.toString(true));
 
         testArchive(module, lib1, lib2);
+    }
+    @Test
+    public void testAudioMixerServices() throws Throwable {
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+        int plainCount = mixers.length;
+        System.out.println("Number of mixers using plain Java = " + plainCount);
+        System.setProperty("ceylon.runtime.test.services.audiotest", String.valueOf(plainCount));
+        
+        JavaArchive module = ShrinkWrap.create(JavaArchive.class, "ceylon.audiotest-1.0.0.car");
+        module.addClasses(ceylon.audiotest.module_.class, ceylon.audiotest.run_.class);
+
+        testArchive(module);
     }
 }
