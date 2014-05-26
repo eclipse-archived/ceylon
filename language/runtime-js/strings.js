@@ -528,7 +528,7 @@ String$proto.$_split = function(sep, discard, group) {
     }
 
     this.codePoints = count;
-    return tokens.reifyCeylonType({Absent$Iterable:{t:Null},Element$Iterable:{t:String$}});
+    return tokens.reifyCeylonType({t:String$});
 }
 String$proto.$_split.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:String$}}},d:['$','String','$m','split']};}
 atr$(String$proto, 'reversed', function() {
