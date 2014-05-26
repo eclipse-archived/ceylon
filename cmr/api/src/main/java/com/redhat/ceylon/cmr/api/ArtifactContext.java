@@ -42,6 +42,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String MODULE_XML = "module.xml";
     public static final String SHA1 = ".sha1";
     public static final String INFO = ".info";
+    public static final String SCRIPTS_ZIPPED = ".scripts.zip";
     
     private String name;
     private String version;
