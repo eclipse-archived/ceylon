@@ -164,7 +164,9 @@ public abstract class ModulesTest {
 
     protected String getBootstrapModules() {
         final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
-        return projectHome + File.separator + "build" + File.separator + "dist" + File.separator + "repo";
+        String runtimeRepo = projectHome + File.separator + "build" + File.separator + "dist" + File.separator + "repo";
+        String distRepo = projectHome + File.separator + ".." + File.separator + "ceylon-dist" + File.separator + "dist" + File.separator + "repo";
+        return distRepo + File.pathSeparator + runtimeRepo;
     }
 
     protected static String toPathString(String name, String version) {
