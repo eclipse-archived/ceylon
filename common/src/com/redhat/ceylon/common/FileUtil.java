@@ -2,6 +2,11 @@ package com.redhat.ceylon.common;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -339,6 +344,45 @@ public class FileUtil {
             return childPath.startsWith(parentPath);
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    /**
+     * Returns true if the specified folder contains at least one regular file
+     */
+    public static boolean containsFile(File dir) {
+        try {
+            final boolean[] found = new boolean[1];
+            found[0] = false;
+            Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path>(){
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attributes) throws IOException {
+                    if(Files.isRegularFile(path)){
+                        found[0] = true;
+                        return FileVisitResult.TERMINATE;
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+            return found[0];
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Recursively copy every file/folder from root to dest
+     */
+    public static void copy(File root, File dest) throws IOException {
+        for(File child : root.listFiles()){
+            File childDest = new File(dest, child.getName());
+            if(child.isDirectory()){
+                if(!childDest.mkdirs())
+                    throw new IOException("Failed to create dir "+childDest.getPath());
+                copy(child, childDest);
+            }else{
+                Files.copy(child.toPath(), childDest.toPath());
+            }
         }
     }
 }
