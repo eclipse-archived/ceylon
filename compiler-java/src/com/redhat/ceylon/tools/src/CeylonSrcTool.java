@@ -105,54 +105,19 @@ public class CeylonSrcTool extends RepoUsingTool {
     }
 
     private void extractArchive(ArtifactResult srcArchive, File dir) throws IOException {
-        if (dir.exists()) {
-            if (!dir.isDirectory()) {
-                throw new RuntimeException(CeylonSrcMessages.msg("not.dir.src.dir", dir.getAbsolutePath()));
+        try{
+            IOUtils.extractArchive(srcArchive.artifact(), dir);
+        }catch(IOUtils.UnzipException x){
+            switch(x.failure){
+            case CannotCreateDestination:
+                throw new RuntimeException(CeylonSrcMessages.msg("unable.create.src.dir", x.dir));
+            case CopyError:
+                throw new RuntimeException(CeylonSrcMessages.msg("unable.extract.entry", x.entryName, srcArchive.artifact().getAbsolutePath()), x.getCause());
+            case DestinationNotDirectory:
+                throw new RuntimeException(CeylonSrcMessages.msg("not.dir.src.dir", x.dir));
+            default:
+                throw x;
             }
-        } else {
-            if (!dir.mkdirs()) {
-                throw new RuntimeException(CeylonSrcMessages.msg("unable.create.src.dir", dir.getAbsolutePath()));
-            }
-        }
-        
-        ZipFile zf = new ZipFile(srcArchive.artifact());
-        try {
-            Enumeration<? extends ZipEntry> entries = zf.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                String entryName = entry.getName();
-                try {
-                    File out = new File(dir, entryName);
-                    if (entry.isDirectory()) {
-                        mkdirs(out);
-                        continue;
-                    }
-                    mkdirs(out.getParentFile());
-                    InputStream zipIn = zf.getInputStream(entry);
-                    try {
-                        BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out));
-                        try {
-                            IOUtils.copyStream(zipIn, fileOut, false, false);
-                        } finally {
-                            fileOut.close();
-                        }
-                    } finally {
-                        zipIn.close();
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(CeylonSrcMessages.msg("unable.extract.entry", entryName, srcArchive.artifact().getAbsolutePath()), e);
-                }
-            }
-        } finally {
-            zf.close();
         }
     }
-    
-    private File mkdirs(File dir) {
-        if (!dir.exists() && !dir.mkdirs()) {
-            throw new RuntimeException(CeylonSrcMessages.msg("unable.create.dir", dir.getAbsolutePath()));
-        }
-        return dir;
-    }
-
 }
