@@ -875,9 +875,12 @@ public class Metamodel {
         ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[view.length];
         int i=0;
         for(com.redhat.ceylon.compiler.typechecker.model.Module module : view){
-            array[i++] = getOrCreateMetamodel(module);
+            FreeModule mod = getOrCreateMetamodel(module);
+            // skip unavailable modules
+            if(mod != null)
+                array[i++] = mod;
         }
-        return Util.sequentialInstance(Module.$TypeDescriptor$, array);
+        return Util.sequentialInstance(Module.$TypeDescriptor$, array, i);
     }
 
     public static ceylon.language.meta.declaration.Module findLoadedModule(String name, String version) {

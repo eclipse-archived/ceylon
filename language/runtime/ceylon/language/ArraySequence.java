@@ -134,6 +134,13 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         		array, 0, array.length, true);
     }
 
+    public static <Element> ArraySequence<Element> 
+    instance(@Ignore TypeDescriptor $reifiedElement, 
+            java.lang.Object[] array, int length) {
+        return new ArraySequence<Element>($reifiedElement, 
+                array, 0, length, true);
+    }
+
     @Ignore
     public ArraySequence(@Ignore TypeDescriptor $reifiedElement, 
     		java.lang.Object[] array, long first, long length, boolean copy) {

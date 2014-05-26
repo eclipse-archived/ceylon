@@ -935,6 +935,23 @@ public class Util {
         return ArraySequence.<T>instance($reifiedT, elements);
     }
 
+    /**
+     * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
+     * wrapping the given elements, depending on whether the given array is 
+     * empty, but only considering the given number of elements
+     * @param elements The elements
+     * @return A Sequential
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static <T> Sequential<T> 
+    sequentialInstance(TypeDescriptor $reifiedT, T[] elements, int length) {
+        if (length == 0) {
+            return (Sequential)empty_.get_();
+        }
+        // Annoyingly this implies an extra copy
+        return ArraySequence.<T>instance($reifiedT, elements, length);
+    }
+
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.String> 
     sequentialInstanceBoxed(java.lang.String[] elements) {
