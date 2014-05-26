@@ -43,5 +43,7 @@ public @interface TestModule {
     
     Class<? extends CeylonModuleRunner.TestLoader> testLoader() default CeylonModuleRunner.StandardLoader.class;
     
-    ModuleSpecifier[] runModulesInNewJvm() default {}; 
+    ModuleSpecifier[] runModulesInNewJvm() default {};
+    
+    String[] removeAtRuntime() default {}; 
 }

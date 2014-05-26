@@ -29,11 +29,14 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -51,6 +54,7 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.runtime.Main;
@@ -115,7 +119,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             if(modules.length == 0)
                 modules = new String[]{ moduleSuiteClass.getPackage().getName() };
             
-            compileAndRun(srcDir, outRepo, modules, testModule.dependencies());
+            Set<String> removeAtRuntime = new HashSet<String>();
+            Collections.addAll(removeAtRuntime, testModule.removeAtRuntime());
+            compileAndRun(srcDir, outRepo, modules, testModule.dependencies(), removeAtRuntime);
             
             for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
                 makeModuleRunnerInNewJvm(module);
@@ -185,7 +191,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.assertTrue(exit == 0);
     }
 
-    private void compileAndRun(File srcDir, File outRepo, String[] modules, String[] dependencies) throws Exception {
+    private void compileAndRun(File srcDir, File outRepo, String[] modules, String[] dependencies, Set<String> removeAtRuntime) throws Exception {
         // Compile all the .ceylon files into a .car
         Context context = new Context();
         final ErrorCollector listener = new ErrorCollector();
@@ -218,13 +224,18 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 children.put(errorRunner, errorRunner.getDescription());
             }
         }
+        // remove what we need for runtime
+        for(String module : removeAtRuntime){
+            File moduleFolder = new File(outRepo, module.replace('.', File.separatorChar));
+            FileUtil.delete(moduleFolder);
+        }
 
         for(String module : modules){
-            postCompile(context, listener, module, srcDir, dependencies);
+            postCompile(context, listener, module, srcDir, dependencies, removeAtRuntime);
         }
     }
     
-    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies) throws Exception {
+    private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies, Set<String> removeAtRuntime) throws Exception {
         // now fetch stuff from the context
         PhasedUnits phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         
@@ -232,9 +243,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
 
         // Get a class loader for the car
         // XXX Need to use CMR if the module has dependencies
-        URL[] carUrls = getCarUrls(moduleName, dependencies, outRepo);
+        URL[] carUrls = getCarUrls(moduleName, dependencies, removeAtRuntime, outRepo);
         URLClassLoader cl = classLoaderForModule(carUrls);
-        Runnable moduleInitialiser = getModuleInitialiser(moduleName, carUrls, dependencies, cl);
+        Runnable moduleInitialiser = getModuleInitialiser(moduleName, carUrls, dependencies, removeAtRuntime, cl);
         
         if (cl != null) {
             loadCompiledTests(moduleRunners, srcDir, cl, phasedUnits, moduleName);
@@ -366,15 +377,16 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         return outCar;
     }
 
-    private URL[] getCarUrls(final String moduleName, final String[] deps, File repo)
+    private URL[] getCarUrls(final String moduleName, final String[] deps, Set<String> removeAtRuntime, File repo)
             throws MalformedURLException {
-        final URL[] carUrls = new URL[1 + (deps != null ? deps.length : 0)];
+        final URL[] carUrls = new URL[1 + (deps != null ? deps.length : 0) - removeAtRuntime.size()];
         
         URL carUrl = urlForModule(repo, moduleName);
         carUrls[0] = carUrl;
         if (deps != null) {
-            for (int ii = 0; ii < deps.length; ii++) {
-                carUrls[1+ii] = urlForModule(repo, deps[ii]);
+            for (int dep = 0, url = 1; dep < deps.length; dep++) {
+                if(!removeAtRuntime.contains(deps[dep]))
+                    carUrls[url++] = urlForModule(repo, deps[dep]);
             }
         }
         return carUrls;
@@ -384,7 +396,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         return new URLClassLoader(carUrls, getClass().getClassLoader());
     }
 
-    private Runnable getModuleInitialiser(final String moduleName, final URL[] carUrls, final String[] dependencies, final ClassLoader cl) throws URISyntaxException{
+    private Runnable getModuleInitialiser(final String moduleName, final URL[] carUrls, final String[] dependencies, final Set<String> removeAtRuntime, final ClassLoader cl) throws URISyntaxException{
         final File carFile = new File(carUrls[0].toURI());
         final String version;
         if (carFile.getName().equals("default.car")) {
@@ -407,10 +419,12 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                 Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTest.makeArtifactResult(null), cl);
                 Metamodel.loadModule(moduleName, version, CompilerTest.makeArtifactResult(carFile), cl);
                 // dependencies
-                for (int i = 0; i < dependencies.length; i++) {
+                for (int dep = 0, c = 1; dep < dependencies.length; dep++) {
                     try {
-                        File car = new File(carUrls[1+i].toURI());
-                        String name = dependencies[i];
+                        String name = dependencies[dep];
+                        if(removeAtRuntime.contains(name))
+                            continue;
+                        File car = new File(carUrls[c++].toURI());
                         String namePart = car.getName();
                         String version;
                         if(namePart.startsWith(name+"-")){
