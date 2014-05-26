@@ -16,6 +16,7 @@
 
 package org.jboss.ceylon.test.modules.services.test;
 
+import javax.sound.sampled.AudioFileFormat.Type;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer;
 
@@ -54,9 +55,12 @@ public class ServicesTestCase extends ModulesTest {
     @Test
     public void testAudioMixerServices() throws Throwable {
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        int plainCount = mixers.length;
-        System.out.println("Number of mixers using plain Java = " + plainCount);
-        System.setProperty("ceylon.runtime.test.services.audiotest", String.valueOf(plainCount));
+        Type[] fileTypes = AudioSystem.getAudioFileTypes();
+        int plainMixerCount = mixers.length;
+        int plainFileTypeCount = fileTypes.length;
+        System.out.println("Number of mixers/filetypes using plain Java = " + plainMixerCount + "/" + plainFileTypeCount);
+        System.setProperty("ceylon.runtime.test.services.audiotest.mixers", String.valueOf(plainMixerCount));
+        System.setProperty("ceylon.runtime.test.services.audiotest.filetypes", String.valueOf(plainFileTypeCount));
         
         JavaArchive module = ShrinkWrap.create(JavaArchive.class, "ceylon.audiotest-1.0.0.car");
         module.addClasses(ceylon.audiotest.module_.class, ceylon.audiotest.run_.class);
