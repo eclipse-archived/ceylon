@@ -1429,4 +1429,19 @@ public class Metamodel {
         // we don't return any thing since we throw
         return null;
     }
+    
+    /**
+     * Used by the generated JVM compiler code
+     */
+    public static ceylon.language.meta.declaration.Module checkModule(ceylon.language.meta.declaration.Module module, String name, String version){
+        if(module == null){
+            String spec;
+            if(version == null)
+                spec = name;
+            else
+                spec = name + "/" + version;
+            throw new ceylon.language.AssertionError("Module "+spec+" is not available");
+        }
+        return module;
+    }
 }
