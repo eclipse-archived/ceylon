@@ -221,15 +221,9 @@ public class HtmlVisitor implements Visitor {
         if (shortName != null) {
             html.text(", ");
             html.open("code id='" + idShortOption(option.getOption()) + "'").text(shortName);
-            if (argumentType != ArgumentType.NOT_ALLOWED) {
+            if (argumentType == ArgumentType.REQUIRED) {
                 html.text(" ");
-                if (argumentType == ArgumentType.OPTIONAL) {
-                    html.text("[");
-                }
                 html.text(argumentName);
-                if (argumentType == ArgumentType.OPTIONAL) {
-                    html.text("]");
-                }
             }
             html.close("code");
         }
@@ -368,7 +362,7 @@ public class HtmlVisitor implements Visitor {
             }
         } else {
             shortOptionSynopsis(option);
-            if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
+            if (option.getArgumentType() == ArgumentType.REQUIRED) {
                 html.text(" ");
                 html.text(multiplicity(argument, argument.getName()));
             }

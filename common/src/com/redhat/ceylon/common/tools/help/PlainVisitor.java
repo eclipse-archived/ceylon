@@ -134,7 +134,7 @@ public class PlainVisitor implements Visitor {
             }
         } else {
             out.append("-" + option.getShortName());
-            if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
+            if (option.getArgumentType() == ArgumentType.REQUIRED) {
                 out.append(" ");
                 out.append(multiplicity(argument, argument.getName()));
             }
@@ -188,15 +188,9 @@ public class PlainVisitor implements Visitor {
         if (shortName != null) {
             out.append(", ");
             out.append(shortName);
-            if (argumentType != ArgumentType.NOT_ALLOWED) {
+            if (argumentType == ArgumentType.REQUIRED) {
                 out.append(" ");
-                if (argumentType == ArgumentType.OPTIONAL) {
-                    out.append("[");
-                }
                 out.append("<" + argumentName + ">");
-                if (argumentType == ArgumentType.OPTIONAL) {
-                    out.append("]");
-                }
             }
         }
         

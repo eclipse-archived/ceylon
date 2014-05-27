@@ -148,15 +148,9 @@ public class DocBookVisitor implements Visitor {
         if (shortName != null) {
             docbook.open("term");
             docbook.text(shortName);
-            if (argumentType != ArgumentType.NOT_ALLOWED) {
+            if (argumentType == ArgumentType.REQUIRED) {
                 docbook.text(" ");
-                if (argumentType == ArgumentType.OPTIONAL) {
-                    docbook.text("[");
-                }
                 docbook.open("replaceable").text(argumentName).close("replaceable");
-                if (argumentType == ArgumentType.OPTIONAL) {
-                    docbook.text("]");
-                }
             }
             docbook.close("term").text("\n");
         }
@@ -291,7 +285,7 @@ public class DocBookVisitor implements Visitor {
             }
         } else {
             shortOptionSynopsis(option);
-            if (option.getArgumentType() != ArgumentType.NOT_ALLOWED) {
+            if (option.getArgumentType() == ArgumentType.REQUIRED) {
                 multiplicity(argument, argument.getName());
             }
         }
