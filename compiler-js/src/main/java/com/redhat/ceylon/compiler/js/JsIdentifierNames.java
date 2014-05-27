@@ -105,7 +105,6 @@ public class JsIdentifierNames {
         reservedWords.add("bind");
         reservedWords.add("Object");
         reservedWords.add("Array");
-        reservedWords.add("String");
         reservedWords.add("Boolean");
         reservedWords.add("Error");
         reservedWords.add("push");

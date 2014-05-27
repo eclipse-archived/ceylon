@@ -1173,7 +1173,6 @@ public class GenerateJsVisitor extends Visitor
             out("this.");
         }
         out(names.name(d), ".$$;");
-        endLine();
     }
 
     private void addObjectToPrototype(ClassOrInterface type, ObjectDefinition objDef) {
@@ -2323,8 +2322,11 @@ public class GenerateJsVisitor extends Visitor
             generateThrow("Undefined type " + id, that);
             out(":", id, ")");
         } else {
-            qualify(that, d);
+            final boolean q=qualify(that, d);
             out(names.name(d));
+            if (!q && TypeUtils.isReservedTypename(d.getName())) {
+                out("$");
+            }
         }
     }
 
@@ -3561,9 +3563,7 @@ public class GenerateJsVisitor extends Visitor
             that.getLeftTerm().visit(this);
             out(",", end, "=", lhs);
             endLine(true);
-            out("for(var i=1; i<", rhs, "; i++)", end, "=", end, ".successor;");
-            endLine();
-            out("return ");
+            out("for(var i=1; i<", rhs, "; i++)", end, "=", end, ".successor;return ");
         }
         out(clAlias, "Range(");
         out(lhs, ",");
@@ -3579,7 +3579,6 @@ public class GenerateJsVisitor extends Visitor
         if (leftNat) {
             out(":", clAlias, "getEmpty();}())");
         } else {
-            endLine();
             out("}else return ", clAlias, "getEmpty();}())");
         }
     }

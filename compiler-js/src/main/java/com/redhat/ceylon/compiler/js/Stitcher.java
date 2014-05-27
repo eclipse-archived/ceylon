@@ -84,6 +84,7 @@ public class Stitcher {
             JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
             jsc.setFiles(includes);
             jsc.generate();
+            JsCompiler.compilingLanguageModule=false;
             File compsrc = new File(tmpout, String.format("ceylon/language/%s/ceylon.language-%<s.js", VERSION));
             if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
                 try (BufferedReader jsr = new BufferedReader(new FileReader(compsrc))) {
