@@ -41,7 +41,7 @@ shared class NullHandlingOperators() {
     
     void testEmpty() {
         variable Boolean sync = false;
-        sync = "".characters.sequence nonempty;
+        sync = "".sequence nonempty;
         String[] seq = {};
         sync = seq nonempty;
         // boxing

@@ -3,7 +3,7 @@ Object[] avoidBackwardBranchWithVarargs(Object* v) {
 }
 void avoidBackwardBranchWithVarargs_1() {
     void join(String* s) {}
-    value s = "Hello World".characters;
+    {Character*} s = "Hello World";
     value x = join(s*.lowercase.string);
 }
 void avoidBackwardBranchWithVarargs_2(Character[] s={}) {
