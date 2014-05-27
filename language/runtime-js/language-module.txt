@@ -8,13 +8,12 @@ Throwable,exception_addons.js,Error,Exception
 #Anything,Object,Null
 #Comparison
 Iterable
-Sequential,Sequence,Empty
+Sequential,Sequence,Empty,StringBuilder
 
 #native Array
 #native Boolean
 #native Callable
 #native SequenceBuilder
-#native StringBuilder
 #native className
 #native flatten
 #native identityHash
