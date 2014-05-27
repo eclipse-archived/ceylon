@@ -66,7 +66,9 @@ import com.redhat.ceylon.common.tool.Tools;
         "line arguments and control passes to that tool.")
 public class CeylonTool implements Tool {
 
-    private static final String ARG_VERSION = "--version";
+    private static final String ARG_LONG_VERSION = "--version";
+    private static final String ARG_SHORT_VERSION = "-v";
+    
     /** Normal termination */
     public static final int SC_OK = 0;
     /** 
@@ -107,7 +109,7 @@ public class CeylonTool implements Tool {
     public CeylonTool() {
     }
     
-    @Option
+    @Option(shortName='v')
     @Description("Print version information and exit, " +
             "*ignoring all other options and arguments*.")
     public void setVersion(boolean version) {
@@ -168,7 +170,7 @@ public class CeylonTool implements Tool {
                 if (arg.equals("--help") || arg.equals("-h") || arg.equals("help")) {
                     result.add("help");
                     result.add("--");
-                } else if (arg.equals("--version")) {
+                } else if (arg.equals(ARG_LONG_VERSION) || arg.equals(ARG_SHORT_VERSION)) {
                     //result.clear();
                     result.add("--version");
                     break;
@@ -212,7 +214,7 @@ public class CeylonTool implements Tool {
     }
 
     public static int start(String... args) throws Exception {
-        if (args.length > 0 && ARG_VERSION.equals(args[0])) {
+        if (args.length > 0 && (ARG_LONG_VERSION.equals(args[0]) || ARG_SHORT_VERSION.equals(args[0]))) {
             version(System.out);
             return SC_OK;
         } else {
