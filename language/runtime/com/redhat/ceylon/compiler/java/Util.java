@@ -1513,7 +1513,7 @@ public class Util {
         if (sequential instanceof ceylon.language.Sequence) {
             return (ceylon.language.Sequence)sequential;
         } else {
-            throw new AssertionError("Assertion failed");
+            throw new AssertionError("Assertion failed: Sequence expected");
         }
     }
     
