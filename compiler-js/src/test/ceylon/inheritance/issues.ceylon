@@ -20,6 +20,14 @@ void testIssues() {
     check(!i266_3 is Issue266i<Issue266i<String>&Issue266two>, "Issue 266 [5]");
     Object i266_4 = Issue266_4();
     check(!i266_4 is Issue266i<Issue266three>, "Issue 266 [6]");
+    //351
+    Object i1={1,null};
+    Object i2={1,2};
+    assert(exists e1={1,null}.indexed.first);
+    Object e2=e1; //Integer?&Object
+    check(e2 is Integer->Integer?&Object, "#351.1");
+    check(i2 is {Integer?*}, "#351.2");
+    check(!i1 is {Integer*}, "#351.3");
 }
 
 class Issue231_1(shared actual String string) {}
