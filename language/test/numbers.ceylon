@@ -527,6 +527,20 @@ void checkParseInteger() {
     check(#f_ff_ff_ff_ff_ff == (parseInteger("f_ff_ff_ff_ff_ff", 16) else ""), "parseInteger(f_ff_ff_ff_ff_ff, 16)");
     check(!parseInteger("ff_ff_ff_ffff", 16) exists, "!parseInteger(ff_ff_ff_ffff, 16) exists");
     check(!parseInteger("ffff_ff_ff_ff", 16) exists, "!parseInteger(ffff_ff_ff_ff, 16) exists");
+    check(255 == (parseInteger("FF", 16) else ""), "parseInteger(FF, 16)");
+    check(!parseInteger("FK", 16) exists, "parseInteger(FK, 16)");
+    check(#F_FFFF == (parseInteger("F_FFFF", 16) else ""), "parseInteger(F_FFFF, 16)");
+    check(#FF_FFFF == (parseInteger("FF_FFFF", 16) else ""), "parseInteger(FF_FFFF, 16)");
+    check(#FFF_FFFF == (parseInteger("FFF_FFFF", 16) else ""), "parseInteger(FFF_FFFF, 16)");
+    check(#FFFF_FFFF == (parseInteger("FFFF_FFFF", 16) else ""), "parseInteger(FFFF_FFFF, 16)");
+    check(#FFFF_FFFF_FFFF == (parseInteger("FFFF_FFFF_FFFF", 16) else ""), "parseInteger(FFFF_FFFF_FFFF, 16)");
+    check(#FFF_FFFF_FFFF == (parseInteger("FFF_FFFF_FFFF", 16) else ""), "parseInteger(FFFF_FFFF_FFFF, 16)");
+    check(#FF_FFFF_FFFF == (parseInteger("FF_FFFF_FFFF", 16) else ""), "parseInteger(FF_FFFF_FFFF, 16)");
+    check(#F_FFFF_FFFF == (parseInteger("F_FFFF_FFFF", 16) else ""), "parseInteger(F_FFFF_FFFF, 16)");
+    check(#FF_FF_FF_FF_FF_FF == (parseInteger("FF_FF_FF_FF_FF_FF", 16) else ""), "parseInteger(FF_FF_FF_FF_FF_FF, 16)");
+    check(#F_FF_FF_FF_FF_FF == (parseInteger("F_FF_FF_FF_FF_FF", 16) else ""), "parseInteger(F_FF_FF_FF_FF_FF, 16)");
+    check(!parseInteger("FF_FF_FF_FFFF", 16) exists, "!parseInteger(FF_FF_FF_FFFF, 16) exists");
+    check(!parseInteger("FFFF_FF_FF_FF", 16) exists, "!parseInteger(FFFF_FF_FF_FF, 16) exists");
     
     check(!parseInteger("12_34", 8) exists, "!parseInteger(12_34, 8) exists");
     check(!parseInteger("123_456", 8) exists, "!parseInteger(123_456, 8) exists");
