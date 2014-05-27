@@ -1509,4 +1509,12 @@ public class Util {
         }
     }
     
+    public static <T> ceylon.language.Sequence<T> asSequence(ceylon.language.Sequential<T> sequential) {
+        if (sequential instanceof ceylon.language.Sequence) {
+            return (ceylon.language.Sequence)sequential;
+        } else {
+            throw new AssertionError("Assertion failed");
+        }
+    }
+    
 }
