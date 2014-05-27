@@ -343,7 +343,7 @@ public abstract class ToolLoader {
             if (setter.getParameterTypes()[0].isPrimitive()) {
                 throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option has primitive parameter type");
             }
-            if (optionArgument.shortName() != option.shortName()) {
+            if (optionArgument.shortName() != option.shortName() && optionArgument.shortName() != OptionArgument.NO_SHORT) {
                 throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option, but their shortName()s differ");
             }
             if (!optionArgument.longName().equals(option.longName())) {
@@ -356,9 +356,14 @@ public abstract class ToolLoader {
         char shortName = optionArgument.shortName();
         if (shortName != OptionArgument.NO_SHORT) {
             if (argumentOptional) {
-                throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option, but has a shortName");
+                throw new ModelException("Method " + setter + " is annotated with @OptionArgument and @Option, but in that case a shortName is only allowed on @Option");
             }
             optionModel.setShortName(shortName);
+        } else if (argumentOptional) {
+            shortName = option.shortName();
+            if (shortName != Option.NO_SHORT) {
+                optionModel.setShortName(shortName);
+            }
         }
         ArgumentModel<A> argumentModel = new ArgumentModel<A>();
         
