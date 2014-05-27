@@ -12,7 +12,7 @@ shared void misc() {
         return sb.string;
     }
     
-    check(stringify(*"hello".characters)=="hello", "args");
+    check(stringify(*"hello")=="hello", "args");
     check(stringify( 'h', 'i' )=="hi", "sequenced args");
     //unusable check(stringify { chars="hello".characters; }=="hello", "named args");
     // FIXME: Disabled until we fix the backend

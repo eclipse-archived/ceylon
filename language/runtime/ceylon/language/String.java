@@ -725,13 +725,6 @@ public final class String
         }
     }
     
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
-    public Iterable<? extends Character, ?> getCharacters() {
-        //TODO: return a nonempty Iterable unless this
-        //      is the empty string
-        return this;
-    }
-    
     @Ignore
     public static Iterable<? extends Character,?> 
     getCharacters(java.lang.String value) {

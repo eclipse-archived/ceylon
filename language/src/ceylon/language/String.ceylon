@@ -61,7 +61,7 @@ shared native final class String(characters)
                   Ranged<Integer,Character,String> {
     
     "The characters that form this string."
-    shared {Character*} characters;
+    {Character*} characters;
     
     "This string, with all characters in lowercase."
     shared native String lowercased;
