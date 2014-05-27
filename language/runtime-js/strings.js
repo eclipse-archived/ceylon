@@ -384,9 +384,6 @@ String$proto.lastOccurrence = function(subc) {
     return null;
 }
 String$proto.lastOccurrence.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Integer}]},d:['$','String','$m','lastOccurrence']};}
-atr$(String$proto, 'characters', function() {
-    return this.size>0 ? this:getEmpty();
-},undefined,function(){return{mod:$CCMM$,$t:{t:Iterable,a:{Absent$Iterable:{t:Null},Element$Iterable:{t:Character}}},d:['$','String','$at','characters']}});
 atr$(String$proto, 'first', function() { return this.$_get(0); },undefined,function(){return{
   mod:$CCMM$,$t:{t:'u',l:[{t:Null},{t:Character}]},d:['$','Iterable','$at','first']}});
 atr$(String$proto, 'last', function(){ return this.size>0?this.$_get(this.size.predecessor):null; },undefined,function(){return{
