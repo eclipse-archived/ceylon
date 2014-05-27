@@ -25,7 +25,7 @@ class Bug1402Parent implements .com.redhat.ceylon.compiler.java.runtime.model.Re
 class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent {
     
     Bug1402Child(final .java.lang.String name, final boolean flag) {
-        super(name, true, (.ceylon.language.Sequence<? extends .ceylon.language.String>)(
+        super(name, true, .com.redhat.ceylon.compiler.java.Util.asSequence((
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$0 = flag ? new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
@@ -66,7 +66,7 @@ class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.
                     }
                 }
             };
-        ).getSequence());
+        ).getSequence()));
     }
     
     @.java.lang.Override
