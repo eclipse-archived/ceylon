@@ -25,12 +25,18 @@ import javax.sound.sampled.AudioFileFormat.Type;
  */
 public class run_ {
     public static void main(String[] args) throws Exception {
+        Mixer mixer = AudioSystem.getMixer(null);
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         Type[] fileTypes = AudioSystem.getAudioFileTypes();
+        boolean moduleHasMixer = mixer != null;
         int moduleMixerCount = mixers.length;
         int moduleFileTypeCount = fileTypes.length;
         System.out.println("Number of mixers/filetypes using Ceylon runtime = " + moduleMixerCount + "/" + moduleFileTypeCount);
         
+        boolean plainHasMixer = Boolean.valueOf(System.getProperty("ceylon.runtime.test.services.audiotest.hasmixer"));
+        if (plainHasMixer != moduleHasMixer) {
+            throw new AssertionError("Getting default mixer gives different result when obtained from plain Java versus the Ceylon runtime");
+        }
         int plainMixerCount = Integer.valueOf(System.getProperty("ceylon.runtime.test.services.audiotest.mixers"));
         if (plainMixerCount != moduleMixerCount) {
             throw new AssertionError("Number of mixers not equal when obtained from plain Java versus the Ceylon runtime");

@@ -54,11 +54,14 @@ public class ServicesTestCase extends ModulesTest {
 
     @Test
     public void testAudioMixerServices() throws Throwable {
+        Mixer mixer = AudioSystem.getMixer(null);
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         Type[] fileTypes = AudioSystem.getAudioFileTypes();
+        boolean plainHasMixer = mixer != null;
         int plainMixerCount = mixers.length;
         int plainFileTypeCount = fileTypes.length;
         System.out.println("Number of mixers/filetypes using plain Java = " + plainMixerCount + "/" + plainFileTypeCount);
+        System.setProperty("ceylon.runtime.test.services.audiotest.hasmixer", String.valueOf(plainHasMixer));
         System.setProperty("ceylon.runtime.test.services.audiotest.mixers", String.valueOf(plainMixerCount));
         System.setProperty("ceylon.runtime.test.services.audiotest.filetypes", String.valueOf(plainFileTypeCount));
         
