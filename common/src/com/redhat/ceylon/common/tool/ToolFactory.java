@@ -208,6 +208,9 @@ public class ToolFactory {
                             }
                             break;
                         case OPTIONAL:
+                            // Even though the argument is optional the short form is always considered to be valueless
+                            argument = "";
+                            break;
                         default:
                             throw new RuntimeException("Assertion failed");
                         }
