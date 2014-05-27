@@ -185,9 +185,13 @@ public class CeylonTool implements Tool {
                         break;
                     }
                     List<String> rest = argsList.subList(ii, args.length);
-                    if (rest.indexOf("--help") != -1) {
-                        if (rest.indexOf("--") == -1 
-                            || (rest.indexOf("--help") < rest.indexOf("--"))) {
+                    int helpIndex = rest.indexOf("--help");
+                    if (helpIndex == -1) {
+                        helpIndex = rest.indexOf("-h");
+                    }
+                    if (helpIndex != -1) {
+                        int doubleDashIndex = rest.indexOf("--");
+                        if (doubleDashIndex == -1 || (helpIndex < doubleDashIndex)) {
                             result.add("help");
                             result.add(arg);
                             break;
