@@ -3131,8 +3131,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Casts a <tt>ceylon.language.Sequential</tt> type to a <tt>ceylon.language.Sequence</tt> type.
      */
     JCExpression castSequentialToSequence(JCExpression sequentialExpr, ProducedType iteratedType) {
-        return make().TypeCast(
-                makeJavaType(typeFact().getSequenceType(iteratedType)), sequentialExpr);
+        return makeUtilInvocation("asSequence", List.of(sequentialExpr), null);
     }
 
     /**
