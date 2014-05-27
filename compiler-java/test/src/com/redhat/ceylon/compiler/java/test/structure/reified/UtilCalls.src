@@ -176,7 +176,7 @@ public final class utilCalls_ {
                         }
                     }
                 };
-                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer> spread$2$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$2$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$2$iterator$ = spread$2$iterable$.iterator();
                 while (!((spread$2$iteration$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {

@@ -3,10 +3,10 @@ shared String expressionRecoverySetterSpecifier {
 }
 assign expressionRecoverySetterSpecifier => asdfSetterSpecifier(expressionRecoverySetterSpecifier);
 
-void expressionRecoverySetterSpecifier_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoverySetterSpecifier_main(void append(Integer i)) {
+    append(1);
     value x = expressionRecoverySetterSpecifier;
-    sb.append(2);
+    append(2);
     expressionRecoverySetterSpecifier = "";
-    sb.append(3);
+    append(3);
 }

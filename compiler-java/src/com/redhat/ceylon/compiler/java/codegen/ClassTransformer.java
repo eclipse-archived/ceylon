@@ -333,8 +333,8 @@ public class ClassTransformer extends AbstractTransformer {
                     SyntheticName sb = naming.synthetic(Unfix.$sb$);
                     SyntheticName element = naming.synthetic(Unfix.$element$);
                     stmts.append(makeVar(FINAL, sb, 
-                            makeJavaType(typeFact().getSequenceBuilderType(iteratedType)),
-                            make().NewClass(null, null, makeJavaType(typeFact().getSequenceBuilderType(iteratedType), JT_CLASS_NEW), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), null)));
+                            makeSequenceBuilderType(iteratedType),
+                            make().NewClass(null, null, makeSequenceBuilderType(iteratedType), List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), null)));
                     stmts.append(make().ForeachLoop(
                             makeVar(element, makeJavaType(iteratedType, JT_ANNOTATION), null), 
                             array.makeIdent(), 

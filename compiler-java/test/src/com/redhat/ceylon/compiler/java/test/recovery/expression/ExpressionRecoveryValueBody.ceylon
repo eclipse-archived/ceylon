@@ -1,11 +1,11 @@
 shared String expressionRecoveryValueBody {
-    expressionRecoveryValueBodySb.append(2);
+    expressionRecoveryValueBodySb(2);
     return asdfValueBody();
 }
-variable SequenceBuilder<Integer> expressionRecoveryValueBodySb = SequenceBuilder<Integer>();
-void expressionRecoveryValueBody_main(SequenceBuilder<Integer> sb) {
-    expressionRecoveryValueBodySb = sb;
-    sb.append(1);
+variable Anything(Integer) expressionRecoveryValueBodySb = 1.plus;
+void expressionRecoveryValueBody_main(void append(Integer i)) {
+    expressionRecoveryValueBodySb = append;
+    append(1);
     value x = expressionRecoveryValueBody;
-    sb.append(3);
+    append(3);
 }

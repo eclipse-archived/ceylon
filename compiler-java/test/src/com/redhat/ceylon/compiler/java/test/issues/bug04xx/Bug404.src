@@ -38,7 +38,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     let
                     {
                         .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = empty;
-                        .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                        .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$1$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                         .java.lang.Object spread$1$iteration$;
                         .ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator();
                         while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -59,7 +59,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     let
                     {
                         .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$3$iterable$ = full;
-                        .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$3$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                        .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$3$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                         .java.lang.Object spread$3$iteration$;
                         .ceylon.language.Iterator<? extends .ceylon.language.String> spread$3$iterator$ = spread$3$iterable$.iterator();
                         while (!((spread$3$iteration$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -76,7 +76,7 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$5$iterable$ = full;
-                .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$5$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$5$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$5$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
                 while (!((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {

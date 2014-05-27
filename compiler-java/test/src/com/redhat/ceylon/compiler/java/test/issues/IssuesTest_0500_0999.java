@@ -253,12 +253,6 @@ public class IssuesTest_0500_0999 extends CompilerTest {
     }
 
     @Test
-    public void testBug640(){
-        // some of this test moved to SDK ceylon.interop.java
-        compareWithJavaSource("bug06xx/bug640/Bug640");
-    }
-
-    @Test
     public void testBug641(){
         compareWithJavaSource("bug06xx/Bug641");
     }

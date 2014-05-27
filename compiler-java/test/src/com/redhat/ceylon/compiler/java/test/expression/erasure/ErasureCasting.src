@@ -158,7 +158,7 @@ final class erasureCasting_ {
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>, ? extends .java.lang.Object> spread$11$iterable$ = sequenceOfErasedMethod;
-                .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$11$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$11$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$11$iteration$;
                 .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>> spread$11$iterator$ = spread$11$iterable$.iterator();
                 while (!((spread$11$iteration$ = spread$11$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -172,7 +172,7 @@ final class erasureCasting_ {
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$12$iterable$ = nonEmptyStringSequence;
-                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$12$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer> spread$12$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$12$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$12$iterator$ = spread$12$iterable$.iterator();
                 while (!((spread$12$iteration$ = spread$12$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -191,7 +191,7 @@ final class erasureCasting_ {
             let
             {
                 .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> spread$15$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
-                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$15$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer> spread$15$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$15$iteration$;
                 .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> spread$15$iterator$ = spread$15$iterable$.iterator();
                 while (!((spread$15$iteration$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {

@@ -1,7 +1,7 @@
-shared void expressionRecoveryIf(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+shared void expressionRecoveryIf(void append(Integer i)) {
+    append(1);
     if (asdfIf()) {
-        sb.append(2);
+        append(2);
     }
-    sb.append(3);
+    append(3);
 }

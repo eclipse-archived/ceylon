@@ -1,3 +1,3 @@
-shared void expressionRecoveryFunctionDp(SequenceBuilder<Integer> sb, String s = asdfFunctionDp()) {
-    sb.append(1);
+shared void expressionRecoveryFunctionDp(void append(Integer i), String s = asdfFunctionDp()) {
+    append(1);
 }

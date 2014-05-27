@@ -19,14 +19,14 @@
  */
 @noanno
 [Sequential<[Integer,Element]>,Sequential<Element>] bug934_collectMatches<Element>(Element[] data, Integer search(Element element)){
-    value ok = SequenceBuilder<[Integer,Element]>();
-    value ko = SequenceBuilder<Element>();
+    variable [[Integer,Element]*] ok = [];
+    variable [Element*] ko = [];
     for(element in data){
         value result = search(element);
         if(result > 0){
-            ok.append([result, element]);
+            ok = [[result, element], *ok];
         }else{
-            ko.append(element);
+            ko = [element, *ko];
         }
     }
     return [ok.sequence, ko.sequence];

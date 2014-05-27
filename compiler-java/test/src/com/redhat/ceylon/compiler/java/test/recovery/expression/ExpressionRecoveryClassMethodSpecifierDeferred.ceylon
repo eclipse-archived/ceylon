@@ -1,12 +1,12 @@
 class ExpressionRecoveryClassMethodSpecifierDeferred() {
-    shared void method(SequenceBuilder<Integer> sb);
+    shared void method(void append(Integer i));
     method = asdfClassMethodSpecifierDeferred();
      
 }
-void expressionRecoveryClassMethodSpecifierDeferred_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoveryClassMethodSpecifierDeferred_main(void append(Integer i)) {
+    append(1);
     value i = ExpressionRecoveryClassMethodSpecifierDeferred();
-    sb.append(2);
-    i.method(sb);
-    sb.append(5);
+    append(2);
+    i.method(append);
+    append(5);
 }

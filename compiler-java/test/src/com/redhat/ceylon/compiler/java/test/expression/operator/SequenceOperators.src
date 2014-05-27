@@ -49,7 +49,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = sequence;
-                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$0$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer> spread$0$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$0$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
                 while (!((spread$0$iteration$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -64,7 +64,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$1$iterable$ = intSequence;
-                .ceylon.language.SequenceBuilder<.ceylon.language.Integer> spread$1$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer> spread$1$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
                 .java.lang.Object spread$1$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$1$iterator$ = spread$1$iterable$.iterator();
                 while (!((spread$1$iteration$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -79,7 +79,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$2$iterable$ = sequence;
-                .ceylon.language.SequenceBuilder<.ceylon.language.Character> spread$2$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$));
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Character> spread$2$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$));
                 .ceylon.language.Integer spread$2$arg$0 = .ceylon.language.Integer.instance(0L);
                 .java.lang.Object spread$2$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$2$iterator$ = spread$2$iterable$.iterator();
@@ -94,7 +94,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$4$iterable$ = sequence;
-                .ceylon.language.SequenceBuilder<.ceylon.language.Character> spread$4$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$));
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Character> spread$4$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$));
                 .java.lang.Object spread$4$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$4$iterator$ = spread$4$iterable$.iterator();
                 while (!((spread$4$iteration$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished)) {
@@ -116,7 +116,7 @@ public class SequenceOperators implements .com.redhat.ceylon.compiler.java.runti
             let
             {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$5$iterable$ = empty;
-                .ceylon.language.SequenceBuilder<.ceylon.language.String> spread$5$sb$ = new .ceylon.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String> spread$5$sb$ = new .com.redhat.ceylon.compiler.java.language.SequenceBuilder<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
                 .java.lang.Object spread$5$iteration$;
                 .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
                 while (!((spread$5$iteration$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {

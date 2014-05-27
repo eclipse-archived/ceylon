@@ -1,11 +1,11 @@
 class ExpressionRecoveryClassMethodSpecifier() {
-    shared void method(SequenceBuilder<Integer> sb) => asdfClassMethodSpecifier();
+    shared void method(void append(Integer i)) => asdfClassMethodSpecifier();
      
 }
-void expressionRecoveryClassMethodSpecifier_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoveryClassMethodSpecifier_main(void append(Integer i)) {
+    append(1);
     value i = ExpressionRecoveryClassMethodSpecifier();
-    sb.append(2);
-    i.method(sb);
-    sb.append(5);
+    append(2);
+    i.method(append);
+    append(5);
 }

@@ -1,6 +1,6 @@
 shared variable String expressionRecoveryVariableValueInit = asdfVariableValueInit();
-void expressionRecoveryVariableValueInit_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoveryVariableValueInit_main(void append(Integer i)) {
+    append(1);
     expressionRecoveryVariableValueInit = "";
-    sb.append(2);
+    append(2);
 }

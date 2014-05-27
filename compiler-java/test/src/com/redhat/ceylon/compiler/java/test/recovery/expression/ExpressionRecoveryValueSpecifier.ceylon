@@ -1,6 +1,6 @@
 shared String expressionRecoveryValueSpecifier => asdfValueSpecifier();
-void expressionRecoveryValueSpecifier_main(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+void expressionRecoveryValueSpecifier_main(void append(Integer i)) {
+    append(1);
     value x= expressionRecoveryValueSpecifier;
-    sb.append(2);
+    append(2);
 }

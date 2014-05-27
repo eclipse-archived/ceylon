@@ -1,3 +1,3 @@
-class ExpressionRecoveryClassExtendsMissingParens(SequenceBuilder<Integer> sb) extends Basic {
-    sb.append(1);
+class ExpressionRecoveryClassExtendsMissingParens(void append(Integer i)) extends Basic {
+    append(1);
 }

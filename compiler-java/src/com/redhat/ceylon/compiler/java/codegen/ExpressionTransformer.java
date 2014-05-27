@@ -3467,9 +3467,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // sequenceBuilder
         Naming.SyntheticName builderVar = varBaseName.suffixedBy(Suffix.$sb$);
         ProducedType returnElementType = expr.getTarget().getType();
-        ProducedType builderType = typeFact().getSequenceBuilderType(returnElementType).getType();
-        JCExpression builderTypeExpr = makeJavaType(builderType);
-        JCExpression builderInitExpr = make().NewClass(null, List.<JCExpression>nil(), makeJavaType(builderType), 
+        
+        JCExpression builderInitExpr = make().NewClass(null, List.<JCExpression>nil(), makeSequenceBuilderType(returnElementType), 
                 List.<JCExpression>of(makeReifiedTypeArgument(returnElementType)), null);
 
         // element.member
@@ -3534,7 +3533,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // build the whole spread operation
         List<JCStatement> stmts = List.<JCStatement>of(
                 makeVar(srcIterableName, srcIterableTypeExpr, srcIterableExpr),
-                makeVar(builderVar, builderTypeExpr, builderInitExpr));
+                makeVar(builderVar, makeSequenceBuilderType(returnElementType), builderInitExpr));
         if (aliasArguments) {
             stmts = stmts.appendList(((InvocationTermTransformer)transformer).callBuilder.getStatements());
         }

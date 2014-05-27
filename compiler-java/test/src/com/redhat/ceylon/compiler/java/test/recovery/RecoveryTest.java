@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,8 +43,10 @@ import javax.tools.JavaFileObject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ceylon.language.SequenceBuilder;
+import ceylon.language.Anything;
+import ceylon.language.Callable;
 
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError;
 import com.redhat.ceylon.compiler.java.metadata.CompileTimeError;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -65,9 +68,15 @@ public class RecoveryTest extends CompilerTest {
     protected void runWithUnresolvedCompilationError(String main,
             String expectedError,
             int... sequence) {
-        SequenceBuilder<ceylon.language.Integer> sb = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        final ArrayList<ceylon.language.Integer> sb= new ArrayList<ceylon.language.Integer>();
+        Callable<Anything> c = new AbstractCallable<Anything>(Anything.$TypeDescriptor$, null, null, (short)-1) {
+            public Anything $call$(java.lang.Object arg0) {
+                sb.add((ceylon.language.Integer)arg0);
+                return null;
+            }
+        };
         try {
-            run(main, new Class[]{SequenceBuilder.class}, new Object[]{sb}, getDestModuleWithArtifact());
+            run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact());
             Assert.fail("Expected execution to throw " + UnresolvedCompilationError.class.getName());
         } catch (RuntimeException e) {
             Throwable e2 = e;
@@ -81,22 +90,28 @@ public class RecoveryTest extends CompilerTest {
             }
             
         }
-        SequenceBuilder<ceylon.language.Integer> expect = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        ArrayList<ceylon.language.Integer> expect = new ArrayList<ceylon.language.Integer>();
         for (int ii : sequence) {
-            expect.append(ceylon.language.Integer.instance(ii));
+            expect.add(ceylon.language.Integer.instance(ii));
         }
-        Assert.assertEquals("Sequences differ", expect.getSequence(), sb.getSequence());
+        Assert.assertEquals("Sequences differ", expect, sb);
     }
     
     protected void run(String main,
             int... sequence) {
-        SequenceBuilder<ceylon.language.Integer> sb = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
-        run(main, new Class[]{SequenceBuilder.class}, new Object[]{sb}, getDestModuleWithArtifact());    
-        SequenceBuilder<ceylon.language.Integer> expect = new SequenceBuilder<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$);
+        final ArrayList<ceylon.language.Integer> sb= new ArrayList<ceylon.language.Integer>();
+        Callable<Anything> c = new AbstractCallable<Anything>(Anything.$TypeDescriptor$, null, null, (short)-1) {
+            public Anything $call$(java.lang.Object arg0) {
+                sb.add((ceylon.language.Integer)arg0);
+                return null;
+            }
+        };
+        run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact());
+        ArrayList<ceylon.language.Integer> expect = new ArrayList<ceylon.language.Integer>();
         for (int ii : sequence) {
-            expect.append(ceylon.language.Integer.instance(ii));
+            expect.add(ceylon.language.Integer.instance(ii));
         }
-        Assert.assertEquals("Sequences differ", expect.getSequence(), sb.getSequence());
+        Assert.assertEquals("Sequences differ", expect, sb);
     }
 
     private ErrorCollector compileIgnoringCeylonErrors(String... ceylon) {

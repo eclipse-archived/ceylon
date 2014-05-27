@@ -1,5 +1,8 @@
-class ExpressionRecoveryClassInitValueInit(SequenceBuilder<Integer> sb) {
-    sb.append(1);
+import ceylon.collection{ArrayList}
+
+
+class ExpressionRecoveryClassInitValueInit(void append(Integer i)) {
+    append(1);
     String x = asdfClassInitValueInit;
-    sb.append(2);
+    append(2);
 }
