@@ -99,7 +99,7 @@ public class CeylonRunTool extends RepoUsingTool {
         this.compileFlags = compile;
     }
 
-    @Option
+    @Option(shortName='d')
     @OptionArgument(argumentName = "flags")
     @Description("Produce verbose output. " +
             "If no `flags` are given then be verbose about everything, " +
