@@ -150,7 +150,7 @@ function tpl$(elems,types,spread){
     return elems.hash;
   },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
   atr$(that,'rest',function(){
-    return elems.length==1?getEmpty():elems.slice(1).reifyCeylonType({t:'u',l:_t.l.slice(1)});
+    return elems.length==1?getEmpty():ArraySequence(elems.slice(1),{Element$Iterable:{t:'u',l:_t.l.slice(1)}});
   },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
   atr$(that,'size',function(){
     return elems.length;

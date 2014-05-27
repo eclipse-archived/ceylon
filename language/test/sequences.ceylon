@@ -310,26 +310,24 @@ shared void arraySequence() {
 @test
 shared void sequences() {
     arraySequence();
-    value builder = SequenceBuilder<String>();
-    value empty = builder.sequence;
-    check(empty.size==0, "empty sequence");
-    check(!empty nonempty, "empty sequence");
-    if (empty nonempty) {
-        fail("empty sequence");
+    Integer[] bare = empty;
+    check(bare.size==0, "bare sequence");
+    check(bare == empty, "bare sequence");
+    check(!bare nonempty, "bare sequence");
+    if (bare nonempty) {
+        fail("bare sequence");
     }
-    check(!empty.span(1, 2) nonempty, "empty.span(1,2)");
-    check(!empty.spanFrom(0) nonempty, "empty.spanFrom(0)");
-    check(!empty.spanTo(0) nonempty, "empty.spanTo(0)");
-    check(!empty.spanFrom(1) nonempty, "empty.spanFrom(1)");
-    check(!empty.spanTo(1) nonempty, "empty.spanTo(1)");
-    check(!empty.segment(1, 2) nonempty, "empty sequence segment");
-    check(empty.string=="[]", "empty.string");
-    check(empty.reversed==empty, "empty reversed");
-    check(empty.sequence==empty, "empty.sequence");
+    check(!bare.span(1, 2) nonempty, "bare.span(1,2)");
+    check(!bare.spanFrom(0) nonempty, "bare.spanFrom(0)");
+    check(!bare.spanTo(0) nonempty, "bare.spanTo(0)");
+    check(!bare.spanFrom(1) nonempty, "bare.spanFrom(1)");
+    check(!bare.spanTo(1) nonempty, "bare.spanTo(1)");
+    check(!bare.segment(1, 2) nonempty, "bare sequence segment");
+    check(bare.string=="[]", "bare.string");
+    check(bare.reversed==bare, "bare reversed");
+    check(bare.sequence==bare, "bare.sequence");
 
-    builder.append("hello");
-    builder.append("world");
-    value result = builder.sequence;
+    String[] result = ArraySequence{"hello", "world"};
     check(result.size==2, "sequence size");
     check(result nonempty, "nonempty sequence");
     if (nonempty result) {
@@ -432,21 +430,6 @@ shared void sequences() {
         }
     }
 
-    if (nonempty result) {
-        value appender = SequenceAppender(result);
-        appender.append("goodbye");
-        value more = appender.sequence;
-        check(more.size==3, "sequence size");
-        check(more.first=="hello", "sequence first");
-        check(more.string=="[hello, world, goodbye]", "sequence.string 2");
-        appender.appendAll({"everyone", "good luck!"});
-        //appender.append("everyone");
-        //appender.append("good luck!");
-        value evenMore = appender.sequence;
-        check(evenMore.size==5, "sequence size");
-        check(evenMore.string=="[hello, world, goodbye, everyone, good luck!]", "sequence.string 3");
-    }
-
     value seq = [ 1, 2, 3, 4 ];
     check(seq.size==4, "sequence size");
     check(seq.string=="[1, 2, 3, 4]", "sequence.string 4: " + seq.string);
@@ -465,11 +448,7 @@ shared void sequences() {
     }
     check(i==4, "sequence iteration");
 
-    value union = SequenceBuilder<String|Float>();
-    union.append("x");
-    union.append(5.1);
-    union.appendAll({"y", -1.2});
-    value useq = union.sequence;
+    value useq = ArraySequence{"x", 5.1, *{"y", -1.2}};
     check(useq.size==4, "union sequence builder");
     check(useq.string=="[x, 5.1, y, -1.2]", "union sequence builder.string");
     variable value s=0;
@@ -510,10 +489,7 @@ shared void sequences() {
     //check(!coal2 nonempty, "nonempty coalesced2");
     //check(coal2.size == 0, "coalesced2.size");
     //check(!'h' in coal2, "coalesced2.contains");
-    value entriesBuilder = SequenceBuilder<Integer->String>();
-    entriesBuilder.append(1->"hello");
-    entriesBuilder.append(2->"world");
-    value entrySequence = entriesBuilder.sequence;
+    value entrySequence = ArraySequence{1->"hello", 2->"world"};
     check(entrySequence.string=="[1->hello, 2->world]", "entries sequence.string");
     variable value cntr=0;
     for (nat->str in entrySequence) {

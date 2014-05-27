@@ -8,6 +8,78 @@ interface SetTestBase<out Element> satisfies Set<Element>
     shared formal Element[] elements;
 }
 
+class ArrayBuilder<Element>() {
+    
+    "The storage"
+    variable Array<Element>? storage = null;
+    "The number of items in [[array]] which have actually been appended."
+    variable Integer length = 0;
+    
+    "Resize policy"
+    Integer newSize(
+        Integer existingSize, Integer extra) {
+        value requiredSize = length+extra;
+        variable value result = existingSize*2+2;
+        "Overflow"
+        assert (requiredSize > 0);
+        if (result < requiredSize) {
+            result = requiredSize;
+        }
+        "Required array too large"
+        assert (result <= runtime.maxArraySize);
+        return result;
+    }
+    
+    "Returns the storage array ready for storing [[extra]] more elements.
+     Reallocates and copies existing entries if needed."
+    Array<Element> getStorage(Integer extra, Element example) {
+        // extra should be > 0
+        if (exists s=storage) {
+            if (s.size >= length + extra) {
+                return s;
+            } else {
+                value newStorage = arrayOfSize<Element>(newSize(s.size, extra), example);
+                s.copyTo(newStorage);
+                storage = newStorage;
+                return newStorage;
+            }
+        } else {
+            value newStorage = arrayOfSize<Element>(newSize(0, extra), example);
+            storage = newStorage;
+            return newStorage;
+        }
+    }
+    
+    shared ArrayBuilder<Element> append(Element element) {
+        value store = getStorage(1, element);
+        store.set(length, element);
+        length += 1;
+        return this;
+    }
+    
+    shared ArrayBuilder<Element> appendAll({Element*} elements) {
+        // TODO If we know the size of elements efficiently we can just do one allocation.
+        for (element in elements) {
+            append(element);
+        }
+        return this;
+    }
+    shared actual String string {
+        return sequence.string;
+    }
+    
+    shared Element[] sequence {
+        if (exists s=storage) {
+            return s.take(length).sequence;
+        }
+        return empty;
+    }
+    
+    //shared Integer size => length;
+
+}
+
+
 class SetTest<Element>(Element* element) extends Object()
             satisfies SetTestBase<Element>
             given Element satisfies Object {
@@ -18,7 +90,7 @@ class SetTest<Element>(Element* element) extends Object()
     shared actual Iterator<Element> iterator() { return elements.iterator(); }
     shared actual Set<Element|Other> union<Other>(Set<Other> set)
                 given Other satisfies Object {
-        value sb = SequenceBuilder<Element|Other>();
+        value sb = ArrayBuilder<Element|Other>();
         sb.appendAll(elements);
         for (e in set) {
             for (e2 in elements) {
@@ -47,7 +119,7 @@ class SetTest<Element>(Element* element) extends Object()
     }
     shared actual Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
                 given Other satisfies Object {
-        value sb = SequenceBuilder<Element|Other>();
+        value sb = ArrayBuilder<Element|Other>();
         for (e in elements) {
             for (e2 in set) {
                 if (e2 == e) { break; }
@@ -66,7 +138,7 @@ class SetTest<Element>(Element* element) extends Object()
     }
     shared actual Set<Element> complement<Other>(Set<Other> set)
                 given Other satisfies Object {
-        value sb = SequenceBuilder<Element>();
+        value sb = ArrayBuilder<Element>();
         for (e in elements) {
             for (e2 in set) {
                 if (e2 == e) { break; }
@@ -94,8 +166,8 @@ shared void testSets() {
     check(!s1.subset(es), "Set.subset 2");
     check(!es.superset(s1), "Set.superset 1");
     check(s1.superset(es), "Set.superset 2");
-    check(s1.union(es)==s1, "Set.union 1");
-    check(es.union(s1)==s1, "Set.union 2");
+    check(s1.union(es)==s1, "Set.union 1 ``s1.union(es)``");
+    check(es.union(s1)==s1, "Set.union 2 ``es.union(s1)``");
     check(s1.complement(es)==s1, "Set.complement 1");
     check(es.complement(s1)==es, "Set.complement 2");
     //LazySet

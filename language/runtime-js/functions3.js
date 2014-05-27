@@ -1,6 +1,6 @@
 function addSuppressedException(/*Exception*/sup,/*Exception*/e) {
     if (e.$sups$===undefined) {
-        e.$sups$=[];
+        e.$sups$=[].reifyCeylonType({t:Throwable});
     }
     if (sup.getT$name === undefined) sup = NativeException(sup);
     e.$sups$.push(sup);

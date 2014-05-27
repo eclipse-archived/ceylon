@@ -3,6 +3,8 @@ package ceylon.language;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
+
 public class SequenceBuilderTest {
 
     private static ceylon.language.Integer i(int i) {

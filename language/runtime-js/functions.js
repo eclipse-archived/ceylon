@@ -138,7 +138,7 @@ function is$(obj,type){
               return false;
             }
           } else if (iance === 'in') {
-            if (!extendsType(cmptype, tmpobj.$$targs$$[i])) {
+            if (!extendsType(cmptype, tmpobj.$$targs$$[i],true)) {
               return false;
             }
           } else if (iance === undefined) {
@@ -205,7 +205,7 @@ function isOfTypes(obj, types) {
   }
   return _ints ? inters||unions : unions;
 }
-function extendsType(t1, t2) { //true if t1 is subtype of t2
+function extendsType(t1, t2,contra) { //true if t1 is subtype of t2
     if (t1 === undefined || t1.t === undefined || t1.t === Nothing || t2 === undefined || t2.t === undefined) {
       return true;//t2 === undefined;
     } else if (t2 && t2.t === Anything) {
@@ -219,8 +219,8 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
         var inters = true;
         var _ints = false;
         for (var i = 0; i < t1.l.length; i++) {
-            var partial = extendsType(t1.l[i], t2);
-            if (t1.t==='i') {
+            var partial = extendsType(t1.l[i],t2,contra);
+            if (t1.t==='u'&&!contra) {
                 unions = partial||unions;
             } else {
                 inters = partial&&inters;
@@ -235,7 +235,7 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
         var inters = true;
         var _ints = false;
         for (var i = 0; i < t2.l.length; i++) {
-            var partial = extendsType(t1, t2.l[i]);
+            var partial = extendsType(t1, t2.l[i],contra);
             if (t2.t==='u') {
                 unions = partial||unions;
             } else {
@@ -249,7 +249,7 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
       if (t2.t==='T') {
         if (t1.l.length>=t2.l.length) {
           for (var i=0; i < t2.l.length;i++) {
-            if (!extendsType(t1.l[i],t2.l[i]))return false;
+            if (!extendsType(t1.l[i],t2.l[i],contra))return false;
           }
           return true;
         } else return false;
@@ -264,7 +264,7 @@ function extendsType(t1, t2) { //true if t1 is subtype of t2
             if (t1.a && t2.a) {
                 //Compare type arguments
                 for (ta in t1.a) {
-                    if (!extendsType(t1.a[ta], t2.a[ta])) return false;
+                    if (!extendsType(t1.a[ta], t2.a[ta],contra)) return false;
                 }
             }
             return true;

@@ -1,6 +1,5 @@
 "An immutable [[Sequence]] implemented using an [[Array]]. 
  Where possible, copying of the underlying array is avoided."
-see (`class SequenceBuilder`, `class SequenceAppender`)
 //TODO: Reimplement this class in Ceylon!
 shared final native class ArraySequence<out Element>({Element+} elements) 
         satisfies [Element+] {

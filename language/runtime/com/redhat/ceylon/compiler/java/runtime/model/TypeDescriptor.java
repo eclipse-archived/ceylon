@@ -51,6 +51,10 @@ public abstract class TypeDescriptor {
     
     public abstract int hashCode();
     
+    public abstract String toString();
+    
+    protected abstract void stringTo(StringBuilder sb);
+    
     /**
      * Returns a hashcode for the given elements 
      * computed so that the order of the elements doesn't matter
@@ -103,6 +107,18 @@ public abstract class TypeDescriptor {
                 b.append(">");
             }
         }
+        
+        protected void stringTo(StringBuilder b) {
+            if(typeArguments.length > 0){
+                b.append("<");
+                for(int i=0;i<typeArguments.length;i++){
+                    if(i>0)
+                        b.append(",");
+                    typeArguments[i].stringTo(b);
+                }
+                b.append(">");
+            }
+        }
     }
 
     public static class Class extends Generic implements QualifiableTypeDescriptor {
@@ -141,11 +157,25 @@ public abstract class TypeDescriptor {
         
         @Override
         public String toString() {
-            StringBuilder b = new StringBuilder();
-            b.append(klass);
-            // add type arguments
-            super.toString(b);
-            return b.toString();
+            String className = klass.getName();
+            if (typeArguments.length != 0) {
+                StringBuilder b = new StringBuilder(className);
+                // add type arguments
+                super.stringTo(b);
+                return b.toString();
+            } else {
+                return className;
+            }
+        }
+        
+        @Override
+        protected void stringTo(StringBuilder sb) {
+            String className = klass.getName();
+            sb.append(className);
+            if (typeArguments.length != 0) {
+                // add type arguments
+                super.stringTo(sb);
+            }
         }
 
         @Override
@@ -370,10 +400,15 @@ public abstract class TypeDescriptor {
         @Override
         public String toString() {
             StringBuilder b = new StringBuilder();
-            b.append(container);
-            b.append(".");
-            b.append(member);
+            stringTo(b);
             return b.toString();
+        }
+        
+        @Override
+        public void stringTo(StringBuilder sb) {
+            sb.append(container);
+            sb.append(".");
+            sb.append(member);
         }
 
         @Override
@@ -414,6 +449,11 @@ public abstract class TypeDescriptor {
         @Override
         public String toString() {
             return "ceylon.language.Nothing";
+        }
+        
+        @Override
+        public void stringTo(StringBuilder sb) {
+            sb.append("ceylon.language.Nothing");
         }
         
 		@Override
@@ -458,7 +498,7 @@ public abstract class TypeDescriptor {
             return true;
         }
 
-        protected String toString(String sep) {
+        protected String toString(char sep) {
             StringBuilder b = new StringBuilder();
             if(members.length > 0){
                 for(int i=0;i<members.length;i++){
@@ -468,6 +508,16 @@ public abstract class TypeDescriptor {
                 }
             }
             return b.toString();
+        }
+        protected void stringTo(StringBuilder sb, char sep) {
+            
+            if(members.length > 0){
+                for(int i=0;i<members.length;i++){
+                    if(i>0)
+                        sb.append(sep);
+                    members[i].stringTo(sb);
+                }
+            }
         }
     }
 
@@ -496,7 +546,12 @@ public abstract class TypeDescriptor {
 
         @Override
         public String toString() {
-            return super.toString("|");
+            return super.toString('|');
+        }
+        
+        @Override
+        public void stringTo(StringBuilder sb) {
+            super.stringTo(sb, '|');
         }
 
         @Override
@@ -564,7 +619,12 @@ public abstract class TypeDescriptor {
 
         @Override
         public String toString() {
-            return super.toString("&");
+            return super.toString('&');
+        }
+        
+        @Override
+        public void stringTo(StringBuilder sb) {
+            super.stringTo(sb, '&');
         }
 
         @Override

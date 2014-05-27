@@ -3,6 +3,7 @@ package ceylon.language;
 import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
@@ -88,8 +89,10 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
          * {@code copyOrNot_*()} methods figure out the arguments for the 
          * this() call. Oh for a Let expr.
          */
-        this($reifiedElement, copyOrNot_array$hidden($reifiedElement, elements), 
-                copyOrNot_first$hidden(elements), copyOrNot_length$hidden(elements), 
+        this($reifiedElement, 
+                copyOrNot_array$hidden($reifiedElement, elements), 
+                copyOrNot_first$hidden(elements), 
+                copyOrNot_length$hidden(elements), 
                 false);
     }
     
