@@ -1999,23 +1999,20 @@ public class GenerateJsVisitor extends Visitor
     public void visit(StringTemplate that) {
         List<StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
-        out(clAlias, "StringBuilder([");
-        boolean first = true;
         for (int i = 0; i < literals.size(); i++) {
             StringLiteral literal = literals.get(i);
-            if (!literal.getText().isEmpty()) {
-                if (!first) { out(","); }
-                first = false;
-                literal.visit(this);
-            }
+            literal.visit(this);
+            if (i>0)out(")");
             if (i < exprs.size()) {
-                if (!first) { out(","); }
-                first = false;
-                exprs.get(i).visit(this);
-                out(".string");
+                out(".plus(");
+                final Expression expr = exprs.get(i);
+                expr.visit(this);
+                if (expr.getTypeModel() == null || !"ceylon.language::String".equals(expr.getTypeModel().getProducedTypeQualifiedName())) {
+                    out(".string");
+                }
+                out(").plus(");
             }
         }
-        out("]).string");
     }
 
     @Override
