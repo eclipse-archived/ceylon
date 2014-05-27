@@ -8,12 +8,11 @@ function String$(/*{Character*}*/value,size) {
         that.codePoints = size;
         return that;
     }
-    var _sb = StringBuilder();
+    var that = '';
     var _iter = value.iterator();
     var _c; while ((_c = _iter.next()) !== getFinished()) {
-        _sb.appendCharacter(_c);
+        that += _c.string;
     }
-    var that = _sb.string;
     if (size !== undefined) that.codePoints=size;
     return that;
 }
@@ -806,108 +805,6 @@ atr$(Character$proto, 'predecessor', function() {
 Character$proto.distanceFrom = function(other) {
     return this.value - other.value;
 }
-
-function StringBuilder(/*String...*/comps) {
-    var that = new StringBuilder.$$;
-    if (comps === undefined){
-      that.value="";
-    } else if (comps.length===1){
-      that.value=comps[0];
-    } else {
-      that.value=String.prototype.concat.apply("",comps);
-    }
-    return that;
-}
-StringBuilder.$crtmm$=function(){return{'super':{t:Basic},$ps:[],
-  $an:function(){return[shared(),$_native()];},mod:$CCMM$,d:['$','StringBuilder']};};
-
-initTypeProto(StringBuilder, 'ceylon.language::StringBuilder', $init$Basic());
-var StringBuilder$proto = StringBuilder.$$.prototype;
-atr$(StringBuilder$proto, 'string', function(){ return String$(this.value, this.size); },undefined,function(){return{
-  mod:$CCMM$,$t:{t:String$},d:['$','StringBuilder','$at','string'],$cont:StringBuilder}});
-StringBuilder$proto.append = function(s) {
-    this.value = this.value.concat(s);
-    return this;
-}
-StringBuilder$proto.append.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','append'],
-  $t:{t:StringBuilder},$cont:StringBuilder,$ps:[{$nm:'string',$t:{t:String$},$mt:'prm'}]};};
-StringBuilder$proto.appendAll = function(strings) {
-    var iter = strings.iterator();
-    var _s; while ((_s = iter.next()) !== getFinished()) {
-        this.append(_s||"null");
-    }
-    return this;
-}
-StringBuilder$proto.appendAll.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','appendAll'],
-  $t:{t:StringBuilder},$ps:[{$nm:'strings',$t:{t:Iterable,a:{Element$Iterable:{t:String$},Absent$Iterable:{t:Null}}},$mt:'prm'}],$cont:StringBuilder
-};};
-StringBuilder$proto.appendCharacter=function(c){return this.append(c.string);}
-StringBuilder$proto.appendCharacter.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','appendCharacter'],
-  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'character',$t:{t:Character},$mt:'prm'}]
-};};
-StringBuilder$proto.appendNewline=function(){return this.append("\n");}
-StringBuilder$proto.appendNewline.$crtmm$=function(){return{mod:$$CCMM$,d:['$','StringBuilder','$m','appendNewline'],
-  $t:{t:StringBuilder},$ps:[],$cont:StringBuilder
-};};
-StringBuilder$proto.appendSpace=function(){return this.append(" ");}
-StringBuilder$proto.appendSpace.$crtmm$=function(){return{mod:$$CCMM$,d:['$','StringBuilder','$m','appendSpace'],
-  $t:{t:StringBuilder},$ps:[],$cont:StringBuilder
-};};
-atr$(StringBuilder$proto, 'size', function() {
-    return countCodepoints(this.value);
-},undefined,function(){return{mod:$CCMM$,$t:{t:Integer},d:['$','StringBuilder','$at','size'],$cont:StringBuilder}});
-StringBuilder$proto.reset = function() {
-    this.value = "";
-    return this;
-}
-StringBuilder$proto.reset.$crtmm$=function(){return{mod:$$CCMM$,d:['$','StringBuilder','$m','reset'],
-  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[]};};
-StringBuilder$proto.insert = function(pos, content) {
-    if (pos <= 0) {
-        this.value = content + this.value;
-    } else if (pos >= this.size) {
-        this.value = this.value + content;
-    } else {
-        this.value = this.value.slice(0, pos).concat(content,this.value.slice(pos));
-    }
-    return this;
-}
-StringBuilder$proto.insert.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','insert'],
-  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'content',$t:{t:String$},$mt:'prm'}]
-};};
-StringBuilder$proto.insertCharacter = function(pos, c) {
-    if (pos <= 0) {
-        this.value = c.string + this.value;
-    } else if (pos >= this.size) {
-        this.value = this.value + c.string;
-    } else {
-        this.value = this.value.slice(0, pos).concat(c.string,this.value.slice(pos));
-    }
-    return this;
-}
-StringBuilder$proto.insertCharacter.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','insertCharacter'],
-  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'character',$t:{t:Character},$mt:'prm'}]
-};};
-StringBuilder$proto.$_delete = function(pos, count) {
-    if (pos < 0) pos=0; else if (pos>this.size) return this;
-    if (count > 0) {
-        this.value = this.value.slice(0, pos) + this.value.slice(pos+count);
-    }
-    return this;
-}
-StringBuilder$proto.$_delete.$crtmm$=function(){return{mod:$CCMM$,d:['$','StringBuilder','$m','delete'],
-  $cont:StringBuilder,$t:{t:StringBuilder},$ps:[{$nm:'pos',$t:{t:Integer},$mt:'prm'},{$nm:'count',$t:{t:Integer},$mt:'prm'}]
-};};
-StringBuilder$proto.deleteInitial=function(c){
-  return this.$_delete(0,c);
-}
-StringBuilder$proto.deleteInitial.$crtmm$=function(){return{
-  mod:$CCMM$,d:['$','StringBuilder','$m','deleteInitial'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};
-StringBuilder$proto.deleteTerminal=function(c){
-  return this.$_delete(this.size-c,c);
-}
-StringBuilder$proto.deleteTerminal.$crtmm$=function(){return{
-  mod:$CCMM$,d:['$','StringBuilder','$m','deleteTerminal'],$t:{t:StringBuilder},$ps:[{$nm:'length',$t:{t:Integer},$mt:'prm'}]};};
 
 ex$.String=String$;
 ex$.Character=Character;
