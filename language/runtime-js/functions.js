@@ -134,7 +134,7 @@ function is$(obj,type){
             }
           }
           if (iance === 'out') {
-            if (!extendsType(tmpobj.$$targs$$[i], cmptype)) {
+            if (!extendsType(tmpobj.$$targs$$[i], cmptype,true)) {
               return false;
             }
           } else if (iance === 'in') {
@@ -151,19 +151,19 @@ function is$(obj,type){
                 //_targ must satisfy all types in cmptype
                 if (cmptype.t!==_targ.t || !cmptype.l || cmptype.l.length!==_targ.l.length)return false;
                 for (var i=0; i<_targ.l.length;i++) {
-                  if (!extendsType(_targ.l[i],cmptype))return false;
+                  if (!extendsType(_targ.l[i],cmptype,true))return false;
                 }
               } else if (cmptype && cmptype.t && cmptype.t==='u') {
                 //_targ must satisfy at least one type in cmptype
                 if (cmptype.t!==_targ.t || !cmptype.l || cmptype.l.length!==_targ.l.length)return false;
                 for (var i=0; i<_targ.l.length;i++) {
-                  if (!extendsType(_targ.l[i],cmptype))return false;
+                  if (!extendsType(_targ.l[i],cmptype,true))return false;
                 }
               }
             } else {
               if (cmptype.t!==_targ.t || !cmptype.l || cmptype.l.length!==_targ.l.length)return false;
               for (var i=0; i<_targ.l.length;i++) {
-                if (!extendsType(_targ.l[i],cmptype))return false;
+                if (!extendsType(_targ.l[i],cmptype,true))return false;
               }
             }
           } else if (iance === null) {
@@ -205,7 +205,7 @@ function isOfTypes(obj, types) {
   }
   return _ints ? inters||unions : unions;
 }
-function extendsType(t1, t2,contra) { //true if t1 is subtype of t2
+function extendsType(t1, t2,tparm) { //true if t1 is subtype of t2
     if (t1 === undefined || t1.t === undefined || t1.t === Nothing || t2 === undefined || t2.t === undefined) {
       return true;//t2 === undefined;
     } else if (t2 && t2.t === Anything) {
@@ -219,8 +219,8 @@ function extendsType(t1, t2,contra) { //true if t1 is subtype of t2
         var inters = true;
         var _ints = false;
         for (var i = 0; i < t1.l.length; i++) {
-            var partial = extendsType(t1.l[i],t2,contra);
-            if (t1.t==='u'&&!contra) {
+            var partial = extendsType(t1.l[i],t2,tparm);
+            if (t1.t==='u'&&!tparm) {
                 unions = partial||unions;
             } else {
                 inters = partial&&inters;
@@ -235,7 +235,7 @@ function extendsType(t1, t2,contra) { //true if t1 is subtype of t2
         var inters = true;
         var _ints = false;
         for (var i = 0; i < t2.l.length; i++) {
-            var partial = extendsType(t1, t2.l[i],contra);
+            var partial = extendsType(t1, t2.l[i],tparm);
             if (t2.t==='u') {
                 unions = partial||unions;
             } else {
@@ -249,7 +249,7 @@ function extendsType(t1, t2,contra) { //true if t1 is subtype of t2
       if (t2.t==='T') {
         if (t1.l.length>=t2.l.length) {
           for (var i=0; i < t2.l.length;i++) {
-            if (!extendsType(t1.l[i],t2.l[i],contra))return false;
+            if (!extendsType(t1.l[i],t2.l[i],tparm))return false;
           }
           return true;
         } else return false;
@@ -264,7 +264,7 @@ function extendsType(t1, t2,contra) { //true if t1 is subtype of t2
             if (t1.a && t2.a) {
                 //Compare type arguments
                 for (ta in t1.a) {
-                    if (!extendsType(t1.a[ta], t2.a[ta],contra)) return false;
+                    if (!extendsType(t1.a[ta], t2.a[ta],tparm)) return false;
                 }
             }
             return true;
