@@ -19,9 +19,7 @@ Comprehension$proto.iterator = function() {
     return ComprehensionIterator(this.makeNextFunc(), this.$$targs$$);
 }
 atr$(Comprehension$proto, 'sequence', function() {
-    var sb = SequenceBuilder({Element$SequenceBuilder:this.$$targs$$.Element$Iterable});
-    sb.appendAll(this);
-    return sb.sequence;
+    return sequential(this,{Element$sequential:this.$$targs$$.Element$Iterable});
 },undefined,{$an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Iterable','$at','sequence']});
 ex$.Comprehension=Comprehension;
 
