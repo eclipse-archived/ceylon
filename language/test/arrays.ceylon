@@ -120,4 +120,14 @@ shared void testArrays() {
     check("{ 1, 3, 5 }"==Array{1,2,3,4,5,6}.take(5).by(2).string, "Array take 5 by 2");
     check("{ 2, 4 }"==Array{1,2,3,4,5,6}.take(5).skip(1).by(2).string, "Array take 5 skip 1 by 2");
     check("{ 3 }"==Array{1,2,3,4,5,6}.by(2).take(2).skip(1).string, "Array by 2 take 2 skip 1");
+    
+    value ae = AssertionError("");
+    value assertionErrors = arrayOfSize<Error>(2, ae);
+    value assertionErrors2 = Array<Error>([ae, ae]);
+    value throwables = arrayOfSize<Throwable>(2, ae);
+    value throwables2 = Array<Throwable>([ae, ae]);
+    check(assertionErrors == assertionErrors2, "assertionErrors == assertionErrors2");
+    check(throwables == throwables2, "throwables == throwables2");
+    check(assertionErrors == throwables, "assertionErrors == throwables");
+    check(assertionErrors2 == throwables2, "assertionErrors2 == throwables2");
 }
