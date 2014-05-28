@@ -381,7 +381,7 @@ ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes
         if (noInherit && mm.$cont!==$$$mptypes.Container$getMethods.t)continue;
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         var anns=mm.$an; if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
-        if (anns && coi$is$anns(anns,ats)) {
+        if (anns && coi$is$anns(anns,ats) && validate$params(mm.$ps,$$$mptypes.Arguments$getMethods,'',1)) {
           var types=[].reifyCeylonType({t:Type$meta$model,a:{Type:{t:Anything}}});
           if (mm.$ps) for (var i=0; i<mm.$ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.$ps[i].$t}));

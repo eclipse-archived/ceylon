@@ -34,20 +34,21 @@ function retpl$(t) { //receives {t:'T',l:[...]}
   }
   return r;
 }
-function validate$params(ps,t,msg) {
+function validate$params(ps,t,msg,nothrow) {
   if (t.t===Nothing)return;
   if (!ps || ps.length==0) {
-    if (t.t===Empty)return;
+    if (t.t===Empty)return true;
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
       //TODO check each parameter
       for (var i=0;i<ps.length;i++)
         if (!extendsType(t.l[i],ps[i].$t))throw IncompatibleTypeException$meta$model(msg);
-      return;
+      return true;
     }
   } else { //it's already a tuple, navigate it
     console.log("TODO!!!! validate$params with Tuple type");
   }
+  if (nothrow)return false;
   throw IncompatibleTypeException$meta$model(msg);
 }
 function validate$typeparams(t,tparms,types) {
