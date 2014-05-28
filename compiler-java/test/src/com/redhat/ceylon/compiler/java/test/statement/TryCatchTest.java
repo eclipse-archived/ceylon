@@ -38,6 +38,12 @@ public class TryCatchTest extends CompilerTest {
     }
     
     @Test
+    public void testTryExceptionSuppressed(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.trycatch.exceptionSuppressed",
+                "trycatch/ExceptionSuppressed.ceylon");
+    }
+    
+    @Test
     public void testTryBareThrow(){
         compareWithJavaSource("trycatch/Throw");
     }
