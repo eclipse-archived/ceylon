@@ -233,19 +233,19 @@ final class javaExceptionMessage_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void javaExceptionMessage() {
-        .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .java.io.IOException().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.JavaException().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.JavaError().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionMessage().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.JavaErrorMessage().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.CeylonException().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.CeylonError().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessage().getMessage());
-        s = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessage().getMessage());
-        s = new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionOverrides().getMessage();
-        s = new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorOverrides().getMessage();
-        s = new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessageOverrides().getMessage();
-        s = new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessageOverrides().getMessage();
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .java.io.IOException());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaException());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaError());
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaErrorMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonException());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonError());
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionOverrides());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorOverrides());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessageOverrides());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessageOverrides());
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
