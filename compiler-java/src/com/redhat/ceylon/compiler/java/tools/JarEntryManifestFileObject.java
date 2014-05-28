@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.*;
 import java.net.URI;
-import java.util.LinkedHashSet;
 import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -171,6 +170,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         public static final Attributes.Name Require_Bundle = new Attributes.Name("Require-Bundle");
         public static final Attributes.Name Bundle_RequiredExecutionEnvironment = new Attributes.Name("Bundle-RequiredExecutionEnvironment");
         public static final Attributes.Name Require_Capability = new Attributes.Name("Require-Capability");
+        public static final Attributes.Name Bundle_ActivationPolicy = new Attributes.Name("Bundle-ActivationPolicy");
 
         public static boolean isManifestFileName(String fileName) {
             return MANIFEST_FILE_NAME.equalsIgnoreCase(fileName);
@@ -210,6 +210,8 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                 main.put(Require_Bundle, requireBundleValue);
             }
 
+            applyActivationPolicyNonLazy(main);
+            
             // Get all the attributes and entries from original manifest
             appendOriginalManifest(manifest, main);
 
@@ -243,8 +245,6 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                     break;
                 }
             }
-
-
         }
 
         private String getRequireCapabilityJavaSE(String version) {
@@ -256,6 +256,10 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                     .append(")")
                    .append('"')
                    .toString();
+        }
+
+        private void applyActivationPolicyNonLazy(Attributes main) {
+            main.put(Bundle_ActivationPolicy, "lazy;exclude:=\"*\"");
         }
 
         private void appendOriginalManifest(Manifest manifest, Attributes main) {
@@ -299,6 +303,9 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                         }
                     }
                 }
+            } else {
+                requires.append("com.redhat.ceylon.dist")
+                .append(";bundle-version=").append(module.getVersion());
             }
             return requires.toString();
         }
