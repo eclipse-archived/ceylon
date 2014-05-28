@@ -217,6 +217,11 @@ public class InteropTest extends CompilerTest {
         compile("JavaExceptionMessage.java");
         compareWithJavaSource("JavaExceptionMessage");
     }
+    
+    @Test
+    public void testIopJavaExceptionArrays(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.interop.javaExceptionArrays", "JavaExceptionArrays.ceylon", "JavaExceptionsAndThrowable.java");
+    }
 
     @Test
     public void testIopRefinesProtectedAccessMethod(){

@@ -29,4 +29,12 @@ public class JavaExceptionsAndThrowable {
     public Error e(Error x){ return x; }
     public Exception x(Exception x){ return x; }
     public RuntimeException rtx(RuntimeException x){ return x; }
+    
+    public Error newError(String message) {
+        return new java.lang.Error(message);
+    }
+    
+    public Exception newException(String message) {
+        return new java.lang.Exception(message);
+    }
 }
