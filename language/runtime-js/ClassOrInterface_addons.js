@@ -342,32 +342,78 @@ ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces=function getDecla
   return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getDeclaredInterfaces,Type$MemberInterface:$$$mptypes.Type$getDeclaredInterfaces}}});
 }
 ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberInterface$meta$model,a:{Container$MemberInterface:'Container$getDeclaredInterfaces',Type$MemberInterface:'Type$getDeclaredInterfaces'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredInterfaces:{'def':{t:Nothing}},Type$getDeclaredInterfaces:{'def':{t:Anything}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredInterfaces']};};
-ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(anntypes,$$$mptypes){
-  throw new Error("ClassOrInterface.getAttributes");
+ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(anntypes,$$$mptypes,noInherit){
+  var mems=[];
+  var ats=coi$get$anns(anntypes);
+  for (m in this.tipo.$$.prototype) {
+    if (m.substring(0,6)==='$prop$') {
+      var mm=getrtmm$$(this.tipo.$$.prototype[m]);
+      if (mm) {
+        if (noInherit && mm.$cont!==this.tipo)continue;
+        if (!extendsType(mm.$t,$$$mptypes.Get$getAttributes))continue;
+        var setter=this.tipo.$$.prototype[m].set && extendsType($$$mptypes.Set$getAttributes,mm.$t);
+        if ($$$mptypes.Set$getAttributes.t!==Nothing && !setter)continue;
+        if (!extendsType({t:this.tipo},$$$mptypes.Container$getAttributes))continue;
+        var anns=mm.$an; if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
+        if (anns && coi$is$anns(anns,ats)) {
+          var atname=mm.d[mm.d.length-1];
+          if (atname.indexOf('$')>0)atname=atname.substring(0,atname.indexOf('$'));
+          mems.push(AppliedAttribute(atname,this.tipo.$$.prototype[m],{Container$Attribute:{t:mm.$cont},Get$Attribute:mm.$t,Set$Attribute:setter?mm.$t:{t:Nothing}}));
+        }
+      }
+    }
+  }
+  return mems.length==0?getEmpty():ArraySequence(mems,{Element$Iterable:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}}});
 }
 ClassOrInterface$meta$model.$$.prototype.getAttributes.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Attribute$meta$model,a:{Set$Attribute:'Set$getAttributes',Container$Attribute:'Container$getAttributes',Get$Attribute:'Get$getAttributes'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getAttributes:{'def':{t:Nothing}},Get$getAttributes:{'def':{t:Anything}},Set$getAttributes:{'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttributes']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes=function getDeclaredAttributes(anntypes,$$$mptypes) {
-  var todos=this.getAttributes(anntypes,{Container$getAttributes:$$$mptypes.Container$getDeclaredAttributes,Get$getAttributes:$$$mptypes.Get$getDeclaredAttributes,Set$getAttributes:$$$mptypes.Set$getDeclaredAttributes});
-  var mias=[];
-  for (var i=0;i<todos.length;i++) {
-    var mm=getrtmm$$(todos[i].tipo);
-    if (mm && mm.$cont && mm.$cont===this.tipo)mias.push(todos[i]);
-  }
-  return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getDeclaredAttributes,Container$Attribute:$$$mptypes.Container$getDeclaredAttributes,Get$Attribute:$$$mptypes.Get$getDeclaredAttributes}}});
+  return this.getAttributes(anntypes,{Container$getAttributes:$$$mptypes.Container$getDeclaredAttributes,Get$getAttributes:$$$mptypes.Get$getDeclaredAttributes,Set$getAttributes:$$$mptypes.Set$getDeclaredAttributes},1);
 }
 ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Attribute$meta$model,a:{Set$Attribute:'Set$getDeclaredAttributes',Container$Attribute:'Container$getDeclaredAttributes',Get$Attribute:'Get$getDeclaredAttributes'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredAttributes:{'def':{t:Nothing}},Get$getDeclaredAttributes:{'def':{t:Anything}},Set$getDeclaredAttributes:{'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredAttributes']};};
-ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes,$$$mptypes) {
-  throw new Error("ClassOrInterface.getMethods");
+ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes,$$$mptypes,noInherit) {
+  var mems=[];
+  var ats=coi$get$anns(anntypes);
+  for (m in this.tipo.$$.prototype) {
+    var mem=this.tipo.$$.prototype[m];
+    if (mem && m.substring(0,6)!='$prop$' && mem.$$===undefined) {
+      var mm=getrtmm$$(mem);
+      if (mm && mm.d && mm.d[mm.d.length-2]=='$m') {
+        if (noInherit && mm.$cont!==$$$mptypes.Container$getMethods.t)continue;
+        if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
+        var anns=mm.$an; if (typeof(anns)==='function'){anns=anns();mm.$an=anns;}
+        if (anns && coi$is$anns(anns,ats)) {
+          var types=[].reifyCeylonType({t:Type$meta$model,a:{Type:{t:Anything}}});
+          if (mm.$ps) for (var i=0; i<mm.$ps.length;i++) {
+            types.push(typeLiteral$meta({Type$typeLiteral:mm.$ps[i].$t}));
+          }
+          mems.push(AppliedMethod(mem, types, {Container$Method:{t:this.tipo},Type$Method:mm.$t,Arguments$Method:$$$mptypes.Arguments$getMethods}));
+        }
+      }
+    }
+  }
+  return mems.length===0?getEmpty():ArraySequence(mems,{Element$Iterable:{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}}});
 }
 ClassOrInterface$meta$model.$$.prototype.getMethods.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Method$meta$model,a:{Container$Method:'Container$getMethods',Arguments$Method:'Arguments$getMethods',Type$Method:'Type$getMethods'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getMethods:{'def':{t:Nothing}},Type$getMethods:{'def':{t:Anything}},Arguments$getMethods:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethods']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredMethods=function getDeclaredMethods(anntypes,$$$mptypes) {
-  var todos=getMethods(anntypes,{Container$getMethods:$$$mptypes.Container$getDeclaredMethods,Type$getMethods:$$$mptypes.Type$getDeclaredMethods,Arguments$getMethods:$$$mptypes.Arguments$getDeclaredMethods});
-  var mias=[];
-  for (var i=0;i<todos.length;i++) {
-    var mm=getrtmm$$(todos[i].tipo);
-    if (mm && mm.$cont && mm.$cont===this.tipo)mias.push(todos[i]);
-  }
-  return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getDeclaredMethods,Arguments$Method:$$$mptypes.Arguments$getDeclaredMethods,Type$Method:$$$mptypes.Type$getDeclaredMethods}}});
+  return this.getMethods(anntypes,{Container$getMethods:$$$mptypes.Container$getDeclaredMethods,Type$getMethods:$$$mptypes.Type$getDeclaredMethods,Arguments$getMethods:$$$mptypes.Arguments$getDeclaredMethods},1);
 }
 ClassOrInterface$meta$model.$$.prototype.getDeclaredMethods.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Method$meta$model,a:{Container$Method:'Container$getDeclaredMethods',Arguments$Method:'Arguments$getDeclaredMethods',Type$Method:'Type$getDeclaredMethods'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredMethods:{'def':{t:Nothing}},Type$getDeclaredMethods:{'def':{t:Anything}},Arguments$getDeclaredMethods:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredMethods']};};
 
+function coi$get$anns(anntypes) {
+  var ats=[];
+  var iter=anntypes.iterator();
+  var a;while((a=iter.next())!==getFinished()){
+    ats.push({t:a.tipo});
+  }
+  return ats;
+}
+function coi$is$anns(anns,ats) {
+  for (var i=0;i<ats.length;i++) {
+    var f=false;
+    for (var j=0;j<anns.length;j++) {
+      f|=(is$(anns[j],ats[i]));
+    }
+    if (!f)return false;
+  }
+  return true;
+}
