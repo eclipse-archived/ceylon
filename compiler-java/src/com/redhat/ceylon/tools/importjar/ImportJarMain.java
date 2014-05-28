@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.tools.importjar;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.redhat.ceylon.common.Versions;
@@ -95,7 +96,7 @@ public class ImportJarMain {
         }
 
         try{
-            CeylonImportJarTool importJar = new CeylonImportJarTool(moduleSpec, destDir, user, pass, jarFile, verbose);
+            CeylonImportJarTool importJar = new CeylonImportJarTool(moduleSpec, destDir, user, pass, new File(jarFile), verbose);
             importJar.publish();
         }catch(ImportJarException x){
             System.err.println(ImportJarMessages.msg("error", x.getLocalizedMessage()));

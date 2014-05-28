@@ -34,7 +34,6 @@ import java.lang.reflect.WildcardType;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -76,8 +75,8 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     private ModuleSpec module;
-    private String jarFile;
-    private String descriptor;
+    private File jarFile;
+    private File descriptor;
     private boolean force;
     private boolean dryRun;
     private boolean showClasses;
@@ -91,7 +90,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         super(ImportJarMessages.RESOURCE_BUNDLE);
     }
     
-    CeylonImportJarTool(String moduleSpec, String out, String user, String pass, String jarFile, String verbose) {
+    CeylonImportJarTool(String moduleSpec, String out, String user, String pass, File jarFile, String verbose) {
         super(ImportJarMessages.RESOURCE_BUNDLE);
         setModuleSpec(moduleSpec);
         this.out = out;
@@ -105,7 +104,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     @OptionArgument(argumentName="file")
     @Description("Specify a module.xml or module.properties file to be used "
             + "as the module descriptor")
-    public void setDescriptor(String descriptor) {
+    public void setDescriptor(File descriptor) {
         this.descriptor = descriptor;
     }
     
@@ -121,7 +120,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
 
     @Argument(argumentName="jar-file", multiplicity="1", order=1)
-    public void setFile(String jarFile) {
+    public void setFile(File jarFile) {
         this.jarFile = jarFile;
     }
     
@@ -152,17 +151,15 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     @Override
     public void initialize() {
         setSystemProperties();
-        if(jarFile == null || jarFile.isEmpty())
-            throw new ImportJarException("error.jarFile.empty");
-        File f = new File(jarFile);
+        File f = applyCwd(jarFile);
         checkReadableFile(f, "error.jarFile");
         if(!f.getName().toLowerCase().endsWith(".jar"))
             throw new ImportJarException("error.jarFile.notJar", new Object[]{f.toString()}, null);
         
         if (descriptor != null) {
-            checkReadableFile(new File(descriptor), "error.descriptorFile");
-            if(!(descriptor.toLowerCase().endsWith(".xml") ||
-                    descriptor.toLowerCase().endsWith(".properties")))
+            checkReadableFile(applyCwd(descriptor), "error.descriptorFile");
+            if(!(descriptor.toString().toLowerCase().endsWith(".xml") ||
+                    descriptor.toString().toLowerCase().endsWith(".properties")))
                 throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
         }
     }
@@ -181,10 +178,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         Set<String> externalClasses = gatherExternalClasses();
         
         if (descriptor != null) {
-            File descriptorFile = new File(descriptor);
-            if (descriptor.toLowerCase().endsWith(".xml")) {
+            File descriptorFile = applyCwd(descriptor);
+            if (descriptor.toString().toLowerCase().endsWith(".xml")) {
                 checkModuleXml(descriptorFile, externalClasses);
-            } else if(descriptor.toLowerCase().endsWith(".properties")) {
+            } else if(descriptor.toString().toLowerCase().endsWith(".properties")) {
                 checkModuleProperties(descriptorFile, externalClasses);
             }
         }
@@ -238,7 +235,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         checkedTypes = new HashSet<>();
         HashSet<String> externalClasses = new HashSet<>();
         try {
-            File jar = new File(jarFile);
+            File jar = applyCwd(jarFile);
             URLClassLoader cl = new URLClassLoader(new URL[] { jar.toURI().toURL() });
             try {
                 jarClassNames = JarUtils.gatherClassnamesFromJar(jar);
@@ -543,20 +540,20 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         context.setForceOperation(true);
         ArtifactContext descriptorContext = null;
         if (descriptor != null) {
-            if (descriptor.toLowerCase().endsWith(".xml")) {
+            if (descriptor.toString().toLowerCase().endsWith(".xml")) {
                 descriptorContext = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.MODULE_XML);
-            } else if (descriptor.toLowerCase().endsWith(".properties")) {
+            } else if (descriptor.toString().toLowerCase().endsWith(".properties")) {
                 descriptorContext = new ArtifactContext(module.getName(), module.getVersion(), ArtifactContext.MODULE_PROPERTIES);
             }
             descriptorContext.setForceOperation(true);
         }
         try{
-            File jarFile = new File(this.jarFile);
+            File jarFile = applyCwd(this.jarFile);
             outputRepository.putArtifact(context, jarFile);
             signArtifact(context, jarFile);
             
             if (descriptorContext != null) {
-                outputRepository.putArtifact(descriptorContext, new File(descriptor));
+                outputRepository.putArtifact(descriptorContext, applyCwd(descriptor));
             }
         }catch(CMRException x){
             throw new ImportJarException("error.failedWriteArtifact", new Object[]{context, x.getLocalizedMessage()}, x);
