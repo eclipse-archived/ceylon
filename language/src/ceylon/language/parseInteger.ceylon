@@ -170,7 +170,8 @@ Integer? computeMagnitude(Integer radix, Character? char) {
     return null;
 }
 
-Integer aInt = 'a'.integer;
+Integer aIntLower = 'a'.integer;
+Integer aIntUpper = 'A'.integer;
 Integer zeroInt = '0'.integer;
 
 Integer? parseDigit(Character digit, Integer radix) {
@@ -179,8 +180,11 @@ Integer? parseDigit(Character digit, Integer radix) {
     if (0<=digitInt-zeroInt<10) {
         figure=digitInt-zeroInt;
     }
-    else if (0<=digitInt-aInt<26) {
-        figure=digitInt-aInt+10;
+    else if (0<=digitInt-aIntLower<26) {
+        figure=digitInt-aIntLower+10;
+    }
+    else if (0<=digitInt-aIntUpper<26) {
+        figure=digitInt-aIntUpper+10;
     }
     else {
         return null;
@@ -217,7 +221,7 @@ shared String formatInteger(Integer integer, Integer radix = 10) {
             c = (d+zeroInt).character;
         }
         else if (10<=d<36) {
-            c = (d-10+aInt).character;
+            c = (d-10+aIntLower).character;
         }
         else {
             assert (false);
