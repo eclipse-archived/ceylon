@@ -1994,11 +1994,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             checkReifiedGenericsForMethods(klass, classMirror);
         setAnnotations(klass, classMirror);
         
-        if (!isCeylon 
-                && isThrowableSubtype(classMirror)) {
-            addMessageValueForJavaThrowable(klass);
-        }
-
         // local declarations come last, because they need all members to be completed first
         if(!klass.isAlias()){
             ClassMirror containerMirror = classMirror;
@@ -2009,42 +2004,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             addLocalDeclarations((LazyContainer) klass, containerMirror, classMirror);
         }
-    }
-    
-    private boolean isThrowableSubtype(ClassMirror classMirror) {
-        TypeMirror superclassType = classMirror.getSuperclass();
-        while(superclassType != null) {
-            classMirror =  superclassType.getDeclaredClass();
-            if ("java.lang.Throwable".equals(classMirror.getQualifiedName())) {
-                return true;
-            }
-            superclassType = classMirror.getSuperclass();
-        }
-        return false;
-    }
-    
-    /**
-     * The {@code getMessage()} result from a Java Exception type can be 
-     * null, so we need to 
-     * call {@code setUncheckedNullType()} on the equivalent value, but 
-     * when such classes haven't overridden {@code getMessage()} there's no 
-     * direct member on which to call that. 
-     * So we need to add one in such cases.
-     * @param klass
-     */
-    private void addMessageValueForJavaThrowable(ClassOrInterface klass) {
-        Value messageValue = (Value)klass.getDirectMember("message", Collections.<ProducedType>emptyList(), false);
-        if (messageValue == null) {
-            for (MethodMirror method : lookupClassMirror(getJDKBaseModule(), "java.lang.Throwable").getDirectMethods()) {
-                if ("getMessage".equals(method.getName())
-                        && method.getParameters().isEmpty()) {
-                    addValue(klass, method, "message", false);
-                    messageValue = (Value)klass.getDirectMember("message", Collections.<ProducedType>emptyList(), false);
-                    break;
-                }
-            }
-        } 
-        messageValue.setUncheckedNullType(true);
     }
 
     private void collectMethods(List<MethodMirror> methodMirrors, Map<String,List<MethodMirror>> methods,

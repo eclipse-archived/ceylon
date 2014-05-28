@@ -3993,6 +3993,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = make().Apply(List.<JCTree.JCExpression>nil(),
                             result,
                             List.<JCTree.JCExpression>of(qualExpr));
+                } else if (expr instanceof Tree.QualifiedMemberOrTypeExpression
+                        && isThrowableMessage((Tree.QualifiedMemberOrTypeExpression)expr)) {
+                    result = makeUtilInvocation("throwableMessage", List.of(qualExpr), null);
+                } else if (expr instanceof Tree.QualifiedMemberOrTypeExpression
+                        && isThrowableSuppressed((Tree.QualifiedMemberOrTypeExpression)expr)) {
+                    result = makeUtilInvocation("suppressedExceptions", List.of(qualExpr), null);
                 } else {
                     result = makeQualIdent(qualExpr, selector);
                     if (useGetter) {
@@ -5092,12 +5098,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = checkForCharacterAsInteger(expr);
         if(ret != null)
             return ret;
-        ret = checkForThrowableSuppressed(expr);
-        if(ret != null)
-            return ret;
-        /*ret = checkForArrayOnJavaArray(expr);
-        if(ret != null)
-            return ret;*/
         return null;
     }
 
@@ -5112,25 +5112,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }*/
 
-    private JCExpression checkForThrowableSuppressed(
-            Tree.QualifiedMemberExpression expr) {
-        if (typeFact().getThrowableDeclaration().getDirectMember("suppressed", null, false).equals(
-                expr.getDeclaration().getRefinedDeclaration())) {
-            // the refined declaration bit above is strictly not needed, but it prevents
-            // a backend error cascaded from a broken ceylon declaration
-            Tree.Primary primary = expr.getPrimary();
-            JCExpression throwable;
-            if (isSuperOrSuperOf(primary)) {
-                // super.suppressed is valid, but suppressed is non-default so can't be 
-                // overridden, so it must be the same as `this.getSupressed()`
-                throwable = naming.makeThis();
-            } else {
-                throwable = transformExpression(primary);
-            }
-            return makeUtilInvocation("suppressedExceptions", 
-                    List.<JCExpression>of(throwable), null);
-        }
-        return null;
+    boolean isThrowableSuppressed(Tree.QualifiedMemberOrTypeExpression expr) {
+        return typeFact().getThrowableDeclaration().getDirectMember("suppressed", null, false).equals(
+                expr.getDeclaration().getRefinedDeclaration());
+    }
+
+    boolean isThrowableMessage(Tree.QualifiedMemberOrTypeExpression expr) {
+        return typeFact().getThrowableDeclaration().getDirectMember("message", null, false).equals(
+                expr.getDeclaration().getRefinedDeclaration());
     }
 
     private JCExpression checkForInvocationExpressionOptimisation(Tree.InvocationExpression ce) {

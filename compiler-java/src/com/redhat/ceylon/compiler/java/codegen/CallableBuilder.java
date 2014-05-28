@@ -45,7 +45,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
@@ -362,11 +361,19 @@ public class CallableBuilder {
             ProducedType typeModel,
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
-        JCExpression memberName = gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER);
-        if(value instanceof FieldValue){
-            callBuilder.fieldRead(memberName);
-        }else{
-            callBuilder.invoke(memberName);
+        if (gen.expressionGen().isThrowableMessage(qmte)) {
+            callBuilder.invoke(gen.makeUtilSelection("throwableMessage"));
+            callBuilder.argument(gen.naming.makeUnquotedIdent(Unfix.$instance$));
+        } else if (gen.expressionGen().isThrowableSuppressed(qmte)) {
+            callBuilder.invoke(gen.makeUtilSelection("suppressedExceptions"));
+            callBuilder.argument(gen.naming.makeUnquotedIdent(Unfix.$instance$));
+        } else {
+            JCExpression memberName = gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER);
+            if(value instanceof FieldValue){
+                callBuilder.fieldRead(memberName);
+            }else{
+                callBuilder.invoke(memberName);
+            }
         }
         JCExpression innerInvocation = callBuilder.build();
         // use the return type since the value is actually applied

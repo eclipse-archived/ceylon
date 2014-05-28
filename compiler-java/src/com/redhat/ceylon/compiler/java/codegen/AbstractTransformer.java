@@ -22,8 +22,8 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
 import static com.sun.tools.javac.code.Flags.FINAL;
-import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
+import static com.sun.tools.javac.code.Flags.PROTECTED;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +93,6 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
-import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
@@ -3797,9 +3796,13 @@ public abstract class AbstractTransformer implements Transformation {
      */
     public JCExpression makeUtilInvocation(String methodName, List<JCExpression> arguments, List<JCExpression> typeArguments) {
         return make().Apply(typeArguments, 
-                            make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
-                                          names().fromString(methodName)), 
+                            makeUtilSelection(methodName), 
                             arguments);
+    }
+
+    JCFieldAccess makeUtilSelection(String methodName) {
+        return make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
+                      names().fromString(methodName));
     }
 
     /**
