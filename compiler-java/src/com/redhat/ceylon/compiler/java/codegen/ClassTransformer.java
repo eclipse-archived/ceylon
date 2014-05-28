@@ -2319,8 +2319,9 @@ public class ClassTransformer extends AbstractTransformer {
             List<JCStatement> body) {
         ProducedType resultType = model.getType();
         for (int index = model.getParameterLists().size() - 1; index >  0; index--) {
-            resultType = gen().typeFact().getCallableType(resultType);
-            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, model.getParameterLists().get(index), parameterListsTree.get(index), body);
+            ParameterList pl = model.getParameterLists().get(index);
+            resultType = gen().typeFact().getCallableType(List.of(resultType, typeFact().getParameterTypesAsTupleType(pl.getParameters(), model.getReference())));
+            CallableBuilder cb = CallableBuilder.mpl(gen(), resultType, pl, parameterListsTree.get(index), body);
             body = List.<JCStatement>of(make().Return(cb.build()));
         }
         return body;
