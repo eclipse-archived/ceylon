@@ -54,7 +54,7 @@ final class reifiedCallable3_ {
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call$(final .java.lang.Object $param$0) {
                         final .java.lang.String i = ((.ceylon.language.String)$param$0).toString();
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Boolean()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {

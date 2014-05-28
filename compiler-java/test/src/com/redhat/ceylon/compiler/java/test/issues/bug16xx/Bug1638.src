@@ -12,7 +12,7 @@ final class bug1638_ {
     static .ceylon.language.Callable<? extends .ceylon.language.String> bug1638(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i) {
-        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Character)", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore

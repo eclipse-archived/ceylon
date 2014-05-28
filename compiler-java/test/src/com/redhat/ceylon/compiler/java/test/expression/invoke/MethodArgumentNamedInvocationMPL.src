@@ -41,7 +41,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -62,7 +62,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -83,7 +83,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -104,7 +104,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -125,7 +125,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -146,7 +146,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -167,7 +167,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -188,7 +188,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -209,7 +209,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
@@ -230,7 +230,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -251,7 +251,7 @@ class MethodArgumentNamedInvocationMPL implements .com.redhat.ceylon.compiler.ja
                     
                     @.java.lang.Override
                     public .ceylon.language.Callable<? extends .ceylon.language.String> $call$() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "String(Integer)", (short)-1){
                             
                             @.java.lang.Override
                             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
