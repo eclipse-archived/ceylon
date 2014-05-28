@@ -216,6 +216,13 @@ public class InteropTest extends CompilerTest {
     public void testIopJavaExceptionMessage(){
         compile("JavaExceptionMessage.java");
         compareWithJavaSource("JavaExceptionMessage");
+        
+    }
+    
+    @Test
+    public void testIopJavaExceptionMessage2(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.interop.javaExceptionMessage2",
+                "JavaExceptionsAndThrowable.java", "JavaExceptionMessage2.ceylon");
     }
     
     @Test

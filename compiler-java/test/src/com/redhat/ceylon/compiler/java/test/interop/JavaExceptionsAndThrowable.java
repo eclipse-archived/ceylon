@@ -37,4 +37,8 @@ public class JavaExceptionsAndThrowable {
     public Exception newException(String message) {
         return new java.lang.Exception(message);
     }
+    
+    public Exception throwRuntimeException(String message) {
+        throw new java.lang.RuntimeException(message);
+    }
 }
