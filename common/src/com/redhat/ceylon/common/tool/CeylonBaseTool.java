@@ -54,6 +54,10 @@ public abstract class CeylonBaseTool implements Tool {
         }
     }
 
+    protected File validCwd() {
+        return (cwd != null) ? cwd : new File(".");
+    }
+
     protected List<File> applyCwd(List<File> files) {
         return FileUtil.applyCwd(getCwd(), files);
     }
