@@ -347,7 +347,7 @@ ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(an
 }
 ClassOrInterface$meta$model.$$.prototype.getAttributes.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Attribute$meta$model,a:{Set$Attribute:'Set$getAttributes',Container$Attribute:'Container$getAttributes',Get$Attribute:'Get$getAttributes'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getAttributes:{'def':{t:Nothing}},Get$getAttributes:{'def':{t:Anything}},Set$getAttributes:{'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttributes']};};
 ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes=function getDeclaredAttributes(anntypes,$$$mptypes) {
-  var todos=this.getAttributes(anntypes,Container$getAttributes:$$$mptypes.Container$getDeclaredAttributes,Get$getAttributes:$$$mptypes.Get$getDeclaredAttributes,Set$getAttributes:$$$mptypes.Set$getDeclaredAttributes});
+  var todos=this.getAttributes(anntypes,{Container$getAttributes:$$$mptypes.Container$getDeclaredAttributes,Get$getAttributes:$$$mptypes.Get$getDeclaredAttributes,Set$getAttributes:$$$mptypes.Set$getDeclaredAttributes});
   var mias=[];
   for (var i=0;i<todos.length;i++) {
     var mm=getrtmm$$(todos[i].tipo);
