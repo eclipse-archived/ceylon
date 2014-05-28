@@ -1,16 +1,20 @@
 import ceylon.language.meta.model {
   ClosedType=Type, UnionType, IntersectionType,
   Member, Interface, VariableAttribute, Class, ClassOrInterface, Attribute, Method, Value, Variable, Function,
-  ClassModel,InterfaceModel
+  ClassModel,InterfaceModel,MemberInterface,MemberClass
 }
 import ceylon.language.meta.declaration {
   ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
   TypeParameter, VariableDeclaration
 }
 
-shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Arguments>
+shared class AppliedClass<out Type=Anything, in Arguments=Nothing>() satisfies Class<Type,Arguments>
     given Type satisfies Object
     given Arguments satisfies Anything[] {
+
+  shared actual ClosedType<Anything>[] parameterTypes => [];
+  shared actual Type apply(Anything* arguments) { throw Exception("AppliedClass.namedApply"); }
+  shared actual Type namedApply(Iterable<String->Object> arguments) { throw Exception("AppliedClass.namedApply"); }
 
   shared actual ClassDeclaration declaration { throw Exception("Class declaration"); }
   shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("Class declaration"); }
@@ -18,15 +22,32 @@ shared class AppliedClass<out Type, in Arguments>() satisfies Class<Type,Argumen
   shared actual InterfaceModel<Anything>[] satisfiedTypes { throw Exception("unimplemented"); }
   shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
     given Kind satisfies ClassOrInterface<Anything> { throw Exception("unimplemented"); }
-  shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
-    given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
-  shared actual Attribute<Container, Type>? getAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
-  shared actual VariableAttribute<Container, Type>? getVariableAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
 
   shared actual Boolean typeOf(Anything instance) { throw Exception("Class declaration"); }
   shared actual Boolean supertypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual Boolean exactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
+
+  shared actual MemberClass<Container, Type, Arguments>[] getClasses<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getClasses"); }
+  shared actual MemberClass<Container, Type, Arguments>[] getDeclaredClasses<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredClasses"); }
+  shared actual MemberClass<Container, Type, Arguments>? getClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getClass"); }
+  shared actual MemberClass<Container, Type, Arguments>? getDeclaredClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredClass"); }
+  shared actual MemberInterface<Container, Type>[] getInterfaces<Container=Nothing, Type=Anything>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getInterfaces"); }
+  shared actual MemberInterface<Container, Type>[] getDeclaredInterfaces<Container=Nothing, Type=Anything>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getDeclaredInterfaces"); }
+  shared actual MemberInterface<Container, Type>? getInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types) { throw Exception("AppliedInterface.getInterface"); }
+  shared actual MemberInterface<Container, Type>? getDeclaredInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types) { throw Exception("AppliedInterface.getDeclaredInterface"); }
+  shared actual Attribute<Container, Get, Set>[] getAttributes<Container=Nothing, Get=Anything, Set=Nothing>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getAttributes"); }
+  shared actual Attribute<Container, Get, Set>[] getDeclaredAttributes<Container=Nothing, Get=Anything, Set=Nothing>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getDeclaredAttributes"); }
+  shared actual Attribute<Container, Get, Set>? getAttribute<Container=Nothing, Get=Anything, Set=Nothing>(String name) { throw Exception("AppliedInterface.getAttribute"); }
+  shared actual Attribute<Container, Get, Set>? getDeclaredAttribute<Container=Nothing, Get=Anything, Set=Nothing>(String name) { throw Exception("AppliedInterface.getDeclaredAttribute"); }
+  shared actual Method<Container, Type, Arguments>[] getMethods<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getMethods"); }
+  shared actual Method<Container, Type, Arguments>[] getDeclaredMethods<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredMethods"); }
+  shared actual Method<Container, Type, Arguments>? getMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getMethod"); }
+  shared actual Method<Container, Type, Arguments>? getDeclaredMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredMethod"); }
+  shared actual Member<Container, Kind>? getDeclaredClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types) given Kind satisfies ClassOrInterface<Anything> { throw Exception("AppliedInterface.getDeclaredClassOrInterface"); }
+
+  shared actual Type[] caseValues => [];
+
 }
 
 shared class AppliedInterface<out Type>() satisfies Interface<Type>
@@ -35,29 +56,52 @@ shared class AppliedInterface<out Type>() satisfies Interface<Type>
   shared actual Map<TypeParameter, ClosedType> typeArguments { throw Exception("unimplemented"); }
   shared actual ClassModel<Anything, Nothing>? extendedType { throw Exception("unimplemented"); }
   shared actual InterfaceModel<Anything>[] satisfiedTypes { throw Exception("unimplemented"); }
-  shared actual Method<SubType, Type, Arguments>? getMethod<SubType, Type, Arguments>(String name, ClosedType* types)
-    given Arguments satisfies Anything[] { throw Exception("unimplemented"); }
   shared actual Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
     given Kind satisfies ClassOrInterface<Anything> { throw Exception("unimplemented"); }
-  shared actual Attribute<Container, Type>? getAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
-  shared actual VariableAttribute<Container, Type>? getVariableAttribute<Container, Type>(String name) { throw Exception("unimplemented"); }
 
   shared actual Boolean typeOf(Anything instance) { throw Exception("Class declaration"); }
   shared actual Boolean supertypeOf(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual Boolean exactly(ClosedType<Anything> type) { throw Exception("Class declaration"); }
   shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
+
+  shared actual MemberClass<Container, Type, Arguments>[] getClasses<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getClasses"); }
+  shared actual MemberClass<Container, Type, Arguments>[] getDeclaredClasses<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredClasses"); }
+  shared actual MemberClass<Container, Type, Arguments>? getClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getClass"); }
+  shared actual MemberClass<Container, Type, Arguments>? getDeclaredClass<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredClass"); }
+  shared actual MemberInterface<Container, Type>[] getInterfaces<Container=Nothing, Type=Anything>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getInterfaces"); }
+  shared actual MemberInterface<Container, Type>[] getDeclaredInterfaces<Container=Nothing, Type=Anything>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getDeclaredInterfaces"); }
+  shared actual MemberInterface<Container, Type>? getInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types) { throw Exception("AppliedInterface.getInterface"); }
+  shared actual MemberInterface<Container, Type>? getDeclaredInterface<Container=Nothing, Type=Anything>(String name, ClosedType<Anything>* types) { throw Exception("AppliedInterface.getDeclaredInterface"); }
+  shared actual Attribute<Container, Get, Set>[] getAttributes<Container=Nothing, Get=Anything, Set=Nothing>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getAttributes"); }
+  shared actual Attribute<Container, Get, Set>[] getDeclaredAttributes<Container=Nothing, Get=Anything, Set=Nothing>(ClosedType<Annotation>* annotationTypes) { throw Exception("AppliedInterface.getDeclaredAttributes"); }
+  shared actual Attribute<Container, Get, Set>? getAttribute<Container=Nothing, Get=Anything, Set=Nothing>(String name) { throw Exception("AppliedInterface.getAttribute"); }
+  shared actual Attribute<Container, Get, Set>? getDeclaredAttribute<Container=Nothing, Get=Anything, Set=Nothing>(String name) { throw Exception("AppliedInterface.getDeclaredAttribute"); }
+  shared actual Method<Container, Type, Arguments>[] getMethods<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getMethods"); }
+  shared actual Method<Container, Type, Arguments>[] getDeclaredMethods<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredMethods"); }
+  shared actual Method<Container, Type, Arguments>? getMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getMethod"); }
+  shared actual Method<Container, Type, Arguments>? getDeclaredMethod<Container=Nothing, Type=Anything, Arguments=Nothing>(String name, ClosedType<Anything>* types) given Arguments satisfies Anything[] { throw Exception("AppliedInterface.getDeclaredMethod"); }
+  shared actual Member<Container, Kind>? getDeclaredClassOrInterface<Container=Nothing, Kind=ClassOrInterface<Anything>>(String name, ClosedType<Anything>* types) given Kind satisfies ClassOrInterface<Anything> { throw Exception("AppliedInterface.getDeclaredClassOrInterface"); }
+
+  shared actual Type[] caseValues => [];
+
 }
 
-shared class AppliedValue<out Type>() satisfies Value<Type> {
-  shared actual Type get() { throw Exception("Implement get"); }
-  shared actual default ValueDeclaration declaration {throw Exception("Value.declaration"); }
-  shared actual ClosedType<Type> type { throw Exception("Value.type"); }
+shared class AppliedValue<out Get=Anything, in Set=Nothing>() satisfies Value<Get,Set> {
+  shared actual Get get() { throw Exception("AppliedValue.get"); }
+  shared actual void set(Set newValue) { throw Exception("AppliedValue.set"); }
+  shared actual void setIfAssignable(Anything newValue) { throw Exception("AppliedValue.setIfAssignable"); }
+  shared actual default ValueDeclaration declaration {throw Exception("AppliedValue.declaration"); }
+  shared actual ClosedType<Get> type { throw Exception("AppliedValue.type"); }
 
-  shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
+  shared actual ClosedType<Anything>? container { throw Exception("AppliedValue.container"); }
 }
 
 shared class AppliedFunction<out Type, in Arguments>() satisfies Function<Type,Arguments>
     given Arguments satisfies Anything[] {
+  shared actual ClosedType<Anything>[] parameterTypes => [];
+  shared actual Type apply(Anything* arguments) { throw Exception("AppliedClass.namedApply"); }
+  shared actual Type namedApply(Iterable<String->Object> arguments) { throw Exception("AppliedClass.namedApply"); }
+
   shared actual FunctionDeclaration declaration { throw Exception("Function declaration"); }
   shared actual ClosedType<Type> type {throw Exception("Function.type"); }
   shared actual ClosedType<Anything>? container { throw Exception("Class declaration"); }
@@ -84,6 +128,9 @@ shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing
     satisfies Method<Container,Type,Arguments>
     given Arguments satisfies Anything[] {
 
+  shared actual ClosedType<Anything>[] parameterTypes => [];
+  shared actual Function<Type, Arguments> bind(Object container) { throw Exception("AppliedMethod.bind"); }
+
     shared actual FunctionDeclaration declaration { throw Exception("unimplemented"); }
     shared actual ClosedType<Type> type { throw Exception("unimplemented"); }
     shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
@@ -93,22 +140,15 @@ shared class AppliedMethod<in Container, out Type=Anything, in Arguments=Nothing
     shared actual Map<TypeParameter, ClosedType<Anything>> typeArguments { throw Exception("unimplemented"); }
 }
 
-shared class AppliedAttribute<in Container, out Type=Anything>() satisfies Attribute<Container,Type> {
+shared class AppliedAttribute<in Container, out Get=Anything, in Set=Nothing>() satisfies Attribute<Container,Get,Set> {
     shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
     shared actual default ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
-    shared actual ClosedType<Type> type { throw Exception("unimplemented"); }
+    shared actual ClosedType<Get> type { throw Exception("unimplemented"); }
     shared actual default ValueDeclaration declaration { throw Exception("unimplemented"); }
+    shared actual Value<Get,Set> bind(Object container) { throw Exception("AppliedAttribute.bind"); }
 }
 
-shared class AppliedVariable<Type>() extends AppliedValue<Type>() satisfies Variable<Type> {
-  shared actual void set(Type newValue) { throw Exception("unimplemented"); }
-  shared actual default VariableDeclaration declaration { throw Exception("unimplemented"); }
-}
-shared class AppliedVariableAttribute<in Container, Type>() extends AppliedAttribute<Container,Type>()
-    satisfies VariableAttribute<Container,Type> {
-  shared actual VariableDeclaration declaration { throw Exception("unimplemented"); }
-  shared actual ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
-}
+
 shared abstract class AppliedMemberClass<in Container, out Type=Anything, in Arguments=Nothing>()
         satisfies MemberClass<Container,Type,Arguments>
         given Arguments satisfies Anything[] {

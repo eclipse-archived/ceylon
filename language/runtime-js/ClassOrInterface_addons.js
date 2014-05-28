@@ -312,3 +312,62 @@ atr$(ClassOrInterface$meta$model.$$.prototype,'caseValues',function(){
   }
   return getEmpty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Type$ClassOrInterface'}},$cont:ClassOrInterface$meta$model,$an:function(){return[doc($CCMM$['ceylon.language.meta.model'].ClassOrInterface.$at.caseValues.$an.doc[0]),shared(),formal()];},d:['ceylon.language.meta.model','ClassOrInterface','$at','caseValues']};});
+
+//This is the new shit May 2014
+ClassOrInterface$meta$model.$$.prototype.getClasses=function getClasses(anntypes,$$$mptypes){
+  throw new Error("ClassOrInterface.getClasses");
+}
+ClassOrInterface$meta$model.$$.prototype.getClasses.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$getClasses',Container$MemberClass:'Container$getClasses',Type$MemberClass:'Type$getClasses'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getClasses:{'def':{t:Nothing}},Type$getClasses:{'def':{t:Anything}},Arguments$getClasses:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getClasses']};};
+ClassOrInterface$meta$model.$$.prototype.getDeclaredClasses=function getDeclaredClasses(anntypes,$$$mptypes) {
+  var todas=this.getClasses(anntypes,{Container$getClasses:$$$mptypes.Container$getDeclaredClasses,Type$getClasses:$$$mptypes.Type$getDeclaredClasses,Arguments$getClasses:$$$mptypes.Arguments$getDeclaredClasses});
+  var mias=[];
+  for (var i=0;i<todas.length;i++) {
+    var mm=getrtmm$$(todas[i].tipo);
+    if (mm && mm.$cont && mm.$cont===this.tipo)mias.push(todas[i]);
+  }
+  return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getDeclaredClasses,Container$MemberClass:$$$mptypes.Container$getDeclaredClasses,Type$MemberClass:$$$mptypes.Type$getDeclaredClasses}}});
+}
+ClassOrInterface$meta$model.$$.prototype.getDeclaredClasses.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberClass$meta$model,a:{Arguments$MemberClass:'Arguments$getDeclaredClasses',Container$MemberClass:'Container$getDeclaredClasses',Type$MemberClass:'Type$getDeclaredClasses'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredClasses:{'def':{t:Nothing}},Type$getDeclaredClasses:{'def':{t:Anything}},Arguments$getDeclaredClasses:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredClasses']};};
+ClassOrInterface$meta$model.$$.prototype.getInterfaces=function getInterfaces(anntypes,$$$mptypes){
+  throw new Error("ClassOrInterface.getInterfaces");
+}
+ClassOrInterface$meta$model.$$.prototype.getInterfaces.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberInterface$meta$model,a:{Container$MemberInterface:'Container$getInterfaces',Type$MemberInterface:'Type$getInterfaces'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getInterfaces:{'def':{t:Nothing}},Type$getInterfaces:{'def':{t:Anything}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getInterfaces']};};
+ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces=function getDeclaredInterfaces(anntypes,$$$mptypes){
+  var todas=this.getInterfaces(anntypes,{Container$getInterfaces:$$$mptypes.Container$getDeclaredInterfaces,Type$getInterfaces:$$$mtypes.Type$getDeclaredInterfaces});
+  var mias=[];
+  for (var i=0;i<todas.length;i++) {
+    var mm=getrtmm$$(todas[i].tipo);
+    if (mm && mm.$cont && mm.$cont===this.tipo)mias.push(todas[i]);
+  }
+  return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getDeclaredInterfaces,Type$MemberInterface:$$$mptypes.Type$getDeclaredInterfaces}}});
+}
+ClassOrInterface$meta$model.$$.prototype.getDeclaredInterfaces.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:MemberInterface$meta$model,a:{Container$MemberInterface:'Container$getDeclaredInterfaces',Type$MemberInterface:'Type$getDeclaredInterfaces'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredInterfaces:{'def':{t:Nothing}},Type$getDeclaredInterfaces:{'def':{t:Anything}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredInterfaces']};};
+ClassOrInterface$meta$model.$$.prototype.getAttributes=function getAttributes(anntypes,$$$mptypes){
+  throw new Error("ClassOrInterface.getAttributes");
+}
+ClassOrInterface$meta$model.$$.prototype.getAttributes.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Attribute$meta$model,a:{Set$Attribute:'Set$getAttributes',Container$Attribute:'Container$getAttributes',Get$Attribute:'Get$getAttributes'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getAttributes:{'def':{t:Nothing}},Get$getAttributes:{'def':{t:Anything}},Set$getAttributes:{'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getAttributes']};};
+ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes=function getDeclaredAttributes(anntypes,$$$mptypes) {
+  var todos=this.getAttributes(anntypes,Container$getAttributes:$$$mptypes.Container$getDeclaredAttributes,Get$getAttributes:$$$mptypes.Get$getDeclaredAttributes,Set$getAttributes:$$$mptypes.Set$getDeclaredAttributes});
+  var mias=[];
+  for (var i=0;i<todos.length;i++) {
+    var mm=getrtmm$$(todos[i].tipo);
+    if (mm && mm.$cont && mm.$cont===this.tipo)mias.push(todos[i]);
+  }
+  return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getDeclaredAttributes,Container$Attribute:$$$mptypes.Container$getDeclaredAttributes,Get$Attribute:$$$mptypes.Get$getDeclaredAttributes}}});
+}
+ClassOrInterface$meta$model.$$.prototype.getDeclaredAttributes.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Attribute$meta$model,a:{Set$Attribute:'Set$getDeclaredAttributes',Container$Attribute:'Container$getDeclaredAttributes',Get$Attribute:'Get$getDeclaredAttributes'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredAttributes:{'def':{t:Nothing}},Get$getDeclaredAttributes:{'def':{t:Anything}},Set$getDeclaredAttributes:{'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredAttributes']};};
+ClassOrInterface$meta$model.$$.prototype.getMethods=function getMethods(anntypes,$$$mptypes) {
+  throw new Error("ClassOrInterface.getMethods");
+}
+ClassOrInterface$meta$model.$$.prototype.getMethods.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Method$meta$model,a:{Container$Method:'Container$getMethods',Arguments$Method:'Arguments$getMethods',Type$Method:'Type$getMethods'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getMethods:{'def':{t:Nothing}},Type$getMethods:{'def':{t:Anything}},Arguments$getMethods:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getMethods']};};
+ClassOrInterface$meta$model.$$.prototype.getDeclaredMethods=function getDeclaredMethods(anntypes,$$$mptypes) {
+  var todos=getMethods(anntypes,{Container$getMethods:$$$mptypes.Container$getDeclaredMethods,Type$getMethods:$$$mptypes.Type$getDeclaredMethods,Arguments$getMethods:$$$mptypes.Arguments$getDeclaredMethods});
+  var mias=[];
+  for (var i=0;i<todos.length;i++) {
+    var mm=getrtmm$$(todos[i].tipo);
+    if (mm && mm.$cont && mm.$cont===this.tipo)mias.push(todos[i]);
+  }
+  return mias.length==0?getEmpty():ArraySequence(mias,{Element$Iterable:{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getDeclaredMethods,Arguments$Method:$$$mptypes.Arguments$getDeclaredMethods,Type$Method:$$$mptypes.Type$getDeclaredMethods}}});
+}
+ClassOrInterface$meta$model.$$.prototype.getDeclaredMethods.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:Method$meta$model,a:{Container$Method:'Container$getDeclaredMethods',Arguments$Method:'Arguments$getDeclaredMethods',Type$Method:'Type$getDeclaredMethods'}}}},$ps:[{$nm:'annotationTypes',$mt:'prm',seq:1,$t:{t:Sequential,a:{Element$Sequential:{t:Type$meta$model,a:{Type$Type:{t:Annotation}}}}},$an:function(){return[];}}],$cont:ClassOrInterface$meta$model,$tp:{Container$getDeclaredMethods:{'def':{t:Nothing}},Type$getDeclaredMethods:{'def':{t:Anything}},Arguments$getDeclaredMethods:{'satisfies':[{t:Sequential,a:{Element$Sequential:{t:Anything}}}],'def':{t:Nothing}}},$an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','ClassOrInterface','$m','getDeclaredMethods']};};
+
