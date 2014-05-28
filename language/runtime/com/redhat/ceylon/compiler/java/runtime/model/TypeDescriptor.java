@@ -205,7 +205,9 @@ public abstract class TypeDescriptor {
                 klass==Identifiable.class) {
                 return java.lang.Object.class;
             }
-            if (klass==Exception.class) {
+            if (klass==ceylon.language.Exception.class ||
+                klass==ceylon.language.Error.class ||
+                klass==ceylon.language.Throwable.class) {
                 return java.lang.Throwable.class;
             }
             if (klass==ObjectArray.class) {
