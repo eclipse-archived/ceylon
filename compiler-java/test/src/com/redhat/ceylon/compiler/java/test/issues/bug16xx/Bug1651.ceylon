@@ -10,6 +10,6 @@ shared void bug1651() {
     try {
         bug1651func<String>(*Bug1651Hollow<String>());
     } catch (AssertionError e) {
-        assert("Assertion failed" == e.message);
+        assert("Assertion failed: Sequence expected" == e.message);
     }
 }
