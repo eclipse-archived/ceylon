@@ -211,7 +211,7 @@
             <synopsis>BinLiteral: "$" BinDigits</synopsis>
             
             <para>A <emphasis>floating point literal</emphasis> is distinguished by the
-            prescence of a decimal point or fractional magnitude:</para>
+            presence of a decimal point or fractional magnitude:</para>
             
             <synopsis>FloatLiteral: NormalFloatLiteral | ShortcutFloatLiteral</synopsis>
             
