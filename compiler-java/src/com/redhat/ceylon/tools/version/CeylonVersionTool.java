@@ -184,7 +184,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         // TODO if version is empty? Prompt? Or should --set have an optional argument? 
         TypeCheckerBuilder tcb = new TypeCheckerBuilder();
         for (File path: this.sourceFolders) {
-            tcb.addSrcDirectory(path);
+            tcb.addSrcDirectory(applyCwd(path));
         }
         TypeChecker tc = tcb.getTypeChecker();
         PhasedUnits pus = tc.getPhasedUnits();
