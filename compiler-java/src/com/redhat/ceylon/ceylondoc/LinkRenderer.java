@@ -20,6 +20,7 @@
 package com.redhat.ceylon.ceylondoc;
 
 import static com.redhat.ceylon.ceylondoc.CeylondMessages.msg;
+import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.normalizeSpaces;
 import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateCallable;
 import static com.redhat.ceylon.compiler.typechecker.util.ProducedTypeNamePrinter.abbreviateEntry;
@@ -310,6 +311,7 @@ public class LinkRenderer {
             if (docLink.getQualified() != null && docLink.getQualified().size() > 0) {
                 return processDeclaration(docLink.getQualified().get(docLink.getQualified().size() - 1));
             } else if (docLink.getBase() != null) {
+                printAbbreviated = !isAbbreviatedType(docLink.getBase());
                 return processDeclaration(docLink.getBase());
             } else if (docLink.getModule() != null) {
                 return processModule(docLink.getModule());
