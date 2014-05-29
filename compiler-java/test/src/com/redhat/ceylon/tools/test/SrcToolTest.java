@@ -85,7 +85,11 @@ public class SrcToolTest extends CompilerTest {
         
         ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
         Assert.assertNotNull(model);
-        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList("--cacherep", getCachePath(), "--rep", getOutPath(), "--src", "build/test-source", "com.redhat.ceylon.tools.test.test_mod_source.src_tool_test/1.0.0"));
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList(
+                "--cacherep", getCachePath(),
+                "--rep", getOutPath(),
+                "--src", "build/test-source",
+                "com.redhat.ceylon.tools.test.test_mod_source.src_tool_test/1.0.0"));
         tool.run();
         
         String path = "build/test-source/com/redhat/ceylon/tools/test/test_mod_source/src_tool_test";
@@ -97,5 +101,37 @@ public class SrcToolTest extends CompilerTest {
         Assert.assertTrue(packageFile.isFile());
         File fooFile = new File(dir, "foo.ceylon");
         Assert.assertTrue(fooFile.isFile());
+    }
+    
+    @Test
+    public void testUnpackingCwd() throws Exception {
+        compile("src_tool_test/module.ceylon", "src_tool_test/package.ceylon", "src_tool_test/foo.ceylon");
+        
+        ToolModel<CeylonSrcTool> model = pluginLoader.loadToolModel("src");
+        Assert.assertNotNull(model);
+        CeylonSrcTool tool = pluginFactory.bindArguments(model, Arrays.<String>asList(
+                "--cacherep", removeRoot(getCachePath()),
+                "--rep", removeRoot(getOutPath()),
+                "--cwd", "build",
+                "--src", "test-source2",
+                "com.redhat.ceylon.tools.test.test_mod_source.src_tool_test/1.0.0"));
+        tool.run();
+        
+        String path = "build/test-source2/com/redhat/ceylon/tools/test/test_mod_source/src_tool_test";
+        File dir = new File(path);
+        Assert.assertTrue(dir.isDirectory());
+        File moduleFile = new File(dir, "module.ceylon");
+        Assert.assertTrue(moduleFile.isFile());
+        File packageFile = new File(dir, "package.ceylon");
+        Assert.assertTrue(packageFile.isFile());
+        File fooFile = new File(dir, "foo.ceylon");
+        Assert.assertTrue(fooFile.isFile());
+    }
+    
+    private String removeRoot(String path) {
+        if (path.startsWith("build/")) {
+            path = path.substring(6);
+        }
+        return path;
     }
 }
