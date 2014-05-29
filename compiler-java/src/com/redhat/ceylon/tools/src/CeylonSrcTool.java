@@ -1,14 +1,8 @@
 package com.redhat.ceylon.tools.src;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
@@ -42,7 +36,7 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 		"")
 public class CeylonSrcTool extends RepoUsingTool {
     
-    private String src = DefaultToolOptions.getCompilerSourceDirs().get(0).getPath();
+    private File src = DefaultToolOptions.getCompilerSourceDirs().get(0);
     
     private List<ModuleSpec> modules;
     
@@ -52,14 +46,14 @@ public class CeylonSrcTool extends RepoUsingTool {
     
     @Description("The output source directory (default: `./source`)")
     @OptionArgument(argumentName="dir")
-    public void setSrc(String directory) {
+    public void setSrc(File directory) {
         this.src = directory;
     }
     
     @OptionArgument(longName="source", argumentName="dirs")
     @Description("An alias for `--src`" +
             " (default: `./source`)")
-    public void setSource(String source) {
+    public void setSource(File source) {
         setSrc(source);
     }
     
@@ -100,7 +94,7 @@ public class CeylonSrcTool extends RepoUsingTool {
                 errorNewline();
                 continue;
             }
-            extractArchive(srcArchive, new File(src));
+            extractArchive(srcArchive, applyCwd(src));
         }
     }
 
