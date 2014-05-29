@@ -32,6 +32,7 @@ import java.util.Properties;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
@@ -126,6 +127,42 @@ public class NewProjectToolTest {
             assertFile(new File(tmpDir, ".classpath"));
             assertFile(new File(tmpDir, ".project"));
             assertDir(new File(tmpDir, ".settings"));
+        } finally {
+            delete(tmpDir);
+        }
+    }
+    
+    @Test
+    public void testHelloWorldCwd() throws Exception {
+        ToolModel<CeylonNewTool> model = pluginLoader.loadToolModel("new");
+        Assert.assertNotNull(model);
+        Assert.assertTrue(model.isPorcelain());
+        Path tmpPath = Files.createTempDirectory("ceylon-new");
+        File tmpDir = tmpPath.toFile();
+        
+        File srcTemplates = new File("../ceylon-dist/templates");
+        File dstTemplates = new File(tmpDir, "templates");
+        FileUtil.copy(srcTemplates, dstTemplates);
+        
+        try {
+            CeylonNewTool tool = pluginFactory.bindArguments(model, 
+                    args("--cwd", tmpDir.getAbsolutePath(),
+                            "--from=templates", 
+                            "hello-world",
+                            "--module-name=org.example.hello",
+                            "--module-version=1",
+                            "--ant=true",
+                            "--eclipse=true",
+                            "--eclipse-project-name=hello",
+                            "target"));
+            runTool(tool);
+            assertFile(new File(tmpDir, "target/source/org/example/hello/module.ceylon"));
+            assertFile(new File(tmpDir, "target/source/org/example/hello/package.ceylon"));
+            assertFile(new File(tmpDir, "target/source/org/example/hello/run.ceylon"));
+            assertFile(new File(tmpDir, "target/build.xml"));
+            assertFile(new File(tmpDir, "target/.classpath"));
+            assertFile(new File(tmpDir, "target/.project"));
+            assertDir(new File(tmpDir, "target/.settings"));
         } finally {
             delete(tmpDir);
         }
