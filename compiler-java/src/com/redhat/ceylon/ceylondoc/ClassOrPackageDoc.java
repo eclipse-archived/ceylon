@@ -20,8 +20,10 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import static com.redhat.ceylon.ceylondoc.Util.findBottomMostRefinedDeclaration;
 import static com.redhat.ceylon.ceylondoc.Util.getDoc;
 import static com.redhat.ceylon.ceylondoc.Util.getModifiers;
+import static com.redhat.ceylon.ceylondoc.Util.getNameWithContainer;
 import static com.redhat.ceylon.ceylondoc.Util.isAbbreviatedType;
 import static com.redhat.ceylon.ceylondoc.Util.isEmpty;
 
@@ -253,7 +255,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeThrows(d);        
             writeBy(d);
             writeSee(d);
-            writeLinkToRefinedDeclaration(d);
+            writeLinkToRefinedDeclaration((MethodOrValue)d);
         }
         if (d instanceof TypeAlias) {
             writeAnnotations(d);
@@ -291,14 +293,19 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
 
-    private void writeLinkToRefinedDeclaration(Declaration d) throws IOException {
-        Declaration refinedDecl = d.getRefinedDeclaration();
-        if (refinedDecl != null && refinedDecl != d) {
+    private void writeLinkToRefinedDeclaration(MethodOrValue d) throws IOException {
+        Declaration topMostRefinedDecl = d.getRefinedDeclaration();
+        if (topMostRefinedDecl != null && topMostRefinedDecl != d) {
+            Declaration bottomMostRefinedDecl = findBottomMostRefinedDeclaration(d);
             open("div class='refined section'");
-            around("span class='title'", "Refined declaration: ");
-            linkRenderer().to(refinedDecl).write();
-            open("span class='value'");
-            close("span");
+            around("span class='title'", "Refines ");
+            if (bottomMostRefinedDecl != null && bottomMostRefinedDecl != topMostRefinedDecl) {
+                linkRenderer().to(bottomMostRefinedDecl).useCustomText(getNameWithContainer(bottomMostRefinedDecl)).write();
+                around("span class='title'", " ultimately refines ");
+                linkRenderer().to(topMostRefinedDecl).useCustomText(getNameWithContainer(topMostRefinedDecl)).write();
+            } else {
+                linkRenderer().to(topMostRefinedDecl).useCustomText(getNameWithContainer(topMostRefinedDecl)).write();
+            }
             close("div");
         }
     }

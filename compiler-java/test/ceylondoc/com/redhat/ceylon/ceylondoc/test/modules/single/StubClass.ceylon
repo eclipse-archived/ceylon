@@ -234,7 +234,7 @@ shared class StubClass(
      "
     shared default void methodWithLinksInDoc(String s) {}
         
-    shared actual void formalMethodFromStubInterface() {}
+    shared actual default void formalMethodFromStubInterface() {}
     
     shared actual void defaultDeprecatedMethodFromStubInterface() {}
     

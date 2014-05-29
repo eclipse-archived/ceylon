@@ -22,5 +22,7 @@ import com.redhat.ceylon.ceylondoc.test.modules.single { StubClass }
 shared class StubClassExtended() extends StubClass(0,0) {
 
     shared actual void methodWithLinksInDoc(String s) {}
+    
+    shared actual void formalMethodFromStubInterface() {}
 
 }

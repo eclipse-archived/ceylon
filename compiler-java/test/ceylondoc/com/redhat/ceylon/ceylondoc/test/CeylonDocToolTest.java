@@ -1019,9 +1019,11 @@ public class CeylonDocToolTest {
     
     private void assertLinksToRefinedDeclaration(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>defaultDeprecatedMethodFromStubInterface</a><span class='value'></span></div>"));
+                Pattern.compile("<div class='refined section'><span class='title'>Refines </span><a class='link-custom-text' href='StubInterface.type.html#defaultDeprecatedMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.defaultDeprecatedMethodFromStubInterface'>StubInterface.defaultDeprecatedMethodFromStubInterface</a></div>"));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile("<div class='refined section'><span class='title'>Refined declaration: </span><a class='link' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>formalMethodFromStubInterface</a><span class='value'></span></div>"));
+                Pattern.compile("<div class='refined section'><span class='title'>Refines </span><a class='link-custom-text' href='StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>StubInterface.formalMethodFromStubInterface</a></div>"));
+        assertMatchInFile(destDir, "a/StubClassExtended.type.html",
+                Pattern.compile("<div class='refined section'><span class='title'>Refines </span><a class='link-custom-text' href='../StubClass.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.formalMethodFromStubInterface'>StubClass.formalMethodFromStubInterface</a><span class='title'> ultimately refines </span><a class='link-custom-text' href='../StubInterface.type.html#formalMethodFromStubInterface' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubInterface.formalMethodFromStubInterface'>StubInterface.formalMethodFromStubInterface</a></div>"));
     }
     
     private void assertGenericTypeParams(File destDir) throws Exception {

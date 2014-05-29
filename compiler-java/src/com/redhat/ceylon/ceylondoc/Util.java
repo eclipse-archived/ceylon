@@ -27,7 +27,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -46,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.Referenceable;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 
 public class Util {
@@ -352,6 +355,38 @@ public class Util {
         // lower-case toplevel so they can never be java keywords
         return pkgName.isEmpty() ? name : com.redhat.ceylon.compiler.java.util.Util.quoteJavaKeywords(pkgName) + "." + name;
     }
+    
+    public static Declaration findBottomMostRefinedDeclaration(TypedDeclaration d) {
+        if (d.getContainer() instanceof TypeDeclaration) {
+            Queue<TypeDeclaration> queue = new LinkedList<TypeDeclaration>();
+            queue.add((TypeDeclaration) d.getContainer());
+            return findBottomMostRefinedDeclaration(d, queue);
+        }
+        return null;
+    }
+
+    private static Declaration findBottomMostRefinedDeclaration(TypedDeclaration d, Queue<TypeDeclaration> queue) {
+        TypeDeclaration type = queue.poll();
+        if (type != null) {
+            if (type != d.getContainer()) {
+                Declaration member = type.getDirectMember(d.getName(), null, false);
+                if (member != null && member.isActual()) {
+                    return member;
+                }
+            }
+
+            queue.add(type.getExtendedTypeDeclaration());
+            queue.addAll(type.getSatisfiedTypeDeclarations());
+
+            return findBottomMostRefinedDeclaration(d, queue);
+        }
+
+        return null;
+    }
+    
+    public static String getNameWithContainer(Declaration d) {
+        return ((TypeDeclaration)d.getContainer()).getName() + "." + d.getName();
+    }    
     
     private static class CeylondocBlockEmitter implements BlockEmitter {
         
