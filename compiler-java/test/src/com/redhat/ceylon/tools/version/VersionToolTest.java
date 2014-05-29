@@ -20,6 +20,7 @@ public class VersionToolTest {
     
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new CeylonToolLoader(null);
+    
     @Test
     public void testAll() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
@@ -34,6 +35,7 @@ public class VersionToolTest {
                 "foo/1.0\n", 
                 normalizeLineEndings(out.toString()));
     }
+    
     @Test
     public void testAllAndDeps() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
@@ -49,6 +51,7 @@ public class VersionToolTest {
                 "foo/1.0\n", 
                 normalizeLineEndings(out.toString()));
     }
+    
     @Test
     public void testFoo() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
@@ -62,6 +65,7 @@ public class VersionToolTest {
                 "foo/1.0\n", 
                 normalizeLineEndings(out.toString()));
     }
+    
     @Test
     public void testFooAndDeps() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
@@ -78,6 +82,7 @@ public class VersionToolTest {
                 "baz/1.2 depends on foo/1.0\n", 
                 normalizeLineEndings(out.toString()));
     }
+    
     @Test
     public void testBarAndDeps() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
@@ -91,6 +96,22 @@ public class VersionToolTest {
         Assert.assertEquals(
                 "bar/3.1\n" +
                 "baz/1.2 depends on bar/3.1\n", 
+                normalizeLineEndings(out.toString()));
+    }
+    
+    @Test
+    public void testAllCwd() throws Exception {
+        ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");
+        CeylonVersionTool tool = pluginFactory.bindArguments(model, Arrays.asList(
+                "--cwd", "test",
+                "--src", "src/com/redhat/ceylon/tools/version/modules"));
+        StringWriter out = new StringWriter();
+        tool.setOut(out);
+        tool.run();
+        Assert.assertEquals(
+                "bar/3.1\n"+
+                "baz/1.2\n"+
+                "foo/1.0\n", 
                 normalizeLineEndings(out.toString()));
     }
     
