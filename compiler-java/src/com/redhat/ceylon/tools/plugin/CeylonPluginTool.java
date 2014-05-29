@@ -133,7 +133,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         boolean errorIfMissing = true;
         if(mode != Mode.list){
             if(modules.isEmpty()){
-                modules.addAll(getSourceModules(sourceFolders));
+                modules.addAll(getSourceModules(applyCwd(sourceFolders)));
                 errorIfMissing = false;
             }
             if(modules.isEmpty()){
@@ -197,7 +197,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         
         File zipSource = null;
         List<File> existingScriptFolders = null;
-        if(isSourceModule(module.getName(), version, sourceFolders)){
+        if(isSourceModule(module.getName(), version, applyCwd(sourceFolders))){
             // copy it directly from the source
             existingScriptFolders = findExistingScriptFolders(module.getName(), errorIfMissing);
             
@@ -332,7 +332,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         String scriptPath = moduleName.replace('.', File.separatorChar);
         List<File> existingScriptFolders = new ArrayList<File>(scriptFolders.size());
         for(File scriptFolder : scriptFolders){
-            File moduleScriptFolder = new File(scriptFolder, scriptPath);
+            File moduleScriptFolder = new File(applyCwd(scriptFolder), scriptPath);
             if(moduleScriptFolder.exists() && FileUtil.containsFile(moduleScriptFolder))
                 existingScriptFolders.add(moduleScriptFolder);
         }
