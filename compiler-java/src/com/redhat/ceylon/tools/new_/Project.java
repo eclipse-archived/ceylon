@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Tool;
 
@@ -43,15 +44,16 @@ public abstract class Project implements Tool {
         return this.directory;
     }
     
-    File mkBaseDir() throws IOException {
-        if (directory.exists() && !directory.isDirectory()) {
+    File mkBaseDir(File cwd) throws IOException {
+        File actualDir = FileUtil.applyCwd(cwd, directory);
+        if (actualDir.exists() && !actualDir.isDirectory()) {
             throw new IOException(Messages.msg("path.exists.and.not.dir", directory));
-        } else if (!directory.exists()) {
-            if (!directory.mkdirs()) {
+        } else if (!actualDir.exists()) {
+            if (!actualDir.mkdirs()) {
                 throw new IOException(Messages.msg("could.not.mkdir", directory));
             }
         }
-        return directory;
+        return actualDir;
     }
 
     @Override

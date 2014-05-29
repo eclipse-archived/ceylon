@@ -99,12 +99,12 @@ public class CeylonNewTool extends CeylonBaseTool {
         setSystemProperties();
         File fromDir = getFromDir();
         if (!fromDir.exists() || !fromDir.isDirectory()) {
-            throw new IllegalArgumentException(Messages.msg("from.nonexistent.or.nondir", from.getAbsolutePath()));
+            throw new IllegalArgumentException(Messages.msg("from.nonexistent.or.nondir", applyCwd(from).getAbsolutePath()));
         }
         Environment env = buildPromptedEnv();
         List<Copy> resources = project.getResources(env);
         // Create base dir only once all the prompting has been done
-        project.mkBaseDir();
+        project.mkBaseDir(getCwd());
         for (Copy copy : resources) {
             copy.run(env);
         }
@@ -116,13 +116,13 @@ public class CeylonNewTool extends CeylonBaseTool {
     }
 
     private File getFromDir() {
-        return new File(from, getProjectName());
+        return new File(applyCwd(from), getProjectName());
     }
     
     private Environment buildPromptedEnv() {
         Environment env = new Environment();
         // TODO Tidy up how we create and what's in this initial environment
-        env.put("base.dir", project.getDirectory().getAbsolutePath());
+        env.put("base.dir", applyCwd(project.getDirectory()).getAbsolutePath());
         env.put("ceylon.home", System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
         //env.put("ceylon.system.repo", System.getProperty("ceylon.system.repo"));
         env.put("ceylon.version.number", Versions.CEYLON_VERSION_NUMBER);
@@ -164,7 +164,7 @@ public class CeylonNewTool extends CeylonBaseTool {
     }
 
     public Copy substituting(final String cwd, PathMatcher pathMatcher, String dst) {
-        return new Copy(new File(getFromDir(), cwd), project.getDirectory(), pathMatcher, dst, true);
+        return new Copy(new File(getFromDir(), cwd), applyCwd(project.getDirectory()), pathMatcher, dst, true);
     }
     
     private void log(Object msg) {
