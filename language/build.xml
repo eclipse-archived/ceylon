@@ -121,11 +121,28 @@
         <delete dir="${build.dir}"/>
     </target>
 
+
+	<target name="copy-repo-for-osgi">
+        <copy 
+            overwrite="true"
+            todir="../ceylon-dist-osgi/defaultRepository">
+            <fileset dir="${build.dist.repo}">
+                <include name="**/*"/>
+                <exclude name="**/module-doc/**/*"/>
+            </fileset>
+        </copy>
+	</target>
+	
     <target name="ide" depends="dist,ide-quick">
     </target>
 
-    <target name="ide-quick">
-
+    <target name="ide-internal" depends="dist,ide-quick-internal">
+    </target>
+	
+	<target name="ide-quick" depends="copy-repo-for-osgi, ide-quick-internal">
+	</target>
+	
+	<target name="ide-quick-internal">
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
@@ -135,7 +152,8 @@
             </fileset>
         </copy>
     </target>
-    
+
+
     <target name="dist"
             depends="build"
             description="Create Ceylon language distribution">
@@ -152,6 +170,7 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.language.src}" />
         </antcall>
+    	<antcall target="copy-repo-for-osgi"/>
     </target>
 
     <!-- Repository targets -->
