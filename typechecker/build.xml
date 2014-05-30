@@ -415,10 +415,24 @@
         <delete dir="${ceylon.typechecker.repo}"/>
     </target>
 
+	<target name="copy-repo-for-osgi">
+        <copy 
+            overwrite="true"
+            todir="../ceylon-dist-osgi/defaultRepository">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+	</target>
+	
     <target name="ide" depends="dist,ide-quick">
     </target>
 
-    <target name="ide-quick">
+    <target name="ide-internal" depends="dist,ide-quick-internal">
+    </target>
+	
+	<target name="ide-quick" depends="copy-repo-for-osgi, ide-quick-internal">
+	</target>
+	
+	<target name="ide-quick-internal">
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
@@ -429,7 +443,7 @@
             file="${build.dist.repo}/${ceylon.typechecker.jar}"
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
     </target>
-    
+
     <target name="dist" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
         <zip destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
@@ -440,6 +454,8 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.typechecker.jar}" />
         </antcall>
+    	
+    	<antcall target="copy-repo-for-osgi"/>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"
