@@ -145,6 +145,8 @@
         <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.repo}"/>
         <copy file="${antlr.stringtemplate.lib}" tofile="${build.dist.repo}/${antlr.stringtemplate.repo}"/>
         <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
+    	
+    	<antcall target="copy-repo-for-osgi"/>
     </target>
 
 	<target name="dist-for-tests" description="Copy jars in the repo used by tests">
@@ -190,10 +192,24 @@
         <delete dir="${ceylon.runtime.repo}"/>
     </target>
 
+	<target name="copy-repo-for-osgi">
+        <copy 
+            overwrite="true"
+            todir="../ceylon-dist-osgi/defaultRepository">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+	</target>
+	
     <target name="ide" depends="dist,ide-quick">
     </target>
 
-    <target name="ide-quick">
+    <target name="ide-internal" depends="dist,ide-quick-internal">
+    </target>
+	
+	<target name="ide-quick" depends="copy-repo-for-osgi, ide-quick-internal">
+	</target>
+	
+	<target name="ide-quick-internal">
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
