@@ -12,7 +12,7 @@
     <property name="ceylon.dist.dir" value="${basedir}/dist"/>
     <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
 
-    <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
+    <property name="modules" value="ceylon-common,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime,ceylon-dist-osgi" />
 
     <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
 
@@ -95,7 +95,7 @@ Some more basic ant tasks:
 
     <target name="ide" depends="siblings">
         <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
-        <property name="buildtarget" value="ide" />
+        <property name="buildtarget" value="ide-internal" />
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
@@ -103,7 +103,7 @@ Some more basic ant tasks:
     </target>
     <target name="ide-quick" depends="siblings">
         <delete dir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository" includes="**/*" includeEmptyDirs="true"/>
-        <property name="buildtarget" value="ide-quick" />
+        <property name="buildtarget" value="ide-quick-internal" />
         <foreach list="${modules}"
                  target="ide-item"
                  param="project.item.name"
@@ -158,6 +158,7 @@ Used with another target such as 'package'.">
         <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="ceylon-dist-osgi.dir" value="${projects.base.dir}/ceylon-dist-osgi"/>
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
         <property name="github-url" value="https://github.com/"/>
     </target>
@@ -173,6 +174,7 @@ Used with another target such as 'package'">
         <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
         <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
         <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="ceylon-dist-osgi.dir" value="${projects.base.dir}/ceylon-dist-osgi"/>
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
         <property name="github-url" value="https://github.com/"/>
     </target>
@@ -203,11 +205,20 @@ Used with another target such as 'package'">
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-                     copy-licenses, install-runtime-libs, install-language, install-runtime"
+                     copy-licenses, install-runtime-libs, install-language, install-runtime, install-dist-osgi"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
-    <target name="zip">
+	<target name="install-dist-osgi" 
+            depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime"
+            description="Generates the OSGI bundle of the overall dist, with OSGI-specific metamodel initialization logic">
+        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="publish" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+	<target name="zip">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
