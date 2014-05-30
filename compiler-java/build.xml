@@ -121,6 +121,7 @@
             <param name="file" value="${build.dist.repo}/${ceylon.compiler.jar}" />
         </antcall>
         <copy file="${txtmark.lib}" tofile="${build.dist.repo}/${txtmark.repo}"/>
+    	<antcall target="copy-repo-for-osgi"/>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon compiler module to default repo">
@@ -303,10 +304,24 @@
     <target name="gavin" depends="ide">
     </target>
 
+	<target name="copy-repo-for-osgi">
+        <copy 
+            overwrite="true"
+            todir="../ceylon-dist-osgi/defaultRepository">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+	</target>
+	
     <target name="ide" depends="dist,ide-quick">
     </target>
 
-    <target name="ide-quick" depends="test.classes">
+    <target name="ide-internal" depends="dist,ide-quick-internal">
+    </target>
+	
+	<target name="ide-quick" depends="copy-repo-for-osgi, ide-quick-internal">
+	</target>
+	
+	<target name="ide-quick-internal" depends="test.classes">
         <copy 
             overwrite="true"
             todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
