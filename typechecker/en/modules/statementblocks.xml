@@ -2039,7 +2039,7 @@ case (is Float) {
             <para>A Java-style overloaded method may be emulated as follows:</para>
             
             <programlisting>shared void print&lt;Printable&gt;(Printable printable) 
-        given Value of String | Integer | Float {
+        given Printable of String | Integer | Float {
     switch (printable)
     case (is String) { 
         print("\"``printable``\""); 
