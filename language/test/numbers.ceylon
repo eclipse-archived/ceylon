@@ -321,6 +321,10 @@ shared void numbers() {
     check((parseFloat("+12340.0") else 0.0)==12.34e3, "parseFloat(+12340.0)");
     
     check((parseFloat("-12340.0") else 0.0)==-12.34e3, "parseFloat(-12340.0)");
+    
+    check((parseFloat("1.234_0") else 0.0)==1.234_0, "parseFloat(1.234_0)");
+    check((parseFloat("0.000_1") else 0.0)==0.000_1, "parseFloat(0.000_1)");
+    check((parseFloat("1.234_56") else 0.0)==1.234_56, "parseFloat(1.234_56)");
 
     //type safety
     check(obj(1+1)    is Integer, "int+int Integer");

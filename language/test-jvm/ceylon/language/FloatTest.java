@@ -63,6 +63,8 @@ public class FloatTest {
         
         assertParseFloat(Double.POSITIVE_INFINITY, "+1.0E+1_000");
         
+        assertParseFloat(1.0, "1.000_0");
+        
         assertParseFloat(null, "1E+3");
         assertParseFloat(null, "1e+3");
         assertParseFloat(null, "1e+1_00");
