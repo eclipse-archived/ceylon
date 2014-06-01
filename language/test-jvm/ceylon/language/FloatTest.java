@@ -69,7 +69,6 @@ public class FloatTest {
         assertParseFloat(null, "1e+1000_000");
         assertParseFloat(null, "1000_000.0");
         assertParseFloat(null, "1_000_00.0");
-        assertParseFloat(null, "0.000_01");
         assertParseFloat(null, "0.00_1");
         assertParseFloat(null, "0.0000_1");
         assertParseFloat(null, "1T");
