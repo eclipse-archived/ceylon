@@ -150,11 +150,15 @@ public class TypeHierarchyVisitor extends Visitor {
                     if (superMemberIsShared && currentMemberIsShared) {
                         boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
                         if (!isMemberNameOnAncestor) {
-                        	if ( currentType.declaration.getUnit()==that.getUnit() ) {
+                            TypeDeclaration otherType = getTypeDeclarationFor(aggregateMembers);
+                        	if (!currentType.declaration.getUnit().getPackage().getModule().isJava() || 
+                                !otherType.getUnit().getPackage().getModule().isJava()) {
                         		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: ");
-                        		sb.append(name).append(" is defined by supertypes ")
-                        		.append(currentType.declaration.getName())
-                        		.append(" and ").append(getTypeDeclarationFor(aggregateMembers));
+                                sb.append(name)
+                                  .append(" is defined by supertypes ")
+                        		  .append(currentType.declaration.getName())
+                        		  .append(" and ")
+                        		  .append(otherType.getName());
                         		that.addError(sb.toString());
                         	}
                         }
@@ -201,11 +205,15 @@ public class TypeHierarchyVisitor extends Visitor {
                         boolean isMemberRefined = isMemberRefined(orderedTypes,index,name,currentTypeMembers);
                         boolean isMemberNameOnAncestor = isMemberNameOnAncestor(currentType, name);
                         if (!isMemberRefined && isMemberNameOnAncestor) {
-                        	if ( currentType.declaration.getUnit()==that.getUnit() ) {
+                            TypeDeclaration otherType = getTypeDeclarationFor(aggregateMembers);
+                        	if (!currentType.declaration.getUnit().getPackage().getModule().isJava() || 
+                        	    !otherType.getUnit().getPackage().getModule().isJava()) {
                         		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: ");
-                        		sb.append(name).append(" is defined by supertypes ")
-                        		.append(currentType.declaration.getName())
-                        		.append(" and ").append(getTypeDeclarationFor(aggregateMembers));
+                                sb.append(name)
+                                  .append(" is defined by supertypes ")
+                        		  .append(currentType.declaration.getName())
+                        		  .append(" and ")
+                        		  .append(otherType.getName());
                         		that.addError(sb.toString());
                         	}
                         }
@@ -232,9 +240,9 @@ public class TypeHierarchyVisitor extends Visitor {
         return false;
     }
 
-    private String getTypeDeclarationFor(Type.Members aggregateMembers) {
+    private TypeDeclaration getTypeDeclarationFor(Type.Members aggregateMembers) {
         Declaration memberDeclaration = getMemberDeclaration(aggregateMembers);
-        return memberDeclaration == null ? null : memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration().getName();
+        return memberDeclaration == null ? null : memberDeclaration.getDeclaringType(memberDeclaration).getDeclaration();
     }
 
     private Declaration getMemberDeclaration(Type.Members aggregateMembers) {
