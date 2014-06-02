@@ -15,6 +15,9 @@ import ceylon.language { internalFirst = first }
    stream. However, a stream has a well-defined set of 
    elements, and any two iterators for an immutable finite 
    stream should eventually return the same elements. 
+   Furthermore, any two iterators for an immutable finite
+   stream should eventually return exactly the same number 
+   of elements, which must be the [[size]] of the stream.
    
    The type `Iterable<Element,Null>`, usually abbreviated
    `{Element*}` represents a possibly-empty iterable 
@@ -176,8 +179,30 @@ shared interface Iterable<out Element, out Absent=Null>
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
      stream."
-    shared default Element[] sequence 
-            => sequential(this);
+    shared default Element[] sequence {
+        if (empty) {
+            return [];
+        }
+        else {
+            object notempty satisfies {Element+} {
+                shared actual Iterator<Element> iterator() {
+                    object iterator satisfies Iterator<Element> {
+                        variable value first = true;
+                        value iterator = outer.iterator();
+                        shared actual Element|Finished next() {
+                            value next = iterator.next();
+                            if (first) {
+                                assert (!next is Finished);
+                            }
+                            return next;
+                        }
+                    }
+                    return iterator;
+                }
+            }
+            return ArraySequence(notempty);
+        }
+    }
     
     "Produces a stream containing the results of applying 
      the [[given mapping|collecting]] to the elements of to 
@@ -657,20 +682,22 @@ shared interface Iterable<out Element, out Absent=Null>
         value it = iterator();
         variable value current = it.next();
         if (!is Finished c1 = current) {
-            sb.append(" ");
-            sb.append(current?.string else "<null>");
+            sb.append(" ")
+              .append(current?.string else "<null>");
             variable value count = 1;
             while (true) {
                 current = it.next();
                 if (is Finished c2 = current) {
                     sb.append(" ");
                     break;
-                } else if (count == 30) {
+                }
+                else if (count == 30) {
                     sb.append(", ... "); // TODO use Unicode ellipse '…'?
                     break;
-                } else {
-                    sb.append(", ");
-                    sb.append(current?.string else "<null>");
+                }
+                else {
+                    sb.append(", ")
+                      .append(current?.string else "<null>");
                     count++;
                 }
             }
