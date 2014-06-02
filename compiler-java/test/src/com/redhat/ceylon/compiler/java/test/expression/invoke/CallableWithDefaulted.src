@@ -349,9 +349,9 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $goto = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                return .ceylon.language.Integer.instance(goto);
+                return .ceylon.language.Integer.instance($goto);
             }
         };
         notDefaulted.$call$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
@@ -361,33 +361,33 @@ final class callableWithDefaulted_ {
                 return 2L;
             }
             
-            private final .java.lang.String $default$b(final long goto) {
-                return "foo" + .ceylon.language.Integer.toString(goto);
+            private final .java.lang.String $default$b(final long $goto) {
+                return "foo" + .ceylon.language.Integer.toString($goto);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                final long goto = $default$goto();
-                final .java.lang.String b = $default$b(goto);
-                return $calltyped$(goto, b);
+                final long $goto = $default$goto();
+                final .java.lang.String b = $default$b($goto);
+                return $calltyped$($goto, b);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
-                final .java.lang.String b = $default$b(goto);
-                return $calltyped$(goto, b);
+                final long $goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = $default$b($goto);
+                return $calltyped$($goto, b);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $goto = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                return $calltyped$(goto, b);
+                return $calltyped$($goto, b);
             }
             
-            private .ceylon.language.Integer $calltyped$(final long goto, final .java.lang.String b) {
-                return .ceylon.language.Integer.instance(goto);
+            private .ceylon.language.Integer $calltyped$(final long $goto, final .java.lang.String b) {
+                return .ceylon.language.Integer.instance($goto);
             }
         };
         foo.$call$();
@@ -399,83 +399,83 @@ final class callableWithDefaulted_ {
                 return 2L;
             }
             
-            private final .java.lang.String $default$b(final long goto) {
+            private final .java.lang.String $default$b(final long $goto) {
                 return "foo";
             }
             
-            private final long $default$c(final long goto, final .java.lang.String b) {
+            private final long $default$c(final long $goto, final .java.lang.String b) {
                 return 2L;
             }
             
-            private final .java.lang.String $default$d(final long goto, final .java.lang.String b, final long c) {
+            private final .java.lang.String $default$d(final long $goto, final .java.lang.String b, final long c) {
                 return "foo";
             }
             
-            private final long $default$e(final long goto, final .java.lang.String b, final long c, final .java.lang.String d) {
+            private final long $default$e(final long $goto, final .java.lang.String b, final long c, final .java.lang.String d) {
                 return 2L;
             }
             
-            private final .java.lang.String $default$f(final long goto, final .java.lang.String b, final long c, final .java.lang.String d, final long e) {
-                return "foo" + .ceylon.language.Integer.toString(goto);
+            private final .java.lang.String $default$f(final long $goto, final .java.lang.String b, final long c, final .java.lang.String d, final long e) {
+                return "foo" + .ceylon.language.Integer.toString($goto);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                final long goto = $default$goto();
-                final .java.lang.String b = $default$b(goto);
-                final long c = $default$c(goto, b);
-                final .java.lang.String d = $default$d(goto, b, c);
-                final long e = $default$e(goto, b, c, d);
-                final .java.lang.String f = $default$f(goto, b, c, d, e);
-                return $calltyped$(goto, b, c, d, e, f);
+                final long $goto = $default$goto();
+                final .java.lang.String b = $default$b($goto);
+                final long c = $default$c($goto, b);
+                final .java.lang.String d = $default$d($goto, b, c);
+                final long e = $default$e($goto, b, c, d);
+                final .java.lang.String f = $default$f($goto, b, c, d, e);
+                return $calltyped$($goto, b, c, d, e, f);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
-                final .java.lang.String b = $default$b(goto);
-                final long c = $default$c(goto, b);
-                final .java.lang.String d = $default$d(goto, b, c);
-                final long e = $default$e(goto, b, c, d);
-                final .java.lang.String f = $default$f(goto, b, c, d, e);
-                return $calltyped$(goto, b, c, d, e, f);
+                final long $goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String b = $default$b($goto);
+                final long c = $default$c($goto, b);
+                final .java.lang.String d = $default$d($goto, b, c);
+                final long e = $default$e($goto, b, c, d);
+                final .java.lang.String f = $default$f($goto, b, c, d, e);
+                return $calltyped$($goto, b, c, d, e, f);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $goto = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                final long c = $default$c(goto, b);
-                final .java.lang.String d = $default$d(goto, b, c);
-                final long e = $default$e(goto, b, c, d);
-                final .java.lang.String f = $default$f(goto, b, c, d, e);
-                return $calltyped$(goto, b, c, d, e, f);
+                final long c = $default$c($goto, b);
+                final .java.lang.String d = $default$d($goto, b, c);
+                final long e = $default$e($goto, b, c, d);
+                final .java.lang.String f = $default$f($goto, b, c, d, e);
+                return $calltyped$($goto, b, c, d, e, f);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final long goto = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $goto = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
                 final long c = ((.ceylon.language.Integer)$param$2).longValue();
-                final .java.lang.String d = $default$d(goto, b, c);
-                final long e = $default$e(goto, b, c, d);
-                final .java.lang.String f = $default$f(goto, b, c, d, e);
-                return $calltyped$(goto, b, c, d, e, f);
+                final .java.lang.String d = $default$d($goto, b, c);
+                final long e = $default$e($goto, b, c, d);
+                final .java.lang.String f = $default$f($goto, b, c, d, e);
+                return $calltyped$($goto, b, c, d, e, f);
             }
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
-                final long goto = $param$0.length > 0 ? ((.ceylon.language.Integer)$param$0[0]).longValue() : $default$goto();
-                final .java.lang.String b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $default$b(goto);
-                final long c = $param$0.length > 2 ? ((.ceylon.language.Integer)$param$0[2]).longValue() : $default$c(goto, b);
-                final .java.lang.String d = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $default$d(goto, b, c);
-                final long e = $param$0.length > 4 ? ((.ceylon.language.Integer)$param$0[4]).longValue() : $default$e(goto, b, c, d);
-                final .java.lang.String f = $param$0.length > 5 ? ((.ceylon.language.String)$param$0[5]).toString() : $default$f(goto, b, c, d, e);
-                return $calltyped$(goto, b, c, d, e, f);
+                final long $goto = $param$0.length > 0 ? ((.ceylon.language.Integer)$param$0[0]).longValue() : $default$goto();
+                final .java.lang.String b = $param$0.length > 1 ? ((.ceylon.language.String)$param$0[1]).toString() : $default$b($goto);
+                final long c = $param$0.length > 2 ? ((.ceylon.language.Integer)$param$0[2]).longValue() : $default$c($goto, b);
+                final .java.lang.String d = $param$0.length > 3 ? ((.ceylon.language.String)$param$0[3]).toString() : $default$d($goto, b, c);
+                final long e = $param$0.length > 4 ? ((.ceylon.language.Integer)$param$0[4]).longValue() : $default$e($goto, b, c, d);
+                final .java.lang.String f = $param$0.length > 5 ? ((.ceylon.language.String)$param$0[5]).toString() : $default$f($goto, b, c, d, e);
+                return $calltyped$($goto, b, c, d, e, f);
             }
             
-            private .ceylon.language.Integer $calltyped$(final long goto, final .java.lang.String b, final long c, final .java.lang.String d, final long e, final .java.lang.String f) {
-                return .ceylon.language.Integer.instance(goto);
+            private .ceylon.language.Integer $calltyped$(final long $goto, final .java.lang.String b, final long c, final .java.lang.String d, final long e, final .java.lang.String f) {
+                return .ceylon.language.Integer.instance($goto);
             }
         };
         bar.$call$();

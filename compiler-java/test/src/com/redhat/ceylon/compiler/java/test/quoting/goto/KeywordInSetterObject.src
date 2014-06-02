@@ -33,8 +33,8 @@ class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.
                         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInSetterObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("i")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(goto_.class));
                     }
                 }
-                final goto_ goto = new goto_();
-                final .java.lang.String s = goto.toString();
+                final goto_ $goto = new goto_();
+                final .java.lang.String s = $goto.toString();
             }
         }
         final i$setter$_ i$setter$_ = new i$setter$_();

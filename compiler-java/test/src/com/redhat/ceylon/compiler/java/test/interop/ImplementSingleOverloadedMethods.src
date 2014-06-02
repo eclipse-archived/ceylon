@@ -7,7 +7,7 @@ class ImplementSingleOverloadedMethods1 extends .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public final void bug1575(final .java.lang.Integer t, final .java.lang.Double double) {
+    public final void bug1575(final .java.lang.Integer t, final .java.lang.Double $double) {
     }
     
     public static void main(.java.lang.String[] args) {
@@ -28,7 +28,7 @@ class ImplementSingleOverloadedMethods2 extends .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public final void bug1575(final .java.lang.Integer t, final .java.lang.Double double) {
+    public final void bug1575(final .java.lang.Integer t, final .java.lang.Double $double) {
     }
     
     public static void main(.java.lang.String[] args) {

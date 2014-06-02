@@ -5,8 +5,8 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
     KeywordInCallable() {
     }
     
-    private final void m$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> do) {
-        do.$call$();
+    private final void m$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> $do) {
+        $do.$call$();
         
         final class enum_ {
             

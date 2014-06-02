@@ -5,49 +5,51 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     MethodForElse() {
     }
     
-    public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
+    public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
         boolean doforelse$0 = true;
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$11 = seq;
-        final boolean isArraySequence$12 = iterable$11 instanceof .ceylon.language.ArraySequence;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$12 = seq;
+        final boolean isArraySequence$13 = iterable$12 instanceof .ceylon.language.ArraySequence;
         .java.lang.Object elem$1 = null;
-        final .java.lang.Object array$13;
-        int i$14 = 0;
-        final int length$15;
-        if (isArraySequence$12) {
-            array$13 = ((.ceylon.language.ArraySequence)iterable$11).$getArray$();
-            i$14 = ((.ceylon.language.ArraySequence)iterable$11).$getFirst$();
-            length$15 = i$14 + ((.ceylon.language.ArraySequence)iterable$11).$getLength$();
+        final .java.lang.Object array$14;
+        int i$15 = 0;
+        final int length$16;
+        if (isArraySequence$13) {
+            array$14 = ((.ceylon.language.ArraySequence)iterable$12).$getArray$();
+            i$15 = ((.ceylon.language.ArraySequence)iterable$12).$getFirst$();
+            length$16 = i$15 + ((.ceylon.language.ArraySequence)iterable$12).$getLength$();
         } else {
-            array$13 = null;
-            length$15 = 0;
+            array$14 = null;
+            length$16 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = isArraySequence$12 ? null : iterable$11.iterator();
-        loop_0: while (isArraySequence$12 ? i$14 < length$15 : !((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$12) elem$1 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$13, i$14++);
-            final .java.lang.String s = ((.ceylon.language.String)elem$1).toString();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = isArraySequence$13 ? null : iterable$12.iterator();
+        loop_0: while (isArraySequence$13 ? i$15 < length$16 : !((elem$1 = i$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$13) elem$1 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$14, i$15++);
+            final long i = ((.ceylon.language.Integer)elem$1).longValue();
             loop_1: while (true) {
                 if (true) {
                     boolean doforelse$3 = true;
-                    final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$6 = seq;
-                    final boolean isArraySequence$7 = iterable$6 instanceof .ceylon.language.ArraySequence;
+                    final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$7 = seq;
+                    final boolean isArraySequence$8 = iterable$7 instanceof .ceylon.language.ArraySequence;
                     .java.lang.Object elem$4 = null;
-                    final .java.lang.Object array$8;
-                    int i$9 = 0;
-                    final int length$10;
-                    if (isArraySequence$7) {
-                        array$8 = ((.ceylon.language.ArraySequence)iterable$6).$getArray$();
-                        i$9 = ((.ceylon.language.ArraySequence)iterable$6).$getFirst$();
-                        length$10 = i$9 + ((.ceylon.language.ArraySequence)iterable$6).$getLength$();
+                    final .java.lang.Object array$9;
+                    int i$10 = 0;
+                    final int length$11;
+                    if (isArraySequence$8) {
+                        array$9 = ((.ceylon.language.ArraySequence)iterable$7).$getArray$();
+                        i$10 = ((.ceylon.language.ArraySequence)iterable$7).$getFirst$();
+                        length$11 = i$10 + ((.ceylon.language.ArraySequence)iterable$7).$getLength$();
                     } else {
-                        array$8 = null;
-                        length$10 = 0;
+                        array$9 = null;
+                        length$11 = 0;
                     }
-                    .ceylon.language.Iterator<? extends .ceylon.language.String> t$iterator$$5 = isArraySequence$7 ? null : iterable$6.iterator();
-                    loop_2: while (isArraySequence$7 ? i$9 < length$10 : !((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
-                        if (isArraySequence$7) elem$4 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$8, i$9++);
-                        final .java.lang.String t = ((.ceylon.language.String)elem$4).toString();
-                        doforelse$3 = false;
-                        break loop_2;
+                    .ceylon.language.Iterator<? extends .ceylon.language.Integer> j$iterator$$5 = isArraySequence$8 ? null : iterable$7.iterator();
+                    loop_2: while (isArraySequence$8 ? i$10 < length$11 : !((elem$4 = j$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                        if (isArraySequence$8) elem$4 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$9, i$10++);
+                        final long j = ((.ceylon.language.Integer)elem$4).longValue();
+                        if (i > j) {
+                            doforelse$3 = false;
+                            break loop_2;
+                        }
                     }
                     if (doforelse$3) {
                         return 1L;
@@ -59,6 +61,67 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             break loop_0;
         }
         if (doforelse$0) {
+            return 0L;
+        }
+        return 2L;
+    }
+    
+    public final long m2(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
+        boolean doforelse$17 = true;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$29 = seq;
+        final boolean isArraySequence$30 = iterable$29 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$18 = null;
+        final .java.lang.Object array$31;
+        int i$32 = 0;
+        final int length$33;
+        if (isArraySequence$30) {
+            array$31 = ((.ceylon.language.ArraySequence)iterable$29).$getArray$();
+            i$32 = ((.ceylon.language.ArraySequence)iterable$29).$getFirst$();
+            length$33 = i$32 + ((.ceylon.language.ArraySequence)iterable$29).$getLength$();
+        } else {
+            array$31 = null;
+            length$33 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$19 = isArraySequence$30 ? null : iterable$29.iterator();
+        loop_3: while (isArraySequence$30 ? i$32 < length$33 : !((elem$18 = $byte$iterator$$19.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$30) elem$18 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$31, i$32++);
+            final long $byte = ((.ceylon.language.Integer)elem$18).longValue();
+            loop_4: while (true) {
+                if (true) {
+                    boolean doforelse$20 = true;
+                    final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$24 = seq;
+                    final boolean isArraySequence$25 = iterable$24 instanceof .ceylon.language.ArraySequence;
+                    .java.lang.Object elem$21 = null;
+                    final .java.lang.Object array$26;
+                    int i$27 = 0;
+                    final int length$28;
+                    if (isArraySequence$25) {
+                        array$26 = ((.ceylon.language.ArraySequence)iterable$24).$getArray$();
+                        i$27 = ((.ceylon.language.ArraySequence)iterable$24).$getFirst$();
+                        length$28 = i$27 + ((.ceylon.language.ArraySequence)iterable$24).$getLength$();
+                    } else {
+                        array$26 = null;
+                        length$28 = 0;
+                    }
+                    .ceylon.language.Iterator<? extends .ceylon.language.Integer> $long$iterator$$22 = isArraySequence$25 ? null : iterable$24.iterator();
+                    loop_5: while (isArraySequence$25 ? i$27 < length$28 : !((elem$21 = $long$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
+                        if (isArraySequence$25) elem$21 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$26, i$27++);
+                        final long $long = ((.ceylon.language.Integer)elem$21).longValue();
+                        if ($byte > $long) {
+                            doforelse$20 = false;
+                            break loop_5;
+                        }
+                    }
+                    if (doforelse$20) {
+                        return 1L;
+                    }
+                    break loop_4;
+                } else break loop_4;
+            }
+            doforelse$17 = false;
+            break loop_3;
+        }
+        if (doforelse$17) {
             return 0L;
         }
         return 2L;

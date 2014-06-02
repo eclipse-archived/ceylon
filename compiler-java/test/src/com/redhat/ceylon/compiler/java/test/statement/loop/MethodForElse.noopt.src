@@ -5,21 +5,23 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     MethodForElse() {
     }
     
-    public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.String> seq) {
+    public final long m(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
         boolean doforelse$0 = true;
         .java.lang.Object elem$1;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$2 = seq.iterator();
-        loop_0: while (!((elem$1 = s$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
-            final .java.lang.String s = ((.ceylon.language.String)elem$1).toString();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = seq.iterator();
+        loop_0: while (!((elem$1 = i$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$1).longValue();
             loop_1: while (true) {
                 if (true) {
                     boolean doforelse$3 = true;
                     .java.lang.Object elem$4;
-                    .ceylon.language.Iterator<? extends .ceylon.language.String> t$iterator$$5 = seq.iterator();
-                    loop_2: while (!((elem$4 = t$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
-                        final .java.lang.String t = ((.ceylon.language.String)elem$4).toString();
-                        doforelse$3 = false;
-                        break loop_2;
+                    .ceylon.language.Iterator<? extends .ceylon.language.Integer> j$iterator$$5 = seq.iterator();
+                    loop_2: while (!((elem$4 = j$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                        final long j = ((.ceylon.language.Integer)elem$4).longValue();
+                        if (i > j) {
+                            doforelse$3 = false;
+                            break loop_2;
+                        }
                     }
                     if (doforelse$3) {
                         return 1L;
@@ -31,6 +33,39 @@ class MethodForElse implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             break loop_0;
         }
         if (doforelse$0) {
+            return 0L;
+        }
+        return 2L;
+    }
+    
+    public final long m2(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
+        boolean doforelse$7 = true;
+        .java.lang.Object elem$8;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$9 = seq.iterator();
+        loop_3: while (!((elem$8 = $byte$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+            final long $byte = ((.ceylon.language.Integer)elem$8).longValue();
+            loop_4: while (true) {
+                if (true) {
+                    boolean doforelse$10 = true;
+                    .java.lang.Object elem$11;
+                    .ceylon.language.Iterator<? extends .ceylon.language.Integer> $long$iterator$$12 = seq.iterator();
+                    loop_5: while (!((elem$11 = $long$iterator$$12.next()) instanceof .ceylon.language.Finished)) {
+                        final long $long = ((.ceylon.language.Integer)elem$11).longValue();
+                        if ($byte > $long) {
+                            doforelse$10 = false;
+                            break loop_5;
+                        }
+                    }
+                    if (doforelse$10) {
+                        return 1L;
+                    }
+                    break loop_4;
+                } else break loop_4;
+            }
+            doforelse$7 = false;
+            break loop_3;
+        }
+        if (doforelse$7) {
             return 0L;
         }
         return 2L;

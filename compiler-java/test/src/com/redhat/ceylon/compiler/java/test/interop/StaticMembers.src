@@ -91,7 +91,7 @@ final class staticFields_ {
     }
     
     static void staticFields() {
-        final .java.lang.Boolean false = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Boolean.FALSE);
+        final .java.lang.Boolean $false = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Boolean.FALSE);
     }
     
     public static void main(.java.lang.String[] args) {

@@ -83,7 +83,7 @@ final class m_ {
     
     static void m() {
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().InnerClass_0$new$();
-        final long int = .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().getGoto();
+        final long $int = .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().getGoto();
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_().$strictfp();
     }
     

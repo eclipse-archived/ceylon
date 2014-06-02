@@ -37,12 +37,12 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     public final void whileIs() {
-        .java.lang.Object int = .ceylon.language.Integer.instance(1L);
+        .java.lang.Object $int = .ceylon.language.Integer.instance(1L);
         loop_3: while (true) {
             .java.lang.Object i$4;
-            if ((i$4 = int) instanceof .ceylon.language.Integer) {
+            if ((i$4 = $int) instanceof .ceylon.language.Integer) {
                 final long i$5 = ((.ceylon.language.Integer)i$4).longValue();
-                int = .ceylon.language.String.instance("");
+                $int = .ceylon.language.String.instance("");
             } else break loop_3;
         }
     }

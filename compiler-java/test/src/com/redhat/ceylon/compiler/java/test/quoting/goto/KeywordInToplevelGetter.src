@@ -9,7 +9,7 @@ public final class strictfp_ {
         return 0L;
     }
     
-    public static void set_(final long strictfp) {
+    public static void set_(final long $strictfp) {
     }
 }
 public final class $module_ {
@@ -33,6 +33,6 @@ public final class $package_ {
         return 0L;
     }
     
-    public static void set_(final long package) {
+    public static void set_(final long $package) {
     }
 }

@@ -14,7 +14,7 @@ public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.r
         this(anno.$strictfp());
     }
     
-    public AnnotationClass(final .java.lang.String strictfp) {
+    public AnnotationClass(final .java.lang.String $strictfp) {
         this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$, .ceylon.language.Annotated.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
         this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
@@ -59,7 +59,7 @@ public final class enum_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.AnnotationAnnotation$annotation$
-    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass $enum(final .java.lang.String instanceof) {
-        return new .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass(instanceof);
+    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass $enum(final .java.lang.String $instanceof) {
+        return new .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass($instanceof);
     }
 }

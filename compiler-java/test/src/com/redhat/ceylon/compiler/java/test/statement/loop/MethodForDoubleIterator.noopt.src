@@ -30,6 +30,38 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
         loop_0: while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getKey().longValue();
             final .java.lang.String s = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$0).getItem().toString();
+            if (i > 5L) {
+            }
+        }
+    }
+    
+    public final void m2() {
+        .java.lang.Object elem$3;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> $byte$iterator$$4 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+                
+                case 1: 
+                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b"));
+                
+                case 2: 
+                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"));
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.iterator();
+        loop_1: while (!((elem$3 = $byte$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+            final long $byte = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$3).getKey().longValue();
+            final .java.lang.String long = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$3).getItem().toString();
+            if ($byte > 5L) {
+            }
         }
     }
     

@@ -192,8 +192,8 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         final boolean $ceylontmp$increasing$81 = $ceylontmp$start$79 <= $ceylontmp$end$80;
         final long $ceylontmp$incr$82 = $ceylontmp$increasing$81 ? 1L : -1L;
         loop_15: for (long throws$83 = $ceylontmp$start$79; $ceylontmp$increasing$81 ? throws$83 - $ceylontmp$end$80 <= 0L : throws$83 - $ceylontmp$end$80 >= 0L; throws$83 += $ceylontmp$incr$82) {
-            final long throws = throws$83;
-            sum += throws;
+            final long $throws = throws$83;
+            sum += $throws;
             break loop_15;
         }
         boolean doforelse$84 = true;

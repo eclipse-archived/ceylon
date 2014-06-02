@@ -39,7 +39,7 @@ final class goto_ {
         }
     }
     
-    public static void set_(final long goto) {
-        value[0] = goto;
+    public static void set_(final long $goto) {
+        value[0] = $goto;
     }
 }

@@ -177,8 +177,8 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         final long start$56 = 1L;
         final long end$57 = start$56 + .java.lang.Math.max(0L, 10L);
         loop_15: for (long i$58 = start$56; i$58 < end$57; i$58++) {
-            final long throws = i$58;
-            sum += throws;
+            final long $throws = i$58;
+            sum += $throws;
             break loop_15;
         }
         boolean doforelse$62 = true;

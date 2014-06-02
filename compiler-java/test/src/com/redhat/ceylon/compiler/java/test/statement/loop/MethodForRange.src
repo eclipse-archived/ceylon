@@ -11,6 +11,16 @@ class MethodForRange implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final boolean deceasing$2 = range$0.getDecreasing();
         loop_0: for (.ceylon.language.Integer item$3 = range$0.getFirst(); item$3.compare(last$1) != (deceasing$2 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$3 = deceasing$2 ? item$3.getPredecessor() : item$3.getSuccessor()) {
             final long i = item$3.longValue();
+            if (i > 5L) {
+            }
+        }
+        final .ceylon.language.Range<.ceylon.language.Integer> range$5 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
+        final .ceylon.language.Integer last$6 = range$5.getLast();
+        final boolean deceasing$7 = range$5.getDecreasing();
+        loop_1: for (.ceylon.language.Integer item$8 = range$5.getFirst(); item$8.compare(last$6) != (deceasing$7 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$8 = deceasing$7 ? item$8.getPredecessor() : item$8.getSuccessor()) {
+            final long $byte = item$8.longValue();
+            if ($byte > 5L) {
+            }
         }
     }
     
