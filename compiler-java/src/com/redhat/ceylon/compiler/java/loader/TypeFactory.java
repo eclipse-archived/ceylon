@@ -20,18 +20,13 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
-import static com.redhat.ceylon.compiler.typechecker.model.Util.producedType;
-
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
-import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.Package;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
@@ -39,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.model.UnknownType;
 import com.redhat.ceylon.compiler.typechecker.model.Util;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.sun.tools.javac.util.List;
 
 public class TypeFactory extends Unit {
@@ -68,6 +62,7 @@ public class TypeFactory extends Unit {
      * @return whether the type is a union type
      */
     public boolean isUnion(ProducedType pt) {
+        if (pt==null) return false;
         TypeDeclaration tdecl = pt.getDeclaration();
         return (tdecl instanceof UnionType && tdecl.getCaseTypes().size() > 1);
     }
@@ -78,6 +73,7 @@ public class TypeFactory extends Unit {
      * @return whether the type is an intersection type
      */
     public boolean isIntersection(ProducedType pt) {
+        if (pt==null) return false;
         TypeDeclaration tdecl = pt.getDeclaration();
         return (tdecl instanceof IntersectionType && tdecl.getSatisfiedTypes().size() > 1);
     }
