@@ -169,33 +169,35 @@ shared void gol() {
             // will be resurrected
             variable Cell[] alives = [];
             variable Cell[] moribunds = [];
-            value seq = SequenceBuilder<Cell>();
-            for (c in _living) {
-                if (c.state == alive) {
-                    if (c.nextState == alive) {
-                        alives = alives.withTrailing(c);
-                    } else if (c.nextState == moribund) {
-                        moribunds = moribunds.withTrailing(c);
-                    }
-                }
-                seq.appendAll(c.resurrections());
-            }
-            Cell[] resurrections = seq.sequence;
-            
-            // And resurrect the dead ones
-            for (c in resurrections) {
-                c.resurrect();
-            }
-            // Now kill all the moribund cells
-            for (c in moribunds) {
-                c.kill();
-            }
-            // Set the global list of alive cells
-            value seq2 = SequenceBuilder<Cell>();
-            seq2.appendAll(alives);
-            seq2.appendAll(resurrections);
-            _living = seq2.sequence;
-            //_living = join(alives, resurrections);
+            // Note: commented out since SequenceBuilder left c.l
+            //value seq = SequenceBuilder<Cell>();
+            //for (c in _living) {
+            //    if (c.state == alive) {
+            //        if (c.nextState == alive) {
+            //            alives = alives.withTrailing(c);
+            //        } else if (c.nextState == moribund) {
+            //            moribunds = moribunds.withTrailing(c);
+            //        }
+            //    }
+            //    seq.appendAll(c.resurrections());
+            //}
+            //Cell[] resurrections = seq.sequence;
+            //
+            //// And resurrect the dead ones
+            //for (c in resurrections) {
+            //    c.resurrect();
+            //}
+            //// Now kill all the moribund cells
+            //for (c in moribunds) {
+            //    c.kill();
+            //}
+            //// Set the global list of alive cells
+            //value seq2 = SequenceBuilder<Cell>();
+            //seq2.appendAll(alives);
+            //seq2.appendAll(resurrections);
+            //_living = seq2.sequence;
+            ////_living = join(alives, resurrections);
+            Cell[] resurrections = [];
             
             return [resurrections, moribunds];
         }
