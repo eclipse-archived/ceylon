@@ -12,7 +12,9 @@ import ceylon.language { internalFirst = first }
    so the order in which elements are produced by the 
    stream's iterator may not be _stable_. That is, the order 
    may be different for two different iterators of the 
-   stream.
+   stream. However, a stream has a well-defined set of 
+   elements, and any two iterators for an immutable finite 
+   stream should eventually return the same elements. 
    
    The type `Iterable<Element,Null>`, usually abbreviated
    `{Element*}` represents a possibly-empty iterable 
