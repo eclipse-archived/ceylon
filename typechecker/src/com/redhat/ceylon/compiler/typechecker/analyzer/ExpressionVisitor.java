@@ -4620,6 +4620,7 @@ public class ExpressionVisitor extends Visitor {
         if (!that.getQualifier()) {
             that.addError("package must qualify a reference to a toplevel declaration");
         }
+        super.visit(that);
     }
     
     private ProducedType getTupleType(List<Tree.PositionalArgument> es, 
