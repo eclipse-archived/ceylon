@@ -299,3 +299,28 @@ void exy(EX val) {
     case (ex) { print("x"); }
     case (ey) { print("y"); }
 }
+
+shared void unreachableif() {
+    while (true) {}
+    @error if (3==1) {} else {}
+}
+shared void reachableif() {
+    while (1==2) {}
+    if (3==1) {} else {}
+}
+shared void unreachablewhile() {
+    if (3==1) { throw; } else { return; }
+    @error while (true) {}    
+}
+shared void reachablewhile() {
+    if (3==1) { throw; } else {}
+    while (true) {}    
+}
+shared void unreachablefor() {
+    if (true) { return; }
+    @error for (c in "hello") {}    
+}
+shared void reachablefor() {
+    if (false) { /*@error*/ return; } //TODO?
+    for (c in "hello") {}    
+}

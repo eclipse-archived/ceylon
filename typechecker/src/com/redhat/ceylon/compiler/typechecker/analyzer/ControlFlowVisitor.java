@@ -355,15 +355,22 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Statement that) {
+        if (!(that instanceof Tree.Variable)) {
+            checkReachable(that);
+        }
+        super.visit(that);
+    }
+
+    private void checkReachable(Tree.Statement that) {
         if (definitelyReturns || definitelyBreaksOrContinues) {
             that.addError("unreachable code");
         }
-        super.visit(that);
     }
     
     @Override
     public void visit(Tree.WhileStatement that) {
         checkExecutableStatementAllowed(that);
+        checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
         Boolean b = beginLoop();
         boolean bc = beginLoopScope();
@@ -384,6 +391,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.ForStatement that) {
         checkExecutableStatementAllowed(that);
+        checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
         
         Boolean b = beginLoop();
@@ -434,6 +442,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.IfStatement that) {
         checkExecutableStatementAllowed(that);
+        checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
         Boolean e = possiblyBreaks;
         boolean bc = definitelyBreaksOrContinues;
@@ -486,6 +495,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchStatement that) {
         checkExecutableStatementAllowed(that);
+        checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
         boolean bc = definitelyBreaksOrContinues;
         
@@ -518,6 +528,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         checkExecutableStatementAllowed(that);
+        checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
         boolean bc = definitelyBreaksOrContinues;
         
