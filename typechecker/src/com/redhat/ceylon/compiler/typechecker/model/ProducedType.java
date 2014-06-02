@@ -1252,14 +1252,52 @@ public class ProducedType extends ProducedReference {
         else if (d instanceof NothingType) {
             return false;
         }
-		ProducedType qt = getQualifyingType();
-		if (qt!=null && qt.containsUnknowns()) {
-			return true;
-		}
-		List<ProducedType> tas = getTypeArgumentList();
-		for (ProducedType at: tas) {
-    		if (at==null || at.containsUnknowns()) {
+        else {
+            ProducedType qt = getQualifyingType();
+            if (qt!=null && qt.containsUnknowns()) {
                 return true;
+            }
+            List<ProducedType> tas = getTypeArgumentList();
+            for (ProducedType at: tas) {
+                if (at==null || at.containsUnknowns()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean containsDeclaration(TypeDeclaration td) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof UnknownType) {
+            return false;
+        }
+        else if (d instanceof UnionType) {
+            for (ProducedType ct: getDeclaration().getCaseTypes()) {
+                if (ct.containsDeclaration(td)) return true;
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (ProducedType st: getDeclaration().getSatisfiedTypes()) {
+                if (st.containsDeclaration(td)) return true;
+            }
+        }
+        else if (d instanceof NothingType) {
+            return false;
+        }
+        else {
+            if (d.equals(td)) {
+                return true;
+            }
+            ProducedType qt = getQualifyingType();
+            if (qt!=null && qt.containsDeclaration(td)) {
+                return true;
+            }
+            List<ProducedType> tas = getTypeArgumentList();
+            for (ProducedType at: tas) {
+                if (at==null || at.containsDeclaration(td)) {
+                    return true;
+                }
             }
         }
         return false;

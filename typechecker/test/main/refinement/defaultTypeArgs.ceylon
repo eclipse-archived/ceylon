@@ -1,3 +1,4 @@
+
 abstract class Keys1()
         satisfies Cat {}
 
@@ -67,4 +68,9 @@ interface II<out T=String> {
 shared interface TraitB<@error Representation=Integer> 
         given Representation satisfies Float {
     shared formal Representation modfiyB();
+}
+
+shared interface TraitA<@error Representation = TraitA> 
+        given Representation satisfies TraitA<Representation> {
+    shared formal Representation modfiyA();
 }
