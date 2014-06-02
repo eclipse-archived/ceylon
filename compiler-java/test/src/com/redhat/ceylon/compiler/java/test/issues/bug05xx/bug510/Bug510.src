@@ -107,7 +107,6 @@ final class volatile_ {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         try {
