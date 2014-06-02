@@ -58,4 +58,29 @@ public abstract class LazyIterable<Element, Absent> extends AbstractIterable<Ele
      */
     @Ignore
     protected abstract Object $evaluate$(int $index$);
+    
+    @Override
+    public boolean getEmpty() {
+        if($numExpressions == 0)
+            return true;
+        // we have at least one expression, but is it spread?
+        if($spread){
+            // do we have at least one non-spread expression?
+            if($numExpressions > 1)
+                return false;
+            else
+                return super.getEmpty(); // with spread we just don't know
+        }else{
+            // we have at least one non-spread expression
+            return false;
+        }
+    }
+    
+    @Override
+    public long getSize() {
+        if($spread)
+            return super.getSize(); // too hazardous
+        // safe
+        return $numExpressions;
+    }
 }
