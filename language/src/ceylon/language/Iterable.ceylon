@@ -778,7 +778,7 @@ shared interface Iterable<out Element, out Absent=Null>
      [[cycle]]."
     see (`function cycle`)
     shared default List<Element> repeat(Integer times) {
-        return sequential(cycle(times));
+        return cycle(times).sequence;
     }
     
 }

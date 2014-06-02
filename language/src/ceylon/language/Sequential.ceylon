@@ -89,36 +89,3 @@ shared interface Sequential<out Element>
             empty then "[]" else "[``commaList(this)``]";
     
 }
-
-"Return a [[Sequential]] containing the given [[elements]], 
- iterating the given [[Iterable]] only once."
-Element[] sequential<Element>({Element*} elements) {
-    if (is Element[] elements) {
-        return elements;
-    }
-    if (is Array<Element> elements) {
-        return elements.sequence;
-    }
-    value iterator = elements.iterator();
-    variable value elem = iterator.next();
-    if (is Finished x = elem) {
-        return [];
-    }
-    assert (is Element x = elem);
-    variable Array<Element> array = arrayOfSize<Element>(5, x);
-    variable Integer index = 0;
-    while (!is Finished y=elem) {
-        if (index >= array.size) {
-            value newSize = array.size + 
-                    array.size.rightLogicalShift(1);
-            value newarray = arrayOfSize<Element>(newSize, x);
-            array.copyTo(newarray);
-            array = newarray;
-        }
-        array.set(index, y);
-        index++;
-        elem = iterator.next();
-    }
-    return array.take(index).sequence;
-}
-
