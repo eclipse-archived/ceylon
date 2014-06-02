@@ -186,12 +186,13 @@ shared interface Iterable<out Element, out Absent=Null>
         else {
             object notempty satisfies {Element+} {
                 shared actual Iterator<Element> iterator() {
+                    value it = outer.iterator();
                     object iterator satisfies Iterator<Element> {
                         variable value first = true;
-                        value iterator = outer.iterator();
                         shared actual Element|Finished next() {
-                            value next = iterator.next();
+                            value next = it.next();
                             if (first) {
+                                first = false;
                                 assert (!next is Finished);
                             }
                             return next;
