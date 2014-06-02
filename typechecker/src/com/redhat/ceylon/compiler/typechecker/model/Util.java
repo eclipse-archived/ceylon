@@ -1160,7 +1160,8 @@ public class Util {
             if (!tp.isCovariant() && !tp.isContravariant()) {
                 ProducedType ta1 = st1.getTypeArguments().get(tp);
                 ProducedType ta2 = st2.getTypeArguments().get(tp);
-                if (!ta1.isExactly(ta2)) {
+                if (ta1!=null && ta2!=null && 
+                        !ta1.isExactly(ta2)) {
                     return false;
                 }
             }
