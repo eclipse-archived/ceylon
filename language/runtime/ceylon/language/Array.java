@@ -1297,7 +1297,7 @@ public final class Array<Element>
     }
     
     @Override 
-    @Ignore 
+    @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
         long size = getSize();
         java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();
