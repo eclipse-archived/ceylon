@@ -266,11 +266,11 @@ public class CallBuilder {
                 }
                 dimensions = dimensions.prepend(arguments.head);
                 dimensions = dimensions.prepend(arrayInstanceReifiedType);
-                result = gen.makeUtilInvocation("makeArray", dimensions, null);
+                result = gen.utilInvocation().makeArray(dimensions);
             }
             if(arguments.tail.nonEmpty()){
                 // must fill it
-                result = gen.makeUtilInvocation("fillArray", List.of(result, arguments.tail.head), null);
+                result = gen.utilInvocation().fillArray(List.of(result, arguments.tail.head));
             }
             break;
         case FIELD_READ:

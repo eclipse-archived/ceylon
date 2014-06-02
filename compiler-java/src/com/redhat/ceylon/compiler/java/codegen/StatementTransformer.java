@@ -1480,9 +1480,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeLengthExpr() {
             if(unboxed)
-                return make().Apply(null, 
-                        naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.arrayLength"), 
-                        List.<JCExpression>of(indexableName.makeIdent()));
+                return utilInvocation().arrayLength(indexableName.makeIdent());
             else
                 return make().TypeCast(make().Type(syms().intType), 
                                        make().Apply(null, 
@@ -1492,29 +1490,29 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            String methodName = null;
             ProducedType gotType = null;
-            if (isCeylonBoolean(elementType)) {
-                methodName = "getBooleanArray";
-                gotType = elementType;
-            } else if (isCeylonFloat(elementType)) {
-                methodName = "getFloatArray";
-                gotType = elementType;
-            } else if (isCeylonInteger(elementType)) {
-                methodName = "getIntegerArray";
-                gotType = elementType;
-            } else if (isCeylonCharacter(elementType)) {
-                methodName = "getCharacterArray";
-                gotType = elementType;
-            }
-            JCExpression elementGet;
+            JCExpression elementGet = null;
             boolean typeErased = false;
             boolean exprBoxed = false;
-            if(methodName != null){
-                elementGet = makeUtilInvocation(methodName, 
-                                                List.<JCExpression>of(indexableName.makeIdent(), indexName.makeIdent()),
-                                                null);
-            }else{
+            if (isCeylonBoolean(elementType)) {
+                elementGet = utilInvocation().getBooleanArray(
+                        indexableName.makeIdent(), indexName.makeIdent());
+                gotType = elementType;
+            } else if (isCeylonFloat(elementType)) {
+                elementGet = utilInvocation().getFloatArray(
+                        indexableName.makeIdent(), indexName.makeIdent());
+                gotType = elementType;
+            } else if (isCeylonInteger(elementType)) {
+                elementGet = utilInvocation().getIntegerArray(
+                        indexableName.makeIdent(), indexName.makeIdent());
+                gotType = elementType;
+            } else if (isCeylonCharacter(elementType)) {
+                elementGet = utilInvocation().getCharacterArray( 
+                        indexableName.makeIdent(), indexName.makeIdent());
+                gotType = elementType;
+            }
+            
+            if(elementGet == null){
                 elementGet = make().Apply(null, 
                                           naming.makeQualIdent(indexableName.makeIdent(), "unsafeItem"),
                                           List.<JCExpression>of(indexName.makeIdent()));

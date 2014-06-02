@@ -356,7 +356,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         if (expectedType != null && hasUncheckedNulls(expr)
                 && expectedType.isSubtypeOf(typeFact().getObjectDeclaration().getType())) {
-            result = makeUtilInvocation("checkNull", List.of(result), null);
+            result = utilInvocation().checkNull(result);
             flags |= EXPR_HAS_NULL_CHECK_FENCE;
         }
         result = applyErasureAndBoxing(result, expr, boxingStrategy, expectedType, flags);
@@ -1446,7 +1446,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Tree.SpreadArgument spreadExpr = (Tree.SpreadArgument) expr;
                 tail = transformExpression(spreadExpr.getExpression());
                 if (!typeFact().isSequentialType(spreadExpr.getTypeModel())) {
-                    tail = sequentialInstance(tail);
+                    tail = utilInvocation().sequentialInstance(tail);
                     ProducedType elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                     ProducedType sequentialType = typeFact().getSequentialType(elementType);
                     ProducedType expectedType = spreadExpr.getTypeModel();
@@ -1638,7 +1638,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getOrdinalDeclaration()));
         JCExpression startExpr = transformExpression(op.getLeftTerm(), BoxingStrategy.BOXED, type);
         JCExpression lengthExpr = transformExpression(op.getRightTerm(), BoxingStrategy.UNBOXED, typeFact().getIntegerDeclaration().getType());
-        return makeUtilInvocation("spreadOp", List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr), 
+        return utilInvocation().spreadOp(List.<JCExpression>of(makeReifiedTypeArgument(type), startExpr, lengthExpr), 
                                   List.<JCExpression>of(makeJavaType(type, JT_TYPE_ARGUMENT)));
     }
 
@@ -2517,7 +2517,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         JCExpression sequential = iterableToSequential(exprAndType.expression);
                         if(invocation.isParameterVariadicPlus(argIndex)){
                             ProducedType iteratedType = typeFact().getIteratedType(argType);
-                            sequential = castSequentialToSequence(sequential, iteratedType);
+                            sequential = utilInvocation().castSequentialToSequence(sequential, iteratedType);
                         }
                         exprAndType = new ExpressionAndType(sequential, exprAndType.type);
                     } else {
@@ -2636,9 +2636,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             expr = sequenceToJavaArray(last, parameterType, boxingStrategy, lastType, x);
         }else{
             JCExpression typeExpr = makeJavaType(iteratedType, JT_TYPE_ARGUMENT);
-            JCExpression sequentialExpr = makeUtilInvocation("sequentialInstance", x.prepend(makeReifiedTypeArgument(iteratedType)), List.of(typeExpr));
+            JCExpression sequentialExpr = utilInvocation().sequentialInstance(x.prepend(makeReifiedTypeArgument(iteratedType)), List.of(typeExpr));
             if (invocation.isParameterVariadicPlus(argIndex)) {
-                expr = castSequentialToSequence(sequentialExpr, iteratedType);
+                expr = utilInvocation().castSequentialToSequence(sequentialExpr, iteratedType);
             } else {
                 expr = sequentialExpr;
             }
@@ -3995,10 +3995,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                             List.<JCTree.JCExpression>of(qualExpr));
                 } else if (expr instanceof Tree.QualifiedMemberOrTypeExpression
                         && isThrowableMessage((Tree.QualifiedMemberOrTypeExpression)expr)) {
-                    result = makeUtilInvocation("throwableMessage", List.of(qualExpr), null);
+                    result = utilInvocation().throwableMessage(qualExpr);
                 } else if (expr instanceof Tree.QualifiedMemberOrTypeExpression
                         && isThrowableSuppressed((Tree.QualifiedMemberOrTypeExpression)expr)) {
-                    result = makeUtilInvocation("suppressedExceptions", List.of(qualExpr), null);
+                    result = utilInvocation().suppressedExceptions(qualExpr);
                 } else {
                     result = makeQualIdent(qualExpr, selector);
                     if (useGetter) {
@@ -4308,7 +4308,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(method.equals("spanFrom")){
                     // make a "Util.<method>(lhs, start, end)" call
                     at(access);
-                    safeAccess = makeUtilInvocation("tuple_"+method, args.prepend(lhs), null);
+                    safeAccess = utilInvocation().tuple_spanFrom(args.prepend(lhs));
                 }else{
                     safeAccess = makeErroneous(access, "compiler bug: only the spanFrom method should be specialised for Tuples");
                 }

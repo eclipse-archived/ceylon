@@ -3121,17 +3121,6 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression iterableToSequential(JCExpression iterable){
         return make().Apply(null, makeSelect(iterable, "getSequence"), List.<JCExpression>nil());
     }
-    
-    JCExpression sequentialInstance(JCExpression iterable){
-        return makeUtilInvocation("sequentialInstance", List.of(iterable), null);
-    }
-
-    /**
-     * Casts a <tt>ceylon.language.Sequential</tt> type to a <tt>ceylon.language.Sequence</tt> type.
-     */
-    JCExpression castSequentialToSequence(JCExpression sequentialExpr, ProducedType iteratedType) {
-        return makeUtilInvocation("asSequence", List.of(sequentialExpr), null);
-    }
 
     /**
      * Returns a JCExpression along the lines of 
@@ -3357,33 +3346,31 @@ public abstract class AbstractTransformer implements Transformation {
         if(boxingStrategy == BoxingStrategy.UNBOXED){
             if(isCeylonInteger(type)){
                 if("byte".equals(type.getUnderlyingType()))
-                    methodName = "toByteArray";
+                    return utilInvocation().toByteArray(expr, initialElements);
                 else if("short".equals(type.getUnderlyingType()))
-                    methodName = "toShortArray";
+                    return utilInvocation().toShortArray(expr, initialElements);
                 else if("int".equals(type.getUnderlyingType()))
-                    methodName = "toIntArray";
+                    return utilInvocation().toIntArray(expr, initialElements);
                 else
-                    methodName = "toLongArray";
+                    return utilInvocation().toLongArray(expr, initialElements);
             }else if(isCeylonFloat(type)){
                 if("float".equals(type.getUnderlyingType()))
-                    methodName = "toFloatArray";
+                    return utilInvocation().toFloatArray(expr, initialElements);
                 else
-                    methodName = "toDoubleArray";
+                    return utilInvocation().toDoubleArray(expr, initialElements);
             } else if (isCeylonCharacter(type)) {
                 if ("char".equals(type.getUnderlyingType()))
-                    methodName = "toCharArray";
+                    return utilInvocation().toCharArray(expr, initialElements);
                 // else it must be boxed, right?
             } else if (isCeylonBoolean(type)) {
-                methodName = "toBooleanArray";
+                return utilInvocation().toBooleanArray(expr, initialElements);
             } else if (isJavaString(type)) {
-                methodName = "toJavaStringArray";
+                return utilInvocation().toJavaStringArray(expr, initialElements);
             } else if (isCeylonString(type)) {
                 return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
             }
-            if(methodName == null){
-                return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
-            }
-            return makeUtilInvocation(methodName, initialElements.prepend(expr), null);
+            
+            return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
         }else{
             return objectVariadicToJavaArray(type, sequenceType, expr, exprType, initialElements);
         }
@@ -3402,7 +3389,7 @@ public abstract class AbstractTransformer implements Transformation {
             ProducedType iterableType, JCExpression expr, List<JCExpression> initialElements) {
         JCExpression klass = makeJavaType(type, JT_CLASS_NEW | JT_NO_PRIMITIVES);
         JCExpression klassLiteral = make().Select(klass, names().fromString("class"));
-        return makeUtilInvocation("toArray", initialElements.prependList(List.of(expr, klassLiteral)), null);
+        return utilInvocation().toArray(expr, klassLiteral, initialElements);
     }
     
     private JCExpression objectSequentialToJavaArray(ProducedType type, JCExpression expr, List<JCExpression> initialElements) {
@@ -3426,9 +3413,9 @@ public abstract class AbstractTransformer implements Transformation {
                                      makeInteger(initialElements.size()));
 
         JCExpression newArrayExpr = make().NewArray(klass1, List.of(sizeExpr), null);
-        JCExpression sequenceToArrayExpr = makeUtilInvocation("toArray",
-                initialElements.prependList(List.of(seqName.makeIdent(), newArrayExpr)),
-                List.of(klass2));
+        JCExpression sequenceToArrayExpr = utilInvocation().toArray(
+                seqName.makeIdent(), newArrayExpr, initialElements,
+                klass2);
         
         // since T[] is erased to Sequential<T> we probably need a cast to FixedSized<T>
         //JCExpression castedExpr = make().TypeCast(seqTypeExpr2, expr);
@@ -3485,12 +3472,12 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public JCExpression isIdentifiable(JCExpression varExpr) {
-            return makeUtilInvocation("isIdentifiable", List.of(varExpr), null);
+            return utilInvocation().isIdentifiable(varExpr);
         }
 
         @Override
         public JCExpression isBasic(JCExpression varExpr) {
-            return makeUtilInvocation("isBasic", List.of(varExpr), null);
+            return utilInvocation().isBasic(varExpr);
         }
 
         @Override
@@ -3503,7 +3490,7 @@ public abstract class AbstractTransformer implements Transformation {
         @Override
         public JCExpression isReified(JCExpression varExpr,
                 ProducedType testedType) {
-            return makeUtilInvocation("isReified", List.of(varExpr, makeReifiedTypeArgument(testedType)), null);
+            return utilInvocation().isReified(varExpr, testedType);
         }
     }
     JavacTypeTestTransformation javacTypeTester = null;
@@ -3787,23 +3774,16 @@ public abstract class AbstractTransformer implements Transformation {
         return make().TypeTest(firstTimeExpr, sequenceType);
     }
     
-    /**
-     * Invokes a static method of the Util helper class
-     * @param methodName name of the method
-     * @param arguments The arguments to the invocation
-     * @param typeArguments The arguments to the method
-     * @return the invocation AST
-     */
-    public JCExpression makeUtilInvocation(String methodName, List<JCExpression> arguments, List<JCExpression> typeArguments) {
-        return make().Apply(typeArguments, 
-                            makeUtilSelection(methodName), 
-                            arguments);
+    private RuntimeUtil utilInvocation = null;
+    
+    RuntimeUtil utilInvocation() {
+        if (utilInvocation == null) {
+            utilInvocation = new RuntimeUtil(this);
+        }
+        return utilInvocation;
     }
-
-    JCFieldAccess makeUtilSelection(String methodName) {
-        return make().Select(make().QualIdent(syms().ceylonUtilType.tsym), 
-                      names().fromString(methodName));
-    }
+    
+    
 
     /**
      * Invokes a static method of the Metamodel helper class

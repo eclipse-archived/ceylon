@@ -362,10 +362,10 @@ public class CallableBuilder {
             final TypedDeclaration value) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (gen.expressionGen().isThrowableMessage(qmte)) {
-            callBuilder.invoke(gen.makeUtilSelection("throwableMessage"));
+            callBuilder.invoke(gen.utilInvocation().throwableMessage());
             callBuilder.argument(gen.naming.makeUnquotedIdent(Unfix.$instance$));
         } else if (gen.expressionGen().isThrowableSuppressed(qmte)) {
-            callBuilder.invoke(gen.makeUtilSelection("suppressedExceptions"));
+            callBuilder.invoke(gen.utilInvocation().suppressedExceptions());
             callBuilder.argument(gen.naming.makeUnquotedIdent(Unfix.$instance$));
         } else {
             JCExpression memberName = gen.naming.makeQualifiedName(gen.naming.makeUnquotedIdent(Unfix.$instance$), value, Naming.NA_GETTER | Naming.NA_MEMBER);

@@ -419,8 +419,8 @@ public class AttributeDefinitionBuilder {
                     List.<JCExpression>of(msg)));
             List<JCStatement> catchStmts;
             if(toplevel && !late){
-                JCStatement rethrow = owner.make().Exec(owner.makeUtilInvocation("rethrow", 
-                        List.of(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())), null));
+                JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
+                        owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
                 // rethrow the init exception if we have one
                 JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
                         owner.makeNull()), rethrow, null);
