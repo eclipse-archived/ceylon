@@ -1019,7 +1019,7 @@ public class ProducedType extends ProducedReference {
         }*/
         //recurse to the qualifying type
         ProducedType outerType;
-        if (dec.isMember() || !dec.isStaticallyImportable()) {
+        if (dec.isMember() && !dec.isStaticallyImportable()) {
             TypeDeclaration outer = (TypeDeclaration) dec.getContainer();
             List<ProducedType> list = new ArrayList<ProducedType>(caseTypes.size());
             for (ProducedType ct: caseTypes) {
