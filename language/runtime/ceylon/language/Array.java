@@ -1218,48 +1218,56 @@ public final class Array<Element>
     
     @Override @Ignore
     public boolean longerThan(long length) {
-        return getSize()>length;
+        return $ceylon$language$List$this.longerThan(length);
     }
     
     @Override @Ignore
     public boolean shorterThan(long length) {
-        return getSize()<length;
+        return $ceylon$language$List$this.shorterThan(length);
     }
     
-    @Override @Ignore
+    @Override
+    @Annotations({ @Annotation("actual") })
+    @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
-    skip(long skip) {
+    skip(@Name("skipit") long skip) {
         int intSkip = (int)skip;
         int length = (int)getSize();
         if (skip <= 0) {
             return this;
         }
-        return new ArrayIterable(this.array, intSkip, Math.max(0, length-intSkip), 1);
+        return new ArrayIterable(this.array, intSkip, 
+                Math.max(0, length-intSkip), 1);
 	}
 
-	@Override @Ignore
+	@Override
+	@Annotations({ @Annotation("actual") })
+	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
-	take(long take) {
+	take(@Name("num") long take) {
 	    int length = (int)getSize();
 	    if (take >= length) {
 	        return this;
 	    }
-		return new ArrayIterable(this.array, 0, Math.max((int)take, 0), 1);
+		return new ArrayIterable(this.array, 0, 
+		        Math.max((int)take, 0), 1);
 	}
 
-	@Override @Ignore
+	@Override
+	@Annotations({ @Annotation("actual") })
+	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
-	by(long step) {
+	by(@Name("step") long step) {
 	    if (step <= 0) {
 	        throw new AssertionError("step size must be greater than zero");
 	    } else if (step == 1) {
 	        return this;
 	    }
-		return new ArrayIterable(array, 
-		        0, 
+		return new ArrayIterable(array, 0, 
 		        (int)((getSize()+step-1)/step), 
 		        (int)step);
 	}
+	
     @Override @Ignore
     public Iterable<? extends Element, ?> 
     getCoalesced() {
@@ -1390,14 +1398,12 @@ public final class Array<Element>
         		result, 0, (int)size, false);
     }
 
-    @Override @SuppressWarnings("rawtypes")
-    @Annotations({ @Annotation("actual") })
+    @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequence 
     withLeading(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
         return $ceylon$language$List$this.withLeading($reifiedOther, e);
     }
-    @Override @SuppressWarnings("rawtypes")
-    @Annotations({ @Annotation("actual") })
+    @Override @Ignore @SuppressWarnings("rawtypes")
     public <Other> Sequence 
     withTrailing(@Ignore TypeDescriptor $reifiedOther, @Name("element") Other e) {
         return $ceylon$language$List$this.withTrailing($reifiedOther, e);

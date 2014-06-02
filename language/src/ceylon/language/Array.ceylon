@@ -49,10 +49,8 @@ shared final native class Array<Element>({Element*} elements)
     
     shared actual native Integer? lastIndex;
     
-    shared actual native Array<Element> span(Integer from, Integer to);
-    shared actual native Array<Element> spanFrom(Integer from);
-    shared actual native Array<Element> spanTo(Integer to);
-    shared actual native Array<Element> segment(Integer from, Integer length);
+    shared actual native Element? first;
+    shared actual native Element? last;
     
     "A new array with the same elements as this array."
     shared actual native Array<Element> clone();
@@ -62,9 +60,16 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native Boolean defines(Integer index);
     shared actual native Iterator<Element> iterator();
     shared actual native Boolean contains(Object element);
+    shared actual native Element[] sequence;
+    
     shared actual native Integer count(Boolean selecting(Element element));
-    shared actual native Element? first;
-    shared actual native Element? last;
-    shared actual native [Other|Element+] withLeading<Other>(Other element);
-    shared actual native [Other|Element+] withTrailing<Other>(Other element);
+    
+    shared actual native Array<Element> span(Integer from, Integer to);
+    shared actual native Array<Element> spanFrom(Integer from);
+    shared actual native Array<Element> spanTo(Integer to);
+    shared actual native Array<Element> segment(Integer from, Integer length);
+        
+    shared actual native {Element*} skip(Integer skipit);
+    shared actual native {Element*} take(Integer num);
+    shared actual native {Element*} by(Integer step);
 }

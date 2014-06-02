@@ -586,10 +586,9 @@ shared interface Iterable<out Element, out Absent=Null>
     shared default Iterable<<Integer->Element&Object>,Element&Null|Absent> indexed {
         object indexes
                 satisfies Iterable<<Integer->Element&Object>,Element&Null|Absent> {
-            value orig => outer;
             shared actual Iterator<Integer->Element&Object> iterator() {
+                value iter = outer.iterator();
                 object iterator satisfies Iterator<Integer->Element&Object> {
-                    value iter = orig.iterator();
                     variable value i=0;
                     shared actual <Integer->Element&Object>|Finished next() {
                         variable value next = iter.next();
