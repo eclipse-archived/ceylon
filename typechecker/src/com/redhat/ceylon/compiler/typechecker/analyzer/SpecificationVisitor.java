@@ -236,7 +236,8 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
             }
-            else if (!specified.definitely) {
+            else if (!specified.definitely || 
+                    declaration.isFormal()) {
                 //you are allowed to refer to formal
                 //declarations in a class declaration
                 //section or interface
