@@ -446,7 +446,7 @@ public class AttributeDefinitionBuilder {
                 owner.make().Exec(
                         owner.make().Assign(
                                 fld,
-                                owner.makeUnquotedIdent(attrName))));
+                                owner.makeQuotedIdent(attrName))));
         if (late) {
             JCStatement init = owner.make().Exec(
                     owner.make().Assign(fld(), 

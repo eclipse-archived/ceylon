@@ -201,7 +201,7 @@ public class MethodDefinitionBuilder
 
     private Name makeName(String name) {
         if (name != null) {
-            return gen.names().fromString(name);
+            return gen.names().fromString(Naming.quoteIfJavaKeyword(name));
         } else {
             return gen.names().init;
         }

@@ -1352,26 +1352,32 @@ public class StatementTransformer extends AbstractTransformer {
             
             Tree.ForIterator forIterator = getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
-                JCStatement variable = makeVar(FINAL, ((Tree.ValueIterator)forIterator).getVariable().getIdentifier().getText(), 
-                        makeJavaType(elementType), 
+                String varName = Naming.quoteIfJavaKeyword(((Tree.ValueIterator)forIterator).getVariable().getIdentifier().getText());
+                JCStatement variable = makeVar(FINAL,
+                        varName,
+                        makeJavaType(elementType),
                         elementGet);
                 // Prepend to the block
                 transformedBlock = transformedBlock.prepend(variable);
             } else if (forIterator instanceof Tree.KeyValueIterator) {
                 SyntheticName entryName = naming.alias("entry");
-                JCStatement entryVariable = makeVar(FINAL, entryName, 
+                JCStatement entryVariable = makeVar(FINAL, entryName,
                         makeJavaType(elementType),
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
-                JCStatement keyVariable = makeVar(FINAL, ((Tree.KeyValueIterator)forIterator).getKeyVariable().getIdentifier().getText(), 
-                        makeJavaType(keyType), 
+                String keyName = Naming.quoteIfJavaKeyword(((Tree.KeyValueIterator)forIterator).getKeyVariable().getIdentifier().getText());
+                JCStatement keyVariable = makeVar(FINAL,
+                        keyName,
+                        makeJavaType(keyType),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
                                 keyType, true, BoxingStrategy.UNBOXED, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
-                JCStatement valueVariable = makeVar(FINAL, ((Tree.KeyValueIterator)forIterator).getValueVariable().getIdentifier().getText(), 
-                        makeJavaType(valueType), 
+                String valueName = Naming.quoteIfJavaKeyword(((Tree.KeyValueIterator)forIterator).getValueVariable().getIdentifier().getText());
+                JCStatement valueVariable = makeVar(FINAL,
+                        valueName,
+                        makeJavaType(valueType),
                         expressionGen().applyErasureAndBoxing(
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
                                 valueType, true, BoxingStrategy.UNBOXED, valueType));
@@ -1813,7 +1819,8 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.ForIterator iterator = getForIterator();
             if (iterator instanceof Tree.ValueIterator) {
                 ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
-                transformedBlock = transformedBlock.prepend(makeVar(FINAL, getElementOrKeyVariableName(), 
+                transformedBlock = transformedBlock.prepend(makeVar(FINAL,
+                        Naming.quoteIfJavaKeyword(getElementOrKeyVariableName()), 
                         makeJavaType(iteratedType), 
                         expressionGen().applyErasureAndBoxing(itemName.makeIdent(),
                                 iteratedType, true, BoxingStrategy.UNBOXED, iteratedType)));
@@ -2728,8 +2735,9 @@ public class StatementTransformer extends AbstractTransformer {
             currentForClause = stmt.getForClause();
             List<JCStatement> blockStatements = transformBlock(getBlock());
             currentForClause = prevForclause;
+            String nm = Naming.quoteIfJavaKeyword(getVariable().getIdentifier().getText());
             blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
-                    names().fromString(getVariable().getIdentifier().getText()), 
+                    names().fromString(nm ), 
                     makeType(),
                     varname.makeIdent()));
             
@@ -2953,7 +2961,7 @@ public class StatementTransformer extends AbstractTransformer {
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
         if (parameter == null) {
             
-            final Name attrName = names().fromString(decl.getIdentifier().getText());
+            final Name attrName = names().fromString(naming.substitute(decl.getDeclarationModel()));
             
             ProducedType t = actualType(decl);
             

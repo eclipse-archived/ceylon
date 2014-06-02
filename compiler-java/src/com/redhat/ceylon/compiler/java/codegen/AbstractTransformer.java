@@ -410,7 +410,7 @@ public abstract class AbstractTransformer implements Transformation {
         int modifiers = isShared ? 0 : FINAL;
         JCTree.JCVariableDecl var = make().VarDef(
                 make().Modifiers(modifiers), 
-                names().fromString(varName), 
+                names().fromString(Naming.quoteIfJavaKeyword(varName)), 
                 typeExpr, 
                 initValue);
         

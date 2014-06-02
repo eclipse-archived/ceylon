@@ -917,7 +917,7 @@ public class Naming implements LocalId {
                 || (mov instanceof Value && mov.isVariable() && mov.isCaptured())) {
             return suffixName(Suffix.$param$, parameter.getName());
         }
-        return parameter.getName();
+        return quoteIfJavaKeyword(parameter.getName());
     }
 
     private TreeMaker maker;
@@ -1909,7 +1909,7 @@ public class Naming implements LocalId {
             if (map.containsKey(key)) {
                 return map.get(key);
             }
-            return key.name;
+            return quoteIfJavaKeyword(key.name);
         }
         public void clear() {
             map.clear();
@@ -2077,7 +2077,7 @@ public class Naming implements LocalId {
     }
     
     SyntheticName synthetic(Value value) {
-        return new SyntheticName(names.fromString(value.getName()));
+        return new SyntheticName(names.fromString(quoteIfJavaKeyword(value.getName())));
     }
     
     void clearSubstitutions(Declaration decl) {
