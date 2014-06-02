@@ -922,7 +922,19 @@ public class ExpressionVisitor extends Visitor {
             ((Specification) that.getScope()).setDeclaration(m);
         }
     }
-
+    
+    @Override public void visit(Tree.TypeParameterDeclaration that) {
+        super.visit(that);
+        TypeParameter tpd = that.getDeclarationModel();
+        ProducedType dta = tpd.getDefaultTypeArgument();
+        if (dta!=null) {
+            for (ProducedType st: tpd.getSatisfiedTypes()) {
+                checkAssignable(dta, st, that.getTypeSpecifier().getType(), 
+                        "default type argument does not satisfy type constraint");
+            }
+        }
+    }
+    
     @Override public void visit(Tree.ParameterDeclaration that) {
         super.visit(that);
         Tree.Type type = that.getTypedDeclaration().getType();

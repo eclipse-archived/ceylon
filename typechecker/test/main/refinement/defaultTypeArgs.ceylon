@@ -63,3 +63,8 @@ interface II<out T=String> {
         shared formal T get();
     }
 }
+
+shared interface TraitB<@error Representation=Integer> 
+        given Representation satisfies Float {
+    shared formal Representation modfiyB();
+}
