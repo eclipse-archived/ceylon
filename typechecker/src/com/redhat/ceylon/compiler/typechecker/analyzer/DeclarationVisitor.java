@@ -1105,7 +1105,7 @@ public class DeclarationVisitor extends Visitor {
             if (!(that instanceof Tree.AttributeDeclaration) && 
                 !(that instanceof Tree.MethodDeclaration) &&
                 !(that instanceof Tree.AnyClass)) {
-                that.addError("formal member may not have a body", 1100);
+                that.addError("formal member may not have a body", 1101);
             }
         }
         
