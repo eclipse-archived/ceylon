@@ -34,3 +34,17 @@ void methodForBreakElse() {
         minors = false;
     }
 }
+@noanno
+void methodForBreakElse2() { 
+    MethodForBreakElse[] people = [MethodForBreakElse(1), MethodForBreakElse(18)];
+    Boolean minors;
+    for (byte in people) {
+        if (byte.age<18) {
+            minors = true;
+            break;
+        }
+    }
+    else {
+        minors = false;
+    }
+}

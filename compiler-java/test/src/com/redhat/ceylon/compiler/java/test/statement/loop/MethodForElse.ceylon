@@ -19,11 +19,34 @@
  */
 @noanno
 class MethodForElse(){
-    shared Integer m(Sequence<String> seq){
-        for(String s in seq){
+    shared Integer m(Sequence<Integer> seq){
+        for(Integer i in seq){
             while (true) {
-                for(String t in seq){
-                    break;
+                for(Integer j in seq){
+                    if (i > j) {
+                        break;
+                    }
+                }
+                else {
+                    return 1;
+                }
+                break;
+            }
+            break;
+        }
+        else {
+            return 0;
+        }
+        return 2;
+    }
+    
+    shared Integer m2(Sequence<Integer> seq){
+        for(Integer byte in seq){
+            while (true) {
+                for(Integer long in seq){
+                    if (byte > long) {
+                        break;
+                    }
                 }
                 else {
                     return 1;

@@ -19,9 +19,16 @@
  */
 @noanno
 class MethodForIterator(){
-    shared void m(Sequence<String> seq){
-        for(String s in seq){
-            // Empty
+    shared void m(Sequence<Integer> seq){
+        for(Integer i in seq){
+            if (i > 5) {
+                // Empty
+            }
+        }
+        for(Integer byte in seq){
+            if (byte > 5) {
+                // Empty
+            }
         }
     }
     shared void m2(){
@@ -38,6 +45,22 @@ class MethodForIterator(){
             // Empty
         }
         for(Character c in "wim"){
+            // Empty
+        }
+        
+        for(String byte in {"aap","noot","mies"}){
+            // Empty
+        }
+        for(String? byte in {"aap",null,"mies"}){
+            // Empty
+        }
+        for(Integer byte in {1,2,3}){
+            // Empty
+        }
+        for(Integer? byte in {1,null,3}){
+            // Empty
+        }
+        for(Character byte in "wim"){
             // Empty
         }
     }

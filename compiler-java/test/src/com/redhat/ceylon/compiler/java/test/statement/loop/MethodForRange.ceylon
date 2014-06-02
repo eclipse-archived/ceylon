@@ -22,7 +22,15 @@ class MethodForRange(){
     shared void m(){
         @disableOptimization:"RangeOpIteration"
         for (Integer i in 1..10) {
-            // Empty
+            if (i > 5) {
+                // Empty
+            }
+        }
+        @disableOptimization:"RangeOpIteration"
+        for (Integer byte in 1..10) {
+            if (byte > 5) {
+                // Empty
+            }
         }
     }
 }

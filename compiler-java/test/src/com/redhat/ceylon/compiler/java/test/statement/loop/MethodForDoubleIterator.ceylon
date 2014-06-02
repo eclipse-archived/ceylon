@@ -21,7 +21,16 @@
 class MethodForDoubleIterator(){
     shared void m(){
         for (Integer i -> String s in {1->"a", 2->"b", 3->"c"}) {
-            // Empty
+            if (i > 5) {
+                // Empty
+            }
+        }
+    }
+    shared void m2(){
+        for (Integer byte -> String long in {1->"a", 2->"b", 3->"c"}) {
+            if (byte > 5) {
+                // Empty
+            }
         }
     }
 }
