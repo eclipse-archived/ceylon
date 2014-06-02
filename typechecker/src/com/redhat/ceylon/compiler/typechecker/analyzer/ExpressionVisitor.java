@@ -1293,19 +1293,21 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkAliasArg(Parameter param, Tree.Expression e) {
-        if (e!=null) {
-            Tree.Term term = e.getTerm();
+        if (e!=null && param!=null) {
             MethodOrValue p = param.getModel();
-            if (term instanceof Tree.BaseMemberExpression) {
-                Declaration d = ((Tree.BaseMemberExpression)term).getDeclaration();
-                if (d!=null && !d.equals(p)) {
+            if (p!=null) {
+                Tree.Term term = e.getTerm();
+                if (term instanceof Tree.BaseMemberExpression) {
+                    Declaration d = ((Tree.BaseMemberExpression) term).getDeclaration();
+                    if (d!=null && !d.equals(p)) {
+                        e.addUnsupportedError("argument must be a parameter reference to " +
+                                p.getName());
+                    }
+                }
+                else {
                     e.addUnsupportedError("argument must be a parameter reference to " +
                             p.getName());
                 }
-            }
-            else {
-                e.addUnsupportedError("argument must be a parameter reference to " +
-                            p.getName());
             }
         }
     }
