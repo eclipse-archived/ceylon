@@ -1390,6 +1390,9 @@ public class TypeVisitor extends Visitor {
                 }
             }
         }
+        if (p instanceof Tree.Package) {
+            ((Tree.Package) p).setQualifier(true);
+        }
         super.visit(that);
     }
 

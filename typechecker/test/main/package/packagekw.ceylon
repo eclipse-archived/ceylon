@@ -17,3 +17,7 @@ class Outer() {
         @type:"X" package.X();
     }
 }
+
+@error Anything p_0 = package;
+@error Anything p_1 = package();
+@error Anything p_2 = (package);

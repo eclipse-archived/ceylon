@@ -682,7 +682,8 @@
 ^(OUTER:ATOM)
 
 "A reference to the containing package."
-^(PACKAGE:ATOM)
+^(PACKAGE:ATOM
+    boolean qualifier;)
 
 "A list of arguments in an invocation expression."
 ^(abstract ARGUMENT_LIST)

@@ -4604,6 +4604,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    @Override public void visit(Tree.Package that) {
+        if (!that.getQualifier()) {
+            that.addError("package must qualify a reference to a toplevel declaration");
+        }
+    }
+    
     private ProducedType getTupleType(List<Tree.PositionalArgument> es, 
             boolean requireSequential) {
         ProducedType result = unit.getType(unit.getEmptyDeclaration());
