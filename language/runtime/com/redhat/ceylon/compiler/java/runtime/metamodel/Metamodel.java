@@ -160,6 +160,11 @@ public class Metamodel {
         typeCheckPackagesToRuntimeModel.clear();
         typeDescriptorToProducedType.clear();
     }
+    
+    // This is only used in tests
+    public static RuntimeModuleManager getModuleManager(){
+        return moduleManager;
+    }
 
     public static Object getLock(){
         return moduleManager.getModelLoader().getLock();
