@@ -3399,8 +3399,7 @@ public class ExpressionVisitor extends Visitor {
                     that.getRightTerm(), "set operand expression must be a set");
             ProducedType lhset = unit.getSetElementType(lhst);
             ProducedType rhset = unit.getSetElementType(rhst);
-            if (that instanceof Tree.UnionAssignOp ||
-                    that instanceof Tree.XorAssignOp) {
+            if (that instanceof Tree.UnionAssignOp) {
                 checkAssignable(rhset, lhset, that.getRightTerm(), 
                         "resulting set element type must be assignable to to declared set element type");
             }            
