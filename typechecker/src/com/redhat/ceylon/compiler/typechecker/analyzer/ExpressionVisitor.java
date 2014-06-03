@@ -3997,8 +3997,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         String name = name(that.getIdentifier());
         TypedDeclaration member = getTypedDeclaration(that.getScope(), 
-                name(that.getIdentifier()), 
-                that.getSignature(), that.getEllipsis(), 
+                name, that.getSignature(), that.getEllipsis(), 
                 that.getUnit());
         if (member==null) {
             if (!dynamic) {

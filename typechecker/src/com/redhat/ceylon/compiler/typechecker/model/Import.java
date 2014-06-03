@@ -45,7 +45,7 @@ public class Import {
     @Override
     public String toString() {
         return "Import[" + alias + "=" + 
-        		(typeDeclaration==null?"":typeDeclaration.getName()) + 
+        		(typeDeclaration==null?"":typeDeclaration.getName()+".") + 
         		declaration.getName() + "]";
     }
     

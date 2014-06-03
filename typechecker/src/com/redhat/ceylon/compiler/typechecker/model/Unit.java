@@ -138,7 +138,9 @@ public class Unit {
                 //be the "abstraction", so search for the 
                 //correct overloaded version
                 Declaration d = i.getDeclaration();
-                return d.getContainer().getMember(d.getName(), signature, ellipsis);
+                if (d.isToplevel() || d.isStaticallyImportable()) {
+                    return d.getContainer().getMember(d.getName(), signature, ellipsis);
+                }
             }
         }
         return null;
@@ -170,7 +172,10 @@ public class Unit {
         for (Import i: new ArrayList<Import>(getImports())) {
             if (i.getAlias()!=null && !i.isAmbiguous() &&
                     i.getAlias().toLowerCase().startsWith(startingWith.toLowerCase())) {
-                result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
+                Declaration d = i.getDeclaration();
+                if (d.isToplevel() || d.isStaticallyImportable()) {
+                    result.put(i.getAlias(), new DeclarationWithProximity(i, proximity));
+                }
             }
         }
         return result;
