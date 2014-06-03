@@ -3248,12 +3248,6 @@ public class GenerateJsVisitor extends Visitor
     }
 
     @Override
-    public void visit(final XorOp that) {
-        Operators.genericBinaryOp(that, ".exclusiveUnion(",
-                TypeUtils.mapTypeArgument(that, "exclusiveUnion", "Element", "Other"), this);
-    }
-
-    @Override
     public void visit(final ComplementOp that) {
         Operators.genericBinaryOp(that, ".complement(",
                 TypeUtils.mapTypeArgument(that, "complement", "Element", "Other"), this);
