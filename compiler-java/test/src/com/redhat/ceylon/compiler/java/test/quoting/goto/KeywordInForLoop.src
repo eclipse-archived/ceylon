@@ -1,0 +1,356 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+final class keywordInForLoop_ {
+    
+    private keywordInForLoop_() {
+    }
+    
+    static void keywordInForLoop(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
+        final .ceylon.language.Range<.ceylon.language.Integer> range$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
+        final .ceylon.language.Integer last$1 = range$0.getLast();
+        final boolean deceasing$2 = range$0.getDecreasing();
+        loop_0: for (.ceylon.language.Integer item$3 = range$0.getFirst(); item$3.compare(last$1) != (deceasing$2 ? .ceylon.language.smaller_.get_() : .ceylon.language.larger_.get_()); item$3 = deceasing$2 ? item$3.getPredecessor() : item$3.getSuccessor()) {
+            final long $byte = item$3.longValue();
+            if ($byte > 5L) {
+            }
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$8 = seq;
+        final boolean isArraySequence$9 = iterable$8 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$5 = null;
+        final .java.lang.Object array$10;
+        int i$11 = 0;
+        final int length$12;
+        if (isArraySequence$9) {
+            array$10 = ((.ceylon.language.ArraySequence)iterable$8).$getArray$();
+            i$11 = ((.ceylon.language.ArraySequence)iterable$8).$getFirst$();
+            length$12 = i$11 + ((.ceylon.language.ArraySequence)iterable$8).$getLength$();
+        } else {
+            array$10 = null;
+            length$12 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$6 = isArraySequence$9 ? null : iterable$8.iterator();
+        loop_1: while (isArraySequence$9 ? i$11 < length$12 : !((elem$5 = $byte$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$9) elem$5 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$10, i$11++);
+            final long $byte = ((.ceylon.language.Integer)elem$5).longValue();
+            if ($byte > 5L) {
+            }
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$15 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("aap");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("noot");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("mies");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final boolean isArraySequence$16 = iterable$15 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$13 = null;
+        final .java.lang.Object array$17;
+        int i$18 = 0;
+        final int length$19;
+        if (isArraySequence$16) {
+            array$17 = ((.ceylon.language.ArraySequence)iterable$15).$getArray$();
+            i$18 = ((.ceylon.language.ArraySequence)iterable$15).$getFirst$();
+            length$19 = i$18 + ((.ceylon.language.ArraySequence)iterable$15).$getLength$();
+        } else {
+            array$17 = null;
+            length$19 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.String> $byte$iterator$$14 = isArraySequence$16 ? null : iterable$15.iterator();
+        loop_2: while (isArraySequence$16 ? i$18 < length$19 : !((elem$13 = $byte$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$16) elem$13 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$17, i$18++);
+            final .java.lang.String $byte = ((.ceylon.language.String)elem$13).toString();
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$22 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("aap");
+                
+                case 1: 
+                    return null;
+                
+                case 2: 
+                    return .ceylon.language.String.instance("mies");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final boolean isArraySequence$23 = iterable$22 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$20 = null;
+        final .java.lang.Object array$24;
+        int i$25 = 0;
+        final int length$26;
+        if (isArraySequence$23) {
+            array$24 = ((.ceylon.language.ArraySequence)iterable$22).$getArray$();
+            i$25 = ((.ceylon.language.ArraySequence)iterable$22).$getFirst$();
+            length$26 = i$25 + ((.ceylon.language.ArraySequence)iterable$22).$getLength$();
+        } else {
+            array$24 = null;
+            length$26 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.String> $byte$iterator$$21 = isArraySequence$23 ? null : iterable$22.iterator();
+        loop_3: while (isArraySequence$23 ? i$25 < length$26 : !((elem$20 = $byte$iterator$$21.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$23) elem$20 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$24, i$25++);
+            final .ceylon.language.String $byte = (.ceylon.language.String)elem$20;
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$29 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Integer.instance(2L);
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final boolean isArraySequence$30 = iterable$29 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$27 = null;
+        final .java.lang.Object array$31;
+        int i$32 = 0;
+        final int length$33;
+        if (isArraySequence$30) {
+            array$31 = ((.ceylon.language.ArraySequence)iterable$29).$getArray$();
+            i$32 = ((.ceylon.language.ArraySequence)iterable$29).$getFirst$();
+            length$33 = i$32 + ((.ceylon.language.ArraySequence)iterable$29).$getLength$();
+        } else {
+            array$31 = null;
+            length$33 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$28 = isArraySequence$30 ? null : iterable$29.iterator();
+        loop_4: while (isArraySequence$30 ? i$32 < length$33 : !((elem$27 = $byte$iterator$$28.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$30) elem$27 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$31, i$32++);
+            final long $byte = ((.ceylon.language.Integer)elem$27).longValue();
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$36 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return null;
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final boolean isArraySequence$37 = iterable$36 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$34 = null;
+        final .java.lang.Object array$38;
+        int i$39 = 0;
+        final int length$40;
+        if (isArraySequence$37) {
+            array$38 = ((.ceylon.language.ArraySequence)iterable$36).$getArray$();
+            i$39 = ((.ceylon.language.ArraySequence)iterable$36).$getFirst$();
+            length$40 = i$39 + ((.ceylon.language.ArraySequence)iterable$36).$getLength$();
+        } else {
+            array$38 = null;
+            length$40 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$35 = isArraySequence$37 ? null : iterable$36.iterator();
+        loop_5: while (isArraySequence$37 ? i$39 < length$40 : !((elem$34 = $byte$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$37) elem$34 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$38, i$39++);
+            final .ceylon.language.Integer $byte = (.ceylon.language.Integer)elem$34;
+        }
+        .java.lang.Object elem$41;
+        .ceylon.language.Iterator<? extends .ceylon.language.Character> $byte$iterator$$42 = .ceylon.language.String.instance("wim").iterator();
+        loop_6: while (!((elem$41 = $byte$iterator$$42.next()) instanceof .ceylon.language.Finished)) {
+            final int $byte = ((.ceylon.language.Character)elem$41).intValue();
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> iterable$46 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
+                
+                case 1: 
+                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b"));
+                
+                case 2: 
+                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"));
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final boolean isArraySequence$47 = iterable$46 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$43 = null;
+        final .java.lang.Object array$48;
+        int i$49 = 0;
+        final int length$50;
+        if (isArraySequence$47) {
+            array$48 = ((.ceylon.language.ArraySequence)iterable$46).$getArray$();
+            i$49 = ((.ceylon.language.ArraySequence)iterable$46).$getFirst$();
+            length$50 = i$49 + ((.ceylon.language.ArraySequence)iterable$46).$getLength$();
+        } else {
+            array$48 = null;
+            length$50 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> $byte$iterator$$44 = isArraySequence$47 ? null : iterable$46.iterator();
+        loop_7: while (isArraySequence$47 ? i$49 < length$50 : !((elem$43 = $byte$iterator$$44.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$47) elem$43 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$48, i$49++);
+            final long $byte = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$43).getKey().longValue();
+            final .java.lang.String long = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$43).getItem().toString();
+            if ($byte > 5L) {
+            }
+        }
+    }
+}
+public final class keywordInForLoop2_ {
+    
+    private keywordInForLoop2_() {
+    }
+    
+    public static long keywordInForLoop2(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
+        boolean doforelse$51 = true;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$63 = seq;
+        final boolean isArraySequence$64 = iterable$63 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$52 = null;
+        final .java.lang.Object array$65;
+        int i$66 = 0;
+        final int length$67;
+        if (isArraySequence$64) {
+            array$65 = ((.ceylon.language.ArraySequence)iterable$63).$getArray$();
+            i$66 = ((.ceylon.language.ArraySequence)iterable$63).$getFirst$();
+            length$67 = i$66 + ((.ceylon.language.ArraySequence)iterable$63).$getLength$();
+        } else {
+            array$65 = null;
+            length$67 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$53 = isArraySequence$64 ? null : iterable$63.iterator();
+        loop_8: while (isArraySequence$64 ? i$66 < length$67 : !((elem$52 = $byte$iterator$$53.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$64) elem$52 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$65, i$66++);
+            final long $byte = ((.ceylon.language.Integer)elem$52).longValue();
+            loop_9: while (true) {
+                if (true) {
+                    boolean doforelse$54 = true;
+                    final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$58 = seq;
+                    final boolean isArraySequence$59 = iterable$58 instanceof .ceylon.language.ArraySequence;
+                    .java.lang.Object elem$55 = null;
+                    final .java.lang.Object array$60;
+                    int i$61 = 0;
+                    final int length$62;
+                    if (isArraySequence$59) {
+                        array$60 = ((.ceylon.language.ArraySequence)iterable$58).$getArray$();
+                        i$61 = ((.ceylon.language.ArraySequence)iterable$58).$getFirst$();
+                        length$62 = i$61 + ((.ceylon.language.ArraySequence)iterable$58).$getLength$();
+                    } else {
+                        array$60 = null;
+                        length$62 = 0;
+                    }
+                    .ceylon.language.Iterator<? extends .ceylon.language.Integer> $long$iterator$$56 = isArraySequence$59 ? null : iterable$58.iterator();
+                    loop_10: while (isArraySequence$59 ? i$61 < length$62 : !((elem$55 = $long$iterator$$56.next()) instanceof .ceylon.language.Finished)) {
+                        if (isArraySequence$59) elem$55 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$60, i$61++);
+                        final long $long = ((.ceylon.language.Integer)elem$55).longValue();
+                        if ($byte > $long) {
+                            doforelse$54 = false;
+                            break loop_10;
+                        }
+                    }
+                    if (doforelse$54) {
+                        return 1L;
+                    }
+                    break loop_9;
+                } else break loop_9;
+            }
+            doforelse$51 = false;
+            break loop_8;
+        }
+        if (doforelse$51) {
+            return 0L;
+        }
+        return 2L;
+    }
+}
+class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    KeywordInForLoop3(final long age) {
+        this.age = age;
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> people = new .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, .ceylon.language.Tuple<.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3>>>(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$, new .java.lang.Object[]{
+                new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3(1L),
+                new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3(18L)});
+        final boolean minors;
+        boolean minors$68 = false;
+        boolean doforelse$69 = true;
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .java.lang.Object> iterable$74 = people;
+        final boolean isArraySequence$75 = iterable$74 instanceof .ceylon.language.ArraySequence;
+        .java.lang.Object elem$70 = null;
+        final .java.lang.Object array$76;
+        int i$77 = 0;
+        final int length$78;
+        if (isArraySequence$75) {
+            array$76 = ((.ceylon.language.ArraySequence)iterable$74).$getArray$();
+            i$77 = ((.ceylon.language.ArraySequence)iterable$74).$getFirst$();
+            length$78 = i$77 + ((.ceylon.language.ArraySequence)iterable$74).$getLength$();
+        } else {
+            array$76 = null;
+            length$78 = 0;
+        }
+        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> $byte$iterator$$71 = isArraySequence$75 ? null : iterable$74.iterator();
+        loop_11: while (isArraySequence$75 ? i$77 < length$78 : !((elem$70 = $byte$iterator$$71.next()) instanceof .ceylon.language.Finished)) {
+            if (isArraySequence$75) elem$70 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$76, i$77++);
+            final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3 $byte = (.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3)elem$70;
+            if ($byte.getAge() < 18L) {
+                minors$68 = true;
+                final boolean minors$73 = minors$68;
+                doforelse$69 = false;
+                break loop_11;
+            }
+        }
+        if (doforelse$69) {
+            minors$68 = false;
+            final boolean minors$79 = minors$68;
+        }
+        minors = minors$68;
+    }
+    private final long age;
+    
+    public final long getAge() {
+        return age;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3.class);
+}

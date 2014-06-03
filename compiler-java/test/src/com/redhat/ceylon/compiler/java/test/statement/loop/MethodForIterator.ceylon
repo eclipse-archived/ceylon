@@ -25,11 +25,6 @@ class MethodForIterator(){
                 // Empty
             }
         }
-        for(Integer byte in seq){
-            if (byte > 5) {
-                // Empty
-            }
-        }
     }
     shared void m2(){
         for(String s in {"aap","noot","mies"}){
@@ -45,22 +40,6 @@ class MethodForIterator(){
             // Empty
         }
         for(Character c in "wim"){
-            // Empty
-        }
-        
-        for(String byte in {"aap","noot","mies"}){
-            // Empty
-        }
-        for(String? byte in {"aap",null,"mies"}){
-            // Empty
-        }
-        for(Integer byte in {1,2,3}){
-            // Empty
-        }
-        for(Integer? byte in {1,null,3}){
-            // Empty
-        }
-        for(Character byte in "wim"){
             // Empty
         }
     }

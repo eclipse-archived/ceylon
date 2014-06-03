@@ -145,6 +145,11 @@ public class QuotingTest extends CompilerTest {
     }
     
     @Test
+    public void testKeywordInForLoop(){
+        compareWithJavaSource("goto/KeywordInForLoop");
+    }
+    
+    @Test
     public void testCaseCollision(){
         try {
             compileAndRun("com.redhat.ceylon.compiler.java.test.quoting.$goto.CaseCollision", "goto/CaseCollision.ceylon");

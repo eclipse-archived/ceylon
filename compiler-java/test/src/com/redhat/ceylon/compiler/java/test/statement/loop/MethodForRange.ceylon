@@ -26,11 +26,5 @@ class MethodForRange(){
                 // Empty
             }
         }
-        @disableOptimization:"RangeOpIteration"
-        for (Integer byte in 1..10) {
-            if (byte > 5) {
-                // Empty
-            }
-        }
     }
 }

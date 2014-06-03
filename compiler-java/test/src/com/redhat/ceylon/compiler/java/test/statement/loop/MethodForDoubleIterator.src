@@ -49,50 +49,6 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
         }
     }
     
-    public final void m2() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, ? extends .java.lang.Object> iterable$11 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"));
-                
-                case 1: 
-                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("b"));
-                
-                case 2: 
-                    return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.instance(3L), .ceylon.language.String.instance("c"));
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
-        final boolean isArraySequence$12 = iterable$11 instanceof .ceylon.language.ArraySequence;
-        .java.lang.Object elem$8 = null;
-        final .java.lang.Object array$13;
-        int i$14 = 0;
-        final int length$15;
-        if (isArraySequence$12) {
-            array$13 = ((.ceylon.language.ArraySequence)iterable$11).$getArray$();
-            i$14 = ((.ceylon.language.ArraySequence)iterable$11).$getFirst$();
-            length$15 = i$14 + ((.ceylon.language.ArraySequence)iterable$11).$getLength$();
-        } else {
-            array$13 = null;
-            length$15 = 0;
-        }
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> $byte$iterator$$9 = isArraySequence$12 ? null : iterable$11.iterator();
-        loop_1: while (isArraySequence$12 ? i$14 < length$15 : !((elem$8 = $byte$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
-            if (isArraySequence$12) elem$8 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$13, i$14++);
-            final long $byte = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$8).getKey().longValue();
-            final .java.lang.String long = ((.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>)elem$8).getItem().toString();
-            if ($byte > 5L) {
-            }
-        }
-    }
-    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForDoubleIterator();

@@ -39,25 +39,4 @@ class MethodForElse(){
         }
         return 2;
     }
-    
-    shared Integer m2(Sequence<Integer> seq){
-        for(Integer byte in seq){
-            while (true) {
-                for(Integer long in seq){
-                    if (byte > long) {
-                        break;
-                    }
-                }
-                else {
-                    return 1;
-                }
-                break;
-            }
-            break;
-        }
-        else {
-            return 0;
-        }
-        return 2;
-    }
 }
