@@ -413,7 +413,7 @@ public final class IntArray implements ReifiedType {
             return new IntArrayIterable(this.array, 
                     this.start, 
                     this.end, 
-                    this.step*(int)step);
+                    com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
         }
         
         @Override
@@ -422,7 +422,7 @@ public final class IntArray implements ReifiedType {
                 return this;
             }
             return new IntArrayIterable(this.array, 
-                    this.start+(int)skip*this.step, 
+                    com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
                     this.end, 
                     this.step);
         }
@@ -434,7 +434,7 @@ public final class IntArray implements ReifiedType {
             }
             return new IntArrayIterable(this.array, 
                     this.start, 
-                    (int)take*this.step+1, 
+                    com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
                     this.step);
         }
         
