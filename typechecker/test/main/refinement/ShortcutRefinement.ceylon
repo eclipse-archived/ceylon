@@ -224,3 +224,19 @@ abstract class WithInnerSubClass() {
         name => "Gavin";
     }
 }
+
+abstract class WithInnerSubClass2() {
+    shared variable default String name="";
+    class SubClass() extends WithInnerSubClass2() {
+        @error name = "Gavin";
+        @error name = "Tom";
+    }
+}
+
+abstract class WithInnerSubClass3() {
+    shared variable formal String name;
+    class SubClass() extends WithInnerSubClass2() {
+        @error name = "Gavin";
+        @error name = "Tom";
+    }
+}
