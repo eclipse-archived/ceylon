@@ -964,7 +964,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 break;
             case OBJECT:
                 // we first make a class
-                Declaration objectClassDecl = makeLazyClass(classMirror, null, null, true);
+                Declaration objectClassDecl = makeLazyClass(classMirror, null, null);
                 typeDeclarationsByName.put(key, objectClassDecl);
                 decls.add(objectClassDecl);
                 // then we make a value for it
@@ -996,7 +996,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             // where the constructor is protected because we want to use an accessor, in this case the class
                             // visibility is to be used
                             if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
-                                decl = makeLazyClass(classMirror, null, constructor, false);
+                                decl = makeLazyClass(classMirror, null, constructor);
                                 setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
                             }else{
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
@@ -1004,19 +1004,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
-                        decl = makeLazyClass(classMirror, null, null, false);
+                        decl = makeLazyClass(classMirror, null, null);
                         setDeclarationVisibility(decl, classMirror, classMirror, isCeylon);
                     } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
                         Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                         decl = klass;
-                        LazyClass subdecl = makeLazyClass(classMirror, klass, null, false);
+                        LazyClass subdecl = makeLazyClass(classMirror, klass, null);
                         // no visibility for subdecl (private)
                         subdecl.setOverloaded(true);
                         klass.getOverloads().add(subdecl);
                         decls.add(subdecl);
                     } else {
                         // private class does not need a constructor
-                        decl = makeLazyClass(classMirror, null, null, false);
+                        decl = makeLazyClass(classMirror, null, null);
                     }
                 }
                 break;
@@ -1048,14 +1048,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // If the class has multiple constructors we make a copy of the class
         // for each one (each with it's own single constructor) and make them
         // a subclass of the original
-        Class supercls = makeLazyClass(classMirror, null, null, false);
+        Class supercls = makeLazyClass(classMirror, null, null);
         // the abstraction class gets the class modifiers
         setDeclarationVisibility(supercls, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
-            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor);
             // the subclasses class get the constructor modifiers
             setDeclarationVisibility(subdecl, constructor, classMirror, isCeylon);
             subdecl.setOverloaded(true);
@@ -1201,8 +1201,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
     
-    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
-        LazyClass klass = new LazyClass(classMirror, this, superClass, constructor, forTopLevelObject);
+    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror constructor) {
+        LazyClass klass = new LazyClass(classMirror, this, superClass, constructor);
         klass.setAnonymous(classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null);
         klass.setAnnotation(classMirror.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
         if(klass.isCeylon())
@@ -1928,7 +1928,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // Having loaded methods and values, we can now set the constructor parameters
         if(constructor != null 
-                && (!(klass instanceof LazyClass) || !((LazyClass)klass).isTopLevelObjectType()))
+                && (!(klass instanceof LazyClass) || !((LazyClass)klass).isAnonymous()))
             setParameters((Class)klass, constructor, isCeylon, klass);
         // Now marry-up attributes and parameters)
         if (klass instanceof Class) {

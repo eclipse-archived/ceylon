@@ -52,7 +52,6 @@ public class LazyClass extends Class implements LazyContainer {
     private ModelCompleter completer;
     private Class superClass;
     private MethodMirror constructor;
-    private boolean forTopLevelObject;
     private String realName;
     private boolean isStatic;
     private boolean isCeylon;
@@ -70,12 +69,11 @@ public class LazyClass extends Class implements LazyContainer {
         return getClass().getSuperclass(); 
     }
     
-    public LazyClass(ClassMirror classMirror, ModelCompleter completer, Class superClass, MethodMirror constructor, boolean forTopLevelObject) {
+    public LazyClass(ClassMirror classMirror, ModelCompleter completer, Class superClass, MethodMirror constructor) {
         this.classMirror = classMirror;
         this.completer = completer;
         this.superClass = superClass;
         this.constructor = constructor;
-        this.forTopLevelObject = forTopLevelObject;
         this.realName = classMirror.getName();
         setName(Util.getMirrorName(classMirror));
         this.isStatic = classMirror.isStatic();
@@ -99,10 +97,6 @@ public class LazyClass extends Class implements LazyContainer {
         return constructor;
     }
     
-    public boolean isTopLevelObjectType(){
-        return forTopLevelObject;
-    }
-
     public String getRealName() {
         return this.realName;
     }
