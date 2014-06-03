@@ -36,7 +36,13 @@ public class ReferenceCounter extends Visitor {
 	}
 	
 	boolean isReferenced(Declaration d) {
-		return referencedDeclarations.contains(d);
+		for (Declaration rd: referencedDeclarations) {
+		    if (rd.getContainer().equals(d.getContainer()) &&
+		            rd.getName().equals(d.getName())) {
+		        return true;
+		    }
+		}
+		return false;
 	}
 	
 	@Override
