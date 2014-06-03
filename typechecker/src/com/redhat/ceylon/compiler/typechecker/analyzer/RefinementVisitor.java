@@ -125,6 +125,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
         }
+        inheritDefaultedArguments(td);
     }
 
     @Override
@@ -137,6 +138,25 @@ public class RefinementVisitor extends Visitor {
                     Parameter p = tp.getParameterModel();
                     if (p.getModel()!=null) {
                         checkParameterVisibility(that, td, tp, p);
+                    }
+                }
+            }
+        }
+        inheritDefaultedArguments(td);
+    }
+
+    private void inheritDefaultedArguments(Declaration d) {
+        if (d.getRefinedDeclaration()!=d) {
+            List<ParameterList> tdpls = ((Functional) d).getParameterLists();
+            List<ParameterList> rdpls = ((Functional) d.getRefinedDeclaration()).getParameterLists();
+            if (!tdpls.isEmpty() && !rdpls.isEmpty()) {
+                List<Parameter> tdps = tdpls.get(0).getParameters();
+                List<Parameter> rdps = rdpls.get(0).getParameters();
+                for (int i=0; i<tdps.size()&&i<rdps.size(); i++) {
+                    Parameter tdp = tdps.get(i);
+                    Parameter rdp = rdps.get(i);
+                    if (tdp!=null && rdp!=null) {
+                        tdp.setDefaulted(rdp.isDefaulted());
                     }
                 }
             }
@@ -852,7 +872,6 @@ public class RefinementVisitor extends Visitor {
                                 param, parameterType, typeNode);
                     }
                 }
-                param.setDefaulted(rparam.isDefaulted());
             }
         }
     }
