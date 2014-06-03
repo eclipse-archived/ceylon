@@ -179,6 +179,13 @@ public class Metamodel {
             return getJavaTypeDescriptor(instance.getClass());
     }
     
+    public static TypeDescriptor getIteratedTypeDescriptor(Iterable iter) {
+        TypeDescriptor td = getTypeDescriptor(iter);
+        return getTypeDescriptorForProducedType(
+                moduleManager.getModelLoader().getUnit().getIteratedType(
+                        getProducedType(td)));
+    }
+    
     private static TypeDescriptor getJavaArrayTypeDescriptor(Class<?> klass) {
         if(klass == byte[].class)
             return ByteArray.$TypeDescriptor$;

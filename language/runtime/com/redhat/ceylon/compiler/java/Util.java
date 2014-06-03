@@ -15,6 +15,8 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.ArrayIterable;
 import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -1171,25 +1173,8 @@ public class Util {
      * a 
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Sequential sequentialInstance(Iterable iterable) {
-        if (iterable instanceof Sequential) {
-            // since it's immutable
-            return (Sequential)iterable;
-        }
-        Iterator iterator = iterable.iterator();
-        Object e = iterator.next();
-        if (e instanceof Finished) {
-            return empty_.get_();
-        } else {
-            SequenceBuilder sb = new SequenceBuilder(Metamodel.getTypeDescriptor(iterable));
-            sb.append(e);
-            e = iterator.next();
-            while (!(e instanceof Finished)) {
-                sb.append(e);
-                e = iterator.next();
-            }
-            return sb.getSequence();
-        }
+    public static Sequential sequentialInstance(final Iterable iterable) {
+        return ceylon.language.impl.sequential_.sequential(Metamodel.getIteratedTypeDescriptor(iterable), iterable);
     }
     
     
