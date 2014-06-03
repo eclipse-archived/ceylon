@@ -33,6 +33,8 @@ void thisSuperOuter() {
 abstract class LeaksThis() extends Exception() 
 satisfies Summable<LeaksThis>&Iterable<String> {
     
+    string => (super of Exception).string;
+    
     @error value r2 = this;
     @error print(this);
     print { @error val=this; };
@@ -60,6 +62,9 @@ satisfies Summable<LeaksThis>&Iterable<String> {
 
 abstract class LeaksSuper() extends Exception() 
 satisfies Summable<LeaksSuper>&Iterable<String> {
+    
+    string => (super of Exception).string;
+    
     @error value r2 = super;
     @error print(super);
     print { @error val=super; };

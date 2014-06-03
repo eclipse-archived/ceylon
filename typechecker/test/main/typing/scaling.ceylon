@@ -8,7 +8,7 @@ shared interface Scalable<Scale,Result> of Result
 shared interface Subtractable<Other> of Other
         satisfies Summable<Other>
         given Other satisfies Subtractable<Other> {
-    shared formal Other minus(Other other);
+    shared formal Other subtract(Other other);
 }
 
 shared interface Numeric<Other> of Other
