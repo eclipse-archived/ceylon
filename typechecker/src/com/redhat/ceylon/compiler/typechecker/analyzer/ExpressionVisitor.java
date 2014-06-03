@@ -712,7 +712,7 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("function is declared void so specified expression must be a statement: " + 
                             d.getName(unit));
                 }
-                if (d instanceof Value && 
+                if (!that.getRefinement() && d instanceof Value && 
                         that.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) {
                     ((Value) d).setTransient(true);
                 }
