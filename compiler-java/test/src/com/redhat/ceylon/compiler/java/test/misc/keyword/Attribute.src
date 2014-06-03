@@ -1,170 +1,59 @@
 package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
-class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
-    Attribute() {
-        this.abstract = false;
-        this.boolean = false;
-        this.byte = false;
-        this.char = false;
-        this.const = false;
-        this.default = false;
-        this.do = false;
-        this.double = false;
-        this.enum = false;
-        this.final = false;
-        this.float = false;
-        this.goto = false;
-        this.implements = false;
-        this.instanceof = false;
-        this.int = false;
-        this.long = false;
-        this.native = false;
-        this.private = false;
-        this.protected = false;
-        this.public = false;
-        this.short = false;
-        this.static = false;
-        this.strictfp = false;
-        this.synchronized = false;
-        this.throws = false;
-        this.transient = false;
-        this.volatile = false;
-    }
-    private final boolean abstract;
-    
-    public final boolean getAbstract() {
-        return abstract;
-    }
-    private final boolean boolean;
-    
-    public final boolean getBoolean() {
-        return boolean;
-    }
-    private final boolean byte;
-    
-    public final boolean getByte() {
-        return byte;
-    }
-    private final boolean char;
-    
-    public final boolean getChar() {
-        return char;
-    }
-    private final boolean const;
-    
-    public final boolean getConst() {
-        return const;
-    }
-    private final boolean default;
-    
-    public final boolean getDefault() {
-        return default;
-    }
-    private final boolean do;
-    
-    public final boolean getDo() {
-        return do;
-    }
-    private final boolean double;
-    
-    public final boolean getDouble() {
-        return double;
-    }
-    private final boolean enum;
-    
-    public final boolean getEnum() {
-        return enum;
-    }
-    private final boolean final;
-    
-    public final boolean getFinal() {
-        return final;
-    }
-    private final boolean float;
-    
-    public final boolean getFloat() {
-        return float;
-    }
-    private final boolean goto;
-    
-    public final boolean getGoto() {
-        return goto;
-    }
-    private final boolean implements;
-    
-    public final boolean getImplements() {
-        return implements;
-    }
-    private final boolean instanceof;
-    
-    public final boolean getInstanceof() {
-        return instanceof;
-    }
-    private final boolean int;
-    
-    public final boolean getInt() {
-        return int;
-    }
-    private final boolean long;
-    
-    public final boolean getLong() {
-        return long;
-    }
-    private final boolean native;
-    
-    public final boolean getNative() {
-        return native;
-    }
-    private final boolean private;
-    
-    public final boolean getPrivate() {
-        return private;
-    }
-    private final boolean protected;
-    
-    public final boolean getProtected() {
-        return protected;
-    }
-    private final boolean public;
-    
-    public final boolean getPublic() {
-        return public;
-    }
-    private final boolean short;
-    
-    public final boolean getShort() {
-        return short;
-    }
-    private final boolean static;
-    
-    public final boolean getStatic() {
-        return static;
-    }
-    private final boolean strictfp;
-    
-    public final boolean getStrictfp() {
-        return strictfp;
-    }
-    private final boolean synchronized;
-    
-    public final boolean getSynchronized() {
-        return synchronized;
-    }
-    private final boolean throws;
-    
-    public final boolean getThrows() {
-        return throws;
-    }
-    private final boolean transient;
-    
-    public final boolean getTransient() {
-        return transient;
-    }
-    private final boolean volatile;
-    
-    public final boolean getVolatile() {
-        return volatile;
+    public Attribute() {
+        final boolean $abstract = false;
+        final boolean $assert = false;
+        final boolean $boolean = false;
+        final boolean $break = false;
+        final boolean $byte = false;
+        final boolean $case = false;
+        final boolean $catch = false;
+        final boolean $char = false;
+        final boolean $const = false;
+        final boolean $continue = false;
+        final boolean $default = false;
+        final boolean $do = false;
+        final boolean $double = false;
+        final boolean $else = false;
+        final boolean $enum = false;
+        final boolean $extends = false;
+        final boolean $final = false;
+        final boolean $finally = false;
+        final boolean $float = false;
+        final boolean $for = false;
+        final boolean $goto = false;
+        final boolean $if = false;
+        final boolean $implements = false;
+        final boolean $import = false;
+        final boolean $instanceof = false;
+        final boolean $int = false;
+        final boolean $interface = false;
+        final boolean $long = false;
+        final boolean $native = false;
+        final boolean $new = false;
+        final boolean $package = false;
+        final boolean $private = false;
+        final boolean $protected = false;
+        final boolean $public = false;
+        final boolean $return = false;
+        final boolean $short = false;
+        final boolean $static = false;
+        final boolean $strictfp = false;
+        final boolean $super = false;
+        final boolean $switch = false;
+        final boolean $synchronized = false;
+        final boolean $this = false;
+        final boolean $throw = false;
+        final boolean $throws = false;
+        final boolean $transient = false;
+        final boolean $try = false;
+        final boolean $void = false;
+        final boolean $volatile = false;
+        final boolean $while = false;
+        final boolean $true = false;
+        final boolean $null = false;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -177,4 +66,919 @@ class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return .com.redhat.ceylon.compiler.java.test.misc.keyword.Attribute.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Attribute.class);
+}
+public class AttributeShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public AttributeShared() {
+        this.$abstract = false;
+        this.$assert = false;
+        this.$boolean = false;
+        this.$break = false;
+        this.$byte = false;
+        this.$case = false;
+        this.$catch = false;
+        this.$char = false;
+        this.$const = false;
+        this.$continue = false;
+        this.$default = false;
+        this.$do = false;
+        this.$double = false;
+        this.$else = false;
+        this.$enum = false;
+        this.$extends = false;
+        this.$final = false;
+        this.$finally = false;
+        this.$float = false;
+        this.$for = false;
+        this.$goto = false;
+        this.$if = false;
+        this.$implements = false;
+        this.$import = false;
+        this.$instanceof = false;
+        this.$int = false;
+        this.$interface = false;
+        this.$long = false;
+        this.$native = false;
+        this.$new = false;
+        this.$package = false;
+        this.$private = false;
+        this.$protected = false;
+        this.$public = false;
+        this.$return = false;
+        this.$short = false;
+        this.$static = false;
+        this.$strictfp = false;
+        this.$super = false;
+        this.$switch = false;
+        this.$synchronized = false;
+        this.$this = false;
+        this.$throw = false;
+        this.$throws = false;
+        this.$transient = false;
+        this.$try = false;
+        this.$void = false;
+        this.$volatile = false;
+        this.$while = false;
+        this.$true = false;
+        this.$null = false;
+    }
+    private final boolean $abstract;
+    
+    public final boolean getAbstract() {
+        return $abstract;
+    }
+    private final boolean $assert;
+    
+    public final boolean getAssert() {
+        return $assert;
+    }
+    private final boolean $boolean;
+    
+    public final boolean getBoolean() {
+        return $boolean;
+    }
+    private final boolean $break;
+    
+    public final boolean getBreak() {
+        return $break;
+    }
+    private final boolean $byte;
+    
+    public final boolean getByte() {
+        return $byte;
+    }
+    private final boolean $case;
+    
+    public final boolean getCase() {
+        return $case;
+    }
+    private final boolean $catch;
+    
+    public final boolean getCatch() {
+        return $catch;
+    }
+    private final boolean $char;
+    
+    public final boolean getChar() {
+        return $char;
+    }
+    private final boolean $const;
+    
+    public final boolean getConst() {
+        return $const;
+    }
+    private final boolean $continue;
+    
+    public final boolean getContinue() {
+        return $continue;
+    }
+    private final boolean $default;
+    
+    public final boolean getDefault() {
+        return $default;
+    }
+    private final boolean $do;
+    
+    public final boolean getDo() {
+        return $do;
+    }
+    private final boolean $double;
+    
+    public final boolean getDouble() {
+        return $double;
+    }
+    private final boolean $else;
+    
+    public final boolean getElse() {
+        return $else;
+    }
+    private final boolean $enum;
+    
+    public final boolean getEnum() {
+        return $enum;
+    }
+    private final boolean $extends;
+    
+    public final boolean getExtends() {
+        return $extends;
+    }
+    private final boolean $final;
+    
+    public final boolean getFinal() {
+        return $final;
+    }
+    private final boolean $finally;
+    
+    public final boolean getFinally() {
+        return $finally;
+    }
+    private final boolean $float;
+    
+    public final boolean getFloat() {
+        return $float;
+    }
+    private final boolean $for;
+    
+    public final boolean getFor() {
+        return $for;
+    }
+    private final boolean $goto;
+    
+    public final boolean getGoto() {
+        return $goto;
+    }
+    private final boolean $if;
+    
+    public final boolean getIf() {
+        return $if;
+    }
+    private final boolean $implements;
+    
+    public final boolean getImplements() {
+        return $implements;
+    }
+    private final boolean $import;
+    
+    public final boolean getImport() {
+        return $import;
+    }
+    private final boolean $instanceof;
+    
+    public final boolean getInstanceof() {
+        return $instanceof;
+    }
+    private final boolean $int;
+    
+    public final boolean getInt() {
+        return $int;
+    }
+    private final boolean $interface;
+    
+    public final boolean getInterface() {
+        return $interface;
+    }
+    private final boolean $long;
+    
+    public final boolean getLong() {
+        return $long;
+    }
+    private final boolean $native;
+    
+    public final boolean getNative() {
+        return $native;
+    }
+    private final boolean $new;
+    
+    public final boolean getNew() {
+        return $new;
+    }
+    private final boolean $package;
+    
+    public final boolean getPackage() {
+        return $package;
+    }
+    private final boolean $private;
+    
+    public final boolean getPrivate() {
+        return $private;
+    }
+    private final boolean $protected;
+    
+    public final boolean getProtected() {
+        return $protected;
+    }
+    private final boolean $public;
+    
+    public final boolean getPublic() {
+        return $public;
+    }
+    private final boolean $return;
+    
+    public final boolean getReturn() {
+        return $return;
+    }
+    private final boolean $short;
+    
+    public final boolean getShort() {
+        return $short;
+    }
+    private final boolean $static;
+    
+    public final boolean getStatic() {
+        return $static;
+    }
+    private final boolean $strictfp;
+    
+    public final boolean getStrictfp() {
+        return $strictfp;
+    }
+    private final boolean $super;
+    
+    public final boolean getSuper() {
+        return $super;
+    }
+    private final boolean $switch;
+    
+    public final boolean getSwitch() {
+        return $switch;
+    }
+    private final boolean $synchronized;
+    
+    public final boolean getSynchronized() {
+        return $synchronized;
+    }
+    private final boolean $this;
+    
+    public final boolean getThis() {
+        return $this;
+    }
+    private final boolean $throw;
+    
+    public final boolean getThrow() {
+        return $throw;
+    }
+    private final boolean $throws;
+    
+    public final boolean getThrows() {
+        return $throws;
+    }
+    private final boolean $transient;
+    
+    public final boolean getTransient() {
+        return $transient;
+    }
+    private final boolean $try;
+    
+    public final boolean getTry() {
+        return $try;
+    }
+    private final boolean $void;
+    
+    public final boolean getVoid() {
+        return $void;
+    }
+    private final boolean $volatile;
+    
+    public final boolean getVolatile() {
+        return $volatile;
+    }
+    private final boolean $while;
+    
+    public final boolean getWhile() {
+        return $while;
+    }
+    private final boolean $true;
+    
+    public final boolean getTrue() {
+        return $true;
+    }
+    private final boolean $null;
+    
+    public final boolean getNull() {
+        return $null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.misc.keyword.AttributeShared();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.keyword.AttributeShared.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.AttributeShared.class);
+}
+class VariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    VariableAttribute() {
+        boolean $abstract = false;
+        boolean $assert = false;
+        boolean $boolean = false;
+        boolean $break = false;
+        boolean $byte = false;
+        boolean $case = false;
+        boolean $catch = false;
+        boolean $char = false;
+        boolean $const = false;
+        boolean $continue = false;
+        boolean $default = false;
+        boolean $do = false;
+        boolean $double = false;
+        boolean $else = false;
+        boolean $enum = false;
+        boolean $extends = false;
+        boolean $final = false;
+        boolean $finally = false;
+        boolean $float = false;
+        boolean $for = false;
+        boolean $goto = false;
+        boolean $if = false;
+        boolean $implements = false;
+        boolean $import = false;
+        boolean $instanceof = false;
+        boolean $int = false;
+        boolean $interface = false;
+        boolean $long = false;
+        boolean $native = false;
+        boolean $new = false;
+        boolean $package = false;
+        boolean $private = false;
+        boolean $protected = false;
+        boolean $public = false;
+        boolean $return = false;
+        boolean $short = false;
+        boolean $static = false;
+        boolean $strictfp = false;
+        boolean $super = false;
+        boolean $switch = false;
+        boolean $synchronized = false;
+        boolean $this = false;
+        boolean $throw = false;
+        boolean $throws = false;
+        boolean $transient = false;
+        boolean $try = false;
+        boolean $void = false;
+        boolean $volatile = false;
+        boolean $while = false;
+        boolean $true = false;
+        boolean $null = false;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttribute();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttribute.class);
+}
+public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public VariableAttributeShared() {
+        this.$abstract = false;
+        this.$assert = false;
+        this.$boolean = false;
+        this.$break = false;
+        this.$byte = false;
+        this.$case = false;
+        this.$catch = false;
+        this.$char = false;
+        this.$const = false;
+        this.$continue = false;
+        this.$default = false;
+        this.$do = false;
+        this.$double = false;
+        this.$else = false;
+        this.$enum = false;
+        this.$extends = false;
+        this.$final = false;
+        this.$finally = false;
+        this.$float = false;
+        this.$for = false;
+        this.$goto = false;
+        this.$if = false;
+        this.$implements = false;
+        this.$import = false;
+        this.$instanceof = false;
+        this.$int = false;
+        this.$interface = false;
+        this.$long = false;
+        this.$native = false;
+        this.$new = false;
+        this.$package = false;
+        this.$private = false;
+        this.$protected = false;
+        this.$public = false;
+        this.$return = false;
+        this.$short = false;
+        this.$static = false;
+        this.$strictfp = false;
+        this.$super = false;
+        this.$switch = false;
+        this.$synchronized = false;
+        this.$this = false;
+        this.$throw = false;
+        this.$throws = false;
+        this.$transient = false;
+        this.$try = false;
+        this.$void = false;
+        this.$volatile = false;
+        this.$while = false;
+        this.$true = false;
+        this.$null = false;
+    }
+    private boolean $abstract;
+    
+    public final boolean getAbstract() {
+        return $abstract;
+    }
+    
+    public final void setAbstract(final boolean $abstract) {
+        this.$abstract = $abstract;
+    }
+    private boolean $assert;
+    
+    public final boolean getAssert() {
+        return $assert;
+    }
+    
+    public final void setAssert(final boolean $assert) {
+        this.$assert = $assert;
+    }
+    private boolean $boolean;
+    
+    public final boolean getBoolean() {
+        return $boolean;
+    }
+    
+    public final void setBoolean(final boolean $boolean) {
+        this.$boolean = $boolean;
+    }
+    private boolean $break;
+    
+    public final boolean getBreak() {
+        return $break;
+    }
+    
+    public final void setBreak(final boolean $break) {
+        this.$break = $break;
+    }
+    private boolean $byte;
+    
+    public final boolean getByte() {
+        return $byte;
+    }
+    
+    public final void setByte(final boolean $byte) {
+        this.$byte = $byte;
+    }
+    private boolean $case;
+    
+    public final boolean getCase() {
+        return $case;
+    }
+    
+    public final void setCase(final boolean $case) {
+        this.$case = $case;
+    }
+    private boolean $catch;
+    
+    public final boolean getCatch() {
+        return $catch;
+    }
+    
+    public final void setCatch(final boolean $catch) {
+        this.$catch = $catch;
+    }
+    private boolean $char;
+    
+    public final boolean getChar() {
+        return $char;
+    }
+    
+    public final void setChar(final boolean $char) {
+        this.$char = $char;
+    }
+    private boolean $const;
+    
+    public final boolean getConst() {
+        return $const;
+    }
+    
+    public final void setConst(final boolean $const) {
+        this.$const = $const;
+    }
+    private boolean $continue;
+    
+    public final boolean getContinue() {
+        return $continue;
+    }
+    
+    public final void setContinue(final boolean $continue) {
+        this.$continue = $continue;
+    }
+    private boolean $default;
+    
+    public final boolean getDefault() {
+        return $default;
+    }
+    
+    public final void setDefault(final boolean $default) {
+        this.$default = $default;
+    }
+    private boolean $do;
+    
+    public final boolean getDo() {
+        return $do;
+    }
+    
+    public final void setDo(final boolean $do) {
+        this.$do = $do;
+    }
+    private boolean $double;
+    
+    public final boolean getDouble() {
+        return $double;
+    }
+    
+    public final void setDouble(final boolean $double) {
+        this.$double = $double;
+    }
+    private boolean $else;
+    
+    public final boolean getElse() {
+        return $else;
+    }
+    
+    public final void setElse(final boolean $else) {
+        this.$else = $else;
+    }
+    private boolean $enum;
+    
+    public final boolean getEnum() {
+        return $enum;
+    }
+    
+    public final void setEnum(final boolean $enum) {
+        this.$enum = $enum;
+    }
+    private boolean $extends;
+    
+    public final boolean getExtends() {
+        return $extends;
+    }
+    
+    public final void setExtends(final boolean $extends) {
+        this.$extends = $extends;
+    }
+    private boolean $final;
+    
+    public final boolean getFinal() {
+        return $final;
+    }
+    
+    public final void setFinal(final boolean $final) {
+        this.$final = $final;
+    }
+    private boolean $finally;
+    
+    public final boolean getFinally() {
+        return $finally;
+    }
+    
+    public final void setFinally(final boolean $finally) {
+        this.$finally = $finally;
+    }
+    private boolean $float;
+    
+    public final boolean getFloat() {
+        return $float;
+    }
+    
+    public final void setFloat(final boolean $float) {
+        this.$float = $float;
+    }
+    private boolean $for;
+    
+    public final boolean getFor() {
+        return $for;
+    }
+    
+    public final void setFor(final boolean $for) {
+        this.$for = $for;
+    }
+    private boolean $goto;
+    
+    public final boolean getGoto() {
+        return $goto;
+    }
+    
+    public final void setGoto(final boolean $goto) {
+        this.$goto = $goto;
+    }
+    private boolean $if;
+    
+    public final boolean getIf() {
+        return $if;
+    }
+    
+    public final void setIf(final boolean $if) {
+        this.$if = $if;
+    }
+    private boolean $implements;
+    
+    public final boolean getImplements() {
+        return $implements;
+    }
+    
+    public final void setImplements(final boolean $implements) {
+        this.$implements = $implements;
+    }
+    private boolean $import;
+    
+    public final boolean getImport() {
+        return $import;
+    }
+    
+    public final void setImport(final boolean $import) {
+        this.$import = $import;
+    }
+    private boolean $instanceof;
+    
+    public final boolean getInstanceof() {
+        return $instanceof;
+    }
+    
+    public final void setInstanceof(final boolean $instanceof) {
+        this.$instanceof = $instanceof;
+    }
+    private boolean $int;
+    
+    public final boolean getInt() {
+        return $int;
+    }
+    
+    public final void setInt(final boolean $int) {
+        this.$int = $int;
+    }
+    private boolean $interface;
+    
+    public final boolean getInterface() {
+        return $interface;
+    }
+    
+    public final void setInterface(final boolean $interface) {
+        this.$interface = $interface;
+    }
+    private boolean $long;
+    
+    public final boolean getLong() {
+        return $long;
+    }
+    
+    public final void setLong(final boolean $long) {
+        this.$long = $long;
+    }
+    private boolean $native;
+    
+    public final boolean getNative() {
+        return $native;
+    }
+    
+    public final void setNative(final boolean $native) {
+        this.$native = $native;
+    }
+    private boolean $new;
+    
+    public final boolean getNew() {
+        return $new;
+    }
+    
+    public final void setNew(final boolean $new) {
+        this.$new = $new;
+    }
+    private boolean $package;
+    
+    public final boolean getPackage() {
+        return $package;
+    }
+    
+    public final void setPackage(final boolean $package) {
+        this.$package = $package;
+    }
+    private boolean $private;
+    
+    public final boolean getPrivate() {
+        return $private;
+    }
+    
+    public final void setPrivate(final boolean $private) {
+        this.$private = $private;
+    }
+    private boolean $protected;
+    
+    public final boolean getProtected() {
+        return $protected;
+    }
+    
+    public final void setProtected(final boolean $protected) {
+        this.$protected = $protected;
+    }
+    private boolean $public;
+    
+    public final boolean getPublic() {
+        return $public;
+    }
+    
+    public final void setPublic(final boolean $public) {
+        this.$public = $public;
+    }
+    private boolean $return;
+    
+    public final boolean getReturn() {
+        return $return;
+    }
+    
+    public final void setReturn(final boolean $return) {
+        this.$return = $return;
+    }
+    private boolean $short;
+    
+    public final boolean getShort() {
+        return $short;
+    }
+    
+    public final void setShort(final boolean $short) {
+        this.$short = $short;
+    }
+    private boolean $static;
+    
+    public final boolean getStatic() {
+        return $static;
+    }
+    
+    public final void setStatic(final boolean $static) {
+        this.$static = $static;
+    }
+    private boolean $strictfp;
+    
+    public final boolean getStrictfp() {
+        return $strictfp;
+    }
+    
+    public final void setStrictfp(final boolean $strictfp) {
+        this.$strictfp = $strictfp;
+    }
+    private boolean $super;
+    
+    public final boolean getSuper() {
+        return $super;
+    }
+    
+    public final void setSuper(final boolean $super) {
+        this.$super = $super;
+    }
+    private boolean $switch;
+    
+    public final boolean getSwitch() {
+        return $switch;
+    }
+    
+    public final void setSwitch(final boolean $switch) {
+        this.$switch = $switch;
+    }
+    private boolean $synchronized;
+    
+    public final boolean getSynchronized() {
+        return $synchronized;
+    }
+    
+    public final void setSynchronized(final boolean $synchronized) {
+        this.$synchronized = $synchronized;
+    }
+    private boolean $this;
+    
+    public final boolean getThis() {
+        return $this;
+    }
+    
+    public final void setThis(final boolean $this) {
+        this.$this = $this;
+    }
+    private boolean $throw;
+    
+    public final boolean getThrow() {
+        return $throw;
+    }
+    
+    public final void setThrow(final boolean $throw) {
+        this.$throw = $throw;
+    }
+    private boolean $throws;
+    
+    public final boolean getThrows() {
+        return $throws;
+    }
+    
+    public final void setThrows(final boolean $throws) {
+        this.$throws = $throws;
+    }
+    private boolean $transient;
+    
+    public final boolean getTransient() {
+        return $transient;
+    }
+    
+    public final void setTransient(final boolean $transient) {
+        this.$transient = $transient;
+    }
+    private boolean $try;
+    
+    public final boolean getTry() {
+        return $try;
+    }
+    
+    public final void setTry(final boolean $try) {
+        this.$try = $try;
+    }
+    private boolean $void;
+    
+    public final boolean getVoid() {
+        return $void;
+    }
+    
+    public final void setVoid(final boolean $void) {
+        this.$void = $void;
+    }
+    private boolean $volatile;
+    
+    public final boolean getVolatile() {
+        return $volatile;
+    }
+    
+    public final void setVolatile(final boolean $volatile) {
+        this.$volatile = $volatile;
+    }
+    private boolean $while;
+    
+    public final boolean getWhile() {
+        return $while;
+    }
+    
+    public final void setWhile(final boolean $while) {
+        this.$while = $while;
+    }
+    private boolean $true;
+    
+    public final boolean getTrue() {
+        return $true;
+    }
+    
+    public final void setTrue(final boolean $true) {
+        this.$true = $true;
+    }
+    private boolean $null;
+    
+    public final boolean getNull() {
+        return $null;
+    }
+    
+    public final void setNull(final boolean $null) {
+        this.$null = $null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttributeShared();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttributeShared.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttributeShared.class);
 }

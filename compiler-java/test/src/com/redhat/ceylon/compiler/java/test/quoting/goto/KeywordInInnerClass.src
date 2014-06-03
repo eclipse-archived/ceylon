@@ -10,9 +10,9 @@ class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.mo
         class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             Inner() {
-                this.transient = new Inner.transient_();
+                this.$transient = new Inner.transient_();
             }
-            private final Inner.transient_ transient;
+            private final Inner.transient_ $transient;
             
             final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
@@ -29,7 +29,7 @@ class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.mo
             }
             
             public final Inner.transient_ getTransient() {
-                return transient;
+                return $transient;
             }
             
             @.java.lang.Override

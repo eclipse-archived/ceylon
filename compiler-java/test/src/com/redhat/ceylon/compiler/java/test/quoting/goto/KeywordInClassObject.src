@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 class KeywordInClassObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     KeywordInClassObject() {
-        this.goto = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_();
+        this.$goto = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_();
     }
-    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ goto;
+    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ $goto;
     
     final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -19,7 +19,7 @@ class KeywordInClassObject implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ getGoto$priv$() {
-        return goto;
+        return $goto;
     }
     
     private final void m$priv$() {
