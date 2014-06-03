@@ -677,7 +677,15 @@ public class ExpressionVisitor extends Visitor {
                 that.setDeclaration((TypedDeclaration) d);
                 Scope cs = getRealScope(that.getScope().getContainer());
                 if (cs instanceof ClassOrInterface && 
-                        !d.isDefinedInScope(cs)) {
+                        d.isClassOrInterfaceMember() &&
+                        !d.getContainer().equals(cs) &&
+                        //if the specified dec is a non-formal variable, 
+                        //and the specifier is = instead of =>, then 
+                        //interpret it as assignment to the variable
+                        (!(d instanceof TypedDeclaration) ||
+                         !((TypedDeclaration) d).isVariable() ||
+                         d.isFormal() ||
+                         sie instanceof Tree.LazySpecifierExpression)) {
                     //then it must be inherited ... TODO: is this totally correct? 
                     //so it's actually a refinement of a formal declaration!
                     if (d.getContainer()==that.getScope()) {

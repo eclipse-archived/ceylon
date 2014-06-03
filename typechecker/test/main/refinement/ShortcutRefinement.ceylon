@@ -217,3 +217,10 @@ class SubWithAssignment()
     @error count2 = 10;
     @error count3 = 15;
 }
+
+abstract class WithInnerSubClass() {
+    shared formal String name;
+    class SubClass() extends WithInnerSubClass() {
+        name => "Gavin";
+    }
+}
