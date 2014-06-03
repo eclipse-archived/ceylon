@@ -63,7 +63,7 @@ abstract class AlsoAbstract() {
 }
 
 class AlsoBroken() extends AlsoAbstract() {
-    @error x = "hello";
+    /*@error*/ x = "hello";
     y = "goodbye";
 }
 
@@ -214,8 +214,8 @@ abstract class SuperWithVariable() {
 class SubWithAssignment() 
         extends SuperWithVariable() {
     @error count1 = 5;
-    @error count2 = 10;
-    @error count3 = 15;
+    /*@error*/ count2 = 10;
+    /*@error*/ count3 = 15;
 }
 
 abstract class WithInnerSubClass() {
@@ -228,7 +228,7 @@ abstract class WithInnerSubClass() {
 abstract class WithInnerSubClass2() {
     shared variable default String name="";
     class SubClass() extends WithInnerSubClass2() {
-        @error name = "Gavin";
+        name = "Gavin";
         @error name = "Tom";
     }
 }
@@ -236,7 +236,16 @@ abstract class WithInnerSubClass2() {
 abstract class WithInnerSubClass3() {
     shared variable formal String name;
     class SubClass() extends WithInnerSubClass2() {
-        @error name = "Gavin";
+        name = "Gavin";
         @error name = "Tom";
     }
+}
+
+abstract class SuperVar() {
+    shared formal variable Integer count;
+    shared default variable String name = "";
+}
+class SubVar() extends SuperVar() {
+    count = 1;
+    name = "Ceylon";
 }
