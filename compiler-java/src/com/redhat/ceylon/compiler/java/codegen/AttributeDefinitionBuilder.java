@@ -400,7 +400,7 @@ public class AttributeDefinitionBuilder {
     }
 
     private JCTree.JCBlock generateDefaultGetterBlock() {
-        JCTree.JCExpression returnExpr = owner.makeUnquotedIdent(fieldName);
+        JCTree.JCExpression returnExpr = owner.makeQuotedIdent(fieldName);
         if (toplevel || late) {
             returnExpr = owner.make().Indexed(returnExpr, owner.make().Literal(0));
         }
@@ -471,9 +471,9 @@ public class AttributeDefinitionBuilder {
     private JCExpression fld() {
         JCExpression fld;
         if (fieldName.equals(attrName)) {
-            fld = owner.makeSelect("this", fieldName);
+            fld = owner.makeSelect("this", Naming.quoteIfJavaKeyword(fieldName));
         } else {
-            fld = owner.makeUnquotedIdent(fieldName);
+            fld = owner.makeQuotedIdent(fieldName);
         }
         return fld;
     }
