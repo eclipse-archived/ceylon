@@ -415,6 +415,14 @@ public class TypeVisitor extends Visitor {
             unit.getUnresolvedReferences().add(id);
         }
         else {
+            for (Declaration d: m.getContainer().getMembers()) {
+                if (d.getName().equals(name) && !d.sameKind(m)) {
+                    //crazy interop cases like isOpen() + open()
+                    id.addError("ambiguous member declaration: " +
+                            name + " of " + td.getName());
+                    return null;
+                }
+            }
             if (!m.isShared()) {
                 id.addError("imported declaration is not shared: " +
                         name + " of " + td.getName(), 400);

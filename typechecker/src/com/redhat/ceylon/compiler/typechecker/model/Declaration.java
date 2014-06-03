@@ -413,4 +413,8 @@ public abstract class Declaration
         String qualifier = getQualifier();
         return qualifier == null ? name : qualifier + name;
     }
+
+    public boolean sameKind(Declaration m) {
+        return m!=null && m.getModelClass()==getModelClass();
+    }
 }
