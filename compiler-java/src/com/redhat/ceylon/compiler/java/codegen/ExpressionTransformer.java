@@ -1920,13 +1920,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     
 
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
+        return transformOverridableBinaryOperator(op, compoundType, 0);
+    }
+    
+    private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType, int typeArgumentToUse) {
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
-        ProducedType supertype = getSupertype(op.getRightTerm(), compoundType);
-        if (supertype == null) {
-            // supertype could be null if, e.g. right type is Nothing
-            supertype = leftType;
+        // the right type always only depends on the LHS so let's not try to find it on the right side because it may
+        // be undecidable: https://github.com/ceylon/ceylon-compiler/issues/1535
+        ProducedType rightType = getTypeArgument(leftType, typeArgumentToUse);
+        // we do have a special case which is when the LHS is Float and RHS is Integer and the typechecker allowed coercion
+        if(getSupertype(op.getLeftTerm(), typeFact().getFloatDeclaration()) != null
+                && getSupertype(op.getRightTerm(), typeFact().getIntegerDeclaration()) != null){
+            // keep the RHS type then, since floats are not integers, the whole thing is resolved in the Java impl of Float with
+            // special hidden operator methods
+            rightType = typeFact().getIntegerDeclaration().getType();
         }
-        ProducedType rightType = getTypeArgument(supertype);
         return transformOverridableBinaryOperator(op, leftType, rightType);
     }
 
@@ -2025,12 +2033,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         final ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
         final ProducedType resultType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
-        ProducedType supertype = getSupertype(op.getRightTerm(), compoundType);
-        if (supertype == null) {
+        // Normally we don't look at the RHS type because it can lead to unknown types, but if we want to extract its
+        // underlying type we have to, and we deal with any eventual unknown type. Presumably unknown types will not have
+        // any useful underlying type anyways.
+        // Note  that looking at the RHS allows us to not have the issue of using the LHS type wrongly for the RHS type when
+        // the LHS type is Float and the RHS type is Integer with implicit Float coercion
+        ProducedType rightSupertype = getSupertype(op.getRightTerm(), compoundType);
+        if (rightSupertype == null || rightSupertype.isUnknown()) {
             // supertype could be null if, e.g. right type is Nothing
-            supertype = leftType;
+            rightSupertype = leftType;
         }
-        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(supertype));
+        ProducedType rightTypeArgument = getTypeArgument(rightSupertype);
+        if(rightTypeArgument == null || rightTypeArgument.isUnknown())
+            rightTypeArgument = getTypeArgument(leftType);
+        final ProducedType rightType = getMostPreciseType(op.getLeftTerm(), rightTypeArgument);
 
         // we work on boxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
@@ -5054,7 +5070,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Type helper functions
 
-    private ProducedType getSupertype(Tree.Term term, Interface compoundType){
+    private ProducedType getSupertype(Tree.Term term, TypeDeclaration compoundType){
         return term.getTypeModel().getSupertype(compoundType);
     }
 
