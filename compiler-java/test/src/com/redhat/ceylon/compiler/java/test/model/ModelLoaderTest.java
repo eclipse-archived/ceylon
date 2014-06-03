@@ -1457,11 +1457,6 @@ public class ModelLoaderTest extends CompilerTest {
         protected void compareAnnotations(Declaration validDeclaration, Declaration modelDeclaration) {
             // do nothing, until ceylon/ceylon-compiler#1231 is fixed
         }
-        
-        protected boolean compareTransientness(MethodOrValue validDeclaration) {
-            // Until https://github.com/ceylon/ceylon-spec/issues/964 is sorted out
-            return !"ceylon.language::Sequence.reversed".equals(validDeclaration.getQualifiedNameString());
-        }
     }
     
     @Test
