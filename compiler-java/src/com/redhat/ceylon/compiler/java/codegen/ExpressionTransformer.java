@@ -1859,13 +1859,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(op, op.getUnit().getIntegralDeclaration());
     }
     
-    
-    
     public JCExpression transform(Tree.PowerOp op) {
         if (Strategy.inlinePowerAsMultiplication(op)) {
             try {
-                long power = getIntegerLiteralPower(op);
-                return transformOptimizedIntegerPower(op.getLeftTerm(), power);
+                Long power = getIntegerLiteralPower(op);
+                if(power != null)
+                    return transformOptimizedIntegerPower(op.getLeftTerm(), power);
             } catch (ErroneousException e) {
                 // fall through and let the default transformation handle this
             }
