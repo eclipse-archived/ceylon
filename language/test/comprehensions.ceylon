@@ -45,8 +45,7 @@ shared void comprehensions() {
   f();
   check(test==1, "comprehensions starting with if 8: variable capture");
   check([if (f()) 1] == {1}.sequence, "comprehensions starting with if 8: collection");
-  check(test==3, "comprehensions starting with if 8: evaluation");
-  test = 2;
+  check(test==2, "comprehensions starting with if 8: evaluation");
   check(![if (!f()) 1] nonempty, "comprehensions starting with if 8: nonemptiness");
   check(test==3, "comprehensions starting with if 8: evaluation 2");
   test = 3;
