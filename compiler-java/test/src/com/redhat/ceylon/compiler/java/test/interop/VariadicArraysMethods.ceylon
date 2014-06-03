@@ -41,4 +41,9 @@ void variadicArraysMethods() {
     // also requires an Object cast
     Callable<Object,[Object?]> f2 = nothing;
     f2(null);
+    
+    java.variadicObject(null); // args[0] == null
+    java.variadicObject(arr1); // args[0] == arr1
+    java.variadicObject(*arr1.iterable); // args == arr1
+    java.variadicInt(*intArray.iterable); // args == intArray
 }

@@ -42,6 +42,10 @@ final class variadicArraysMethods_ {
         f.$call$(intArray);
         final .ceylon.language.Callable<? extends .java.lang.Object> f2 = (.ceylon.language.Callable).ceylon.language.nothing_.get_();
         f2.$call$((.java.lang.Object)null);
+        java.variadicObject((.java.lang.Object)null);
+        java.variadicObject((.java.lang.Object)arr1);
+        java.variadicObject((.java.lang.Object[])arr1);
+        java.variadicInt(intArray);
     }
     
     public static void main(.java.lang.String[] args) {
