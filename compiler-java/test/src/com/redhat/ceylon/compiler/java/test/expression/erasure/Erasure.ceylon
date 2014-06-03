@@ -70,7 +70,7 @@ class MyException(String? m, Exception? x)
  satisfies EmptyInterface {}
 
 @noanno
-interface MyNumeric satisfies Numeric<MyNumeric> & Integral<MyNumeric> & Comparable<MyNumeric>{}
+interface MyNumeric satisfies Numeric<MyNumeric> & Integral<MyNumeric> & Comparable<MyNumeric> & Exponentiable<MyNumeric,MyNumeric>{}
 
 @noanno
 class Test(Integer&EmptyInterface n) {
@@ -191,6 +191,7 @@ class Test(Integer&EmptyInterface n) {
         sync = n - n;
         sync = n * n;
         sync = n % n;
+        sync = n ^ n;
 
         sync = -n;
         sync = +n;
