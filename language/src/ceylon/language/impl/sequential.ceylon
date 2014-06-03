@@ -9,26 +9,28 @@
 shared Element[] sequential<Element>({Element*} iterable) {
     if (is Element[] iterable) {
         return iterable;
+    } 
+    if (iterable.empty) {
+        return [];
     }
-    value it = iterable.iterator();
-    if (!is Finished firstElement = it.next()) {
+    else {
         object notempty satisfies {Element+} {
             shared actual Iterator<Element> iterator() {
+                value it = iterable.iterator();
                 object iterator satisfies Iterator<Element> {
                     variable value first = true;
                     shared actual Element|Finished next() {
+                        value next = it.next();
                         if (first) {
                             first = false;
-                            return firstElement;
+                            assert (!next is Finished);
                         }
-                        return it.next();
+                        return next;
                     }
                 }
                 return iterator;
             }
         }
         return ArraySequence(notempty);
-    } else {
-        return [];
     }
 }
