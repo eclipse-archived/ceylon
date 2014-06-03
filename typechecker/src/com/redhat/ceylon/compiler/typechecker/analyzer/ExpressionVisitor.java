@@ -809,13 +809,12 @@ public class ExpressionVisitor extends Visitor {
             bme.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
                     RefinementVisitor.message(sv), 510);
         }
-        /*else if (sv.isVariable()) {
+        else if (sv.isVariable()) {
             bme.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
                     RefinementVisitor.message(sv));
-        }*/
+        }
         Value v = new Value();
         v.setName(sv.getName());
-        v.setVariable(sv.isVariable());
         /*if (sie!=null) {
             v.setType(sie.getExpression().getTypeModel());
         }*/
