@@ -45,17 +45,23 @@ shared void comprehensions() {
   f();
   check(test==1, "comprehensions starting with if 8: variable capture");
   check([if (f()) 1] == {1}.sequence, "comprehensions starting with if 8: collection");
-  check(test==2, "comprehensions starting with if 8: evaluation");
+  check(test==3, "comprehensions starting with if 8: evaluation");
+  test = 2;
   check(![if (!f()) 1] nonempty, "comprehensions starting with if 8: nonemptiness");
   check(test==3, "comprehensions starting with if 8: evaluation 2");
+  test = 3;
   value c = {if (f()) if (!f()) 1};
   check(test==3, "comprehensions starting with if 8: evaluation 3");
+  test = 3;
   check(c.size==0, "comprehensions starting with if 8: emptiness");
   check(test==5, "comprehensions starting with if 8: reevaluation");
+  test = 5;
   value c2 = {if (f()) if (!f()) if (f()) 1};
   check(test==5, "comprehensions starting with if 9: evaluation");
+  test = 5;
   check(c2.size==0, "comprehensions starting with if 9: emptiness");
   check(test==7, "comprehensions starting with if 9: reevaluation, not too much");
+  test = 7;
 
   //new comprehension-related functions
   check(any { for (x in 1..5) x>4 }, "any");
