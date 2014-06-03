@@ -100,7 +100,7 @@ public class Util {
     private static <T> int fastIterableSize(Iterable<? extends T, ?> iterable) {
         if (iterable instanceof Sequential
                 || iterable instanceof ArrayIterable) {
-            return (int)iterable.getSize();
+            return toInt(iterable.getSize());
         }
         String[] o = null;
         Object[] i;
@@ -273,7 +273,7 @@ public class Util {
         }
         
         void appendLong(long i) {
-            appendInt((int)i);
+            appendInt(toInt(i));
         }
     }
     
@@ -355,7 +355,7 @@ public class Util {
         }
         
         void appendLong(long b) {
-            appendByte((byte)b);
+            appendByte(toByte(b));
         }
     }
     
@@ -385,7 +385,7 @@ public class Util {
         }
         
         void appendLong(long b) {
-            appendShort((short)b);
+            appendShort(toShort(b));
         }
     }
     
@@ -533,7 +533,7 @@ public class Util {
         if(list == null)
             return initialElements;
         int i=initialElements.length;
-        boolean[] ret = new boolean[(int) list.getSize() + i];
+        boolean[] ret = new boolean[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Boolean> iterator = list.iterator();
         Object o;
@@ -566,16 +566,16 @@ public class Util {
     public static byte[]
     toByteArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
-        byte[] ret = new byte[(list == null ? 0 : (int) list.getSize()) + initialElements.length];
+        byte[] ret = new byte[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (byte) initialElements[i];
+            ret[i] = toByte(initialElements[i]);
         }
         if(list != null){
             Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
             Object o;
             while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = (byte)((ceylon.language.Integer)o).longValue();
+                ret[i++] = toByte(((ceylon.language.Integer)o).longValue());
             }
         }
         return ret;
@@ -604,16 +604,16 @@ public class Util {
     public static short[]
     toShortArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
-        short[] ret = new short[(list == null ? 0 : (int) list.getSize()) + initialElements.length];
+        short[] ret = new short[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (short) initialElements[i];
+            ret[i] = toShort(initialElements[i]);
         }
         if(list != null){
             Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
             Object o;
             while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = (short)((ceylon.language.Integer)o).longValue();
+                ret[i++] = toShort(((ceylon.language.Integer)o).longValue());
             }
         }
         return ret;
@@ -642,16 +642,16 @@ public class Util {
     public static int[]
     toIntArray(ceylon.language.List<? extends ceylon.language.Integer> list,
             long... initialElements){
-        int[] ret = new int[(list == null ? 0 : (int) list.getSize()) + initialElements.length];
+        int[] ret = new int[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
         for(;i<initialElements.length;i++){
-            ret[i] = (int) initialElements[i];
+            ret[i] = toInt(initialElements[i]);
         }
         if(list != null){
             Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
             Object o;
             while((o = iterator.next()) != finished_.get_()){
-                ret[i++] = (int)((ceylon.language.Integer)o).longValue();
+                ret[i++] = toInt(((ceylon.language.Integer)o).longValue());
             }
         }
         return ret;
@@ -680,7 +680,7 @@ public class Util {
         if(list == null)
             return initialElements;
         int i=initialElements.length;
-        long[] ret = new long[(int) list.getSize() + i];
+        long[] ret = new long[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Integer> iterator = list.iterator();
         Object o;
@@ -713,7 +713,7 @@ public class Util {
     public static float[]
     toFloatArray(ceylon.language.List<? extends ceylon.language.Float> list,
             double... initialElements){
-        float[] ret = new float[(list == null ? 0 : (int) list.getSize()) + initialElements.length];
+        float[] ret = new float[(list == null ? 0 : toInt(list.getSize()) + initialElements.length)];
         int i=0;
         for(;i<initialElements.length;i++){
             ret[i] = (float) initialElements[i];
@@ -751,7 +751,7 @@ public class Util {
         if(list == null)
             return initialElements;
         int i=initialElements.length;
-        double[] ret = new double[(int) list.getSize() + i];
+        double[] ret = new double[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Float> iterator = list.iterator();
         Object o;
@@ -809,7 +809,7 @@ public class Util {
         if(list == null)
             return initialElements;
         int i=initialElements.length;
-        int[] ret = new int[(int) list.getSize() + i];
+        int[] ret = new int[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.Character> iterator = list.iterator();
         Object o;
@@ -842,7 +842,7 @@ public class Util {
         if(list == null)
             return initialElements;
         int i=initialElements.length;
-        java.lang.String[] ret = new java.lang.String[(int) list.getSize() + i];
+        java.lang.String[] ret = new java.lang.String[toInt(list.getSize() + i)];
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends ceylon.language.String> iterator = list.iterator();
         Object o;
@@ -904,7 +904,7 @@ public class Util {
             return initialElements;
         int i=initialElements.length;
         T[] ret = (T[]) java.lang.reflect.Array.newInstance(klass,
-                        (int)list.getSize() + i);
+                        toInt(list.getSize() + i));
         System.arraycopy(initialElements, 0, ret, 0, i);
         Iterator<? extends T> iterator = list.iterator();
         Object o;
@@ -1124,7 +1124,7 @@ public class Util {
             		start, length, copy);
         }
         // we have both, let's find the total size
-        int total = (int) (rest.getSize() + length);
+        int total = toInt(rest.getSize() + length);
         java.lang.Object[] newArray = new java.lang.Object[total];
         System.arraycopy(elements, start, newArray, 0, length);
         Iterator<? extends T> iterator = rest.iterator();
@@ -1155,7 +1155,7 @@ public class Util {
         } else if (start instanceof ceylon.language.Character) {
             ceylon.language.Character startChar = (ceylon.language.Character)start;
             return new ceylon.language.Range($reifiedT, startChar, 
-                    ceylon.language.Character.instance((int)(startChar.intValue() + length - 1)));
+                    ceylon.language.Character.instance(toInt(startChar.intValue() + length - 1)));
         } else {
             T end = start;
             long ii = 0L;
@@ -1321,7 +1321,7 @@ public class Util {
     apply(Callable<? extends Return> function, 
     		Sequential<? extends Object> arguments){
         int variadicParameterIndex = function.$getVariadicParameterIndex$();
-        switch ((int) arguments.getSize()) {
+        switch (toInt(arguments.getSize())) {
         case 0:
             // even if the function is variadic it will overload $call so we're good
             return function.$call$();
@@ -1377,12 +1377,12 @@ public class Util {
             // no variadic param
             case -1:
                 java.lang.Object[] args = Util.toArray(arguments, 
-                		new java.lang.Object[(int) arguments.getSize()]);
+                		new java.lang.Object[toInt(arguments.getSize())]);
                 return function.$call$(args);
             // we have a variadic param in there bothering us
             default:
                 // we stuff everything before the variadic into an array
-                int beforeVariadic = (int)Math.min(arguments.getSize(), 
+                int beforeVariadic = Math.min(toInt(arguments.getSize()), 
                 		variadicParameterIndex);
                 boolean needsVariadic = beforeVariadic < arguments.getSize();
                 args = new java.lang.Object[beforeVariadic + (needsVariadic ? 1 : 0)];
