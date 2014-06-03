@@ -180,29 +180,7 @@ shared interface Iterable<out Element, out Absent=Null>
      of this stream, in the same order they occur in this
      stream."
     shared default Element[] sequence {
-        if (empty) {
-            return [];
-        }
-        else {
-            object notempty satisfies {Element+} {
-                shared actual Iterator<Element> iterator() {
-                    value it = outer.iterator();
-                    object iterator satisfies Iterator<Element> {
-                        variable value first = true;
-                        shared actual Element|Finished next() {
-                            value next = it.next();
-                            if (first) {
-                                first = false;
-                                assert (!next is Finished);
-                            }
-                            return next;
-                        }
-                    }
-                    return iterator;
-                }
-            }
-            return ArraySequence(notempty);
-        }
+        return [*this];
     }
     
     "Produces a stream containing the results of applying 
