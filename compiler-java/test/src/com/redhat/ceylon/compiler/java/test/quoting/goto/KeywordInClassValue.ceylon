@@ -20,4 +20,12 @@
 @noanno
 class KeywordInClassValue() {
     shared String goto = "";
+    shared variable String abstract = "";
+    String volatile = "";
+    variable String implements = "";
+    
+    shared void m() {
+        abstract = "";
+        implements = "";
+    }
 }
