@@ -5,6 +5,7 @@ import static java.util.Arrays.copyOfRange;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterator;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
@@ -66,7 +67,7 @@ public final class Array<Element>
             final TypeDescriptor $reifiedElement,
             final ceylon.language.Iterable<? extends Element, 
             		?> elements) {
-        int size = (int) elements.getSize();
+        int size = Util.toInt(elements.getSize());
         Iterator<?> iterator = elements.iterator();
         java.lang.Class<?> clazz = $reifiedElement.getArrayElementClass();
         if (!$reifiedElement.containsNull()) {
@@ -546,48 +547,48 @@ public final class Array<Element>
             java.lang.Object a;
             if (array instanceof char[]) {
                 a = copyOfRange((char[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                        Util.toInt(fromIndex), 
+                        Util.toInt(toIndex+1));
             }
             else if (array instanceof byte[]) {
                 a = copyOfRange((byte[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                        Util.toInt(fromIndex), 
+                        Util.toInt(toIndex+1));
             }
             else if (array instanceof short[]) {
                 a = copyOfRange((short[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                        Util.toInt(fromIndex), 
+                        Util.toInt(toIndex+1));
             }
             else if (array instanceof int[]) {
                 a = copyOfRange((int[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                        Util.toInt(fromIndex), 
+                        Util.toInt(toIndex+1));
             }
             else if (array instanceof long[]) {
-            	a = copyOfRange((long[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                a = copyOfRange((long[])array, 
+                    Util.toInt(fromIndex), 
+                    Util.toInt(toIndex+1));
             }
             else if (array instanceof float[]) {
-            	a = copyOfRange((float[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                a = copyOfRange((float[])array, 
+                    Util.toInt(fromIndex), 
+                    Util.toInt(toIndex+1));
             }
             else if (array instanceof double[]) {
-            	a = copyOfRange((double[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                a = copyOfRange((double[])array, 
+                    Util.toInt(fromIndex), 
+                    Util.toInt(toIndex+1));
             }
             else if (array instanceof boolean[]) {
-            	a = copyOfRange((boolean[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                a = copyOfRange((boolean[])array, 
+                    Util.toInt(fromIndex), 
+                    Util.toInt(toIndex+1));
             }
             else {
-            	a = copyOfRange((java.lang.Object[])array, 
-                        		(int)fromIndex, 
-                        		(int)toIndex+1);
+                a = copyOfRange((java.lang.Object[])array, 
+                    Util.toInt(fromIndex), 
+                    Util.toInt(toIndex+1));
             }
             Array<Element> rval = new Array<Element>($reifiedElement, a);
             return revert ? rval.getReversed() : rval;
@@ -608,49 +609,49 @@ public final class Array<Element>
             long resultFromIndex = fromIndex + resultLength;
             java.lang.Object a;
             if (array instanceof char[]) {
-            	a = copyOfRange((char[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((char[])array, 
+                    Util.toInt(fromIndex), 
+                    Util.toInt(resultFromIndex));
             }
             else if (array instanceof byte[]) {
-            	a = copyOfRange((byte[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((byte[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else if (array instanceof short[]) {
-            	a = copyOfRange((short[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((short[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else if (array instanceof int[]) {
-            	a = copyOfRange((int[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((int[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else if (array instanceof long[]) {
-            	a = copyOfRange((long[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((long[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else if (array instanceof float[]) {
-            	a = copyOfRange((float[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((float[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else if (array instanceof double[]) {
-            	a = copyOfRange((double[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((double[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else if (array instanceof boolean[]) {
-            	a = copyOfRange((boolean[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                a = copyOfRange((boolean[])array, 
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             else {
                 a = copyOfRange((java.lang.Object[])array, 
-                        		(int)fromIndex, 
-                        		(int)resultFromIndex);
+                        Util.toInt(fromIndex), 
+                        Util.toInt(resultFromIndex));
             }
             return new Array<Element>($reifiedElement, a);
         }
@@ -682,6 +683,7 @@ public final class Array<Element>
     final class ArrayIterable extends AbstractArrayIterable<Element, java.lang.Object> {
 
         ArrayIterable() {
+            // ok to cast here, since we know the size must fit in an int
             super($reifiedElement, array, (int)Array.this.getSize());
         }
         
@@ -711,6 +713,7 @@ public final class Array<Element>
         java.lang.String stringValue() {
             if (array instanceof int[]
                     && step == 1) {
+                // ok to cast here, since we know the size must fit in an int
                 return new java.lang.String((int[])array, start, (int)this.getSize());
             } 
             return null;
@@ -719,6 +722,7 @@ public final class Array<Element>
     
     @Override
     public Iterator<Element> iterator() {
+        // ok to cast here, since we know the size must fit in an int
         return new AbstractArrayIterator<Element>($reifiedElement, 0, (int)getSize(), 1) {
             protected Element get(int index) {
                 return unsafeItem(index);
@@ -729,8 +733,8 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Null|Element")
     @Override
     public Element get(@Name("index") Integer key) {
-        long i = key.longValue();
-        return get((int)i);
+        int i = Util.toInt(key.longValue());
+        return get(i);
     }
 
     @Ignore
@@ -822,7 +826,7 @@ public final class Array<Element>
     				" must be less than size of array " + size);
     	}
     	else {
-    		int idx = (int) index;
+    		int idx = Util.toInt(index);
             if (array instanceof char[]) {
             	((char[])array)[idx] = 
             			((java.lang.Character)element).charValue();
@@ -1002,38 +1006,39 @@ public final class Array<Element>
     
     @Override
     public Array<Element> getRest() {
-        long size = getSize();
+        // ok to cast here, since we know the size must fit in an int
+        int size = (int)getSize();
         if (size < 2) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
         else {
         	java.lang.Object a;
             if (array instanceof char[]) {
-            	a = copyOfRange((char[])array, 1, (int)size);
+            	a = copyOfRange((char[])array, 1, size);
             } 
             else if (array instanceof byte[]) {
-            	a = copyOfRange((byte[])array, 1, (int)size);
+            	a = copyOfRange((byte[])array, 1, size);
             } 
             else if (array instanceof short[]) {
-            	a = copyOfRange((short[])array, 1, (int)size);
+            	a = copyOfRange((short[])array, 1, size);
             } 
             else if (array instanceof int[]) {
-            	a = copyOfRange((int[])array, 1, (int)size);
+            	a = copyOfRange((int[])array, 1, size);
             } 
             else if (array instanceof long[]) {
-            	a = copyOfRange((long[])array, 1, (int)size);
+            	a = copyOfRange((long[])array, 1, size);
             } 
             else if (array instanceof float[]) {
-            	a = copyOfRange((float[])array, 1, (int)size);
+            	a = copyOfRange((float[])array, 1, size);
             } 
             else if (array instanceof double[]) {
-            	a = copyOfRange((double[])array, 1, (int)size);
+            	a = copyOfRange((double[])array, 1, size);
             } 
             else if (array instanceof boolean[]) {
-            	a = copyOfRange((boolean[])array, 1, (int)size);
+            	a = copyOfRange((boolean[])array, 1, size);
             } 
             else {
-                a = copyOfRange((java.lang.Object[])array, 1, (int)size);
+                a = copyOfRange((java.lang.Object[])array, 1, size);
             }
             return new Array<Element>($reifiedElement, a);
         }
@@ -1055,8 +1060,9 @@ public final class Array<Element>
     @Annotations({ @Annotation("actual") })
     @TypeInfo("ceylon.language::Null|Element")
     public Element getLast() {
-        final long size = getSize();
-        return size > 0 ? unsafeItem((int)size-1) : null;
+        // ok to cast here, since we know the size must fit in an int
+        final int size = (int)getSize();
+        return size > 0 ? unsafeItem(size-1) : null;
     }
 
     @Override
@@ -1231,7 +1237,8 @@ public final class Array<Element>
     @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
     skip(@Name("skipit") long skip) {
-        int intSkip = (int)skip;
+        int intSkip = Util.toInt(skip);
+        // ok to cast here, since we know the size must fit in an int
         int length = (int)getSize();
         if (skip <= 0) {
             return this;
@@ -1245,12 +1252,13 @@ public final class Array<Element>
 	@TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Null>")
 	public Iterable<? extends Element, ?> 
 	take(@Name("num") long take) {
+	    // ok to cast here, since we know the size must fit in an int
 	    int length = (int)getSize();
 	    if (take >= length) {
 	        return this;
 	    }
 		return new ArrayIterable(this.array, 0, 
-		        Math.max((int)take, 0), 1);
+		        Math.max(Util.toInt(take), 0), 1);
 	}
 
 	@Override
@@ -1264,8 +1272,8 @@ public final class Array<Element>
 	        return this;
 	    }
 		return new ArrayIterable(array, 0, 
-		        (int)((getSize()+step-1)/step), 
-		        (int)step);
+		        Util.toInt((getSize()+step-1)/step), 
+		        Util.toInt(step));
 	}
 	
     @Override @Ignore
@@ -1299,10 +1307,11 @@ public final class Array<Element>
     @Override 
     @TypeInfo("ceylon.language::Sequential<Element>")
     public Sequential<? extends Element> getSequence() {
-        long size = getSize();
+        // ok to cast here, since we know the size must fit in an int
+        int size = (int)getSize();
         java.lang.Class<?> arrayElementClass = $reifiedElement.getArrayElementClass();
         java.lang.Object[] result = (java.lang.Object[])java.lang.reflect.Array
-        		.newInstance(arrayElementClass, (int)size);
+        		.newInstance(arrayElementClass, size);
         if (array instanceof long[]) {
             long[] arr = (long[]) array;
             if (arrayElementClass==Integer.class) {
@@ -1392,10 +1401,10 @@ public final class Array<Element>
             }
         }
         else {
-            arraycopy(array, 0, result, 0, (int)size);
+            arraycopy(array, 0, result, 0, size);
         }
         return new ArraySequence<Element>($reifiedElement, 
-        		result, 0, (int)size, false);
+        		result, 0, size, false);
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")

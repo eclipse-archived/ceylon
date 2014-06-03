@@ -2,6 +2,7 @@ package ceylon.language;
 
 import java.io.IOException;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -93,7 +94,7 @@ public final class process_ {
     }
     
     public void exit(@Name("code") long code) {
-        System.exit((int) code);
+        System.exit(Util.toInt(code));
     }
     
     /*@TypeInfo("ceylon.language::Map<ceylon.language::String, ceylon.language::String>")

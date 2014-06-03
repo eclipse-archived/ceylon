@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTyp
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -91,7 +92,7 @@ public final class Tuple<Element, First extends Element,
     
     private static java.lang.Object[] makeArray(java.lang.Object first, 
     		Sequential<?> rest) {
-        java.lang.Object[] elements = new java.lang.Object[(int)rest.getSize() + 1];
+        java.lang.Object[] elements = new java.lang.Object[Util.toInt(rest.getSize() + 1)];
         elements[0] = first;
         copyToArray(rest, elements, 1);
         return elements;
@@ -100,7 +101,7 @@ public final class Tuple<Element, First extends Element,
     private static java.lang.Object[] makeArray(java.lang.Object[] array, 
     		Sequential<?> tail) {
         java.lang.Object[] elements = Arrays.copyOf(array, 
-        		array.length + (int)tail.getSize());
+        		array.length + Util.toInt(tail.getSize()));
         copyToArray(tail, elements, array.length);
         return elements;
     }
@@ -330,7 +331,7 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     private TypeDescriptor $getUnionOfAllType(int offset) {
         TypeDescriptor[] types = 
-        		new TypeDescriptor[(int)getSize() - offset];
+        		new TypeDescriptor[Util.toInt(getSize() - offset)];
         for (int i = 0; i < getSize() - offset; i++) {
             types[i] = $getElementType(offset + i);
         }

@@ -248,12 +248,12 @@ public final class Character
 
     @Override
     public Character neighbour(@Name("offset") long offset) {
-        return instance((int) (codePoint+offset));
+        return instance(Util.toInt(codePoint+offset));
     }
 
     @Ignore
     public static Character neighbour(int codePoint, long offset) {
-        return instance((int) (codePoint+offset));
+        return instance(Util.toInt(codePoint+offset));
     }
 
     @Override

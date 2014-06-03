@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.StringInclusions;
@@ -339,7 +340,7 @@ public final class String
 
     @Ignore
     public static Character get(java.lang.String value, long key) {
-        int index = (int)key;
+        int index = Util.toInt(key);
         int length = value.length();
         if (index < 0 || index >= length) {
             return null;
@@ -499,7 +500,7 @@ public final class String
     		long index, List<?> sublist) {
         if (sublist instanceof String) {
             java.lang.String str = ((String) sublist).value;
-            int offset = value.offsetByCodePoints(0, (int) index);
+            int offset = value.offsetByCodePoints(0, Util.toInt(index));
             return value.regionMatches(offset, str, 0, str.length());
         }
         else {
@@ -512,7 +513,7 @@ public final class String
     public boolean includesAt(long index, List<?> sublist) {
         if (sublist instanceof String) {
             java.lang.String str = ((String) sublist).value;
-            int offset = value.offsetByCodePoints(0, (int) index);
+            int offset = value.offsetByCodePoints(0, Util.toInt(index));
             return value.regionMatches(offset, str, 0, str.length());
         }
         else {
@@ -829,7 +830,7 @@ public final class String
     public boolean longerThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
         try {
-            value.offsetByCodePoints(0, (int)length+1);
+            value.offsetByCodePoints(0, Util.toInt(length+1));
             return true;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -841,7 +842,7 @@ public final class String
     public static boolean longerThan(java.lang.String value, 
     		long length) {
         try {
-            value.offsetByCodePoints(0, (int)length+1);
+            value.offsetByCodePoints(0, Util.toInt(length+1));
             return true;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -852,7 +853,7 @@ public final class String
     public boolean shorterThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
         try {
-            value.offsetByCodePoints(0, (int)length);
+            value.offsetByCodePoints(0, Util.toInt(length));
             return false;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -864,7 +865,7 @@ public final class String
     public static boolean shorterThan(java.lang.String value, 
     		long length) {
         try {
-            value.offsetByCodePoints(0, (int)length);
+            value.offsetByCodePoints(0, Util.toInt(length));
             return false;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1015,8 +1016,8 @@ public final class String
         } else if (length >= getSize(value)) {
             return value;
         } else {
-            int offset = value.offsetByCodePoints(0, (int)length);
-            return value.substring(0, (int)offset);
+            int offset = value.offsetByCodePoints(0, Util.toInt(length));
+            return value.substring(0, offset);
         }
     }
 
@@ -1036,7 +1037,7 @@ public final class String
             return value;
         } else {
             int offset = value.offsetByCodePoints(0, 
-            		value.length()-(int)length);
+                    Util.toInt(value.length()-length));
             return value.substring(offset, value.length());
         }
     }
@@ -1092,8 +1093,8 @@ public final class String
         if ((fromIndex + resultLength) > len) {
             resultLength = len - fromIndex;
         }
-        int start = value.offsetByCodePoints(0, (int)fromIndex);
-        int end = value.offsetByCodePoints(start, (int)resultLength);
+        int start = value.offsetByCodePoints(0, Util.toInt(fromIndex));
+        int end = value.offsetByCodePoints(start, Util.toInt(resultLength));
         return value.substring(start, end);
     }
 
@@ -1124,9 +1125,9 @@ public final class String
         if (from < 0) {
             from = 0;
         }
-        int start = value.offsetByCodePoints(0, (int)from);
+        int start = value.offsetByCodePoints(0, Util.toInt(from));
         int end = value.offsetByCodePoints(start, 
-        		(int)(toIndex - from + 1));
+                Util.toInt(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
         return result;
     }
@@ -1152,7 +1153,7 @@ public final class String
             toIndex = len - 1;
         }
         int start = 0;
-        int end = value.offsetByCodePoints(start, (int)(toIndex + 1));
+        int end = value.offsetByCodePoints(start, Util.toInt(toIndex + 1));
         java.lang.String result = value.substring(start, end);
         return result;
     }
@@ -1180,9 +1181,9 @@ public final class String
     	if (from < 0) {
     		from = 0;
     	}
-        int start = value.offsetByCodePoints(0, (int)from);
+        int start = value.offsetByCodePoints(0, Util.toInt(from));
         int end = value.offsetByCodePoints(start, 
-        		(int)(toIndex - from + 1));
+                Util.toInt(toIndex - from + 1));
         java.lang.String result = value.substring(start, end);
         return reverse ? getReversed(result) : result;
     }
@@ -1223,7 +1224,7 @@ public final class String
         int len = value.length();
         if (times<=0 || len==0) return "";
         if (times==1) return value;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder(len*(int)times);
+        java.lang.StringBuilder builder = new java.lang.StringBuilder(Util.toInt(len*times));
         for (int i=0; i<times; i++) {
             builder.append(value);
         }
@@ -1391,8 +1392,9 @@ public final class String
     		second = "";
     	}
     	else {
-    		first = value.substring(0,(int)index);
-    		second = value.substring((int)index);
+    		int intIndex = Util.toInt(index);
+            first = value.substring(0,intIndex);
+    		second = value.substring(intIndex);
     	}
     	return new Tuple(String.$TypeDescriptor$, 
     			new String[] { instance(first), 

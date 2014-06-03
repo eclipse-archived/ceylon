@@ -32,6 +32,7 @@ public final class arrayOfSize_ {
 		if (size<0) {
     		throw new AssertionError("array size must not be negative");
     	}
+        // typecast should be safe here
         return new Array<Element>($reifiedElement, (int)size, element);
     }
     

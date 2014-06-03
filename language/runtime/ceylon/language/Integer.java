@@ -426,8 +426,8 @@ public final class Integer
             value<java.lang.Integer.MIN_VALUE) {
             throw new OverflowException();
         }
-        int result = (int) value;
-        if (!java.lang.Character.isDefined((int) value)) {
+        int result = Util.toInt(value);
+        if (!java.lang.Character.isDefined(result)) {
             throw new OverflowException();
         }
         return result;

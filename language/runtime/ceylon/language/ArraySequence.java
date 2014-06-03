@@ -2,6 +2,7 @@ package ceylon.language;
 
 import java.util.Arrays;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -181,14 +182,14 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     	this.$reifiedElement = $reifiedElement;
     	if (copy) {
     	    this.array = (Element[])Arrays.copyOfRange(array, 
-    	    		(int)first, (int)length);
+                  Util.toInt(first), Util.toInt(length));
     	    this.first = 0;
     	    
     	} else {
             this.array = (Element[])array;
-            this.first = (int)first;
+            this.first = Util.toInt(first);
     	}
-    	this.length = (int)length;
+    	this.length = Util.toInt(length);
     }
     
     /** 
@@ -273,7 +274,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Element getFirst() {
-        return (Element)array[(int) first];
+        return (Element)array[first];
     }
 
     @Override
@@ -295,7 +296,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
 
     @Override
     public Element getLast() {
-        return (Element)array[(int)(first + length - 1)];
+        return (Element)array[first + length - 1];
     }
 
     @Override
@@ -312,7 +313,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     @Override
     public Sequential<? extends Element> span(@Name("from") Integer from, 
             @Name("to") Integer to) {
-        long fromIndex = from.longValue();
+        long fromIndex = Util.toInt(from.longValue());
         long toIndex = to==null ? getSize() : to.longValue();
         long lastIndex = getLastIndex().longValue();
         boolean reverse = toIndex<fromIndex;
@@ -325,10 +326,10 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     		return (Sequential<? extends Element>)empty_.get_();
     	}
     	fromIndex= Math.max(fromIndex, 0);
-    	toIndex = Math.min(toIndex, lastIndex);        
+    	toIndex = Math.min(toIndex, lastIndex);
     	if (reverse) {
             Element[] sub = reversedCopy$priv$((Element[])array, 
-            		(int)(first+fromIndex), (int)(toIndex-fromIndex+1));
+                    Util.toInt(first+fromIndex), Util.toInt(toIndex-fromIndex+1));
             return backedBy$hidden(sub, 0, sub.length);
         }
     	else {
@@ -418,7 +419,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         @Override
         public java.lang.Object next() {
             if (idx <= getLastIndex().longValue()+first) {
-                return array[(int) idx++];
+                return array[Util.toInt(idx++)];
             }
             else {
                 return finished_.get_();
@@ -437,7 +438,7 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     public Element get(@Name("index") Integer key) {
         long index = key.longValue();
         return index < 0 || index >= length ?
-                null : (Element)array[(int) (index+first)];
+                null : (Element)array[Util.toInt(index+first)];
     }
 
     @Override
