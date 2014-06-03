@@ -44,23 +44,18 @@ shared void comprehensions() {
   check(test==0, "comprehensions starting with if 8: general laziness");
   f();
   check(test==1, "comprehensions starting with if 8: variable capture");
-  check([if (f()) 1] == {1}.sequence, "comprehensions starting with if 8: collection");
-  check(test==2, "comprehensions starting with if 8: evaluation");
+  check([if (f()) 1] == [1], "comprehensions starting with if 8: collection");
+  check(test==2, "comprehensions starting with if 8: evaluation expected 2, got ``test``");
   check(![if (!f()) 1] nonempty, "comprehensions starting with if 8: nonemptiness");
-  check(test==3, "comprehensions starting with if 8: evaluation 2");
-  test = 3;
+  check(test==3, "comprehensions starting with if 8: evaluation 2 expected 3, got ``test``");
   value c = {if (f()) if (!f()) 1};
-  check(test==3, "comprehensions starting with if 8: evaluation 3");
-  test = 3;
+  check(test==3, "comprehensions starting with if 8: lazy evaluation 3 expected 3, got ``test``");
   check(c.size==0, "comprehensions starting with if 8: emptiness");
-  check(test==5, "comprehensions starting with if 8: reevaluation");
-  test = 5;
+  check(test==5, "comprehensions starting with if 8: reevaluation expected 5 got ``test``");
   value c2 = {if (f()) if (!f()) if (f()) 1};
-  check(test==5, "comprehensions starting with if 9: evaluation");
-  test = 5;
+  check(test==5, "comprehensions starting with if 9: lazy evaluation expected 5 got ``test``");
   check(c2.size==0, "comprehensions starting with if 9: emptiness");
-  check(test==7, "comprehensions starting with if 9: reevaluation, not too much");
-  test = 7;
+  check(test==7, "comprehensions starting with if 9: reevaluation expected 7 got ``test``");
 
   //new comprehension-related functions
   check(any { for (x in 1..5) x>4 }, "any");
