@@ -1659,6 +1659,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).Unary(JCTree.NOT, expr);
     }
 
+    public JCExpression transform(Tree.EqualOp op) {
+        // we don't care about the left/right type since they're both Object
+        return transformOverridableBinaryOperator(op, null, null);
+    }
+
     public JCExpression transform(Tree.SegmentOp op) {
         // we need to get the range bound type
         final ProducedType type = getTypeArgument(getSupertype(op.getLeftTerm(), op.getUnit().getOrdinalDeclaration()));
@@ -1914,9 +1919,6 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     // Overridable binary operators
     
-    public JCExpression transform(Tree.BinaryOperatorExpression op) {
-        return transformOverridableBinaryOperator(op, null, null);
-    }
 
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
         ProducedType leftType = getSupertype(op.getLeftTerm(), compoundType);
