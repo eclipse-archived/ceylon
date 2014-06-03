@@ -70,6 +70,8 @@ import com.redhat.ceylon.compiler.typechecker.model.UnionType;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.TypeTags;
 import com.sun.tools.javac.tree.JCTree;
@@ -2540,6 +2542,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                         exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(typeFact().getObjectDeclaration().getType()), exprAndType.expression),
                                 exprAndType.type);
                     }
+                }else if(invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread()){
+                    // in fact, the very same problem happens when passing null or object arrays to a java variadic method
+                    ProducedType argumentType = invocation.getArgumentType(argIndex);
+                    if(isJavaObjectArray(argumentType)
+                            || isNull(argumentType)){
+                        // remove any ambiguity
+                        exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(parameterType), exprAndType.expression),
+                                exprAndType.type);
+                    }
                 }
             } else {
                 // we must have a sequenced param
@@ -2607,6 +2618,32 @@ public class ExpressionTransformer extends AbstractTransformer {
         final ProducedType iteratedType = typeFact().getIteratedType(parameterType);
         final JCExpression expr;
         final JCExpression type;
+        // optimise "*javaArray.iterable" into "javaArray" for java variadic parameters, since we can pass them just along
+        if(invocation.isJavaMethod()
+                && numArguments == argIndex+1
+                && !invocation.isArgumentComprehension(argIndex)){
+            Expression argumentExpression = invocation.getArgumentExpression(argIndex);
+            Term argument = Decl.unwrapExpressionsUntilTerm(argumentExpression);
+            if (argument instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression qualifiedMemberArgument = (Tree.QualifiedMemberExpression)argument;
+                if ("iterable".equals(qualifiedMemberArgument.getIdentifier().getText())
+                    && isJavaArray(qualifiedMemberArgument.getPrimary().getTypeModel())) {
+                    // just pass the array as-is
+                    // we don't care at all about unboxing or casting since we can't be dealing with boxing
+                    // and we generate our own cast, at least for non-primitive arrays where it may be ambiguous,
+                    // we could avoid the cast for non-type-parameter and non-Object arrays, but that's more expensive
+                    // to check for
+                    JCExpression primary = transformExpression(qualifiedMemberArgument.getPrimary());
+                    type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
+                    if(isJavaObjectArray(qualifiedMemberArgument.getPrimary().getTypeModel())){
+                        expr = make().TypeCast(makeJavaType(qualifiedMemberArgument.getPrimary().getTypeModel()), primary);
+                    }else{
+                        expr = primary;
+                    }
+                    return new ExpressionAndType(expr, type);
+                }
+            }
+        }
         // invoking f(a, *b), where declared f(A a, B* b)
         // we can have several remaining arguments and the last one is spread
         List<JCExpression> x = List.<JCExpression>nil();

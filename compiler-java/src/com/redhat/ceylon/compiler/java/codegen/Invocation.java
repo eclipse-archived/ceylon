@@ -322,6 +322,8 @@ abstract class SimpleInvocation extends Invocation {
     //protected abstract String getParameterName(int argIndex);
     protected abstract JCExpression getParameterExpression(int argIndex);
 
+    protected abstract boolean isArgumentComprehension(int argIndex);
+
     protected abstract boolean getParameterUnboxed(int argIndex);
 
     protected abstract BoxingStrategy getParameterBoxingStrategy(int argIndex);
@@ -545,6 +547,12 @@ class IndirectInvocation extends SimpleInvocation {
     }
     
     @Override
+    protected boolean isArgumentComprehension(int argIndex){
+        // comprehensions are listed as last argument after all argumentExpressions
+        return comprehension != null && argIndex == argumentExpressions.size();
+    }
+    
+    @Override
     protected Tree.Expression getArgumentExpression(int argIndex) {
         return argumentExpressions.get(argIndex);
     }
@@ -698,6 +706,13 @@ class PositionalInvocation extends DirectInvocation {
             return ((Tree.SpreadArgument) arg).getExpression();
         throw new RuntimeException("Trying to get an argument expression which is a Comprehension: " + arg);
     }
+    
+    @Override
+    protected boolean isArgumentComprehension(int argIndex){
+        PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
+        return arg instanceof Tree.Comprehension;
+    }
+    
     @Override
     protected ProducedType getArgumentType(int argIndex) {
         PositionalArgument arg = getPositional().getPositionalArguments().get(argIndex);
@@ -881,6 +896,10 @@ class CallableInvocation extends DirectInvocation {
         return isSpread() && argIndex == getNumArguments() - 1;
     }
     @Override
+    protected boolean isArgumentComprehension(int argIndex){
+        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+    }
+    @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
         Parameter param = callableParameters.get(argIndex);
         
@@ -970,7 +989,10 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     protected Expression getArgumentExpression(int argIndex) {
         throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
     }
-    
+    @Override
+    protected boolean isArgumentComprehension(int argIndex){
+        throw new RuntimeException("I override getTransformedArgumentExpression(), so should never be called");
+    }
     @Override
     public void location(CallBuilder callBuilder) {
         callBuilder.location(null);
