@@ -1869,7 +1869,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // fall through and let the default transformation handle this
             }
         }
-        return transform((Tree.ArithmeticOp)op);
+        return transformOverridableBinaryOperator(op, op.getUnit().getExponentiableDeclaration(), 1);
     }
 
     /**
