@@ -8,10 +8,10 @@ class Teste extends .javax.swing.JFrame implements .com.redhat.ceylon.compiler.j
     
     private final void teste$priv$() {
         final .java.awt.Container container = .com.redhat.ceylon.compiler.java.Util.checkNull(getContentPane());
-        container.setSize((int)300L, (int)200L);
+        container.setSize(.com.redhat.ceylon.compiler.java.Util.toInt(300L), .com.redhat.ceylon.compiler.java.Util.toInt(200L));
         .com.redhat.ceylon.compiler.java.Util.checkNull(getContentPane()).setSize(new .java.awt.Dimension());
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1238 java = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1238((int)1L);
-        java.m((int)1L);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1238 java = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1238(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+        java.m(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
     }
     
     public static void main(.java.lang.String[] args) {

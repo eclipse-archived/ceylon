@@ -6,8 +6,8 @@ final class bug1341_ {
     }
     
     static void bug1341() {
-        final .ceylon.language.Array<.ceylon.language.Integer> oa1 = .com.redhat.ceylon.compiler.java.language.ObjectArray<.ceylon.language.Integer>.getArray(.com.redhat.ceylon.compiler.java.Util.fillArray(new .ceylon.language.Integer[(int)10L], .ceylon.language.Integer.instance(33L)));
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> oa2 = .com.redhat.ceylon.compiler.java.language.ObjectArray<.ceylon.language.String>.getArray(.com.redhat.ceylon.compiler.java.Util.fillArray(new .ceylon.language.String[(int)10L], .ceylon.language.String.instance("foo"))).getSequence();
+        final .ceylon.language.Array<.ceylon.language.Integer> oa1 = .com.redhat.ceylon.compiler.java.language.ObjectArray<.ceylon.language.Integer>.getArray(.com.redhat.ceylon.compiler.java.Util.fillArray(new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt(10L)], .ceylon.language.Integer.instance(33L)));
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> oa2 = .com.redhat.ceylon.compiler.java.language.ObjectArray<.ceylon.language.String>.getArray(.com.redhat.ceylon.compiler.java.Util.fillArray(new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt(10L)], .ceylon.language.String.instance("foo"))).getSequence();
     }
     
     public static void main(.java.lang.String[] args) {

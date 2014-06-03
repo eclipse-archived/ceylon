@@ -14,7 +14,7 @@ final class staticRefs_ {
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                final int arg0 = (int)((.ceylon.language.Integer)$param$0).longValue();
+                final int arg0 = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 return (
                     let
                     {
@@ -50,7 +50,7 @@ final class staticRefs_ {
         final long procs = .java.lang.Runtime.getRuntime().availableProcessors();
         .java.lang.System.out.flush();
         .java.lang.System.err.flush();
-        .java.lang.System.exit((int)0L);
+        .java.lang.System.exit(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
         final long cmp = .java.lang.Boolean.compare(true, false);
         final .java.io.File[] roots = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
         final .java.util.Locale.Builder localeBuilder = new .java.util.Locale.Builder();

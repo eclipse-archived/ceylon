@@ -15,7 +15,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfIntsBy$priv$(final int[] array) {
         final int[] array$3 = array;
-        final int step$6 = (int)2L;
+        final int step$6 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$6 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_1: for (int i$5 = 0; i$5 < array$3.length; i$5 += step$6) {
             final long element = array$3[i$5];
@@ -48,7 +48,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfCharsBy$priv$(final char[] array) {
         final char[] array$14 = array;
-        final int step$17 = (int)2L;
+        final int step$17 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$17 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_5: for (int i$16 = 0; i$16 < array$14.length; i$16 += step$17) {
             final int element = array$14[i$16];
@@ -66,7 +66,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfBytesBy$priv$(final byte[] array) {
         final byte[] array$21 = array;
-        final int step$24 = (int)2L;
+        final int step$24 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$24 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_7: for (int i$23 = 0; i$23 < array$21.length; i$23 += step$24) {
             final long element = array$21[i$23];
@@ -84,7 +84,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfShortsBy$priv$(final short[] array) {
         final short[] array$28 = array;
-        final int step$31 = (int)2L;
+        final int step$31 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$31 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_9: for (int i$30 = 0; i$30 < array$28.length; i$30 += step$31) {
             final long element = array$28[i$30];
@@ -102,7 +102,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfLongsBy$priv$(final long[] array) {
         final long[] array$35 = array;
-        final int step$38 = (int)2L;
+        final int step$38 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$38 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_11: for (int i$37 = 0; i$37 < array$35.length; i$37 += step$38) {
             final long element = array$35[i$37];
@@ -120,7 +120,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfBooleansBy$priv$(final boolean[] array) {
         final boolean[] array$42 = array;
-        final int step$45 = (int)2L;
+        final int step$45 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$45 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_13: for (int i$44 = 0; i$44 < array$42.length; i$44 += step$45) {
             final boolean element = array$42[i$44];
@@ -138,7 +138,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfFloatsBy$priv$(final float[] array) {
         final float[] array$49 = array;
-        final int step$52 = (int)2L;
+        final int step$52 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$52 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_15: for (int i$51 = 0; i$51 < array$49.length; i$51 += step$52) {
             final double element = array$49[i$51];
@@ -156,7 +156,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     
     private final void arrayOfDoublesBy$priv$(final double[] array) {
         final double[] array$56 = array;
-        final int step$59 = (int)2L;
+        final int step$59 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
         if (step$59 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
         loop_17: for (int i$58 = 0; i$58 < array$56.length; i$58 += step$59) {
             final double element = array$56[i$58];

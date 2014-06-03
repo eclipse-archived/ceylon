@@ -14,7 +14,7 @@ final class bug1507_ {
             } else {
                 boolean doforelse$2 = true;
                 final long $ceylontmp$start$3 = 0L;
-                final long $ceylontmp$end$4 = new .java.util.Random().nextInt((int)10L);
+                final long $ceylontmp$end$4 = new .java.util.Random().nextInt(.com.redhat.ceylon.compiler.java.Util.toInt(10L));
                 final boolean $ceylontmp$increasing$5 = $ceylontmp$start$3 <= $ceylontmp$end$4;
                 final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
                 loop_0: for (long j$7 = $ceylontmp$start$3; $ceylontmp$increasing$5 ? j$7 - $ceylontmp$end$4 <= 0L : j$7 - $ceylontmp$end$4 >= 0L; j$7 += $ceylontmp$incr$6) {

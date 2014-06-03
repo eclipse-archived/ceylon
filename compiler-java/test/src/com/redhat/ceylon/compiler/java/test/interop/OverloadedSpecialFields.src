@@ -9,10 +9,10 @@ final class overloadedSpecialFields_ {
         final .com.redhat.ceylon.compiler.java.test.interop.JavaOverloadedSpecialFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaOverloadedSpecialFields();
         .java.lang.Object sync = null;
         sync = .ceylon.language.Integer.instance(java.hashCode());
-        sync = .ceylon.language.Integer.instance(java.hashCode((int)0L));
+        sync = .ceylon.language.Integer.instance(java.hashCode(.com.redhat.ceylon.compiler.java.Util.toInt(0L)));
         sync = .ceylon.language.Integer.instance(java.hashCode(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(0L)));
         sync = .ceylon.language.String.instance(java.toString());
-        sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString((int)1L)));
+        sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString(.com.redhat.ceylon.compiler.java.Util.toInt(1L))));
         sync = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.toString(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))));
     }
     

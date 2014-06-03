@@ -269,14 +269,14 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long javaArrayIterationStatic$priv$() {
-        final int[] array = new int[(int)10L];
+        final int[] array = new int[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
         final long $ceylontmp$start$43 = 1L;
         final long $ceylontmp$end$44 = 10L;
         final boolean $ceylontmp$increasing$45 = $ceylontmp$start$43 <= $ceylontmp$end$44;
         final long $ceylontmp$incr$46 = $ceylontmp$increasing$45 ? 1L : -1L;
         loop_8: for (long index$47 = $ceylontmp$start$43; $ceylontmp$increasing$45 ? index$47 - $ceylontmp$end$44 <= 0L : index$47 - $ceylontmp$end$44 >= 0L; index$47 += $ceylontmp$incr$46) {
             final long index = index$47;
-            array[(int)(index - 1L)] = (int)index;
+            array[.com.redhat.ceylon.compiler.java.Util.toInt(index - 1L)] = .com.redhat.ceylon.compiler.java.Util.toInt(index);
         }
         long sum = 0L;
         final int[] array$48 = array;

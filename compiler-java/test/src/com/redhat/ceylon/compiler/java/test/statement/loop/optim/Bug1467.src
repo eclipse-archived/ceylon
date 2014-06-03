@@ -5,7 +5,7 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     Bug1467() {
         this.size = 1024L * 1024L / 4L;
-        this.buff = new int[(int)getSize$priv$()];
+        this.buff = new int[.com.redhat.ceylon.compiler.java.Util.toInt(getSize$priv$())];
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long size;
@@ -28,7 +28,7 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final long end$1 = start$0 + .java.lang.Math.max(0L, getSize$priv$() - 1L);
         loop_0: for (long i$2 = start$0; i$2 < end$1; i$2++) {
             final long i = i$2;
-            getBuff$priv$()[(int)i] = (int)i;
+            getBuff$priv$()[.com.redhat.ceylon.compiler.java.Util.toInt(i)] = .com.redhat.ceylon.compiler.java.Util.toInt(i);
         }
     }
     

@@ -6,12 +6,12 @@ final class bug1568_ {
     }
     
     static void bug1568() {
-        final int x1 = .java.sql.DriverManager.getLoginTimeout();
-        .java.sql.DriverManager.setLoginTimeout((int)10L);
+        final long x1 = .java.sql.DriverManager.getLoginTimeout();
+        .java.sql.DriverManager.setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt(10L));
         .java.sql.DriverManager.println("");
         final .java.sql.Driver x2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.sql.DriverManager.getDriver(""));
-        final int x3 = .java.sql.DriverManager.getLoginTimeout();
-        .java.sql.DriverManager.setLoginTimeout((int)20L);
+        final long x3 = .java.sql.DriverManager.getLoginTimeout();
+        .java.sql.DriverManager.setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt(20L));
         .java.sql.DriverManager.println("");
         final .java.sql.Driver x4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.sql.DriverManager.getDriver(""));
     }

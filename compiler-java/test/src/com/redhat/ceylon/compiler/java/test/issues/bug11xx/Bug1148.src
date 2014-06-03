@@ -46,7 +46,7 @@ public final class bug1148_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.Character $call$(final .java.lang.Object $param$0) {
-                            final int $ceylontmp$character = (int)((.ceylon.language.Character)$param$0).intValue();
+                            final int $ceylontmp$character = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Character)$param$0).intValue());
                             return new .ceylon.language.Character($ceylontmp$character);
                         }
                     };
