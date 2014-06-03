@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1662 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662> {
+    
+    Bug1662(final double $float) {
+        this.$float = $float;
+        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.$TypeDescriptor$, this);
+    }
+    private final double $float;
+    
+    private final double getFloat$priv$() {
+        return $float;
+    }
+    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662> $ceylon$language$Summable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662> $ceylon$language$Summable$impl() {
+        return $ceylon$language$Summable$this$;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662 plus(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662 other) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662(getFloat$priv$() + other.getFloat$priv$());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.class);
+}
