@@ -15,6 +15,11 @@ Dog|Cat? pet() => dogIsBetter then dog() else Cat();
 SmallDog|BigDog|Cat? somePet() => dogIsBetter then someDog() else Cat();
 
 
+class SequenceBuilder<Value>() {
+    shared void append(Value val) {}
+    shared Value[] sequence => [];
+}
+
 {Value*} collectTillBreak<Value>(Value?() get) {
     value builder = SequenceBuilder<Value>();
     while (true) {

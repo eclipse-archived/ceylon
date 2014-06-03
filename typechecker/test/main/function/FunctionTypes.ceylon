@@ -278,7 +278,8 @@ void sequencedParams() {
     Anything(Character*) str0p = string1;
     Anything(Character) str1 = str;
     Anything(Character, Character) str2 = str;
-    str(*"hello".characters);
+    str(*"hello");
+    str(*"hello".sequence);
     str();
     str('X');
     str('h', 'e', 'l', 'l', 'o');
