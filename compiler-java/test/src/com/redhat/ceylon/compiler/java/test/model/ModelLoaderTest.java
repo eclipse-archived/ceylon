@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.model;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,13 +42,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.JDKUtils;
-import com.redhat.ceylon.cmr.api.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -145,7 +145,7 @@ public class ModelLoaderTest extends CompilerTest {
         // get the context to grab the declarations
         final Context context2 = task2.getContext();
         
-        // check the declarations after Enter but before the compilation is done otherwise we can'tload lazy
+        // check the declarations after Enter but before the compilation is done otherwise we can't load lazy
         // declarations from the jar anymore because we've overridden the jar and the javac jar index is corrupted
         class Listener implements TaskListener{
             @Override
@@ -157,16 +157,8 @@ public class ModelLoaderTest extends CompilerTest {
                 if(e.getKind() == Kind.ENTER){
                     AbstractModelLoader modelLoader = CeylonModelLoader.instance(context2);
                     Modules modules = LanguageCompiler.getCeylonContextInstance(context2).getModules();
-                    Module testModule = getTestModule(modules);
                     // now see if we can find our declarations
-                    for(Entry<String, Declaration> entry : decls.entrySet()){
-                        String quotedQualifiedName = entry.getKey().substring(1);
-                        Declaration modelDeclaration = modelLoader.getDeclaration(testModule, quotedQualifiedName, 
-                                Decl.isValue(entry.getValue()) ? DeclarationType.VALUE : DeclarationType.TYPE);
-                        Assert.assertNotNull(modelDeclaration);
-                        // make sure we loaded them exactly the same
-                        modelCompare.compareDeclarations(entry.getValue(), modelDeclaration);
-                    }
+                    compareDeclarations(modelCompare, decls, modelLoader, modules);
                 }
             }
         }
@@ -175,6 +167,41 @@ public class ModelLoaderTest extends CompilerTest {
 
         success = task2.call();
         Assert.assertTrue("Compilation failed", success);
+        
+        // now check with the runtime model loader too
+        String module = moduleForJavaModelLoading();
+        String version = "1";
+        ModuleWithArtifact moduleWithArtifact = new ModuleWithArtifact(module, version);
+        synchronized(RUN_LOCK){
+            // this initialises the metamodel, even if we don't use the resulting ClassLoader
+            NonCachingURLClassLoader classLoader;
+            try {
+                classLoader = getClassLoader("runtime model loader tests", moduleWithArtifact);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+            try{
+                RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
+                RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
+                Modules modules = moduleManager.getContext().getModules();
+                // now see if we can find our declarations
+                compareDeclarations(modelCompare, decls, modelLoader, modules);
+            }finally{
+                classLoader.clearCache();
+            }
+        }
+    }
+
+    private void compareDeclarations(final ModelComparison modelCompare, final Map<String, Declaration> decls, AbstractModelLoader modelLoader, Modules modules) {
+        Module testModule = getTestModule(modules);
+        for(Entry<String, Declaration> entry : decls.entrySet()){
+            String quotedQualifiedName = entry.getKey().substring(1);
+            Declaration modelDeclaration = modelLoader.getDeclaration(testModule, quotedQualifiedName, 
+                    Decl.isValue(entry.getValue()) ? DeclarationType.VALUE : DeclarationType.TYPE);
+            Assert.assertNotNull(modelDeclaration);
+            // make sure we loaded them exactly the same
+            modelCompare.compareDeclarations(entry.getValue(), modelDeclaration);
+        }
     }
 
     private Module getTestModule(Modules modules) {
