@@ -830,7 +830,9 @@ TypeConstraints?
             that declares the nested interface.</para>
             
             <para>A user-defined interface may not satisfy the interface 
-            <literal>Callable</literal> defined in <literal>ceylon.language</literal>.</para>
+            <literal>Callable</literal> defined in <literal>ceylon.language</literal>
+            nor directly satisfy the interface <literal>ConstrainedAnnotation</literal>
+            defined in <literal>ceylon.language</literal>.</para>
          
         </section>
         
@@ -1302,7 +1304,9 @@ TypeConstraints?
              nested interface.</para>
              
              <para>A user-defined class may not satisfy the interface 
-             <literal>Callable</literal> defined in <literal>ceylon.language</literal>.</para>
+             <literal>Callable</literal> defined in <literal>ceylon.language</literal> nor 
+             directly satisfy the interface <literal>ConstrainedAnnotation</literal> 
+             defined in <literal>ceylon.language</literal>.</para>
          
         </section>
         

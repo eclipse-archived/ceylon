@@ -5424,13 +5424,17 @@ public class ExpressionVisitor extends Visitor {
         if (td.getSatisfiedTypes().isEmpty()) return; //handle undecidability case
         for (Tree.StaticType t: that.getTypes()) {
             ProducedType type = t.getTypeModel();
-            if (td instanceof ClassOrInterface &&
-            		unit.isCallableType(type) && 
-            		!inLanguageModule(that.getUnit())) {
-                t.addError("directly satisfies Callable");
-            }
             if (type!=null && type.getDeclaration()!=null) {
                 type = type.resolveAliases();
+                if (td instanceof ClassOrInterface &&
+                        !inLanguageModule(that.getUnit())) {
+                    if (unit.isCallableType(type)) {
+                        t.addError("satisfies Callable");
+                    }
+                    if (type.getDeclaration().equals(unit.getConstrainedAnnotationDeclaration())) {
+                        t.addError("directly satisfies ConstrainedAnnotation");
+                    }
+                }
                 if (!set.add(type.getDeclaration())) {
                     //this error is not really truly necessary
                     //but the spec says it is an error, and
