@@ -83,4 +83,18 @@ public abstract class LazyIterable<Element, Absent> extends AbstractIterable<Ele
         // safe
         return $numExpressions;
     }
+    
+    @Override
+    public boolean longerThan(long length) {
+        if ($spread && length >= $numExpressions)
+            return super.longerThan(length);
+        return $numExpressions > length;
+    }
+    
+    @Override
+    public boolean shorterThan(long length) {
+        if ($spread && length >= $numExpressions)
+            return super.shorterThan(length);
+        return $numExpressions < length;
+    }
 }

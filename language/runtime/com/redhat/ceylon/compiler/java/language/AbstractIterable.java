@@ -184,11 +184,11 @@ public abstract class AbstractIterable<Element,Absent> implements Iterable<Eleme
         return $ceylon$language$Iterable$this.every(f);
     }
     @Override @Ignore
-    public final boolean longerThan(long length) {
+    public boolean longerThan(long length) {
         return $ceylon$language$Iterable$this.longerThan(length);
     }
     @Override @Ignore
-    public final boolean shorterThan(long length) {
+    public boolean shorterThan(long length) {
         return $ceylon$language$Iterable$this.shorterThan(length);
     }
     @Override @Ignore
