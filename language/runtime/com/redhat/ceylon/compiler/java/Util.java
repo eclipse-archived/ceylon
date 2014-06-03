@@ -971,6 +971,10 @@ public class Util {
         return ArraySequence.<T>instance($reifiedT, elements, length);
     }
 
+    /** 
+     * Used to obtain a {@code Sequential<String>} from a {@code java.lang.String[]} 
+     * obtained from an annotation.
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.String> 
     sequentialInstanceBoxed(java.lang.String[] elements) {
@@ -989,6 +993,10 @@ public class Util {
         		newArray);
     }
 
+    /** 
+     * Used to obtain a {@code Sequential<Integer>} from a {@code long[]} 
+     * obtained from an annotation.
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Integer> 
     sequentialInstanceBoxed(long[] elements) {
@@ -1007,6 +1015,10 @@ public class Util {
         		newArray);
     }
 
+    /** 
+     * Used to obtain a {@code Sequential<Character>} from a {@code int[]} 
+     * obtained from an annotation.
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Character> 
     sequentialInstanceBoxed(int[] elements) {
@@ -1025,6 +1037,10 @@ public class Util {
         		newArray);
     }
 
+    /** 
+     * Used to obtain a {@code Sequential<Boolean>} from a {@code boolean[]} 
+     * obtained from an annotation.
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Boolean> 
     sequentialInstanceBoxed(boolean[] elements) {
@@ -1043,6 +1059,10 @@ public class Util {
         		newArray);
     }
 
+    /** 
+     * Used to obtain a {@code Sequential<Float>} from a {@code float[]} 
+     * obtained from an annotation.
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Float> 
     sequentialInstanceBoxed(double[] elements) {
@@ -1198,46 +1218,55 @@ public class Util {
         return seq;
     }
     
+    /** Called to initialize an {@code BooleanArray} when one is instantiated */
     public static boolean[] fillArray(boolean[] array, boolean val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize a {@code ByteArray} when one is instantiated */
     public static byte[] fillArray(byte[] array, byte val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize an {@code ShortArray} when one is instantiated */
     public static short[] fillArray(short[] array, short val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize an {@code IntArray} when one is instantiated */
     public static int[] fillArray(int[] array, int val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize a {@code LongArray} when one is instantiated */
     public static long[] fillArray(long[] array, long val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize a {@code FloatArray} when one is instantiated */
     public static float[] fillArray(float[] array, float val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize a {@code DoubleArray} when one is instantiated */
     public static double[] fillArray(double[] array, double val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize a {@code CharArray} when one is instantiated */
     public static char[] fillArray(char[] array, char val){
         Arrays.fill(array, val);
         return array;
     }
     
+    /** Called to initialize an {@code ObjectArray<T>} when one it instantiated */
     public static <T> T[] fillArray(T[] array, T val){
         Arrays.fill(array, val);
         return array;
