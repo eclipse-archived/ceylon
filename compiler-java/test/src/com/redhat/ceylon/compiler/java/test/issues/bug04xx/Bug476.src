@@ -439,7 +439,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
+    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     

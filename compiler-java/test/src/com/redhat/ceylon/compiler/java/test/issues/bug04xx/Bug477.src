@@ -341,7 +341,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
+    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     
@@ -740,7 +740,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
+    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     

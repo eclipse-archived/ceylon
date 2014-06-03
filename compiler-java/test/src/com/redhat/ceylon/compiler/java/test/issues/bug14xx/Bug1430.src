@@ -331,7 +331,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Category<? super .java.lang.Object> getKeys() {
+    public .ceylon.language.Category<? super .ceylon.language.Integer> getKeys() {
         return $ceylon$language$Correspondence$this$.getKeys();
     }
     
