@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 
 /**
@@ -153,7 +154,7 @@ public abstract class ModuleWildcardsHelper {
     }
     
     private static void findModules(List<String> modules, File root, File dir) {
-        File descriptor = new File(dir, "module.ceylon");
+        File descriptor = new File(dir, Constants.MODULE_DESCRIPTOR);
         if (descriptor.isFile()) {
             File modDir = FileUtil.relativeFile(root, dir);
             String modName = modDir.getPath().replace(File.separatorChar, '.');
