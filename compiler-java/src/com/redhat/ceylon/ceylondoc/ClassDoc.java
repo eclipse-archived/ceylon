@@ -36,8 +36,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.ceylondoc.Util.ProducedTypeComparatorByName;
+import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -56,13 +56,10 @@ public class ClassDoc extends ClassOrPackageDoc {
     private TypeDeclaration klass;
     private List<Method> methods;
     private List<TypedDeclaration> attributes;
-    private List<Class> subclasses;
-    private List<Class> satisfyingClasses;
     private List<Interface> innerInterfaces;
     private List<Class> innerClasses;
     private List<Class> innerExceptions;
     private List<TypeAlias> innerAliases;
-    private List<Interface> satisfyingInterfaces;
     private List<ProducedType> superInterfaces;
     private List<TypeDeclaration> superClasses;
     private Map<MemberSpecification, Map<TypeDeclaration, List<Declaration>>> superclassInheritedMembers = new HashMap<ClassDoc.MemberSpecification, Map<TypeDeclaration,List<Declaration>>>(2);
@@ -122,30 +119,9 @@ public class ClassDoc extends ClassOrPackageDoc {
                 }
             }
         }
-        
-        satisfyingClasses = new ArrayList<Class>();
-        satisfyingInterfaces = new ArrayList<Interface>();
-        List<ClassOrInterface> satisfyingClassesOrInterfaces = tool.getSatisfyingClassesOrInterfaces(klass);
-        if (satisfyingClassesOrInterfaces != null) {
-            for (ClassOrInterface classOrInterface : satisfyingClassesOrInterfaces) {
-                if (classOrInterface instanceof Class) {
-                    satisfyingClasses.add((Class) classOrInterface);
-                } else if (classOrInterface instanceof Interface) {
-                    satisfyingInterfaces.add((Interface) classOrInterface);
-                }
-            }
-        }
-
-        subclasses = tool.getSubclasses(klass);
-        if (subclasses == null) {
-            subclasses = new ArrayList<Class>();
-        }
 
         Collections.sort(methods, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(attributes, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(subclasses, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(satisfyingClasses, ReferenceableComparatorByName.INSTANCE);
-        Collections.sort(satisfyingInterfaces, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(superInterfaces, ProducedTypeComparatorByName.INSTANCE);
         Collections.sort(innerInterfaces, ReferenceableComparatorByName.INSTANCE);
         Collections.sort(innerClasses, ReferenceableComparatorByName.INSTANCE);
@@ -355,12 +331,8 @@ public class ClassDoc extends ClassOrPackageDoc {
         open("div class='class-description'");
         
         writeTagged(klass);
-        writeTypeHierarchy();
+        writeTypeHierarchyTabs();
         writeListOnSummary("satisfied", "Satisfied Interfaces: ", superInterfaces);
-        writeListOnSummary("subclasses", "Direct Known Subclasses: ", subclasses);
-        writeListOnSummary("satisfyingClasses", "Direct Known Satisfying Classes: ", satisfyingClasses);
-        writeListOnSummary("satisfyingInterfaces", "Direct Known Satisfying Interfaces: ", satisfyingInterfaces);
-        writeSubtypesHierarchy();
         writeEnclosingType();
         writeAnnotationConstructors();
     
@@ -371,82 +343,147 @@ public class ClassDoc extends ClassOrPackageDoc {
         close("div"); // class-description
     }
 
-    private void writeTypeHierarchy() throws IOException {
-        if (klass instanceof Class) {
-            open("div class='typeHierarchy section'");
-            around("span class='title'", "Type Hierarchy:");
-            
-            LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();
-            superTypes.add(klass.getType());
-            ProducedType type = klass.getExtendedType();
-            while (type != null) {
-                superTypes.add(0, type);
-                type = type.getDeclaration().getExtendedType();
-            }
-            int i = 0;
-            for (ProducedType superType : superTypes) {
-                String klass = "inheritance-" + i;
-                open("ul class='inheritance "+klass+"'", "li");
-                if( i != 0) {
-                    around("i class='icon-indentation'");
-                }
-                
-                writeIcon(superType.getDeclaration());
-                around("span class='decl' title='"+ superType.getProducedTypeQualifiedName() +"'", linkRenderer().to(superType).printTypeParameterDetail(true).getLink());
-                i++;
-            }
-            while (i-- > 0) {
-                close("li", "ul");
-            }
-            
-            close("div");
-        }
-    }
-    
-    private void writeSubtypesHierarchy() throws IOException {
-        if (!(klass instanceof ClassOrInterface)) {
-            return;
-        }
-        if (satisfyingInterfaces.isEmpty() && satisfyingClasses.isEmpty() && subclasses.isEmpty()) {
+    private void writeTypeHierarchyTabs() throws IOException {
+        boolean hasTypeHierarchy = klass instanceof Class;
+        boolean hasSupertypeHierarchy = klass instanceof Class || !isEmpty(klass.getSatisfiedTypeDeclarations());
+        boolean hasSubtypeHierarchy = !isEmpty(tool.getSubclasses(klass)) || !isEmpty(tool.getSatisfyingClassesOrInterfaces(klass));
+
+        if (!hasTypeHierarchy && !hasSupertypeHierarchy && !hasSubtypeHierarchy) {
             return;
         }
         
-        open("div class='subtypes-hierarchy section'");
-        write("<a href='#' class='title' title='Click for expand/collapse'>All Known Subtypes Hierarchy <i class='icon-collapse'></i></a>");
-        writeSubtypesHierarchyLevel(Collections.singletonList((ClassOrInterface) klass), 0);
+        boolean isTypeHierarchyActive = hasTypeHierarchy;
+        boolean isSupertypeHierarchyActive = hasSupertypeHierarchy && !hasTypeHierarchy;
+        boolean isSubtypeHierarchyActive = hasSubtypeHierarchy && !hasSupertypeHierarchy && !hasTypeHierarchy;
+
+        open("div class='type-hierarchy section'");
+        open("div class='tabbable'");
+
+        open("ul class='nav nav-tabs'");
+        writeTabNav("tabTypeHierarchy", "Type Hierarchy", "icon-type-hierarchy", isTypeHierarchyActive, hasTypeHierarchy);
+        writeTabNav("tabSupertypeHierarchy", "Supertype Hierarchy", "icon-supertype-hierarchy", isSupertypeHierarchyActive, hasSupertypeHierarchy);
+        writeTabNav("tabSubtypeHierarchy", "Subtype Hierarchy", "icon-subtype-hierarchy", isSubtypeHierarchyActive, hasSubtypeHierarchy);
+        close("ul"); // nav-tabs
+
+        open("div class='tab-content'");
+        
+        open("div class='tab-pane "+ (isTypeHierarchyActive ? "active" : "") +"' id='tabTypeHierarchy'");
+        if( hasTypeHierarchy ) {
+            writeTypeHierarchy();
+        } else {
+            write("<p class='muted'><i>no type hierarchy</i></p>");
+        }
         close("div");
+        
+        open("div class='tab-pane "+ (isSupertypeHierarchyActive ? "active" : "") +"' id='tabSupertypeHierarchy'");
+        if( hasSupertypeHierarchy ) {
+            writeSuperTypeHierarchy(Collections.singletonList(klass), 0);
+        } else {
+            write("<p class='muted'><i>no supertypes hierarchy</i></p>");
+        }
+        close("div");
+
+        open("div class='tab-pane "+ (isSubtypeHierarchyActive ? "active" : "") +"' id='tabSubtypeHierarchy'");
+        if( hasSubtypeHierarchy ) {
+            writeSubtypesHierarchy(Collections.singletonList(klass), 0);
+        } else {
+            write("<p class='muted'><i>no subtypes hierarchy</i></p>"); 
+        }
+        close("div");
+        
+        close("div"); // tab-content
+        close("div"); // tabbable
+        close("div"); // typeHierarchy
     }
     
-    private void writeSubtypesHierarchyLevel(List<ClassOrInterface> types, int level) throws IOException {
-        if( types.size() > 1 ) {
-            Collections.sort(types, ReferenceableComparatorByName.INSTANCE);
+    private void writeTabNav(String id, String name, String icon, boolean isActive, boolean isEnabled) throws IOException {
+        write("<li" + (isActive ? " class='active'" : "") + ">");
+        write("<a id='" + id + "Nav' href='#" + id + "' data-toggle='tab'>");
+        write("<i class='" + icon + (isEnabled ? "" : "-disabled") + "'></i>");
+        write("<span" + (isEnabled ? "" : " class='disabled'") + ">" + name + "</span>");
+        write("</a>");
+        write("</li>");
+    }
+    
+    private void writeTypeHierarchy() throws IOException {
+        LinkedList<ProducedType> superTypes = new LinkedList<ProducedType>();
+        superTypes.add(klass.getType());
+        ProducedType type = klass.getExtendedType();
+        while (type != null) {
+            superTypes.add(0, type);
+            type = type.getDeclaration().getExtendedType();
         }
-        for (ClassOrInterface type : types) {
-            String cssClass = "inheritance-" + level;
-            if (level == 0) {
-                open("ul class='inheritance " + cssClass + "' style='display: none'", "li");
-            } else {
-                open("ul class='inheritance " + cssClass + "'", "li");
-                around("i class='icon-indentation'");
+        int i = 0;
+        for (ProducedType superType : superTypes) {
+            writeTypeHierarchyLevel(superType.getDeclaration(), i, true);
+            if (!isEmpty(superType.getSatisfiedTypes())) {
+                write("<a class='hint' title='Go to the Supertype Hierarchy' onClick='$(\"#tabSupertypeHierarchyNav\").tab(\"show\");'> ...and other supertypes</a>");
             }
-            writeIcon(type);
-            linkRenderer().to(type).printTypeParameters(false).printAbbreviated(false).write();
-
-            List<ClassOrInterface> subtypes = new ArrayList<ClassOrInterface>();
-            
-            List<ClassOrInterface> satisfyingClassesOrInterfaces = tool.getSatisfyingClassesOrInterfaces(type);
-            if (satisfyingClassesOrInterfaces != null) {
-                subtypes.addAll(satisfyingClassesOrInterfaces);
-            }
-            List<Class> subclasses = tool.getSubclasses(type);
-            if (subclasses != null) {
-                subtypes.addAll(subclasses);
-            }
-
-            writeSubtypesHierarchyLevel(subtypes, level + 1);
-
+            i++;
+        }
+        while (i-- > 0) {
             close("li", "ul");
         }
+    }
+    
+    private void writeSuperTypeHierarchy(List<TypeDeclaration> types, int level) throws IOException {
+        if (types.size() > 1) {
+            Collections.sort(types, ReferenceableComparatorByName.INSTANCE);
+        }
+        for (TypeDeclaration type : types) {
+            writeTypeHierarchyLevel(type, level, false);
+            writeSuperTypeHierarchy(collectSupertypes(type), level + 1);
+            close("li", "ul");
+        }
+    }
+
+    private void writeSubtypesHierarchy(List<TypeDeclaration> types, int level) throws IOException {
+        if (types.size() > 1) {
+            Collections.sort(types, ReferenceableComparatorByName.INSTANCE);
+        }
+        for (TypeDeclaration type : types) {
+            writeTypeHierarchyLevel(type, level, true);
+            writeSubtypesHierarchy(collectSubtypes(type), level + 1);
+            close("li", "ul");
+        }
+    }
+    
+    private void writeTypeHierarchyLevel(TypeDeclaration type, int level, boolean arrowUp) throws IOException {
+        open("ul class='inheritance inheritance-" + level + "'", "li");
+        if (level > 0) {
+            if( arrowUp ) {
+                around("i class='icon-indentation-arrow-up'");
+            } else {
+                around("i class='icon-indentation-arrow-right'");
+            }
+        }
+        writeIcon(type);
+        linkRenderer().to(type).printTypeParameters(false).printAbbreviated(false).write();
+    }
+    
+    private List<TypeDeclaration> collectSupertypes(TypeDeclaration type) {
+        List<TypeDeclaration> supertypes = new ArrayList<TypeDeclaration>();
+        if (type instanceof Class && type.getExtendedTypeDeclaration() != null) {
+            supertypes.add(type.getExtendedTypeDeclaration());
+        }
+        List<TypeDeclaration> satisfiedTypes = type.getSatisfiedTypeDeclarations();
+        if (satisfiedTypes != null) {
+            supertypes.addAll(satisfiedTypes);
+        }
+        return supertypes;
+    }
+
+    private List<TypeDeclaration> collectSubtypes(TypeDeclaration type) {
+        List<TypeDeclaration> subtypes = new ArrayList<TypeDeclaration>();
+        List<Class> subclasses = tool.getSubclasses(type);
+        if (subclasses != null) {
+            subtypes.addAll(subclasses);
+        }
+        List<ClassOrInterface> satisfyingClassesOrInterfaces = tool.getSatisfyingClassesOrInterfaces(type);
+        if (satisfyingClassesOrInterfaces != null) {
+            subtypes.addAll(satisfyingClassesOrInterfaces);
+        }
+        return subtypes;
     }
 
     private void writeListOnSummary(String cssClass, String title, List<?> types) throws IOException {

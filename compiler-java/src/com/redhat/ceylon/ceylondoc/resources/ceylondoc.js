@@ -95,28 +95,6 @@ $(".specifier-ellipsis").each(function() {
 
 
 /*
- * COLLAPSIBLE SUBTYPES HIERARCHY
- */
-$('.subtypes-hierarchy').each(function() {
-	var title = $('.title', this);
-	var tree = $('.inheritance-0', this);
-	
-	title.click(function () {
-		if(tree.is(':visible')) {
-			var icon = $(".icon-expand", title);
-			icon.removeClass("icon-expand");
-			icon.addClass("icon-collapse");
-		} else {
-			var icon = $(".icon-collapse", title);
-			icon.removeClass("icon-collapse");
-			icon.addClass("icon-expand");
-		}
-		tree.toggle();
-	});
-});
-
-
-/*
  * COLLAPSIBLE DESCRIPTION
  */
 $('tbody .description').each(function() {

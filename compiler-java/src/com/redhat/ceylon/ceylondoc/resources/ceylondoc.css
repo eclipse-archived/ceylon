@@ -274,12 +274,46 @@ div .type-alias-specifier {
 	padding-left: 30px;
 }
 
+.type-hierarchy {
+    margin-bottom: 10px;
+}
+
+.type-hierarchy .nav-tabs {
+    margin-bottom: 4px;    
+}
+
+.type-hierarchy [class^='icon-'] {
+    vertical-align: text-bottom;
+} 
+
+.type-hierarchy li>a {
+    color: #555;
+    font-size: 13px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.type-hierarchy .nav-tabs>.active>a {
+    font-weight: bold;
+}
+
+.type-hierarchy .nav-tabs a>.disabled,
+.type-hierarchy .nav-tabs>.active>a>.disabled {
+    color: rgb(180,180,180);
+}
+
+.type-hierarchy li>a.hint {
+    color: rgb(180,180,180);
+    cursor: pointer;
+    font-style: italic;
+}
+
 .inheritance {
 	list-style-type: none;
 }
 
 .inheritance-0 {
-    margin-left: 0;
+    margin-left: 20px;
 }
 
 .inheritance-1 {
@@ -464,7 +498,7 @@ code {
 
 [class^='icon-'] {
 	display: inline-block;
-	background-image: url("ceylondoc-icons.png");
+	background-image: url("ceylondoc-icons.png") !important;
 	background-repeat: no-repeat;
 	height: 16px;
 	width: 16px;
@@ -623,6 +657,44 @@ td [class^='icon-'] {
 
 .icon-assertion {
     background-position: -608px 0px;
+}
+
+.icon-subtype-hierarchy {
+    background-position: -624px 0px;
+}
+
+.icon-supertype-hierarchy {
+    background-position: -640px 0px;
+}
+
+.icon-type-hierarchy {
+    background-position: -656px 0px;
+}
+
+.icon-indentation-arrow-up {
+    background-position: -672px 0px;
+    position: relative;
+    top: -6px;
+    left: -2px;
+}
+
+.icon-indentation-arrow-right {
+    background-position: -688px 0px;
+    position: relative;
+    top: -6px;
+    left: -2px;
+}
+
+.icon-subtype-hierarchy-disabled {
+    background-position: -704px 0px;
+}
+
+.icon-supertype-hierarchy-disabled {
+    background-position: -720px 0px;
+}
+
+.icon-type-hierarchy-disabled {
+    background-position: -736px 0px;
 }
 
 a:HOVER .icon-expand-all,
