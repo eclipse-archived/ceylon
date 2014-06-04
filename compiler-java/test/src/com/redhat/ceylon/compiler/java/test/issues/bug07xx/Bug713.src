@@ -1,16 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
-class Bug713 extends .java.awt.Container implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .javax.accessibility.Accessible {
+class Bug713 extends .java.awt.Container implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug713() {
         super();
-        this.accessibleContext = (.javax.accessibility.AccessibleContext).ceylon.language.nothing_.get_();
-    }
-    private final .javax.accessibility.AccessibleContext accessibleContext;
-    
-    @.java.lang.Override
-    public final .javax.accessibility.AccessibleContext getAccessibleContext() {
-        return accessibleContext;
     }
     
     @.java.lang.Override

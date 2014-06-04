@@ -26,4 +26,7 @@ abstract class Bug715<Item>() satisfies Map<String, Item>
         return nothing;
     }
   
+    hash = 1;
+  
+    equals(Object that) => false;
 }

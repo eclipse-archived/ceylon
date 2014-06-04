@@ -21,8 +21,7 @@ import java.awt { Container, Component, Point }
 import javax.accessibility { Accessible, AccessibleContext }
 
 @noanno
-class Bug713() extends Container() satisfies Accessible {
-    shared actual AccessibleContext accessibleContext = nothing;
+class Bug713() extends Container() {
     shared actual Component getComponentAt(Point? point) {
         return nothing;
     }
