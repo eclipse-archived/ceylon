@@ -1815,14 +1815,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.ScaleOp op) {
         OperatorTranslation operator = Operators.getOperator(Tree.ScaleOp.class);
         Tree.Term scalableTerm = op.getRightTerm();
+        ProducedType scalableTermType = getSupertype(scalableTerm, typeFact().getScalableDeclaration());
         SyntheticName scaleableName = naming.alias("scalable");
         JCVariableDecl scaleable = makeVar(scaleableName, 
-                makeJavaType(scalableTerm.getTypeModel(), JT_NO_PRIMITIVES), 
-                transformExpression(scalableTerm));
+                makeJavaType(scalableTermType, JT_NO_PRIMITIVES), 
+                transformExpression(scalableTerm, BoxingStrategy.BOXED, scalableTermType));
         
         Tree.Term scaleTerm = op.getLeftTerm();
         SyntheticName scaleName = naming.alias("scale");
-        ProducedType scaleType = scalableTerm.getTypeModel().getSupertype(typeFact().getScalableDeclaration()).getTypeArgumentList().get(0);
+        ProducedType scaleType = getTypeArgument(scalableTermType, 1);
         JCExpression scaleValue;
         if (isCeylonInteger(scaleTerm.getTypeModel())
                 && isCeylonFloat(scaleType)) {
@@ -1830,7 +1831,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             scaleValue = transformExpression(scaleTerm, BoxingStrategy.UNBOXED, scalableTerm.getTypeModel());
             scaleValue = boxType(scaleValue, typeFact().getFloatDeclaration().getType());
         } else {
-            scaleValue = transformExpression(scaleTerm);
+            scaleValue = transformExpression(scaleTerm, BoxingStrategy.BOXED, scaleType);
         }
         JCVariableDecl scale = makeVar(scaleName, 
                 makeJavaType(scaleType, JT_NO_PRIMITIVES),
