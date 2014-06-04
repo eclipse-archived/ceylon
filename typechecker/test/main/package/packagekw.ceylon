@@ -21,3 +21,9 @@ class Outer() {
 @error Anything p_0 = package;
 @error Anything p_1 = package();
 @error Anything p_2 = (package);
+
+void run<X>(X x) {
+    package.run("hello");
+    package.run<String>("hello");
+    package.run<X>(x);
+}

@@ -1762,18 +1762,30 @@ public class ExpressionVisitor extends Visitor {
                             (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (term instanceof Tree.QualifiedTypeExpression) {
-                    visitQualifiedTypeExpression((Tree.QualifiedTypeExpression) term,
-                            ((Tree.QualifiedTypeExpression) term).getPrimary().getTypeModel(),
-                            (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression) term;
+                    if (qte.getPrimary() instanceof Tree.Package) {
+                        visitBaseTypeExpression(qte, (TypeDeclaration) dec, 
+                                typeArgs, mte.getTypeArguments());
+                    }
+                    else {
+                        visitQualifiedTypeExpression(qte, qte.getPrimary().getTypeModel(),
+                                (TypeDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    }
                 }
                 else if (term instanceof Tree.BaseMemberExpression) {
                     visitBaseMemberExpression((Tree.BaseMemberExpression) term,
                             (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
                 }
                 else if (term instanceof Tree.QualifiedMemberExpression) {
-                    visitQualifiedMemberExpression((Tree.QualifiedMemberExpression) term,
-                            ((Tree.QualifiedMemberExpression) term).getPrimary().getTypeModel(),
-                            (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+                    if (qme.getPrimary() instanceof Tree.Package) {
+                        visitBaseMemberExpression(qme, (TypedDeclaration) dec, 
+                                typeArgs, mte.getTypeArguments());
+                    }
+                    else {
+                        visitQualifiedMemberExpression(qme, qme.getPrimary().getTypeModel(),
+                                (TypedDeclaration) dec, typeArgs, mte.getTypeArguments());
+                    }
                 }
             }
         }
