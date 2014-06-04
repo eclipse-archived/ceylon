@@ -1913,8 +1913,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.BitwiseOp op) {
-    	JCExpression result = transformOverridableBinaryOperator(op, null, null);
-    	return result;
+        ProducedType leftType = getSupertype(op.getLeftTerm(), typeFact().getSetDeclaration());
+        ProducedType rightType = getSupertype(op.getRightTerm(), typeFact().getSetDeclaration());
+    	return transformOverridableBinaryOperator(op, leftType, rightType);
     }    
 
     // Overridable binary operators
@@ -2073,11 +2074,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     	
         ProducedType valueType = op.getLeftTerm().getTypeModel();
+        final ProducedType rightType = getSupertype(op.getRightTerm(), typeFact().getSetDeclaration());
         
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, valueType, valueType, new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
-            	JCExpression result = transformOverridableBinaryOperator(op.getRightTerm(), null, operator.binaryOperator, OptimisationStrategy.NONE, previousValue);
+            	JCExpression result = transformOverridableBinaryOperator(op.getRightTerm(), rightType, operator.binaryOperator, OptimisationStrategy.NONE, previousValue);
             	return result;
             }
         });
