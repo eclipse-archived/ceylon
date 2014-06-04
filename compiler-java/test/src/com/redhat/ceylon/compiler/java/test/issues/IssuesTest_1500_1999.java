@@ -338,11 +338,9 @@ public class IssuesTest_1500_1999 extends CompilerTest {
     
     @Test
     public void testBug1639() {
-        assertErrors(
-                new String[] { "bug16xx/Bug1639.ceylon" },
-                defaultOptions,
-                null,
-                new CompilerError(22, "dynamic is not yet supported on this platform"));
+        assertErrors("bug16xx/Bug1639",
+                new CompilerError(22, "dynamic is not yet supported on this platform"),
+                new CompilerError(23, "dynamic is not yet supported on this platform"));
     }
     
     @Ignore("Only used for profiling")

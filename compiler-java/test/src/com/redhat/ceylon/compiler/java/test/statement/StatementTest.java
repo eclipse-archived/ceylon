@@ -666,6 +666,7 @@ public class StatementTest extends CompilerTest {
         assertErrors("dynamic/Dynamic",
                 new CompilerError(22, "dynamic is not yet supported on this platform"),
                 new CompilerError(25, "dynamic is not yet supported on this platform"),
+                new CompilerError(26, "dynamic is not yet supported on this platform"),
                 new CompilerError(26, "value type could not be inferred"));
     }
 }
