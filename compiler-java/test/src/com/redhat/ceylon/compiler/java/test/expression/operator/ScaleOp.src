@@ -22,7 +22,7 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             let
             {
                 .ceylon.language.Float scale$1 = .ceylon.language.Float.instance(2.0);
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp scalable$0 = this;
+                .ceylon.language.Scalable<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> scalable$0 = this;
             }
             returning scalable$0.scale(scale$1);
         );
@@ -30,7 +30,7 @@ class ScaleOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             let
             {
                 .ceylon.language.Float scale$3 = .ceylon.language.Float.instance(2L + 2L);
-                .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp scalable$2 = this;
+                .ceylon.language.Scalable<? super .ceylon.language.Float, ? extends .com.redhat.ceylon.compiler.java.test.expression.operator.ScaleOp> scalable$2 = this;
             }
             returning scalable$2.scale(scale$3);
         );
