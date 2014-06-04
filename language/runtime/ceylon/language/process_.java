@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 7) @Object
 public final class process_ {
@@ -26,11 +27,11 @@ public final class process_ {
     @Ignore
     public void setupArguments(java.lang.String[] args) {
         if (args.length>0) {
-            java.lang.Object[] newArgs = new java.lang.Object[args.length];
+            Array<String> newArgs = new Array<String>(String.$TypeDescriptor$, args.length, String.instance(""));
             for (int i = 0; i < args.length; i++) {
-                newArgs[i] = String.instance(args[i]);
+                newArgs.set(i, String.instance(args[i]));
             }
-            this.args = ArraySequence.<String>instance(String.$TypeDescriptor$, newArgs);
+            this.args = new ASequence<String>(String.$TypeDescriptor$, newArgs);
         }
     }
     
