@@ -1823,7 +1823,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Tree.Term scaleTerm = op.getLeftTerm();
         SyntheticName scaleName = naming.alias("scale");
-        ProducedType scaleType = getTypeArgument(scalableTermType, 1);
+        ProducedType scaleType = getTypeArgument(scalableTermType, 0);
         JCExpression scaleValue;
         if (isCeylonInteger(scaleTerm.getTypeModel())
                 && isCeylonFloat(scaleType)) {
