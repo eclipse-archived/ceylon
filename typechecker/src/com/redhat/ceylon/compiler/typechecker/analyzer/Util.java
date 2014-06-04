@@ -512,8 +512,11 @@ public class Util {
         }
     }
 
-    static StringBuilder typeNamesAsIntersection(
+    static String typeNamesAsIntersection(
             List<ProducedType> upperBounds, Unit unit) {
+        if (upperBounds.isEmpty()) {
+            return "Anything";
+        }
         StringBuilder sb = new StringBuilder();
         for (ProducedType st: upperBounds) {
             sb.append(st.getProducedTypeName(unit)).append(" & ");
@@ -521,7 +524,7 @@ public class Util {
         if (sb.toString().endsWith(" & ")) {
             sb.setLength(sb.length()-3);
         }
-        return sb;
+        return sb.toString();
     }
 
     public static Tree.Term eliminateParensAndWidening(Tree.Term term) {
