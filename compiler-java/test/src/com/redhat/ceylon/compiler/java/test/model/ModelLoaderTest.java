@@ -252,7 +252,7 @@ public class ModelLoaderTest extends CompilerTest {
         com.redhat.ceylon.compiler.typechecker.context.Context context = new com.redhat.ceylon.compiler.typechecker.context.Context(repoManager, vfs);
         RuntimeModuleManager moduleManager = new RuntimeModuleManager(context);
         moduleManager.initCoreModules();
-        moduleManager.loadModule("ceylon.language", Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
+        moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
                 getClass().getClassLoader());
         RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
         modelLoader.setupWithNoStandardModules();
@@ -1496,7 +1496,7 @@ public class ModelLoaderTest extends CompilerTest {
             @Override
             public void test(ModelLoader loader) {
                 OtherModelCompare comparer = new OtherModelCompare();
-                Module binaryLangMod = loader.getLoadedModule("ceylon.language");
+                Module binaryLangMod = loader.getLoadedModule(AbstractModelLoader.CEYLON_LANGUAGE);
                 for (Map.Entry<String, Declaration> entry : nativeFromSource.entrySet()) {
                     System.out.println(entry.getKey());
                     Declaration source = entry.getValue();

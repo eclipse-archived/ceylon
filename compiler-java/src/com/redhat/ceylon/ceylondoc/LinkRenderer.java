@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -395,15 +396,15 @@ public class LinkRenderer {
                 decl = ((Element) scope).getUnit().getImportedDeclaration(declName, null, false);
             }
 
-            if (decl == null && !isNested && !scope.getQualifiedNameString().equals("ceylon.language") ) {
+            if (decl == null && !isNested && !scope.getQualifiedNameString().equals(AbstractModelLoader.CEYLON_LANGUAGE) ) {
                 decl = resolveDeclaration(scope.getContainer(), declName, isNested);
             }
             
-            if (decl == null && declName.equals("Nothing") && scope.getQualifiedNameString().equals("ceylon.language")) {
+            if (decl == null && declName.equals("Nothing") && scope.getQualifiedNameString().equals(AbstractModelLoader.CEYLON_LANGUAGE)) {
                 decl = new NothingType(((Package) scope).getUnit());
             }
         } else {
-            Package pkg = ceylonDocTool.getCurrentModule().getPackage("ceylon.language");
+            Package pkg = ceylonDocTool.getCurrentModule().getPackage(AbstractModelLoader.CEYLON_LANGUAGE);
             if (pkg != null) {
                 decl = resolveDeclaration(pkg, declName, isNested);
             }

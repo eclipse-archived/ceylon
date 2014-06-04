@@ -1419,7 +1419,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Don't try to load a package descriptor for ceylon.language 
         // if we're bootstrapping
         if (isBootstrap 
-                && pkg.getQualifiedNameString().startsWith("ceylon.language")) {
+                && pkg.getQualifiedNameString().startsWith(CEYLON_LANGUAGE)) {
             return;
         }
         

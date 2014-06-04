@@ -62,6 +62,7 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -846,7 +847,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                     doc(decl);
                 }
                 
-                if (pkg.getNameAsString().equals("ceylon.language")) {
+                if (pkg.getNameAsString().equals(AbstractModelLoader.CEYLON_LANGUAGE)) {
                     docNothingType(pkg);
                 }
             }

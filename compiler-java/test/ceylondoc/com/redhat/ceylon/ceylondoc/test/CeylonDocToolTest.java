@@ -68,6 +68,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.net.httpserver.HttpExchange;
@@ -443,13 +444,13 @@ public class CeylonDocToolTest {
     @Test
     public void ceylonLanguage() throws Exception {
         String pathname = "../ceylon.language/src";
-        String moduleName = "ceylon.language";
+        String moduleName = AbstractModelLoader.CEYLON_LANGUAGE;
         CeylonDocTool tool = tool(pathname, moduleName, true);
         tool.setIncludeNonShared(false);
         tool.setIncludeSourceCode(true);
         tool.run();
         
-        Module module = makeModule("ceylon.language", LANGUAGE_MODULE_VERSION);
+        Module module = makeModule(AbstractModelLoader.CEYLON_LANGUAGE, LANGUAGE_MODULE_VERSION);
         File destDir = getOutputDir(tool, module);
         
         assertFileExists(destDir, "index.html");
@@ -517,7 +518,7 @@ public class CeylonDocToolTest {
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
         File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
-        File languageModule = repoManager.getArtifact(new ArtifactContext("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
+        File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();

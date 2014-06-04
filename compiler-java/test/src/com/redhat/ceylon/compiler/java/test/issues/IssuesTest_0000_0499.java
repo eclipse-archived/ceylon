@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTest;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 
 public class IssuesTest_0000_0499 extends CompilerTest {
@@ -54,7 +55,7 @@ public class IssuesTest_0000_0499 extends CompilerTest {
         // If this test is failing, make sure you have done "ant publish"
         // of ceylon.language
         String repoDir = Repositories.get().getUserRepoDir().getCanonicalPath();
-        options.add(dir+File.pathSeparator+getModuleArchive("ceylon.language", TypeChecker.LANGUAGE_MODULE_VERSION, repoDir));
+        options.add(dir+File.pathSeparator+getModuleArchive(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, repoDir));
         Boolean result = getCompilerTask(options, "bug00xx/Bug41_2.ceylon").call();
         Assert.assertEquals("Compilation worked", Boolean.TRUE, result);
     }

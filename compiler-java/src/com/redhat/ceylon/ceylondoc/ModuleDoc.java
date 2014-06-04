@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.ceylondoc.Util.ModuleImportComparatorByName;
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
@@ -112,7 +113,7 @@ public class ModuleDoc extends CeylonDoc {
         Iterator<ModuleImport> moduleImportIterator = moduleImports.listIterator();
         while (moduleImportIterator.hasNext()) {
             ModuleImport moduleImport = moduleImportIterator.next();
-            if (moduleImport.getModule().getNameAsString().equals("ceylon.language")) {
+            if (moduleImport.getModule().getNameAsString().equals(AbstractModelLoader.CEYLON_LANGUAGE)) {
                 moduleImportIterator.remove();
             }
         }

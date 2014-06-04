@@ -222,7 +222,7 @@ public class CeylonEnter extends Enter {
                     || (classSymbol.sourcefile != null && classSymbol.sourcefile.getKind() == Kind.SOURCE)){
                 PackageSymbol pkg = classSymbol.packge();
                 String name = pkg.getQualifiedName().toString();
-                if(name.startsWith("ceylon.language") || name.startsWith("com.redhat.ceylon.compiler.java"))
+                if(name.startsWith(AbstractModelLoader.CEYLON_LANGUAGE) || name.startsWith("com.redhat.ceylon.compiler.java"))
                     resetClassSymbol(classSymbol);
             }
         }

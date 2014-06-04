@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
@@ -756,7 +757,7 @@ public abstract class CeylonDoc extends Markup {
         private boolean isCeylonLanguageAnnotation(Tree.Annotation annotation) {
             if (annotation.getPrimary() instanceof Tree.MemberOrTypeExpression) {
                 Declaration declaration = ((Tree.MemberOrTypeExpression) annotation.getPrimary()).getDeclaration();
-                if (declaration.getQualifiedNameString().startsWith("ceylon.language")) {
+                if (declaration.getQualifiedNameString().startsWith(AbstractModelLoader.CEYLON_LANGUAGE)) {
                     return true;
                 }
             }

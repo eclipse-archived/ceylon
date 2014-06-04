@@ -24,6 +24,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.loader.AbstractModelLoader;
 import com.redhat.ceylon.compiler.loader.model.LazyModule;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.Package;
 
 public class ReflectionModule extends LazyModule {
@@ -50,7 +51,7 @@ public class ReflectionModule extends LazyModule {
                     String name = getNameAsString();
                     for(String pkg : jarPackages){
                         // special case for the language module to hide stuff
-                        if(!name.equals("ceylon.language") || pkg.startsWith("ceylon.language"))
+                        if(!name.equals(AbstractModelLoader.CEYLON_LANGUAGE) || pkg.startsWith(AbstractModelLoader.CEYLON_LANGUAGE))
                             modelLoader.findOrCreatePackage(this, pkg);
                     }
                     packagesLoaded = true;
