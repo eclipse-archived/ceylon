@@ -66,4 +66,6 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} skip(Integer skipit);
     shared actual native {Element*} take(Integer num);
     shared actual native {Element*} by(Integer step);
+    
+    shared native void sortInPlace(Comparison comparing(Element x, Element y));
 }

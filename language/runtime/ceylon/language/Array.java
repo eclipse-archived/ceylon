@@ -5,6 +5,8 @@ import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
@@ -1737,5 +1739,31 @@ public final class Array<Element>
     @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(Array.class, $reifiedElement);
+    }
+    
+    public void sortInPlace(
+            @Name("comparing")@FunctionalParameter("(x,y)")
+            @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
+            final Callable<? extends Comparison> comparing) {
+        java.util.AbstractList<Element> list = new java.util.AbstractList<Element>() {
+            @Override
+            public Element get(int index) {
+                return Array.this.unsafeItem(index);
+            }
+            @Override
+            public int size() {
+                return (int)Array.this.getSize();
+            }
+            
+        };
+        Comparator<Element> comparator = new Comparator<Element>() {
+            public int compare(Element x, Element y) {
+                Comparison result = comparing.$call$(x, y);
+                if (result==larger_.get_()) return 1;
+                if (result==smaller_.get_()) return -1;
+                return 0;
+            }
+        };
+        Collections.<Element>sort(list, comparator);
     }
 }

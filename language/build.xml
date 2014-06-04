@@ -439,8 +439,6 @@
                 <include name="ceylon/language/system_.java"/>
             	<exclude name="ceylon/language/printStackTrace.ceylon"/>
             	<include name="ceylon/language/printStackTrace_.java"/>
-                <exclude name="ceylon/language/internalSort.ceylon"/>
-                <include name="ceylon/language/internalSort_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
                 <include name="ceylon/language/String.java"/>
                 <include name="ceylon/language/string_.java"/>
