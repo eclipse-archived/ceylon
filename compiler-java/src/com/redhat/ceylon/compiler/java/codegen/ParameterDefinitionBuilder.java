@@ -254,7 +254,7 @@ public class ParameterDefinitionBuilder {
         if(Annotations.includeIgnore(annotationFlags)){
             annots = annots.appendList(gen.makeAtIgnore());
         }
-        Name name = gen.names().fromString(Naming.quoteIfJavaKeyword(getJavaParameterName()));
+        Name name = gen.names().fromString(Naming.quoteParameterName(getJavaParameterName()));
         return gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots.toList()), 
                 name, type, null);   
     }

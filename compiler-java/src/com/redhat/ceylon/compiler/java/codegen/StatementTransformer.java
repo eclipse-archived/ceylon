@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Suffix;
@@ -1352,7 +1351,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             Tree.ForIterator forIterator = getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
-                String varName = Naming.quoteIfJavaKeyword(((Tree.ValueIterator)forIterator).getVariable().getIdentifier().getText());
+                String varName = Naming.getVariableName(((Tree.ValueIterator)forIterator).getVariable());
                 JCStatement variable = makeVar(FINAL,
                         varName,
                         makeJavaType(elementType),
@@ -1366,7 +1365,7 @@ public class StatementTransformer extends AbstractTransformer {
                         elementGet);
                 ProducedType entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
                 ProducedType keyType = entryType.getTypeArgumentList().get(0);
-                String keyName = Naming.quoteIfJavaKeyword(((Tree.KeyValueIterator)forIterator).getKeyVariable().getIdentifier().getText());
+                String keyName = Naming.getVariableName(((Tree.KeyValueIterator)forIterator).getKeyVariable());
                 JCStatement keyVariable = makeVar(FINAL,
                         keyName,
                         makeJavaType(keyType),
@@ -1374,7 +1373,7 @@ public class StatementTransformer extends AbstractTransformer {
                                 make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
                                 keyType, true, BoxingStrategy.UNBOXED, keyType));
                 ProducedType valueType = entryType.getTypeArgumentList().get(1);
-                String valueName = Naming.quoteIfJavaKeyword(((Tree.KeyValueIterator)forIterator).getValueVariable().getIdentifier().getText());
+                String valueName = Naming.getVariableName(((Tree.KeyValueIterator)forIterator).getValueVariable());
                 JCStatement valueVariable = makeVar(FINAL,
                         valueName,
                         makeJavaType(valueType),
@@ -1818,7 +1817,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (iterator instanceof Tree.ValueIterator) {
                 ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
                 transformedBlock = transformedBlock.prepend(makeVar(FINAL,
-                        Naming.quoteIfJavaKeyword(getElementOrKeyVariableName()), 
+                        Naming.getVariableName(getElementOrKeyVariable()), 
                         makeJavaType(iteratedType), 
                         expressionGen().applyErasureAndBoxing(itemName.makeIdent(),
                                 iteratedType, true, BoxingStrategy.UNBOXED, iteratedType)));
@@ -2229,28 +2228,10 @@ public class StatementTransformer extends AbstractTransformer {
             return null;
         }
         
-        protected final String getElementOrKeyVariableName() {
-            Tree.ForIterator iterator = getForIterator();
-            if (iterator instanceof Tree.ValueIterator) {
-                return ((Tree.ValueIterator)iterator).getVariable().getIdentifier().getText();
-            } else if (iterator instanceof Tree.KeyValueIterator) {
-                return ((Tree.KeyValueIterator)iterator).getKeyVariable().getIdentifier().getText();
-            }
-            return null;
-        }
-        
         protected final Tree.Variable getValueVariable() {
             Tree.ForIterator iterator = getForIterator();
             if (iterator instanceof Tree.KeyValueIterator) {
                 return ((Tree.KeyValueIterator)iterator).getKeyVariable();
-            }
-            return null;
-        }
-        
-        protected final String getValueVariableName() {
-            Tree.ForIterator iterator = getForIterator();
-            if (iterator instanceof Tree.KeyValueIterator) {
-                return ((Tree.KeyValueIterator)iterator).getKeyVariable().getIdentifier().getText();
             }
             return null;
         }
@@ -2733,9 +2714,8 @@ public class StatementTransformer extends AbstractTransformer {
             currentForClause = stmt.getForClause();
             List<JCStatement> blockStatements = transformBlock(getBlock());
             currentForClause = prevForclause;
-            String nm = Naming.quoteIfJavaKeyword(getVariable().getIdentifier().getText());
             blockStatements = blockStatements.prepend(make().VarDef(make().Modifiers(FINAL), 
-                    names().fromString(nm ), 
+                    names().fromString(Naming.getVariableName(getVariable())), 
                     makeType(),
                     varname.makeIdent()));
             

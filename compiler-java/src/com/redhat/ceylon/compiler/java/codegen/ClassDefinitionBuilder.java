@@ -593,18 +593,19 @@ public class ClassDefinitionBuilder
     
     public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal, 
             List<JCTree.JCAnnotation> annotations) {
-        Name attrNameNm = gen.names().fromString(Naming.quoteIfJavaKeyword(attrName));
         if (!isLocal) {
             // A shared or captured attribute gets turned into a class member
+            Name attrNameNm = gen.names().fromString(Naming.quoteFieldName(attrName));
             defs(gen.make().VarDef(gen.make().Modifiers(modifiers, annotations), attrNameNm, type, null));
             if (initialValue != null) {
                 // The attribute's initializer gets moved to the constructor
                 // because it might be using locals of the initializer
-                init(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", Naming.quoteIfJavaKeyword(attrName)), initialValue)));
+                init(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", Naming.quoteFieldName(attrName)), initialValue)));
             }
         } else {
             // Otherwise it's local to the constructor
             // Stef: pretty sure we don't want annotations on a variable defined in a constructor
+            Name attrNameNm = gen.names().fromString(Naming.quoteLocalValueName(attrName));
             init(gen.make().VarDef(gen.make().Modifiers(modifiers), attrNameNm, type, initialValue));
         }
         return this;

@@ -391,6 +391,30 @@ public class Naming implements LocalId {
         return getterName;
     }
 
+    public static String getVariableName(Tree.Variable var) {
+        return (var != null) ? Naming.quoteIfJavaKeyword(var.getIdentifier().getText()) : null;
+    }
+    
+    public static String getLocalValueName(Value val) {
+        return Naming.quoteIfJavaKeyword(val.getName());
+    }
+    
+    public static String quoteLocalValueName(String name) {
+        return Naming.quoteIfJavaKeyword(name);
+    }
+    
+    public static String quoteFieldName(String name) {
+        return Naming.quoteIfJavaKeyword(name);
+    }
+    
+    public static String quoteParameterName(String name) {
+        return Naming.quoteIfJavaKeyword(name);
+    }
+    
+    public static String quoteMethodName(String name) {
+        return Naming.quoteIfJavaKeyword(name);
+    }
+    
     /**
      * Removes any leading $ from the given string.
      */

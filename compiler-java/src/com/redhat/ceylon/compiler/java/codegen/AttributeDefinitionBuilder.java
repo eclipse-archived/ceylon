@@ -333,7 +333,7 @@ public class AttributeDefinitionBuilder {
 
         return owner.make().VarDef(
                 owner.make().Modifiers(flags),
-                owner.names().fromString(Naming.quoteIfJavaKeyword(fieldName)),
+                owner.names().fromString(Naming.quoteFieldName(fieldName)),
                 (toplevel || late) ? owner.make().TypeArray(attrType()) : attrType(),
                 null
         );
@@ -471,7 +471,7 @@ public class AttributeDefinitionBuilder {
     private JCExpression fld() {
         JCExpression fld;
         if (fieldName.equals(attrName)) {
-            fld = owner.makeSelect("this", Naming.quoteIfJavaKeyword(fieldName));
+            fld = owner.makeSelect("this", Naming.quoteFieldName(fieldName));
         } else {
             fld = owner.makeQuotedIdent(fieldName);
         }

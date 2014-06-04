@@ -39,7 +39,6 @@ import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterDeclaration;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCAnnotation;
@@ -201,7 +200,7 @@ public class MethodDefinitionBuilder
 
     private Name makeName(String name) {
         if (name != null) {
-            return gen.names().fromString(Naming.quoteIfJavaKeyword(name));
+            return gen.names().fromString(Naming.quoteMethodName(name));
         } else {
             return gen.names().init;
         }
@@ -223,7 +222,7 @@ public class MethodDefinitionBuilder
     JCExpression makeResultType(TypedDeclaration typedDeclaration, ProducedType type, int flags) {
         if (typedDeclaration == null
                 || ((!(typedDeclaration instanceof Method) || !((Method)typedDeclaration).isParameter())
-                        && gen.isAnything(type))) {
+                        && AbstractTransformer.isAnything(type))) {
             if ((typedDeclaration instanceof Method)
                     && ((Method)typedDeclaration).isDeclaredVoid()
                     && !Strategy.useBoxedVoid((Method)typedDeclaration)) {

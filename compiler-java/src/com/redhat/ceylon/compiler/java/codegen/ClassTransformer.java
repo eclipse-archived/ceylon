@@ -698,7 +698,7 @@ public class ClassTransformer extends AbstractTransformer {
             Parameter decl) {
         MethodOrValue model = decl.getModel();
         classBuilder.defs(make().VarDef(make().Modifiers(transformClassParameterDeclFlags(decl) | PRIVATE, makeAtIgnore()),
-                names().fromString(Naming.quoteIfJavaKeyword(decl.getName())), 
+                names().fromString(Naming.quoteFieldName(decl.getName())), 
                 classGen().transformClassParameterType(decl), null));
         
         classBuilder.init(make().Exec(make().Assign(
@@ -3427,7 +3427,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(model.isSelfCaptured()){
                 // if it's captured we need to box it and define the var before the class, so it can access it
                 JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
-                JCFieldAccess setter = naming.makeSelect(Naming.quoteIfJavaKeyword(name), Naming.getSetterName(model));
+                JCFieldAccess setter = naming.makeSelect(Naming.getLocalValueName(model), Naming.getSetterName(model));
                 JCStatement assign = make().Exec(make().Assign(setter, newInstance));
                 result = result.prepend(assign);
 

@@ -409,9 +409,9 @@ public abstract class AbstractTransformer implements Transformation {
 
         int modifiers = isShared ? 0 : FINAL;
         JCTree.JCVariableDecl var = make().VarDef(
-                make().Modifiers(modifiers), 
-                names().fromString(Naming.quoteIfJavaKeyword(varName)), 
-                typeExpr, 
+                make().Modifiers(modifiers),
+                names().fromString(Naming.quoteLocalValueName(varName)),
+                typeExpr,
                 initValue);
         
         return var;
@@ -3340,7 +3340,6 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression sequenceToJavaArray(JCExpression expr, ProducedType sequenceType, 
                                      BoxingStrategy boxingStrategy, ProducedType exprType,
                                      List<JCTree.JCExpression> initialElements) {
-        String methodName = null;
         // find the sequence element type
         ProducedType type = typeFact().getIteratedType(sequenceType);
         if(boxingStrategy == BoxingStrategy.UNBOXED){
@@ -3580,7 +3579,7 @@ public abstract class AbstractTransformer implements Transformation {
             JCExpression firstTimeExpr, Naming.CName varName, ProducedType testedType, ProducedType expressionType) {
         // If the type test is expensive and we can figure out a 
         // "complement type" whose type test is cheap we can invert the test.
-        TypeDeclaration widerDeclaration = expressionType.getDeclaration();
+        //TypeDeclaration widerDeclaration = expressionType.getDeclaration();
         if (!isTypeTestCheap(firstTimeExpr, varName, testedType, expressionType)) {
             //if (widerDeclaration instanceof UnionType
             //        || widerDeclaration instanceof ClassOrInterface) {
