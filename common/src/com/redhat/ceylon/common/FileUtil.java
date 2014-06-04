@@ -297,12 +297,7 @@ public class FileUtil {
             if (file.startsWith(prefix) && prefix.length() > srcDirLength) {
                 srcDirLength = prefix.length();
             }
-            String absPrefix;
-            try {
-                absPrefix = prefixFile.getCanonicalPath();
-            } catch (IOException e) {
-                absPrefix = prefixFile.getAbsolutePath();
-            }
+            String absPrefix = absoluteFile(prefixFile).getPath();
             if (file.startsWith(absPrefix) && absPrefix.length() > srcDirLength) {
                 srcDirLength = absPrefix.length();
             }
@@ -315,7 +310,7 @@ public class FileUtil {
         
         return path;
     }
-
+    
     public static boolean sameFile(File a, File b) {
         if(a == null)
             return b == null;
