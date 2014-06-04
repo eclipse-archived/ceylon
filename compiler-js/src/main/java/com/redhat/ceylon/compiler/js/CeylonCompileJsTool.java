@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -290,7 +291,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                     }
                 }
                 if (f != null) {
-                    if ("module.ceylon".equals(f.getName().toLowerCase())) {
+                    if (Constants.MODULE_DESCRIPTOR.equals(f.getName().toLowerCase())) {
                         String _f = f.getParentFile().getAbsolutePath();
                         for (File root : roots) {
                             if (root.getAbsolutePath().startsWith(_f)) {
@@ -305,7 +306,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                         for (File root : roots) {
                             File middir = f.getParentFile();
                             while (middir != null && !middir.getAbsolutePath().equals(root.getAbsolutePath())) {
-                                if (new File(middir, "module.ceylon").exists()) {
+                                if (new File(middir, Constants.MODULE_DESCRIPTOR).exists()) {
                                     String _f = middir.getAbsolutePath().substring(root.getAbsolutePath().length()+1).replace(
                                             File.separatorChar, '.');
                                     modfilters.add(_f);
@@ -380,7 +381,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     private static void addFilesToCompilationSet(boolean verbose, File dir, List<String> onlyFiles, boolean skipModules) {
         if (skipModules) {
-            File module = new File(dir, "module.ceylon");
+            File module = new File(dir, Constants.MODULE_DESCRIPTOR);
             if (module.isFile()) {
                 // Seems this folder contains a module, so we skip it
                 return;

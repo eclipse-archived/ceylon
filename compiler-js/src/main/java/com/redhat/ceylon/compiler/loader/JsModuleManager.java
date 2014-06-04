@@ -14,6 +14,7 @@ import net.minidev.json.JSONValue;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactResult;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -99,7 +100,7 @@ public class JsModuleManager extends ModuleManager {
         module.setName(moduleName);
         module.setVersion(version);
         Unit u = new Unit();
-        u.setFilename("module.ceylon");
+        u.setFilename(Constants.MODULE_DESCRIPTOR);
         u.setFullPath(moduleName+"/"+version);
         module.setUnit(u);
         JsonModule dep = (JsonModule)findLoadedModule("ceylon.language", null);
