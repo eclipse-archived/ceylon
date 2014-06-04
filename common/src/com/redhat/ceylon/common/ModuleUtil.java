@@ -1,5 +1,7 @@
 package com.redhat.ceylon.common;
 
+import java.io.File;
+
 public abstract class ModuleUtil {
 
     private ModuleUtil() {
@@ -33,6 +35,10 @@ public abstract class ModuleUtil {
         } else {
             return moduleName + "/" + version;
         }
+    }
+
+    public static File moduleToPath(String moduleName) {
+        return new File(moduleName.replace('.', File.separatorChar));
     }
 
 }
