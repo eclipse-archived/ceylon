@@ -30,6 +30,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -408,6 +409,19 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                         String resrcPath = this.resources.toString();
                         throw new IllegalStateException(CeylonCompileMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                     }
+                }
+            } else {
+                File moduleDescriptor = null;
+                File modDir = ModuleUtil.moduleToPath(moduleOrFile);
+                for (File src : srcs) {
+                    File fullModDir = new File(src, modDir.getPath());
+                    if (fullModDir != null && fullModDir.isDirectory() && fullModDir.canRead()) {
+                        moduleDescriptor = new File(fullModDir, Constants.MODULE_DESCRIPTOR);
+                        break;
+                    }
+                }
+                if (moduleDescriptor == null || !moduleDescriptor.isFile()) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("error.not.module", moduleOrFile));
                 }
             }
             arguments.add(moduleOrFile);
