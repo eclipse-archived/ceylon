@@ -598,6 +598,13 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
         append(gen.makeErroneous(that, "dynamic is not yet supported on this platform"));
     }
 
+    public void visit(Tree.DynamicModifier that) {
+        // We should never get here since the error should have been 
+        // reported by the UnsupportedVisitor and the containing statement
+        // replaced with a throw.
+        append(gen.makeErroneous(that, "dynamic is not yet supported on this platform"));
+    }
+
     public void visit(Tree.DynamicClause that) {
         // We should never get here since the error should have been 
         // reported by the UnsupportedVisitor and the containing statement

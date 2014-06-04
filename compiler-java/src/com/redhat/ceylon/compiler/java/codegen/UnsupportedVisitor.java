@@ -21,6 +21,24 @@ public class UnsupportedVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Dynamic that) {
+        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        super.visit(that);
+    }
+
+    @Override
+    public void visit(Tree.DynamicClause that) {
+        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        super.visit(that);
+    }
+
+    @Override
+    public void visit(Tree.DynamicModifier that) {
+        that.addUnsupportedError("dynamic is not yet supported on this platform");
+        super.visit(that);
+    }
+
+    @Override
     public void visit(Tree.FloatLiteral that) {
         try {
             ExpressionTransformer.literalValue(that);
