@@ -189,15 +189,12 @@
     
             <itemizedlist>
                 <listitem>
-                    <para>both of the inherited declarations are <literal>formal</literal>
-                    and directly or indirectly refine some member of a common 
-                    supertype,</para>
-                </listitem>
-                <listitem>
                     <para>the class or interface contains a declaration that directly or 
                     indirectly refines both the inherited declarations (in which case both 
                     the inherited declarations directly or indirectly refine some member 
-                    of a common supertype),</para>
+                    of a common supertype, as required by <xref linkend="classrefinement"/>,
+                    <xref linkend="attributerefinement"/>, and 
+                    <xref linkend="methodrefinement"/>),</para>
                 </listitem>
                 <listitem>
                     <para>one of the inherited declarations directly or indirectly refines 
