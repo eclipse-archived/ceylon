@@ -1174,7 +1174,13 @@ public class Util {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Sequential sequentialInstance(final Iterable iterable) {
-        return ceylon.language.impl.sequential_.sequential(Metamodel.getIteratedTypeDescriptor(iterable), iterable);
+        Object result = ceylon.language.notempty_.notempty(Metamodel.getIteratedTypeDescriptor(iterable),
+                Null.$TypeDescriptor$,
+                iterable);
+        if (result == null) {
+            return (Sequential)empty_.get_();
+        }
+        return (Sequential)result;
     }
     
     
