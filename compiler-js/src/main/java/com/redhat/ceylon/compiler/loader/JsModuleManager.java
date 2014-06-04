@@ -50,11 +50,11 @@ public class JsModuleManager extends ModuleManager {
         if (!clLoaded) {
             clLoaded = true;
             //If we haven't loaded the language module yet, we need to load it first
-            if (!("ceylon.language".equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
+            if (!(Module.LANGUAGE_MODULE_NAME.equals(artifact.name()) && artifact.artifact().getName().endsWith(".js"))) {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading JS language module before any other modules");
                 }
-                ArtifactContext ac = new ArtifactContext("ceylon.language", module.getLanguageModule().getVersion(), ".js");
+                ArtifactContext ac = new ArtifactContext(Module.LANGUAGE_MODULE_NAME, module.getLanguageModule().getVersion(), ".js");
                 ac.setFetchSingleArtifact(true);
                 ac.setThrowErrorIfMissing(true);
                 ArtifactResult lmar = getContext().getRepositoryManager().getArtifactResult(ac);
@@ -103,9 +103,9 @@ public class JsModuleManager extends ModuleManager {
         u.setFilename(Constants.MODULE_DESCRIPTOR);
         u.setFullPath(moduleName+"/"+version);
         module.setUnit(u);
-        JsonModule dep = (JsonModule)findLoadedModule("ceylon.language", null);
+        JsonModule dep = (JsonModule)findLoadedModule(Module.LANGUAGE_MODULE_NAME, null);
         //This can only happen during initCoreModules()
-        if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals("ceylon.language")) && dep == null) {
+        if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) && dep == null) {
             //Load the language module if we're not inside initCoreModules()
             dep = (JsonModule)getContext().getModules().getLanguageModule();
             //Add language module as a dependency
@@ -175,7 +175,7 @@ public class JsModuleManager extends ModuleManager {
         }
         ((JsonModule)module).setModel(model);
         for (ModuleImport imp : module.getImports()) {
-            if (!imp.getModule().getNameAsString().equals("ceylon.language")) {
+            if (!imp.getModule().getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) {
                 ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(),
                         imp.getModule().getVersion(), ArtifactContext.JS);
                 artifact = getContext().getRepositoryManager().getArtifactResult(ac);

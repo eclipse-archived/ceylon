@@ -75,8 +75,8 @@ public class TestModuleManager {
         loadJsModel();
         srcmod = tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getLanguageModule();
         jsmod = jstc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getLanguageModule();
-        srclang = srcmod.getDirectPackage("ceylon.language");
-        jslang = jsmod.getDirectPackage("ceylon.language");
+        srclang = srcmod.getDirectPackage(Module.LANGUAGE_MODULE_NAME);
+        jslang = jsmod.getDirectPackage(Module.LANGUAGE_MODULE_NAME);
     }
 
     private static void loadJsModel() {

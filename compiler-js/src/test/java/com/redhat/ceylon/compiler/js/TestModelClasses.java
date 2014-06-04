@@ -11,6 +11,7 @@ import util.ModelUtils;
 
 import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 
 public class TestModelClasses {
 
@@ -59,7 +60,7 @@ public class TestModelClasses {
         ModelUtils.checkAnnotations(((List<Map>)cls.get(MetamodelGenerator.KEY_PARAMS)).get(0), "shared");
         cls = (Map<String, Object>)cls.get("super");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "Basic",
-                MetamodelGenerator.KEY_MODULE, "ceylon.language");
+                MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
 
         cls = (Map<String, Object>)model.get("SimpleClass4");
         ModelUtils.checkMap(cls, MetamodelGenerator.KEY_NAME, "SimpleClass4",

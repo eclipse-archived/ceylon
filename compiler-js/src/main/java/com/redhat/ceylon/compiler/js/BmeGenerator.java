@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -22,7 +23,7 @@ public class BmeGenerator {
             String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
 
             // map Ceylon true/false/null directly to JS true/false/null
-            if ("ceylon.language".equals(pkgName)) {
+            if (Module.LANGUAGE_MODULE_NAME.equals(pkgName)) {
                 if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
                     gen.out(name);
                     return;

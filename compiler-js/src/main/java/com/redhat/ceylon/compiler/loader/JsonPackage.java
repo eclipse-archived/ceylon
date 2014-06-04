@@ -13,6 +13,7 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleManager;
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.Generic;
+import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.redhat.ceylon.compiler.typechecker.model.NothingType;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
@@ -52,14 +53,14 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
 
     static {
         idobj.put(MetamodelGenerator.KEY_NAME, "Basic");
-        idobj.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
-        idobj.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
+        idobj.put(MetamodelGenerator.KEY_PACKAGE, Module.LANGUAGE_MODULE_NAME);
+        idobj.put(MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
         objclass.put(MetamodelGenerator.KEY_NAME, "Object");
-        objclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
-        objclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
+        objclass.put(MetamodelGenerator.KEY_PACKAGE, Module.LANGUAGE_MODULE_NAME);
+        objclass.put(MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
         voidclass.put(MetamodelGenerator.KEY_NAME, "Anything");
-        voidclass.put(MetamodelGenerator.KEY_PACKAGE, "ceylon.language");
-        voidclass.put(MetamodelGenerator.KEY_MODULE, "ceylon.language");
+        voidclass.put(MetamodelGenerator.KEY_PACKAGE, Module.LANGUAGE_MODULE_NAME);
+        voidclass.put(MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
     }
     public JsonPackage(String pkgname) {
         this.pkgname = pkgname;
@@ -82,7 +83,7 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
     void loadDeclarations() {
         if (loaded) return;
         loaded = true;
-        if (getModule().getLanguageModule() == getModule() && "ceylon.language".equals(pkgname)) {
+        if (getModule().getLanguageModule() == getModule() && Module.LANGUAGE_MODULE_NAME.equals(pkgname)) {
             //Mark the language module as immediately available to bypass certain validations
             getModule().setAvailable(true);
         }
@@ -748,8 +749,8 @@ public class JsonPackage extends com.redhat.ceylon.compiler.typechecker.model.Pa
                 com.redhat.ceylon.compiler.typechecker.model.Package rp;
                 if ("$".equals(pname)) {
                     //Language module package
-                    rp = "ceylon.language".equals(getNameAsString())? this :
-                        getModule().getLanguageModule().getDirectPackage("ceylon.language");
+                    rp = Module.LANGUAGE_MODULE_NAME.equals(getNameAsString())? this :
+                        getModule().getLanguageModule().getDirectPackage(Module.LANGUAGE_MODULE_NAME);
                 } else if (mname == null) {
                     //local type
                     if (".".equals(pname)) {

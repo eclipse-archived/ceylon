@@ -49,7 +49,7 @@ public class TypeUtils {
     final TypeDeclaration destroyable;
 
     TypeUtils(Module languageModule) {
-        com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage("ceylon.language");
+        com.redhat.ceylon.compiler.typechecker.model.Package pkg = languageModule.getPackage(Module.LANGUAGE_MODULE_NAME);
         tuple = (TypeDeclaration)pkg.getDirectMember("Tuple", null, false);
         iterable = (TypeDeclaration)pkg.getDirectMember("Iterable", null, false);
         sequential = (TypeDeclaration)pkg.getDirectMember("Sequential", null, false);
@@ -554,7 +554,7 @@ public class TypeUtils {
     public static List<String> generateModelPath(final Declaration d) {
         final ArrayList<String> sb = new ArrayList<>();
         final String pkgName = d.getUnit().getPackage().getNameAsString();
-        sb.add("ceylon.language".equals(pkgName)?"$":pkgName);
+        sb.add(Module.LANGUAGE_MODULE_NAME.equals(pkgName)?"$":pkgName);
         if (d.isToplevel()) {
             sb.add(d.getName());
             if (d instanceof Setter) {
@@ -759,7 +759,7 @@ public class TypeUtils {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
             pt = ((TypeDeclaration)pkg.getModule().getLanguageModule().getDirectPackage(
-                    "ceylon.language").getDirectMember("Anything", null, false)).getType();
+                    Module.LANGUAGE_MODULE_NAME).getDirectMember("Anything", null, false)).getType();
         }
         if (!outputMetamodelTypeList(pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
@@ -874,7 +874,7 @@ public class TypeUtils {
             if (sb.length()==0) {
                 sb.append("$CCMM$");
                 if ("$".equals(p)) {
-                    p = "ceylon.language";
+                    p = Module.LANGUAGE_MODULE_NAME;
                 }
                 if (p.isEmpty() || p.indexOf('.') >= 0) {
                     sb.append("['").append(p).append("']");

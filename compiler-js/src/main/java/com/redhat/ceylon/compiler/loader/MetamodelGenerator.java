@@ -293,7 +293,7 @@ public class MetamodelGenerator {
                 } else {
                     //Most likely a dynamic type, set it to Anything
                     pm.put(KEY_TYPE, typeMap(((TypeDeclaration)module.getLanguageModule().getDirectPackage(
-                            "ceylon.language").getDirectMember("Anything", null, false)).getType(), from));
+                            Module.LANGUAGE_MODULE_NAME).getDirectMember("Anything", null, false)).getType(), from));
                 }
                 if (parm.isHidden()) {
                     pm.put("$hdn", 1);
@@ -596,7 +596,7 @@ public class MetamodelGenerator {
     }
 
     private void addPackage(final Map<String,Object> map, final String pkgName) {
-        if (pkgName.equals("ceylon.language")) {
+        if (pkgName.equals(Module.LANGUAGE_MODULE_NAME)) {
             map.put(KEY_PACKAGE, "$");
         } else {
             map.put(KEY_PACKAGE, pkgName);
