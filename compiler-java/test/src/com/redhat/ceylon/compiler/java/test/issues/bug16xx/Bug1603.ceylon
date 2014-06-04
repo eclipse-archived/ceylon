@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+@noanno
 class Bug1603<Element>(shared Element first, Integer length) 
         given Element satisfies Ordinal<Element> & 
         Comparable<Element> & Summable<Element> {
@@ -29,11 +30,12 @@ class Bug1603<Element>(shared Element first, Integer length)
         return false;
     }
     
-    shared Boolean m2(Object element) {
-        if (is Integer element, 
-            is Integer first) {
-            return first+length < element <= first;
-        }
-        return false;
-    }
+    // This is now disallowed by the typechecker
+    //shared Boolean m2(Object element) {
+    //    if (is Integer element, 
+    //        is Integer first) {
+    //        return first+length < element <= first;
+    //    }
+    //    return false;
+    //}
 }
