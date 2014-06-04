@@ -1103,7 +1103,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         } else if (modPkgOrDecl instanceof Module) {
             Module moduleDecl = (Module)modPkgOrDecl;
             folder = getOutputFolder(moduleDecl);
-            filename = "module.ceylon";
+            filename = Constants.MODULE_DESCRIPTOR;
         } else {
             throw new RuntimeException(CeylondMessages.msg("error.unexpected", modPkgOrDecl));
         }

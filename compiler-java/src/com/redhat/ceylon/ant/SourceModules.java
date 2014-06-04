@@ -54,7 +54,7 @@ public class SourceModules extends ProjectComponent {
         FileSet fs = new FileSet();
         fs.setDir(this.dir);
         // TODO Handle default module
-        fs.setIncludes("**/module.ceylon");
+        fs.setIncludes("**/" + Constants.MODULE_DESCRIPTOR);
         DirectoryScanner ds = fs.getDirectoryScanner(getProject());
         String[] files = ds.getIncludedFiles();
         log("<sourcemodules> found files " + Arrays.toString(files), Project.MSG_VERBOSE);

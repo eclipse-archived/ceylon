@@ -48,6 +48,7 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.RepositoryException;
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.EnvironmentException;
@@ -716,7 +717,7 @@ public class Main extends com.sun.tools.javac.main.Main {
             }
             List<File> moduleFiles = List.nil();
             boolean isProperModule = "default".equals(moduleName);
-            String moduleFilePath = moduleName.replace('.', File.separatorChar) + File.separatorChar + "module.ceylon";
+            String moduleFilePath = moduleName.replace('.', File.separatorChar) + File.separatorChar + Constants.MODULE_DESCRIPTOR;
             for (JavaFileObject file : files) {
                 File f = new File(file.toUri().getPath());
                 if (!filenames.contains(f) && !moduleFiles.contains(f)) {
@@ -830,10 +831,11 @@ public class Main extends com.sun.tools.javac.main.Main {
     // that were found in the list of files that was passed
     private Set<String> collectModuleDirs(Iterable<JavaFileObject> files) {
         Set<String> dirs = new HashSet<String>();
+        String modDesc = "/" + Constants.MODULE_DESCRIPTOR;
         Iterable<? extends File> paths = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
         for (JavaFileObject f : files) {
             String path = f.toUri().getPath();
-            if (f instanceof CeylonFileObject && path.endsWith("/module.ceylon")) {
+            if (f instanceof CeylonFileObject && path.endsWith(modDesc)) {
                 path = path.substring(0, path.length() - 14);
                 path = FileUtil.relativeFile(paths, path);
                 dirs.add(path);

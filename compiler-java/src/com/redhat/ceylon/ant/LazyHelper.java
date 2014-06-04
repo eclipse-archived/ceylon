@@ -30,6 +30,8 @@ import java.util.List;
 
 import org.apache.tools.ant.Project;
 
+import com.redhat.ceylon.common.Constants;
+
 /**
  * Encapsulates file modification time logic for figuring out whether a tool 
  * execution is actually required: Are any sources newer than the output.
@@ -188,9 +190,9 @@ abstract class LazyHelper {
             for (File src : task.getSrc()) {
                 if (Util.isChildOfOrEquals(src, file)) {
                     while (!file.equals(src)) {
-                        File moduleDescriptor = file.isDirectory() ? new File(file, "module.ceylon") : file;
+                        File moduleDescriptor = file.isDirectory() ? new File(file, Constants.MODULE_DESCRIPTOR) : file;
                         if (moduleDescriptor.exists()
-                                && moduleDescriptor.getName().equals("module.ceylon")) {
+                                && moduleDescriptor.getName().equals(Constants.MODULE_DESCRIPTOR)) {
                             String moduleName = moduleDescriptor.getParentFile().getAbsolutePath().substring(src.getAbsolutePath().length()+1).replace(File.separator, ".");
                             ModuleDescriptorReader mdr = new ModuleDescriptorReader(moduleName, src);
                             return new Module(mdr.getModuleName(), mdr.getModuleVersion());
