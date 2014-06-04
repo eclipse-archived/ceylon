@@ -2243,9 +2243,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <entry><literal>lhs ** rhs</literal></entry>
             <entry>scale</entry>
             <entry><literal>rhs.scale(lhs)</literal></entry>
-            <entry><literal>Y</literal></entry>
-            <entry><literal>Scalable&lt;X,Y&gt;</literal></entry>
             <entry><literal>X</literal></entry>
+            <entry><literal>Scalable&lt;X,Y&gt;</literal></entry>
+            <entry><literal>Y</literal></entry>
         </row>
         
     </tbody>
