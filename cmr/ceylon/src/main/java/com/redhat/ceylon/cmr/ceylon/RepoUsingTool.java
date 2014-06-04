@@ -493,7 +493,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     private void collectModules(File sourceRoot, File sourceFile, Map<String, ModuleSpec> modules) {
         if(sourceFile.isDirectory()){
-            File moduleFile = new File(sourceFile, "module.ceylon");
+            File moduleFile = new File(sourceFile, Constants.MODULE_DESCRIPTOR);
             // do we have a module file?
             if(moduleFile.exists()){
                 collectModule(sourceRoot, sourceFile, modules);
