@@ -33,12 +33,6 @@ public final class Character
 
     @Ignore
     @Override
-    public Ordinal$impl<Character> $ceylon$language$Ordinal$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
     public Enumerable$impl<Character> $ceylon$language$Enumerable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }

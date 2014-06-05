@@ -3,10 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.meta.model.Attribute$impl;
-import ceylon.language.meta.model.Model$impl;
 import ceylon.language.meta.model.Value;
-import ceylon.language.meta.model.ValueModel$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -48,24 +45,6 @@ public class AppliedAttribute<Container, Get, Set>
         this.closedType = Metamodel.getAppliedMetamodel(typedReference.getType());
         this.$reifiedGet = $reifiedGet;
         this.$reifiedSet = $reifiedSet;
-    }
-
-    @Override
-    @Ignore
-    public ValueModel$impl<Get,Set> $ceylon$language$meta$model$ValueModel$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Model$impl $ceylon$language$meta$model$Model$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Attribute$impl<Container, Get, Set> $ceylon$language$meta$model$Attribute$impl() {
-        return null;
     }
 
     @Override

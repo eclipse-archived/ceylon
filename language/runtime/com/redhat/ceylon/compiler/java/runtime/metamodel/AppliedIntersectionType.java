@@ -6,7 +6,6 @@ import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.meta.model.IntersectionType$impl;
 import ceylon.language.meta.model.Type;
 import ceylon.language.meta.model.Type$impl;
 
@@ -68,12 +67,6 @@ public class AppliedIntersectionType<Intersection>
     @Override
     @Ignore
     public Type$impl<Intersection> $ceylon$language$meta$model$Type$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public IntersectionType$impl<Intersection> $ceylon$language$meta$model$IntersectionType$impl() {
         return null;
     }
 

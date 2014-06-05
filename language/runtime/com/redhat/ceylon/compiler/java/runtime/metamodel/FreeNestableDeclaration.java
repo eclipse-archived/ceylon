@@ -1,13 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.Annotated$impl;
-import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.meta.declaration.Declaration$impl;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.Package;
-import ceylon.language.meta.declaration.NestableDeclaration$impl;
-import ceylon.language.meta.declaration.TypedDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -32,36 +27,6 @@ public abstract class FreeNestableDeclaration
 
     public FreeNestableDeclaration(com.redhat.ceylon.compiler.typechecker.model.Declaration declaration) {
         this.declaration = declaration;
-    }
-
-    @Override
-    @Ignore
-    public NestableDeclaration$impl $ceylon$language$meta$declaration$NestableDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public TypedDeclaration$impl $ceylon$language$meta$declaration$TypedDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$meta$declaration$AnnotatedDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$Annotated$impl() {
-        return null;
     }
 
     @Override

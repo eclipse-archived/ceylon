@@ -24,7 +24,6 @@ import ceylon.language.Finished;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator$impl;
 import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
@@ -377,13 +376,6 @@ public final class CharArray implements ReifiedType {
             return new Iterator<ceylon.language.Character>() {
                 
                 private int index = CharArrayIterable.this.start;
-                
-                private final Iterator$impl<ceylon.language.Character> $ceylon$language$Iterator$this = new Iterator$impl<ceylon.language.Character>(ceylon.language.Character.$TypeDescriptor$, this);
-                
-                @Override
-                public Iterator$impl<? extends ceylon.language.Character> $ceylon$language$Iterator$impl() {
-                    return $ceylon$language$Iterator$this;
-                }
                 
                 @Override
                 public Object next() {

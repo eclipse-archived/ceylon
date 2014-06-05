@@ -3,9 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
-import ceylon.language.meta.declaration.Declaration$impl;
 import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.TypeParameter$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -64,18 +62,6 @@ public class FreeTypeParameter
         container = Metamodel.getOrCreateMetamodel(declaration.getDeclaration());
     }
 
-    @Override
-    @Ignore
-    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public TypeParameter$impl $ceylon$language$meta$declaration$TypeParameter$impl() {
-        return null;
-    }
-    
     @Override
     @Ignore
     public TypeDescriptor $getType$() {

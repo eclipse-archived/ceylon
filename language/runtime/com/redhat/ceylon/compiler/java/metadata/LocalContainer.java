@@ -23,5 +23,5 @@ public @interface LocalContainer {
      * The Java class name of the companion class, relative to the nearest Java class container of this
      * local interface (after we've put it back where it belongs in the model).
      */
-    String companionClassName();
+    String companionClassName() default "";
 }

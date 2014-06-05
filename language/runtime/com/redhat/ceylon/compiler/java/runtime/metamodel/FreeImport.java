@@ -2,9 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.reflect.Field;
 
-import ceylon.language.Annotated$impl;
-import ceylon.language.meta.declaration.Import$impl;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -30,18 +27,6 @@ public class FreeImport
         this.moduleImport = moduleImport;
     }
 
-    @Override
-    @Ignore
-    public Import$impl $ceylon$language$meta$declaration$Import$impl() {
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$Annotated$impl() {
-        return null;
-    }
-    
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {

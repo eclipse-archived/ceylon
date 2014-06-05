@@ -24,7 +24,6 @@ import ceylon.language.Finished;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator$impl;
 import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
@@ -377,13 +376,6 @@ public final class LongArray implements ReifiedType {
             return new Iterator<ceylon.language.Integer>() {
                 
                 private int index = LongArrayIterable.this.start;
-                
-                private final Iterator$impl<ceylon.language.Integer> $ceylon$language$Iterator$this = new Iterator$impl<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$, this);
-                
-                @Override
-                public Iterator$impl<? extends ceylon.language.Integer> $ceylon$language$Iterator$impl() {
-                    return $ceylon$language$Iterator$this;
-                }
                 
                 @Override
                 public Object next() {

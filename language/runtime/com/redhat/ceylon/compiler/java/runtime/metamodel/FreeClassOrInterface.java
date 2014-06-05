@@ -10,8 +10,6 @@ import ceylon.language.Anything;
 import ceylon.language.Empty;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration$impl;
-import ceylon.language.meta.declaration.GenericDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Member;
@@ -60,18 +58,6 @@ public abstract class FreeClassOrInterface
 
     public FreeClassOrInterface(com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface declaration) {
         super(declaration);
-    }
-
-    @Override
-    @Ignore
-    public ClassOrInterfaceDeclaration$impl $ceylon$language$meta$declaration$ClassOrInterfaceDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public GenericDeclaration$impl $ceylon$language$meta$declaration$GenericDeclaration$impl() {
-        return null;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

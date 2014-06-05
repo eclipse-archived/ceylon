@@ -40,19 +40,6 @@ public final class Float
 
     @Ignore
     @Override
-    public Numeric$impl<Float> $ceylon$language$Numeric$impl(){
-        // drags Summable<Float> Invertable<Float>
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
-    public Summable$impl<Float> $ceylon$language$Summable$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
     public Invertable$impl<Float> $ceylon$language$Invertable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
@@ -63,12 +50,6 @@ public final class Float
         throw Util.makeUnimplementedMixinAccessException();
     }
     
-    @Ignore
-    @Override
-    public Exponentiable$impl<Float,Float> $ceylon$language$Exponentiable$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
     @Ignore
     public static Float instance(double d) {
         return new Float(d);

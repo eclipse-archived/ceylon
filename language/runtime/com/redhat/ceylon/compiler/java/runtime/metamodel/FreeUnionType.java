@@ -7,8 +7,6 @@ import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.OpenType$impl;
-import ceylon.language.meta.declaration.OpenUnion$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -39,18 +37,6 @@ public class FreeUnionType
             types[i++] = Metamodel.getMetamodel(pt);
         }
         this.caseTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
-    }
-
-    @Override
-    @Ignore
-    public OpenType$impl $ceylon$language$meta$declaration$OpenType$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public OpenUnion$impl $ceylon$language$meta$declaration$OpenUnion$impl() {
-        return null;
     }
 
     @Override

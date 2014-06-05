@@ -51,12 +51,6 @@ public final class String
     @Ignore
     protected final Comparable$impl<String> 
     $ceylon$language$Comparable$this;
-    @Ignore
-    protected final Summable$impl<String> 
-    $ceylon$language$Summable$this;
-    @Ignore
-    protected final Ranged$impl 
-    $ceylon$language$Ranged$this;
 
     @Ignore
     public final java.lang.String value;
@@ -78,11 +72,6 @@ public final class String
         		new Collection$impl<Character>(Character.$TypeDescriptor$, this);
         this.$ceylon$language$Comparable$this = 
         		new Comparable$impl<String>(String.$TypeDescriptor$, this);
-        this.$ceylon$language$Summable$this = 
-        		new Summable$impl<String>(String.$TypeDescriptor$, this);
-        this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl(Integer.$TypeDescriptor$, 
-        				Character.$TypeDescriptor$,String.$TypeDescriptor$, (Ranged) this);
         if (characters instanceof String) {
             value = ((String)characters).value;
         } else {
@@ -120,11 +109,6 @@ public final class String
         		new Collection$impl<Character>(Character.$TypeDescriptor$, this);
         this.$ceylon$language$Comparable$this = 
         		new Comparable$impl<String>(String.$TypeDescriptor$, this);
-        this.$ceylon$language$Summable$this = 
-        		new Summable$impl<String>(String.$TypeDescriptor$, this);
-        this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl(Integer.$TypeDescriptor$, 
-        				Character.$TypeDescriptor$,String.$TypeDescriptor$, (Ranged) this);
         value = string;
     }
 
@@ -165,23 +149,9 @@ public final class String
 
     @Ignore
     @Override
-    public Ranged$impl
-    $ceylon$language$Ranged$impl(){
-        return $ceylon$language$Ranged$this;
-    }
-
-    @Ignore
-    @Override
     public Comparable$impl<String> 
     $ceylon$language$Comparable$impl(){
         return $ceylon$language$Comparable$this;
-    }
-
-    @Ignore
-    @Override
-    public Summable$impl<String> 
-    $ceylon$language$Summable$impl(){
-        return $ceylon$language$Summable$this;
     }
 
     @Override

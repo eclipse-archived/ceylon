@@ -11,9 +11,6 @@ import java.util.Map;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.model.Function$impl;
-import ceylon.language.meta.model.FunctionModel$impl;
-import ceylon.language.meta.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -233,36 +230,6 @@ public class AppliedFunction<Type, Arguments extends Sequential<? extends Object
     @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.model::Type<ceylon.language::Anything>")
     public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {
         return typeArguments;
-    }
-
-    @Override
-    @Ignore
-    public ceylon.language.meta.model.Generic$impl $ceylon$language$meta$model$Generic$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public ceylon.language.meta.model.Applicable$impl<Type> $ceylon$language$meta$model$Applicable$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Model$impl $ceylon$language$meta$model$Model$impl() {
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public FunctionModel$impl<Type, Arguments> $ceylon$language$meta$model$FunctionModel$impl() {
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public Function$impl<Type, Arguments> $ceylon$language$meta$model$Function$impl() {
-        return null;
     }
 
     private void checkMethod(){

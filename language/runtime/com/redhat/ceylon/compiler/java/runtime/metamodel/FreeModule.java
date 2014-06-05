@@ -6,13 +6,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import ceylon.language.Sequential;
-import ceylon.language.Annotated$impl;
 import ceylon.language.Resource;
-import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.meta.declaration.Declaration$impl;
+import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.Import;
-import ceylon.language.meta.declaration.Module$impl;
 import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -42,30 +38,6 @@ public class FreeModule implements ceylon.language.meta.declaration.Module,
         this.declaration = declaration;
     }
 
-    @Override
-    @Ignore
-    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$meta$declaration$AnnotatedDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Module$impl $ceylon$language$meta$declaration$Module$impl() {
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$Annotated$impl() {
-        return null;
-    }
-    
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {

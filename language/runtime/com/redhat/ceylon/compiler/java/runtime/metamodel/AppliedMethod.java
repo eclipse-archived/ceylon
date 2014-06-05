@@ -7,9 +7,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.model.Function;
-import ceylon.language.meta.model.FunctionModel$impl;
-import ceylon.language.meta.model.Method$impl;
-import ceylon.language.meta.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -63,30 +60,6 @@ public class AppliedMethod<Container, Type, Arguments extends Sequential<? exten
         List<Parameter> parameters = method.getParameterLists().get(0).getParameters();
         List<ProducedType> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         this.parameterTypes = Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
-    }
-
-    @Override
-    @Ignore
-    public ceylon.language.meta.model.Generic$impl $ceylon$language$meta$model$Generic$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Model$impl $ceylon$language$meta$model$Model$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Method$impl<Container, Type, Arguments> $ceylon$language$meta$model$Method$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public FunctionModel$impl<Type, Arguments> $ceylon$language$meta$model$FunctionModel$impl() {
-        return null;
     }
 
     @Override

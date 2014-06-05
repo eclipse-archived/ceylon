@@ -9,7 +9,6 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassDeclaration$impl;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
-import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -73,12 +72,6 @@ public class FreeClass
     @Override
     @Ignore
     public ClassDeclaration$impl $ceylon$language$meta$declaration$ClassDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
         return null;
     }
 

@@ -8,7 +8,6 @@ import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.meta.model.Type;
 import ceylon.language.meta.model.Type$impl;
-import ceylon.language.meta.model.UnionType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -69,12 +68,6 @@ public class AppliedUnionType<Union>
     @Override
     @Ignore
     public Type$impl<Union> $ceylon$language$meta$model$Type$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public UnionType$impl<Union> $ceylon$language$meta$model$UnionType$impl() {
         return null;
     }
 

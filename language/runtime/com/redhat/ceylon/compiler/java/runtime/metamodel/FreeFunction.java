@@ -8,8 +8,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.FunctionDeclaration$impl;
-import ceylon.language.meta.declaration.FunctionalDeclaration$impl;
-import ceylon.language.meta.declaration.GenericDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -76,18 +74,6 @@ public class FreeFunction
     @Override
     @Ignore
     public FunctionDeclaration$impl $ceylon$language$meta$declaration$FunctionDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public GenericDeclaration$impl $ceylon$language$meta$declaration$GenericDeclaration$impl() {
         return null;
     }
 

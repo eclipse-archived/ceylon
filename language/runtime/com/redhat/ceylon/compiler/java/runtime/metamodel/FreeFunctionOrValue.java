@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.meta.declaration.FunctionOrValueDeclaration$impl;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -23,12 +21,6 @@ public abstract class FreeFunctionOrValue
         this.parameter = Metamodel.getParameterFromTypedDeclaration(declaration);
     }
     
-    @Override
-    @Ignore
-    public FunctionOrValueDeclaration$impl $ceylon$language$meta$declaration$FunctionOrValueDeclaration$impl() {
-        return null;
-    }
-
     @Override
     public boolean getDefaulted(){
         return parameter == null ? false : parameter.isDefaulted();

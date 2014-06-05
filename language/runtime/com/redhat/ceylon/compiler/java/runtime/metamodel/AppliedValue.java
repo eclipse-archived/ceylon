@@ -10,10 +10,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 import ceylon.language.meta.model.IncompatibleTypeException;
-import ceylon.language.meta.model.Model$impl;
 import ceylon.language.meta.model.MutationException;
-import ceylon.language.meta.model.Value$impl;
-import ceylon.language.meta.model.ValueModel$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -217,24 +214,6 @@ public class AppliedValue<Get, Set>
             }
         }else
             throw Metamodel.newModelError("Unsupported attribute type: "+decl);
-    }
-
-    @Override
-    @Ignore
-    public Value$impl<Get,Set> $ceylon$language$meta$model$Value$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public ValueModel$impl<Get,Set> $ceylon$language$meta$model$ValueModel$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Model$impl $ceylon$language$meta$model$Model$impl() {
-        return null;
     }
 
     @Override

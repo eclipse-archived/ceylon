@@ -4,11 +4,7 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.Annotated$impl;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
-import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
-import ceylon.language.meta.declaration.Declaration$impl;
-import ceylon.language.meta.declaration.Package$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
@@ -36,30 +32,6 @@ public class FreePackage implements ceylon.language.meta.declaration.Package,
 
     public FreePackage(com.redhat.ceylon.compiler.typechecker.model.Package declaration){
         this.declaration = declaration;
-    }
-    
-    @Override
-    @Ignore
-    public Declaration$impl $ceylon$language$meta$declaration$Declaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public AnnotatedDeclaration$impl $ceylon$language$meta$declaration$AnnotatedDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Package$impl $ceylon$language$meta$declaration$Package$impl() {
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public Annotated$impl $ceylon$language$Annotated$impl() {
-        return null;
     }
     
     @Override

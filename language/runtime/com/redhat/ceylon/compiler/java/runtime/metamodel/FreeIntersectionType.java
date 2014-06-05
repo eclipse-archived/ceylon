@@ -6,9 +6,7 @@ import ceylon.language.Finished;
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
-import ceylon.language.meta.declaration.OpenIntersection$impl;
 import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.OpenType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -39,18 +37,6 @@ public class FreeIntersectionType
             types[i++] = Metamodel.getMetamodel(pt);
         }
         this.satisfiedTypes = Util.sequentialInstance(ceylon.language.meta.declaration.OpenType.$TypeDescriptor$, types);
-    }
-
-    @Override
-    @Ignore
-    public OpenType$impl $ceylon$language$meta$declaration$OpenType$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public OpenIntersection$impl $ceylon$language$meta$declaration$OpenIntersection$impl() {
-        return null;
     }
 
     @Override

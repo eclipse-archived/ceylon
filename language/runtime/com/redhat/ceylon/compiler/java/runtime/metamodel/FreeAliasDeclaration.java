@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
-import ceylon.language.meta.declaration.AliasDeclaration$impl;
-import ceylon.language.meta.declaration.GenericDeclaration$impl;
 import ceylon.language.meta.declaration.OpenType;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -47,18 +45,6 @@ public class FreeAliasDeclaration extends FreeNestableDeclaration
         this.typeParameters = Metamodel.getTypeParameters(declaration);
         
         this.extendedType = Metamodel.getMetamodel(declaration.getExtendedType());
-    }
-
-    @Override
-    @Ignore
-    public AliasDeclaration$impl $ceylon$language$meta$declaration$AliasDeclaration$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public GenericDeclaration$impl $ceylon$language$meta$declaration$GenericDeclaration$impl() {
-        return null;
     }
 
     @Override

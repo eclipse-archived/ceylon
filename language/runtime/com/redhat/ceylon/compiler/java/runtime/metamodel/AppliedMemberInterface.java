@@ -4,9 +4,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.model.Interface;
-import ceylon.language.meta.model.InterfaceModel$impl;
-import ceylon.language.meta.model.Member$impl;
-import ceylon.language.meta.model.MemberInterface$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -26,24 +23,6 @@ public class AppliedMemberInterface<Container, Type>
                            ProducedType producedType) {
         super($reifiedType, producedType);
         this.$reifiedContainer = $reifiedContainer;
-    }
-
-    @Override
-    @Ignore
-    public InterfaceModel$impl<Type> $ceylon$language$meta$model$InterfaceModel$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Member$impl<Container, Interface<? extends Type>> $ceylon$language$meta$model$Member$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public MemberInterface$impl<Container, Type> $ceylon$language$meta$model$MemberInterface$impl() {
-        return null;
     }
 
     @Override

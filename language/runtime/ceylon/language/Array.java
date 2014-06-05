@@ -43,8 +43,6 @@ public final class Array<Element>
     protected final List$impl<Element> $ceylon$language$List$this;
     @Ignore
     protected final Correspondence$impl<Integer,Element> $ceylon$language$Correspondence$this;
-    @Ignore
-    protected final Ranged$impl $ceylon$language$Ranged$this;
     
     private final java.lang.Object array;
     
@@ -348,11 +346,6 @@ public final class Array<Element>
         this.$ceylon$language$Correspondence$this = 
         		new Correspondence$impl<Integer,Element>(Integer.$TypeDescriptor$, 
         				$reifiedElement, this);
-        this.$ceylon$language$Ranged$this = 
-        		new Ranged$impl(Integer.$TypeDescriptor$,
-        		        $reifiedElement,
-                        TypeDescriptor.klass(Array.class, $reifiedElement), 
-                        (Ranged)this);
         this.array = array;
         this.$reifiedElement = $reifiedElement;
     }
@@ -387,13 +380,6 @@ public final class Array<Element>
         return $ceylon$language$Correspondence$this;
     }
 
-    @Ignore
-    @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Ranged$impl $ceylon$language$Ranged$impl(){
-        return $ceylon$language$Ranged$this;
-    }
-    
     @Ignore
     public static <T> Array<T> instance(T[] array) {
         if (array == null) {

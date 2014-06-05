@@ -8,9 +8,7 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
-import ceylon.language.meta.declaration.OpenClassOrInterfaceType$impl;
 import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.OpenType$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.InternalMap;
@@ -37,18 +35,6 @@ public abstract class FreeClassOrInterfaceType
     
     FreeClassOrInterfaceType(com.redhat.ceylon.compiler.typechecker.model.ProducedType producedType){
         this.producedType = producedType;
-    }
-
-    @Override
-    @Ignore
-    public OpenType$impl $ceylon$language$meta$declaration$OpenType$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public OpenClassOrInterfaceType$impl $ceylon$language$meta$declaration$OpenClassOrInterfaceType$impl() {
-        return null;
     }
 
     protected void checkInit(){

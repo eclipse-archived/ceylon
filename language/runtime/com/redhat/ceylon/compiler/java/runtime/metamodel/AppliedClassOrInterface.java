@@ -14,10 +14,8 @@ import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
 import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
-import ceylon.language.meta.model.ClassOrInterface$impl;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
-import ceylon.language.meta.model.Model$impl;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
@@ -61,24 +59,6 @@ public abstract class AppliedClassOrInterface<Type>
     @Override
     @Ignore
     public ceylon.language.meta.model.Type$impl<Type> $ceylon$language$meta$model$Type$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public ceylon.language.meta.model.Generic$impl $ceylon$language$meta$model$Generic$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Model$impl $ceylon$language$meta$model$Model$impl() {
-        return null;
-    }
-    
-    @Override
-    @Ignore
-    public ClassOrInterface$impl<Type> $ceylon$language$meta$model$ClassOrInterface$impl() {
         return null;
     }
 

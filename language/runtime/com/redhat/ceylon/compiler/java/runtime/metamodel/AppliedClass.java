@@ -10,8 +10,6 @@ import java.util.List;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.model.Class$impl;
-import ceylon.language.meta.model.ClassModel$impl;
 import ceylon.language.meta.model.InvocationException;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -58,24 +56,6 @@ public class AppliedClass<Type, Arguments extends Sequential<? extends Object>>
         this.$reifiedArguments = $reifiedArguments;
         this.container = container;
         this.instance = instance;
-    }
-
-    @Override
-    @Ignore
-    public ceylon.language.meta.model.Applicable$impl<Type> $ceylon$language$meta$model$Applicable$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Class$impl<Type, Arguments> $ceylon$language$meta$model$Class$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public ClassModel$impl<Type, Arguments> $ceylon$language$meta$model$ClassModel$impl() {
-        return null;
     }
 
     @Override

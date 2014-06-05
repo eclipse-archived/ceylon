@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
-import ceylon.language.meta.declaration.InterfaceDeclaration$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -24,12 +23,6 @@ public class FreeInterface
     
     public FreeInterface(com.redhat.ceylon.compiler.typechecker.model.Interface declaration) {
         super(declaration);
-    }
-
-    @Override
-    @Ignore
-    public InterfaceDeclaration$impl $ceylon$language$meta$declaration$InterfaceDeclaration$impl() {
-        return null;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -4,9 +4,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.model.Class;
-import ceylon.language.meta.model.ClassModel$impl;
-import ceylon.language.meta.model.Member$impl;
-import ceylon.language.meta.model.MemberClass$impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -30,24 +27,6 @@ public class AppliedMemberClass<Container, Type, Arguments extends Sequential<? 
         super($reifiedType, producedType);
         this.$reifiedArguments = $reifiedArguments;
         this.$reifiedContainer = $reifiedContainer;
-    }
-
-    @Override
-    @Ignore
-    public ClassModel$impl<Type, Arguments> $ceylon$language$meta$model$ClassModel$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public Member$impl<Container, Class<? extends Type, ? super Arguments>> $ceylon$language$meta$model$Member$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public MemberClass$impl<Container, Type, Arguments> $ceylon$language$meta$model$MemberClass$impl() {
-        return null;
     }
 
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;

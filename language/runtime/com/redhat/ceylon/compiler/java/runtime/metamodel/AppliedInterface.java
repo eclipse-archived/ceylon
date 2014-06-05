@@ -1,8 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.meta.model.Interface$impl;
-import ceylon.language.meta.model.InterfaceModel$impl;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -33,18 +30,6 @@ public class AppliedInterface<Type>
         this.instance = instance;
     }
     
-    @Override
-    @Ignore
-    public Interface$impl<Type> $ceylon$language$meta$model$Interface$impl() {
-        return null;
-    }
-
-    @Override
-    @Ignore
-    public InterfaceModel$impl<Type> $ceylon$language$meta$model$InterfaceModel$impl() {
-        return null;
-    }
-
     @Override
     @TypeInfo("ceylon.language.meta.declaration::InterfaceDeclaration")
     public ceylon.language.meta.declaration.InterfaceDeclaration getDeclaration() {

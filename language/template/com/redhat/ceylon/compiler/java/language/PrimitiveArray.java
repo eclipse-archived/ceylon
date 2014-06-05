@@ -24,7 +24,6 @@ import ceylon.language.Finished;
 import ceylon.language.Iterable;
 import ceylon.language.Iterable$impl;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator$impl;
 import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
@@ -377,13 +376,6 @@ public final class @Classname@ implements ReifiedType {
             return new Iterator<@BoxedType@>() {
                 
                 private int index = @Classname@Iterable.this.start;
-                
-                private final Iterator$impl<@BoxedType@> $ceylon$language$Iterator$this = new Iterator$impl<@BoxedType@>(@BoxedType@.$TypeDescriptor$, this);
-                
-                @Override
-                public Iterator$impl<? extends @BoxedType@> $ceylon$language$Iterator$impl() {
-                    return $ceylon$language$Iterator$this;
-                }
                 
                 @Override
                 public Object next() {

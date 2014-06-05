@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
-import ceylon.language.meta.model.Member$impl;
-
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -33,12 +31,6 @@ public abstract class AppliedMember<Container, Kind extends ceylon.language.meta
         this.container = container;
     }
     
-    @Override
-    @Ignore
-    public Member$impl<Container, Kind> $ceylon$language$meta$model$Member$impl() {
-        return null;
-    }
-
     @Override
     @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
     public ceylon.language.meta.model.Type<? extends Object> getDeclaringType() {

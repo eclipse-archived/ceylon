@@ -44,19 +44,6 @@ public final class Integer
 
     @Ignore
     @Override
-    public Numeric$impl<Integer> $ceylon$language$Numeric$impl(){
-        // drags Summable<Integer> Invertable<Integer>
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
-    public Summable$impl<Integer> $ceylon$language$Summable$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
     public Invertable$impl<Integer> $ceylon$language$Invertable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
@@ -76,12 +63,6 @@ public final class Integer
 
     @Ignore
     @Override
-    public Ordinal$impl<Integer> $ceylon$language$Ordinal$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
     public Enumerable$impl<Integer> $ceylon$language$Enumerable$impl(){
         // drags Ordinal<Integer>
         throw Util.makeUnimplementedMixinAccessException();
@@ -90,12 +71,6 @@ public final class Integer
     @Ignore
     @Override
     public Binary$impl<Integer> $ceylon$language$Binary$impl(){
-        throw Util.makeUnimplementedMixinAccessException();
-    }
-
-    @Ignore
-    @Override
-    public Exponentiable$impl<Integer,Integer> $ceylon$language$Exponentiable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
 
