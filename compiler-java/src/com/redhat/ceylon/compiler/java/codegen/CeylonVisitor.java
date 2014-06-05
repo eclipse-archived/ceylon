@@ -242,7 +242,9 @@ public class CeylonVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.TypeParameterDeclaration param) {
         TypeDeclaration container = (TypeDeclaration)param.getDeclarationModel().getContainer();
         classBuilder.typeParameter(param);
-        classBuilder.getCompanionBuilder(container).typeParameter(param);
+        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(container);
+        if(companionBuilder != null)
+            companionBuilder.typeParameter(param);
     }
 
     public void visit(Tree.ExtendedType extendedType) {
