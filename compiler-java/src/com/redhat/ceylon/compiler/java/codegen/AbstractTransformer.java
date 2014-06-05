@@ -2790,7 +2790,7 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression pathAttr = make().Assign(naming.makeUnquotedIdent("path"), 
                                           make().NewArray(null, null, array.toList()));
         JCExpression companionAttr = make().Assign(naming.makeUnquotedIdent("companionClassName"), 
-                                                   make().Literal(companionClassName));
+                                                   make().Literal(companionClassName == null ? "" : companionClassName));
 
         return makeModelAnnotation(syms().ceylonAtLocalContainerType, List.of(pathAttr, companionAttr));
     }
