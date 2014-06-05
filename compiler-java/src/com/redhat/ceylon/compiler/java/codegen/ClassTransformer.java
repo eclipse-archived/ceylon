@@ -175,7 +175,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (def instanceof Tree.AnyInterface) {
             classBuilder.annotations(expressionGen().transform(def.getAnnotationList()));
             if(def instanceof Tree.InterfaceDefinition){
-                transformInterface(def, model, classBuilder, typeParameterList);
+                transformInterface(def, (Interface)model, classBuilder, typeParameterList);
             }else{
                 // interface alias
                 classBuilder.annotations(makeAtAlias(model.getExtendedType()));
@@ -905,16 +905,18 @@ public class ClassTransformer extends AbstractTransformer {
         return type;
     }
 
-    private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, ClassOrInterface model, ClassDefinitionBuilder classBuilder, TypeParameterList typeParameterList) {
+    private void transformInterface(com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface def, Interface model, ClassDefinitionBuilder classBuilder, TypeParameterList typeParameterList) {
         //  Copy all the qualifying type's type parameters into the interface
         java.util.List<TypeParameter> typeParameters = typeParametersOfAllContainers(model, false);
         for(TypeParameter tp : typeParameters){
             classBuilder.typeParameter(tp, false);
         }
         
-        classBuilder.method(makeCompanionAccessor((Interface)model, model.getType(), null, false));
-        // Build the companion class
-        buildCompanion(def, (Interface)model, classBuilder, typeParameterList);
+        if(model.isCompanionClassNeeded()){
+            classBuilder.method(makeCompanionAccessor(model, model.getType(), null, false));
+            // Build the companion class
+            buildCompanion(def, (Interface)model, classBuilder, typeParameterList);
+        }
         
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model);
@@ -986,7 +988,7 @@ public class ClassTransformer extends AbstractTransformer {
             // now see if we refined them
             for(Interface iface : satisfiedInterfaces){
                 // skip those we can't do anything about
-                if(!supportsReified(iface))
+                if(!supportsReified(iface) || !CodegenUtil.isCompanionClassNeeded(iface))
                     continue;
                 ProducedType thisType = model.getType().getSupertype(iface);
                 ProducedType superClassType = model.getExtendedType().getSupertype(iface);
@@ -1407,10 +1409,12 @@ public class ClassTransformer extends AbstractTransformer {
         if (gen().willEraseToObject(iface.getType())) {
             return false;
         }
-        if (iface instanceof LazyInterface) {
-            return ((LazyInterface)iface).isCeylon();
+        // Java interfaces never have companion classes
+        if (iface instanceof LazyInterface
+            && !((LazyInterface)iface).isCeylon()){
+            return false;
         }
-        return true;
+        return CodegenUtil.isCompanionClassNeeded(iface);
     }
 
     private void transformInstantiateCompanions(
@@ -1549,7 +1553,7 @@ public class ClassTransformer extends AbstractTransformer {
             TypeParameterList typeParameterList) {
         at(def);
         // Give the $impl companion a $this field...
-        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(model, typeParameterList);
+        classBuilder.getCompanionBuilder(model, typeParameterList);
     }
 
     private List<JCAnnotation> makeLocalContainerPath(Interface model) {
@@ -1561,7 +1565,7 @@ public class ClassTransformer extends AbstractTransformer {
                 path = path.prepend(((Declaration) container).getPrefixedName());
             container = container.getContainer();
         }
-        return makeAtLocalContainer(path, model.getJavaCompanionClassName());
+        return makeAtLocalContainer(path, model.isCompanionClassNeeded() ? model.getJavaCompanionClassName() : null);
     }
 
     public List<JCStatement> transformRefinementSpecifierStatement(SpecifierStatement op, ClassDefinitionBuilder classBuilder) {
@@ -2144,8 +2148,9 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 throw new RuntimeException();
             }
-            classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
-                .methods(companionDefs);
+            if(!companionDefs.isEmpty())
+                classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
+                    .methods(companionDefs);
             
             // Transform the declaration to the target interface
             // but only if it's shared

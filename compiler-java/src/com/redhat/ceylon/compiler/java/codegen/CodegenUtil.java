@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.model.Class;
 import com.redhat.ceylon.compiler.typechecker.model.Declaration;
 import com.redhat.ceylon.compiler.typechecker.model.Functional;
+import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.IntersectionType;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
 import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
@@ -49,7 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
  * Utility functions that are specific to the codegen package
  * @see Util
  */
-class CodegenUtil {
+public class CodegenUtil {
 
     
     private CodegenUtil(){}
@@ -458,6 +459,9 @@ class CodegenUtil {
         }
         return false;
     }
-    
-    
+
+    public static boolean isCompanionClassNeeded(TypeDeclaration decl) {
+        return decl instanceof Interface 
+                && BooleanUtil.isNotFalse(((Interface)decl).isCompanionClassNeeded());
+    }
 }
