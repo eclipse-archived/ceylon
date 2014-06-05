@@ -294,7 +294,7 @@ public class CeylonUtils {
                 root = new File(absolute(resolveRepoUrl(repositories, cacheRepo)));
             }
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), mavenOverrides);
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getMavenOverrides(config));
 
             // Now we add all the rest of the repositories in the order that they will be searched
             
@@ -537,7 +537,11 @@ public class CeylonUtils {
         }
 
         private boolean isOffline(CeylonConfig config) {
-            return offline || config.getBoolOption(DefaultToolOptions.DEFAULTS_OFFLINE, false);
+            return offline || DefaultToolOptions.getDefaultOffline(config);
+        }
+        
+        private String getMavenOverrides(CeylonConfig config) {
+            return (mavenOverrides != null) ? mavenOverrides : DefaultToolOptions.getCompilerMavenOverrides(config);
         }
     }
 
