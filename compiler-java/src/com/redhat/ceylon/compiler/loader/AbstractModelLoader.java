@@ -58,6 +58,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.codegen.ObjectLiteralAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.ParameterAnnotationTerm;
 import com.redhat.ceylon.compiler.java.codegen.StringLiteralAnnotationTerm;
+import com.redhat.ceylon.compiler.java.codegen.CodegenUtil;
 import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.loader.mirror.AccessibleMirror;
@@ -680,7 +681,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         ClassMirror companionClass = lookupClassMirror(pkg.getModule(), companionName);
         if(companionClass == null){
-            throw new ModelResolutionException("Could not find interface companion class "+companionName+" for "+d.getQualifiedNameString());
+            ((Interface)d).setCompanionClassNeeded(false);
         }
         ((LazyInterface)d).companionClass = companionClass;
     }
@@ -803,6 +804,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             scope = (Scope) getDirectMember(scope, name);
         }
         String companionClassName = (String) localContainerAnnotation.getValue("companionClassName");
+        if(companionClassName == null || companionClassName.isEmpty()){
+            declaration.setCompanionClassNeeded(false);
+            return scope;
+        }
         ClassMirror container;
         Scope javaClassScope;
         if(scope instanceof TypedDeclaration && ((TypedDeclaration) scope).isMember())
@@ -1855,7 +1860,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Map<String, List<MethodMirror>> methods = new LinkedHashMap<String, List<MethodMirror>>();
         collectMethods(classMirror.getDirectMethods(), methods, isCeylon, isFromJDK);
 
-        if(isCeylon && klass instanceof LazyInterface){
+        if(isCeylon && klass instanceof LazyInterface && CodegenUtil.isCompanionClassNeeded(klass)){
             ClassMirror companionClass = ((LazyInterface)klass).companionClass;
             if(companionClass != null)
                 collectMethods(companionClass.getDirectMethods(), methods, isCeylon, isFromJDK);
