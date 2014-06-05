@@ -1745,10 +1745,19 @@ public final class Array<Element>
             @Name("comparing")@FunctionalParameter("(x,y)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Comparison,ceylon.language::Tuple<Element,Element,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>>") 
             final Callable<? extends Comparison> comparing) {
-        java.util.AbstractList<Element> list = new java.util.AbstractList<Element>() {
+        java.util.List<Element> list = new java.util.AbstractList<Element>() {
             @Override
             public Element get(int index) {
                 return Array.this.unsafeItem(index);
+            }
+            @Override
+            public Element set(int index, Element element) {
+                // Strictly this method should return the element that was at 
+                // the given index, but that might require even more boxing 
+                // and in practice the return value
+                // doesn't seem to be used by the sorting algorithm
+                Array.this.set(index, element);
+                return null;
             }
             @Override
             public int size() {
