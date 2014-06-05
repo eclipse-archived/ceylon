@@ -1,7 +1,7 @@
 """A _tuple_ is a typed linked list. Each instance of 
    `Tuple` represents the value and type of a single link.
-   The attributes `first` and `rest` allow us to retrieve
-   a value form the list without losing its static type 
+   The attributes `first` and `rest` allow us to retrieve a 
+   value form the list without losing its static type 
    information.
    
        value point = Tuple(0.0, Tuple(0.0, Tuple("origin")));
@@ -17,8 +17,8 @@
        String label = point[2];
    
    A list of types enclosed in brackets is an abbreviated 
-   tuple type. An instance of `Tuple` may be constructed 
-   by surrounding a value list in brackets:
+   tuple type. An instance of `Tuple` may be constructed by 
+   surrounding a value list in brackets:
    
        [String,String] words = ["hello", "world"];
    
@@ -50,11 +50,12 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         given First satisfies Element
         given Rest satisfies Element[] {
     
-    "The first element of this tuple."
+    "The first element of this tuple. (The head of the 
+     linked list.)"
     shared actual First first;
     
-    "A tuple with the elements of this tuple, except
-     for the first element."
+    "A tuple with the elements of this tuple, except for the
+     first element. (The tail of the linked list.)"
     shared actual Rest rest;
     
     size => 1 + rest.size;
@@ -75,6 +76,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         }
     }
     
+    "The last element of this tuple."
     shared actual Element last {
         if (nonempty rest) {
             return rest.last;
@@ -111,6 +113,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     reversed => rest.reversed.withTrailing(first);
     
+    "This tuple."
     shared actual Tuple<Element,First,Rest> clone() => this;
     
     shared actual Iterator<Element> iterator() {
@@ -129,6 +132,8 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         return iterator;
     }
     
+    "Determine if the given value is an element of this
+     tuple."
     shared actual Boolean contains(Object element) {
         if (exists first, first==element) {
             return true;
