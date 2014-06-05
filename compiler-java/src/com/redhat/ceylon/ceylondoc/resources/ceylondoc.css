@@ -54,7 +54,7 @@
 }
 
 .sub-navbar-label {
-	color: rgb(160, 160, 160);
+	color: rgb(142, 78, 134);;
 	padding-right: 6px;
 }
 
@@ -222,7 +222,12 @@
 }
 
 .type-parameter-keyword {
-	color: rgb(120, 120, 120);
+	color: rgb(142, 69, 133);
+}
+
+.type-parameter-value a {
+    color: #005580;
+    font-style: normal;
 }
 
 .sub-navbar .type-parameter {
@@ -235,7 +240,7 @@
 }
 
 .sub-navbar .type-parameter-keyword {
-	color: rgb(160, 160, 160);
+	color: rgb(142, 78, 134);
 }
 
 .literal {
@@ -473,6 +478,10 @@ td .import-description {
 
 .doc.section {
     margin-bottom: -10px; /* HACK for <p> padding-bottom 10px */
+}
+
+.class-description .doc {
+    margin-top: 10px;
 }
 
 td>p:FIRST-CHILD {

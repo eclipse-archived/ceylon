@@ -329,8 +329,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 }
                 write(typeParam.getName());
                 if (typeParam.isDefaulted() && typeParam.getDefaultTypeArgument() != null){
-                    write("<span class='type-parameter-keyword'> = </span>");
+                    write("<span class='type-parameter'> = </span>");
+                    write("<span class='type-parameter-value'>");
                     write(linkRenderer().to(typeParam.getDefaultTypeArgument()).getLink());
+                    write("</span>");
                 }
             }
             write("&gt;");
