@@ -46,7 +46,7 @@ import com.redhat.ceylon.compiler.java.codegen.DeferredVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DefiniteAssignmentVisitor;
 import com.redhat.ceylon.compiler.java.codegen.MissingNativeVisitor;
 import com.redhat.ceylon.compiler.java.codegen.UnsupportedVisitor;
-import com.redhat.ceylon.compiler.java.codegen.LocalInterfaceVisitor;
+import com.redhat.ceylon.compiler.java.codegen.InterfaceVisitor;
 import com.redhat.ceylon.compiler.java.codegen.TypeParameterCaptureVisitor;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
@@ -448,7 +448,7 @@ public class CeylonEnter extends Enter {
         AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         TypeParameterCaptureVisitor tpCaptureVisitor = new TypeParameterCaptureVisitor();
-        LocalInterfaceVisitor localInterfaceVisitor = new LocalInterfaceVisitor();
+        InterfaceVisitor localInterfaceVisitor = new InterfaceVisitor();
         // Extra phases for the compiler
         
         // boxing visitor depends on boxing decl

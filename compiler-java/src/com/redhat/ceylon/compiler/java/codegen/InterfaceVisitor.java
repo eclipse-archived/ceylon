@@ -24,20 +24,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.compiler.typechecker.model.Declaration;
+import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
 import com.redhat.ceylon.compiler.typechecker.model.Method;
+import com.redhat.ceylon.compiler.typechecker.model.Parameter;
+import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.Setter;
+import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
 import com.redhat.ceylon.compiler.typechecker.model.Value;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
- * Visits every local interface and computes their Java companion class name. 
+ * Visits every local interface and computes their Java companion class name.
+ * Also visits every interface and calculates if they need a companion class. 
  * 
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LocalInterfaceVisitor extends Visitor {
+public class InterfaceVisitor extends Visitor {
 
     private Set<String> localCompanionClasses = new HashSet<String>();
     
@@ -117,7 +123,31 @@ public class LocalInterfaceVisitor extends Visitor {
             super.visit(that);
             localCompanionClasses = old;
         }
+        if(model instanceof Interface){
+            ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
+        }
+    }
 
+    private boolean isInterfaceWithCode(ClassOrInterface model) {
+        for (Declaration member : model.getMembers()) {
+            if (member instanceof TypeParameter) {
+                continue;
+            }
+            if (member instanceof Functional) {
+                for (ParameterList pl : ((Functional)member).getParameterLists()) {
+                    for (Parameter p : pl.getParameters()) {
+                        if (p.isDefaulted()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            // formal classes contain code
+            if (!member.isFormal() || member instanceof com.redhat.ceylon.compiler.typechecker.model.Class) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
