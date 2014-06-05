@@ -20,6 +20,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_DOC = "compiler.doc";
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
     public final static String COMPILER_PACK200 = "compiler.pack200";
+    public final static String COMPILER_MAVENOVERRIDES = "compiler.mavenoverrides";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String TESTTOOL_COMPILE = "testtool.compile";
@@ -125,6 +126,14 @@ public class DefaultToolOptions {
     
     public static boolean getCompilerPack200(CeylonConfig config) {
         return config.getBoolOption(COMPILER_PACK200, false);
+    }
+    
+    public static String getCompilerMavenOverrides() {
+        return getCompilerMavenOverrides(CeylonConfig.get());
+    }
+    
+    public static String getCompilerMavenOverrides(CeylonConfig config) {
+        return config.getOption(COMPILER_MAVENOVERRIDES);
     }
     
     public static String getRunToolCompileFlags() {
