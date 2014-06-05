@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
 public interface Bug1545ISignal$IListener<T> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<T>.IListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl$IListener$impl();
 }
 public interface Bug1545ISignal<T> {
     
@@ -20,12 +18,6 @@ public final class Bug1545ISignal$impl<T> {
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
     }
-    
-    public final class IListener$impl {
-        
-        public IListener$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<T> $this) {
-        }
-    }
 }
 public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<.ceylon.language.Integer> {
     
@@ -42,13 +34,6 @@ public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.m
     class Listener implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<.ceylon.language.Integer> {
         
         Listener() {
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$IListener$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545Signal.this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$.new IListener$impl(this);
-        }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer>.IListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$IListener$this$;
-        
-        @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer>.IListener$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl$IListener$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$IListener$this$;
         }
         
         @.java.lang.Override

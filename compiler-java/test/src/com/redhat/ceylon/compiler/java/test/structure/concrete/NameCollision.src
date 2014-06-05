@@ -1,28 +1,14 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface Iterable {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable.class);
-}
-final class Iterable$impl {
-    
-    Iterable$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable $this) {
-    }
 }
 class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable, .ceylon.language.Iterable<.ceylon.language.Integer, .java.lang.Object> {
     
     NameCollision() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl(this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.empty = true;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.Iterable$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Iterable$this$;
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.Integer, .java.lang.Object> $ceylon$language$Iterable$this$;
     

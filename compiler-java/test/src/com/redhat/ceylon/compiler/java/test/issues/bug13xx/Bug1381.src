@@ -285,12 +285,5 @@ final class Bug1381_Superinterface$impl {
     }
 }
 interface Bug1381_Subinterface extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1381_Subinterface$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface.class);
-}
-final class Bug1381_Subinterface$impl {
-    
-    Bug1381_Subinterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface $this) {
-    }
 }

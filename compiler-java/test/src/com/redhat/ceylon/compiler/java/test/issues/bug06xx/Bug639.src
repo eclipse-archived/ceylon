@@ -2,27 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface Bug639Widening {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$impl();
-    
     public abstract .java.lang.Object getImplementation();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening.class);
-}
-final class Bug639Widening$impl {
-    
-    Bug639Widening$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening $this) {
-    }
 }
 class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     
     Bug639WideningImpl(final .java.lang.String impl) {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl(this);
         this.implementation = .ceylon.language.String.instance(impl);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this$;
     }
     private final .ceylon.language.String implementation;
     
@@ -44,14 +30,7 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.mod
 class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
     
     Bug639WideningImpl2(final long impl) {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl(this);
         this.implementation = .ceylon.language.Integer.instance(impl);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug639Widening$this$;
     }
     private final .ceylon.language.Integer implementation;
     

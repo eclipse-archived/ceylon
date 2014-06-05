@@ -2,32 +2,18 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 interface Bug891_Interface {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$impl();
-    
     public abstract .java.lang.Object f();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface.class);
-}
-final class Bug891_Interface$impl {
-    
-    Bug891_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface $this) {
-    }
 }
 class Bug891_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface {
     
     Bug891_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl(this);
     }
     private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
     
     private final void arg$priv$() {
         arg.$call$();
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug891_Interface$this$;
     }
     
     @.java.lang.Override

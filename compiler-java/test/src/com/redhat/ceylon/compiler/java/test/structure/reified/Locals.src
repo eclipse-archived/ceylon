@@ -1302,13 +1302,10 @@ class Outer<O> implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
                 "privateMethodForLocalInterfaces",
                 "1LocalI1",
                 "privateMethod"},
-        companionClassName = "1LocalI2$impl")
+        companionClassName = "")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({})
 interface OuterInterface$privateMethodForLocalInterfaces$LocalI1$privateMethod$LocalI2<Outer> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .java.lang.Object LocalI2$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("LocalI1")
@@ -1914,14 +1911,6 @@ final class OuterInterface$impl<Outer> {
             
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
             private void privateMethod$priv$() {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                final class LocalI2$impl {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    LocalI2$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$privateMethodForLocalInterfaces$LocalI1$privateMethod$LocalI2<Outer> $this) {
-                    }
-                }
                 if (((.ceylon.language.meta.declaration.Declaration)((.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$privateMethodForLocalInterfaces$LocalI1$privateMethod$LocalI2.class)).getContainer()).getName().equals("privateMethod")) {
                 } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`interface LocalI2`.container.name == \"privateMethod\""));
             }
@@ -2102,12 +2091,9 @@ class OuterInterfaceImpl<T> implements .com.redhat.ceylon.compiler.java.runtime.
         path = {
                 "metamodelEquality",
                 "1getter"},
-        companionClassName = "1I$impl")
+        companionClassName = "")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
 interface metamodelEquality$metamodelEquality$0$1getter$I_ {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .java.lang.Object I$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("I")
@@ -2115,12 +2101,9 @@ interface metamodelEquality$metamodelEquality$0$1getter$I_ {
         path = {
                 "metamodelEquality",
                 "2getter"},
-        companionClassName = "1I$impl")
+        companionClassName = "")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
 interface metamodelEquality$metamodelEquality$4$2getter$I_ {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .java.lang.Object I$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -2175,14 +2158,6 @@ final class metamodelEquality_ {
                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
                         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1getter")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
-                        }
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    final class I$impl {
-                        
-                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                        I$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$0$1getter$I_ $this) {
                         }
                     }
                     class1.ref = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(C.class);
@@ -2286,14 +2261,6 @@ final class metamodelEquality_ {
                         @.com.redhat.ceylon.compiler.java.metadata.Ignore
                         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("2getter")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
-                        }
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    final class I$impl {
-                        
-                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                        I$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.metamodelEquality$metamodelEquality$4$2getter$I_ $this) {
                         }
                     }
                     class2.ref = (.ceylon.language.meta.declaration.ClassDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(C.class);
@@ -2645,17 +2612,7 @@ final class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     Foo() {
-        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Foo, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.structure.reified.Foo.$TypeDescriptor$, .ceylon.language.Annotated.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Foo, .com.redhat.ceylon.compiler.java.test.structure.reified.Foo, .ceylon.language.Annotated>(.com.redhat.ceylon.compiler.java.test.structure.reified.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.reified.Foo.$TypeDescriptor$), .ceylon.language.Annotated.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Foo, .ceylon.language.Annotated> $ceylon$language$OptionalAnnotation$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Foo, ? super .ceylon.language.Annotated> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this$;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Foo, .com.redhat.ceylon.compiler.java.test.structure.reified.Foo, .ceylon.language.Annotated> $ceylon$language$ConstrainedAnnotation$this$;
@@ -2670,14 +2627,6 @@ final class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -2709,9 +2658,6 @@ final class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 caseTypes = {})})
 interface MapTestBase<Key, Item> extends .ceylon.language.Map<Key, Item> {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase$impl<? extends Key, ? extends Item> $com$redhat$ceylon$compiler$java$test$structure$reified$MapTestBase$impl();
-    
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Annotations({
@@ -2719,17 +2665,6 @@ interface MapTestBase<Key, Item> extends .ceylon.language.Map<Key, Item> {
             @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal")})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<ceylon.language::Entry<Key,Item>>")
     public abstract .ceylon.language.Sequential<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> getEntries();
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class MapTestBase$impl<Key, Item> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    MapTestBase$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase<? extends Key, ? extends Item> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Class(
@@ -2771,7 +2706,6 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
         super();
         this.$reified$Key = $reified$Key;
         this.$reified$Item = $reified$Item;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$MapTestBase$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase$impl<Key, Item>($reified$Key, $reified$Item, this);
         this.$ceylon$language$Map$this$ = new .ceylon.language.Map$impl<Key, Item>($reified$Key, $reified$Item, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends Key, ? extends Item>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends Key, ? extends Item>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .ceylon.language.Null.$TypeDescriptor$, this);
@@ -2783,14 +2717,6 @@ class MapTest<Key, Item> extends .java.lang.Object implements .com.redhat.ceylon
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase$impl<Key, Item> $com$redhat$ceylon$compiler$java$test$structure$reified$MapTestBase$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.MapTestBase$impl<? extends Key, ? extends Item> $com$redhat$ceylon$compiler$java$test$structure$reified$MapTestBase$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$MapTestBase$this$;
-    }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Map$impl<Key, Item> $ceylon$language$Map$this$;
     

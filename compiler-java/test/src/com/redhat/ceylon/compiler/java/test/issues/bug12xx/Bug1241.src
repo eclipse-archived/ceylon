@@ -1,36 +1,18 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 interface Bug1241$I<L> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.I$impl<L> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1241$I$impl();
 }
 public class Bug1241 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     public Bug1241() {
     }
     
-    final class I$impl<L> {
-        
-        I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241$I<L> $this) {
-        }
-        
-        public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L) {
-        }
-    }
-    
     class A<L> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241$I<L> {
         
         A(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L) {
             this.$reified$L = $reified$L;
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1241$I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.I$impl<L>($reified$L, this);
         }
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L;
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.I$impl<L> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1241$I$this$;
-        
-        @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.I$impl<L> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1241$I$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1241$I$this$;
-        }
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

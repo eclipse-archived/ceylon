@@ -27,9 +27,7 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
     CollidingLiteralDefaults(final long i1, final long i2) {
         this.i1 = i1;
         this.i2 = i2;
-        this.$ceylon$language$SequencedAnnotation$this$ = new .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor$, .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, .ceylon.language.meta.declaration.FunctionDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor$), .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     private final long i1;
     
@@ -43,12 +41,6 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
     public final long getI2() {
         return i2;
     }
-    protected final .ceylon.language.SequencedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.SequencedAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, ? super .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$SequencedAnnotation$impl() {
-        return $ceylon$language$SequencedAnnotation$this$;
-    }
     protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults>, .ceylon.language.meta.declaration.FunctionDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
     @.java.lang.Override
@@ -59,12 +51,6 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
-    }
-    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override

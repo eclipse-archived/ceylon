@@ -14,7 +14,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<Element, .java.lang.Object>($reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, Element>(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element, this);
-        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, Element, .ceylon.language.List<? extends Element>>(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reified$Element), (.ceylon.language.Ranged<.ceylon.language.Integer, Element, .ceylon.language.List<? extends Element>>)(.ceylon.language.Ranged)this);
         this.last = (Element)getFirst();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
@@ -364,12 +363,6 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends Element> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.items(keys);
-    }
-    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, Element, .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, Element, ? extends .ceylon.language.List<? extends Element>> $ceylon$language$Ranged$impl() {
-        return $ceylon$language$Ranged$this$;
     }
     private final Element first;
     

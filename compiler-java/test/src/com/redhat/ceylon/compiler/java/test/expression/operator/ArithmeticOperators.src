@@ -6,13 +6,9 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
         super();
         this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Number$this$ = new .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Numeric$this$ = new .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Invertable$this$ = new .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
         this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Ordinal$this$ = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Exponentiable$this$ = new .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$this$;
     
@@ -41,12 +37,6 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     public long getSign() {
         return $ceylon$language$Number$this$.getSign();
     }
-    protected final .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Numeric$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Numeric$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Numeric$impl() {
-        return $ceylon$language$Numeric$this$;
-    }
     protected final .ceylon.language.Invertable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertable$this$;
     
     @.java.lang.Override
@@ -57,12 +47,6 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Invertable$this$.minus(other);
-    }
-    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Summable$impl() {
-        return $ceylon$language$Summable$this$;
     }
     protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$this$;
     
@@ -105,18 +89,6 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getPredecessor() {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
-    }
-    protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Ordinal$impl() {
-        return $ceylon$language$Ordinal$this$;
-    }
-    protected final .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Exponentiable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Exponentiable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Exponentiable$impl() {
-        return $ceylon$language$Exponentiable$this$;
     }
     
     @.java.lang.Override

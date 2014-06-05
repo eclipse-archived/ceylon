@@ -31,9 +31,6 @@ final class bug1543_ {
         caseTypes = {})})
 public interface My1543Sequential<Element> extends .ceylon.language.List<Element> {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$My1543Sequential$impl();
-    
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
@@ -93,17 +90,6 @@ public interface My1543Sequential<Element> extends .ceylon.language.List<Element
             erased = true)
     public abstract .ceylon.language.Tuple<.java.lang.Object, ? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequential<? extends Element>> m();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class My1543Sequential$impl<Element> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public My1543Sequential$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<? extends Element> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
-    }
-}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
@@ -114,9 +100,6 @@ public final class My1543Sequential$impl<Element> {
         satisfies = {},
         caseTypes = {})})
 public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequential<Element> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$My1543Sequence$impl();
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
@@ -138,17 +121,6 @@ public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.jav
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Other")
     final Other head);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class My1543Sequence$impl<Element> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public My1543Sequence$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Sequence<? extends Element> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$

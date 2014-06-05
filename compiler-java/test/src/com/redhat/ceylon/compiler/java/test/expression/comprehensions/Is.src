@@ -2,45 +2,17 @@ package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
 interface Common {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl();
-    
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.class);
 }
-final class Common$impl {
-    
-    Common$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common $this) {
-    }
-}
 interface FooInterface {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$impl();
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface foo();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface.class);
 }
-final class FooInterface$impl {
-    
-    FooInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface $this) {
-    }
-}
 class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface {
     
     Foo() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$FooInterface$this$;
     }
     
     @.java.lang.Override
@@ -87,33 +59,12 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehens
 }
 interface BarInterface {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$impl();
-    
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface bar();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.class);
-}
-final class BarInterface$impl {
-    
-    BarInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface $this) {
-    }
 }
 class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface {
     
     Bar() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$Common$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$comprehensions$BarInterface$this$;
     }
     
     @.java.lang.Override

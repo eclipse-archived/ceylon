@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.method;
 
 interface MethodRefinementWithSpecifiers_Interface {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$impl();
-    
     public abstract .java.lang.Object f2();
     
     public abstract .java.lang.Object f3();
@@ -41,11 +39,6 @@ interface MethodRefinementWithSpecifiers_Interface {
     public abstract .java.lang.Object f19();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface.class);
 }
-final class MethodRefinementWithSpecifiers_Interface$impl {
-    
-    MethodRefinementWithSpecifiers_Interface$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface $this) {
-    }
-}
 final class methodRefinementWithSpecifiers_returnsMethod_ {
     
     private methodRefinementWithSpecifiers_returnsMethod_() {
@@ -81,7 +74,6 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     
     MethodRefinementWithSpecifiers_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
         this.arg = arg;
-        this.$com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl(this);
         this.f9$specifier$ = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
         this.f10$specifier$ = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.get_();
     }
@@ -89,12 +81,6 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
     
     private final void arg$priv$() {
         arg.$call$();
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$method$MethodRefinementWithSpecifiers_Interface$this$;
     }
     
     class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

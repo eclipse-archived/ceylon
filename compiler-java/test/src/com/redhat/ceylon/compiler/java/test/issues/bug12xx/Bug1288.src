@@ -2,17 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 interface Bug1288_Foo<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1288_Foo$impl();
-    
     public abstract T foo(final .java.lang.Object t);
-}
-final class Bug1288_Foo$impl<T> {
-    
-    Bug1288_Foo$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(

@@ -2,17 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 public interface Bug668_X<Element, Nada> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<? extends Element, ? extends Nada> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$impl();
-    
     public abstract .java.lang.Object getFirst();
-}
-public final class Bug668_X$impl<Element, Nada> {
-    
-    public Bug668_X$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<? extends Element, ? extends Nada> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada) {
-    }
 }
 public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<Element, .java.lang.Object> {
     
@@ -49,7 +39,6 @@ final class bug668_method_ {
             
             private obj_() {
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
-                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, this);
             }
             protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$;
             
@@ -61,12 +50,6 @@ final class bug668_method_ {
             @.java.lang.Override
             public .java.lang.Object getFirst() {
                 return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$.getFirst();
-            }
-            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<.java.lang.Object, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this$;
-            
-            @.java.lang.Override
-            public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X$impl<? extends .java.lang.Object, ? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$impl() {
-                return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$this$;
             }
             
             @.java.lang.Override

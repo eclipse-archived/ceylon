@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 public interface I1$I2<T1A, T1B, T2A, T2B> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl<T1A, T1B>.I2$impl<T2A, T2B> $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl$I2$impl();
-    
     public abstract T1A t1a();
     
     public abstract T1B t1b();
@@ -13,8 +11,6 @@ public interface I1$I2<T1A, T1B, T2A, T2B> {
     public abstract T2A t2b();
 }
 public interface I1$I2Hiding<T1B, T1A> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl<T1A, T1B>.I2Hiding$impl<T1A> $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl$I2Hiding$impl();
     
     public abstract T1A t1a();
 }
@@ -36,24 +32,6 @@ public final class I1$impl<T1A, T1B> {
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1B) {
         this.$reified$T1B = $reified$T1B;
         this.$reified$T1A = $reified$T1A;
-    }
-    
-    public final class I2$impl<T2A, T2B> {
-        
-        public I2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2B, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$I2<T1A, T1B, T2A, T2B> $this) {
-        }
-        
-        public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2B) {
-        }
-    }
-    
-    public final class I2Hiding$impl<T1A> {
-        
-        public I2Hiding$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1A, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$I2Hiding<T1B, T1A> $this) {
-        }
-        
-        public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1A) {
-        }
     }
 }
 interface CapturedTypeParam$foo$1bar$I<OuterT1, OuterT2, MethodFooT1, MethodFooT2, MethodBarT1, MethodBarT2, InnerT1, InnerT2> {

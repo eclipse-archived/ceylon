@@ -139,19 +139,10 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
             final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
                 this.$reified$T = $reified$T;
-                this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<Local<T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T)), this);
                 this.i1 = 1L;
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .ceylon.language.Summable$impl<Local<T>> $ceylon$language$Summable$this$;
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .ceylon.language.Summable$impl<Local<T>> $ceylon$language$Summable$impl() {
-                return $ceylon$language$Summable$this$;
-            }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final long i1;
             

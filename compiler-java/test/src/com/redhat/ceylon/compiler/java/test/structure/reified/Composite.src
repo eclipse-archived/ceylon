@@ -15,20 +15,6 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
                 satisfies = {},
                 caseTypes = {})})
 public interface CompositeInterface<Key, Value> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$impl();
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class CompositeInterface$impl<Key, Value> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public CompositeInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, Value> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
@@ -52,20 +38,11 @@ public class CompositeClass<Key, Value> implements .com.redhat.ceylon.compiler.j
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         this.$reified$Key = $reified$Key;
         this.$reified$Value = $reified$Value;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object>($reified$Key, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Value, .ceylon.language.Integer.$TypeDescriptor$), this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.CompositeInterface$impl<Key, .java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$CompositeInterface$this$;
-    }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {

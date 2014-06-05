@@ -21,15 +21,8 @@ class Bug781Class implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
 }
 interface Bug781Interface {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug07xx$Bug781Interface$impl();
-    
     public abstract .java.lang.Object i();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface.class);
-}
-final class Bug781Interface$impl {
-    
-    Bug781Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface $this) {
-    }
 }
 class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

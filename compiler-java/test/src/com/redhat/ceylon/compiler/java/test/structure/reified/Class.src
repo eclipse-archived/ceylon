@@ -15,38 +15,14 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
                 satisfies = {},
                 caseTypes = {})})
 public interface Interface<Key, Value> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl();
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class Interface$impl<Key, Value> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<Key, Value> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
 public interface SubInterface extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class SubInterface$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public SubInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface $this) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
@@ -101,7 +77,6 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
     final long b) {
         this.$reified$Key = $reified$Key;
         this.$reified$Value = $reified$Value;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer>($reified$Key, .ceylon.language.Integer.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
@@ -116,14 +91,6 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static <Key, Value>long $default$b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final long a) {
         return 3L;
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -177,15 +144,6 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
 public final class toplevelObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.ceylon.language.String, .ceylon.language.Integer> {
     
     private toplevelObject_() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, this);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.ceylon.language.String, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_[] value;
     private static final .java.lang.Throwable $initException$;

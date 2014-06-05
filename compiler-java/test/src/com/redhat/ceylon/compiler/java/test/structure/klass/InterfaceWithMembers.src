@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface InterfaceWithMembers {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithMembers$impl();
-    
     public abstract boolean getB();
     
     public abstract boolean getB2();
@@ -12,9 +10,4 @@ interface InterfaceWithMembers {
     
     public abstract .java.lang.Object m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers.class);
-}
-final class InterfaceWithMembers$impl {
-    
-    InterfaceWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers $this) {
-    }
 }

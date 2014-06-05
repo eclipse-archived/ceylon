@@ -2,61 +2,21 @@ package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
 interface Bug1594Producer<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1594Producer$impl();
-    
     public abstract T getT();
-}
-final class Bug1594Producer$impl<T> {
-    
-    Bug1594Producer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Producer<? extends T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface Bug1594ProducerWithBound<T extends .ceylon.language.Number<.ceylon.language.Integer>> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1594ProducerWithBound$impl();
-    
     public abstract T getT();
-}
-final class Bug1594ProducerWithBound$impl<T extends .ceylon.language.Number<.ceylon.language.Integer>> {
-    
-    Bug1594ProducerWithBound$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ProducerWithBound<? extends T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface Bug1594ProducerAlias {
 }
 interface Bug1594Consumer<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer$impl<? super T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1594Consumer$impl();
-    
     public abstract .java.lang.Object m(final T t);
-}
-final class Bug1594Consumer$impl<T> {
-    
-    Bug1594Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Consumer<? super T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface Bug1594ConsumerWithBound<T extends .ceylon.language.Number<.ceylon.language.Integer>> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound$impl<? super T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1594ConsumerWithBound$impl();
-    
     public abstract .java.lang.Object m(final T t);
-}
-final class Bug1594ConsumerWithBound$impl<T extends .ceylon.language.Number<.ceylon.language.Integer>> {
-    
-    Bug1594ConsumerWithBound$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594ConsumerWithBound<? super T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface Bug1594Alias {
 }

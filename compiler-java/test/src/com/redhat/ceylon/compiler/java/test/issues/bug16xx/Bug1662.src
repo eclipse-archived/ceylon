@@ -4,18 +4,11 @@ class Bug1662 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     Bug1662(final double $float) {
         this.$float = $float;
-        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.$TypeDescriptor$, this);
     }
     private final double $float;
     
     private final double getFloat$priv$() {
         return $float;
-    }
-    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662> $ceylon$language$Summable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662> $ceylon$language$Summable$impl() {
-        return $ceylon$language$Summable$this$;
     }
     
     @.java.lang.Override

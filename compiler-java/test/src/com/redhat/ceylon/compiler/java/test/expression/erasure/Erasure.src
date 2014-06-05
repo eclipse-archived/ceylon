@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.expression.erasure;
 
 interface Top {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$impl();
-    
     public abstract .java.lang.Object top();
     
     public abstract long getTopAttribute();
@@ -13,67 +11,27 @@ interface Top {
     public abstract .java.lang.Object leftAndRightMethod(final .java.lang.Object param);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Top.class);
 }
-final class Top$impl {
-    
-    Top$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.Top $this) {
-    }
-}
 interface Left extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$impl();
     
     public abstract .java.lang.Object left();
     
     public abstract long getLeftAttribute();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left.class);
 }
-final class Left$impl {
-    
-    Left$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.Left $this) {
-    }
-}
 interface Right extends .com.redhat.ceylon.compiler.java.test.expression.erasure.Top {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Right$impl();
     
     public abstract .java.lang.Object right();
     
     public abstract long getRightAttribute();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Right.class);
 }
-final class Right$impl {
-    
-    Right$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.Right $this) {
-    }
-}
 class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right {
     
     CMiddle() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Right$this$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
         this.rightAttribute = 1L;
         this.leftAndRightAttribute = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Right$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Right$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Right$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$Right$this$;
     }
     
     @.java.lang.Override
@@ -134,23 +92,9 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
 class CLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left {
     
     CLeft() {
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl(this);
         this.topAttribute = 1L;
         this.leftAttribute = 1L;
         this.leftAndRightAttribute = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle();
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Left$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$Left$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.Top$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$Top$this$;
     }
     
     @.java.lang.Override
@@ -198,26 +142,12 @@ class CLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft.class);
 }
 interface EmptyInterface {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface.class);
-}
-final class EmptyInterface$impl {
-    
-    EmptyInterface$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface $this) {
-    }
 }
 class MyException extends .ceylon.language.Exception implements .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface {
     
     MyException(final .ceylon.language.String m, final .java.lang.Exception x) {
         super(m, x);
-        this.$com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EmptyInterface$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EmptyInterface$this$;
     }
     
     @.java.lang.Override
@@ -227,14 +157,7 @@ class MyException extends .ceylon.language.Exception implements .com.redhat.ceyl
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyException.class);
 }
 interface MyNumeric extends .ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Scalable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric> {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$MyNumeric$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.class);
-}
-final class MyNumeric$impl {
-    
-    MyNumeric$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric $this) {
-    }
 }
 class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

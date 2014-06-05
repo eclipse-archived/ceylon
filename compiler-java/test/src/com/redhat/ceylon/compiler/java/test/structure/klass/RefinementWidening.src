@@ -106,64 +106,22 @@ class RWContrParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure
     }
 }
 interface RWTopI {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RWTopI$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI.class);
 }
-final class RWTopI$impl {
-    
-    RWTopI$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI $this) {
-    }
-}
 interface RWLeft extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RWLeft$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft.class);
 }
-final class RWLeft$impl {
-    
-    RWLeft$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft $this) {
-    }
-}
 interface RWRight extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RWRight$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RWRight$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWRight.class);
 }
-final class RWRight$impl {
-    
-    RWRight$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWRight $this) {
-    }
-}
 interface RWNumber {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RWNumber$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber.class);
 }
-final class RWNumber$impl {
-    
-    RWNumber$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber $this) {
-    }
-}
 interface RWInteger extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RWInteger$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger.class);
 }
-final class RWInteger$impl {
-    
-    RWInteger$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger $this) {
-    }
-}
 interface RWFloat extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RWFloat$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RWFloat$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWFloat.class);
-}
-final class RWFloat$impl {
-    
-    RWFloat$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RWFloat $this) {
-    }
 }
 abstract class RWTop<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

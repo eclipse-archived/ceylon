@@ -1,34 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface VarianceTop {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceTop$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop.class);
 }
-final class VarianceTop$impl {
-    
-    VarianceTop$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop $this) {
-    }
-}
 interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceTop {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceMiddle$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle.class);
 }
-final class VarianceMiddle$impl {
-    
-    VarianceMiddle$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle $this) {
-    }
-}
 interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom$impl $com$redhat$ceylon$compiler$java$test$structure$klass$VarianceBottom$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom.class);
-}
-final class VarianceBottom$impl {
-    
-    VarianceBottom$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom $this) {
-    }
 }
 class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

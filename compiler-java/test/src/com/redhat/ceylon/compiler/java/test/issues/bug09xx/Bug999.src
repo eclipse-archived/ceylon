@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
 interface Bug999Interface<Key, Value> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<? super Key, ? extends Value> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$impl();
-    
     public abstract Value get1(final Key k);
     
     public abstract Value get2(final Key k);
@@ -24,20 +22,11 @@ interface Bug999Interface<Key, Value> {
     
     public abstract boolean getAttr8();
 }
-final class Bug999Interface$impl<Key, Value> {
-    
-    Bug999Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<? super Key, ? extends Value> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-    }
-}
 class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
     
     Bug999(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.i = i;
         this.f = f;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, this);
         this.attr3 = .ceylon.language.Boolean.instance(true);
         this.attr4 = .ceylon.language.Boolean.instance(true);
         this.attr7 = true;
@@ -52,12 +41,6 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private final boolean f$priv$() {
         return f.$call$().booleanValue();
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug999Interface$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug999Interface$this$;
     }
     
     @.java.lang.Override

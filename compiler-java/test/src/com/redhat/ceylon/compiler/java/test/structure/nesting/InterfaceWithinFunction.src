@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface interfaceWithinFunction$Foo_ {
-    
-    public .java.lang.Object Foo$impl();
 }
 final class interfaceWithinFunction_ {
     
@@ -10,12 +8,6 @@ final class interfaceWithinFunction_ {
     }
     
     static void interfaceWithinFunction() {
-        
-        final class Foo$impl {
-            
-            Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinFunction$Foo_ $this) {
-            }
-        }
     }
     
     public static void main(.java.lang.String[] args) {

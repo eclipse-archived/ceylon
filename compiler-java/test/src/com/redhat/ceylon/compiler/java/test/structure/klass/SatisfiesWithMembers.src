@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface SatisfiesWithMembers {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$impl();
-    
     public abstract boolean getB();
     
     public abstract boolean getB2();
@@ -13,23 +11,11 @@ interface SatisfiesWithMembers {
     public abstract .java.lang.Object m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers.class);
 }
-final class SatisfiesWithMembers$impl {
-    
-    SatisfiesWithMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers $this) {
-    }
-}
 class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
     
     SatisfiesWithMembersClass() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl(this);
         this.b = true;
         this.b2 = false;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$SatisfiesWithMembers$this$;
     }
     private final boolean b;
     

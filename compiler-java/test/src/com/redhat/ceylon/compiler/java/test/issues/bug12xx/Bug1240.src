@@ -30,34 +30,13 @@ final class Top$impl<T> {
     }
 }
 interface A {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$A$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.class);
 }
-final class A$impl {
-    
-    A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A $this) {
-    }
-}
 interface B {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$B$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.class);
 }
-final class B$impl {
-    
-    B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B $this) {
-    }
-}
 interface Left extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left.class);
-}
-final class Left$impl {
-    
-    Left$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left $this) {
-    }
 }
 interface Middle<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<T> {
     
@@ -91,28 +70,13 @@ final class Middle$impl<T> {
     }
 }
 interface Right extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right.class);
-}
-final class Right$impl {
-    
-    Right$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right $this) {
-    }
 }
 class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right {
     
     Bottom() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top)this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle)this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
     
@@ -136,12 +100,6 @@ class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A m() {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.m();
     }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$this$;
-    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
@@ -157,16 +115,8 @@ class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
 class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right {
     
     Bottom2() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top)this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle)this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Left$this$;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$;
     
@@ -179,12 +129,6 @@ class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$impl() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Right$this$;
     }
     
     @.java.lang.Override

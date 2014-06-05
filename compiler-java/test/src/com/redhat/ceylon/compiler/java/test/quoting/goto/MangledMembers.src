@@ -66,8 +66,6 @@ class MangledMembers_clone implements .com.redhat.ceylon.compiler.java.runtime.m
 }
 interface MangledMembers_interface {
     
-    public .com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface$impl $com$redhat$ceylon$compiler$java$test$quoting$$goto$MangledMembers_interface$impl();
-    
     public abstract .java.lang.String $clone();
     
     public abstract .java.lang.String $hashCode();
@@ -82,9 +80,4 @@ interface MangledMembers_interface {
     
     public abstract .java.lang.String $finalize();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface.class);
-}
-final class MangledMembers_interface$impl {
-    
-    MangledMembers_interface$impl(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface $this) {
-    }
 }

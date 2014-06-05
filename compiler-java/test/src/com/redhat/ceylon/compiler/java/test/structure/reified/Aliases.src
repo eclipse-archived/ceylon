@@ -56,18 +56,8 @@ public final class ClassAlias<T> {
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface TargetInterface {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$TargetInterface$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class TargetInterface$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public TargetInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.TargetInterface $this) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$

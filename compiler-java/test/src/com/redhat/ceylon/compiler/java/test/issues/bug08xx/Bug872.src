@@ -271,24 +271,10 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.class);
 }
 public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.class);
 }
-public final class Tag$impl {
-    
-    public Tag$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag $this) {
-    }
-}
 public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.class);
-}
-public final class InlineTag$impl {
-    
-    public InlineTag$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag $this) {
-    }
 }
 public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
     
@@ -401,13 +387,6 @@ public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.
     
     public Block(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor$, name, initialTags);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this$;
     }
     
     @.java.lang.Override
@@ -454,20 +433,6 @@ public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx
     
     public Inline(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
         super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.$TypeDescriptor$, name, initialTags);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$InlineTag$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Tag$this$;
     }
     
     @.java.lang.Override

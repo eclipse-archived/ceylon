@@ -2,45 +2,14 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
 public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone>> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable$impl<? extends Clone> $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Cloneable$impl();
-    
     public abstract Clone getClone();
 }
-public final class Cloneable$impl<Clone extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone>> {
-    
-    public Cloneable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Clone) {
-    }
-}
 interface IBug441 extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441.class);
-}
-final class IBug441$impl {
-    
-    IBug441$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441 $this) {
-    }
 }
 class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441> {
     
     Bug441() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug04xx$Cloneable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.$TypeDescriptor$, (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441>)(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable)this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug04xx$IBug441$this$;
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Cloneable$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable$impl<? extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Cloneable$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Cloneable$this$;
     }
     
     @.java.lang.Override

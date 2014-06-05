@@ -24,14 +24,7 @@ final class Bug993Top$impl<E> {
     }
 }
 interface Bug993MiddleInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface.class);
-}
-final class Bug993MiddleInterface$impl {
-    
-    Bug993MiddleInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface $this) {
-    }
 }
 class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {
     
@@ -64,14 +57,7 @@ class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.mode
 class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Sequence<? extends .ceylon.language.Character>> {
     
     Bug993BottomFromInterface() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl(this);
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Character.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993MiddleInterface$this$;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$;
     

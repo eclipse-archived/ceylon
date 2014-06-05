@@ -2,63 +2,23 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 interface TypeGroupA {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.annotations.TypeGroupA$impl $com$redhat$ceylon$compiler$java$test$annotations$TypeGroupA$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupA.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class TypeGroupA$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    TypeGroupA$impl(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupA $this) {
-    }
-}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 interface TypeGroupB {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.annotations.TypeGroupB$impl $com$redhat$ceylon$compiler$java$test$annotations$TypeGroupB$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupB.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class TypeGroupB$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    TypeGroupB$impl(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupB $this) {
-    }
-}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 interface TypeGroupC {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.annotations.TypeGroupC$impl $com$redhat$ceylon$compiler$java$test$annotations$TypeGroupC$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupC.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class TypeGroupC$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    TypeGroupC$impl(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupC $this) {
-    }
-}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 interface TypeGroupD {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.annotations.TypeGroupD$impl $com$redhat$ceylon$compiler$java$test$annotations$TypeGroupD$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupD.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class TypeGroupD$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    TypeGroupD$impl(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupD $this) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute

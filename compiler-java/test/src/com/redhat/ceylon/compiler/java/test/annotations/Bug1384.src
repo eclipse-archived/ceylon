@@ -20,21 +20,13 @@ public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public Bug1384(final .ceylon.language.meta.declaration.ValueDeclaration reference) {
         this.reference = reference;
-        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384.$TypeDescriptor$), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     private final .ceylon.language.meta.declaration.ValueDeclaration reference;
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final .ceylon.language.meta.declaration.ValueDeclaration getReference() {
         return reference;
-    }
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this$;
     }
     protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
@@ -46,12 +38,6 @@ public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
-    }
-    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override
@@ -80,21 +66,13 @@ public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.
     
     public Bug1384_sequence(final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> references) {
         this.references = references;
-        this.$ceylon$language$OptionalAnnotation$this$ = new .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$, .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
         this.$ceylon$language$ConstrainedAnnotation$this$ = new .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration>(.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence.$TypeDescriptor$), .ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, this);
-        this.$ceylon$language$Annotation$this$ = new .ceylon.language.Annotation$impl(this);
     }
     private final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> references;
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> getReferences() {
         return references;
-    }
-    protected final .ceylon.language.OptionalAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.OptionalAnnotation$impl<? extends .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, ? super .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$OptionalAnnotation$impl() {
-        return $ceylon$language$OptionalAnnotation$this$;
     }
     protected final .ceylon.language.ConstrainedAnnotation$impl<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration> $ceylon$language$ConstrainedAnnotation$this$;
     
@@ -106,12 +84,6 @@ public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.
     @.java.lang.Override
     public final boolean occurs(final .ceylon.language.Annotated programElement) {
         return $ceylon$language$ConstrainedAnnotation$this$.occurs(programElement);
-    }
-    protected final .ceylon.language.Annotation$impl $ceylon$language$Annotation$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Annotation$impl $ceylon$language$Annotation$impl() {
-        return $ceylon$language$Annotation$this$;
     }
     
     @.java.lang.Override

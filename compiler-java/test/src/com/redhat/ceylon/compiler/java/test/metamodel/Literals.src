@@ -337,9 +337,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class)
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 public interface LitInterface$Member {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$impl.Member$impl $com$redhat$ceylon$compiler$java$test$metamodel$LitInterface$impl$Member$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member.class)})
@@ -359,14 +356,6 @@ final class LitInterface$impl {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface $this;
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final class Member$impl {
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public Member$impl(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface$Member $this) {
-        }
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
@@ -379,9 +368,6 @@ final class LitInterface$impl {
         satisfies = {},
         caseTypes = {})})
 public interface LitParameterisedInterface$Member<T, X> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$impl<T>.Member$impl<X> $com$redhat$ceylon$compiler$java$test$metamodel$LitParameterisedInterface$impl$Member$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member.class)})
@@ -411,18 +397,6 @@ final class LitParameterisedInterface$impl<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final class Member$impl<X> {
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public Member$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$Member<T, X> $this) {
-        }
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
-        }
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)

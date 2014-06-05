@@ -119,32 +119,11 @@ public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Bar.class);
 }
 public interface ICaseTypes {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes$impl $com$redhat$ceylon$compiler$java$test$structure$klass$ICaseTypes$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes.class);
 }
-public final class ICaseTypes$impl {
-    
-    public ICaseTypes$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes $this) {
-    }
-}
 public interface IFoo extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.IFoo$impl $com$redhat$ceylon$compiler$java$test$structure$klass$IFoo$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.IFoo.class);
 }
-public final class IFoo$impl {
-    
-    public IFoo$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.IFoo $this) {
-    }
-}
 public interface IBar extends .com.redhat.ceylon.compiler.java.test.structure.klass.ICaseTypes {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.IBar$impl $com$redhat$ceylon$compiler$java$test$structure$klass$IBar$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.IBar.class);
-}
-public final class IBar$impl {
-    
-    public IBar$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.IBar $this) {
-    }
 }

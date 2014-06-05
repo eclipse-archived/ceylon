@@ -1,30 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
 interface AbstractSatisfier_I extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I.class);
-}
-final class AbstractSatisfier_I$impl {
-    
-    AbstractSatisfier_I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I $this) {
-    }
 }
 abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
     
     AbstractSatisfier(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
-        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl(this);
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<T, .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$AbstractSatisfier_I$this$;
-    }
     protected final .ceylon.language.Iterable$impl<T, .java.lang.Object> $ceylon$language$Iterable$this$;
     
     @.java.lang.Override

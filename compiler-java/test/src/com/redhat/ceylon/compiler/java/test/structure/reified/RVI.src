@@ -55,56 +55,22 @@ public class Bottom extends .com.redhat.ceylon.compiler.java.test.structure.reif
         satisfies = {},
         caseTypes = {})})
 public interface Interface<Key> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<? extends Key> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl();
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class Interface$impl<Key> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<? extends Key> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<com.redhat.ceylon.compiler.java.test.structure.reified::Top>"})
 public interface SubInterface1 extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class SubInterface1$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public SubInterface1$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 $this) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<com.redhat.ceylon.compiler.java.test.structure.reified::Bottom>"})
 public interface SubInterface2 extends .com.redhat.ceylon.compiler.java.test.structure.reified.Interface<.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class SubInterface2$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public SubInterface2$impl(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2 $this) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.ceylon.language.SharedAnnotation$annotation$
@@ -113,24 +79,6 @@ public final class SubInterface2$impl {
 public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 {
     
     public Class1() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl(this);
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top>(.com.redhat.ceylon.compiler.java.test.structure.reified.Top.$TypeDescriptor$, this);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface1$this$;
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<.com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.Interface$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.Top> $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -156,16 +104,6 @@ public class Class2 extends .com.redhat.ceylon.compiler.java.test.structure.reif
     
     public Class2() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl(this);
-        $com$redhat$ceylon$compiler$java$test$structure$reified$Interface$this$.$refine$(.com.redhat.ceylon.compiler.java.test.structure.reified.Bottom.$TypeDescriptor$);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface2$impl $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$SubInterface2$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

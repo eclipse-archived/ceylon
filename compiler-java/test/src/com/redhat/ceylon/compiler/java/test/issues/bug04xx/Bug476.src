@@ -1,34 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
 interface Bug476A {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476A$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A.class);
 }
-final class Bug476A$impl {
-    
-    Bug476A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A $this) {
-    }
-}
 interface Bug476B extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476B$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B.class);
 }
-final class Bug476B$impl {
-    
-    Bug476B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476B $this) {
-    }
-}
 interface Bug476C {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C$impl $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug476C$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C.class);
-}
-final class Bug476C$impl {
-    
-    Bug476C$impl(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476C $this) {
-    }
 }
 abstract class Bug476Top<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -108,7 +87,6 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
-        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, T, .ceylon.language.List<? extends T>>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$T), this);
         this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -456,12 +434,6 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends T> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.items(keys);
-    }
-    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, T, .ceylon.language.List<? extends T>> $ceylon$language$Ranged$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, T, ? extends .ceylon.language.List<? extends T>> $ceylon$language$Ranged$impl() {
-        return $ceylon$language$Ranged$this$;
     }
     
     @.java.lang.Override

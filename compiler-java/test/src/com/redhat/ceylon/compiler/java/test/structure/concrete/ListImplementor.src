@@ -9,7 +9,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<X, .java.lang.Object>($reified$X, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, X>(.ceylon.language.Integer.$TypeDescriptor$, $reified$X, this);
-        this.$ceylon$language$Ranged$this$ = new .ceylon.language.Ranged$impl<.ceylon.language.Integer, X, .ceylon.language.List<? extends X>>(.ceylon.language.Integer.$TypeDescriptor$, $reified$X, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$X), this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     protected final .ceylon.language.List$impl<X> $ceylon$language$List$this$;
@@ -356,12 +355,6 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public .ceylon.language.Sequential<? extends X> items(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> keys) {
         return $ceylon$language$Correspondence$this$.items(keys);
-    }
-    protected final .ceylon.language.Ranged$impl<.ceylon.language.Integer, X, .ceylon.language.List<? extends X>> $ceylon$language$Ranged$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Ranged$impl<? super .ceylon.language.Integer, X, ? extends .ceylon.language.List<? extends X>> $ceylon$language$Ranged$impl() {
-        return $ceylon$language$Ranged$this$;
     }
     
     @.java.lang.Override

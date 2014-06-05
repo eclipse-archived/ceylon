@@ -2,85 +2,27 @@ package com.redhat.ceylon.compiler.java.test.expression.erasure;
 
 interface EC_A {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_A$impl();
-    
     public abstract long $int();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A.class);
 }
-final class EC_A$impl {
-    
-    EC_A$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A $this) {
-    }
-}
 interface EC_B {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_B$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B.class);
 }
-final class EC_B$impl {
-    
-    EC_B$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B $this) {
-    }
-}
 interface EC_C {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_C$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C.class);
 }
-final class EC_C$impl {
-    
-    EC_C$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C $this) {
-    }
-}
 interface EC_ABC extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_B, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_C {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC$impl $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ABC$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC.class);
-}
-final class EC_ABC$impl {
-    
-    EC_ABC$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ABC $this) {
-    }
 }
 interface EC_Parameterised<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised$impl<? extends T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_Parameterised$impl();
-    
     public abstract T t();
-}
-final class EC_Parameterised$impl<T> {
-    
-    EC_Parameterised$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface EC_ParameterisedSelfBound<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound$impl<? extends T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ParameterisedSelfBound$impl();
-    
     public abstract T t();
 }
-final class EC_ParameterisedSelfBound$impl<T> {
-    
-    EC_ParameterisedSelfBound$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound<? extends T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
-}
 interface EC_DoubleParameters<T1, T2> extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<.java.lang.Object> {
-    
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters$impl<T1, T2> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$impl();
-}
-final class EC_DoubleParameters$impl<T1, T2> {
-    
-    EC_DoubleParameters$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<T1, T2> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2) {
-    }
 }
 final class erasureCasting_ {
     
@@ -302,17 +244,7 @@ final class valueOrNada_ {
 }
 interface EC_ParameterisedTOrString<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString$impl<T> $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ParameterisedTOrString$impl();
-    
     public abstract .java.lang.Object t();
-}
-final class EC_ParameterisedTOrString$impl<T> {
-    
-    EC_ParameterisedTOrString$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 final class ec_TOrOptionalString_ {
     

@@ -121,15 +121,8 @@ class GenCon<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
 }
 interface ISats {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$impl();
-    
     public abstract .java.lang.Object z();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ISats.class);
-}
-final class ISats$impl {
-    
-    ISats$impl(.com.redhat.ceylon.compiler.java.test.structure.type.ISats $this) {
-    }
 }
 class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
@@ -155,13 +148,6 @@ class BarSats extends .com.redhat.ceylon.compiler.java.test.structure.type.Bar i
     
     BarSats() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$structure$type$ISats$this$ = new .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.type.ISats$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$type$ISats$this$;
     }
     
     @.java.lang.Override
@@ -267,14 +253,7 @@ class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Conversions.class);
 }
 interface ISats2 {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.type.ISats2$impl $com$redhat$ceylon$compiler$java$test$structure$type$ISats2$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ISats2.class);
-}
-final class ISats2$impl {
-    
-    ISats2$impl(.com.redhat.ceylon.compiler.java.test.structure.type.ISats2 $this) {
-    }
 }
 class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

@@ -1,18 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
 
 public interface Bug1478Bla {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla.class);
 }
-public final class Bug1478Bla$impl {
-    
-    public Bug1478Bla$impl(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla $this) {
-    }
-}
 public interface Bug1478AbstractFoo$InnerInterface<T> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.InnerInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478AbstractFoo$InnerInterface$impl();
     
     public abstract long execute2(final T t);
 }
@@ -38,12 +29,6 @@ public abstract class Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compil
         }
     }
     
-    public final class InnerInterface$impl {
-        
-        public InnerInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo$InnerInterface<T> $this) {
-        }
-    }
-    
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.class, $reified$T);
@@ -54,15 +39,8 @@ public class Bug1478Foo<T> extends .com.redhat.ceylon.compiler.java.test.issues.
     public Bug1478Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super($reified$T);
         this.$reified$T = $reified$T;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl(this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478Bla$this$;
-    }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo<T>.Inner Inner$new$() {
@@ -73,13 +51,6 @@ public class Bug1478Foo<T> extends .com.redhat.ceylon.compiler.java.test.issues.
         
         protected Inner() {
             super();
-            this.$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478AbstractFoo$InnerInterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.InnerInterface$impl(this);
-        }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.InnerInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478AbstractFoo$InnerInterface$this$;
-        
-        @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.InnerInterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478AbstractFoo$InnerInterface$impl() {
-            return $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1478AbstractFoo$InnerInterface$this$;
         }
         
         @.java.lang.Override

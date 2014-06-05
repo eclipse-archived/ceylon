@@ -1,16 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
 interface Buffer<X> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer$impl<X> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Buffer$impl();
-}
-final class Buffer$impl<X> {
-    
-    Buffer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<X> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
-    }
 }
 interface OutStream<T> {
     

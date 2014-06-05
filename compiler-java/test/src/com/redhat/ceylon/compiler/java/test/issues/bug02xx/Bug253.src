@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
 interface Boxer<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$impl();
-    
     public abstract T getOne();
     
     public abstract void setOne(final T one);
@@ -12,26 +10,11 @@ interface Boxer<T> {
     
     public abstract void setTwo(final T two);
 }
-final class Boxer$impl<T> {
-    
-    Boxer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
-}
 class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
     
     IntBoxer() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
         this.one = .ceylon.language.Integer.instance(1L);
         this.two = .ceylon.language.Integer.instance(2L);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug02xx$Boxer$this$;
     }
     private .ceylon.language.Integer one;
     

@@ -36,28 +36,11 @@ final class RefinementAndIntersection_H$impl {
 }
 interface RefinementAndIntersection_Co<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<? extends T> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$impl();
-    
     public abstract T get();
-}
-final class RefinementAndIntersection_Co$impl<T> {
-    
-    RefinementAndIntersection_Co$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<? extends T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> {
     
     RefinementAndIntersection_SuperCoGood() {
-        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G>(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G.$TypeDescriptor$, this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co$impl<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this$;
     }
     
     @.java.lang.Override
@@ -80,7 +63,6 @@ class RefinementAndIntersection_SubCoGood extends .com.redhat.ceylon.compiler.ja
     
     RefinementAndIntersection_SubCoGood() {
         super();
-        $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_Co$this$.$refine$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H.$TypeDescriptor$));
     }
     
     @.java.lang.Override

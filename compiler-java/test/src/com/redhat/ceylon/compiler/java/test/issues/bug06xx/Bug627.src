@@ -64,26 +64,12 @@ class Bug627Two extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug
 }
 interface Bug627Abstract {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$impl();
-    
     public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object> elements();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract.class);
-}
-final class Bug627Abstract$impl {
-    
-    Bug627Abstract$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract $this) {
-    }
 }
 class Bug627Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract {
     
     Bug627Concrete() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug627Abstract$this$;
     }
     
     @.java.lang.Override

@@ -1,40 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 interface ExtendsGeneric_Foo<T> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo$impl<? super T> $com$redhat$ceylon$compiler$java$test$structure$klass$ExtendsGeneric_Foo$impl();
-}
-final class ExtendsGeneric_Foo$impl<T> {
-    
-    ExtendsGeneric_Foo$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Foo<? super T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface ExtendsGeneric_Bar<T> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar$impl<? extends T> $com$redhat$ceylon$compiler$java$test$structure$klass$ExtendsGeneric_Bar$impl();
-}
-final class ExtendsGeneric_Bar$impl<T> {
-    
-    ExtendsGeneric_Bar$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Bar<? extends T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 interface ExtendsGeneric_Baz<T> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$ExtendsGeneric_Baz$impl();
-}
-final class ExtendsGeneric_Baz$impl<T> {
-    
-    ExtendsGeneric_Baz$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric_Baz<T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

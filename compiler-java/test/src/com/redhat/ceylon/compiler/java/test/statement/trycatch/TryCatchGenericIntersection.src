@@ -2,18 +2,8 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 interface Intersect {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$impl();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class Intersect$impl {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    Intersect$impl(.com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect $this) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
@@ -22,15 +12,6 @@ class ExceptionIntersection extends .ceylon.language.Exception implements .com.r
     
     ExceptionIntersection() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$this$ = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl(this);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$impl() {
-        return $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -76,15 +57,6 @@ class ExceptionSubIntersection extends .com.redhat.ceylon.compiler.java.test.sta
     
     ExceptionSubIntersection() {
         super();
-        this.$com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$this$ = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl(this);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.statement.trycatch.Intersect$impl $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$impl() {
-        return $com$redhat$ceylon$compiler$java$test$statement$trycatch$Intersect$this$;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

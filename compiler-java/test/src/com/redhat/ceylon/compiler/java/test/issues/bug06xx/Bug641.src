@@ -14,8 +14,6 @@ final class bug641_ {
 }
 interface Bug641Set<Element> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug641Set$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug641Set$impl();
-    
     public abstract <Other>.ceylon.language.Set union(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Set<? extends Other> set);
     
     public abstract <Other>.ceylon.language.Set intersection(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Set<? extends Other> set);
@@ -23,12 +21,4 @@ interface Bug641Set<Element> {
     public abstract <Other>.ceylon.language.Set exclusiveUnion(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Set<? extends Other> set);
     
     public abstract <Other>.ceylon.language.Set<? extends Element> complement(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.Set<? extends Other> set);
-}
-final class Bug641Set$impl<Element> {
-    
-    Bug641Set$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug641Set<? extends Element> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
-    }
 }

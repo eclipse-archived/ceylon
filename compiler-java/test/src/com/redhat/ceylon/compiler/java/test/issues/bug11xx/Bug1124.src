@@ -2,28 +2,17 @@ package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
 interface Bug1124Interface<Key, Value> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<? super Key, ? extends Value> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$impl();
-    
     public abstract Value get1(final Key k);
     
     public abstract Value get2(final Key k);
     
     public abstract .java.lang.Object get3(final Key k);
 }
-final class Bug1124Interface$impl<Key, Value> {
-    
-    Bug1124Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<? super Key, ? extends Value> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-    }
-}
 class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
     
     Bug1124(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
         this.i = i;
         this.f = f;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, this);
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> g = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), "Boolean?(Integer)", (short)-1){
             
             @.java.lang.Override
@@ -42,12 +31,6 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final boolean f$priv$() {
         return f.$call$().booleanValue();
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<.ceylon.language.Integer, .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface$impl<? super .ceylon.language.Integer, ? extends .ceylon.language.Boolean> $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1124Interface$this$;
     }
     
     @.java.lang.Override

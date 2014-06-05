@@ -4,12 +4,9 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
         path = {"localTypeAliasMethod"},
-        companionClassName = "1TypeAliasInterface$impl")
+        companionClassName = "")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
 interface localTypeAliasMethod$TypeAliasInterface_ {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .java.lang.Object TypeAliasInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -35,14 +32,6 @@ final class localTypeAliasMethod_ {
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(TypeAliasClass.class));
-            }
-        }
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        final class TypeAliasInterface$impl {
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            TypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ $this) {
             }
         }
         

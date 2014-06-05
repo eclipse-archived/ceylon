@@ -4,9 +4,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class)
 interface Bug510$Bug510inner {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$impl.Bug510inner$impl $com$redhat$ceylon$compiler$java$test$issues$bug05xx$bug510$Bug510$impl$Bug510inner$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner.class)})
@@ -26,14 +23,6 @@ final class Bug510$impl {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this;
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    final class Bug510inner$impl {
-        
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        Bug510inner$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner $this) {
-        }
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method

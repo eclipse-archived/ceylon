@@ -18,16 +18,6 @@ public class TypeAliasWithTypeParametersClass<T> implements .com.redhat.ceylon.c
     }
 }
 public interface TypeAliasWithTypeParametersInterface<T> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface$impl<T> $com$redhat$ceylon$compiler$java$test$structure$alias$TypeAliasWithTypeParametersInterface$impl();
-}
-public final class TypeAliasWithTypeParametersInterface$impl<T> {
-    
-    public TypeAliasWithTypeParametersInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasWithTypeParametersInterface<T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>")

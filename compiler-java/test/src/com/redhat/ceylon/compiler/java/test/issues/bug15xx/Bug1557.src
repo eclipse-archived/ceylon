@@ -25,34 +25,13 @@ final class run_ {
     }
 }
 interface A {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$A$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.A.class);
 }
-final class A$impl {
-    
-    A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.A $this) {
-    }
-}
 interface B {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$B$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B.class);
 }
-final class B$impl {
-    
-    B$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.B $this) {
-    }
-}
 interface C extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.A, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.B {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.C$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$C$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C.class);
-}
-final class C$impl {
-    
-    C$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.C $this) {
-    }
 }
 final class cmp_ {
     

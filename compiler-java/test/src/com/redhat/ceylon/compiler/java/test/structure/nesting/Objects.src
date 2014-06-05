@@ -1,8 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 interface Objects$objects_o$DummyI {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.DummyI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Objects$objects_o_$DummyI$impl();
 }
 interface Objects$ObjectsI {
     
@@ -39,12 +37,6 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.DummyC.class));
-            }
-        }
-        
-        final class DummyI$impl {
-            
-            DummyI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$objects_o$DummyI $this) {
             }
         }
         

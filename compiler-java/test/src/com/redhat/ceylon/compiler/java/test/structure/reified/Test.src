@@ -1,44 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 public interface TestInterface<Key, Value> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl();
-}
-public final class TestInterface$impl<Key, Value> {
-    
-    public TestInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-    }
 }
 public interface TestInterface2<Key, Value> {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<? extends Key, ? extends Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface2$impl();
-}
-public final class TestInterface2$impl<Key, Value> {
-    
-    public TestInterface2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
-    }
 }
 public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, .ceylon.language.Integer> {
     
     public TestClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         this.$reified$Key = $reified$Key;
         this.$reified$Value = $reified$Value;
-        this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer>($reified$Key, .ceylon.language.Integer.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
-    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl() {
-        return $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$;
-    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);

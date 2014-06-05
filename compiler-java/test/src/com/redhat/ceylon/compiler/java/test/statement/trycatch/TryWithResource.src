@@ -3,13 +3,6 @@ package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable {
     
     TryWithResource(final long n) {
-        this.$ceylon$language$Destroyable$this$ = new .ceylon.language.Destroyable$impl(this);
-    }
-    protected final .ceylon.language.Destroyable$impl $ceylon$language$Destroyable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Destroyable$impl $ceylon$language$Destroyable$impl() {
-        return $ceylon$language$Destroyable$this$;
     }
     
     @.java.lang.Override

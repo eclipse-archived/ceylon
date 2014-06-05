@@ -2,27 +2,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
 interface I {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$impl();
-    
     public abstract .ceylon.language.Integer getX();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I.class);
-}
-final class I$impl {
-    
-    I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I $this) {
-    }
 }
 class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I {
     
     C(final .ceylon.language.Integer x) {
         this.x = x;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I$impl $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$I$this$;
     }
     private final .ceylon.language.Integer x;
     

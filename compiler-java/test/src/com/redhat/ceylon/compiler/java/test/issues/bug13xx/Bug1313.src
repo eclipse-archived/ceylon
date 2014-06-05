@@ -5,15 +5,6 @@ package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 class Bug1313 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313> {
     
     Bug1313() {
-        this.$ceylon$language$Summable$this$ = new .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313>(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, this);
-    }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313> $ceylon$language$Summable$this$;
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Summable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313> $ceylon$language$Summable$impl() {
-        return $ceylon$language$Summable$this$;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

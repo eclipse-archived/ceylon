@@ -2,15 +2,8 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 public interface Bug1235I {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$impl();
-    
     public abstract .ceylon.language.String getS();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I.class);
-}
-public final class Bug1235I$impl {
-    
-    public Bug1235I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I $this) {
-    }
 }
 public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I {
     
@@ -27,7 +20,6 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public Bug1235A(final .ceylon.language.String s) {
         this.s = s;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl(this);
     }
     private final .ceylon.language.String s;
     
@@ -38,12 +30,6 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public static .ceylon.language.String $default$s() {
         return .ceylon.language.String.instance("");
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this$;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -72,17 +58,10 @@ public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public Bug1235B(final .ceylon.language.String s) {
         this.s = s;
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl(this);
     }
     
     public static .ceylon.language.String $default$s() {
         return .ceylon.language.String.instance("");
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1235I$this$;
     }
     private final .ceylon.language.String s;
     

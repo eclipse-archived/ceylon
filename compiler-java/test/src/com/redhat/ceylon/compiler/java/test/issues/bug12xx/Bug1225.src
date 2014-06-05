@@ -1,25 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
 public interface Bug1225Availability {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability.class);
-}
-public final class Bug1225Availability$impl {
-    
-    public Bug1225Availability$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability $this) {
-    }
 }
 public final class bug1225available_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     
     private bug1225available_() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_[] value;
     private static final .java.lang.Throwable $initException$;
@@ -50,13 +36,6 @@ public final class bug1225available_ implements .com.redhat.ceylon.compiler.java
 public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     
     private bug1225unavailableBy_O_() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_[] value;
     private static final .java.lang.Throwable $initException$;
@@ -87,13 +66,6 @@ public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compile
 public final class bug1225unavailableBy_X_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     
     private bug1225unavailableBy_X_() {
-        this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl(this);
-    }
-    protected final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$;
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability$impl $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$impl() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug12xx$Bug1225Availability$this$;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_[] value;
     private static final .java.lang.Throwable $initException$;

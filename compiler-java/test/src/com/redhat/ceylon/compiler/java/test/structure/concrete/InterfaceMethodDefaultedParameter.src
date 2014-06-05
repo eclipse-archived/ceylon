@@ -45,11 +45,14 @@ interface I<T> {
 final class I$impl<T> {
     
     I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
+        this.$reified$T = $reified$T;
         this.$this = $this;
     }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this;
     
     public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
     }
     
     public final long m$i() {

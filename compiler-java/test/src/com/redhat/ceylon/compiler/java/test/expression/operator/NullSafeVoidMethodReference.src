@@ -2,15 +2,8 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 
 interface NullSafeAnythingMethodReference {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference$impl $com$redhat$ceylon$compiler$java$test$expression$operator$NullSafeAnythingMethodReference$impl();
-    
     public abstract .java.lang.Object invoke();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference.class);
-}
-final class NullSafeAnythingMethodReference$impl {
-    
-    NullSafeAnythingMethodReference$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.NullSafeAnythingMethodReference $this) {
-    }
 }
 final class test_ {
     

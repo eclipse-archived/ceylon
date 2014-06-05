@@ -57,20 +57,6 @@ public class CeylonClass<Element> extends .com.redhat.ceylon.compiler.java.test.
         satisfies = {},
         caseTypes = {})})
 public interface CeylonInterface<Element> extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaInterface<Element> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface$impl<Element> $com$redhat$ceylon$compiler$java$test$structure$reified$CeylonInterface$impl();
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class CeylonInterface$impl<Element> {
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public CeylonInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonInterface<Element> $this) {
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
-    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
 @.com.redhat.ceylon.compiler.java.metadata.Method

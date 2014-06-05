@@ -115,7 +115,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         final long i) {
             this.i = i;
-            this.$ceylon$language$Ordinal$this$ = new .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), this);
             this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), this);
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -126,14 +125,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         public final long getI() {
             return i;
-        }
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        protected final .ceylon.language.Ordinal$impl<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Ordinal$this$;
-        
-        @.java.lang.Override
-        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        public .ceylon.language.Ordinal$impl<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Ordinal$impl() {
-            return $ceylon$language$Ordinal$this$;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> $ceylon$language$Comparable$this$;

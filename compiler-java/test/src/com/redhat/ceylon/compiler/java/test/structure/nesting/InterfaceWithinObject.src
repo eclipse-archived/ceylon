@@ -1,19 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 public interface interfaceWithinObject$Z_ {
-    
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl();
 }
 final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private interfaceWithinObject_() {
         this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
-    }
-    
-    public final class Z$impl {
-        
-        public Z$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ $this) {
-        }
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI ZI$new$() {
@@ -23,13 +15,6 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     public class ZI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
         
         protected ZI() {
-            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
-        }
-        protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
-        
-        @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl() {
-            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
         }
         
         @.java.lang.Override
@@ -42,13 +27,6 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     public final class z_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
         
         private z_() {
-            this.$com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$ = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl(this);
-        }
-        protected final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
-        
-        @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.Z$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject_$Z$impl() {
-            return $com$redhat$ceylon$compiler$java$test$structure$nesting$interfaceWithinObject$Z$this$;
         }
         
         @.java.lang.Override

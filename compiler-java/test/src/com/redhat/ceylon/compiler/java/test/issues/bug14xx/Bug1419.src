@@ -2,57 +2,17 @@ package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
 
 interface Bug1419Val<Get, Set> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val$impl<? extends Get, ? super Set> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Val$impl();
-    
     public abstract Get get();
-}
-final class Bug1419Val$impl<Get, Set> {
-    
-    Bug1419Val$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val<? extends Get, ? super Set> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set) {
-    }
 }
 interface Bug1419Mem<Container, Member> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem$impl<? super Container, ? extends Member> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Mem$impl();
-    
     public abstract Member bind(final Container instance);
 }
-final class Bug1419Mem$impl<Container, Member> {
-    
-    Bug1419Mem$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Member, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem<? super Container, ? extends Member> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Member) {
-    }
-}
 interface Bug1419Attr<Container, Get, Set> extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Mem<Container, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val<? extends Get, ? super Set>> {
-    
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr$impl<? super Container, ? extends Get, ? super Set> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$impl();
-}
-final class Bug1419Attr$impl<Container, Get, Set> {
-    
-    Bug1419Attr$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr<? super Container, ? extends Get, ? super Set> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set) {
-    }
 }
 interface Bug1419COI<T> {
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419COI$impl();
-    
     public abstract <Container, Get, Set>.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr<? super Container, ? extends Get, ? super Set> getAttribute(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Container, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Get, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Set, final .java.lang.String name);
-}
-final class Bug1419COI$impl<T> {
-    
-    Bug1419COI$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI<T> $this) {
-    }
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-    }
 }
 final class bug1419_ {
     
