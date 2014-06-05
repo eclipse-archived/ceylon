@@ -1,0 +1,181 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+interface Bug1625<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1625$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl<T>.Inner Inner$new$();
+}
+final class Bug1625$impl<T> {
+    
+    Bug1625$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        protected Inner() {
+        }
+        
+        private final .ceylon.language.Sequential<? extends T> t$priv$(final T t) {
+            return new .ceylon.language.Tuple<T, T, .ceylon.language.Sequential<? extends T>>($reified$T, new .java.lang.Object[]{t});
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625.class, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl.Inner.class));
+        }
+    }
+}
+interface Bug1625_2<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1625_2$impl();
+    
+    public abstract .java.lang.Object f(final T t);
+    
+    public abstract .ceylon.language.Sequential<? extends T> f$ts(final T t);
+    
+    public abstract .java.lang.Object f(final T t, final .ceylon.language.Sequential<? extends T> ts);
+}
+final class Bug1625_2$impl<T> {
+    
+    Bug1625_2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public final .ceylon.language.Sequential<? extends T> f$ts(final T t) {
+        return new .ceylon.language.Tuple<T, T, .ceylon.language.Sequential<? extends T>>($reified$T, new .java.lang.Object[]{t});
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface Bug1625_3<T> {
+    
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object f(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t, @.com.redhat.ceylon.compiler.java.metadata.Name("ts")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
+    final .ceylon.language.Sequential<? extends T> ts);
+    
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Annotations({
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("formal"),
+            @.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Sequential<T>")
+    public abstract .ceylon.language.Sequential<? extends T> getTs();
+}
+class Bug1625_3Impl<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3<T> {
+    
+    Bug1625_3Impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f(final T t, final .ceylon.language.Sequential<? extends T> ts) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends T> getTs() {
+        return (.ceylon.language.Sequential).ceylon.language.nothing_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl.class, $reified$T);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Name("Empty")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug1625"},
+        companionClassName = "")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface bug1625$Empty_ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"::bug1625$Empty_"})
+final class bug1625_ {
+    
+    private bug1625_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1625() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1625_.bug1625();
+    }
+}
+interface Bug1625_Top<T> {
+}
+class Bug1625_Middle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Top<.java.lang.Object> {
+    
+    Bug1625_Middle() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle.class);
+}
+class Bug1625_Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle implements .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Top<.ceylon.language.String> {
+    
+    Bug1625_Bottom() {
+        super();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Bottom();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Bottom.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Bottom.class);
+}
