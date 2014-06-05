@@ -29,11 +29,7 @@ import static com.sun.tools.javac.code.Flags.STATIC;
 
 import com.redhat.ceylon.compiler.typechecker.model.Annotation;
 import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
 import com.redhat.ceylon.compiler.typechecker.model.Interface;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
 import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.model.TypeParameter;
@@ -402,10 +398,6 @@ public class ClassDefinitionBuilder
     private boolean ignoreAnnotations = false;
     private boolean noAnnotations = false;
 
-    private boolean hasConcreteMembers = true;
-
-    private boolean hasMemberWithDefaultedParameter;
-
     /** 
      * The class will be generated with the {@code @Ignore} annotation only
      */
@@ -521,48 +513,33 @@ public class ClassDefinitionBuilder
     }
 
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
-        if (concreteInterfaceMemberDefs == null) {
+        if (concreteInterfaceMemberDefs == null 
+                // if we want a companion build for a class, allow it
+                && (decl instanceof com.redhat.ceylon.compiler.typechecker.model.Class
+                        // if it's an interface, let's first check if we need one
+                        || CodegenUtil.isCompanionClassNeeded(decl))) {
             String className = gen.naming.getCompanionClassName(decl, false);//.replaceFirst(".*\\.", "");
             concreteInterfaceMemberDefs = new ClassDefinitionBuilder(gen, className, decl.getName())
                 .ignoreAnnotations();
             concreteInterfaceMemberDefs.isCompanion = true;
-            concreteInterfaceMemberDefs.hasConcreteMembers = false;
-            concreteInterfaceMemberDefs.hasMemberWithDefaultedParameter = false;
-            for (Declaration member : decl.getMembers()) {
-                if (member instanceof TypeParameter) {
-                    continue;
-                }
-                if (member instanceof Functional) {
-                    PLS: for (ParameterList pl : ((Functional)member).getParameterLists()) {
-                        for (Parameter p : pl.getParameters()) {
-                            if (p.isDefaulted()) {
-                                concreteInterfaceMemberDefs.hasMemberWithDefaultedParameter = true;
-                                break PLS;
-                            }
-                        }
-                    }
-                }
-                if (!member.isFormal()) {
-                    concreteInterfaceMemberDefs.hasConcreteMembers = true;
-                }
-            }
         }
         return concreteInterfaceMemberDefs;
     }
     
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl, TypeParameterList typeParameterList) {
         ClassDefinitionBuilder companionBuilder = getCompanionBuilder(decl);
+        // if the interface has no need of companion, give up
+        if(companionBuilder == null)
+            return null;
         // make sure we get fields and init code for reified params
         if(typeParameterList != null) {
             companionBuilder.reifiedTypeParameters(typeParameterList);
         }
         ProducedType thisType = decl.getType();
-        if (companionBuilder.hasConcreteMembers || companionBuilder.hasMemberWithDefaultedParameter) {
-            companionBuilder.field(PRIVATE | FINAL, 
-                    "$this", 
-                    gen.makeJavaType(thisType), 
-                    null, false, gen.makeAtIgnore());
-        }
+        companionBuilder.field(PRIVATE | FINAL, 
+                "$this", 
+                gen.makeJavaType(thisType), 
+                null, false, gen.makeAtIgnore());
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
         ctor.ignoreModelAnnotations();
         if(typeParameterList != null)
@@ -572,14 +549,12 @@ public class ClassDefinitionBuilder
         pdb.type(gen.makeJavaType(thisType), null);
         // ...initialize the $this field from a ctor parameter...
         ctor.parameter(pdb);
-        if (companionBuilder.hasConcreteMembers || companionBuilder.hasMemberWithDefaultedParameter) {
-            ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
-                    gen.make().Exec(
-                            gen.make().Assign(
-                                    gen.makeSelect(gen.naming.makeThis(), "$this"), 
-                                    gen.naming.makeQuotedThis())));
-            ctor.body(bodyStatements.toList());
-        }
+        ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
+                gen.make().Exec(
+                        gen.make().Assign(
+                                gen.makeSelect(gen.naming.makeThis(), "$this"), 
+                                gen.naming.makeQuotedThis())));
+        ctor.body(bodyStatements.toList());
         
         if(typeParameterList != null)
             companionBuilder.addRefineReifiedTypeParametersMethod(typeParameterList);
@@ -646,18 +621,16 @@ public class ClassDefinitionBuilder
     public ClassDefinitionBuilder reifiedTypeParameter(TypeParameterDeclaration param) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param.getDeclarationModel());
         parameter(makeReifiedParameter(descriptorName));
-        if (hasConcreteMembers) {
-            long flags = PRIVATE;
-            if(!isCompanion)
-                flags |= FINAL;
-            List<JCAnnotation> annotations = gen.makeAtIgnore();
-            JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
-                    gen.makeTypeDescriptorType(), null);
-            defs(localVar);
-            init(gen.make().Exec(gen.make().Assign(
-                    gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
-                    gen.naming.makeQualIdent(null, descriptorName))));
-        }
+        long flags = PRIVATE;
+        if(!isCompanion)
+            flags |= FINAL;
+        List<JCAnnotation> annotations = gen.makeAtIgnore();
+        JCVariableDecl localVar = gen.make().VarDef(gen.make().Modifiers(flags, annotations), gen.names().fromString(descriptorName), 
+                gen.makeTypeDescriptorType(), null);
+        defs(localVar);
+        init(gen.make().Exec(gen.make().Assign(
+                gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
+                gen.naming.makeQualIdent(null, descriptorName))));
         return this;
     }
 
@@ -705,10 +678,8 @@ public class ClassDefinitionBuilder
         for(TypeParameterDeclaration tp : typeParameterList.getTypeParameterDeclarations()){
             String descriptorName = gen.naming.getTypeArgumentDescriptorName(tp.getDeclarationModel());
             method.parameter(makeReifiedParameter(descriptorName));
-            if (hasConcreteMembers) {
-                body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
-                                                                      gen.naming.makeQualIdent(null, descriptorName))));
-            }
+            body = body.prepend(gen.make().Exec(gen.make().Assign(gen.naming.makeQualIdent(gen.naming.makeThis(), descriptorName), 
+                    gen.naming.makeQualIdent(null, descriptorName))));
         }
         method.body(body);
         defs(method.build());
