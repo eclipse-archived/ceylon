@@ -210,7 +210,7 @@ void test_max_min() {
 }
 
 shared void arraySequence() {
-    value abc = ArraySequence({"a", "b", "c"});
+    value abc = notempty({"a", "b", "c"});
     check(3==abc.size, "abc.size");
     check(!abc.empty, "abc.empty");
     check(2==abc.lastIndex, "abc.lastIndex");
@@ -327,7 +327,7 @@ shared void sequences() {
     check(bare.reversed==bare, "bare reversed");
     check(bare.sequence()==bare, "bare.sequence()");
 
-    String[] result = ArraySequence{"hello", "world"};
+    String[] result = notempty{"hello", "world"};
     check(result.size==2, "sequence size");
     check(result nonempty, "nonempty sequence");
     if (nonempty result) {
@@ -448,7 +448,7 @@ shared void sequences() {
     }
     check(i==4, "sequence iteration");
 
-    value useq = ArraySequence{"x", 5.1, *{"y", -1.2}};
+    value useq = notempty{"x", 5.1, *{"y", -1.2}};
     check(useq.size==4, "union sequence builder");
     check(useq.string=="[x, 5.1, y, -1.2]", "union sequence builder.string");
     variable value s=0;
@@ -489,7 +489,7 @@ shared void sequences() {
     //check(!coal2 nonempty, "nonempty coalesced2");
     //check(coal2.size == 0, "coalesced2.size");
     //check(!'h' in coal2, "coalesced2.contains");
-    value entrySequence = ArraySequence{1->"hello", 2->"world"};
+    value entrySequence = notempty{1->"hello", 2->"world"};
     check(entrySequence.string=="[1->hello, 2->world]", "entries sequence.string");
     variable value cntr=0;
     for (nat->str in entrySequence) {

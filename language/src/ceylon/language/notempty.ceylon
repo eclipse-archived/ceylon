@@ -16,7 +16,9 @@ shared [Element+]|Absent notempty<Element,Absent>(Iterable<Element, Absent> elem
     }
     return ASequence(array);
 }
-
+"A `Sequence` backed by an `Array`. Because `Array `is mutable this class is 
+ private to the language module, where we can be sure the Array is not 
+ modified after the Sequence has been initialized."
 class ASequence<Element>(Array<Element> array) satisfies [Element+] {
     
     shared actual Element? get(Integer index) 
@@ -53,17 +55,43 @@ class ASequence<Element>(Array<Element> array) satisfies [Element+] {
         return reversed;
     }
     
-    shared actual Element[] segment(Integer from, Integer length) 
-            => notempty(array[from:length]) else [];
+    shared actual Element[] segment(Integer from, Integer length) {
+        if (from < 0) {
+            return notempty(array[0:length+from]) else [];
+        } else {
+            return notempty(array[from:length]) else [];
+        }
+    }
     
-    shared actual Element[] span(Integer from, Integer to) 
-            => notempty(array[from..to]) else [];
+    shared actual Element[] span(Integer from, Integer to) {
+        if (from <= to) {
+            if (to < 0 || from > lastIndex) {
+                return [];
+            }
+            return notempty(array[largest(from, 0)..smallest(to, lastIndex)]) else [];
+        } else {
+            if (from < 0 || to > lastIndex) {
+                return [];
+            }
+            return notempty(array[smallest(from, lastIndex)..largest(to, 0)]) else [];
+        }
+    }
     
-    shared actual Element[] spanFrom(Integer from) 
-            => notempty(array[from...]) else [];
+    shared actual Element[] spanFrom(Integer from) {
+        if (from > lastIndex) {
+            return [];
+        } else {
+            return notempty(array[largest(from, 0)...]) else [];
+        }
+    }
     
-    shared actual Element[] spanTo(Integer to) 
-            => notempty(array[...to]) else [];
+    shared actual Element[] spanTo(Integer to) {
+        if (to < 0) {
+            return [];
+        } else { 
+            return notempty(array[...smallest(to, lastIndex)]) else [];
+        }
+    }
     
     shared actual Boolean equals(Object that) 
             => (super of Sequence<Element>).equals(that);

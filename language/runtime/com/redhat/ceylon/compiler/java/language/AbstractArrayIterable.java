@@ -12,6 +12,7 @@ import ceylon.language.List;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
+import ceylon.language.notempty_;
 
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -234,7 +235,12 @@ public abstract class AbstractArrayIterable<Element, ArrayType> implements Reifi
     public Sequential<? extends Element> sequence() {
         // Note: Sequential is immutable, and we don't know where the array
         // came from, so however we create the sequence we must take a copy
-        return this.getEmpty() ? empty_.get_() : new ArraySequence($reified$Element, this);
+        Object result = notempty_.notempty($reified$Element, Null.$TypeDescriptor$, this);
+        if (result == null) {
+            return (Sequential)empty_.get_();
+        } else {
+            return (Sequential)result;
+        }
     }
 
     @Ignore

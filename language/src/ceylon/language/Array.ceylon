@@ -67,5 +67,7 @@ shared final native class Array<Element>({Element*} elements)
     shared actual native {Element*} take(Integer num);
     shared actual native {Element*} by(Integer step);
     
+    "Sorts the elements in this array according 
+     to the ordering induced by the given function."
     shared native void sortInPlace(Comparison comparing(Element x, Element y));
 }

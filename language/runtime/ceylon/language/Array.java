@@ -506,7 +506,7 @@ public final class Array<Element>
 
     @Override
     public Array<Element> spanFrom(@Name("from") Integer from) {
-        return span(from, Integer.instance(getSize()));
+        return span(from, getLastIndex());
     }
     
     @Override
@@ -662,12 +662,12 @@ public final class Array<Element>
         long fromIndex = from.longValue();
         if (fromIndex<0) fromIndex=0;
         long resultLength = length;
-        long lastIndex = getLastIndex().longValue();
-        if (fromIndex>lastIndex||resultLength<=0) {
+        long sz = getSize();
+        if (fromIndex>=sz||resultLength<=0) {
             return new Array<Element>($reifiedElement, EMPTY_ARRAY);
         }
         else {
-            long resultFromIndex = fromIndex + resultLength;
+            long resultFromIndex = Math.min(fromIndex + resultLength, sz);
             java.lang.Object a;
             if (array instanceof char[]) {
                 a = copyOfRange((char[])array, 
@@ -1358,8 +1358,7 @@ public final class Array<Element>
         else {
             arraycopy(array, 0, result, 0, size);
         }
-        return new ArraySequence<Element>($reifiedElement, 
-        		result, 0, size, false);
+        return new ASequence<Element>($reifiedElement, new Array<Element>($reifiedElement, result));
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")

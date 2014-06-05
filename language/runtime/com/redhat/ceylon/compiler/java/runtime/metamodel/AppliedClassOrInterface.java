@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 import java.util.Collections;
 import java.util.List;
 
+import ceylon.language.Array;
 import ceylon.language.ArraySequence;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
@@ -1096,7 +1097,7 @@ public abstract class AppliedClassOrInterface<Type>
         Iterator<? extends ceylon.language.meta.declaration.OpenType> iterator = caseTypeDeclarations.iterator();
         Object it;
         @SuppressWarnings("unchecked")
-        Type[] ret = (Type[]) java.lang.reflect.Array.newInstance($reifiedType.getArrayElementClass(), (int) caseTypeDeclarations.getSize());
+        Array<Type> ret = new Array<Type>($reifiedType, (int) caseTypeDeclarations.getSize(), null);
         int count = 0;
         while((it = iterator.next()) != finished_.get_()){
             if(it instanceof ceylon.language.meta.declaration.OpenClassType == false)
@@ -1109,9 +1110,9 @@ public abstract class AppliedClassOrInterface<Type>
             ceylon.language.meta.model.Value<? extends Type,? super Object> valueModel = 
                     valueDeclaration.<Type,Object>apply($reifiedType, TypeDescriptor.NothingType);
             Type value = valueModel.get();
-            ret[count++] = value;
+            ret.set(count++, value);
         }
-        return new ArraySequence<>($reifiedType, ret, 0, count, false);
+        return ret.take(count).getSequence();
     }
     
     @Ignore

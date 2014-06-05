@@ -9,7 +9,6 @@ import com.redhat.ceylon.compiler.java.TypeDescriptorTest;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
-    ArraySequenceTest.class,
     FloatTest.class,
     IntegerTest.class,
     SequenceBuilderTest.class,

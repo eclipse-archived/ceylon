@@ -66,33 +66,6 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
     
     @Ignore
     private TypeDescriptor $reifiedElement;
-
-    /**
-     * The public (Ceylon) initializer. Note that if elements is an 
-     * ArraySequence we avoid creating a new array. Otherwise a new array of 
-     * exactly the right size is used
-     * @param $reifiedElement
-     * @param elements
-     */
-    public ArraySequence(@Ignore TypeDescriptor $reifiedElement,
-            @TypeInfo("ceylon.language::Iterable<Element,ceylon.language::Nothing>")
-            @Name("elements")
-            ceylon.language.Iterable<? extends Element, ?> elements) {
-        /*
-         * Ugly, optimization:
-         * In the case that the Iterable is an ArraySequence we can avoid 
-         * copying the backing array, but in the case it's just an Iterable
-         * we need to allocate an array 
-         * (and reallocate, as we iterate filling the array). The 
-         * {@code copyOrNot_*()} methods figure out the arguments for the 
-         * this() call. Oh for a Let expr.
-         */
-        this($reifiedElement, 
-                copyOrNot_array$hidden($reifiedElement, elements), 
-                copyOrNot_first$hidden(elements), 
-                copyOrNot_length$hidden(elements), 
-                false);
-    }
     
     @Ignore
     private static <Element> java.lang.Object[] 
@@ -128,18 +101,11 @@ public class ArraySequence<Element> implements Sequence<Element>, ReifiedType {
         return USE_ARRAY_SIZE;
     }
 
-    public static <Element> ArraySequence<Element> 
+    private static <Element> ArraySequence<Element> 
     instance(@Ignore TypeDescriptor $reifiedElement, 
     		java.lang.Object[] array) {
         return new ArraySequence<Element>($reifiedElement, 
         		array, 0, array.length, true);
-    }
-
-    public static <Element> ArraySequence<Element> 
-    instance(@Ignore TypeDescriptor $reifiedElement, 
-            java.lang.Object[] array, int length) {
-        return new ArraySequence<Element>($reifiedElement, 
-                array, 0, length, true);
     }
 
     @Ignore
