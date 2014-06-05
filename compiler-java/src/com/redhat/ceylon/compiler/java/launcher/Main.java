@@ -858,7 +858,7 @@ public class Main extends com.sun.tools.javac.main.Main {
     }
 
     private String relativeSourcePath(JavaFileObject file) {
-        String path = file.toUri().getPath();
+        String path = new File(file.toUri()).getPath();
         Iterable<? extends File> paths = ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
         String relPath = FileUtil.relativeFile(paths, path);
         return relPath;
