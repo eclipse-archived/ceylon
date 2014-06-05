@@ -682,12 +682,12 @@ public class RefinementVisitor extends Visitor {
 	        TypeParameter refinedTypeParam = refinedTypeParams.get(i);
 	        TypeParameter refiningTypeParam = refiningTypeParams.get(i);
 	        ProducedType refinedProducedType = refinedTypeParam.getType();
+            Map<TypeParameter, ProducedType> args = ci.getType()
+                    .getSupertype((TypeDeclaration)refined.getContainer())
+                    .getTypeArguments();
 	        for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
 	            ProducedType bound = 
 	            		t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
-	            Map<TypeParameter, ProducedType> args = ci.getType()
-	                    .getSupertype((TypeDeclaration)refined.getContainer())
-	                    .getTypeArguments();
 	            //for every type constraint of the refining member, there must
 	            //be at least one type constraint of the refined member which
 	            //is assignable to it, guaranteeing that the intersection of
@@ -709,6 +709,22 @@ public class RefinementVisitor extends Visitor {
 	                        " does not satisfy: " + t.getProducedTypeName(that.getUnit()));
 	            }
 	        }
+            for (ProducedType st: refinedTypeParam.getSatisfiedTypes()) {
+                boolean ok = false;
+                for (ProducedType t: refiningTypeParam.getSatisfiedTypes()) {
+                    ProducedType bound = 
+                            t.substitute(singletonMap(refiningTypeParam, refinedProducedType));
+                    if (st.substitute(args).isSubtypeOf(bound)) {
+                        ok = true;
+                    }
+                }
+                if (!ok) {
+                    that.addUnsupportedError("refined member type parameter " + 
+                            refinedTypeParam.getName() + " of " + message(refined) +
+                            " with upper bound which member type parameter " + refiningTypeParam.getName() + 
+                            " does not satisfy not yet supported: " + st.getProducedTypeName(that.getUnit()));
+                }
+            }
 	        typeArgs.add(refinedProducedType);
 	    }
 	    return typeArgs;
