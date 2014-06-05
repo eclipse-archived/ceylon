@@ -411,16 +411,19 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                     }
                 }
             } else {
-                File moduleDescriptor = null;
+                boolean hasDescriptor = false;
                 File modDir = ModuleUtil.moduleToPath(moduleOrFile);
                 for (File src : srcs) {
                     File fullModDir = new File(src, modDir.getPath());
                     if (fullModDir != null && fullModDir.isDirectory() && fullModDir.canRead()) {
-                        moduleDescriptor = new File(fullModDir, Constants.MODULE_DESCRIPTOR);
-                        break;
+                        File moduleDescriptor = new File(fullModDir, Constants.MODULE_DESCRIPTOR);
+                        if (moduleDescriptor.isFile()) {
+                            hasDescriptor = true;
+                            break;
+                        }
                     }
                 }
-                if (moduleDescriptor == null || !moduleDescriptor.isFile()) {
+                if (!hasDescriptor) {
                     throw new IllegalArgumentException(CeylonCompileMessages.msg("error.not.module", moduleOrFile));
                 }
             }
