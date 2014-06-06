@@ -78,9 +78,6 @@ public final class Tuple<Element, First extends Element,
                 new Sequence$impl<Element>($reifiedElement, this);
         this.$ceylon$language$Sequential$this = 
                 new Sequential$impl<Element>($reifiedElement, this);
-        this.$ceylon$language$Ranged$this = 
-                new Ranged$impl(Integer.$TypeDescriptor$, 
-                        $reifiedElement, TypeDescriptor.klass(Sequence.class, $reifiedElement), (Ranged) this);
         if (length == USE_ARRAY_SIZE) {
             length = array.length;
         }
@@ -462,9 +459,6 @@ public final class Tuple<Element, First extends Element,
     @Ignore
     private final Sequence$impl<Element> 
     $ceylon$language$Sequence$this;
-    @Ignore
-    private final Ranged$impl 
-    $ceylon$language$Ranged$this;
 
     /** 
      * A backing array. Maybe shared between many ArraySequence instances
@@ -514,13 +508,6 @@ public final class Tuple<Element, First extends Element,
     public Correspondence$impl<Integer,Element> 
     $ceylon$language$Correspondence$impl(){
         return $ceylon$language$Correspondence$this;
-    }
-
-    @Ignore
-    @Override
-    public Ranged$impl 
-    $ceylon$language$Ranged$impl(){
-        return $ceylon$language$Ranged$this;
     }
 
     @Ignore
