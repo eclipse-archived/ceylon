@@ -504,15 +504,8 @@ public class CeylonUtils {
 
         private String absolute(String path) {
             if (!isRemote(path)) {
-                File f = new File(path);
-                if (!f.isAbsolute()) {
-                    f = new File(cwd, path);
-                    try {
-                        path = f.getCanonicalPath();
-                    } catch (IOException e) {
-                        path = f.getAbsolutePath();
-                    }
-                }
+                File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
+                path = f.getPath();
             }
             return path;
         }
