@@ -43,7 +43,7 @@
        String? firstLabel = point[2];
        String[] allLabels = point[2...];"""
 by ("Gavin")
-shared final class Tuple<out Element, out First, out Rest=[]>
+shared final native class Tuple<out Element, out First, out Rest=[]>
             (first, rest)
         extends Object()
         satisfies [Element+]
@@ -52,22 +52,23 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     "The first element of this tuple. (The head of the 
      linked list.)"
-    shared actual First first;
+    shared actual native First first;
     
     "A tuple with the elements of this tuple, except for the
      first element. (The tail of the linked list.)"
-    shared actual Rest rest;
+    shared actual native Rest rest;
     
     size => 1 + rest.size;
     
-    shared actual Element? elementAt(Integer index) {
+
+    shared actual native Element? elementAt(Integer index) {
         switch (index<=>0)
         case (smaller) { return null; }
         case (equal) { return first; }
         case (larger) { return rest[index-1]; }
     }
     
-    shared actual Integer lastIndex {
+    shared actual native Integer lastIndex {
         if (exists restLastIndex = rest.lastIndex) {
             return restLastIndex+1;
         }
@@ -77,7 +78,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     }
     
     "The last element of this tuple."
-    shared actual Element last {
+    shared actual native Element last {
         if (nonempty rest) {
             return rest.last;
         }
@@ -86,7 +87,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         }
     }
     
-    shared actual Element[] segment(Integer from, Integer length) {
+    shared actual native Element[] segment(Integer from, Integer length) {
         if(length <= 0){
             return [];
         }
@@ -99,7 +100,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
         return rest[realFrom-1:length];
     }
     
-    shared actual Element[] span(Integer from, Integer end) {
+    shared actual native Element[] span(Integer from, Integer end) {
         if (from<0 && end<0) { return []; }
         Integer realFrom = from < 0 then 0 else from;
         Integer realEnd = end < 0 then 0 else end;
@@ -114,9 +115,9 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     reversed => rest.reversed.withTrailing(first);
     
     "This tuple."
-    shared actual Tuple<Element,First,Rest> clone() => this;
+    shared actual native Tuple<Element,First,Rest> clone() => this;
     
-    shared actual Iterator<Element> iterator() {
+    shared actual native Iterator<Element> iterator() {
         object iterator satisfies Iterator<Element> {
             variable Element[] current = outer;
             shared actual Element|Finished next() {
@@ -134,7 +135,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     "Determine if the given value is an element of this
      tuple."
-    shared actual Boolean contains(Object element) {
+    shared actual native Boolean contains(Object element) {
         if (exists first, first==element) {
             return true;
         }
@@ -145,7 +146,7 @@ shared final class Tuple<out Element, out First, out Rest=[]>
     
     "Returns a new tuple that starts with the specified
      element, followed by the elements of this tuple."
-    shared actual 
+    shared actual native
     Tuple<Element|Other,Other,Tuple<Element,First,Rest>> 
     withLeading<Other>(
             "The first element of the resulting tuple."

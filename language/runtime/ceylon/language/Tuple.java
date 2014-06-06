@@ -556,6 +556,7 @@ public final class Tuple<Element, First extends Element,
         return (Element[])reversed;
     }
     
+    @Ignore
     @Override
     public boolean defines(@Name("key") Integer key) {
         long ind = key.longValue();
@@ -622,18 +623,19 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$Sequence$this.toString();
     }
 
-    @Transient
+    @Ignore
     @Override
     public boolean equals(java.lang.Object that) {
         return $ceylon$language$List$this.equals(that);
     }
 
-    @Transient
+    @Ignore
     @Override
     public int hashCode() {
         return $ceylon$language$List$this.hashCode();
     }
 
+    @Ignore
     @Override
     public long count(
             @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<Element,Element,ceylon.language::Empty>>")
