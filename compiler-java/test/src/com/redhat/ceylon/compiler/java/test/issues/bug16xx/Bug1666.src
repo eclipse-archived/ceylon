@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+final class bug1666_ {
+    
+    private bug1666_() {
+    }
+    
+    static <Num>Num bug1666(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Num, final Num number) {
+        {
+            .java.lang.Object sel$0 = number;
+            if (sel$0 instanceof .ceylon.language.Float) {
+                final .ceylon.language.Float number$5 = (.ceylon.language.Float)sel$0;
+                final .java.lang.Object s$8;
+                .java.lang.Object s$7 = null;
+                if (.com.redhat.ceylon.compiler.java.Util.isReified(s$7 = ((.ceylon.language.Float)number$5).times(.ceylon.language.Integer.instance(2L)), $reified$Num)) {
+                    s$8 = s$7;
+                } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Num s = number*2"));
+                return (Num)s$8;
+            } else if (sel$0 instanceof .ceylon.language.Integer) {
+                final .ceylon.language.Integer number$1 = (.ceylon.language.Integer)sel$0;
+                final .java.lang.Object s$4;
+                .java.lang.Object s$3 = null;
+                if (.com.redhat.ceylon.compiler.java.Util.isReified(s$3 = ((.ceylon.language.Numeric<.ceylon.language.Integer>)(.ceylon.language.Numeric)number$1).times(.ceylon.language.Integer.instance(2L)), $reified$Num)) {
+                    s$4 = s$3;
+                } else throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Num s = number*2"));
+                return (Num)s$4;
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+}
