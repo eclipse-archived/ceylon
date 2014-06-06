@@ -534,7 +534,12 @@ public class CeylonUtils {
         }
         
         private String getMavenOverrides(CeylonConfig config) {
-            return (mavenOverrides != null) ? mavenOverrides : DefaultToolOptions.getCompilerMavenOverrides(config);
+            String path = (mavenOverrides != null) ? mavenOverrides : DefaultToolOptions.getCompilerMavenOverrides(config);
+            if (path != null) {
+                File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(path)));
+                return f.getPath();
+            }
+            return null;
         }
     }
 
