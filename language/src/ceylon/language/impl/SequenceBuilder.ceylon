@@ -1,4 +1,4 @@
-shared class SequenceBuilder<Element>() {
+shared class SequenceBuilder<Element>(Integer initialSize=5) {
     "The storage"
     variable Array<Element>? store = null;
     "The number of items in [[array]] which have actually been appended."
@@ -33,7 +33,7 @@ shared class SequenceBuilder<Element>() {
                 return newArray;
             }
         } else {
-            value newArray = arrayOfSize<Element>(newSize(0, extra), example);
+            value newArray = arrayOfSize<Element>(initialSize, example);
             this.store = newArray;
             return newArray;
         }

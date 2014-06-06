@@ -5,10 +5,10 @@ import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTyp
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
+import ceylon.language.impl.SequenceBuilder;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
-import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;

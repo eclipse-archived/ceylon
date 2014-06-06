@@ -10,6 +10,7 @@ import ceylon.language.Map;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
+import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
@@ -19,7 +20,6 @@ import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.Member;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;

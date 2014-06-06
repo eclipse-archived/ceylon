@@ -3,7 +3,7 @@ package ceylon.language;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
+import ceylon.language.impl.SequenceBuilder;
 
 public class SequenceBuilderTest {
 
@@ -30,7 +30,7 @@ public class SequenceBuilderTest {
     public void testEmpty() {
         SequenceBuilder<String> sb = new SequenceBuilder<String>(String.$TypeDescriptor$);
         Assert.assertEquals(0, sb.getSize());
-        Assert.assertTrue(sb.getEmpty());
+        //Assert.assertTrue(sb.getEmpty());
         Assert.assertEquals(empty, sb.sequence());
     }
     @Test
@@ -40,17 +40,17 @@ public class SequenceBuilderTest {
         sb.append(s("2"));
         sb.append(s("3"));
         Assert.assertEquals(3, sb.getSize());
-        Assert.assertFalse(sb.getEmpty());
+        //Assert.assertFalse(sb.getEmpty());
         Assert.assertEquals("[1, 2, 3]", sb.sequence().toString());
         
         sb.appendAll(empty);
         Assert.assertEquals(3, sb.getSize());
-        Assert.assertFalse(sb.getEmpty());
+        //Assert.assertFalse(sb.getEmpty());
         Assert.assertEquals("[1, 2, 3]", sb.sequence().toString());
         
         sb.appendAll(sb.sequence());
         Assert.assertEquals(6, sb.getSize());
-        Assert.assertFalse(sb.getEmpty());
+        //Assert.assertFalse(sb.getEmpty());
         Assert.assertEquals("[1, 2, 3, 1, 2, 3]", sb.sequence().toString());
     }
     @Test
@@ -60,7 +60,7 @@ public class SequenceBuilderTest {
             sb.append(s(""+ii));
         }
         Assert.assertEquals(1000, sb.getSize());
-        Assert.assertFalse(sb.getEmpty());
+        //Assert.assertFalse(sb.getEmpty());
         java.lang.String str = sb.sequence().toString();
         Assert.assertTrue(str.substring(0, 10), str.startsWith("[0, 1, 2, "));
         Assert.assertTrue(str.endsWith(", 998, 999]"));

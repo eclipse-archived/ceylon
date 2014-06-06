@@ -8,12 +8,14 @@ import java.util.zip.ZipFile;
 
 import ceylon.language.Resource;
 import ceylon.language.Sequential;
+import ceylon.language.impl.SequenceBuilder;
+import ceylon.language.meta.declaration.AnnotatedDeclaration$impl;
+import ceylon.language.meta.declaration.Declaration$impl;
 import ceylon.language.meta.declaration.Import;
 import ceylon.language.meta.declaration.Package;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.FileResource;
-import com.redhat.ceylon.compiler.java.language.SequenceBuilder;
 import com.redhat.ceylon.compiler.java.language.ZipResource;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
