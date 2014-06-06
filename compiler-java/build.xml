@@ -310,6 +310,12 @@
             todir="../ceylon-dist-osgi/defaultRepository">
             <fileset dir="${build.dist.repo}"/>
         </copy>
+        <copy 
+            overwrite="true"
+            todir="../ceylon-dist-osgi/lib">
+            <fileset file="${ceylon.bootstrap.lib}"/>
+        </copy>
+		
 	</target>
 	
     <target name="ide" depends="dist,ide-quick">
