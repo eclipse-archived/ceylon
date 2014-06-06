@@ -222,10 +222,6 @@
 	</target>
 	
 	<target name="ide-quick-internal">
-        <copy overwrite="true"
-              todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
-              <fileset dir="${build.dist.repo}"/>
-        </copy>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
