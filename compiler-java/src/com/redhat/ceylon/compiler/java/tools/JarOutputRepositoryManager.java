@@ -20,12 +20,11 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import static com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.WritePendingException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -47,6 +46,7 @@ import com.redhat.ceylon.cmr.api.SourceArchiveCreator;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.compiler.typechecker.model.Module;
 import com.sun.tools.javac.main.OptionName;
 import com.sun.tools.javac.util.Log;
@@ -109,6 +109,7 @@ public class JarOutputRepositoryManager {
         private boolean manifestWritten = false;
         private boolean writeOsgiManifest;
         private final String resourceRootPath;
+        private boolean writeMavenManifest;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager) throws IOException{
             this.options = options;
@@ -119,6 +120,7 @@ public class JarOutputRepositoryManager {
                     module.getNameAsString(), module.getVersion(), options.get(OptionName.VERBOSE) != null, cmrLog);
             this.module = module;
             this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
+            this.writeMavenManifest = !options.isSet(OptionName.CEYLONNOPOM);
             
             // Determine the special path that signals that the files it contains
             // should be moved to the root of the output JAR/CAR
@@ -172,6 +174,9 @@ public class JarOutputRepositoryManager {
                 Manifest manifest = new OsgiManifest(module).build();
                 writeManifestJarEntry(manifest);
             }
+            if (writeMavenManifest) {
+                writeMavenManifest(module);
+            }
 
             Properties previousMapping = getPreviousMapping();
             writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles));
@@ -203,7 +208,8 @@ public class JarOutputRepositoryManager {
                     } else {
                         return modifiedResourceFiles.contains(entryFullName)
                                 || entryFullName.equals(MAPPING_FILE)
-                                || (writeOsgiManifest && OsgiManifest.isManifestFileName(entryFullName));
+                                || (writeOsgiManifest && OsgiManifest.isManifestFileName(entryFullName))
+                                || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
                     }
                 }
             };
@@ -226,6 +232,10 @@ public class JarOutputRepositoryManager {
                 catch (IOException ignore) {
                 }
             }
+        }
+
+        private void writeMavenManifest(Module module) {
+            MavenPomUtil.writeMavenManifest(jarOutputStream, module, folders);
         }
 
         private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {

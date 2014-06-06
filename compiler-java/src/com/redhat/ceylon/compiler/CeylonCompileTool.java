@@ -165,6 +165,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
+    private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
 
     public CeylonCompileTool() {
@@ -176,7 +177,13 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     public void setNoOsgi(boolean noOsgi) {
         this.noOsgi = noOsgi;
     }
-    
+
+    @Option(longName="no-pom")
+    @Description("Indicates that the generated car file should not contain Maven POM module declarations.")
+    public void setNoPom(boolean noPom) {
+        this.noPom = noPom;
+    }
+
     @Option(longName="pack200")
     @Description("Try to make the generated car file smaller by repacking it using `pack200`.")
     public void setPack200(boolean pack200) {
@@ -321,7 +328,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (noOsgi) {
             arguments.add("-noosgi");
         }
-        
+
+        if (noPom) {
+            arguments.add("-nopom");
+        }
+
         if (pack200) {
             arguments.add("-pack200");
         }
