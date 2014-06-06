@@ -91,7 +91,7 @@ class RuntimeUtil {
     }
     
     public JCExpression sequentialInstance(JCExpression typeArgument, JCExpression reifiedTypeArgument, JCExpression annoAttr){
-        return makeUtilInvocation(List.of(typeArgument), "sequentialInstance", List.<JCExpression>of(reifiedTypeArgument, annoAttr));
+        return makeUtilInvocation(typeArgument != null ? List.of(typeArgument) : null, "sequentialInstance", List.<JCExpression>of(reifiedTypeArgument, annoAttr));
     }
 
     /**
@@ -123,9 +123,11 @@ class RuntimeUtil {
         return makeUtilInvocation(typeArguments, "spreadOp", arguments);
     }
 
-    public JCExpression sequentialInstance(List<JCExpression> arguments,
-            List<JCExpression> typeArguments) {
-        return makeUtilInvocation(typeArguments, "sequentialInstance", arguments);
+    public JCExpression sequentialInstance(JCExpression typeArgument,
+            JCExpression reifiedTypeArgument, 
+            JCExpression /*Sequential*/ rest, 
+            List<JCExpression> /*T...*/elements) {
+        return makeUtilInvocation(typeArgument != null ? List.of(typeArgument) : null, "sequentialInstance", elements.prepend(rest).prepend(reifiedTypeArgument));
     }
 
     public JCExpression throwableMessage(JCExpression qualExpr) {
