@@ -108,12 +108,6 @@
 	</target>
 	
 	<target name="ide-quick-internal">
-        <copy 
-            overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
-            <fileset dir="${build.dist.repo}"/>
-        </copy>
-        
         <copy overwrite="true"
             file="${build.dist.repo}/${ceylon.common.jar}"
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}-ide.jar" />
