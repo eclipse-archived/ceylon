@@ -214,7 +214,7 @@ public class TypeUtils {
             subs = d.getCaseTypes();
         } else if ("ceylon.language::Tuple".equals(d.getQualifiedNameString())) {
             gen.out("{t:'T");
-            subs = getTupleTypes(pt);
+            subs = node.getUnit().getTupleElementTypes(pt);
         } else {
             return false;
         }
@@ -982,35 +982,6 @@ public class TypeUtils {
             }
             gen.out("];}");
         }
-    }
-
-    private static List<ProducedType> getTupleTypes(ProducedType pt) {
-        final ArrayList<ProducedType> ts=new ArrayList<>();
-        do {
-            if (pt.getProducedTypeQualifiedName().equals("ceylon.language::Empty")) {
-                pt = null;
-            } else {
-                String tname=pt.getProducedTypeQualifiedName();
-                if (tname.startsWith("ceylon.language::Tuple")) {
-                    ts.add(pt.getTypeArgumentList().get(1));
-                    pt = pt.getTypeArgumentList().get(2);
-                } else if (tname.startsWith("ceylon.language::Sequen")) {
-                    ts.add(pt);
-                    pt = null;
-                } else if (pt.getDeclaration() instanceof UnionType) {
-                    for (ProducedType ct : pt.getCaseTypes()) {
-                        if (ct.getProducedTypeQualifiedName().startsWith("ceylon.language::Tuple")) {
-                            ts.add(pt);
-                            pt=null;
-                            break;
-                        }
-                    }
-                } else { //just cut it short
-                    pt = null;
-                }
-            }
-        } while (pt != null);
-        return ts;
     }
 
     /** Generates the right type arguments for operators that are sugar for method calls.
