@@ -435,11 +435,6 @@
 	<target name="ide-quick-internal">
         <copy 
             overwrite="true"
-            todir="../ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/defaultRepository">
-            <fileset dir="${build.dist.repo}"/>
-        </copy>
-        <copy 
-            overwrite="true"
             file="${build.dist.repo}/${ceylon.typechecker.jar}"
             tofile="../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}-ide.jar"/>
     </target>
