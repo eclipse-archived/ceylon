@@ -31,7 +31,7 @@ public final class process_ {
             for (int i = 0; i < args.length; i++) {
                 newArgs.set(i, String.instance(args[i]));
             }
-            this.args = new ASequence<String>(String.$TypeDescriptor$, newArgs);
+            this.args = new ArraySequence<String>(String.$TypeDescriptor$, newArgs);
         }
     }
     

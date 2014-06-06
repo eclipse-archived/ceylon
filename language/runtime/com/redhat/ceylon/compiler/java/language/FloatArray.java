@@ -364,7 +364,7 @@ public final class FloatArray implements ReifiedType {
         public Sequential<? extends ceylon.language.Float> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
-            Object result = ceylon.language.notempty_.notempty(ceylon.language.Float.$TypeDescriptor$,
+            Object result = ceylon.language.sequence_.sequence(ceylon.language.Float.$TypeDescriptor$,
                         ceylon.language.Null.$TypeDescriptor$,
                         FloatArrayIterable.this);
             if (result == null) {

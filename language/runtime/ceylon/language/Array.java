@@ -1358,7 +1358,7 @@ public final class Array<Element>
         else {
             arraycopy(array, 0, result, 0, size);
         }
-        return new ASequence<Element>($reifiedElement, new Array<Element>($reifiedElement, result));
+        return new ArraySequence<Element>($reifiedElement, new Array<Element>($reifiedElement, result));
     }
 
     @Override @Ignore @SuppressWarnings("rawtypes")

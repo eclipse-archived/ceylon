@@ -6,5 +6,5 @@ Element[] internalSort<Element>(
         return [];
     }
     array.sortInPlace(comparing);
-    return ASequence(array);
+    return ArraySequence(array);
 }

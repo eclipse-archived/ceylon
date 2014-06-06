@@ -397,8 +397,6 @@
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
-                <exclude name="ceylon/language/ArraySequence.ceylon"/>
-                <include name="ceylon/language/ArraySequence.java"/>
                 <exclude name="ceylon/language/arrayOfSize.ceylon"/>
                 <include name="ceylon/language/arrayOfSize_.java"/>
                 <exclude name="ceylon/language/Boolean.ceylon"/>

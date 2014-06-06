@@ -364,7 +364,7 @@ public final class BooleanArray implements ReifiedType {
         public Sequential<? extends ceylon.language.Boolean> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
-            Object result = ceylon.language.notempty_.notempty(ceylon.language.Boolean.$TypeDescriptor$,
+            Object result = ceylon.language.sequence_.sequence(ceylon.language.Boolean.$TypeDescriptor$,
                         ceylon.language.Null.$TypeDescriptor$,
                         BooleanArrayIterable.this);
             if (result == null) {

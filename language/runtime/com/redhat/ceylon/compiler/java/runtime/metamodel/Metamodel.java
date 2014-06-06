@@ -28,7 +28,7 @@ import ceylon.language.Null;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.notempty_;
+import ceylon.language.sequence_;
 import ceylon.language.impl.SequenceBuilder;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.Module;
@@ -895,7 +895,7 @@ public class Metamodel {
             if(mod != null)
                 array[i++] = mod;
         }
-        Object result = notempty_.notempty(
+        Object result = sequence_.sequence(
                 ceylon.language.meta.declaration.Module.$TypeDescriptor$, 
                 Null.$TypeDescriptor$, 
                 new ObjectArray.ObjectArrayIterable<>(ceylon.language.meta.declaration.Module.$TypeDescriptor$, array).take(i));

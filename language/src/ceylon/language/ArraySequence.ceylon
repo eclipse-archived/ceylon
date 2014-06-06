@@ -1,25 +1,7 @@
-"A [[Sequence]] of the given elements, or `Absent` if the iterable is empty.
- A [[Sequential]] can be obtained using the `else` operator:
- 
-     notempty(elements) else []
- "
-by("Gavin")
-shared [Element+]|Absent notempty<Element,Absent>(Iterable<Element, Absent> elements) 
-        given Absent satisfies Null {
-    if (is [Element+] elements) {
-        return elements;
-    }
-    value array = Array(elements);
-    if (array.empty) {
-        assert (is Absent null);
-        return null;
-    }
-    return ASequence(array);
-}
 "A `Sequence` backed by an `Array`. Because `Array `is mutable this class is 
  private to the language module, where we can be sure the Array is not 
  modified after the Sequence has been initialized."
-class ASequence<Element>(Array<Element> array) satisfies [Element+] {
+class ArraySequence<Element>(Array<Element> array) satisfies [Element+] {
     
     shared actual Element? get(Integer index) 
             => array[index];
@@ -48,18 +30,18 @@ class ASequence<Element>(Array<Element> array) satisfies [Element+] {
     }
     
     shared actual Element[] rest 
-            => notempty(array.rest) else [];
+            => package.sequence(array.rest) else [];
     
     shared actual [Element+] reversed {
-        assert (exists reversed = /*package.*/notempty(array.reversed));
+        assert (exists reversed = package.sequence(array.reversed));
         return reversed;
     }
     
     shared actual Element[] segment(Integer from, Integer length) {
         if (from < 0) {
-            return notempty(array[0:length+from]) else [];
+            return package.sequence(array[0:length+from]) else [];
         } else {
-            return notempty(array[from:length]) else [];
+            return package.sequence(array[from:length]) else [];
         }
     }
     
@@ -68,12 +50,12 @@ class ASequence<Element>(Array<Element> array) satisfies [Element+] {
             if (to < 0 || from > lastIndex) {
                 return [];
             }
-            return notempty(array[largest(from, 0)..smallest(to, lastIndex)]) else [];
+            return package.sequence(array[largest(from, 0)..smallest(to, lastIndex)]) else [];
         } else {
             if (from < 0 || to > lastIndex) {
                 return [];
             }
-            return notempty(array[smallest(from, lastIndex)..largest(to, 0)]) else [];
+            return package.sequence(array[smallest(from, lastIndex)..largest(to, 0)]) else [];
         }
     }
     
@@ -81,7 +63,7 @@ class ASequence<Element>(Array<Element> array) satisfies [Element+] {
         if (from > lastIndex) {
             return [];
         } else {
-            return notempty(array[largest(from, 0)...]) else [];
+            return package.sequence(array[largest(from, 0)...]) else [];
         }
     }
     
@@ -89,7 +71,7 @@ class ASequence<Element>(Array<Element> array) satisfies [Element+] {
         if (to < 0) {
             return [];
         } else { 
-            return notempty(array[...smallest(to, lastIndex)]) else [];
+            return package.sequence(array[...smallest(to, lastIndex)]) else [];
         }
     }
     
@@ -98,5 +80,5 @@ class ASequence<Element>(Array<Element> array) satisfies [Element+] {
     
     shared actual Integer hash 
             => (super of Sequence<Element>).hash;
-
+    
 }

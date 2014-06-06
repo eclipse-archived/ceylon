@@ -364,7 +364,7 @@ public final class ShortArray implements ReifiedType {
         public Sequential<? extends ceylon.language.Integer> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
-            Object result = ceylon.language.notempty_.notempty(ceylon.language.Integer.$TypeDescriptor$,
+            Object result = ceylon.language.sequence_.sequence(ceylon.language.Integer.$TypeDescriptor$,
                         ceylon.language.Null.$TypeDescriptor$,
                         ShortArrayIterable.this);
             if (result == null) {
@@ -554,11 +554,6 @@ public final class ShortArray implements ReifiedType {
         @Override
         public Iterable<? extends Entry<? extends ceylon.language.Integer, ? extends ceylon.language.Integer>, ? extends Object> getIndexed() {
             return $ceylon$language$Iterable$this.getIndexed();
-        }
-        
-        @Override
-        public String toString() {
-            return $ceylon$language$Iterable$this.toString();
         }
     }
     

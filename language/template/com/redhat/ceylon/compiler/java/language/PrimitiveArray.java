@@ -364,7 +364,7 @@ public final class @Classname@ implements ReifiedType {
         public Sequential<? extends @BoxedType@> sequence() {
             // Note: Sequential is immutable, and we don't know where the array
             // came from, so however we create the sequence we must take a copy
-            Object result = ceylon.language.notempty_.notempty(@BoxedType@.$TypeDescriptor$,
+            Object result = ceylon.language.sequence_.sequence(@BoxedType@.$TypeDescriptor$,
                         ceylon.language.Null.$TypeDescriptor$,
                         @Classname@Iterable.this);
             if (result == null) {
