@@ -413,9 +413,5 @@ public class IssuesTest_1500_1999 extends CompilerTest {
                         +"  required: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n"
                         +"  found: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n"
                         +"  reason: explicit type argument com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Seconds does not conform to declared bound(s) com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds"));
-
-                
-                
-                
     }
 }
