@@ -19,6 +19,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_SCRIPT = "compiler.script";
     public final static String COMPILER_DOC = "compiler.doc";
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
+    public final static String COMPILER_NOPOM = "compiler.nopom";
     public final static String COMPILER_PACK200 = "compiler.pack200";
     public final static String COMPILER_MAVENOVERRIDES = "compiler.mavenoverrides";
     
@@ -119,7 +120,15 @@ public class DefaultToolOptions {
     public static boolean getCompilerNoOsgi(CeylonConfig config) {
         return config.getBoolOption(COMPILER_NOOSGI, false);
     }
+
+    public static boolean getCompilerNoPom() {
+        return getCompilerNoPom(CeylonConfig.get());
+    }
     
+    public static boolean getCompilerNoPom(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_NOPOM, false);
+    }
+
     public static boolean getCompilerPack200() {
         return getCompilerPack200(CeylonConfig.get());
     }
